@@ -1,0 +1,39 @@
+# Segment 100 Learning Module
+
+This folder is the focused learning and analysis module for the ATL105 Standard Message Data Segment (Segment 100).
+
+## Contents
+
+- [SME and Technical Business Analysis Note](segment-100-sme-tba-learning-note.md)
+- [Segment 100 End-to-End Flow](segment-100-flow.md)
+- [Coverage Closure](coverage/README.md)
+- [Account Number SME/TBA Note](account-number-sme-tba-note.md)
+- [Account Number Entry Flow](account-number-flow.md)
+- [Sequence/Lifecycle SME Note](sequence-lifecycle-sme-tba-note.md)
+- [Sequence/Lifecycle Flow](sequence-lifecycle-flow.md)
+- [Partial Approval SME Note](partial-approval-sme-tba-note.md)
+- [Partial Approval Flow](partial-approval-flow.md)
+- [Final Closure SME Note](final-closure-sme-tba-note.md)
+- [Final Closure Flow](final-closure-flow.md)
+
+## Scope
+
+This module covers:
+
+- TCP/IP header versus ATL105 data sections
+- Data Section 1 and Segment 100 construction
+- Transaction and card/POS interpretation
+- Segment 100 field responsibilities
+- Companion-segment decisioning
+- Serialization and validation behavior
+- Business-requirement, scenario, test-case, and test-data analysis
+
+It does not claim that Segment 100 alone represents every ATL105 transaction. Segment 100 is the standard core; conditional Section 3 segments must be added when the flow requires them.
+
+## Authoritative Neighboring Knowledge
+
+- [Segment 100 canonical anchors](../segment-100-canonical-anchors.md)
+- [Segment compatibility matrix](../segment-compatibility-matrix.md)
+- [Financial transaction request sections](../11-financial-transaction-request-sections.md)
+- [Section 1 and Section 2 refinement](../atl105-knowledge-notes/section1-section2-business-requirement-refinement.md)
+- [Canonical artifact contract](../../../canonical-artifact-contract.md)

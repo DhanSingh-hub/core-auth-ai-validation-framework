@@ -1,0 +1,120 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-COMPATIBILITY-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEG100-BASE-001",
+      "title": "A standard non-EMV request may contain Segment 100 only when no additional data is required.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}
+      ]
+    },
+    {
+      "id": "BR-SEG100-EMV-001",
+      "title": "An EMV purchase must include Segment 130 with Segment 100.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"11.8.1","segment":"130","rule":"section-3-required-for-emv"}
+      ]
+    },
+    {
+      "id": "BR-SEG100-FLEET-001",
+      "title": "A fleet transaction requiring fleet data must include Segment 101 with Segment 100.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"fleet-data-required"}
+      ]
+    },
+    {
+      "id": "BR-SEG100-FUEL-001",
+      "title": "A fuel transaction requiring product data must include Segment 102 with Segment 100.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"102","rule":"product-or-fuel-data-required"}
+      ]
+    },
+    {
+      "id": "BR-SEG100-MULTI-001",
+      "title": "A transaction with multiple applicable data categories must include Segment 100 and every required companion segment.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101,102","rule":"multiple-section-3-segments-required"}
+      ]
+    },
+    {
+      "id": "BR-SEG100-REVIEW-001",
+      "title": "An unknown segment combination must be held for review rather than silently accepted or rejected.",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"12","segment":"UNKNOWN","rule":"unknown-combination-requires-review"}
+      ]
+    }
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG100-ONLY-001","requirementIds":["BR-SEG100-BASE-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}]},
+    {"id":"SCN-SEG100-EMV-001","requirementIds":["BR-SEG100-EMV-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.8.1","segment":"130","rule":"section-3-required-for-emv"}]},
+    {"id":"SCN-SEG100-FLEET-001","requirementIds":["BR-SEG100-FLEET-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"fleet-data-required"}]},
+    {"id":"SCN-SEG100-FUEL-001","requirementIds":["BR-SEG100-FUEL-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"102","rule":"product-or-fuel-data-required"}]},
+    {"id":"SCN-SEG100-MULTI-001","requirementIds":["BR-SEG100-MULTI-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101,102","rule":"multiple-section-3-segments-required"}]},
+    {"id":"SCN-SEG100-CONDITIONAL-001","requirementIds":["BR-SEG100-BASE-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}]},
+    {"id":"SCN-SEG100-REVIEW-001","requirementIds":["BR-SEG100-REVIEW-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"UNKNOWN","rule":"unknown-combination-requires-review"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-ONLY-001","scenarioIds":["SCN-SEG100-ONLY-001"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}]},
+    {"id":"TC-SEG100-EMV-001","scenarioIds":["SCN-SEG100-EMV-001"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.8.1","segment":"130","rule":"section-3-required-for-emv"}]},
+    {"id":"TC-SEG100-FLEET-001","scenarioIds":["SCN-SEG100-FLEET-001"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"fleet-data-required"}]},
+    {"id":"TC-SEG100-FUEL-001","scenarioIds":["SCN-SEG100-FUEL-001"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"102","rule":"product-or-fuel-data-required"}]},
+    {"id":"TC-SEG100-MULTI-001","scenarioIds":["SCN-SEG100-MULTI-001"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101,102","rule":"multiple-section-3-segments-required"}]},
+    {"id":"TC-SEG100-CONDITIONAL-001","scenarioIds":["SCN-SEG100-CONDITIONAL-001"],"expectedOutcome":"PASS_WITH_REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}]},
+    {"id":"TC-SEG100-REVIEW-001","scenarioIds":["SCN-SEG100-REVIEW-001"],"expectedOutcome":"REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"UNKNOWN","rule":"unknown-combination-requires-review"}]}
+  ],
+  "testData": [
+    {
+      "id":"TD-SEG100-ONLY-001",
+      "testCaseIds":["TC-SEG100-ONLY-001"],
+      "expectedValidation":"PASS",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"01"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[]},"testControls":{"expectedSegments":["100"]}}
+    },
+    {
+      "id":"TD-SEG100-EMV-001",
+      "testCaseIds":["TC-SEG100-EMV-001"],
+      "expectedValidation":"PASS",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.8.1","segment":"130","rule":"section-3-required-for-emv"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"02"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[{"segmentType":"130","emvRequestData":"SYNTHETIC-EMV-DATA"}]},"testControls":{"expectedSegments":["100","130"],"isEmv":true}}
+    },
+    {
+      "id":"TD-SEG100-FLEET-001",
+      "testCaseIds":["TC-SEG100-FLEET-001"],
+      "expectedValidation":"PASS",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"fleet-data-required"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"02"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[{"segmentType":"101","vehicleId":"VEHICLE01"}]},"testControls":{"expectedSegments":["100","101"],"requiresFleetData":true}}
+    },
+    {
+      "id":"TD-SEG100-FUEL-001",
+      "testCaseIds":["TC-SEG100-FUEL-001"],
+      "expectedValidation":"PASS",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"102","rule":"product-or-fuel-data-required"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"02"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020","pumpLaneNumber":"01","fuelPurchaseAmount":"00001234"}},"dataSection3":[{"segmentType":"102","productCode":"001","productAmount":"00001234"}]},"testControls":{"expectedSegments":["100","102"],"requiresProductOrFuelData":true}}
+    },
+    {
+      "id":"TD-SEG100-MULTI-001",
+      "testCaseIds":["TC-SEG100-MULTI-001"],
+      "expectedValidation":"PASS",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101,102","rule":"multiple-section-3-segments-required"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"03"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[{"segmentType":"101","vehicleId":"VEHICLE01"},{"segmentType":"102","productCode":"001","productAmount":"00001234"}]},"testControls":{"expectedSegments":["100","101","102"],"requiredCompanionSegments":["101","102"]}}
+    },
+    {
+      "id":"TD-SEG100-CONDITIONAL-001",
+      "testCaseIds":["TC-SEG100-CONDITIONAL-001"],
+      "expectedValidation":"PASS_WITH_REVIEW",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"01"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[]},"testControls":{"expectedSegments":["100"],"conditionalSegmentDecision":"review-flow-configuration"}}
+    },
+    {
+      "id":"TD-SEG100-REVIEW-001",
+      "testCaseIds":["TC-SEG100-REVIEW-001"],
+      "expectedValidation":"REVIEW",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"UNKNOWN","rule":"unknown-combination-requires-review"}],
+      "payload":{"request":{"dataSection1":{"numberOfSegments":"02"},"dataSection2":{"standardSegment":{"segmentType":"100","promptCode":"0020"}},"dataSection3":[{"segmentType":"119","syntheticData":"UNMAPPED-COMBINATION"}]},"testControls":{"expectedSegments":["100","119"],"compatibilityStatus":"UNKNOWN_REQUIRES_REVIEW"}}
+    }
+  ]
+}

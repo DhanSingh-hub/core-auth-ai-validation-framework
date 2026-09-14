@@ -1,0 +1,64 @@
+﻿{
+    "testDataId":  "TEST-DATA-ATL105-MIN-034",
+    "testCaseId":  "TEST-CASE-ATL105-MIN-034",
+    "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+    "expectedValidation":  "FAIL",
+    "objective":  "Incorrect Segment 100 length.",
+    "scope":  {
+                  "includes":  [
+                                   "TCP/IP Message Header",
+                                   "ATL105 Data Section No. 1",
+                                   "Segment 100"
+                               ],
+                  "excludes":  [
+                                   "Data Section No. 3"
+                               ],
+                  "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+              },
+    "flowContext":  null,
+    "lifecycleMessages":  null,
+    "request":  {
+                    "tcpIpHeader":  {
+                                        "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                        "byteOrder":  "network-big-endian",
+                                        "tpduProtocolId":  "60",
+                                        "tpduDestinationAddress":  "0000",
+                                        "tpduSourceAddress":  "0000"
+                                    },
+                    "dataSection1":  {
+                                         "messageFormatVersionIdentifier":  "ATL105",
+                                         "numberOfSegments":  "01",
+                                         "fieldSeparators":  {
+                                                                 "betweenElements55And63":  true,
+                                                                 "afterElement63":  true
+                                                             }
+                                     },
+                    "dataSection2":  {
+                                         "standardSegment":  {
+                                                                 "segmentType":  "100",
+                                                                 "informationByte":  "0",
+                                                                 "terminalIdentifier":  "TSCA000001",
+                                                                 "promptCode":  "0020",
+                                                                 "accountNumber":  "4111111111111111",
+                                                                 "cardDiscretionaryBlockData":  "",
+                                                                 "encryptedPinBlockData":  "",
+                                                                 "pumpLaneNumber":  "",
+                                                                 "fuelPurchaseAmount":  "",
+                                                                 "nonfuelAmount":  "00001000",
+                                                                 "taxAmount":  "",
+                                                                 "cashAmount":  "",
+                                                                 "sequenceNumber":  "100001",
+                                                                 "approvalNumber":  "",
+                                                                 "localDateTime":  "0101261200",
+                                                                 "partialApprovalIndicator":  "1",
+                                                                 "segmentLength":  "001"
+                                                             }
+                                     },
+                    "dataSection3":  [
+
+                                     ]
+                },
+    "testControls":  {
+
+                     }
+}

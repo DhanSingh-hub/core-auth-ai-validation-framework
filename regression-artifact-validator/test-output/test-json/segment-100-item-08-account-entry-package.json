@@ -1,0 +1,23 @@
+{
+  "manifest":{"packageId":"ATL105-SEG100-ITEM-08-ACCOUNT-ENTRY","specification":"ATL105","specificationVersion":"2026-3"},
+  "businessRequirements":[
+    {"id":"BR-SEG100-E2-001","title":"Account Number representation must agree with the declared POS entry method.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}]},
+    {"id":"BR-SEG100-E2-002","title":"Tokenized or TransArmor account representation must be explicit.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.13","segment":"100","element":"2","rule":"account-number-token-representation"}]}
+  ],
+  "testScenarios":[
+    {"id":"SCN-SEG100-E2-001","requirementIds":["BR-SEG100-E2-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}]},
+    {"id":"SCN-SEG100-E2-002","requirementIds":["BR-SEG100-E2-002"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.13","segment":"100","element":"2","rule":"account-number-token-representation"}]}
+  ],
+  "testCases":[
+    {"id":"TC-SEG100-E2-001","scenarioIds":["SCN-SEG100-E2-001"],"expectedOutcome":"PASS","category":"dependency","tags":["segment-100","account-number","manual"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}]},
+    {"id":"TC-SEG100-E2-002","scenarioIds":["SCN-SEG100-E2-001"],"expectedOutcome":"PASS","category":"dependency","tags":["segment-100","account-number","track2"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}]},
+    {"id":"TC-SEG100-E2-003","scenarioIds":["SCN-SEG100-E2-001"],"expectedOutcome":"FAIL","category":"dependency","tags":["segment-100","account-number","track2"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}]},
+    {"id":"TC-SEG100-E2-004","scenarioIds":["SCN-SEG100-E2-002"],"expectedOutcome":"FAIL","category":"dependency","tags":["segment-100","account-number","token"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.13","segment":"100","element":"2","rule":"account-number-token-representation"}]}
+  ],
+  "testData":[
+    {"id":"TD-SEG100-E2-001","testCaseIds":["TC-SEG100-E2-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}],"payload":{"request":{"dataSection2":{"standardSegment":{"accountNumber":"4111111111111111"}}},"testControls":{"validateAccountNumberEntry":true,"entryMode":"manual"}}},
+    {"id":"TD-SEG100-E2-002","testCaseIds":["TC-SEG100-E2-002"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}],"payload":{"request":{"dataSection2":{"standardSegment":{"accountNumber":"4111111111111111=2512"}}},"testControls":{"validateAccountNumberEntry":true,"entryMode":"track2"}}},
+    {"id":"TD-SEG100-E2-003","testCaseIds":["TC-SEG100-E2-003"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.1.1","segment":"100","element":"2","rule":"account-number-entry-method"}],"payload":{"request":{"dataSection2":{"standardSegment":{"accountNumber":"4111111111111111"}}},"testControls":{"validateAccountNumberEntry":true,"entryMode":"track2"}}},
+    {"id":"TD-SEG100-E2-004","testCaseIds":["TC-SEG100-E2-004"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10.13","segment":"100","element":"2","rule":"account-number-token-representation"}],"payload":{"request":{"dataSection2":{"standardSegment":{"accountNumber":"TOKEN-001"}}},"testControls":{"validateAccountNumberEntry":true,"entryMode":"token","tokenOrTransarmorRepresentation":false}}}
+  ]
+}

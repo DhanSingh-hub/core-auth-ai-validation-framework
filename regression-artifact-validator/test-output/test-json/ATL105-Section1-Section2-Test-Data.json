@@ -1,0 +1,95 @@
+{
+  "suiteId": "TEST-DATA-ATL105-SECTION1-SECTION2-001",
+  "status": "Working baseline - Test Team review required before Client submission",
+  "scope": {
+    "includes": ["TCP/IP Message Header", "ATL105 Data Section No. 1", "Segment 100"],
+    "excludes": ["Data Section No. 3"],
+    "messageModel": "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+  },
+  "representation": {
+    "header": "Structured TCP/IP header fields; a future serializer must calculate and emit binary wire bytes.",
+    "payload": "Structured ATL105 fields; a future serializer must emit field separators and Segment 100 fields in wire order.",
+    "paymentData": "Synthetic test values only. No live payment credentials are included."
+  },
+  "baseRequest": {
+    "tcpIpHeader": {
+      "messageLength": "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+      "byteOrder": "network-big-endian",
+      "tpduProtocolId": "60",
+      "tpduDestinationAddress": "0000",
+      "tpduSourceAddress": "0000"
+    },
+    "dataSection1": {
+      "messageFormatVersionIdentifier": "ATL105",
+      "numberOfSegments": "01",
+      "fieldSeparators": {
+        "betweenElements55And63": true,
+        "afterElement63": true
+      }
+    },
+    "dataSection2": {
+      "standardSegment": {
+        "segmentType": "100",
+        "segmentLength": "CALCULATE_FROM_SEGMENT_CONTENT",
+        "informationByte": "0",
+        "terminalIdentifier": "TSCA000001",
+        "promptCode": "0020",
+        "accountNumber": "4111111111111111",
+        "cardDiscretionaryBlockData": "",
+        "encryptedPinBlockData": "",
+        "pumpLaneNumber": "",
+        "fuelPurchaseAmount": "",
+        "nonfuelAmount": "00001000",
+        "taxAmount": "",
+        "cashAmount": "",
+        "sequenceNumber": "100001",
+        "approvalNumber": "",
+        "localDateTime": "0101261200",
+        "partialApprovalIndicator": "1"
+      }
+    },
+    "dataSection3": []
+  },
+  "testData": [
+    {"testCaseId":"TEST-CASE-ATL105-MIN-001","scenarioId":"TEST-SCN-ATL105-MIN-001","expectedValidation":"PASS","overrides":{},"objective":"Eligible minimal request."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-002","scenarioId":"TEST-SCN-ATL105-MIN-001","expectedValidation":"FAIL","flowContext":{"requiresSection3":"variable-information"},"overrides":{},"objective":"Section 3 trigger makes the minimal structure ineligible."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-003","scenarioId":"TEST-SCN-ATL105-MIN-002","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"0020"},"objective":"POS purchase/capture."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-004","scenarioId":"TEST-SCN-ATL105-MIN-003","expectedValidation":"PASS","lifecycleMessages":[{"role":"original-authorization","promptCode":"3020","sequenceNumber":"100002","approvalNumber":"APR001"},{"role":"completion","promptCode":"0020","sequenceNumber":"100002","approvalNumber":"APR001"}],"objective":"Preauthorized completion correlates to the original authorization."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-005","scenarioId":"TEST-SCN-ATL105-MIN-004","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"3020"},"objective":"POS authorization only."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-006","scenarioId":"TEST-SCN-ATL105-MIN-005","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"7020","dataSection2.standardSegment.sequenceNumber":"100003"},"objective":"Merchandise return/refund."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-007","scenarioId":"TEST-SCN-ATL105-MIN-006","expectedValidation":"PASS","lifecycleMessages":[{"role":"original-purchase","promptCode":"0020","sequenceNumber":"100004","approvalNumber":"APR004"},{"role":"purchase-void","promptCode":"8020","sequenceNumber":"100004","approvalNumber":"APR004"}],"objective":"Purchase reversal/void correlation."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-008","scenarioId":"TEST-SCN-ATL105-MIN-007","expectedValidation":"PASS","lifecycleMessages":[{"role":"original-refund","promptCode":"7020","sequenceNumber":"100005","approvalNumber":"APR005"},{"role":"void-of-return","promptCode":"U020","sequenceNumber":"100005","approvalNumber":"APR005"}],"objective":"Void-of-return correlation."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-009","scenarioId":"TEST-SCN-ATL105-MIN-008","expectedValidation":"PASS","lifecycleMessages":[{"role":"timed-out-request","promptCode":"0020","sequenceNumber":"100006","approvalNumber":""},{"role":"timeout-reversal","promptCode":"Z020","sequenceNumber":"100006","approvalNumber":""}],"objective":"Time-out reversal correlation."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-010","scenarioId":"TEST-SCN-ATL105-MIN-009","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"A020","dataSection2.standardSegment.nonfuelAmount":""},"objective":"Account verification without purchase amount."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-011","scenarioId":"TEST-SCN-ATL105-MIN-010","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"6020","dataSection2.standardSegment.sequenceNumber":"100007"},"objective":"Mail/phone purchase."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-012","scenarioId":"TEST-SCN-ATL105-MIN-011","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"B020","dataSection2.standardSegment.sequenceNumber":"100008"},"objective":"Mail/phone authorization only."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-013","scenarioId":"TEST-SCN-ATL105-MIN-011","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.promptCode":"C020","dataSection2.standardSegment.sequenceNumber":"100009"},"objective":"Mail/phone reversal."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-014","scenarioId":"TEST-SCN-ATL105-MIN-012","expectedValidation":"PASS","overrides":{"tcpIpHeader.messageLength":"CALCULATE_FROM_FOLLOWING_PAYLOAD"},"objective":"Valid TCP/IP Message Length."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-015","scenarioId":"TEST-SCN-ATL105-MIN-012","expectedValidation":"FAIL","overrides":{"tcpIpHeader.messageLength":"0001"},"objective":"Incorrect TCP/IP Message Length."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-016","scenarioId":"TEST-SCN-ATL105-MIN-012","expectedValidation":"FAIL","overrides":{"tcpIpHeader.byteOrder":"little-endian"},"objective":"Reversed Message Length byte order."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-017","scenarioId":"TEST-SCN-ATL105-MIN-012","expectedValidation":"FAIL","overrides":{"tcpIpHeader.messageLength":"TRUNCATED_ONE_BYTE"},"objective":"Incomplete Message Length field."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-018","scenarioId":"TEST-SCN-ATL105-MIN-012","expectedValidation":"FAIL","overrides":{"tcpIpHeader.messageLength":"0010","wirePayload":""},"objective":"Header without declared payload."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-019","scenarioId":"TEST-SCN-ATL105-MIN-013","expectedValidation":"PASS","overrides":{"tcpIpHeader.tpduProtocolId":"60"},"objective":"Valid TPDU Protocol ID."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-020","scenarioId":"TEST-SCN-ATL105-MIN-013","expectedValidation":"FAIL","overrides":{"tcpIpHeader.tpduProtocolId":"61"},"objective":"Invalid TPDU Protocol ID."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-021","scenarioId":"TEST-SCN-ATL105-MIN-013","expectedValidation":"PASS","overrides":{"tcpIpHeader.tpduDestinationAddress":"0000","tcpIpHeader.tpduSourceAddress":"0000"},"objective":"Valid reserved TPDU fields."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-022","scenarioId":"TEST-SCN-ATL105-MIN-013","expectedValidation":"FAIL","overrides":{"tcpIpHeader.tpduDestinationAddress":"0001"},"objective":"Non-zero reserved TPDU field."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-023","scenarioId":"TEST-SCN-ATL105-MIN-014","expectedValidation":"PASS","overrides":{"dataSection1.messageFormatVersionIdentifier":"ATL105"},"objective":"Valid ATL105 identifier."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-024","scenarioId":"TEST-SCN-ATL105-MIN-014","expectedValidation":"FAIL","overrides":{"dataSection1.messageFormatVersionIdentifier":"ATL104"},"objective":"Invalid message identifier."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-025","scenarioId":"TEST-SCN-ATL105-MIN-014","expectedValidation":"PASS","overrides":{"dataSection1.numberOfSegments":"01"},"objective":"Valid one-segment count."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-026","scenarioId":"TEST-SCN-ATL105-MIN-014","expectedValidation":"FAIL","overrides":{"dataSection1.numberOfSegments":"02"},"objective":"Incorrect segment count."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-027","scenarioId":"TEST-SCN-ATL105-MIN-014","expectedValidation":"FAIL","overrides":{"dataSection1.fieldSeparators.afterElement63":false},"objective":"Missing Data Section 1 separator."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-028","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"PASS","overrides":{},"objective":"Exactly one Segment 100."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-029","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"FAIL","overrides":{"dataSection2.standardSegment":null},"objective":"Missing Segment 100."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-030","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"FAIL","overrides":{"dataSection2.duplicateStandardSegment":true},"objective":"Duplicate Segment 100."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-031","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.segmentType":"100"},"objective":"Valid Segment Type."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-032","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"FAIL","overrides":{"dataSection2.standardSegment.segmentType":"101"},"objective":"Invalid Segment Type."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-033","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.segmentLength":"CALCULATE_FROM_SEGMENT_CONTENT"},"objective":"Valid Segment 100 length."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-034","scenarioId":"TEST-SCN-ATL105-MIN-015","expectedValidation":"FAIL","overrides":{"dataSection2.standardSegment.segmentLength":"001"},"objective":"Incorrect Segment 100 length."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-035","scenarioId":"TEST-SCN-ATL105-MIN-016","expectedValidation":"PASS","overrides":{},"objective":"Required core Segment 100 fields populated."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-036","scenarioId":"TEST-SCN-ATL105-MIN-016","expectedValidation":"FAIL","overrides":{"dataSection2.standardSegment.terminalIdentifier":""},"objective":"Required terminal identifier missing."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-037","scenarioId":"TEST-SCN-ATL105-MIN-016","expectedValidation":"PASS","overrides":{"dataSection2.standardSegment.taxAmount":"","serialization.nonTrailingEmptyFieldSeparator":true},"objective":"Non-trailing empty field retains separator."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-038","scenarioId":"TEST-SCN-ATL105-MIN-016","expectedValidation":"PASS","overrides":{"serialization.trailingOptionalFieldsOmitted":true},"objective":"Unneeded trailing optional fields omitted."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-039","scenarioId":"TEST-SCN-ATL105-MIN-017","expectedValidation":"FAIL","flowContext":{"isEmv":true,"requiresSection3":"emv-request-data-segment-130"},"overrides":{},"objective":"EMV request without Segment 130."},
+    {"testCaseId":"TEST-CASE-ATL105-MIN-040","scenarioId":"TEST-SCN-ATL105-MIN-018","expectedValidation":"FAIL","flowContext":{"requiresSection3":["nfc-tokenization-123","fleet-101","product-102","ebt-103","purchase-card-104","variable-information-111","moneris-135"]},"overrides":{},"objective":"Additional-data trigger without required Segment 3 data."}
+  ]
+}
