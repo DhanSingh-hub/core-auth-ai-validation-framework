@@ -12,6 +12,24 @@ Prompt Code
 
 It is not merely a display label. It influences the expected business flow, required fields, lifecycle behavior, and sometimes companion segments.
 
+## SME/TBA Learning Objective
+
+The SME identifies the real POS event and card context. The TBA converts that understanding into explicit, testable rules. Neither role should begin by copying the Prompt Code from an AI artifact.
+
+```text
+POS event
+  -> transaction intent
+  -> card/program context
+  -> Prompt Code
+  -> Segment 100 field conditions
+  -> companion-segment decision
+  -> lifecycle expectation
+```
+
+The key question is not only “Is the code formatted correctly?” It is:
+
+> Does this Prompt Code describe the transaction that the POS claims to be sending?
+
 ## SME Review Questions
 
 1. What did the customer or clerk initiate?
@@ -51,6 +69,52 @@ Examples:
 - A completion must preserve the original transaction relationship.
 - A special transaction code must not be accepted as a normal financial request without a supporting flow.
 - An eWIC code requires eWIC-specific rules, not only generic Prompt Code validation.
+
+## Context Classification Table
+
+| Context question | Example answer | TBA consequence |
+| --- | --- | --- |
+| What did the POS initiate? | Purchase/capture | Use a purchase Prompt Code and initial-request rules |
+| Is this a follow-up? | Completion after authorization | Reuse the required original lifecycle references |
+| How was the account obtained? | Swiped, keyed, tokenized, or EMV | Validate Account Number and discretionary/PIN data consistently |
+| Is special data present? | EMV chip data | Require the applicable companion segment, such as Segment 130 |
+| Is the transaction fuel or fleet? | Fuel purchase | Evaluate Pump/Lane, Fuel Amount, and fleet/product segments |
+| Is the code special or nonfinancial? | Inquiry or program flow | Route to the specialized rule set instead of ordinary financial rules |
+
+## Valid Shape, Invalid Meaning
+
+A Prompt Code can pass a shape check and still be wrong:
+
+| Situation | Prompt Code | Expected result |
+| --- | --- | --- |
+| Authorization-only declared, purchase code supplied | `0020` | Fail: context mismatch |
+| Purchase with supported card context | `0020` | Continue to field and companion checks |
+| Completion with a new unrelated sequence | valid-looking code | Fail or review: lifecycle mismatch |
+| EMV context without required EMV companion data | valid-looking code | Fail: compatibility mismatch |
+| Unsupported special code used as a normal financial request | `9020` | Fail or route to review |
+
+## TBA Decomposition Pattern
+
+Convert one business observation into independent artifacts:
+
+```text
+Observation:
+  POS performs an authorization-only transaction for card type 020.
+
+BR:
+  An authorization-only request for card type 020 shall use Prompt Code 3020.
+
+TS:
+  Authorization-only request with card type 020.
+
+TC:
+  Submit Prompt Code 0020 while the declared intent is authorization-only.
+
+TD:
+  Segment 100 Prompt Code = 0020; expected result = FAIL.
+```
+
+The negative case is valuable because it proves that the validator checks meaning, not only syntax.
 
 ## TBA Artifact Design
 
@@ -98,3 +162,23 @@ It does not yet fully validate every Appendix E card type or every transaction-s
 - Are lifecycle messages using the right related Prompt Codes?
 - Does the code imply a companion segment or separate module?
 - Is the expected result based on behavior rather than string shape alone?
+
+## Training Exercise
+
+For each case, document the transaction intent, Prompt Code interpretation, required Segment 100 fields, companion-segment expectation, and expected result:
+
+1. Retail purchase, card type `020`, no EMV or fuel data.
+2. EMV purchase, card type `020`, chip data present.
+3. Fleet fuel purchase, pump number and fuel amount present.
+4. Authorization-only request with a purchase Prompt Code.
+5. Completion that does not preserve the original Sequence Number.
+
+The expected analysis must distinguish:
+
+```text
+syntax valid
+semantic valid
+context valid
+lifecycle valid
+serialization valid
+```

@@ -63,6 +63,21 @@ Specification pack
 
 The Core Auth platform generates an approved, traceable regression test suite. Test execution, production automation execution, failure triage, and changes to an existing external automation framework remain outside the generation platform unless separately integrated and approved.
 
+### AI Solution Outcomes and Test Validation Focus
+
+The strategy focuses on the artifacts produced by the AI Solution and how the Test Solution validates them:
+
+| AI outcome | Validation focus |
+| --- | --- |
+| Knowledge model | Source provenance, confidence, flags, relationships, and approval state |
+| Business Requirements | Source mapping, completeness, atomicity, and testability |
+| Test Scenarios | Relevance, classification, combinations, and missing scenarios |
+| Test Cases | Traceability, expected-result consistency, priority, and approval state |
+| Test Data JSON | Schema, field semantics, serialization, lifecycle, and executability |
+| Traceability/coverage reports | Independent recalculation and discrepancy detection |
+
+The Test Validation Team validates these outcomes. It does not need to reproduce the AI generation process to determine whether the outputs are complete, traceable, and correct.
+
 ### Architecture Alignment
 
 The strategy follows the Core Auth Regression Automation Tool architecture:

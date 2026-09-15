@@ -22,6 +22,8 @@ import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
 import com.coreauth.validator.canonical.Segment100CompatibilityValidator;
 import com.coreauth.validator.canonical.Segment100PayloadValidator;
 import com.coreauth.validator.canonical.Segment100SerializationValidator;
+import com.coreauth.validator.canonical.Segment100ArtifactComparison;
+import com.coreauth.validator.canonical.SourceAnchor;
 import com.coreauth.validator.validation.ValidationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -66,6 +68,46 @@ class CanonicalTraceabilityValidatorTest {
         ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
 
         assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void comparesAiRequirementsWithIndependentAnchorsNotLocalIds() throws Exception {
+        Path file = Files.createTempFile("atl105-comparison-", ".json");
+        Files.writeString(file, VALID_PACKAGE);
+
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
+        SourceAnchor independent = anchor("1", "55", "message-format-identifier");
+        independent.setSpecification("ATL105");
+        independent.setVersion("2026");
+        Segment100ArtifactComparison.ComparisonReport report = new Segment100ArtifactComparison()
+                .compare(artifactPackage, java.util.List.of(independent));
+
+        assertThat(report.matched()).hasSize(1);
+        assertThat(report.missing()).isEmpty();
+        assertThat(report.extra()).isEmpty();
+        assertThat(report.precision()).isEqualTo(1.0);
+        assertThat(report.recall()).isEqualTo(1.0);
+    }
+
+    @Test
+    void reportsMissingAndExtraAiRequirementAnchors() throws Exception {
+        Path file = Files.createTempFile("atl105-comparison-diff-", ".json");
+        Files.writeString(file, VALID_PACKAGE);
+
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
+        SourceAnchor expected = anchor("1", "63", "number-of-segments");
+        expected.setSpecification("ATL105");
+        expected.setVersion("2026");
+        SourceAnchor actual = anchor("1", "55", "message-format-identifier");
+        actual.setSpecification("ATL105");
+        actual.setVersion("2026");
+        Segment100ArtifactComparison.ComparisonReport report = new Segment100ArtifactComparison()
+                .compare(artifactPackage, java.util.List.of(expected));
+
+        assertThat(report.matched()).isEmpty();
+        assertThat(report.missing()).contains(expected.canonicalKey());
+        assertThat(report.extra()).contains(actual.canonicalKey());
+        assertThat(report.hasDifferences()).isTrue();
     }
 
     @Test

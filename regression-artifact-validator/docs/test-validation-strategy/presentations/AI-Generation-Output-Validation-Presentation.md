@@ -9,38 +9,35 @@
 
 AI artifacts can be valid JSON while still being incomplete, untraceable, semantically wrong, or based on unapproved knowledge. The Test Solution is the independent quality gate.
 
-## 2. AI Generation Workflow
+## 2. AI Solution Outcomes
+
+The AI Solution provides outcome artifacts for Test Validation:
+
+| AI outcome | What it contains | Validation focus |
+| --- | --- | --- |
+| Knowledge model | Fields, rules, values, relationships, source references | Provenance, confidence, flags, approvals |
+| Business Requirements | Testable statements derived from source rules | Source mapping, completeness, atomicity |
+| Test Scenarios | Business situations to be tested | Relevance, classification, missing scenarios |
+| Test Cases | Objectives, conditions, expected results, links | Traceability, consistency, approval state |
+| Test Data JSON | Requests, field values, lifecycle data | Schema, semantics, serialization, executability |
+| Traceability/coverage | Artifact links and reported metrics | Independent recalculation and discrepancy checks |
+
+## 3. Test Validation Stages
 
 ```text
-Specification
-  -> profile/extract
-  -> knowledge model
-  -> knowledge approval
-  -> requirements
-  -> scenarios
-  -> scenario approval
-  -> prioritization
-  -> test cases
-  -> test-case approval
-  -> test data/suite
-  -> traceability/coverage
-```
-
-## 3. Test Solution and Validation
-
-```text
-AI output
-  -> preserve
-  -> normalize
-  -> validate stages
-  -> validate provenance/approvals
-  -> Rule -> BR -> Scenario -> Case -> Data
+AI outcome artifacts
+  -> preserve original files
+  -> detect format and normalize
+  -> validate each outcome structure
+  -> validate source provenance and approvals
+  -> validate Rule -> BR -> Scenario -> Case -> Data
   -> validate ATL105 semantics
-  -> independent coverage
-  -> decision/report/manual review
+  -> independently calculate coverage
+  -> manual high-risk sample comparison
+  -> final decision and report
 ```
 
-The Test Solution compares AI claims with independent rules and evidence at every stage.
+The Test Solution validates the AI outcomes. It does not need to reproduce the AI generation process to determine whether the outcomes are complete, traceable, and correct.
 
 Before broad acceptance, the Test Team manually validates only a small, risk-based handful of high-risk AI artifacts against canonical Test Solution artifacts, independent specification rules, and expected business behavior. This targeted sample confirms compatible results for high-impact items; it does not replace automated validation or formal approval.
 
@@ -68,47 +65,34 @@ Approved source rule
 ## Canonical Approach
 
 ```mermaid
-flowchart TD
-    A[AI JSON format v1] --> E[Approved format adapter]
-    B[AI JSON format v2] --> E
-    C[Raw ATL105 message JSON] --> E
-    D[Future specification format] --> E
-    E --> F[Canonical Requirement]
-    E --> G[Canonical Scenario]
-    E --> H[Canonical Test Case]
-    E --> I[Canonical Test Data]
-    F --> J[Canonical source anchor]
-    G --> J
-    H --> J
-    I --> J
-    J --> K[Independent validation engine]
+flowchart LR
+  A[AI Solution JSON] --> B[Common Canonical Format]
+  B --> C[ATL105 Source Rule]
+  C --> D[Independent Test Validation]
+  D --> E[Pass, Fail, or Review]
 ```
 
-Different local IDs and JSON property names may be accepted when artifacts map to the same canonical source anchor and meaning.
+The canonical format contains the requirement, scenario, test case, test data, source reference, and expected result. The AI's original ID is preserved, but validation uses the common structure and source rule.
 
 ## Semantic Approach
 
 ```mermaid
 flowchart LR
-    A[JSON syntax] --> B[Schema structure]
-    B --> C[Field and data types]
-    C --> D[Source provenance]
-    D --> E[Business meaning]
-    E --> F[Cross-field dependencies]
-    F --> G[Lifecycle and segment rules]
-    G --> H[Executable expected behavior]
-    H --> I[Pass, fail, or manual review]
+    A[AI JSON] --> B[Structure check]
+    B --> C[Business meaning check]
+    C --> D[Specification rule check]
+    D --> E[Pass, Fail, or Review]
 ```
 
 ```text
-Structural validation asks:
-  Is the JSON shaped correctly?
+Structural validation:
+  Is the JSON written correctly?
 
-Semantic validation asks:
-  Does the JSON represent valid specification and business behavior?
+Semantic validation:
+  Does the JSON mean the correct business behavior?
 ```
 
-Example: `segmentType = 101` may be valid JSON, but it is semantically invalid when the test claims to represent Segment 100.
+Example: `segmentType = 101` may be valid JSON, but it is wrong when the test claims to represent Segment 100.
 
 ## 6. ATL105 Foundation Plan
 

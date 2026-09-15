@@ -13,6 +13,12 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Sequence/Lifecycle Flow](sequence-lifecycle-flow.md)
 - [Partial Approval SME Note](partial-approval-sme-tba-note.md)
 - [Partial Approval Flow](partial-approval-flow.md)
+- [Prompt Code SME/TBA Note](prompt-code-sme-tba-note.md)
+- [Prompt Code Decision Flow](prompt-code-flow.md)
+- [Companion-Segment Compatibility Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md)
+- [Companion-Segment Compatibility Flow](companion-compatibility/companion-segment-compatibility-flow.md)
+- [Serialization and Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
+- [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
 - [Final Closure SME Note](final-closure-sme-tba-note.md)
 - [Final Closure Flow](final-closure-flow.md)
 

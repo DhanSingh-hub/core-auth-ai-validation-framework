@@ -51,13 +51,26 @@ public final class Segment100PayloadValidator {
         checkPattern(segment, "sequenceNumber", SIX_DIGITS, "6 digits", id, result);
         checkEnum(segment, "partialApprovalIndicator", new String[]{"0", "1", "5"}, id, result);
 
-        if (section1.path("messageFormatVersionIdentifier").asText(null) != null) {
-            checkEquals(section1, "messageFormatVersionIdentifier", "ATL105", id, result);
-        }
-        if (section1.path("numberOfSegments").asText(null) != null) {
-            String declared = section1.path("numberOfSegments").asText();
-            if (!declared.matches("^[0-9]{2}$")) {
-                result.addError("Segment100Payload", id + " numberOfSegments must be two digits");
+        // MUT-010: messageFormatVersionIdentifier is required
+        checkEquals(section1, "messageFormatVersionIdentifier", "ATL105", id, result);
+        
+        // MUT-009: numberOfSegments must be present and valid
+        String declaredSegments = section1.path("numberOfSegments").asText(null);
+        if (declaredSegments == null || declaredSegments.isEmpty()) {
+            result.addError("Segment100Payload", id + " numberOfSegments is required");
+        } else if (!declaredSegments.matches("^[0-9]{2}$")) {
+            result.addError("Segment100Payload", id + " numberOfSegments must be two digits");
+        } else {
+            // Count actual segments in dataSection2
+            JsonNode dataSection2 = request.path("dataSection2");
+            int actualCount = 0;
+            if (dataSection2.isObject()) {
+                actualCount = dataSection2.size(); // Count all fields/segments
+            }
+            
+            int declared = Integer.parseInt(declaredSegments);
+            if (declared != actualCount) {
+                result.addError("Segment100Payload", id + " numberOfSegments '" + declaredSegments + "' does not match actual segment count: " + actualCount);
             }
         }
     }
