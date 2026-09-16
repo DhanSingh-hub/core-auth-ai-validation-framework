@@ -19,7 +19,7 @@ The Test Solution independently validates those artifacts. Test Solution fixture
 
 Use the baseline index as the organizing contract:
 
-[Segment 100 BR baseline index](../../test-output/test-json/segment-100-br-baseline-index.json)
+[Segment 100 BR baseline index](../../test-output/test-json/knowledge/segment-100-br-baseline-index.json)
 
 1. `CORE-STRUCTURE`: segment identity, field order, lengths, separators, serialization.
 2. `CORE-FIELDS`: terminal, Prompt Code, account, amounts, sequence, approval, time, partial approval.
@@ -40,11 +40,15 @@ Capture specification section, page, segment, element, rule, applicability, and 
 
 ### Phase 2: Segment Model
 
-Document required, optional, and conditional fields; lengths; types; enumerations; field order; separators; and request/response differences.
+Document required, optional, and conditional fields; lengths; types; enumerations; field order; separators; and request/response differences. Produce a machine-readable field inventory with one row for every ordered field, its canonical source rule, JSON representation, appendix dependencies, and validation status.
+
+For Segment 100, the reference inventory is [segment-100-field-knowledge-inventory.json](../../test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json).
 
 ### Phase 3: Context Matrix
 
 Map transaction types, card types, POS entry modes, companion segments, response families, and lifecycle relationships. Transaction type alone must not determine the complete message.
+
+Produce an explicit context envelope for every AI artifact. The Segment 100 reference model is [segment-100-context-model.json](../../test-output/test-json/knowledge/segment-100-context-model.json). Required dimensions include transaction type, card type, payment network, lifecycle role, and message family; conditional dimensions include entry mode, POS condition, specialized domain, companion segments, and response context.
 
 ### Phase 4: BR Derivation
 

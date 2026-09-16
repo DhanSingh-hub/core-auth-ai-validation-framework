@@ -8,7 +8,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 
 - [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
-- [Segment 100 BR Baseline Index](../../../test-output/test-json/segment-100-br-baseline-index.json)
+- [Segment 100 BR Baseline Index](../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json)
 - [Segment 100 Annexure BR Baseline](../../../test-output/test-json/segment-100-annexure-br-baseline-package.json)
 
 - [SME and Technical Business Analysis Note](segment-100-sme-tba-learning-note.md)
