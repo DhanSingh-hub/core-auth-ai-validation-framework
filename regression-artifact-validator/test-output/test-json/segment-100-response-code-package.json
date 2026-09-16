@@ -1,0 +1,27 @@
+{
+  "manifest":{"packageId":"ATL105-SEG100-RESPONSE-CODES-001","specification":"ATL105","specificationVersion":"2026-3"},
+  "businessRequirements":[
+    {"id":"BR-SEG100-RC-APPROVED-PURCHASE","title":"Segment 100 purchase responses support approved purchase/capture outcomes.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-0-4"}]},
+    {"id":"BR-SEG100-RC-APPROVED-AUTH","title":"Segment 100 authorization responses support approved authorization outcomes.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-2-3"}]},
+    {"id":"BR-SEG100-RC-PARTIAL","title":"Segment 100 supports partial approval with an approved amount.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-F"}]},
+    {"id":"BR-SEG100-RC-DECLINED","title":"Segment 100 declined responses carry a decline code.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-1-S"}]}
+  ],
+  "testScenarios":[
+    {"id":"TS-SEG100-RC-PURCHASE","requirementIds":["BR-SEG100-RC-APPROVED-PURCHASE"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-0-4"}]},
+    {"id":"TS-SEG100-RC-AUTH","requirementIds":["BR-SEG100-RC-APPROVED-AUTH"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-2-3"}]},
+    {"id":"TS-SEG100-RC-PARTIAL","requirementIds":["BR-SEG100-RC-PARTIAL"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-F"}]},
+    {"id":"TS-SEG100-RC-DECLINED","requirementIds":["BR-SEG100-RC-DECLINED"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-1-S"}]}
+  ],
+  "testCases":[
+    {"id":"TC-SEG100-RC-PURCHASE","scenarioIds":["TS-SEG100-RC-PURCHASE"],"expectedOutcome":"PASS_AND_FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-0-4"}]},
+    {"id":"TC-SEG100-RC-AUTH","scenarioIds":["TS-SEG100-RC-AUTH"],"expectedOutcome":"PASS_AND_FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-2-3"}]},
+    {"id":"TC-SEG100-RC-PARTIAL","scenarioIds":["TS-SEG100-RC-PARTIAL"],"expectedOutcome":"PASS_AND_FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-F"}]},
+    {"id":"TC-SEG100-RC-DECLINED","scenarioIds":["TS-SEG100-RC-DECLINED"],"expectedOutcome":"PASS_AND_FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-1-S"}]}
+  ],
+  "testData":[
+    {"id":"TD-SEG100-RC-PURCHASE","testCaseIds":["TC-SEG100-RC-PURCHASE"],"expectedValidation":"REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-0-4"}],"payload":{"Financial Response":{"MessageType":"ATL105","ResponseCode":"0","SequenceNumber":"100001","ApprovalNumber":"APR001","AuthorizerResponseCode":"00"}}},
+    {"id":"TD-SEG100-RC-AUTH","testCaseIds":["TC-SEG100-RC-AUTH"],"expectedValidation":"REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-2-3"}],"payload":{"Financial Response":{"MessageType":"ATL105","ResponseCode":"2","SequenceNumber":"100001","ApprovalNumber":"APR001","AuthorizerResponseCode":"00"}}},
+    {"id":"TD-SEG100-RC-PARTIAL","testCaseIds":["TC-SEG100-RC-PARTIAL"],"expectedValidation":"REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-F"}],"payload":{"Financial Response":{"MessageType":"ATL105","ResponseCode":"F","SequenceNumber":"100001","ApprovalNumber":"APR001","ApprovedAmount":"000001000","AuthorizerResponseCode":"00"}}},
+    {"id":"TD-SEG100-RC-DECLINED","testCaseIds":["TC-SEG100-RC-DECLINED"],"expectedValidation":"REVIEW","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"83","rule":"response-code-1-S"}],"payload":{"Financial Response":{"MessageType":"ATL105","ResponseCode":"1","SequenceNumber":"100001","DeclineCode":"05","AuthorizerResponseCode":"00"}}}
+  ]
+}

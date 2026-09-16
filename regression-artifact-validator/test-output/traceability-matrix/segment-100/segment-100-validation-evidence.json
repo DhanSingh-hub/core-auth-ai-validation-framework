@@ -1,0 +1,144 @@
+{
+  "reportId" : "ATL105-SEG100-VALIDATION-EVIDENCE",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "scope" : "Independent validation of AI Solution artifacts",
+  "sourceOfTruth" : "ATL105 specification and independent oracle",
+  "transactionTypeCoverage" : {
+    "expectedCodes" : 13,
+    "codes" : [ {
+      "code" : "0",
+      "meaning" : "POS Purchase/Capture or preauthorized completion",
+      "multiStepEligible" : true
+    }, {
+      "code" : "3",
+      "meaning" : "POS Authorization Only",
+      "multiStepEligible" : true
+    }, {
+      "code" : "4",
+      "meaning" : "Customer-activated Purchase/Capture",
+      "multiStepEligible" : false
+    }, {
+      "code" : "5",
+      "meaning" : "Customer-activated Authorization Only",
+      "multiStepEligible" : true
+    }, {
+      "code" : "6",
+      "meaning" : "Mail/Phone Purchase",
+      "multiStepEligible" : false
+    }, {
+      "code" : "7",
+      "meaning" : "Merchandise Return/Refund",
+      "multiStepEligible" : true
+    }, {
+      "code" : "8",
+      "meaning" : "Purchase Reversal/Void",
+      "multiStepEligible" : true
+    }, {
+      "code" : "A",
+      "meaning" : "Account Verification",
+      "multiStepEligible" : false
+    }, {
+      "code" : "B",
+      "meaning" : "Mail/Phone Authorization Only",
+      "multiStepEligible" : true
+    }, {
+      "code" : "C",
+      "meaning" : "Mail/Phone Reversal/Void",
+      "multiStepEligible" : true
+    }, {
+      "code" : "S",
+      "meaning" : "Cancellation",
+      "multiStepEligible" : true
+    }, {
+      "code" : "U",
+      "meaning" : "Void of Merchandise Return",
+      "multiStepEligible" : true
+    }, {
+      "code" : "Z",
+      "meaning" : "Time-out Reversal",
+      "multiStepEligible" : true
+    } ],
+    "singleStepStatus" : "PASS",
+    "singleStepErrors" : 0,
+    "singleStepArtifactCount" : 13
+  },
+  "cardTypeCoverage" : {
+    "expectedCardTypes" : 36,
+    "status" : "FAIL",
+    "errors" : 47,
+    "note" : "AI artifact coverage is measured independently; the current generated baseline uses card type 020 only."
+  },
+  "converterPreflight" : {
+    "filesChecked" : 13,
+    "failures" : 0,
+    "status" : "PASS",
+    "note" : "Preflight only; actual ATL105 converter execution remains an external gate."
+  },
+  "multiStepCoverage" : {
+    "flows" : [ {
+      "flow" : "AUTHORIZATION_COMPLETION",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : true,
+      "negativeErrorCount" : 1
+    }, {
+      "flow" : "AUTHORIZATION_CANCELLATION",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : false,
+      "negativeErrorCount" : 0
+    }, {
+      "flow" : "AUTHORIZATION_VOID",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : true,
+      "negativeErrorCount" : 1
+    }, {
+      "flow" : "REFUND_VOID_OF_RETURN",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : true,
+      "negativeErrorCount" : 1
+    }, {
+      "flow" : "SALE_VOID",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : true,
+      "negativeErrorCount" : 1
+    }, {
+      "flow" : "TIMEOUT_REVERSAL",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : false,
+      "negativeErrorCount" : 0
+    }, {
+      "flow" : "TIMEOUT_TOR_NEXT_TRANSACTION",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : false
+    }, {
+      "flow" : "TIMEOUT_TOR_RETRIES",
+      "positiveStatus" : "PASS",
+      "negativeMismatchDetected" : false
+    } ],
+    "flowCount" : 8,
+    "status" : "PASS"
+  },
+  "brTsTcTestData" : {
+    "transactionTypes" : 13,
+    "status" : "PASS",
+    "source" : "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\test-output\\test-json\\segment-100-code-flow-br-ts-tc-testdata.json"
+  },
+  "findings" : [ {
+    "id" : "AI_OUTPUT_PENDING",
+    "message" : "Actual AI-generated artifacts have not yet been supplied.",
+    "status" : "PENDING"
+  }, {
+    "id" : "EXTERNAL_CONVERTER_PENDING",
+    "message" : "Run the real ATL105 converter against AI-generated JSON.",
+    "status" : "PENDING"
+  }, {
+    "id" : "EWIC_FLOW_PENDING",
+    "message" : "eWIC Authorization to Completion requires the separate EBT/eWIC artifact set.",
+    "status" : "PENDING"
+  }, {
+    "id" : "SME_REVIEW_PENDING",
+    "message" : "SME review remains outside this automated report.",
+    "status" : "OUT_OF_SCOPE"
+  } ],
+  "overallStatus" : "READY_FOR_AI_ARTIFACT_INTAKE"
+}

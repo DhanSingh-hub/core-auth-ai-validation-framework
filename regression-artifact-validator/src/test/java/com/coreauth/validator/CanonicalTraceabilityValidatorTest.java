@@ -336,11 +336,14 @@ class CanonicalTraceabilityValidatorTest {
                 Path packageEleven = root.resolve("test-output/test-json/segment-100-item-09-sequence-lifecycle-package.json");
                 Path packageTwelve = root.resolve("test-output/test-json/segment-100-item-10-partial-approval-package.json");
                 Path packageThirteen = root.resolve("test-output/test-json/segment-100-item-11-final-closure-package.json");
+                Path packageFourteen = root.resolve("test-output/test-json/segment-100-gap-closure-package.json");
+                Path packageFifteen = root.resolve("test-output/test-json/segment-100-ewic-gap-package.json");
+                Path packageSixteen = root.resolve("test-output/test-json/segment-100-response-code-package.json");
                 Path catalog = root.resolve("docs/specs/kb/segment-100/coverage/segment-100-rule-catalog.json").normalize();
                 Path output = root.resolve("test-output/traceability-matrix/segment-100");
 
                 Segment100CoverageReportWriter.ReportFiles files = new Segment100CoverageRelease().generate(
-                    java.util.List.of(packageOne, packageTwo, packageThree, packageFour, packageFive, packageSix, packageSeven, packageEight, packageNine, packageTen, packageEleven, packageTwelve, packageThirteen), catalog, output);
+                    java.util.List.of(packageOne, packageTwo, packageThree, packageFour, packageFive, packageSix, packageSeven, packageEight, packageNine, packageTen, packageEleven, packageTwelve, packageThirteen, packageFourteen, packageFifteen, packageSixteen), catalog, output);
 
                 assertThat(files.json()).exists();
                 assertThat(files.markdown()).exists();

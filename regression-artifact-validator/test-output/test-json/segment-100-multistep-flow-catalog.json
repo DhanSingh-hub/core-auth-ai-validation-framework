@@ -1,0 +1,70 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-MULTISTEP-FLOWS",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "scope": "Segment 100 credit-card multi-step lifecycle flows"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEG100-LIFE-AUTH-COMPLETE",
+      "title": "Authorization completion reuses the original Sequence Number.",
+      "sourceAnchors": [{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]
+    },
+    {
+      "id": "BR-SEG100-LIFE-AUTH-VOID",
+      "title": "Authorization void reuses the original Sequence Number.",
+      "sourceAnchors": [{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]
+    },
+    {
+      "id": "BR-SEG100-LIFE-REFUND-VOID",
+      "title": "Refund void of return reuses the original Sequence Number.",
+      "sourceAnchors": [{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]
+    },
+    {
+      "id": "BR-SEG100-LIFE-SALE-VOID",
+      "title": "Sale void reuses the original Sequence Number.",
+      "sourceAnchors": [{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]
+    },
+    {
+      "id": "BR-SEG100-LIFE-TIMEOUT-TOR",
+      "title": "A timeout reversal reuses the Sequence Number of the timed-out request.",
+      "sourceAnchors": [{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]
+    }
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG100-LIFE-AUTH-COMPLETE","requirementIds":["BR-SEG100-LIFE-AUTH-COMPLETE"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]},
+    {"id":"SCN-SEG100-LIFE-AUTH-VOID","requirementIds":["BR-SEG100-LIFE-AUTH-VOID"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]},
+    {"id":"SCN-SEG100-LIFE-REFUND-VOID","requirementIds":["BR-SEG100-LIFE-REFUND-VOID"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]},
+    {"id":"SCN-SEG100-LIFE-SALE-VOID","requirementIds":["BR-SEG100-LIFE-SALE-VOID"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]},
+    {"id":"SCN-SEG100-LIFE-TIMEOUT-TOR","requirementIds":["BR-SEG100-LIFE-TIMEOUT-TOR"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"10","segment":"100","element":"86","rule":"lifecycle-correlation"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-LIFE-AUTH-COMPLETE-PASS","scenarioIds":["SCN-SEG100-LIFE-AUTH-COMPLETE"],"expectedOutcome":"PASS","category":"lifecycle","tags":["authorization","completion","multistep"],"testDataFiles":["authorization-completion-authorization.source.json","authorization-completion-completion.valid.json"]},
+    {"id":"TC-SEG100-LIFE-AUTH-COMPLETE-MISMATCH","scenarioIds":["SCN-SEG100-LIFE-AUTH-COMPLETE"],"expectedOutcome":"FAIL","category":"lifecycle","tags":["authorization","completion","sequence-mismatch"],"testDataFiles":["authorization-completion-authorization.source.json","authorization-completion-completion.source.json"]},
+    {"id":"TC-SEG100-LIFE-AUTH-VOID-PASS","scenarioIds":["SCN-SEG100-LIFE-AUTH-VOID"],"expectedOutcome":"PASS","category":"lifecycle","tags":["authorization","void","multistep"],"testDataFiles":["authorization-void-authorization.source.json","authorization-void-void.valid.json"]},
+    {"id":"TC-SEG100-LIFE-AUTH-VOID-MISMATCH","scenarioIds":["SCN-SEG100-LIFE-AUTH-VOID"],"expectedOutcome":"FAIL","category":"lifecycle","tags":["authorization","void","sequence-mismatch"],"testDataFiles":["authorization-void-authorization.source.json","authorization-void-void.source.json"]},
+    {"id":"TC-SEG100-LIFE-REFUND-VOID-PASS","scenarioIds":["SCN-SEG100-LIFE-REFUND-VOID"],"expectedOutcome":"PASS","category":"lifecycle","tags":["refund","void-of-return","multistep"],"testDataFiles":["refund-void-refund.source.json","refund-void-void-of-return.valid.json"]},
+    {"id":"TC-SEG100-LIFE-REFUND-VOID-MISMATCH","scenarioIds":["SCN-SEG100-LIFE-REFUND-VOID"],"expectedOutcome":"FAIL","category":"lifecycle","tags":["refund","void-of-return","sequence-mismatch"],"testDataFiles":["refund-void-refund.source.json","refund-void-void-of-return.source.json"]},
+    {"id":"TC-SEG100-LIFE-SALE-VOID-PASS","scenarioIds":["SCN-SEG100-LIFE-SALE-VOID"],"expectedOutcome":"PASS","category":"lifecycle","tags":["sale","void","multistep"],"testDataFiles":["sale-void-sale.source.json","sale-void-void.valid.json"]},
+    {"id":"TC-SEG100-LIFE-SALE-VOID-MISMATCH","scenarioIds":["SCN-SEG100-LIFE-SALE-VOID"],"expectedOutcome":"FAIL","category":"lifecycle","tags":["sale","void","sequence-mismatch"],"testDataFiles":["sale-void-sale.source.json","sale-void-void.source.json"]},
+    {"id":"TC-SEG100-LIFE-TIMEOUT-TOR-PASS","scenarioIds":["SCN-SEG100-LIFE-TIMEOUT-TOR"],"expectedOutcome":"PASS","category":"lifecycle","tags":["timeout","tor","synthetic","multistep"],"testDataFiles":["timeout-tor-original.synthetic.json","timeout-tor-reversal.synthetic.json"]}
+  ],
+  "testData": [
+    {"id":"TD-SEG100-LIFE-AUTH-COMPLETE-PASS","testCaseIds":["TC-SEG100-LIFE-AUTH-COMPLETE-PASS"],"expectedValidation":"PASS","files":["authorization-completion-authorization.source.json","authorization-completion-completion.valid.json"]},
+    {"id":"TD-SEG100-LIFE-AUTH-COMPLETE-MISMATCH","testCaseIds":["TC-SEG100-LIFE-AUTH-COMPLETE-MISMATCH"],"expectedValidation":"FAIL","files":["authorization-completion-authorization.source.json","authorization-completion-completion.source.json"]},
+    {"id":"TD-SEG100-LIFE-AUTH-VOID-PASS","testCaseIds":["TC-SEG100-LIFE-AUTH-VOID-PASS"],"expectedValidation":"PASS","files":["authorization-void-authorization.source.json","authorization-void-void.valid.json"]},
+    {"id":"TD-SEG100-LIFE-AUTH-VOID-MISMATCH","testCaseIds":["TC-SEG100-LIFE-AUTH-VOID-MISMATCH"],"expectedValidation":"FAIL","files":["authorization-void-authorization.source.json","authorization-void-void.source.json"]},
+    {"id":"TD-SEG100-LIFE-REFUND-VOID-PASS","testCaseIds":["TC-SEG100-LIFE-REFUND-VOID-PASS"],"expectedValidation":"PASS","files":["refund-void-refund.source.json","refund-void-void-of-return.valid.json"]},
+    {"id":"TD-SEG100-LIFE-REFUND-VOID-MISMATCH","testCaseIds":["TC-SEG100-LIFE-REFUND-VOID-MISMATCH"],"expectedValidation":"FAIL","files":["refund-void-refund.source.json","refund-void-void-of-return.source.json"]},
+    {"id":"TD-SEG100-LIFE-SALE-VOID-PASS","testCaseIds":["TC-SEG100-LIFE-SALE-VOID-PASS"],"expectedValidation":"PASS","files":["sale-void-sale.source.json","sale-void-void.valid.json"]},
+    {"id":"TD-SEG100-LIFE-SALE-VOID-MISMATCH","testCaseIds":["TC-SEG100-LIFE-SALE-VOID-MISMATCH"],"expectedValidation":"FAIL","files":["sale-void-sale.source.json","sale-void-void.source.json"]},
+    {"id":"TD-SEG100-LIFE-TIMEOUT-TOR-PASS","testCaseIds":["TC-SEG100-LIFE-TIMEOUT-TOR-PASS"],"expectedValidation":"PASS","files":["timeout-tor-original.synthetic.json","timeout-tor-reversal.synthetic.json"]}
+  ],
+  "scopeNotes": [
+    "The .source.json files preserve the supplied transaction data unchanged.",
+    "The .valid.json files are corrected positive variants whose follow-up SequenceNumber matches the original.",
+    "Timeout/TOR data is synthetic and must be reviewed against the converter and timeout-specific business rules.",
+    "eWIC authorization/completion is excluded from this credit-card transaction catalog and requires a separate eWIC data set."
+  ]
+}

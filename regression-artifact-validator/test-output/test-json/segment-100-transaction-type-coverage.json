@@ -1,0 +1,56 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-TRANSACTION-TYPE-COVERAGE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "100",
+    "promptCodeElement": "78",
+    "source": "Appendix G: Valid Transaction Type Codes"
+  },
+  "summary": {
+    "allValidAppendixGCodes": 23,
+    "standardFinancialCodes": 13,
+    "specialOrNonStandardCodes": 10,
+    "singleStepEligibleCodes": 18,
+    "multiStepEligibleCodes": 10,
+    "contextDependentCodes": 5
+  },
+  "transactionTypes": [
+    {"code":"0","name":"POS Purchase/Capture or Preauthorized Completion","scope":"standard-financial","singleStep":true,"multiStep":true,"multiStepUse":"Preauthorized completion","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-0"},
+    {"code":"3","name":"POS Authorization Only","scope":"standard-financial","singleStep":true,"multiStep":true,"multiStepUse":"Authorization followed by completion or cancellation","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-3"},
+    {"code":"4","name":"Customer-activated Purchase/Capture","scope":"standard-financial","singleStep":true,"multiStep":false,"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-4"},
+    {"code":"5","name":"Customer-activated Authorization Only","scope":"standard-financial","singleStep":true,"multiStep":true,"multiStepUse":"Authorization followed by completion or cancellation","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-5"},
+    {"code":"6","name":"Mail/Phone Purchase","scope":"standard-financial","singleStep":true,"multiStep":false,"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-6"},
+    {"code":"7","name":"Merchandise Return/Refund","scope":"standard-financial","singleStep":true,"multiStep":true,"multiStepUse":"Refund followed by void of return","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-7"},
+    {"code":"8","name":"Purchase Reversal/Void","scope":"standard-financial","singleStep":false,"multiStep":true,"multiStepUse":"Purchase followed by reversal or void","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-8"},
+    {"code":"A","name":"Account Verification","scope":"standard-financial","singleStep":true,"multiStep":false,"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-A"},
+    {"code":"B","name":"Mail/Phone Authorization Only","scope":"standard-financial","singleStep":true,"multiStep":true,"multiStepUse":"Authorization followed by completion or cancellation","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-B"},
+    {"code":"C","name":"Mail/Phone Reversal/Void","scope":"standard-financial","singleStep":false,"multiStep":true,"multiStepUse":"Mail/phone purchase or authorization followed by reversal","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-C"},
+    {"code":"S","name":"Cancellation","scope":"standard-financial","singleStep":false,"multiStep":true,"multiStepUse":"Cancellation of an authorization-only transaction","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-S"},
+    {"code":"U","name":"Void of Merchandise Return","scope":"standard-financial","singleStep":false,"multiStep":true,"multiStepUse":"Refund followed by void of return","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-U"},
+    {"code":"Z","name":"Time-out Reversal","scope":"standard-financial","singleStep":false,"multiStep":true,"multiStepUse":"Timed-out financial request followed by TOR","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-Z"},
+    {"code":"9","name":"Special Transactions","scope":"special-nonfinancial","singleStep":true,"multiStep":false,"notes":"Valid Appendix G code, but not a standard financial transaction type."},
+    {"code":"D","name":"RBC Loyalty Lookup","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"E","name":"Balance Inquiry","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"K","name":"Activate Stored Value Card","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"L","name":"Deactivate Stored Value Card","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"M","name":"Balance Merge","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"N","name":"Replace Card","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"Q","name":"Recharge Card","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"T","name":"Token Registration","scope":"special-nonfinancial","singleStep":true,"multiStep":false},
+    {"code":"V","name":"Loyalty Advice Function","scope":"special-nonfinancial","singleStep":true,"multiStep":false}
+  ],
+  "multiStepScenarios": [
+    {"id":"AUTH-COMPLETION","originalCodes":["3","5","B"],"followUpCodes":["0"],"status":"defined"},
+    {"id":"PURCHASE-REVERSAL-VOID","originalCodes":["0","4","6"],"followUpCodes":["8","C"],"status":"defined"},
+    {"id":"REFUND-VOID-OF-RETURN","originalCodes":["7"],"followUpCodes":["U"],"status":"defined"},
+    {"id":"AUTHORIZATION-CANCELLATION","originalCodes":["3","5","B"],"followUpCodes":["S"],"status":"defined"},
+    {"id":"TIMEOUT-REVERSAL","originalCodes":["0","3","4","5","6","B"],"followUpCodes":["Z"],"status":"defined"}
+  ],
+  "validationPolicy": {
+    "standardFinancialCodesRequireSegment100": true,
+    "specialCodesRequireSpecializedFlowValidation": true,
+    "transactionTypeAloneDoesNotDetermineCompanionSegments": true,
+    "lifecycleFollowUpsMustReuseOriginalSequenceNumber": true
+  }
+}
