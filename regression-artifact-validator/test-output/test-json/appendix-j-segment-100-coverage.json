@@ -1,0 +1,29 @@
+{
+  "appendix": "J",
+  "title": "Valid Point-of-Service Entry Mode Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies through Variable Information Element 113, typically carried in Segment 111 Table ID 005, and affects Segment 100 transaction context and lifecycle correlation.",
+  "source": "docs/specs/extracted_text.txt Appendix J-1 through J-2",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPJ-COMPOSITION","title":"POS Entry Mode Element 113 shall contain a valid two-digit PAN Entry Mode followed by a valid one-digit Terminal Capability Mode.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix J","segment":"111","element":"113","rule":"pos-entry-mode-composition"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPJ-PAN-MODES","title":"PAN Entry Mode shall use a source-defined value consistent with the card-entry method and transaction context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix J","segment":"111","element":"113","rule":"pan-entry-mode"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPJ-TERMINAL-CAPABILITY","title":"Terminal Capability Mode shall reflect the POS PIN, EMV, contactless, or mPOS capability hierarchy.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix J","segment":"111","element":"113","rule":"terminal-capability-mode"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPJ-LIFECYCLE-PERSISTENCE","title":"POS Entry Mode shall persist across lifecycle transactions except for source-defined exceptions, including PAN mode 90 referenced by a completion or void using mode 02.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix J","segment":"111","element":"113","rule":"entry-mode-lifecycle-persistence"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPJ-CONTEXT-RESTRICTIONS","title":"Entry Mode 10, 82, and terminal capability mode 3 shall be used only in their source-defined card, network, and mPOS contexts.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix J","segment":"111","element":"113","rule":"entry-mode-context-restrictions"},"status":"REVIEW_REQUIRED"}
+  ],
+  "panEntryModes": ["00","01","02","04","05","07","10","79","80","82","86","90","91","95"],
+  "terminalCapabilityModes": ["0","1","2","3","6","8"],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPJ-COMPOSITION","covers":["BR-SEG100-APPJ-COMPOSITION"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPJ-CONTEXT","covers":["BR-SEG100-APPJ-PAN-MODES","BR-SEG100-APPJ-TERMINAL-CAPABILITY","BR-SEG100-APPJ-CONTEXT-RESTRICTIONS"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPJ-LIFECYCLE","covers":["BR-SEG100-APPJ-LIFECYCLE-PERSISTENCE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPJ-COMPOSITION","scenarioId":"TS-SEG100-APPJ-COMPOSITION","positive":"Valid three-digit POS Entry Mode","negative":["Invalid PAN mode","invalid terminal mode","wrong length","non-numeric mode"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPJ-CONTEXT","scenarioId":"TS-SEG100-APPJ-CONTEXT","positive":"Entry mode agrees with card/POS context","negative":["Mode 10 used for first credential storage","Mode 82 used for prohibited stored-card context","mPOS mode 3 used without applicable mPOS context"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPJ-LIFECYCLE","scenarioId":"TS-SEG100-APPJ-LIFECYCLE","positive":"Follow-up preserves original entry mode or source-defined 90-to-02 exception","negative":["Unjustified entry-mode change"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment 100 lifecycle and Variable Information dependencies are documented; dedicated Appendix J validation is not yet implemented.",
+  "remaining": ["Validate Table ID 005 Variable Information data when AI artifacts are available.","Resolve lifecycle exceptions through source/client review."]
+}

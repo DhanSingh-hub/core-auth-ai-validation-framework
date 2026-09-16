@@ -1,0 +1,26 @@
+{
+  "appendix": "Q",
+  "title": "Valid National Point-of-Service Condition Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies through Variable Information Element 113, Table ID 030, and describes POS/terminal context for Segment 100 transactions.",
+  "source": "docs/specs/extracted_text.txt Appendix Q-1 through Q-7",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPQ-COMPOSITION","title":"National POS Condition Code shall contain the source-defined ten-position structure: terminal class, presentation type, security condition, and terminal type.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Q","segment":"111","element":"113","rule":"pos-condition-code-composition"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPQ-TERMINAL","title":"Terminal class and terminal type positions shall use valid Appendix Q values consistent with the physical or digital POS channel.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Q","segment":"111","element":"113","rule":"pos-condition-terminal-context"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPQ-PRESENTATION","title":"Presentation positions shall correctly identify customer/card presence, mail/telephone order, preauthorization, retention capability, and re-presentment state.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Q","segment":"111","element":"113","rule":"pos-condition-presentation"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPQ-SECURITY","title":"Security Condition position shall use valid values for no concern, suspected fraud, verified identification, or electronic commerce digital signature.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Q","segment":"111","element":"113","rule":"pos-condition-security"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPQ-FLOW-CONSISTENCY","title":"POS Condition Code shall be consistent with Segment 100 Prompt Code, entry mode, transaction lifecycle, and eWIC/channel context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Q","segment":"111","element":"78,113","rule":"pos-condition-flow-consistency"},"status":"REVIEW_REQUIRED"}
+  ],
+  "positionModel": {"positions":"1-3 terminal class; 4-7 presentation type; 8 security condition; 9-10 terminal type"},
+  "testScenarios": [
+    {"id":"TS-SEG100-APPQ-STRUCTURE","covers":["BR-SEG100-APPQ-COMPOSITION","BR-SEG100-APPQ-TERMINAL","BR-SEG100-APPQ-PRESENTATION","BR-SEG100-APPQ-SECURITY"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPQ-CONTEXT","covers":["BR-SEG100-APPQ-FLOW-CONSISTENCY"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPQ-STRUCTURE","scenarioId":"TS-SEG100-APPQ-STRUCTURE","positive":"Valid Table 030 ten-position code","negative":["invalid reserved value","wrong length","invalid terminal type","invalid presentation/security value"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPQ-CONTEXT","scenarioId":"TS-SEG100-APPQ-CONTEXT","positive":"POS condition agrees with Prompt Code and lifecycle","negative":["mail/telephone condition on ordinary card-present purchase","wrong terminal context for eWIC or mPOS","re-presentment mismatch"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "POS Entry Mode and Variable Information dependencies are documented; dedicated Table 030 validation is not yet implemented.",
+  "remaining": ["Validate AI-generated Table 030 data when available.","Resolve channel-specific and eWIC POS condition interpretations."]
+}

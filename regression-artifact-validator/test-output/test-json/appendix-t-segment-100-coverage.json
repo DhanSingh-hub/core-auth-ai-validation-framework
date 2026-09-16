@@ -1,0 +1,25 @@
+{
+  "appendix": "T",
+  "title": "EMV Additional Information Data Layouts",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to EMV additional-information data associated with Segment 100/130 transactions and EMV responses.",
+  "source": "docs/specs/extracted_text.txt Appendix T-1 through T-2",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPT-EMV-TABLE-DATA","title":"EMV Additional Information Table ID 001 shall use the source-defined length and EMVYES/EMVNOT request values.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix T","segment":"EMV-ADDITIONAL-INFO","element":"116,118","rule":"emv-table-data-001"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPT-CARC","title":"CARC Additional Information Table ID 002 shall carry the one-character Card Authentication Results Code returned by Visa.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix T","segment":"EMV-ADDITIONAL-INFO","element":"116,118","rule":"carc-table-002"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPT-ECHO","title":"EMV Table Data included in an authorization response shall be echoed in subsequent advice or batch-upload requests when required by the source.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix T","segment":"EMV-ADDITIONAL-INFO","element":"118","rule":"emv-additional-info-echo"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPT-EMV-TABLE","covers":["BR-SEG100-APPT-EMV-TABLE-DATA"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPT-CARC","covers":["BR-SEG100-APPT-CARC"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPT-ECHO","covers":["BR-SEG100-APPT-ECHO"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPT-EMV-TABLE","scenarioId":"TS-SEG100-APPT-EMV-TABLE","positive":"EMVYES or EMVNOT uses Table ID 001","negative":["invalid table ID","invalid value","wrong table length"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPT-CARC","scenarioId":"TS-SEG100-APPT-CARC","positive":"CARC uses Table ID 002 and one-character result","negative":["wrong table ID","invalid length","missing CARC"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPT-ECHO","scenarioId":"TS-SEG100-APPT-ECHO","positive":"Response EMV data is preserved into required follow-up message","negative":["missing echo","changed EMV data"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated EMV Additional Information response artifacts are currently available.",
+  "remaining": ["Obtain AI-generated EMV response/advice artifacts.","Validate Table IDs, lengths, CARC values, and echo behavior."]
+}

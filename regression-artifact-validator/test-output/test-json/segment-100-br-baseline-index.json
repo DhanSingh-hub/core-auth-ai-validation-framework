@@ -1,0 +1,76 @@
+{
+  "baselineId": "ATL105-SEG100-BR-BASELINE-INDEX-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "purpose": "Canonical organization of Segment 100 BRs without modifying original artifact packages",
+  "systemBoundary": {
+    "aiSolution": "Produces BR, TS, TC, request JSON, response JSON, and traceability artifacts.",
+    "testSolution": "Independently validates AI artifacts against ATL105 source rules.",
+    "fiservExecution": "Uses AI-generated converter-ready JSON after validation; not Test Solution output."
+  },
+  "categories": [
+    {
+      "id": "CORE-STRUCTURE",
+      "name": "Core Segment 100 Structure",
+      "scope": "Segment identity, field order, required fields, lengths, separators, and serialization.",
+      "sourcePackages": ["segment-100-item-03-element-55-package.json", "segment-100-item-04-data-section-1-package.json", "segment-100-item-05-identity-length-package.json", "segment-100-item-11-final-closure-package.json"]
+    },
+    {
+      "id": "CORE-FIELDS",
+      "name": "Core Segment 100 Fields",
+      "scope": "Terminal, Prompt Code, account, amount, sequence, approval, local time, and partial approval fields.",
+      "sourcePackages": ["segment-100-item-06-terminal-identifier-package.json", "segment-100-item-07-prompt-code-package.json", "segment-100-item-08-account-entry-package.json", "segment-100-item-10-partial-approval-package.json", "segment-100-gap-closure-package.json"]
+    },
+    {
+      "id": "TRANSACTION-TYPES",
+      "name": "Transaction and Card Context",
+      "scope": "13 standard financial transaction types, 36 financial card types, and Prompt Code composition.",
+      "sourcePackages": ["segment-100-transaction-type-coverage.json", "segment-100-code-flow-br-ts-tc-testdata.json"]
+    },
+    {
+      "id": "LIFECYCLE",
+      "name": "Lifecycle and Multi-Step Transactions",
+      "scope": "Authorization, completion, cancellation, reversal, void, refund, timeout, TOR, and retry behavior.",
+      "sourcePackages": ["segment-100-item-09-sequence-lifecycle-package.json", "segment-100-multistep-flow-catalog.json"]
+    },
+    {
+      "id": "EBT-EWIC",
+      "name": "EBT and eWIC",
+      "scope": "Segment 103, eWIC operations, Element 164, WIC product/balance/program data.",
+      "sourcePackages": ["segment-100-ewic-gap-package.json"]
+    },
+    {
+      "id": "RESPONSES",
+      "name": "Financial Responses",
+      "scope": "Element 83 response codes, approvals, declines, partial approval, decline codes, and response context.",
+      "sourcePackages": ["segment-100-response-code-package.json", "atl105-response-code-family-matrix.json"]
+    },
+    {
+      "id": "ANNEXURE-CONDITIONAL",
+      "name": "Conditional Annexure Rules",
+      "scope": "Appendix-derived rules that apply only when transaction, card, channel, or companion conditions are present.",
+      "sourcePackages": ["segment-100-annexure-br-baseline-package.json", "appendix-a-segment-100-coverage.json", "appendix-b-segment-100-coverage.json", "appendix-c-segment-100-coverage.json", "appendix-d-segment-100-coverage.json", "appendix-e-segment-100-coverage.json", "appendix-f-segment-100-coverage.json", "appendix-g-segment-100-coverage.json", "appendix-h-segment-100-coverage.json", "appendix-i-segment-100-coverage.json", "appendix-j-segment-100-coverage.json", "appendix-k-segment-100-coverage.json", "appendix-l-segment-100-coverage.json", "appendix-m-segment-100-coverage.json", "appendix-q-segment-100-coverage.json", "appendix-r-segment-100-coverage.json", "appendix-t-segment-100-coverage.json"]
+    },
+    {
+      "id": "SEPARATE-DOMAINS",
+      "name": "Separate Domain Boundaries",
+      "scope": "Specialized domains that must not be auto-promoted to universal Segment 100 rules.",
+      "sourcePackages": ["appendix-n-segment-100-coverage.json", "appendix-o-segment-100-coverage.json", "appendix-p-segment-100-coverage.json", "appendix-s-segment-100-coverage.json", "appendix-u-segment-100-coverage.json", "appendix-v-segment-100-coverage.json"],
+      "approvalState": "REVIEW_REQUIRED"
+    }
+  ],
+  "artifactChain": {
+    "requiredOrder": ["BR", "TS", "TC", "TD"],
+    "sourceAnchorRequiredAtEveryLevel": true,
+    "aiTestDataMustBeConverterReady": true,
+    "testSolutionFixturesMustBeLabeledSeparately": true
+  },
+  "statusPolicy": {
+    "COVERED": "Source-backed and traceable through BR, TS, TC, and TD.",
+    "PARTIALLY_COVERED": "Some validation exists but field, context, or executable evidence is incomplete.",
+    "REVIEW_REQUIRED": "Requires SME, client, external specification, configuration, or AI artifact evidence.",
+    "MISSING": "No usable artifact evidence exists."
+  },
+  "restructureDecision": "Use this index as the canonical organization. Preserve original packages for auditability; do not duplicate or renumber existing BR IDs without a migration decision."
+}
