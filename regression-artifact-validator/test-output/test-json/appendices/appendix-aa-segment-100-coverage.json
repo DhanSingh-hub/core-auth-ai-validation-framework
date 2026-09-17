@@ -1,0 +1,26 @@
+{
+  "appendix": "AA",
+  "title": "TransArmor Processing Considerations",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Segment 100 transactions using TransArmor encryption/tokenization (RSA, TA-VE, TDES/DUKPT, Ingenico OnGuard FPE, AES DUKPT).",
+  "source": "docs/specs/extracted_text.txt Appendix AA-1 through AA-6",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAA-ACCOUNT-FORMAT","title":"For TransArmor processing, Account Number (Element 2) shall use the TAP header format TAPnnnnnnxyyyyyyyyyyyzzzz[EDATA]: 3-byte TAP indicator, 6-byte sequence number matching Element 86, 1-byte EDATA identifier, 11-byte Key ID, 4-byte Token Type ID, and EDATA of no more than 400 bytes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AA","segment":"100","element":"2,86","rule":"transarmor-account-number-format"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAA-EXPIRATION-TOKEN-PERSISTENCE","title":"On subsequent TransArmor transactions, the unencrypted expiration date shall be sent in Card Discretionary Block Data (Element 12) as for non-TransArmor transactions, and the TransArmor token returned in the initial transaction response shall be used in the Account Number field of subsequent transactions.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AA","segment":"100","element":"2,12","rule":"transarmor-expiration-token-persistence"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAA-DECLINE-TOKEN-RETRIEVAL","title":"A TransArmor Token Only transaction that cannot be resolved to the necessary stored token for the associated PAN shall be declined with Decline Code 4M.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AA","segment":"100","element":"26","rule":"transarmor-token-retrieval-decline"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAA-KEY-LOAD-RESPONSE","title":"A TransArmor Key and Key ID Load request shall return Response Code 'K' for an approved load or 'L' for a rejected load (merchant not TransArmor-enabled, or an invalid/outdated signing key), consistent with Load Type 'K' in Element 48.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AA","segment":"100","element":"48,83","rule":"transarmor-key-load-response"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAA-ACCOUNT","covers":["BR-SEG100-APPAA-ACCOUNT-FORMAT","BR-SEG100-APPAA-EXPIRATION-TOKEN-PERSISTENCE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAA-DECLINE","covers":["BR-SEG100-APPAA-DECLINE-TOKEN-RETRIEVAL"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAA-KEY-LOAD","covers":["BR-SEG100-APPAA-KEY-LOAD-RESPONSE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAA-ACCOUNT","scenarioId":"TS-SEG100-APPAA-ACCOUNT","positive":"Valid TAP header and EDATA within 400 bytes; token reused correctly on subsequent transaction","negative":["Sequence number mismatch with Element 86","EDATA exceeds 400 bytes","expiration date omitted on subsequent transaction","wrong token used"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAA-DECLINE","scenarioId":"TS-SEG100-APPAA-DECLINE","positive":"Token Only transaction with resolvable token approved","negative":["Token Only transaction with unresolvable token returns any code other than 4M"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAA-KEY-LOAD","scenarioId":"TS-SEG100-APPAA-KEY-LOAD","positive":"Approved Key Load returns 'K'; ineligible/invalid-key merchant returns 'L'","negative":["Approved load returns wrong code","rejected load returns 'K'"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated TransArmor AI artifact or approved key-load/tokenization fixture is currently available.",
+  "remaining": ["Obtain the ATL105 Specifications Update for TransArmor Processing document referenced for Key Load/RegiStart.","Validate AI-generated TransArmor request/response artifacts across all encryption types when available."]
+}

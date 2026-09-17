@@ -19,6 +19,13 @@
     {"id":"TC-SEG100-APPO-TOKEN-ACCOUNT","scenarioId":"TS-SEG100-APPO-TOKEN-ACCOUNT","positive":"Valid tokenized account representation","negative":["PAN/token collision","invalid token length","invalid token BIN","failed account validation"],"status":"PARTIALLY_COVERED"},
     {"id":"TC-SEG100-APPO-TOKEN-CONTEXT","scenarioId":"TS-SEG100-APPO-TOKEN-CONTEXT","positive":"Token expiration, cryptogram, and entry mode agree with token context","negative":["wrong cryptogram size","missing token expiration","wrong token presentment mode"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "Generic account/token dependency rules exist; dedicated tokenized AI artifacts and tokenization-specific converter rules are not yet available.",
-  "remaining": ["Obtain tokenized AI artifacts and security-safe cryptogram fixtures.","Confirm exact token BIN, Luhn, expiration, and POS Entry Mode rules with the tokenization implementation."]
+  "testData": [
+    {"id":"TD-SEG100-APPO-TOKEN-ACCOUNT","coversBr":"BR-SEG100-APPO-TOKEN-ACCOUNT","readiness":"EXECUTABLE","fileName":null,"reason":"Token length/BIN/Luhn format validation can use synthetic token values; does not require a live token vault."},
+    {"id":"TD-SEG100-APPO-TOKEN-EXPIRATION","coversBr":"BR-SEG100-APPO-TOKEN-EXPIRATION","readiness":"EXECUTABLE","fileName":null,"reason":"Field-population format check only."},
+    {"id":"TD-SEG100-APPO-CRYPTOGRAM-FORMAT","coversBr":"BR-SEG100-APPO-CRYPTOGRAM","readiness":"EXECUTABLE","fileName":null,"reason":"Validates 28/56-byte base64 length and token-data-block framing only, not cryptographic authenticity."},
+    {"id":"TD-SEG100-APPO-ENTRY-MODE","coversBr":"BR-SEG100-APPO-ENTRY-MODE","readiness":"EXECUTABLE","fileName":null,"reason":"POS Entry Mode context check only."}
+  ],
+  "testDataReadinessSummary": {"executable": 4, "externalFixtureRequired": 0, "reviewRequired": 0, "note": "All Appendix O rules validate format/structure; none require a live token vault to be meaningfully tested."},
+  "testDataStatus": "Generic account/token dependency rules exist; dedicated tokenized AI artifacts and tokenization-specific converter rules are not yet available. Synthetic test data is a valid path for all four BRs (format-only checks); no external fixture is required for this appendix.",
+  "remaining": ["Author synthetic tokenized AI artifacts covering token length/BIN, expiration, cryptogram format, and entry mode.","Confirm exact token BIN, Luhn, expiration, and POS Entry Mode rules with the tokenization implementation."]
 }

@@ -11,13 +11,16 @@
     "aiArtifactCertification": "Pending until AI-generated artifacts are received"
   },
   "summary": {
-    "appendicesReviewed": 22,
-    "appendixRange": "A-V",
-    "appendixBusinessRequirementRecords": 88,
-    "directlyApplicable": ["A","B","D","E","F","G","H","I","J","K","L","M","Q","R","T"],
-    "separateDomainOrReviewBoundary": ["C","N","O","P","S","U","V"],
+    "appendicesReviewed": 31,
+    "appendixRange": "A-AE",
+    "appendixBusinessRequirementRecords": 122,
+    "directlyApplicable": ["A","B","D","E","F","G","H","I","J","K","L","M","Q","R","T","X","Y","Z","AB","AC","AD","AE"],
+    "separateDomainOrReviewBoundary": ["C","N","O","P","S","U","V","W","AA"],
     "aiArtifactValidation": "PENDING",
-    "externalConverter": "DEFERRED"
+    "externalConverter": "DEFERRED",
+    "totalAppendicesInSpecification": 31,
+    "specificationAppendixRange": "A-AE",
+    "appendicesNotYetCatalogued": 0
   },
   "appendices": [
     {"id":"A","title":"TCP/IP Message Header","applicability":"transport-envelope","requestResponse":"both","brRecords":4,"status":"COVERED","sourceRecord":"appendix-a-segment-100-coverage.json","primaryRules":["message length","network byte order","TPDU protocol 0x60","reserved addresses"]},
@@ -28,7 +31,7 @@
     {"id":"F","title":"Valid Payment Systems Product Codes","applicability":"companion-segment","requestResponse":"request","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-f-segment-100-coverage.json","primaryRules":["Segment 102 product codes","unique fuel codes","product order","amount reconciliation"]},
     {"id":"G","title":"Valid Transaction Type Codes","applicability":"prompt-code-context","requestResponse":"both","brRecords":5,"status":"COVERED","sourceRecord":"appendix-g-segment-100-coverage.json","primaryRules":["13 financial codes","special code 9","lifecycle code relationships"]},
     {"id":"H","title":"Decline Codes Permitting Clerk/Customer Intervention","applicability":"response-behavior","requestResponse":"response","brRecords":4,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-h-segment-100-coverage.json","primaryRules":["data re-entry","timeout resubmission","recurring stop","TransArmor token retry"]},
-    {"id":"I","title":"Variable Information Data Layouts","applicability":"conditional-companion","requestResponse":"both","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-i-segment-100-coverage.json","primaryRules":["Segment 111 trigger","Table ID/length","context consistency","Table 041"]},
+    {"id":"I","title":"Variable Information Data Layouts","applicability":"conditional-companion","requestResponse":"both","brRecords":6,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-i-segment-100-coverage.json","primaryRules":["Segment 111 trigger","Table ID/length","context consistency","Table 041","Purchase Restriction Method (Table 018)"]},
     {"id":"J","title":"Valid Point-of-Service Entry Mode Codes","applicability":"conditional-companion","requestResponse":"request","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-j-segment-100-coverage.json","primaryRules":["PAN mode","terminal capability","lifecycle persistence","context restrictions"]},
     {"id":"K","title":"Additional Information Data Layouts","applicability":"response-context","requestResponse":"response","brRecords":5,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-k-segment-100-coverage.json","primaryRules":["Element 116 flag","Segment 118 tables","balance","AVS/NVS","card verification"]},
     {"id":"L","title":"Valid Currency Codes","applicability":"conditional-field-context","requestResponse":"both","brRecords":3,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-l-segment-100-coverage.json","primaryRules":["three-digit currency","network context","eWIC currency"]},
@@ -41,8 +44,21 @@
     {"id":"S","title":"Valid CA Public Key File Record Layout","applicability":"separate-domain","requestResponse":"administrative","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-s-segment-100-coverage.json","primaryRules":["CA_KEYS header","key record","EMV key configuration"]},
     {"id":"T","title":"EMV Additional Information Data Layouts","applicability":"emv-response","requestResponse":"both","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-t-segment-100-coverage.json","primaryRules":["EMV Table Data 001","CARC 002","response echo"]},
     {"id":"U","title":"Visa Digital Wallet","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-u-segment-100-coverage.json","primaryRules":["pass-through wallet","staged purchase","staged funding","wallet correlation"]},
-    {"id":"V","title":"Moneris Data Layout","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-v-segment-100-coverage.json","primaryRules":["Segment 135/136","request tables","completion linkage","MAC/encryption"]}
+    {"id":"V","title":"Moneris Data Layout","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-v-segment-100-coverage.json","primaryRules":["Segment 135/136","request tables","completion linkage","MAC/encryption"]},
+    {"id":"X","title":"Online Refund/Refund Authorization","applicability":"transaction-type-companion","requestResponse":"request","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-x-segment-100-coverage.json","primaryRules":["indicator trigger","valid value","lifecycle persistence"]},
+    {"id":"Y","title":"3-D Secure","applicability":"conditional-companion","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-y-segment-100-coverage.json","primaryRules":["ECI/cryptogram brand","Visa TAVV/CAVV matrix","Amex SafeKey format","MasterCard UCAF/DSRP composition"]},
+    {"id":"Z","title":"Stored Credential","applicability":"conditional-companion","requestResponse":"request","brRecords":7,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-z-segment-100-coverage.json","primaryRules":["initial storage","MIT recurring/installment/unscheduled","CIT initial entry mode","CVV2 prohibition","network reference carryover"]},
+    {"id":"W","title":"Download Data Layout","applicability":"separate-domain","requestResponse":"request","brRecords":2,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-w-segment-100-coverage.json","primaryRules":["site language table","postal code table"]},
+    {"id":"AA","title":"TransArmor Processing Considerations","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-aa-segment-100-coverage.json","primaryRules":["account number TAP format","expiration/token persistence","decline 4M token retrieval","key load response"]},
+    {"id":"AB","title":"Purchase Repayment","applicability":"conditional-companion","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-ab-segment-100-coverage.json","primaryRules":["CB/IR brand scope","MasterCard installment indicator","MasterCard merchant name format","advice code 22"]},
+    {"id":"AC","title":"Valid Country Codes","applicability":"conditional-field-context","requestResponse":"request","brRecords":2,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-ac-segment-100-coverage.json","primaryRules":["valid country code","acquirer context"]},
+    {"id":"AD","title":"Real Time Account Updater","applicability":"conditional-companion","requestResponse":"request","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-ad-segment-100-coverage.json","primaryRules":["participation scope","trigger indicator","account dependency"]},
+    {"id":"AE","title":"Visa Estimated and Incremental Authorization Transactions","applicability":"conditional-companion","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-ae-segment-100-coverage.json","primaryRules":["MCC scope","initial indicator","incremental continuity","expiration window"]}
   ],
+  "notYetCatalogued": {
+    "purpose": "All 31 appendices (A-AE) in the ATL105 specification table of contents now have a coverage record in this framework.",
+    "appendices": []
+  },
   "statusPolicy": {
     "COVERED":"Source-backed and traceable in the current independent framework.",
     "PARTIALLY_COVERED":"Core shape or dependency exists, but enumeration, context, or executable evidence remains.",
