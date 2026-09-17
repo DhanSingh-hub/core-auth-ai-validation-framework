@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "artifactId": "SEG101-REJECTION-FLEET-AND-145-MUTUAL-EXCLUSION-004",
+    "purpose": "Negative fixture: Segment 101 and Segment 145 present in the same message. SEG101-R-003 says this is invalid and the validator must detect it.",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"mutual-exclusion-enhanced-fleet"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "060",
+      "paymentNetwork": "FLEET",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST",
+      "hostPromptsSupported": false
+    },
+    "expected": "REJECT",
+    "expectedRejectionRule": "SEG101-R-003",
+    "provisionalDependencies": ["P-08"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "3",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "086",
+      "InformationByte": "0",
+      "TerminalID": "FL500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "060"
+      },
+      "TrackData": "6900460430001112223:49125050707570",
+      "PINBlockData": "",
+      "PumpNumber": "03",
+      "FuelPurchaseAmount": "00003850",
+      "NonFuelAmount": "00000000",
+      "TaxAmount": "00000225",
+      "CashAmount": "00000000",
+      "SequenceNumber": "500103",
+      "ApprovalNumber": "",
+      "LocalDateTime": "2609171700",
+      "PartialApprovalIndicator": "0"
+    },
+    "Fleet Data Segment": {
+      "SegmentType": "101",
+      "SegmentLength": "041",
+      "Odometer": "00087652",
+      "VehicleNumber": "VH0018",
+      "JobNumber": "",
+      "DriverIdentificationNumber": "DRV00042",
+      "FleetEmployeeNumber": "EMP01997",
+      "LicenseNumber": "",
+      "JobId": "",
+      "DepartmentNumber": "",
+      "CustomerData": "",
+      "UserId": "USR000042",
+      "VehicleIdNumber": ""
+    },
+    "Enhanced Fleet Data Segment": {
+      "SegmentType": "145",
+      "SegmentLength": "030",
+      "_note": "Detailed Segment 145 layout is out of scope for this training (see PROVISIONAL P-08). Its mere presence alongside Segment 101 must trigger SEG101-R-003 rejection."
+    }
+  }
+}

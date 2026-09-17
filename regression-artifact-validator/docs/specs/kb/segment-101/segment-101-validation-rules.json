@@ -1,0 +1,61 @@
+{
+  "rulesetId": "ATL105-SEG101-VALIDATION-RULES-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "101",
+  "segmentName": "Fleet Data Segment",
+  "generatedFor": "Segment 101 Payload Validator (Item 1 baseline) and downstream Item 2-8 consumers",
+  "aiJsonPathHints": {
+    "baseSegmentContainer": "request.dataSection3.fleetSegment",
+    "authCompletionAlternateContainer": "request.dataSection3.fleetSegment (in Auth Completion messages)",
+    "counterpartInSegment100Structure": "request.dataSection2.standardSegment"
+  },
+  "requirednessLegend": {"R":"REQUIRED","O":"OPTIONAL","C":"CONDITIONAL"},
+  "fields": [
+    {"order":1,"jsonField":"segmentType","element":"85","name":"Segment Type","type":"N","minLen":3,"maxLen":3,"requiredness":"R","allowedValues":["101"],"ruleIds":["SEG101-R-004"]},
+    {"order":2,"jsonField":"segmentLength","element":"84","name":"Segment Length","type":"N","minLen":3,"maxLen":3,"requiredness":"R","allowedPattern":"^[0-9]{3}$","numericMin":1,"numericMaxBase":61,"ruleIds":["SEG101-R-005","SEG101-R-006"],"provisional":"P-01"},
+    {"order":3,"jsonField":"odometer","element":"64","name":"Odometer","type":"N","minLen":0,"maxLen":8,"requiredness":"C","allowedPattern":"^[0-9]{0,8}$","ruleIds":["SEG101-R-009"]},
+    {"order":4,"jsonField":"vehicleNumber","element":"108","name":"Vehicle Number","type":"AN","minLen":0,"maxLen":10,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,10}$","ruleIds":["SEG101-R-010"]},
+    {"order":5,"jsonField":"jobNumber","element":"47","name":"Job Number","type":"AN","minLen":0,"maxLen":10,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,10}$","ruleIds":["SEG101-R-011"]},
+    {"order":6,"jsonField":"driverIdentificationNumber","element":"31","name":"Driver/Identification Number","type":"AN","minLen":0,"maxLen":10,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,10}$","ruleIds":["SEG101-R-012"]},
+    {"order":7,"jsonField":"fleetEmployeeNumber","element":"40","name":"Fleet Employee Number","type":"AN","minLen":0,"maxLen":10,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,10}$","ruleIds":["SEG101-R-013"]},
+    {"order":8,"jsonField":"licenseNumber","element":"158","name":"License #","type":"AN","minLen":0,"maxLen":10,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,10}$","ruleIds":["SEG101-R-014"]},
+    {"order":9,"jsonField":"jobId","element":"159","name":"Job ID","type":"AN","minLen":0,"maxLen":12,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,12}$","ruleIds":["SEG101-R-015"]},
+    {"order":10,"jsonField":"departmentNumber","element":"160","name":"Department #","type":"AN","minLen":0,"maxLen":12,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,12}$","ruleIds":["SEG101-R-016"]},
+    {"order":11,"jsonField":"customerData","element":"161","name":"Customer Data","type":"AN","minLen":0,"maxLen":12,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,12}$","ruleIds":["SEG101-R-017"]},
+    {"order":12,"jsonField":"userId","element":"162","name":"User ID","type":"AN","minLen":0,"maxLen":12,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,12}$","disallowedValues":["0","00","000","0000","00000","000000","0000000","00000000","000000000","0000000000","00000000000","000000000000"],"ruleIds":["SEG101-R-018"]},
+    {"order":13,"jsonField":"vehicleIdNumber","element":"163","name":"Vehicle ID#","type":"AN","minLen":0,"maxLen":8,"requiredness":"C","allowedPattern":"^[A-Za-z0-9]{0,8}$","ruleIds":["SEG101-R-019"]},
+    {"order":14,"jsonField":"fleetTag1","element":"FLEET-TAG","name":"Fleet Tag 1","type":"AN","minLen":0,"maxLen":34,"requiredness":"C","messageScope":["AUTH_COMPLETION"],"requiresHostPrompts":true,"ruleIds":["SEG101-R-020","SEG101-R-021","SEG101-R-022","SEG101-R-023","SEG101-R-024"]},
+    {"order":15,"jsonField":"fleetTag2","element":"FLEET-TAG","name":"Fleet Tag 2","type":"AN","minLen":0,"maxLen":34,"requiredness":"C","messageScope":["AUTH_COMPLETION"],"requiresHostPrompts":true,"ruleIds":["SEG101-R-020","SEG101-R-021","SEG101-R-022","SEG101-R-023","SEG101-R-024"]},
+    {"order":16,"jsonField":"fleetTag3","element":"FLEET-TAG","name":"Fleet Tag 3","type":"AN","minLen":0,"maxLen":34,"requiredness":"C","messageScope":["AUTH_COMPLETION"],"requiresHostPrompts":true,"ruleIds":["SEG101-R-020","SEG101-R-021","SEG101-R-022","SEG101-R-023","SEG101-R-024"]},
+    {"order":17,"jsonField":"fleetTag4","element":"FLEET-TAG","name":"Fleet Tag 4","type":"AN","minLen":0,"maxLen":34,"requiredness":"C","messageScope":["AUTH_COMPLETION"],"requiresHostPrompts":true,"ruleIds":["SEG101-R-020","SEG101-R-021","SEG101-R-022","SEG101-R-023","SEG101-R-024"]},
+    {"order":18,"jsonField":"fleetTag5","element":"FLEET-TAG","name":"Fleet Tag 5","type":"AN","minLen":0,"maxLen":34,"requiredness":"C","messageScope":["AUTH_COMPLETION"],"requiresHostPrompts":true,"ruleIds":["SEG101-R-020","SEG101-R-021","SEG101-R-022","SEG101-R-023","SEG101-R-024"]}
+  ],
+  "fleetTagCodes": {
+    "DLS":{"format":"an3","description":"Driver License State/Province Abbreviation","pattern":"^[A-Za-z0-9]{1,3}$"},
+    "DLN":{"format":"an22","description":"Driver License name (PROVISIONAL P-02)","pattern":"^[A-Za-z0-9]{1,22}$"},
+    "PON":{"format":"an31","description":"Work Order / P.O. Number","pattern":"^[A-Za-z0-9]{1,31}$"},
+    "INV":{"format":"an31","description":"Invoice Number","pattern":"^[A-Za-z0-9]{1,31}$"},
+    "TRP":{"format":"an15","description":"Trip Number","pattern":"^[A-Za-z0-9]{1,15}$"},
+    "UNT":{"format":"an31","description":"Unit Number","pattern":"^[A-Za-z0-9]{1,31}$"},
+    "TLH":{"format":"n6","description":"Trailer Hours / Refer Hours","pattern":"^[0-9]{1,6}$"},
+    "DOB":{"format":"n8","description":"Date of Birth","pattern":"^[0-9]{8}$"},
+    "ZIP":{"format":"an9","description":"ZIP / Postal Code","pattern":"^[A-Za-z0-9]{1,9}$"},
+    "END":{"format":"an31","description":"Entered Data (Alphanumeric)","pattern":"^[A-Za-z0-9]{1,31}$"},
+    "MID":{"format":"an31","description":"Maintenance ID","pattern":"^[A-Za-z0-9]{1,31}$"},
+    "VIN":{"format":"an17","description":"VIN","pattern":"^[A-Za-z0-9]{1,17}$"},
+    "TRA":{"format":"an15","description":"Tractor Number","pattern":"^[A-Za-z0-9]{1,15}$"},
+    "HUB":{"format":"n9","description":"Hubometer","pattern":"^[0-9]{1,9}$"},
+    "TLR":{"format":"an15","description":"Trailer Number","pattern":"^[A-Za-z0-9]{1,15}$"},
+    "CBA":{"format":"n6","description":"Cashback Amount","pattern":"^[0-9]{1,6}$"},
+    "VHT":{"format":"an10","description":"Vehicle Tag","pattern":"^[A-Za-z0-9]{1,10}$"}
+  },
+  "structuralRules": [
+    {"id":"SEG101-R-001","enforce":"Segment 101 requires a Segment 100 sibling in the same message"},
+    {"id":"SEG101-R-003","enforce":"Segment 101 and Segment 145 must not coexist"},
+    {"id":"SEG101-R-007","enforce":"Field order must match Section 12.2"},
+    {"id":"SEG101-R-008","enforce":"Empty non-trailing fields retain Field Separators"},
+    {"id":"SEG101-R-026","enforce":"At most one Segment 101 per message"}
+  ],
+  "status":"READY_FOR_ITEM1_BASELINE_VALIDATOR"
+}
