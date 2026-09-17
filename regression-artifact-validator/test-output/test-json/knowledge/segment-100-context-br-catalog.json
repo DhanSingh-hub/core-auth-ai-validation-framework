@@ -1,0 +1,63 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-CONTEXT-BR-CATALOG-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "artifactContractVersion": "2",
+    "strictExecutionContract": true,
+    "purpose": "Authoritative context-level BR families expected in the Segment 100 Test Solution baseline"
+  },
+  "statusPolicy": {
+    "DRAFT": "Being authored and not eligible for coverage claims",
+    "REVIEW_REQUIRED": "Requires SME or source clarification; not confirmed coverage",
+    "APPROVED_FOR_REVIEW": "Structurally complete but awaiting execution evidence",
+    "EXECUTION_READY": "Complete BR to TD chain, source anchor, version, envelope, and readiness evidence",
+    "BLOCKED": "Known source, version, oracle, or test-data issue prevents execution"
+  },
+  "contextBrFamilies": [
+    {
+      "category": "TRANSACTION_TYPE",
+      "title": "Standard financial transaction type behavior",
+      "expectedCount": 13,
+      "transactionTypes": ["0", "3", "4", "5", "6", "7", "8", "A", "B", "C", "S", "U", "Z"],
+      "sourcePackages": ["segment-100-code-flow-br-ts-tc-testdata.json", "segment-100-multistep-flow-catalog.json"]
+    },
+    {
+      "category": "COMPANION_DOMAIN",
+      "title": "Conditional companion and specialized domain behavior",
+      "domains": ["EMV", "fleet", "fuel", "eWIC/EBT", "purchase-card", "NFC/token", "variable-information", "multiple-segment", "unknown-combination"],
+      "sourcePackages": ["segment-100-compatibility-package.json", "segment-100-gap-closure-package.json", "segment-100-ewic-gap-package.json", "segment-100-remaining-package.json"]
+    },
+    {
+      "category": "LIFECYCLE",
+      "title": "Completion, reversal, timeout, retry, cancellation, void, and refund behavior",
+      "sourcePackages": ["segment-100-item-09-sequence-lifecycle-package.json", "segment-100-item-11-final-closure-package.json", "segment-100-multistep-flow-catalog.json"]
+    },
+    {
+      "category": "RESPONSE_NETWORK",
+      "title": "Response-code, authorizer, and payment-network behavior",
+      "sourcePackages": ["segment-100-response-code-package.json", "atl105-response-code-family-matrix.json", "section-5-payment-network-segment-100-matrix.json"]
+    },
+    {
+      "category": "APPENDIX_APPLICABILITY",
+      "title": "Appendix and annexure applicability and specialized-domain boundaries",
+      "appendices": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"],
+      "sourcePackages": ["segment-100-annexure-br-baseline-package.json", "appendices/appendix-*-segment-100-coverage.json"]
+    },
+    {
+      "category": "CORE_STRUCTURE",
+      "title": "Segment identity, framing, length, ordering, required fields, and serialization",
+      "sourcePackages": ["segment-100-item-01-message-length-package.json", "segment-100-item-02-tpdu-header-package.json", "segment-100-item-03-element-55-package.json", "segment-100-item-04-data-section-1-package.json", "segment-100-item-05-identity-length-package.json", "segment-100-item-11-final-closure-package.json"]
+    }
+  ],
+  "chainContract": {
+    "requiredOrder": ["BR", "TS", "TC", "TD"],
+    "sameAnchorRequiredAtEveryLevel": true,
+    "sameSpecificationVersionRequiredAtEveryLevel": true,
+    "oneTestDataFilePerTestCase": true,
+    "requestEnvelopeRequired": true,
+    "responseEnvelopeRequired": true,
+    "smeReviewDeferred": true,
+    "smeReminder": "Keep REVIEW_REQUIRED mappings unresolved until an SME owner records a decision and reason."
+  }
+}

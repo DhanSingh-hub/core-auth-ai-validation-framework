@@ -24,6 +24,7 @@ public final class CanonicalTraceabilityValidator {
         }
 
         validateManifest(artifactPackage.getManifest(), result);
+        boolean strict = artifactPackage.getManifest() != null && artifactPackage.getManifest().isStrictExecutionContract();
         Map<String, CanonicalRequirement> requirements = index(artifactPackage.getBusinessRequirements(),
                 CanonicalRequirement::getId, CanonicalRequirement::getSourceAnchors, "BusinessRequirement", result);
         Map<String, CanonicalScenario> scenarios = index(artifactPackage.getTestScenarios(),
@@ -33,9 +34,15 @@ public final class CanonicalTraceabilityValidator {
         Map<String, CanonicalTestData> testData = index(artifactPackage.getTestData(),
                 CanonicalTestData::getId, CanonicalTestData::getSourceAnchors, "TestData", result);
 
-        validateScenarios(scenarios, requirements, result);
-        validateTestCases(testCases, scenarios, result);
-        validateTestData(testData, testCases, result);
+        validateAnchorVersions(artifactPackage.getManifest(), requirements, scenarios, testCases, testData, result);
+        validateRequirements(requirements, strict, result);
+        validateScenarios(scenarios, requirements, strict, result);
+        validateTestCases(testCases, scenarios, strict, result);
+        validateTestData(testData, testCases, strict, result);
+        validateChainAnchorContinuity(requirements, scenarios, testCases, testData, result);
+        validateExecutionStatuses(requirements, scenarios, testCases, testData, strict, result);
+        validateScheduledAvailability(requirements, scenarios, testCases, result);
+        validateRequirementCrosswalk(artifactPackage.getRequirementCrosswalk(), requirements, result);
         validateOrphans(requirements, scenarios, testCases, testData, result);
         return result;
     }
@@ -88,9 +95,24 @@ public final class CanonicalTraceabilityValidator {
         }
     }
 
+    private static void validateRequirements(Map<String, CanonicalRequirement> requirements,
+                                             boolean strict, ValidationResult result) {
+        if (!strict) return;
+        for (CanonicalRequirement requirement : requirements.values()) {
+            required(requirement.getCategory(), "BusinessRequirement", requirement.getId() + ".category", result);
+            required(requirement.getApplicability(), "BusinessRequirement", requirement.getId() + ".applicability", result);
+            required(requirement.getPriority(), "BusinessRequirement", requirement.getId() + ".priority", result);
+            validateStatus(requirement.getExecutionStatus(), "BusinessRequirement", requirement.getId(), result);
+        }
+    }
+
     private static void validateScenarios(Map<String, CanonicalScenario> scenarios,
-                                          Map<String, CanonicalRequirement> requirements, ValidationResult result) {
+                                          Map<String, CanonicalRequirement> requirements,
+                                          boolean strict, ValidationResult result) {
         for (CanonicalScenario scenario : scenarios.values()) {
+            if (strict && scenario.getStatus() == null) {
+                result.addError("TestScenario", scenario.getId() + ".status is required");
+            }
             List<String> links = safe(scenario.getRequirementIds());
             if (links.isEmpty()) {
                 result.addError("TestScenario", scenario.getId() + " must link to a requirement");
@@ -107,9 +129,14 @@ public final class CanonicalTraceabilityValidator {
     }
 
     private static void validateTestCases(Map<String, CanonicalTestCase> testCases,
-                                          Map<String, CanonicalScenario> scenarios, ValidationResult result) {
+                                          Map<String, CanonicalScenario> scenarios,
+                                          boolean strict, ValidationResult result) {
         for (CanonicalTestCase testCase : testCases.values()) {
             required(testCase.getExpectedOutcome(), "TestCase", testCase.getId() + ".expectedOutcome", result);
+            if (strict) {
+                validateStatus(testCase.getStatus(), "TestCase", testCase.getId(), result);
+                required(testCase.getTestDataFile(), "TestCase", testCase.getId() + ".testDataFile", result);
+            }
             List<String> links = safe(testCase.getScenarioIds());
             if (links.isEmpty()) {
                 result.addError("TestCase", testCase.getId() + " must link to a scenario");
@@ -126,11 +153,25 @@ public final class CanonicalTraceabilityValidator {
     }
 
     private static void validateTestData(Map<String, CanonicalTestData> testData,
-                                         Map<String, CanonicalTestCase> testCases, ValidationResult result) {
+                                         Map<String, CanonicalTestCase> testCases,
+                                         boolean strict, ValidationResult result) {
         for (CanonicalTestData data : testData.values()) {
             required(data.getExpectedValidation(), "TestData", data.getId() + ".expectedValidation", result);
             if (data.getPayload() == null || data.getPayload().isNull()) {
                 result.addError("TestData", data.getId() + " payload is required");
+            }
+            if (strict) {
+                required(data.getFileName(), "TestData", data.getId() + ".fileName", result);
+                if (data.getReadiness() == null) {
+                    result.addError("TestData", data.getId() + ".readiness is required");
+                }
+                if (data.getPayload() == null || !data.getPayload().isObject()
+                        || !data.getPayload().path("request").isObject()) {
+                    result.addError("TestData", data.getId() + " must contain an object request envelope");
+                }
+                if (data.getResponse() == null || !data.getResponse().isObject()) {
+                    result.addError("TestData", data.getId() + " must contain an object response envelope");
+                }
             }
             List<String> links = safe(data.getTestCaseIds());
             if (links.isEmpty()) {
@@ -142,6 +183,165 @@ public final class CanonicalTraceabilityValidator {
                     result.addError("TestData", data.getId() + " references missing test case: " + testCaseId);
                 } else if (!sharesAnchor(data.getSourceAnchors(), testCase.getSourceAnchors())) {
                     result.addError("Traceability", data.getId() + " has no sourceAnchor in common with " + testCaseId);
+                }
+            }
+        }
+    }
+
+    private static void validateAnchorVersions(PackageManifest manifest,
+                                               Map<String, CanonicalRequirement> requirements,
+                                               Map<String, CanonicalScenario> scenarios,
+                                               Map<String, CanonicalTestCase> testCases,
+                                               Map<String, CanonicalTestData> testData,
+                                               ValidationResult result) {
+        if (manifest == null || isBlank(manifest.getSpecificationVersion())) return;
+        String version = manifest.getSpecificationVersion().trim();
+        requirements.forEach((id, value) -> validateAnchorVersions(value.getSourceAnchors(), "BusinessRequirement", id, version, result));
+        scenarios.forEach((id, value) -> validateAnchorVersions(value.getSourceAnchors(), "TestScenario", id, version, result));
+        testCases.forEach((id, value) -> validateAnchorVersions(value.getSourceAnchors(), "TestCase", id, version, result));
+        testData.forEach((id, value) -> validateAnchorVersions(value.getSourceAnchors(), "TestData", id, version, result));
+    }
+
+    private static void validateAnchorVersions(List<SourceAnchor> anchors, String stage, String id,
+                                               String version, ValidationResult result) {
+        for (SourceAnchor anchor : safe(anchors)) {
+            if (anchor != null && !version.equalsIgnoreCase(anchor.getVersion())) {
+                result.addError("Traceability", stage + " " + id + " anchor version " + anchor.getVersion()
+                        + " does not match manifest version " + version);
+            }
+        }
+    }
+
+    private static void validateChainAnchorContinuity(Map<String, CanonicalRequirement> requirements,
+                                                      Map<String, CanonicalScenario> scenarios,
+                                                      Map<String, CanonicalTestCase> testCases,
+                                                      Map<String, CanonicalTestData> testData,
+                                                      ValidationResult result) {
+        for (CanonicalTestData data : testData.values()) {
+            for (String testCaseId : safe(data.getTestCaseIds())) {
+                CanonicalTestCase testCase = testCases.get(testCaseId);
+                if (testCase == null) continue;
+                for (String scenarioId : safe(testCase.getScenarioIds())) {
+                    CanonicalScenario scenario = scenarios.get(scenarioId);
+                    if (scenario == null) continue;
+                    for (String requirementId : safe(scenario.getRequirementIds())) {
+                        CanonicalRequirement requirement = requirements.get(requirementId);
+                        if (requirement != null && !sharesAllAnchors(List.of(data.getSourceAnchors(), testCase.getSourceAnchors(),
+                            scenario.getSourceAnchors(), requirement.getSourceAnchors()))) {
+                            result.addError("Traceability", data.getId() + " does not preserve one common ATL105 anchor through "
+                                    + requirementId + " -> " + scenarioId + " -> " + testCaseId);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean sharesAllAnchors(List<List<SourceAnchor>> levels) {
+        Set<String> common = null;
+        for (List<SourceAnchor> level : levels) {
+            Set<String> keys = safe(level).stream().filter(anchor -> anchor != null)
+                    .map(SourceAnchor::canonicalKey).collect(Collectors.toSet());
+            if (common == null) common = new HashSet<>(keys); else common.retainAll(keys);
+        }
+        return common != null && !common.isEmpty();
+    }
+
+    private static void validateExecutionStatuses(Map<String, CanonicalRequirement> requirements,
+                                                  Map<String, CanonicalScenario> scenarios,
+                                                  Map<String, CanonicalTestCase> testCases,
+                                                  Map<String, CanonicalTestData> testData,
+                                                  boolean strict, ValidationResult result) {
+        if (!strict) return;
+        for (CanonicalRequirement requirement : requirements.values()) {
+            if ("EXECUTION_READY".equals(requirement.getExecutionStatus())) {
+                boolean linked = scenarios.values().stream().anyMatch(s -> safe(s.getRequirementIds()).contains(requirement.getId()));
+                if (!linked) result.addError("Status", requirement.getId() + " cannot be EXECUTION_READY without a scenario");
+            }
+        }
+        for (CanonicalTestData data : testData.values()) {
+            if (data.getReadiness() == TestDataReadiness.EXECUTABLE
+                    && (data.getPayload() == null || !data.getPayload().path("request").isObject()
+                    || data.getResponse() == null || !data.getResponse().isObject())) {
+                result.addError("Status", data.getId() + " cannot be EXECUTABLE without request and response envelopes");
+            }
+        }
+    }
+
+    private static void validateStatus(String value, String stage, String id, ValidationResult result) {
+        required(value, stage, id + ".status", result);
+        if (!isBlank(value)) {
+            try { ArtifactStatus.valueOf(value); }
+            catch (IllegalArgumentException exception) { result.addError(stage, id + " has invalid status: " + value); }
+        }
+    }
+
+    private static void validateScheduledAvailability(Map<String, CanonicalRequirement> requirements,
+                                                      Map<String, CanonicalScenario> scenarios,
+                                                      Map<String, CanonicalTestCase> testCases,
+                                                      ValidationResult result) {
+        requirements.values().forEach(requirement -> validateScheduledAvailability("BusinessRequirement",
+                requirement.getId(), requirement.getExecutionStatus(), requirement.getNotBeforeDate(), result));
+        scenarios.values().forEach(scenario -> validateScheduledAvailability("TestScenario", scenario.getId(),
+                scenario.getStatus() == null ? null : scenario.getStatus().name(), scenario.getNotBeforeDate(), result));
+        testCases.values().forEach(testCase -> validateScheduledAvailability("TestCase", testCase.getId(),
+                testCase.getStatus(), testCase.getNotBeforeDate(), result));
+    }
+
+    private static void validateScheduledAvailability(String stage, String id, String status,
+                                                      String notBeforeDate, ValidationResult result) {
+        boolean scheduled = "SCHEDULED".equals(status);
+        if (scheduled && isBlank(notBeforeDate)) {
+            result.addError(stage, id + ".notBeforeDate is required when status is SCHEDULED");
+            return;
+        }
+        if (isBlank(notBeforeDate)) return;
+        java.time.LocalDate parsedDate;
+        try {
+            parsedDate = java.time.LocalDate.parse(notBeforeDate.trim());
+        } catch (java.time.format.DateTimeParseException exception) {
+            result.addError(stage, id + ".notBeforeDate must be an ISO-8601 date, got: " + notBeforeDate);
+            return;
+        }
+        boolean future = parsedDate.isAfter(java.time.LocalDate.now());
+        if (future && "EXECUTION_READY".equals(status)) {
+            result.addError(stage, id + " cannot be EXECUTION_READY before notBeforeDate " + notBeforeDate
+                    + "; use SCHEDULED until that date");
+        }
+    }
+
+    private static void validateRequirementCrosswalk(List<RequirementCrosswalkEntry> crosswalk,
+                                                     Map<String, CanonicalRequirement> requirements,
+                                                     ValidationResult result) {
+        if (crosswalk == null) {
+            return;
+        }
+        Set<String> baselineIds = new HashSet<>();
+        for (RequirementCrosswalkEntry entry : crosswalk) {
+            if (entry == null) {
+                result.addError("RequirementCrosswalk", "entry is required");
+                continue;
+            }
+            String baselineId = entry.getTestRequirementId();
+            if (isBlank(baselineId)) {
+                result.addError("RequirementCrosswalk", "testRequirementId is required");
+            } else if (!baselineIds.add(baselineId)) {
+                result.addError("RequirementCrosswalk", "duplicate testRequirementId: " + baselineId);
+            }
+            if (entry.getMatchStatus() == null) {
+                result.addError("RequirementCrosswalk", baselineId + ".matchStatus is required");
+            }
+            required(entry.getMatchReason(), "RequirementCrosswalk", baselineId + ".matchReason", result);
+            if (entry.getMatchStatus() == RequirementMatchStatus.REVIEW_REQUIRED) {
+                required(entry.getReviewOwner(), "RequirementCrosswalk", baselineId + ".reviewOwner", result);
+            }
+            List<String> aiIds = safe(entry.getAiRequirementIds());
+            if (entry.getMatchStatus() == RequirementMatchStatus.CONFIRMED && aiIds.isEmpty()) {
+                result.addError("RequirementCrosswalk", baselineId + " confirmed mapping must reference an AI requirement");
+            }
+            for (String aiId : aiIds) {
+                if (!requirements.containsKey(aiId)) {
+                    result.addError("RequirementCrosswalk", baselineId + " references missing AI requirement: " + aiId);
                 }
             }
         }

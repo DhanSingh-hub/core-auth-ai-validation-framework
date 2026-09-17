@@ -11,6 +11,8 @@ public final class CanonicalTestCase {
     private List<String> tags;
     private String priority;
     private String status;
+    private String testDataFile;
+    private String notBeforeDate;
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -28,4 +30,8 @@ public final class CanonicalTestCase {
     public void setPriority(String priority) { this.priority = priority; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public String getTestDataFile() { return testDataFile; }
+    public void setTestDataFile(String testDataFile) { this.testDataFile = testDataFile; }
+    public String getNotBeforeDate() { return notBeforeDate; }
+    public void setNotBeforeDate(String notBeforeDate) { this.notBeforeDate = notBeforeDate; }
 }

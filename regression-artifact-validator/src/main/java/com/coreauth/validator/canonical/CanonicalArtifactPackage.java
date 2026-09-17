@@ -9,6 +9,7 @@ public final class CanonicalArtifactPackage {
     private List<CanonicalScenario> testScenarios;
     private List<CanonicalTestCase> testCases;
     private List<CanonicalTestData> testData;
+    private List<RequirementCrosswalkEntry> requirementCrosswalk;
 
     public PackageManifest getManifest() { return manifest; }
     public void setManifest(PackageManifest manifest) { this.manifest = manifest; }
@@ -20,4 +21,6 @@ public final class CanonicalArtifactPackage {
     public void setTestCases(List<CanonicalTestCase> testCases) { this.testCases = testCases; }
     public List<CanonicalTestData> getTestData() { return testData; }
     public void setTestData(List<CanonicalTestData> testData) { this.testData = testData; }
+    public List<RequirementCrosswalkEntry> getRequirementCrosswalk() { return requirementCrosswalk; }
+    public void setRequirementCrosswalk(List<RequirementCrosswalkEntry> requirementCrosswalk) { this.requirementCrosswalk = requirementCrosswalk; }
 }

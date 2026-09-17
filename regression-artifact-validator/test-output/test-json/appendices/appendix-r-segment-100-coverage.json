@@ -22,6 +22,14 @@
     {"id":"TC-SEG100-APPR-CHIP-DATA","scenarioId":"TS-SEG100-APPR-CHIP-DATA","positive":"Valid length and TLV structure","negative":["length mismatch","malformed BCD/hex","invalid TLV length"],"status":"PARTIALLY_COVERED"},
     {"id":"TC-SEG100-APPR-CROSS-FIELD","scenarioId":"TS-SEG100-APPR-CROSS-FIELD","positive":"EMV tags agree with Segment 100 context","negative":["amount mismatch","currency mismatch","transaction-type mismatch"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "Segment 130 presence and Element 63 compatibility are covered; complete EMV TLV and cross-field validation remains pending.",
-  "remaining": ["Validate AI-generated EMV chip data when available.","Obtain complete EMV tag requirements beyond this example appendix."]
+  "testData": [
+    {"id":"TD-SEG100-APPR-EMV-COMPANION","coversBr":"BR-SEG100-APPR-EMV-COMPANION","readiness":"EXECUTABLE","fileName":null,"reason":"Segment 130 presence and Element 63 count are structural checks; synthetic placeholder chip data is sufficient."},
+    {"id":"TD-SEG100-APPR-CHIP-LENGTH","coversBr":"BR-SEG100-APPR-CHIP-LENGTH","readiness":"EXECUTABLE","fileName":null,"reason":"Length-prefix validation is structural; does not require a genuine EMV card/kernel."},
+    {"id":"TD-SEG100-APPR-TLV-FORMAT","coversBr":"BR-SEG100-APPR-TLV-FORMAT","readiness":"EXECUTABLE","fileName":null,"reason":"BCD/hex TLV tag-length-value framing is structural and synthesizable."},
+    {"id":"TD-SEG100-APPR-CROSS-FIELD","coversBr":"BR-SEG100-APPR-CROSS-FIELD","readiness":"EXECUTABLE","fileName":null,"reason":"Amount/currency/transaction-type cross-check compares plaintext TLV values against Segment 100 fields; no cryptographic verification involved."},
+    {"id":"TD-SEG100-APPR-CRYPTOGRAM-AUTHENTICITY","coversBr":null,"readiness":"EXTERNAL_FIXTURE_REQUIRED","fileName":null,"reason":"No current BR claims cryptographic verification of the 9F26 Application Cryptogram (ARQC/TC); genuine verification requires a certified EMV kernel or HSM and cannot be synthesized. Tracked here so this boundary is explicit if such a BR is added later."}
+  ],
+  "testDataReadinessSummary": {"executable": 4, "externalFixtureRequired": 1, "reviewRequired": 0, "note": "All defined BRs validate structural/plaintext TLV content and are synthesizable. Cryptogram authenticity is out of scope and explicitly flagged as external-fixture-required."},
+  "testDataStatus": "Segment 130 presence and Element 63 compatibility are covered; complete EMV TLV and cross-field validation remains pending as synthetic data, not a cryptographic gap. Cryptogram authenticity (9F26) is explicitly out of scope pending a certified EMV kernel/HSM fixture.",
+  "remaining": ["Author synthetic EMV chip data covering length, TLV format, and cross-field consistency.","Obtain complete EMV tag requirements beyond this example appendix.","If cryptogram authenticity validation is ever required, source it from a certified EMV kernel/HSM, not AI generation."]
 }

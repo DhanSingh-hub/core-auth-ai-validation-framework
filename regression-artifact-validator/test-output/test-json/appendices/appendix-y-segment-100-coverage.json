@@ -1,0 +1,35 @@
+{
+  "appendix": "Y",
+  "title": "3-D Secure",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to eCommerce Segment 100 transactions using Visa Verified by Visa, MasterCard SecureCode/Identity Check, or American Express SafeKey 3-D Secure authentication.",
+  "source": "docs/specs/extracted_text.txt Appendix Y-1 through Y-3",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPY-ECI-CRYPTOGRAM","title":"A 3-D Secure Authorization Response shall return the applicable ECI/Terminal Type value (25, 26, 27, 28, or 29) together with the card-brand cryptogram: Visa CAVV, MasterCard AAV, or Amex AEVV.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Y","segment":"FINANCIAL-RESPONSE","rule":"three-d-secure-eci-cryptogram-brand"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPY-VISA-DUAL-CRYPTOGRAM","title":"For Visa token-based transactions combined with 3-D Secure, the TAVV token cryptogram and the 3DS CAVV cryptogram (revised format) shall be populated per the defined Verified-by-Visa-only, Digital-Wallet-only, or combined scenario.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Y","segment":"111,123","element":"195,237","rule":"visa-tavv-cavv-scenario-matrix"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPY-AMEX-SAFEKEY-FORMAT","title":"Amex SafeKey transactions shall be sent with indicator 'SK' followed by 56 bytes of SafeKey data in base64 format; when the first 28 bytes are not applicable, they shall be space-filled.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Y","segment":"111","element":"113","rule":"amex-safekey-data-format"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPY-MASTERCARD-UCAF-DSRP","title":"MasterCard AAV cryptogram data shall use Segment 111 Table ID 36 (UCAF Data) while Token/DSRP cryptograms shall use Segment 123 Element 237 (TAVV); when both are present, the UCAF Security Level Code shall be '21' (Channel Encrypted).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Y","segment":"111,123","element":"237","rule":"mastercard-ucaf-dsrp-composition"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPY-RESPONSE","covers":["BR-SEG100-APPY-ECI-CRYPTOGRAM"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPY-VISA","covers":["BR-SEG100-APPY-VISA-DUAL-CRYPTOGRAM"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPY-AMEX","covers":["BR-SEG100-APPY-AMEX-SAFEKEY-FORMAT"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPY-MASTERCARD","covers":["BR-SEG100-APPY-MASTERCARD-UCAF-DSRP"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPY-RESPONSE","scenarioId":"TS-SEG100-APPY-RESPONSE","positive":"Valid ECI value with matching brand cryptogram","negative":["ECI value outside 25-29 for a 3DS transaction","cryptogram brand mismatch"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPY-VISA","scenarioId":"TS-SEG100-APPY-VISA","positive":"TAVV/CAVV combination matches the declared scenario","negative":["TAVV present without applicable token context","CAVV missing for Verified-by-Visa-only scenario"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPY-AMEX","scenarioId":"TS-SEG100-APPY-AMEX","positive":"'SK' indicator with 56-byte base64 SafeKey data","negative":["wrong indicator","wrong data length","non-base64 data","missing space-fill on inapplicable first 28 bytes"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPY-MASTERCARD","scenarioId":"TS-SEG100-APPY-MASTERCARD","positive":"AAV in Table ID 36, TAVV/DSRP in Segment 123, Security Level Code '21' when both present","negative":["AAV and DSRP cryptogram fields swapped","missing Security Level Code '21' when both present"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id":"TD-SEG100-APPY-ECI-CRYPTOGRAM","coversBr":"BR-SEG100-APPY-ECI-CRYPTOGRAM","readiness":"EXECUTABLE","fileName":null,"reason":"ECI value and cryptogram byte-length/format can be validated with synthetic placeholders; does not verify cryptographic authenticity."},
+    {"id":"TD-SEG100-APPY-VISA-DUAL-CRYPTOGRAM","coversBr":"BR-SEG100-APPY-VISA-DUAL-CRYPTOGRAM","readiness":"EXTERNAL_FIXTURE_REQUIRED","fileName":null,"reason":"Validating the TAVV/CAVV scenario matrix against a real transaction requires genuine Visa-issued token/3DS cryptograms; a synthetic pairing cannot confirm scenario correctness."},
+    {"id":"TD-SEG100-APPY-AMEX-SAFEKEY-FORMAT","coversBr":"BR-SEG100-APPY-AMEX-SAFEKEY-FORMAT","readiness":"EXECUTABLE","fileName":null,"reason":"56-byte base64 format and space-fill rule are structural checks; synthetic SafeKey data is sufficient."},
+    {"id":"TD-SEG100-APPY-MASTERCARD-UCAF-DSRP","coversBr":"BR-SEG100-APPY-MASTERCARD-UCAF-DSRP","readiness":"EXTERNAL_FIXTURE_REQUIRED","fileName":null,"reason":"Verifying genuine AAV/DSRP cryptogram placement and correctness requires real MasterCard SecureCode/DSRP-issued data; a synthetic value cannot confirm cryptographic correctness."}
+  ],
+  "testDataReadinessSummary": {"executable": 2, "externalFixtureRequired": 2, "reviewRequired": 0, "note": "ECI/format-level checks are synthesizable; TAVV/CAVV and AAV/DSRP cryptogram authenticity requires genuine network-issued data."},
+  "testDataStatus": "No dedicated 3-D Secure AI artifact or approved external authentication-service contract is currently available. ECI/format-level rules can use synthetic data; genuine Visa TAVV/CAVV and MasterCard AAV/DSRP cryptograms cannot be synthesized and must be sourced externally.",
+  "remaining": ["Author synthetic ECI/cryptogram-format and Amex SafeKey format test data.","Obtain real Visa TAVV/CAVV and MasterCard AAV/DSRP fixtures from the network/token service; do not synthesize them.","Confirm exact Table ID 35/36 layouts and Segment 123 element positions with the tokenization/3DS implementation."]
+}

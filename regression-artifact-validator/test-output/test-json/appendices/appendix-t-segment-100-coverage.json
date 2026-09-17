@@ -20,6 +20,12 @@
     {"id":"TC-SEG100-APPT-CARC","scenarioId":"TS-SEG100-APPT-CARC","positive":"CARC uses Table ID 002 and one-character result","negative":["wrong table ID","invalid length","missing CARC"],"status":"REVIEW_REQUIRED"},
     {"id":"TC-SEG100-APPT-ECHO","scenarioId":"TS-SEG100-APPT-ECHO","positive":"Response EMV data is preserved into required follow-up message","negative":["missing echo","changed EMV data"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "No dedicated EMV Additional Information response artifacts are currently available.",
-  "remaining": ["Obtain AI-generated EMV response/advice artifacts.","Validate Table IDs, lengths, CARC values, and echo behavior."]
+  "testData": [
+    {"id":"TD-SEG100-APPT-EMV-TABLE-DATA","coversBr":"BR-SEG100-APPT-EMV-TABLE-DATA","readiness":"EXECUTABLE","fileName":null,"reason":"EMVYES/EMVNOT is a fixed enumerated value; fully synthesizable."},
+    {"id":"TD-SEG100-APPT-CARC","coversBr":"BR-SEG100-APPT-CARC","readiness":"EXECUTABLE","fileName":null,"reason":"CARC is a one-character format check; the value itself is a network-returned result, not cryptographic material."},
+    {"id":"TD-SEG100-APPT-ECHO","coversBr":"BR-SEG100-APPT-ECHO","readiness":"EXECUTABLE","fileName":null,"reason":"Echo-preservation is a byte-for-byte carryover check across messages; synthetic EMV Table Data is sufficient."}
+  ],
+  "testDataReadinessSummary": {"executable": 3, "externalFixtureRequired": 0, "reviewRequired": 0, "note": "No cryptographic material is involved in this appendix; all rules are synthesizable."},
+  "testDataStatus": "No dedicated EMV Additional Information response artifacts are currently available yet, but none require a live/external fixture; synthetic AI-generated data is an acceptable path.",
+  "remaining": ["Author synthetic EMV response/advice artifacts covering Table IDs 001/002 and echo behavior."]
 }

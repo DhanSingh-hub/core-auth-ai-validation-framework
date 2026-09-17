@@ -1,0 +1,23 @@
+{
+  "appendix": "AD",
+  "title": "Real Time Account Updater",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to card-not-present Segment 100 transactions from a participating acquirer/merchant that are Credential-on-File, Installment, or Recurring payments.",
+  "source": "docs/specs/extracted_text.txt Appendix AD-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","title":"Real Time Account Updater applies only to card-not-present transactions from a participating, registered/certified acquirer/merchant that are Credential-on-File, Installment, or Recurring payments.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"111","element":"113","rule":"account-updater-participation-scope"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAD-TRIGGER-INDICATOR","title":"A participating merchant shall send the Account Updater Request Indicator (Segment 111, Table ID 060, Sub Table ID 01) as the trigger on Installment, Recurring, and Credential-on-File request messages.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"111","element":"113","rule":"account-updater-trigger-indicator"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","title":"Real Time Account Updater processing depends on Account Number (Element 2) and Card Discretionary Block Data (Element 12) content and shall be validated jointly with those fields.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"100","element":"2,12","rule":"account-updater-account-dependency"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAD-SCOPE","covers":["BR-SEG100-APPAD-PARTICIPATION-SCOPE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAD-TRIGGER","covers":["BR-SEG100-APPAD-TRIGGER-INDICATOR","BR-SEG100-APPAD-ACCOUNT-DEPENDENCY"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAD-SCOPE","scenarioId":"TS-SEG100-APPAD-SCOPE","positive":"Non-participating merchant omits the indicator; card-present transactions are out of scope","negative":["Indicator sent on a card-present transaction","Indicator sent by a non-registered merchant"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAD-TRIGGER","scenarioId":"TS-SEG100-APPAD-TRIGGER","positive":"Table ID 060 Sub Table 01 present on Installment/Recurring/COF request with valid Account Number/Card Discretionary Data","negative":["Indicator missing on an eligible transaction","indicator present without Credential-on-File/Installment/Recurring context"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated Real Time Account Updater AI artifact or approved merchant-registration fixture is currently available.",
+  "remaining": ["Obtain merchant registration/certification configuration source for participation validation.","Validate AI-generated Credential-on-File/Installment/Recurring artifacts carrying Table ID 060 when available."]
+}
