@@ -1,0 +1,75 @@
+{
+  "modelId": "ATL105-SEG101-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "101",
+  "segmentName": "Fleet Data Segment",
+  "purpose": "Explicit context envelope for AI-generated Segment 101 artifacts. Fleet Data is a companion segment that only appears when the transaction is on a fleet-eligible card/program.",
+  "requiredContext": {
+    "transactionType": {
+      "source": "Appendix G",
+      "values": ["0","5","6","7","S","C","U"],
+      "requiredFor": "all financial Segment 101 artifacts",
+      "notes": "0 authorization request, 5 refund, 6 pre-authorization, 7 balance inquiry, S completion, C cancellation, U timeout reversal are the fleet-relevant financial transaction types. Confirm final subset against Petroleum Industry Processing Specifications."
+    },
+    "cardType": {
+      "source": "Appendix E fleet card types",
+      "values": "REVIEW_REQUIRED subset (fleet-eligible card types only; not the full 36 financial card types)",
+      "requiredFor": "all Segment 101 artifacts",
+      "notes": "Segment 101 must not be certified for non-fleet card types. Enumerate the exact fleet card codes during Wave 2 from Appendix E."
+    },
+    "paymentNetworkType": {
+      "source": "Section 5",
+      "values": ["FLEET","PETROLEUM_PROPRIETARY"],
+      "requiredFor": "all Segment 101 artifacts",
+      "notes": "PETROLEUM_PROPRIETARY is separate-domain and must declare its specialized-domain metadata."
+    },
+    "lifecycleRole": {
+      "values": ["ORIGINAL_AUTH","AUTH_COMPLETION","CANCELLATION","REVERSAL","VOID","TIMEOUT_ORIGINAL","TOR","NEXT_TRANSACTION","RETRY"],
+      "requiredFor": "multi-step artifacts",
+      "notes": "Fleet Tags 1-5 are exclusive to AUTH_COMPLETION."
+    },
+    "messageFamily": {
+      "values": ["FINANCIAL_REQUEST","AUTH_COMPLETION","FINANCIAL_RESPONSE_PENDING_CONFIRMATION"],
+      "requiredFor": "all artifacts",
+      "notes": "FINANCIAL_RESPONSE presence is REVIEW_REQUIRED until an authoritative response-side reference is located."
+    },
+    "companionParentSegment": {
+      "values": ["100"],
+      "requiredFor": "every Segment 101 artifact",
+      "notes": "Segment 101 is a Data Section 3 companion; Segment 100 must be present in the same message."
+    }
+  },
+  "conditionalContext": {
+    "posEntryMode": "Appendix J Table 005 — fleet entry modes; enumerate during Wave 2",
+    "posConditionCode": "Appendix Q Table 030 — fleet-relevant conditions",
+    "productCodePresence": "Segment 102 may accompany Segment 101 when fuel/product data is captured",
+    "hostPromptsSupported": "Required for Fleet Tags 1-5 in Auth Completion messages",
+    "specializedDomain": ["PETROLEUM_PROPRIETARY","ENHANCED_FLEET_SEG145_ALTERNATIVE"],
+    "companionSegments": ["100","102","111"],
+    "mutuallyExclusiveSegments": ["145"],
+    "responseCode": "Element 83 for the outer financial response",
+    "declineCode": "Element 26 for the outer financial response",
+    "authorizerCode": "Element 7 for the outer financial response"
+  },
+  "lifecycleContext": {
+    "originalSequenceNumber": "required for follow-up and retry artifacts (persisted from Segment 100)",
+    "currentSequenceNumber": "required for every transaction artifact (from Segment 100)",
+    "terminalId": "required for device-bound lifecycle comparison (from Segment 100)",
+    "accountIdentity": "required when the fleet program mandates identity correlation",
+    "amountContext": "requested or approved amount from Segment 100 fuel/nonfuel/tax fields",
+    "approvalReference": "required when the completion carries approval linkage",
+    "fleetTagsPersistence": "Fleet Tags 1-5 present only in Auth Completion (0220) and are NOT expected to persist across cancellations or reversals"
+  },
+  "validationRules": [
+    "Do not certify Segment 101 for non-fleet card types.",
+    "Do not certify Fleet Tags 1-5 in messages other than Auth Completion (0220).",
+    "Do not certify Segment 101 in messages that also carry Segment 145 (Enhanced Fleet); this combination must be rejected.",
+    "Do not infer companion Segment 102 presence from Segment 101 alone; check Segment 100 fuel/product amounts.",
+    "Do not certify PETROLEUM_PROPRIETARY payment network behavior without specializedDomain metadata plus Petroleum Industry Processing Specifications evidence.",
+    "Do not treat generic Segment 100 fixtures as evidence of Segment 101 coverage.",
+    "Do not treat generic Fleet card fixtures as evidence of Petroleum Industry Processing Specifications coverage.",
+    "Missing fleet-program context is REVIEW_REQUIRED unless the ATL105 spec explicitly proves it is unnecessary."
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}
