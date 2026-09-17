@@ -1,0 +1,27 @@
+{
+  "segment": "123",
+  "title": "NFC Payment Tokenization Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Required on initial and recurring NFC tokenized transactions and for MasterCard Token/DSRP or Visa TAVV data.",
+  "source": "docs/specs/extracted_text.txt 12.19 NFC Payment Tokenization Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and trigger/response fields only. Not field-by-field exhaustive.",
+  "businessRequirements": [
+    {"id":"BR-SEG123-TYPE","title":"Segment Type field in the NFC Payment Tokenization Data Segment has fixed value 123.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.19","segment":"123","element":"85","rule":"segment-123-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG123-LENGTH","title":"Segment Length identifies the NFC Payment Tokenization Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.19","segment":"123","element":"84","rule":"segment-123-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG123-TRIGGER","title":"Segment 123 is required on all initial and recurring transactions involving tokenized data and for transactions including MasterCard Token/DSRP or Visa TAVV data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.19","segment":"123","rule":"segment-123-trigger-condition"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG123-TOKEN-PAN-SUFFIX","title":"Token PAN Suffix (Element 197) is returned in the response only if supplied by the authorizer.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.19","segment":"123","element":"197","rule":"segment-123-token-pan-suffix-response"},"status":"EXTERNAL_FIXTURE_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG123-TYPE","covers":["BR-SEG123-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG123-LENGTH","covers":["BR-SEG123-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG123-TRIGGER","covers":["BR-SEG123-TRIGGER"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG123-TOKEN-PAN","covers":["BR-SEG123-TOKEN-PAN-SUFFIX"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG123-TYPE","scenarioId":"TS-SEG123-TYPE","positive":"Segment Type = 123","negative":["Segment Type not equal to 123"],"status":"COVERED"},
+    {"id":"TC-SEG123-TRIGGER","scenarioId":"TS-SEG123-TRIGGER","positive":"Segment 123 present on tokenized initial/recurring transactions","negative":["Segment 123 omitted on a tokenized transaction requiring it"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment Type/Length structural checks are synthesizable. Token PAN Suffix authenticity requires a real token/authorizer response and cannot be synthesized (EXTERNAL_FIXTURE_REQUIRED).",
+  "remaining": ["Author full field-by-field NFC Payment Tokenization coverage (CAVV Revised Format, Token Requestor ID) beyond this core-structure baseline."]
+}

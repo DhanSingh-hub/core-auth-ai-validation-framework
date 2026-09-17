@@ -1,0 +1,27 @@
+{
+  "segment": "101",
+  "title": "Fleet Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Included in all fleet card transaction requests; appears in Data Section 3.",
+  "source": "docs/specs/extracted_text.txt 12.2 Fleet Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and mutual-exclusion/trigger rules only. Not field-by-field exhaustive.",
+  "businessRequirements": [
+    {"id":"BR-SEG101-TYPE","title":"Segment Type field in the Fleet Data Segment has fixed value 101.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"85","rule":"segment-101-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG101-LENGTH","title":"Segment Length identifies the Fleet Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-101-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG101-MAX-LENGTH","title":"The Fleet Data Segment has a maximum length of 61 alphanumeric characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"segment-101-max-length"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG101-ENHANCED-MUTEX","title":"Segment 101 (Fleet Data Segment) and Segment 145 (Enhanced Fleet Segment) must not be sent together.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"segment-101-145-mutual-exclusion"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG101-TYPE","covers":["BR-SEG101-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG101-LENGTH","covers":["BR-SEG101-LENGTH","BR-SEG101-MAX-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG101-MUTEX","covers":["BR-SEG101-ENHANCED-MUTEX"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG101-TYPE","scenarioId":"TS-SEG101-TYPE","positive":"Segment Type = 101","negative":["Segment Type not equal to 101"],"status":"COVERED"},
+    {"id":"TC-SEG101-LENGTH","scenarioId":"TS-SEG101-LENGTH","positive":"Segment Length matches actual serialized length and stays within 61 characters","negative":["Length mismatch","exceeds 61 characters"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG101-MUTEX","scenarioId":"TS-SEG101-MUTEX","positive":"Only one of Segment 101 or 145 present","negative":["Both Segment 101 and 145 present in the same request"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment Type/Length structural checks are synthesizable; the 101/145 mutual-exclusion rule needs AI-generated negative artifacts.",
+  "remaining": ["Author full field-by-field Fleet Data Segment coverage (Odometer, Vehicle Number, Job Number, etc.) beyond this core-structure baseline."]
+}
