@@ -1,0 +1,24 @@
+{
+  "appendix": "U",
+  "title": "Visa Digital Wallet",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies conditionally to Segment 100 tokenized/digital-wallet transactions and staged multi-transaction wallet flows.",
+  "source": "docs/specs/extracted_text.txt Appendix U-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPU-PASS-THROUGH","title":"A pass-through Visa Digital Wallet transaction shall preserve the supplied account/token credential and identify the applicable tokenized presentment context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix U","segment":"100","element":"2,78","rule":"pass-through-digital-wallet"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPU-STAGED-PURCHASE","title":"A staged digital wallet Purchase transaction shall use the wallet-assigned account context to pay the retailer while retaining the underlying transaction character.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix U","segment":"100","element":"2,78","rule":"staged-wallet-purchase"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPU-STAGED-FUNDING","title":"A staged digital wallet Funding transaction shall use the Visa account supplied to the wallet operator to fund or reimburse the wallet.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix U","segment":"100","element":"2,78","rule":"staged-wallet-funding"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPU-STAGED-CORRELATION","title":"Purchase and Funding stages shall retain their individual transaction identity while preserving the wallet relationship and applicable lifecycle references.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix U","segment":"100","element":"2,78,86","rule":"staged-wallet-correlation"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPU-PASS-THROUGH","covers":["BR-SEG100-APPU-PASS-THROUGH"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPU-STAGED-WALLET","covers":["BR-SEG100-APPU-STAGED-PURCHASE","BR-SEG100-APPU-STAGED-FUNDING","BR-SEG100-APPU-STAGED-CORRELATION"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPU-PASS-THROUGH","scenarioId":"TS-SEG100-APPU-PASS-THROUGH","positive":"Pass-through wallet token context is valid","negative":["token/account context mismatch","wrong token presentment mode"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPU-STAGED-WALLET","scenarioId":"TS-SEG100-APPU-STAGED-WALLET","positive":"Purchase and Funding stages preserve wallet relationship","negative":["stages use wrong account context","stages lose lifecycle relationship","duplicate or missing stage"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated digital-wallet AI artifacts or complete Appendix U field contract is currently available.",
+  "remaining": ["Obtain tokenization/digital-wallet implementation rules and AI-generated wallet artifacts.","Define exact Prompt Codes, token fields, and sequence/correlation behavior for staged wallet flows."]
+}

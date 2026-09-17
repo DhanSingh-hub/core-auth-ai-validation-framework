@@ -1,0 +1,22 @@
+{
+  "appendix": "P",
+  "title": "TransArmor VeriFone Edition: Responses to Administrative Commands",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Separate TransArmor administrative-response family; not a complete standard Segment 100 financial request/response layout in this ATL105 release.",
+  "source": "docs/specs/extracted_text.txt Appendix P-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPP-TRANSARMOR-BOUNDARY","title":"TransArmor administrative command responses shall be validated using the dedicated TransArmor specification rather than the standard Segment 100 financial response rules.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix P","segment":"TRANSARMOR-ADMIN","rule":"administrative-response-boundary"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPP-TRANSARMOR-LINK","title":"When a TransArmor administrative operation affects a Segment 100 tokenized transaction, its response and token state shall remain correlated with the originating transaction context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix P","segment":"TRANSARMOR-ADMIN","rule":"administrative-response-correlation"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPP-TRANSARMOR-BOUNDARY","covers":["BR-SEG100-APPP-TRANSARMOR-BOUNDARY"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPP-TRANSARMOR-LINK","covers":["BR-SEG100-APPP-TRANSARMOR-LINK"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPP-TRANSARMOR-BOUNDARY","scenarioId":"TS-SEG100-APPP-TRANSARMOR-BOUNDARY","positive":"Administrative response validated against dedicated TransArmor contract","negative":["Administrative response incorrectly accepted by standard Segment 100 validator"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPP-TRANSARMOR-LINK","scenarioId":"TS-SEG100-APPP-TRANSARMOR-LINK","positive":"Token state and originating transaction remain correlated","negative":["Token response detached from originating transaction"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Detailed Appendix P test data cannot be generated from this ATL105 document alone.",
+  "remaining": ["Obtain BUYPASS Platform ATL105 Specification Updates for TransArmor Processing.","Do not treat Appendix P as a complete Segment 100 financial response contract."]
+}

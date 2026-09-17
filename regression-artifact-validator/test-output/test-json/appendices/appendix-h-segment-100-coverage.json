@@ -1,0 +1,34 @@
+{
+  "appendix": "H",
+  "title": "Decline Codes Permitting Clerk/Customer Intervention",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Decline Code Element 26 in responses associated with Segment 100 financial requests.",
+  "source": "docs/specs/extracted_text.txt Appendix H-1 through H-3",
+  "codeFamilies": {
+    "dataReentry": ["!3","!W",":H","2D","3A","3F","CB","FZ","I1","I2","I3","KS","W2","W3"],
+    "timeoutResubmission": ["4I","6C"],
+    "recurringPaymentStop": ["K=","K#"],
+    "transarmorTokenRetry": ["4M"]
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPH-REENTRY","title":"A response Decline Code in the Appendix H data-reentry family shall prompt the applicable clerk/customer data correction and resubmission behavior.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix H","segment":"FINANCIAL-RESPONSE","element":"26","rule":"decline-data-reentry"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPH-TIMEOUT","title":"Decline Codes 4I and 6C identify a timed-out transaction and permit the source-defined retry/reversal handling.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix H","segment":"FINANCIAL-RESPONSE","element":"26","rule":"decline-timeout-resubmission"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPH-RECURRING","title":"Visa recurring-payment decline codes K= and K# stop or prevent resubmission according to the source rule.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix H","segment":"FINANCIAL-RESPONSE","element":"26","rule":"decline-recurring-payment-stop"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPH-TRANSARMOR","title":"Decline Code 4M identifies a TransArmor token-retrieval failure and permits the source-defined retry behavior.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix H","segment":"FINANCIAL-RESPONSE","element":"26","rule":"decline-transarmor-token-retry"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPH-REENTRY","covers":["BR-SEG100-APPH-REENTRY"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPH-TIMEOUT","covers":["BR-SEG100-APPH-TIMEOUT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPH-RECURRING","covers":["BR-SEG100-APPH-RECURRING"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPH-TRANSARMOR","covers":["BR-SEG100-APPH-TRANSARMOR"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPH-REENTRY","scenarioId":"TS-SEG100-APPH-REENTRY","positive":"Valid decline code prompts the specified data correction","negative":["Wrong prompt action","resubmission without correction"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPH-TIMEOUT","scenarioId":"TS-SEG100-APPH-TIMEOUT","positive":"4I/6C leads to permitted retry or reversal handling","negative":["Treat timeout as ordinary decline","resubmit without lifecycle correlation"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPH-RECURRING","scenarioId":"TS-SEG100-APPH-RECURRING","positive":"K=/K# applies source-defined recurring-payment stop behavior","negative":["Resubmit prohibited recurring transaction"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPH-TRANSARMOR","scenarioId":"TS-SEG100-APPH-TRANSARMOR","positive":"4M invokes source-defined token retrieval retry","negative":["Treat 4M as generic decline"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Element 26 format is validated as a two-character decline code; Appendix H behavior-specific artifacts are not yet complete.",
+  "remaining": ["Add response decline behavior validators and AI response artifacts for Appendix H codes."]
+}

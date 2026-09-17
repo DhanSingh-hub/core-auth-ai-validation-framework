@@ -1,0 +1,30 @@
+{
+  "appendix": "I",
+  "title": "Variable Information Data Layouts",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies conditionally through Variable Information Segment 111 when Segment 100 transaction/card/merchant context requires a variable-information Table ID.",
+  "source": "docs/specs/extracted_text.txt Appendix I-1 onward",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPI-VARIABLE-TRIGGER","title":"A Segment 100 transaction requiring Variable Information shall include Segment 111 in Data Section 3 and Element 63 shall include it in the serialized count.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"111","element":"111","rule":"variable-information-required"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPI-TABLE-ID","title":"Variable Information Segment 111 shall use the Table ID defined for the applicable transaction/card/merchant context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I","segment":"111","element":"111","rule":"variable-information-table-id"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPI-TABLE-LENGTH","title":"Variable Information Table Length and Table Data shall respect the source-defined layout and maximum length for the selected Table ID.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I","segment":"111","element":"111","rule":"variable-information-table-length"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPI-CONTEXT","title":"Variable Information data shall be consistent with Segment 100 Prompt Code, card type, entry mode, transaction flow, and merchant configuration.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I","segment":"111","element":"78","rule":"variable-information-context"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPI-COUNTRY-SUBDIVISION","title":"When Terminal Identifier uses the Appendix D non-US/non-Canada state-code condition, Variable Information Table 041 shall carry the country subdivision data required by the source.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I","segment":"111","element":"111","rule":"country-subdivision-table-041"},"status":"REVIEW_REQUIRED"}
+  ],
+  "representativeTableFamilies": ["001 UPC","002 Program Identifier","003 AVS","004 Card Verification","005 POS Entry Mode","006 Currency","007 SIC","008 Balance","009 Partial Approval Indicator","041 Country Subdivision"],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPI-TRIGGER","covers":["BR-SEG100-APPI-VARIABLE-TRIGGER"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPI-TABLE-LAYOUT","covers":["BR-SEG100-APPI-TABLE-ID","BR-SEG100-APPI-TABLE-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPI-CONTEXT","covers":["BR-SEG100-APPI-CONTEXT"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPI-COUNTRY","covers":["BR-SEG100-APPI-COUNTRY-SUBDIVISION"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPI-TRIGGER","scenarioId":"TS-SEG100-APPI-TRIGGER","positive":"Required Table 111 is present and counted","negative":["Required Variable Information omitted","Element 63 excludes Segment 111"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPI-TABLE-LAYOUT","scenarioId":"TS-SEG100-APPI-TABLE-LAYOUT","positive":"Table ID, length, and data match a defined Appendix I layout","negative":["Unknown Table ID","length mismatch","data exceeds table maximum"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPI-CONTEXT","scenarioId":"TS-SEG100-APPI-CONTEXT","positive":"Variable data agrees with Prompt Code and flow","negative":["Variable table conflicts with card/transaction context"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPI-COUNTRY","scenarioId":"TS-SEG100-APPI-COUNTRY","positive":"Table 041 accompanies the non-US/non-Canada terminal condition","negative":["Numeric 00 without Table 041"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment 111 trigger and Element 63 compatibility are covered; full Appendix I table enumeration is not yet implemented.",
+  "remaining": ["Review Appendix I table families one by one where Segment 100 transaction/card contexts use them.","Validate AI-generated Variable Information JSON when available."]
+}

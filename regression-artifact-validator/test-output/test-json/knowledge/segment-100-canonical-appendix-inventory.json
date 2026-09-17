@@ -1,0 +1,52 @@
+{
+  "inventoryId": "ATL105-SEG100-CANONICAL-APPENDIX-INVENTORY-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "purpose": "Canonical appendix-to-Segment-100 applicability inventory",
+  "systemBoundary": {
+    "coreSegment100": "Universal Segment 100 request/response and lifecycle rules",
+    "conditional": "Rules activated by transaction, card, channel, companion, or response context",
+    "separateDomain": "Requires its own implementation contract or external specification",
+    "aiArtifactCertification": "Pending until AI-generated artifacts are received"
+  },
+  "summary": {
+    "appendicesReviewed": 22,
+    "appendixRange": "A-V",
+    "appendixBusinessRequirementRecords": 88,
+    "directlyApplicable": ["A","B","D","E","F","G","H","I","J","K","L","M","Q","R","T"],
+    "separateDomainOrReviewBoundary": ["C","N","O","P","S","U","V"],
+    "aiArtifactValidation": "PENDING",
+    "externalConverter": "DEFERRED"
+  },
+  "appendices": [
+    {"id":"A","title":"TCP/IP Message Header","applicability":"transport-envelope","requestResponse":"both","brRecords":4,"status":"COVERED","sourceRecord":"appendix-a-segment-100-coverage.json","primaryRules":["message length","network byte order","TPDU protocol 0x60","reserved addresses"]},
+    {"id":"B","title":"POS Purchase Example","applicability":"conditional-composite-example","requestResponse":"request","brRecords":6,"status":"COVERED","sourceRecord":"appendix-b-segment-100-coverage.json","primaryRules":["POS purchase envelope","Segment 100","Prompt Code","amount/product reconciliation"]},
+    {"id":"C","title":"Valid Authorizer Codes","applicability":"response-context","requestResponse":"response","brRecords":3,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-c-segment-100-coverage.json","primaryRules":["Element 7 valid code","authorizer context","production configuration review"]},
+    {"id":"D","title":"Valid State Codes","applicability":"conditional-field-context","requestResponse":"request","brRecords":3,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-d-segment-100-coverage.json","primaryRules":["Terminal Identifier ANSI state","alphabetical state context","Table 041 country subdivision"]},
+    {"id":"E","title":"Valid Card Type Codes","applicability":"prompt-code-context","requestResponse":"request","brRecords":4,"status":"COVERED","sourceRecord":"appendix-e-segment-100-coverage.json","primaryRules":["36 financial card types","Prompt Code composition","special Prompt Code separation"]},
+    {"id":"F","title":"Valid Payment Systems Product Codes","applicability":"companion-segment","requestResponse":"request","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-f-segment-100-coverage.json","primaryRules":["Segment 102 product codes","unique fuel codes","product order","amount reconciliation"]},
+    {"id":"G","title":"Valid Transaction Type Codes","applicability":"prompt-code-context","requestResponse":"both","brRecords":5,"status":"COVERED","sourceRecord":"appendix-g-segment-100-coverage.json","primaryRules":["13 financial codes","special code 9","lifecycle code relationships"]},
+    {"id":"H","title":"Decline Codes Permitting Clerk/Customer Intervention","applicability":"response-behavior","requestResponse":"response","brRecords":4,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-h-segment-100-coverage.json","primaryRules":["data re-entry","timeout resubmission","recurring stop","TransArmor token retry"]},
+    {"id":"I","title":"Variable Information Data Layouts","applicability":"conditional-companion","requestResponse":"both","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-i-segment-100-coverage.json","primaryRules":["Segment 111 trigger","Table ID/length","context consistency","Table 041"]},
+    {"id":"J","title":"Valid Point-of-Service Entry Mode Codes","applicability":"conditional-companion","requestResponse":"request","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-j-segment-100-coverage.json","primaryRules":["PAN mode","terminal capability","lifecycle persistence","context restrictions"]},
+    {"id":"K","title":"Additional Information Data Layouts","applicability":"response-context","requestResponse":"response","brRecords":5,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-k-segment-100-coverage.json","primaryRules":["Element 116 flag","Segment 118 tables","balance","AVS/NVS","card verification"]},
+    {"id":"L","title":"Valid Currency Codes","applicability":"conditional-field-context","requestResponse":"both","brRecords":3,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-l-segment-100-coverage.json","primaryRules":["three-digit currency","network context","eWIC currency"]},
+    {"id":"M","title":"Element Format Examples for EBT Program Data","applicability":"ebt-ewic-companion","requestResponse":"request","brRecords":4,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-m-segment-100-coverage.json","primaryRules":["Element 164 total length","tag/length/detail","HIP amount","multiple subelements"]},
+    {"id":"N","title":"First Data Premium Gift Card Magnetic Stripe Data Layout","applicability":"separate-domain","requestResponse":"request","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-n-segment-100-coverage.json","primaryRules":["16-digit account/BIN","Track II layout","serial derivation"]},
+    {"id":"O","title":"Payment Token Terminologies","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-o-segment-100-coverage.json","primaryRules":["token account","token expiration","cryptogram","token presentment"]},
+    {"id":"P","title":"TransArmor VeriFone Edition Responses to Administrative Commands","applicability":"separate-domain","requestResponse":"response","brRecords":2,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-p-segment-100-coverage.json","primaryRules":["administrative boundary","token state correlation"]},
+    {"id":"Q","title":"Valid National Point-of-Service Condition Codes","applicability":"conditional-companion","requestResponse":"request","brRecords":5,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-q-segment-100-coverage.json","primaryRules":["ten-position structure","terminal class/type","presentation","security","flow consistency"]},
+    {"id":"R","title":"EMV Chip Data Example","applicability":"emv-companion","requestResponse":"request","brRecords":4,"status":"PARTIALLY_COVERED","sourceRecord":"appendix-r-segment-100-coverage.json","primaryRules":["Segment 130","chip-data length","TLV format","cross-field consistency"]},
+    {"id":"S","title":"Valid CA Public Key File Record Layout","applicability":"separate-domain","requestResponse":"administrative","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-s-segment-100-coverage.json","primaryRules":["CA_KEYS header","key record","EMV key configuration"]},
+    {"id":"T","title":"EMV Additional Information Data Layouts","applicability":"emv-response","requestResponse":"both","brRecords":3,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-t-segment-100-coverage.json","primaryRules":["EMV Table Data 001","CARC 002","response echo"]},
+    {"id":"U","title":"Visa Digital Wallet","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-u-segment-100-coverage.json","primaryRules":["pass-through wallet","staged purchase","staged funding","wallet correlation"]},
+    {"id":"V","title":"Moneris Data Layout","applicability":"separate-domain","requestResponse":"both","brRecords":4,"status":"REVIEW_REQUIRED","sourceRecord":"appendix-v-segment-100-coverage.json","primaryRules":["Segment 135/136","request tables","completion linkage","MAC/encryption"]}
+  ],
+  "statusPolicy": {
+    "COVERED":"Source-backed and traceable in the current independent framework.",
+    "PARTIALLY_COVERED":"Core shape or dependency exists, but enumeration, context, or executable evidence remains.",
+    "REVIEW_REQUIRED":"Needs SME, configuration, external specification, or specialized AI artifacts.",
+    "PENDING":"Cannot be certified until AI output or external converter evidence is supplied."
+  }
+}

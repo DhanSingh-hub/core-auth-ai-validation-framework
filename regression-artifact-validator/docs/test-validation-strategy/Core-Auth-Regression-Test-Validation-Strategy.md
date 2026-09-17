@@ -30,7 +30,7 @@
 
 | Version | Date | Author/Owner | Change | Status |
 | --- | --- | --- | --- | --- |
-| 0.1 | 2026-09-14 | Core Auth Test Validation Team | Template-aligned strategy baseline | Working review |
+| 0.2 | 2026-09-16 | Core Auth Test Validation Team | Added Test Team solution design, AI artifact validation value, and risk-based manual testing | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -78,6 +78,35 @@ The strategy focuses on the artifacts produced by the AI Solution and how the Te
 
 The Test Validation Team validates these outcomes. It does not need to reproduce the AI generation process to determine whether the outputs are complete, traceable, and correct.
 
+### What the Test Team Is Building
+
+The Test Team is building an independent validation solution around the AI Solution. The solution is reusable across specifications and uses a specification pack to supply specification-specific rules.
+
+| Test Team capability | What the team builds | How it helps test the AI Solution |
+| --- | --- | --- |
+| Artifact intake | Versioned adapters, manifests, hashes, and original-file preservation | Proves which AI package was tested and prevents silent format changes |
+| Canonical model | Common representations for requirements, scenarios, test cases, and request-only Test Data JSON | Allows different AI output formats to be compared consistently |
+| Independent rule catalog | Atomic rules, source anchors, conditions, examples, and expected behavior derived from the specification | Provides an oracle independent of AI-generated requirements and coverage claims |
+| Traceability graph | Rule -> BR -> Scenario -> Test Case -> Test Data links | Finds orphan, duplicate, unsupported, and broken artifacts |
+| Semantic validators | Field, value, dependency, lifecycle, compatibility, and serialization checks | Detects JSON that is structurally valid but business- or specification-invalid |
+| Coverage engine | Independent rule, requirement, scenario, case, data, traceability, and parameter coverage | Exposes missing coverage and verifies AI-reported metrics |
+| Manual review queue | Risk-based sample selection, findings, decisions, and evidence | Resolves ambiguity that automation cannot responsibly approve |
+| Evidence and reporting | Reproducible JSON/Markdown reports with status, defects, and review items | Gives stakeholders an auditable pass, fail, or held-for-review decision |
+
+The Test Team solution is therefore both a validator and an independent evidence producer. It can generate canonical Test Team artifacts from approved rules, compare them with AI artifacts, and show exactly why an artifact is accepted, rejected, or held for review.
+
+### How the Test Solution Helps Testing
+
+The Test Solution reduces the principal risks of AI-generated testing assets:
+
+- **False confidence:** valid JSON is separated from correct business meaning.
+- **Untraceable content:** every accepted artifact must resolve to an independent source rule.
+- **Hidden omissions:** coverage is measured against the independent rule catalog, not only AI-produced counts.
+- **Inconsistent formats:** adapters normalize different AI packages into one canonical contract.
+- **Unsupported approval:** confidence scores and AI approval flags cannot replace Test Team or business approval.
+- **Ambiguous interpretation:** uncertain items are explicitly held for manual review instead of being silently accepted.
+- **Regression risk:** the validator and its rule catalog are versioned and executed repeatedly when AI schemas, specifications, or validators change.
+
 ### Architecture Alignment
 
 The strategy follows the Core Auth Regression Automation Tool architecture:
@@ -103,29 +132,6 @@ The AI output is treated as an untrusted sample input to the validation solution
 - **Test Case Review:** the Test Validation Team validates generated cases and expected results against the independent rules and executable checks.
 
 AI review, confidence scoring, scripted approval, and producer claims may prioritize attention, but they do not establish correctness.
-
-### Document Purpose
-
-This document defines the test objective, scope, approach, phases, data, tools, schedule, governance, responsibilities, deliverables, risks, and acceptance criteria for the Core Auth Regression Test Solution.
-
-### Document Scope
-
-The current implementation foundation is ATL105, with Segment 100 as the first completed module. Current ATL105 delivery expands to all segments, message categories, transaction flows, responses, appendices, dependencies, lifecycle rules, and serialization rules.
-
-The end goal is specification-independent operation: a new specification supplies a specification pack, rule catalog, source anchors, schemas, dependencies, lifecycle model, serialization rules, and coverage profile while the reusable Core Auth engine performs generation, normalization, validation, reporting, and governance.
-
-### Abbreviations
-
-| Term | Meaning |
-| --- | --- |
-| BR | Business Requirement |
-| TBA | Technical Business Analyst |
-| SME | Subject Matter Expert |
-| BVT | Build Verification Test |
-| UAT | User Acceptance Testing |
-| RACI | Responsible, Accountable, Consulted, Informed |
-| SIT | System Integration Testing |
-| AI | Artificial Intelligence |
 
 ## Test Objective
 
@@ -368,6 +374,18 @@ AI-generated artifact
   <> independent specification rule
   <> expected business behavior
 ```
+
+The initial ATL105 sample should normally contain five to eight items, adjusted when risk or package size requires it:
+
+| Sample item | Manual checks | Required evidence |
+| --- | --- | --- |
+| One high-impact Business Requirement | Atomic wording, source anchor, condition, and expected behavior | Annotated source rule and comparison result |
+| One positive and one negative Scenario | Valid combination, boundary/negative intent, duplicate handling, and requirement link | Scenario comparison and disposition |
+| One high-priority Test Case | Preconditions, steps, expected result, priority rationale, and scenario link | Case review record and approval decision |
+| One lifecycle Test Data JSON request | Request-only payload, original/follow-up relationship, sequence reuse, and lifecycle values | Canonical mapping and lifecycle check |
+| One serialization or dependency-risk request | Segment order, lengths, separators, required fields, and companion-segment conditions | Validator output and wire-format comparison |
+
+Manual reviewers record the artifact version, source rule, reviewer, date, observed differences, defect or assumption, expected disposition, and approval status. A sample passes only when the AI artifact, canonical Test Team artifact, independent rule, and expected business behavior agree. A sample finding does not automatically reject the entire package; it is classified by severity and used to determine whether additional sampling or broader correction is required.
 
 The comparison records format/schema agreement, source-anchor agreement, complete traceability, expected-result agreement, payload semantics, differences, defects, assumptions, and manual-review findings.
 

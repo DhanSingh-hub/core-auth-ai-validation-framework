@@ -1,0 +1,23 @@
+{
+  "appendix": "S",
+  "title": "Valid CA Public Key File Record Layout",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Separate EMV CA key-file/key-load data that supports EMV transactions using Segment 100 and Segment 130.",
+  "source": "docs/specs/extracted_text.txt Appendix S-1 through S-2",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPS-CA-FILE-HEADER","title":"A CA Public Key file shall use the CA_KEYS file name, version, comma-separated records, and CRLF termination.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix S","segment":"CA-KEY-FILE","rule":"ca-key-file-header"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPS-CA-KEY-RECORD","title":"Each CA Public Key record shall contain valid expiry date, SHA-1 hash indicator, RSA algorithm indicator, RID, index, modulus, exponent, and checksum fields.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix S","segment":"CA-KEY-RECORD","rule":"ca-key-record-layout"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPS-CA-EMV-LINK","title":"An EMV Segment 100/130 transaction shall use CA key configuration consistent with the applicable EMV AID and public-key data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix S","segment":"100,130","rule":"ca-key-emv-configuration"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPS-CA-FILE","covers":["BR-SEG100-APPS-CA-FILE-HEADER","BR-SEG100-APPS-CA-KEY-RECORD"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPS-CA-EMV-LINK","covers":["BR-SEG100-APPS-CA-EMV-LINK"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPS-CA-FILE","scenarioId":"TS-SEG100-APPS-CA-FILE","positive":"Valid CA_KEYS file and CA public-key record","negative":["wrong file name","wrong hash/algorithm indicator","invalid expiry","invalid exponent","checksum mismatch","missing CRLF"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPS-CA-EMV-LINK","scenarioId":"TS-SEG100-APPS-CA-EMV-LINK","positive":"EMV AID resolves to valid configured CA key","negative":["missing key","expired key","RID/index mismatch"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No CA_KEYS file or external EMV key-load artifact is currently available.",
+  "remaining": ["Obtain CA key-file/key-load artifacts and the complete EMV key management contract.","Do not treat Appendix S as part of ordinary Segment 100 financial JSON validation."]
+}

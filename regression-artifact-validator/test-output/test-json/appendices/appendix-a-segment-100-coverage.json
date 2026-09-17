@@ -1,0 +1,27 @@
+{
+  "appendix": "A",
+  "title": "TCP/IP Message Header",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to every ATL105 message carrying Segment 100, but defines transport framing rather than Segment 100 business fields.",
+  "source": "docs/specs/extracted_text.txt Appendix A-1 through A-2",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPA-MESSAGE-LENGTH","title":"TCP/IP Message Length is a two-byte length of all following message data excluding the length field itself.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix A","segment":"TCP-IP-HEADER","element":"message-length","rule":"message-length"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPA-NETWORK-ORDER","title":"TCP/IP Message Length is transmitted in network byte order with the high-order byte first.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix A","segment":"TCP-IP-HEADER","element":"message-length","rule":"network-byte-order"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPA-PROTOCOL-ID","title":"The TPDU Protocol ID is fixed at 0x60.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix A","segment":"TCP-IP-HEADER","element":"protocol-id","rule":"tpdu-protocol-id"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPA-RESERVED-ADDRESSES","title":"TPDU destination and source address bytes are zero when sending messages to BUYPASS.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix A","segment":"TCP-IP-HEADER","element":"destination-source-address","rule":"reserved-tpdu-addresses"},"status":"COVERED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPA-FRAMING","covers":["BR-SEG100-APPA-MESSAGE-LENGTH","BR-SEG100-APPA-NETWORK-ORDER"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPA-TPDU","covers":["BR-SEG100-APPA-PROTOCOL-ID","BR-SEG100-APPA-RESERVED-ADDRESSES"],"status":"COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPA-FRAMING","scenarioId":"TS-SEG100-APPA-FRAMING","positive":"Valid two-byte network-order length","negative":["Length excludes or includes wrong bytes","Little-endian byte order","Partial one-byte length read"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPA-TPDU","scenarioId":"TS-SEG100-APPA-TPDU","positive":"Protocol 0x60 and zero reserved addresses","negative":["Wrong protocol ID","Nonzero destination address","Nonzero source address"],"status":"COVERED"}
+  ],
+  "testDataStatus": "Existing package coverage is in segment-100-item-01-message-length-package.json and segment-100-item-02-tpdu-header-package.json.",
+  "remaining": [
+    "Run the real ATL105 converter against AI-generated messages.",
+    "Validate TCP streaming behavior against the external runtime/converter implementation."
+  ]
+}

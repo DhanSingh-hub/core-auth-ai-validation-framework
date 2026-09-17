@@ -1,0 +1,24 @@
+{
+  "appendix": "O",
+  "title": "Payment Token Terminologies",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies conditionally to Segment 100 tokenized transactions and related security/entry-mode context.",
+  "source": "docs/specs/extracted_text.txt Appendix O-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPO-TOKEN-ACCOUNT","title":"A payment token used as Segment 100 Account Number shall be a valid 13-19 digit token value subject to account validation and designated token BIN rules.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix O","segment":"100","element":"2","rule":"payment-token-account-number"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPO-TOKEN-EXPIRATION","title":"Payment Token Expiration Date shall be populated in the PAN Expiration Date field when token processing requires it.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix O","segment":"100","element":"12","rule":"payment-token-expiration-date"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPO-CRYPTOGRAM","title":"In-App token cryptogram data shall use the source-defined 28-byte or 56-byte base64 representation and token-data-block interpretation.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix O","segment":"100","element":"33","rule":"payment-token-cryptogram"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPO-ENTRY-MODE","title":"Tokenized Segment 100 transactions shall use a POS Entry Mode that identifies the token presentment mode.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix O","segment":"111","element":"113","rule":"payment-token-entry-mode"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPO-TOKEN-ACCOUNT","covers":["BR-SEG100-APPO-TOKEN-ACCOUNT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPO-TOKEN-CONTEXT","covers":["BR-SEG100-APPO-TOKEN-EXPIRATION","BR-SEG100-APPO-CRYPTOGRAM","BR-SEG100-APPO-ENTRY-MODE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPO-TOKEN-ACCOUNT","scenarioId":"TS-SEG100-APPO-TOKEN-ACCOUNT","positive":"Valid tokenized account representation","negative":["PAN/token collision","invalid token length","invalid token BIN","failed account validation"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPO-TOKEN-CONTEXT","scenarioId":"TS-SEG100-APPO-TOKEN-CONTEXT","positive":"Token expiration, cryptogram, and entry mode agree with token context","negative":["wrong cryptogram size","missing token expiration","wrong token presentment mode"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Generic account/token dependency rules exist; dedicated tokenized AI artifacts and tokenization-specific converter rules are not yet available.",
+  "remaining": ["Obtain tokenized AI artifacts and security-safe cryptogram fixtures.","Confirm exact token BIN, Luhn, expiration, and POS Entry Mode rules with the tokenization implementation."]
+}

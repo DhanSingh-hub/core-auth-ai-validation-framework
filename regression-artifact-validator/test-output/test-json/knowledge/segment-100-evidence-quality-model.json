@@ -1,0 +1,33 @@
+{
+  "modelId": "ATL105-SEG100-EVIDENCE-QUALITY-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "purpose": "Evidence quality classification for Segment 100 knowledge and AI-artifact validation",
+  "dimensions": {
+    "sourceEvidence": ["SOURCE_CONFIRMED","SOURCE_DERIVED","EXTERNAL_SPEC_REQUIRED","UNKNOWN"],
+    "implementationEvidence": ["IMPLEMENTED_TESTED","IMPLEMENTED_PARTIAL","NOT_IMPLEMENTED","EXTERNAL_IMPLEMENTATION"],
+    "artifactEvidence": ["AI_ARTIFACT_VALIDATED","INDEPENDENT_FIXTURE_ONLY","AI_ARTIFACT_PENDING","NO_ARTIFACT"],
+    "reviewState": ["AUTO_APPROVABLE","REVIEW_REQUIRED","BLOCKED"]
+  },
+  "decisionRules": [
+    {"when":"SOURCE_CONFIRMED + IMPLEMENTED_TESTED + AI_ARTIFACT_VALIDATED","status":"COVERED"},
+    {"when":"SOURCE_CONFIRMED + IMPLEMENTED_TESTED + INDEPENDENT_FIXTURE_ONLY","status":"READY_FOR_AI_INTAKE"},
+    {"when":"SOURCE_CONFIRMED + IMPLEMENTED_PARTIAL","status":"PARTIALLY_COVERED"},
+    {"when":"EXTERNAL_SPEC_REQUIRED or EXTERNAL_IMPLEMENTATION","status":"REVIEW_REQUIRED"},
+    {"when":"UNKNOWN source evidence or NO_ARTIFACT for a mandatory rule","status":"BLOCKED"},
+    {"when":"Conditional behavior without context evidence","status":"REVIEW_REQUIRED"}
+  ],
+  "requiredEvidence": {
+    "sourceAnchor":"Required for every BR, TS, TC, and TD.",
+    "implementation":"Validator/test or explicit external implementation reference.",
+    "artifact":"AI artifact provenance, source format, revision, and validation result.",
+    "review":"Reviewer, decision, rationale, and unresolved question when review is required."
+  },
+  "currentSegment100Policy": {
+    "genericCoreRules":"READY_FOR_AI_INTAKE",
+    "independentFixtures":"Do not claim AI coverage",
+    "specializedAppendices":"REVIEW_REQUIRED unless dedicated evidence exists",
+    "externalConverter":"PENDING",
+    "aiArtifactIntake":"PENDING"
+  }
+}
