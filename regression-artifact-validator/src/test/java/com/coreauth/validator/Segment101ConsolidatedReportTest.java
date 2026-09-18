@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment101ConsolidatedReportTest {
 
-    private static final Path DEFAULT_OUTPUT = Paths.get("SEGMENT-101-CONSOLIDATED-REPORT.txt");
+    private static final Path DEFAULT_OUTPUT = Paths.get("test-output", "consolidated-reports", "SEGMENT-101-CONSOLIDATED-REPORT.txt");
 
     @AfterEach
     void cleanupDefaultOutput() throws IOException {

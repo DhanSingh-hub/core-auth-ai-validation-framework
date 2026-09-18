@@ -7,6 +7,9 @@
 <style>
 :root { --ink:#132238; --muted:#5b6777; --paper:#f6f3eb; --surface:#ffffff; --line:#d8d0c1; --teal:#087e8b; --green:#2e8b57; --gold:#bd7a00; --red:#b74242; --navy:#235789; }
 * { box-sizing:border-box; } body { margin:0; background:var(--paper); color:var(--ink); font:15px Georgia, 'Times New Roman', serif; line-height:1.45; } header { padding:42px max(24px, calc((100vw - 1280px)/2)); background:var(--ink); color:#fff; border-bottom:7px solid var(--teal); } h1,h2 { font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-weight:400; letter-spacing:0; } h1 { margin:0; font-size:42px; line-height:1; } h2 { font-size:26px; margin:0 0 12px; } header p { max-width:900px; color:#d6e6ea; margin:14px 0 0; } main { max-width:1280px; margin:0 auto; padding:28px 24px 60px; } .notice { padding:14px 17px; border-left:5px solid var(--gold); background:#fff7e6; margin-bottom:24px; } .stats { display:grid; grid-template-columns:repeat(4,minmax(160px,1fr)); gap:12px; margin-bottom:28px; } .stat { background:var(--surface); border:1px solid var(--line); padding:16px; min-height:110px; } .stat strong { display:block; font:38px/1 Impact, sans-serif; color:var(--navy); } .stat.warn strong { color:var(--gold); } .stat.danger strong { color:var(--red); } .stat span { color:var(--muted); font-size:13px; } section { margin:26px 0; } .panel { background:var(--surface); border:1px solid var(--line); padding:20px; } .chart-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; } .bar-row { display:grid; grid-template-columns:185px 1fr 110px; gap:10px; align-items:center; margin:14px 0; } .bar { height:27px; display:flex; background:#e8e2d7; overflow:hidden; } .bar span { min-width:2px; } .confirmed { background:var(--green); } .potential { background:var(--gold); } .missing { background:var(--red); } .review { background:var(--teal); } .legend { display:flex; gap:15px; flex-wrap:wrap; color:var(--muted); font-size:13px; } .legend i { width:12px; height:12px; display:inline-block; margin-right:5px; } .flow { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:12px 0 18px; } .node { border:2px solid var(--navy); background:#fff; padding:15px; min-width:150px; text-align:center; } .node strong { display:block; font:28px/1 Impact,sans-serif; color:var(--navy); } .arrow { color:var(--teal); font-size:30px; } .filters { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; } input,select { font:inherit; padding:8px; border:1px solid var(--line); background:#fff; } input { min-width:280px; } .table-wrap { overflow:auto; border:1px solid var(--line); max-height:650px; } table { width:100%; border-collapse:collapse; min-width:1080px; background:#fff; } th { position:sticky; top:0; background:#e8eee9; text-align:left; font-size:12px; z-index:1; } th,td { padding:9px; border-bottom:1px solid #e6e0d6; vertical-align:top; } td { font-size:13px; } tr:nth-child(even) { background:#fbfaf7; } code { display:block; color:#174a6e; font:12px Consolas, monospace; } small { display:block; color:var(--muted); margin-top:4px; } .badge { display:inline-block; font:11px Consolas,monospace; padding:3px 5px; margin-bottom:4px; color:#fff; } .badge.matched_element_and_semantics,.badge.matched_semantics_only { background:var(--green); } .badge.potential_match_review_required { background:var(--gold); } .badge.unmatched_in_test_solution,.badge.missing_scenario { background:var(--red); } .badge.scenario_review_required { background:var(--teal); } .two-columns { display:grid; grid-template-columns:1fr 1fr; gap:24px; } .callout { padding:16px; border-left:5px solid var(--teal); background:#edf7f7; } @media (max-width:800px) { header { padding:30px 20px; } h1 { font-size:34px; } main { padding:20px 14px; } .stats,.chart-grid,.two-columns { grid-template-columns:1fr; } .bar-row { grid-template-columns:1fr; gap:4px; } input { min-width:100%; } }
+.hover-detail { position:fixed; z-index:20; max-width:360px; padding:12px 14px; border:1px solid var(--navy); border-radius:6px; background:var(--ink); color:#fff; box-shadow:0 8px 24px rgba(19,34,56,.24); font:13px/1.45 Consolas,monospace; white-space:pre-line; pointer-events:none; opacity:0; transform:translateY(5px); transition:opacity .12s ease, transform .12s ease; }
+.hover-detail.visible { opacity:1; transform:translateY(0); }
+.stat, .bar-row { cursor:help; }
 </style>
 </head>
 <body>
@@ -643,6 +646,52 @@
 const search=document.getElementById('search'),match=document.getElementById('matchFilter'),scenario=document.getElementById('scenarioFilter');
 function filterRows(){for(const row of document.querySelectorAll('#matrix tbody tr')){const text=row.innerText.toLowerCase();row.hidden=(search.value&& !text.includes(search.value.toLowerCase()))||(match.value&&row.dataset.match!==match.value)||(scenario.value&&row.dataset.scenario!==scenario.value);}}
 search.addEventListener('input',filterRows);match.addEventListener('change',filterRows);scenario.addEventListener('change',filterRows);
+</script>
+<script>
+(() => {
+	const tooltip = document.createElement('div');
+	tooltip.className = 'hover-detail';
+	document.body.appendChild(tooltip);
+
+	function show(target, detail) {
+		tooltip.textContent = detail;
+		tooltip.classList.add('visible');
+		const rect = target.getBoundingClientRect();
+		const left = Math.min(Math.max(12, rect.left), window.innerWidth - 372);
+		const top = rect.bottom + 10;
+		tooltip.style.left = `${left}px`;
+		tooltip.style.top = `${Math.min(top, window.innerHeight - tooltip.offsetHeight - 12)}px`;
+	}
+
+	function hide() { tooltip.classList.remove('visible'); }
+
+	document.querySelectorAll('.stat').forEach((card) => {
+		card.addEventListener('mouseenter', () => {
+			const text = card.innerText.replace(/\s+/g, ' ').trim();
+			const ratio = text.match(/\((\d+)\/(\d+)\)/);
+			const label = text.replace(/^\S+\s*/, '');
+			const detail = ratio
+				? `${label}\nCalculation: ${ratio[1]} / ${ratio[2]} x 100 = ${(100 * Number(ratio[1]) / Number(ratio[2])).toFixed(1)}%`
+				: `${text}\nThis is a count, not a percentage.`;
+			show(card, detail);
+		});
+		card.addEventListener('mouseleave', hide);
+	});
+
+	document.querySelectorAll('.bar-row').forEach((row) => {
+		row.addEventListener('mouseenter', () => {
+			const label = row.querySelector('b')?.innerText || 'Coverage';
+			const summary = row.querySelector(':scope > span:last-child')?.innerText || '';
+			const parts = [...summary.matchAll(/(\d+)\s+[A-Za-z-]+/g)].map((match) => Number(match[1]));
+			const total = parts.reduce((sum, value) => sum + value, 0);
+			const calculation = total
+				? `Calculation: ${parts[0]} / ${total} x 100 = ${(100 * parts[0] / total).toFixed(1)}%\nTotal counted: ${total}`
+				: 'Calculation details are unavailable for this row.';
+			show(row, `${label}\n${summary}\n${calculation}`);
+		});
+		row.addEventListener('mouseleave', hide);
+	});
+})();
 </script>
 </body>
 </html>

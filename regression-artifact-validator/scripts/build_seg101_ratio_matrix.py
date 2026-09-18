@@ -13,8 +13,8 @@ Inputs
 
 Outputs
 -------
-- POC-Segment-101-Coverage-Ratio-Matrix.json  (BR -> scenarios -> test cases -> test data)
-- POC-Segment-101-Coverage-Ratio-AI-vs-Test-Solution.html  (re-titled visual report)
+- test-output/ai-artifacts/coverage-reports/POC-Segment-101-Coverage-Ratio-Matrix.json  (BR -> scenarios -> test cases -> test data)
+- test-output/ai-artifacts/coverage-reports/POC-Segment-101-Coverage-Ratio-AI-vs-Test-Solution.html  (re-titled visual report)
 """
 from __future__ import annotations
 
@@ -44,8 +44,8 @@ REQ_CATALOG_JSON = AI_PIPELINE / "step5_requirements" / "approved" / "requiremen
 SCENARIO_CATALOG_JSON = AI_PIPELINE / "scenarios" / "approved" / "approved_scenarios.json"
 TESTCASE_CATALOG_JSON = AI_PIPELINE / "test_generation" / "approved" / "test_case_catalog.json"
 
-OUT_JSON = BASE / "POC-Segment-101-Coverage-Ratio-Matrix.json"
-OUT_HTML = BASE / "POC-Segment-101-Coverage-Ratio-AI-vs-Test-Solution.html"
+OUT_JSON = BASE / "test-output" / "ai-artifacts" / "coverage-reports" / "POC-Segment-101-Coverage-Ratio-Matrix.json"
+OUT_HTML = BASE / "test-output" / "ai-artifacts" / "coverage-reports" / "POC-Segment-101-Coverage-Ratio-AI-vs-Test-Solution.html"
 
 IST = timezone(timedelta(hours=5, minutes=30))
 

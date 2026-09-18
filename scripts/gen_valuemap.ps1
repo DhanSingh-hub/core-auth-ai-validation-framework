@@ -1,5 +1,6 @@
 $ErrorActionPreference='Stop'
-$src='ATL105 Visa.html'
+$ReportDir = Join-Path $PSScriptRoot '..\reports\atl105-visa'
+$src = Join-Path $ReportDir 'ATL105 Visa.html'
 $rxCaret=[regex]'<span class="caret[^"]*">(.*?)</span>'
 $rxLeafOpen=[regex]'<div class="leaf-item[^"]*">(.*)$'
 function Dec($s){ $s -replace '&lt;','<' -replace '&gt;','>' -replace '&amp;','&' }
@@ -147,6 +148,6 @@ $h+='&bull; <b>&middot;</b> characters are the report&rsquo;s fixed-width paddin
 $h+='&bull; Header fields <i>SegmentType</i> / <i>SegmentLength</i> are greyed; grouped parents (<i>PromptCode</i>, <i>ProductTableEntry</i>) are bold with their sub-fields indented.</div></div>'
 $h+='</div></body></html>'
 $html=$h -join "`n"
-Set-Content 'ATL105 Visa - Segment Value Map.html' -Value $html -Encoding UTF8
+Set-Content (Join-Path $ReportDir 'ATL105 Visa - Segment Value Map.html') -Value $html -Encoding UTF8
 Write-Output ('records={0} elements={1} codes={2}' -f $records.Count,$nElem,$nCodes)
 Write-Output 'DONE'

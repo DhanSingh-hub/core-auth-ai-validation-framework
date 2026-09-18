@@ -1,6 +1,6 @@
 param(
     [string]$PocPipelineRoot = "C:\Users\F5H46GZ\Downloads\POC-DEMO\POC-DEMO\core-auth-test-generation-platform\src\pipeline",
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot "test-output\ai-artifacts\business-requirements")
+    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) "test-output\ai-artifacts\business-requirements")
 )
 
 $requirementsCatalog = Get-Content (Join-Path $PocPipelineRoot "step5_requirements\approved\requirement_catalog.json") -Raw | ConvertFrom-Json

@@ -70,7 +70,7 @@
    - Executive summary with framework status
    - Detailed breakdown of each validation item (Items 1-8)
    - Quality metrics and sign-off
-   - Generated report saved to: `CONSOLIDATED-VALIDATION-REPORT.txt`
+   - Generated report saved to: `test-output/consolidated-reports/CONSOLIDATED-VALIDATION-REPORT.txt`
 
 2. **Report Contents:**
    - **Item 1:** Coverage Closure (3 tests, 29 rules cataloged)
@@ -150,7 +150,7 @@
 
 ### New Files:
 1. `ConsolidatedValidationReport.java` - Comprehensive validation report generator
-2. `CONSOLIDATED-VALIDATION-REPORT.txt` - Generated final validation report
+2. `test-output/consolidated-reports/CONSOLIDATED-VALIDATION-REPORT.txt` - Generated final validation report
 
 ---
 
@@ -172,7 +172,7 @@ Generate consolidated report:
 ```
 mvn exec:java '-Dexec.mainClass=com.coreauth.validator.canonical.ConsolidatedValidationReport'
 ```
-Expected: Full report printed to console and saved to CONSOLIDATED-VALIDATION-REPORT.txt
+Expected: Full report printed to console and saved to test-output/consolidated-reports/CONSOLIDATED-VALIDATION-REPORT.txt
 
 ---
 

@@ -650,5 +650,5 @@ The Segment 100 training established a **proven, specification-grounded, systema
 
 **Questions? Refer to:**
 - Segment 100 source code: `src/main/java/com/coreauth/validator/canonical/Segment100*.java`
-- Consolidated report: `CONSOLIDATED-VALIDATION-REPORT.txt`
+- Consolidated report: `test-output/consolidated-reports/CONSOLIDATED-VALIDATION-REPORT.txt`
 - Validation strategy: `docs/test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md`

@@ -236,11 +236,13 @@ public class ConsolidatedValidationReport {
 
         // Also write to file for archival
         try {
+            java.nio.file.Path reportPath = java.nio.file.Paths.get("test-output", "consolidated-reports", "CONSOLIDATED-VALIDATION-REPORT.txt");
+            java.nio.file.Files.createDirectories(reportPath.getParent());
             java.nio.file.Files.write(
-                java.nio.file.Paths.get("CONSOLIDATED-VALIDATION-REPORT.txt"),
+                reportPath,
                 sb.toString().getBytes()
             );
-            System.out.println("\n✓ Report saved to: CONSOLIDATED-VALIDATION-REPORT.txt");
+            System.out.println("\n✓ Report saved to: " + reportPath);
         } catch (Exception e) {
             System.err.println("Warning: Could not write report to file: " + e.getMessage());
         }

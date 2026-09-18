@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-P = Path(r"c:\Users\F7OKAGW\OneDrive - Fiserv Corp\Desktop\core-auth-ai-validation-framework\regression-artifact-validator\POC-Segment-101-Coverage-Ratio-Matrix.json")
+P = Path(__file__).resolve().parent.parent / "test-output" / "ai-artifacts" / "coverage-reports" / "POC-Segment-101-Coverage-Ratio-Matrix.json"
 
 with P.open("r", encoding="utf-8") as f:
     d = json.load(f)

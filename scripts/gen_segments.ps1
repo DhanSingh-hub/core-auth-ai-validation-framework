@@ -1,5 +1,6 @@
 $ErrorActionPreference='Stop'
-$src='ATL105 Visa.html'
+$ReportDir = Join-Path $PSScriptRoot '..\reports\atl105-visa'
+$src = Join-Path $ReportDir 'ATL105 Visa.html'
 $rxCaret=[regex]'<span class="caret[^"]*">(.*?)</span>'
 $rxLeafOpen=[regex]'<div class="leaf-item[^"]*">(.*)$'   # value may wrap to next lines
 function Dec($s){ $s -replace '&lt;','<' -replace '&gt;','>' -replace '&amp;','&' }
@@ -125,6 +126,6 @@ $h+='&bull; The <b>Merchant Response</b> body also carries message-level fields 
 
 $h+='</div></body></html>'
 $html=$h -join "`n"
-Set-Content 'ATL105 Visa - Segment Coverage.html' -Value $html -Encoding UTF8
+Set-Content (Join-Path $ReportDir 'ATL105 Visa - Segment Coverage.html') -Value $html -Encoding UTF8
 Write-Output ('segments={0} codes={1} distinctElements={2}' -f $meta.Keys.Count,$nCodes,$nElem)
 Write-Output 'DONE'
