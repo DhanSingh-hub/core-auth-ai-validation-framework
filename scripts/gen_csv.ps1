@@ -1,5 +1,6 @@
 $ErrorActionPreference='Stop'
-$src='ATL105 Visa.html'
+$ReportDir = Join-Path $PSScriptRoot '..\reports\atl105-visa'
+$src = Join-Path $ReportDir 'ATL105 Visa.html'
 $rxCaret=[regex]'<span class="caret[^"]*">(.*?)</span>'
 $rxLeafOpen=[regex]'<div class="leaf-item[^"]*">(.*)$'
 function Dec($s){ $s -replace '&lt;','<' -replace '&gt;','>' -replace '&amp;','&' }
@@ -92,6 +93,6 @@ foreach($seg in $segOrder){
     }
   }
 }
-Set-Content 'ATL105 Visa - Field Values.csv' -Value $rows -Encoding UTF8
+Set-Content (Join-Path $ReportDir 'ATL105 Visa - Field Values.csv') -Value $rows -Encoding UTF8
 Write-Output ('rows={0} expired={1} invalid={2}' -f $nRows,$nExp,$nInv)
 Write-Output 'DONE'

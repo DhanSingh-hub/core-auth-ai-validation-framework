@@ -1,5 +1,6 @@
 $ErrorActionPreference='Stop'
-$src='ATL105 Visa.html'
+$ReportDir = Join-Path $PSScriptRoot '..\reports\atl105-visa'
+$src = Join-Path $ReportDir 'ATL105 Visa.html'
 $rx=[regex]'<span class="caret ([a-z-]+)">TC:\s*(.*?)</span>'
 # Partial Approval is a response tag ([Partial Approval]), NOT a message step -> excluded from scanner
 $scan=[regex]::new('dup\s*completion|partial\s*completion|completion|comp(?![a-z])|authoriz[a-z]*|auth|cancellation|cancel[a-z]*|(?<![a-z])can(?![a-z])|timeout|sale|refund|return|void',[System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
@@ -174,7 +175,7 @@ $h+='&bull; <b>Partial Approval, AVS/CVV, AFP, eWallet (Apple/Google Pay) and Mo
 $h+='</div></body></html>'
 
 $html=$h -join "`n"
-Set-Content 'ATL105 Visa - Corrected Flow List.html' -Value $html -Encoding UTF8
+Set-Content (Join-Path $ReportDir 'ATL105 Visa - Corrected Flow List.html') -Value $html -Encoding UTF8
 
 # summary for verification
 $sum=@()
@@ -182,5 +183,5 @@ $sum+=('messages={0} transactions={1} flows={2} single={3} multi={4}' -f $nMsg,$
 $tt=0;$tm=0
 foreach($a in $ordered){ $tt+=$a.Txns; $tm+=$a.Msgs; $sum+=('{0,4}txn {1,4}msg {2,3}P/{3,3}F  {4}-step  {5}' -f $a.Txns,$a.Msgs,$a.TxnPass,$a.TxnFail,$a.Steps,$a.Chain) }
 $sum+=('SUM txn={0} msg={1}' -f $tt,$tm)
-Set-Content 'gen_summary.txt' -Value $sum -Encoding UTF8
+Set-Content (Join-Path $ReportDir 'gen_summary.txt') -Value $sum -Encoding UTF8
 Write-Output 'DONE'

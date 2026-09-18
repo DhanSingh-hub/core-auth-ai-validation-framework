@@ -29,7 +29,7 @@ public final class Segment101ConsolidatedReport {
     private static final Path DEFAULT_TEST_INPUT =
         Paths.get("test-input", "ai-solution", "test-data", "segment-101");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("SEGMENT-101-CONSOLIDATED-REPORT.txt");
+        Paths.get("test-output", "consolidated-reports", "SEGMENT-101-CONSOLIDATED-REPORT.txt");
 
     public record ReportInputs(
         Path ruleCatalog,

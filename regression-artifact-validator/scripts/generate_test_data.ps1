@@ -1,6 +1,6 @@
 param(
-    [string]$InputFile = (Join-Path $PSScriptRoot 'test-output\test-json\ATL105-Section1-Section2-Test-Data.json'),
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot 'test-output\test-json\section1-section2')
+    [string]$InputFile = (Join-Path (Split-Path $PSScriptRoot -Parent) 'test-output\test-json\ATL105-Section1-Section2-Test-Data.json'),
+    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) 'test-output\test-json\section1-section2')
 )
 
 $ErrorActionPreference = 'Stop'

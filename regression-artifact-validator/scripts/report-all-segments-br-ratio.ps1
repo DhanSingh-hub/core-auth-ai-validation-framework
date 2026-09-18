@@ -1,5 +1,5 @@
 param(
-    [string]$ReportsDirectory = (Join-Path $PSScriptRoot 'test-output\ai-artifacts\coverage-reports'),
+    [string]$ReportsDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) 'test-output\ai-artifacts\coverage-reports'),
     [string]$OutputDirectory = (Join-Path $ReportsDirectory 'all-segments')
 )
 
@@ -7,6 +7,16 @@ $files = @(Get-ChildItem $ReportsDirectory -File -Filter 'POC-AI-Segment-*-BR-Co
 if ($files.Count -eq 0) { throw "No segment crosswalk files found in '$ReportsDirectory'." }
 $records = @()
 $segmentSummaries = @()
+function Get-MatchReason($sourceRecord) {
+    if (-not [string]::IsNullOrWhiteSpace([string]$sourceRecord.matchReason)) { return [string]$sourceRecord.matchReason }
+    switch -Regex ([string]$sourceRecord.testMatchStatus) {
+        '^MATCHED_ELEMENT_AND_SEMANTICS$' { return 'Matched: shared source element and semantic evidence met the confirmed heuristic threshold; validate business meaning before acceptance.' }
+        '^MATCHED_SEMANTICS_ONLY$' { return 'Matched: semantic token evidence met the semantics-only threshold without a shared element; validate source and scope before acceptance.' }
+        '^POTENTIAL_MATCH_REVIEW_REQUIRED$' { return 'Potential/partial match: evidence was plausible but did not establish confirmed equivalence; manual review required.' }
+        '^UNMATCHED_IN_TEST_SOLUTION$' { return 'Unmatched: no confirmed Test Solution mapping; validate whether the AI requirement is missing, out of scope, or differently structured.' }
+        default { return 'Review required: match disposition is not available from the source crosswalk.' }
+    }
+}
 
 foreach ($file in $files) {
     $document = Get-Content $file.FullName -Raw | ConvertFrom-Json
@@ -35,11 +45,11 @@ foreach ($file in $files) {
             scenarioStatus = $sourceRecord.scenarioStatus
             scenarioIds = $sourceRecord.scenarioIds
             testMatchStatus = $sourceRecord.testMatchStatus
-            matchReason = $sourceRecord.matchReason
+            matchReason = Get-MatchReason $sourceRecord
+            sharedElements = if ($null -ne $sourceRecord.sharedElements) { $sourceRecord.sharedElements } else { '' }
             testSolutionAction = $sourceRecord.testSolutionAction
             testRequirementId = $sourceRecord.testRequirementId
             testRequirementTitle = $sourceRecord.testRequirementTitle
-            sharedElements = if ($null -ne $sourceRecord.sharedElements) { $sourceRecord.sharedElements } else { '' }
             semanticScore = $sourceRecord.semanticScore
             aiStatement = $sourceRecord.aiStatement
             transactionType = if ($null -ne $sourceRecord.transactionType) { $sourceRecord.transactionType } else { 'Not available' }
@@ -128,6 +138,11 @@ $html = $html.Replace('</style>', $parallelStyles + '</style>')
 $html = $html.Replace('<section class="panel coverage-glance"><div><h2>Coverage At A Glance</h2>', '<section class="panel coverage-glance"><h2>Coverage At A Glance &amp; Traceability Flow</h2><div class="parallel-panels"><div class="flow-column"><h3>Coverage At A Glance</h3>')
 $html = $html.Replace('</div><div><h2>Traceability Flow</h2>', '</div><div class="flow-column"><h3>Traceability Flow</h3>')
 $html = $html.Replace('</div></section><details class="panel charts"', '</div></div></section><details class="panel charts"')
+$verticalStyles = '.panel.charts{display:block}.baseline-summary-panels{display:flex;flex-direction:column;gap:24px}.baseline-column,.summary-column{width:100%;min-width:0}.summary-column{order:1}.baseline-column{order:2}.baseline-column>div,.summary-column{border:1px solid var(--line);background:#fff;padding:16px}.summary-column .table-wrap{max-height:520px;overflow-x:hidden}.summary-column table{min-width:0;width:100%;table-layout:fixed}.summary-column th,.summary-column td{font-size:12px;padding:8px;white-space:normal;overflow-wrap:anywhere}.summary-column th:nth-child(1),.summary-column td:nth-child(1){width:10%}.summary-column th:nth-child(2),.summary-column td:nth-child(2){width:15%}.summary-column th:nth-child(3),.summary-column td:nth-child(3){width:15%}.summary-column th:nth-child(4),.summary-column td:nth-child(4){width:20%}.summary-column th:nth-child(5),.summary-column td:nth-child(5){width:20%}.summary-column th:nth-child(6),.summary-column td:nth-child(6){width:20%}.baseline-column h2{margin-top:0}.baseline-column .reviewbox{margin-top:14px}.filter-panel,.matrix-controls{border:1px solid var(--line);background:#fbfaf7;padding:16px;margin:0 0 18px}.filter-panel h3,.matrix-controls h3{margin:0 0 12px;font:20px Impact,Haettenschweiler,sans-serif;color:var(--ink)}'
+$html = $html.Replace('</style>', $verticalStyles + '</style>')
+$html = $html.Replace('<details class="panel charts" open><summary>Segment Baseline Coverage &amp; Segment Summary</summary><div><h2>Segment Baseline Coverage</h2>', '<details class="panel charts" open><summary>Segment Baseline Coverage &amp; Segment Summary</summary><div class="baseline-summary-panels"><div class="baseline-column"><div><h2>Segment Baseline Coverage</h2>')
+$html = $html.Replace('</div><div class="segment-summary"><h2>Segment Summary</h2>', '</div></div><div class="summary-column"><h2>Segment Summary</h2>')
+$html = $html.Replace('</div></details><section class="panel"><h2>Analyst BR Matching Matrix</h2>', '</div></div></details><section class="panel"><h2>Analyst BR Matching Matrix</h2>')
 $allLinkedScenarios = $allAi - $allMissing
 $allBaselineGap = $allTest - $allCovered
 $coverageGlance = @"
@@ -137,23 +152,27 @@ $coverageReplacement = '</section>' + $coverageGlance + '<details class="panel c
 $html = $html.Replace('</section><details class="panel charts"', $coverageReplacement)
 $html = $html.Replace('<details class="panel charts"', $coverageGlance + '<details class="panel charts"')
 $filterMarkup = @"
-<div class="filters no-print"><div class="filtergroup"><label>View by</label><select id="viewBy"><option value="segment">Segment</option><option value="transaction">Transaction Type</option><option value="flow">Transaction Flow Steps</option><option value="template">Message Template</option><option value="card">Card Type</option><option value="response">Response Type</option></select></div><div class="filtergroup"><label id="scopeLabel">Segment</label><select id="segmentFilter"><option value="">All Segments</option>$segmentOptions</select></div><div class="filtergroup"><label>Matrix view</label><select id="matrixFilter"><option value="all">All BRs</option><option value="review">REVIEW_REQUIRED</option><option value="gaps">Unmatched and potential</option></select></div><div class="filtergroup"><label>Search</label><input id="search" placeholder="BR, source rule, reason, requirement"></div><div class="filtergroup"><label>Export</label><button id="csvButton" type="button">Download CSV</button><button id="printButton" type="button">Print report</button></div></div>
+<div class="filter-panel no-print"><h3>Filters</h3><div class="filters"><div class="filtergroup"><label>Filter-1</label><select id="filter1Dimension"><option value="">No filter</option><option value="segment">Segment</option><option value="transaction">Transaction Type</option><option value="flow">Transaction Flow Steps</option><option value="template">Message Template</option><option value="card">Card Type</option><option value="response">Response Type</option></select><select id="filter1Value"><option value="">All values</option>$segmentOptions</select></div><div class="filtergroup"><label>Filter-2</label><select id="filter2Dimension"><option value="">No filter</option><option value="segment">Segment</option><option value="transaction">Transaction Type</option><option value="flow">Transaction Flow Steps</option><option value="template">Message Template</option><option value="card">Card Type</option><option value="response">Response Type</option></select><select id="filter2Value"><option value="">All values</option>$segmentOptions</select></div><div class="filtergroup"><label>Filter-3</label><select id="filter3Dimension"><option value="">No filter</option><option value="segment">Segment</option><option value="transaction">Transaction Type</option><option value="flow">Transaction Flow Steps</option><option value="template">Message Template</option><option value="card">Card Type</option><option value="response">Response Type</option></select><select id="filter3Value"><option value="">All values</option>$segmentOptions</select></div><div class="filtergroup"><label>Matrix view</label><select id="matrixFilter"><option value="all">All BRs</option><option value="review">REVIEW_REQUIRED</option><option value="gaps">Unmatched and potential</option></select></div><div class="filtergroup"><label>Search</label><input id="search" placeholder="BR, source rule, reason, requirement"></div><div class="filtergroup"><label>Export</label><button id="csvButton" type="button">Download CSV</button><button id="printButton" type="button">Print report</button></div></div></div>
 "@
 $filterReplacement = $filterMarkup + '<div class="table-wrap"><table id="matrix">'
 $html = [regex]::Replace($html, '(?s)<div class="filters no-print">.*?</div><div class="table-wrap"><table id="matrix">', $filterReplacement)
+$matrixControls = '<div class="matrix-controls no-print"><h3>Matrix Controls</h3><div class="filters"><div class="filtergroup"><label>Matrix view</label><select id="matrixFilter"><option value="all">All BRs</option><option value="review">REVIEW_REQUIRED</option><option value="gaps">Unmatched and potential</option></select></div><div class="filtergroup"><label>Search</label><input id="search" placeholder="Search BR ID, rule, title, or requirement"></div><div class="filtergroup"><label>Match status</label><select id="matchStatusFilter"><option value="">All match statuses</option><option value="matched_element_and_semantics">MATCHED_ELEMENT_AND_SEMANTICS</option><option value="matched_semantics_only">MATCHED_SEMANTICS_ONLY</option><option value="potential_match_review_required">POTENTIAL_MATCH_REVIEW_REQUIRED</option><option value="unmatched_in_test_solution">UNMATCHED_IN_TEST_SOLUTION</option></select></div><div class="filtergroup"><label>Scenario status</label><select id="scenarioStatusFilter"><option value="">All scenario statuses</option><option value="scenario_review_required">SCENARIO_REVIEW_REQUIRED</option><option value="missing_scenario">MISSING_SCENARIO</option></select></div><div class="filtergroup"><label>Export</label><button id="csvButton" type="button">Download CSV</button><button id="printButton" type="button">Print report</button></div></div></div><div class="table-wrap"><table id="matrix">'
+$html = [regex]::Replace($html, '(?s)<div class="filtergroup"><label>Matrix view</label><select id="matrixFilter">.*?</select></div><div class="filtergroup"><label>Search</label><input id="search"[^>]*></div>', '')
+$html = $html.Replace('<div class="table-wrap"><table id="matrix">', $matrixControls)
 $scopeScript = @"
 <script>
 const rows=[...document.querySelectorAll('#matrix tbody tr')];
 const search=document.getElementById('search');
-const viewBy=document.getElementById('viewBy');
-const scopeFilter=document.getElementById('segmentFilter');
+const filterDimensions=[1,2,3].map(index=>document.getElementById('filter'+index+'Dimension'));
+const filterValues=[1,2,3].map(index=>document.getElementById('filter'+index+'Value'));
 const segmentOptions="<option value=''>All Segments</option>$segmentOptions";
 const elementOptions="<option value=''>All Elements</option>$elementOptions";
 const options={segment:segmentOptions,element:elementOptions,transaction:"<option value=''>All Transaction Types</option>$transactionOptions",flow:"<option value=''>All Transaction Flow Steps</option>$flowOptions",template:"<option value=''>All Message Templates</option>$templateOptions",card:"<option value=''>All Card Types</option>$cardOptions",response:"<option value=''>All Response Types</option>$responseOptions"};
 const labels={segment:'Segment',element:'Element',transaction:'Transaction Type',flow:'Transaction Flow Steps',template:'Message Template',card:'Card Type',response:'Response Type'};
-function populateScope(){scopeFilter.innerHTML=options[viewBy.value];scopeFilter.previousElementSibling.textContent=labels[viewBy.value];applyFilters();}
-function applyFilters(){const query=search.value.toLowerCase();const matrixMode=document.getElementById('matrixFilter').value;for(const row of rows){const text=row.innerText.toLowerCase();const gap=row.dataset.status.includes('potential')||row.dataset.status.includes('unmatched');const scopeValue=scopeFilter.value;const key=viewBy.value;const rowValue=key==='element'?row.dataset.element:key==='flow'?row.dataset.flow.split('|'):row.dataset[key];const scopeMatch=!scopeValue||((Array.isArray(rowValue)?rowValue:rowValue.split(',')).includes(scopeValue));const modeMatch=matrixMode==='all'||matrixMode==='review'||(matrixMode==='gaps'&&gap);row.hidden=!(scopeMatch&&modeMatch&&(!query||text.includes(query)));}}
-viewBy.addEventListener('change',populateScope);scopeFilter.addEventListener('change',applyFilters);search.addEventListener('input',applyFilters);document.getElementById('matrixFilter').addEventListener('change',applyFilters);populateScope();
+function rowValues(row,dimension){return dimension==='element'?row.dataset.element.split(','):dimension==='flow'?row.dataset.flow.split('|'):((row.dataset[dimension]||'').split(','));}
+function populateFilter(index){const dimension=filterDimensions[index].value;filterValues[index].innerHTML=dimension?(options[dimension]||'<option value="">All values</option>'):'<option value="">All values</option>';applyFilters();}
+function applyFilters(){const query=search.value.toLowerCase();const matrixMode=document.getElementById('matrixFilter').value;const matchStatus=document.getElementById('matchStatusFilter').value;const scenarioStatus=document.getElementById('scenarioStatusFilter').value;for(const row of rows){const text=row.innerText.toLowerCase();const gap=row.dataset.status.includes('potential')||row.dataset.status.includes('unmatched');const filtersMatch=filterDimensions.every((dimension,index)=>{const selectedDimension=dimension.value;const selectedValue=filterValues[index].value;return !selectedDimension||!selectedValue||rowValues(row,selectedDimension).includes(selectedValue)});const modeMatch=matrixMode==='all'||matrixMode==='review'||(matrixMode==='gaps'&&gap);const statusMatch=!matchStatus||row.dataset.status===matchStatus;const scenarioMatch=!scenarioStatus||row.dataset.scenario===scenarioStatus;row.hidden=!(filtersMatch&&modeMatch&&statusMatch&&scenarioMatch&&(!query||text.includes(query)));}}
+filterDimensions.forEach((dimension,index)=>dimension.addEventListener('change',()=>populateFilter(index)));filterValues.forEach(value=>value.addEventListener('change',applyFilters));search.addEventListener('input',applyFilters);document.getElementById('matrixFilter').addEventListener('change',applyFilters);document.getElementById('matchStatusFilter').addEventListener('change',applyFilters);document.getElementById('scenarioStatusFilter').addEventListener('change',applyFilters);filterDimensions.forEach((_,index)=>populateFilter(index));
 document.querySelectorAll('select,input').forEach(control=>control.addEventListener('input',applyFilters));
 document.getElementById('printButton').addEventListener('click',()=>window.print());
 document.getElementById('csvButton').addEventListener('click',()=>{const lines=[['Segment','AI BR','Source rule','Scope','Scenario status','Match status','Match reason','Test Solution BR','AI requirement']];for(const row of rows)if(!row.hidden)lines.push([...row.children].map(cell=>'"'+cell.innerText.replaceAll('"','""')+'"'));const blob=new Blob([lines.map(line=>line.join(',')).join('\n')],{type:'text/csv'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='all-segments-br-ratio.csv';link.click();URL.revokeObjectURL(link.href);});
@@ -170,6 +189,18 @@ $html = $html.Replace('</div><div><h2>Traceability Flow</h2>', '</div><div class
 $html = $html.Replace('</div></section><details class="panel charts"', '</div></div></section><details class="panel charts"')
 $html = $html.Replace('<section class="panel coverage-glance"><h2>Coverage At A Glance &amp; Traceability Flow</h2>', '<details class="panel coverage-glance" open><summary>Coverage At A Glance &amp; Traceability Flow</summary><section><h2>Coverage At A Glance &amp; Traceability Flow</h2>')
 $html = $html.Replace('</section><details class="panel charts"', '</section></details><details class="panel charts"')
+$html = $html.Replace('<details class="panel charts" open><summary>Segment Baseline Coverage &amp; Segment Summary</summary><div><h2>Segment Baseline Coverage</h2>', '<details class="panel charts" open><summary>Segment Baseline Coverage &amp; Segment Summary</summary><div class="baseline-summary-panels"><div class="baseline-column"><div><h2>Segment Baseline Coverage</h2>')
+$html = $html.Replace('</div><div class="segment-summary"><h2>Segment Summary</h2>', '</div></div><div class="summary-column"><h2>Segment Summary</h2>')
+$html = $html.Replace('</div></details><section class="panel"><h2>Analyst BR Matching Matrix</h2>', '</div></div></details><section class="panel"><h2>Analyst BR Matching Matrix</h2>')
+$html = $html.Replace('<summary>Segment Baseline Coverage &amp; Segment Summary</summary>', '<summary>Segment Summary</summary>')
+$html = [regex]::Replace($html, '(?s)<div class="baseline-column"><div><h2>Segment Baseline Coverage</h2>.*?</div><div><h2>Review Workload</h2>', '<div class="baseline-column"><div><h2>Review Workload</h2>')
+$html = $html.Replace('<h2>Review Workload</h2>', '<h2>Review Workload</h2><p class="chart-note"><strong>Meaning:</strong> unresolved BR mapping items requiring validation. These are not approved defects and do not count as accepted coverage until reviewed.</p>')
+$statusStyles = '.status-confirmed{color:#2e8b57;font-weight:700}.status-review{color:#bd7a00;font-weight:700}.status-missing{color:#b74242;font-weight:700}.status-linked{color:#087e8b;font-weight:700}.status-swatch{display:inline-block;width:10px;height:10px;margin:0 4px 0 10px}.status-swatch:first-child{margin-left:0}.swatch-confirmed{background:#2e8b57}.swatch-review{background:#bd7a00}.swatch-missing{background:#b74242}.swatch-linked{background:#087e8b}'
+$html = $html.Replace('</style>', $statusStyles + '</style>')
+$html = $html.Replace("$allMatches confirmed / $allPotential review", "<span class='status-confirmed'>$allMatches confirmed</span> / <span class='status-review'>$allPotential review</span>")
+$html = $html.Replace("$allCovered covered / $allBaselineGap gap", "<span class='status-confirmed'>$allCovered covered</span> / <span class='status-missing'>$allBaselineGap gap</span>")
+$html = $html.Replace("$allLinkedScenarios review-required / $allMissing missing", "<span class='status-linked'>$allLinkedScenarios review-required</span> / <span class='status-missing'>$allMissing missing</span>")
+$html = $html.Replace('<p class="chart-note"><strong>Legend:</strong> confirmed | review required | missing/gap | linked but uncertified</p>', '<p class="chart-note"><strong>Legend:</strong> <span class="status-swatch swatch-confirmed"></span><span class="status-confirmed">confirmed</span> <span class="status-swatch swatch-review"></span><span class="status-review">review required</span> <span class="status-swatch swatch-missing"></span><span class="status-missing">missing/gap</span> <span class="status-swatch swatch-linked"></span><span class="status-linked">linked but uncertified</span></p>')
 $html | Set-Content $htmlPath -Encoding utf8
 
 $markdownPath = Join-Path $OutputDirectory 'all-segments-br-ratio.md'
