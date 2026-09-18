@@ -1,0 +1,24 @@
+{
+  "segment": "104",
+  "title": "Purchase Card Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Included for purchase-card (corporate/procurement card) transactions requiring Level II/III data; appears in Data Section 3.",
+  "source": "docs/specs/extracted_text.txt 12.5 Purchase Card Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and length ceiling only. Not field-by-field exhaustive.",
+  "businessRequirements": [
+    {"id":"BR-SEG104-TYPE","title":"Segment Type field in the Purchase Card Data Segment has fixed value 104.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.5","segment":"104","element":"85","rule":"segment-104-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG104-LENGTH","title":"Segment Length identifies the Purchase Card Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.5","segment":"104","element":"84","rule":"segment-104-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG104-MAX-LENGTH","title":"The Purchase Card Data Segment has a maximum length of 86 alphanumeric characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.5","segment":"104","rule":"segment-104-max-length"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG104-TYPE","covers":["BR-SEG104-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG104-LENGTH","covers":["BR-SEG104-LENGTH","BR-SEG104-MAX-LENGTH"],"status":"PARTIALLY_COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG104-TYPE","scenarioId":"TS-SEG104-TYPE","positive":"Segment Type = 104","negative":["Segment Type not equal to 104"],"status":"COVERED"},
+    {"id":"TC-SEG104-LENGTH","scenarioId":"TS-SEG104-LENGTH","positive":"Length matches serialized content and stays within 86 characters","negative":["Length mismatch","exceeds 86 characters"],"status":"PARTIALLY_COVERED"}
+  ],
+  "testDataStatus": "Segment Type/Length structural checks are synthesizable; no dedicated purchase-card AI artifacts are currently available.",
+  "remaining": ["Author full field-by-field Purchase Card Data Segment coverage (Purchase Code, Tax/Freight/Duty Amounts, Ship-to fields) beyond this core-structure baseline."]
+}

@@ -1,0 +1,20 @@
+{
+  "appendix": "W",
+  "title": "Download Data Layout",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Data Segment No. DL7 (Supplemental Terminal Data Segment) used for terminal download/configuration messages, not the standard Segment 100 financial request/response flow.",
+  "source": "docs/specs/extracted_text.txt Appendix W-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPW-LANGUAGE-CODE","title":"Site Language Table ID 001 shall carry a fixed three-digit Table Length of 003 and an ISO 639-2 language code associated with the terminal.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix W","segment":"DL7","rule":"download-site-language"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPW-POSTAL-CODE","title":"Postal Code Table ID 002 shall carry a fixed three-digit Table Length of 013 and the 13-character international postal code associated with the transmitting device.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix W","segment":"DL7","rule":"download-postal-code"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPW-TABLES","covers":["BR-SEG100-APPW-LANGUAGE-CODE","BR-SEG100-APPW-POSTAL-CODE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPW-TABLES","scenarioId":"TS-SEG100-APPW-TABLES","positive":"Valid Table ID, length, and data for site language and postal code","negative":["Wrong table length","invalid ISO 639-2 code","postal code not 13 characters"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated Download Data Segment (DL7) AI artifact or approved terminal-configuration fixture is currently available.",
+  "remaining": ["Obtain full DL7 Supplemental Terminal Data Segment layout beyond Table IDs 001/002.","Confirm whether download messages fall inside or outside standard Segment 100 financial validation scope."]
+}

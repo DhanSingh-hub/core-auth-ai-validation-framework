@@ -5,6 +5,8 @@ public final class PackageManifest {
     private String packageId;
     private String specification;
     private String specificationVersion;
+    private String artifactContractVersion;
+    private boolean strictExecutionContract;
 
     public String getPackageId() { return packageId; }
     public void setPackageId(String packageId) { this.packageId = packageId; }
@@ -12,4 +14,8 @@ public final class PackageManifest {
     public void setSpecification(String specification) { this.specification = specification; }
     public String getSpecificationVersion() { return specificationVersion; }
     public void setSpecificationVersion(String specificationVersion) { this.specificationVersion = specificationVersion; }
+    public String getArtifactContractVersion() { return artifactContractVersion; }
+    public void setArtifactContractVersion(String artifactContractVersion) { this.artifactContractVersion = artifactContractVersion; }
+    public boolean isStrictExecutionContract() { return strictExecutionContract; }
+    public void setStrictExecutionContract(boolean strictExecutionContract) { this.strictExecutionContract = strictExecutionContract; }
 }

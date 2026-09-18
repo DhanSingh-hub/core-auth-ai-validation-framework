@@ -1,0 +1,84 @@
+{
+  "catalogId": "ATL105-SEG100-KNOWLEDGE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "title": "Canonical Segment 100 Knowledge Catalog",
+  "purpose": "Single entry point for source-derived Segment 100 knowledge, applicability, validation boundaries, and training evidence.",
+  "systemBoundary": {
+    "aiSolution": "Generates BR, TS, TC, request/response JSON, and traceability artifacts.",
+    "testSolution": "Independently validates AI artifacts against this catalog and ATL105 source evidence.",
+    "fiservExecution": "Consumes AI-generated converter-ready JSON after independent validation.",
+    "sourceOfTruth": "ATL105 2026-3 specification and canonical source anchors"
+  },
+  "knowledgeModules": {
+    "fieldInventory": "knowledge/segment-100-field-knowledge-inventory.json",
+    "contextModel": "knowledge/segment-100-context-model.json",
+    "requestResponseLifecycle": "knowledge/segment-100-request-response-lifecycle-knowledge.json",
+    "brBaselineIndex": "knowledge/segment-100-br-baseline-index.json",
+    "annexureBrBaseline": "knowledge/segment-100-annexure-br-baseline-package.json",
+    "appendixInventory": "knowledge/segment-100-canonical-appendix-inventory.json",
+    "evidenceQuality": "knowledge/segment-100-evidence-quality-model.json",
+    "pendingContexts": "knowledge/segment-100-pending-context-boundaries.json",
+    "paymentNetworks": "section-5-payment-network-segment-100-matrix.json",
+    "responseFamilies": "atl105-response-code-family-matrix.json"
+  },
+  "coverageSummary": {
+    "fieldCount": 17,
+    "appendixCount": 22,
+    "financialTransactionTypeCount": 13,
+    "financialCardTypeCount": 36,
+    "paymentNetworkLeafTypeCount": 16,
+    "standardFinancialResponseCodeCount": 7,
+    "allElement83ResponseCodeCount": 31,
+    "canonicalTestScenarioCount": 69,
+    "canonicalTestCaseCount": 77,
+    "authoritativeRuleCount": 58,
+    "aiArtifactCoverage": "PENDING",
+    "externalConverter": "DEFERRED",
+    "smeReview": "OUT_OF_SCOPE_FOR_AUTOMATION"
+  },
+  "knowledgeCategories": [
+    {"id":"CORE_STRUCTURE","source":"segment-100-field-knowledge-inventory.json","scope":"17 ordered fields, lengths, separators, and serialization"},
+    {"id":"TRANSACTION_CARD_CONTEXT","source":"segment-100-transaction-type-coverage.json","scope":"Appendix E/G Prompt Code and card/transaction combinations"},
+    {"id":"PAYMENT_NETWORK","source":"section-5-payment-network-segment-100-matrix.json","scope":"Section 5 supported payment-network families"},
+    {"id":"COMPANION_SEGMENTS","source":"segment-100-canonical-appendix-inventory.json","scope":"EMV, NFC, fleet, fuel, EBT, purchase-card, variable information, and Moneris triggers"},
+    {"id":"REQUEST","source":"segment-100-request-response-lifecycle-knowledge.json","scope":"Device-originated Segment 100 financial request"},
+    {"id":"RESPONSE","source":"segment-100-request-response-lifecycle-knowledge.json","scope":"Financial response, response families, approval, decline, and additional information"},
+    {"id":"LIFECYCLE","source":"segment-100-multistep-flow-catalog.json","scope":"Original/follow-up identity, completion, cancellation, reversal, void, timeout, TOR, and retries"},
+    {"id":"EBT_EWIC","source":"segment-100-ewic-gap-package.json","scope":"Segment 103, eWIC operations, WIC/EBT program data"},
+    {"id":"ANNEXURE","source":"segment-100-canonical-appendix-inventory.json","scope":"Appendix-specific conditional requirements"},
+    {"id":"SEPARATE_DOMAINS","source":"segment-100-specialized-domain-registry.json","scope":"Premium Gift Card, token, TransArmor, CA keys, wallet, and Moneris boundaries"}
+  ],
+  "artifactContract": {
+    "order": ["businessRequirements", "testScenarios", "testCases", "testData"],
+    "sourceAnchorRequired": true,
+    "aiFilesPreservedUnchanged": true,
+    "testDataMustBeConverterReady": true,
+    "requestResponseLifecycleSeparated": true
+  },
+  "statusPolicy": {
+    "COVERED": "Source, implementation, and artifact evidence agree.",
+    "READY_FOR_AI_INTAKE": "Independent oracle and tests are ready; AI artifact evidence is not yet supplied.",
+    "PARTIALLY_COVERED": "Some source or implementation evidence exists, but coverage is incomplete.",
+    "REVIEW_REQUIRED": "Specialized, conditional, external, or ambiguous evidence requires review.",
+    "BLOCKED": "Required source, implementation, or artifact evidence is missing."
+  },
+  "validationEntryPoints": {
+    "canonicalTraceability": "CanonicalTraceabilityValidator",
+    "fieldKnowledge": "Segment100FieldKnowledgeInventoryTest",
+    "transactionTypes": "Segment100TransactionTypeOracle",
+    "cardTypes": "Segment100CardTypeCoverageReport",
+    "paymentNetworks": "Segment100PaymentNetworkOracle",
+    "singleStep": "Segment100SingleStepCoverageValidator",
+    "multiStep": "Segment100MultiStepCoverageValidator",
+    "ewic": "Segment100EwicArtifactIntakeValidator",
+    "responses": "Segment100ResponseCodeValidator",
+    "specializedDomains": "Segment100SpecializedDomainIntakeValidator",
+    "contextBoundaries": "Segment100ContextBoundaryValidator",
+    "evidenceQuality": "EvidenceQualityModel",
+    "appendixConsistency": "AppendixCoverageConsistency"
+  },
+  "trainingRule": "Do not infer behavior from field names alone; resolve transaction, card, network, lifecycle, companion, response, appendix, and specialized-domain context first.",
+  "finalCertificationGate": "Requires actual AI artifacts, applicable review decisions, and external ATL105 converter execution."
+}

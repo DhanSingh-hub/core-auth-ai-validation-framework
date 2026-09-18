@@ -1,0 +1,29 @@
+{
+  "appendix": "C",
+  "title": "Valid Authorizer Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Element 7 in financial responses associated with Segment 100 requests; it is not a Segment 100 request field.",
+  "source": "docs/specs/extracted_text.txt Appendix C-1 through C-3",
+  "authorizerCodeCount": 98,
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPC-AUTHORIZER-CODE","title":"A financial response associated with a Segment 100 transaction shall carry a valid two-digit Authorizer Code from ATL105 Appendix C.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"7","rule":"authorizer-code-appendix-c"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPC-AUTHORIZER-CONTEXT","title":"The response Authorizer Code shall be consistent with the transaction/card/authorizer context when that context is known.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"FINANCIAL-RESPONSE","element":"7","rule":"authorizer-context"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPC-PRODUCTION-STATUS","title":"Authorizer codes documented by ATL105 but not production-enabled shall be held for configuration or deployment review rather than silently approved.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix C","segment":"FINANCIAL-RESPONSE","element":"7","rule":"authorizer-production-status"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPC-TYPE-TAXONOMY","title":"Each Appendix C Authorizer Code shall map to exactly one documented Authorizer Type (e.g., Credit, Debit, Fleet, EBT, Check, Stored Value/Gift, Proprietary, Loyalty, Other), and response interpretation shall be consistent with that type.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix C","segment":"FINANCIAL-RESPONSE","element":"7","rule":"authorizer-type-taxonomy"},"status":"PARTIALLY_COVERED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPC-AUTHORIZER-CODE","covers":["BR-SEG100-APPC-AUTHORIZER-CODE"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPC-AUTHORIZER-CONTEXT","covers":["BR-SEG100-APPC-AUTHORIZER-CONTEXT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPC-PRODUCTION-STATUS","covers":["BR-SEG100-APPC-PRODUCTION-STATUS"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPC-TYPE-TAXONOMY","covers":["BR-SEG100-APPC-TYPE-TAXONOMY"],"status":"PARTIALLY_COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPC-AUTHORIZER-CODE","scenarioId":"TS-SEG100-APPC-AUTHORIZER-CODE","positive":"Valid Appendix C authorizer code such as 02","negative":["One digit","three digits","non-numeric code","code outside Appendix C"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPC-AUTHORIZER-CONTEXT","scenarioId":"TS-SEG100-APPC-AUTHORIZER-CONTEXT","positive":"Authorizer matches known transaction/card context","negative":["Authorizer family conflicts with declared card context"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPC-PRODUCTION-STATUS","scenarioId":"TS-SEG100-APPC-PRODUCTION-STATUS","positive":"Configured authorizer is enabled","negative":["Documented but unavailable authorizer is auto-approved"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPC-TYPE-TAXONOMY","scenarioId":"TS-SEG100-APPC-TYPE-TAXONOMY","positive":"Authorizer code maps to its documented Authorizer Type (e.g., 02=Visa Credit, 06=PULSE Debit, 33=COMDATA Fleet)","negative":["Authorizer code interpreted under the wrong type category"],"status":"PARTIALLY_COVERED"}
+  ],
+  "responseCodeRelationship": "Element 7 Authorizer Code is distinct from Element 8 Authorizer Response Code and Element 83 Response Code.",
+  "remaining": ["AI-generated response artifacts and deployment configuration are required for final validation."]
+}

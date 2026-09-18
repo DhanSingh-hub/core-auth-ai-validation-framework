@@ -1,0 +1,27 @@
+{
+  "segment": "103",
+  "title": "EBT Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Included for EBT/eWIC transactions; appears in Data Section 3.",
+  "source": "docs/specs/extracted_text.txt 12.4 EBT Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and request/response separator behavior only. Not field-by-field exhaustive.",
+  "businessRequirements": [
+    {"id":"BR-SEG103-TYPE","title":"Segment Type field in the EBT Data Segment has fixed value 103.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-103-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG103-LENGTH-VARIANT","title":"Segment Length is 3 digits normally, or 4 digits specifically for EBT with eWIC data transactions.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-103-length-variant"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG103-SEPARATOR-BEHAVIOR","title":"A Financial Transaction request includes Field Separators between EBT Data Segment fields, but a Financial Transaction response omits Field Separators between the same fields.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"segment-103-request-response-separator-difference"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG103-MAX-LENGTH","title":"The EBT Data Segment has a maximum length of 3,334 alphanumeric characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"segment-103-max-length"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG103-TYPE","covers":["BR-SEG103-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG103-LENGTH","covers":["BR-SEG103-LENGTH-VARIANT","BR-SEG103-MAX-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG103-SEPARATOR","covers":["BR-SEG103-SEPARATOR-BEHAVIOR"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG103-TYPE","scenarioId":"TS-SEG103-TYPE","positive":"Segment Type = 103","negative":["Segment Type not equal to 103"],"status":"COVERED"},
+    {"id":"TC-SEG103-LENGTH","scenarioId":"TS-SEG103-LENGTH","positive":"Length is 4 digits for eWIC data, 3 digits otherwise","negative":["3-digit length used with eWIC data present"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG103-SEPARATOR","scenarioId":"TS-SEG103-SEPARATOR","positive":"Request has Field Separators; response omits them between the same fields","negative":["Response incorrectly includes Field Separators","request omits Field Separators"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment Type is covered by existing eWIC packages; the request-vs-response separator difference and eWIC 4-digit length variant need dedicated artifacts.",
+  "remaining": ["Author full field-by-field EBT Data Segment coverage (Voucher ID, WIC Discount Amount, WIC Product Data, EBT Program Data) beyond this core-structure baseline."]
+}

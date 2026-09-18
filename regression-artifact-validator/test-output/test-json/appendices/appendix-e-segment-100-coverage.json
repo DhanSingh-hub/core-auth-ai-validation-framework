@@ -1,0 +1,28 @@
+{
+  "appendix": "E",
+  "title": "Valid Card Type Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Segment 100 Prompt Code card context and to separate Table Load/Special Prompt Code families.",
+  "source": "docs/specs/extracted_text.txt Appendix E-1 through E-5",
+  "codeFamilies": {
+    "financialPromptCodes": {"count":36,"format":"Transaction Type + three-digit Card Type","segment100Applicable":true},
+    "tableLoadResponseCodes": {"scope":"Card acceptance and terminal feature configuration","segment100Applicable":false,"requiresSeparateFlow":true},
+    "specialPromptCodes": {"count":11,"format":"Three-character special Prompt Code","segment100Applicable":false,"requiresSeparateFlow":true}
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPE-FINANCIAL-CARD-TYPES","title":"Financial Segment 100 Prompt Codes shall use one of the 36 Appendix E card types valid for financial transaction Prompt Codes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"financial-card-type"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPE-PROMPT-COMPOSITION","title":"A financial Prompt Code shall combine a valid Appendix G transaction type with a valid Appendix E financial card type.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"prompt-code-card-type-composition"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPE-CONoco-INTERNAL","title":"Conoco internal code 89 shall not be used as the merchant Prompt Code; merchant transactions use card type 090.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"conoco-card-type-090"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPE-SPECIAL-SEPARATION","title":"Special three-character Prompt Codes shall be validated as special transaction artifacts and not accepted as standard financial Segment 100 Prompt Codes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"SPECIAL","element":"78","rule":"special-prompt-code-family"},"status":"COVERED"}
+  ],
+  "financialCardTypeOracle": {
+    "count": 36,
+    "implementedIn": "Segment100CardTypeOracle.java",
+    "positiveTests": "Segment100CardTypeOracleTest.java",
+    "negativeExamples": ["021", "099", "XXX", "02A", "20"]
+  },
+  "specialPromptCodes": ["900","901","902","903","904","905","981","990","995","996","997"],
+  "testDataStatus": "Financial card-type oracle and Prompt Code combination tests are implemented; AI artifact coverage remains pending.",
+  "remaining": ["Validate AI-generated artifacts across all 36 financial card types.","Keep Table Load and Special Prompt Code artifacts in separate message-family packages."]
+}

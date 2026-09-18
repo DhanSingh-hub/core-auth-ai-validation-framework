@@ -171,6 +171,15 @@ public class ConsolidatedValidationReport {
         sb.append("  Added TDs: 6 traceable evidence records\n");
         sb.append("  Gap package: test-output/test-json/segment-100-gap-closure-package.json\n");
         sb.append("  Canonical traceability: PASS\n");
+
+        sb.append("\nITEM 11: ATL105 RESPONSE-CODE FAMILY MATRIX\n");
+        sb.append("  Status: ✓ COMPLETE FOR INDEPENDENT CLASSIFICATION\n");
+        sb.append("  Unique Element 83 codes classified: 31\n");
+        sb.append("  Standard Segment 100 financial response codes: 7 (0, 1, 2, 3, 4, F, S)\n");
+        sb.append("  Other families: totals, electronic mail, proprietary load, TransArmor, EMV key load, communications test\n");
+        sb.append("  Context-dependent codes: L, M, X\n");
+        sb.append("  Matrix: test-output/test-json/atl105-response-code-family-matrix.json\n");
+        sb.append("  AI response artifact validation: PENDING\n");
         sb.append("\n");
 
         // Quality Metrics

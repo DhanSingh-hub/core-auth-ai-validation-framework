@@ -1,0 +1,33 @@
+{
+  "appendix": "Z",
+  "title": "Stored Credential",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Visa, MasterCard, Discover, and Amex Segment 100 transactions that store or reuse a stored credential for merchant-initiated (MIT) or cardholder-initiated (CIT) recurring, installment, or unscheduled transactions.",
+  "source": "docs/specs/extracted_text.txt Appendix Z-1 through Z-4",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPZ-INITIAL-STORAGE","title":"When storing a credential for the first time, Variable Information Table ID 32 Sub Table 08 shall carry Value 'I' (Initial), whether sent as a $0.00 Account Verification or an amount-due transaction.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-initial-value"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-MIT-RECURRING","title":"A merchant-initiated recurring stored-credential transaction shall be identified as 'R', use Table ID 32 Sub Table 08 = 'C' (Subsequent), POS Entry Mode '10', and include Table ID 49 Sub Table 02 = 'M' (Merchant Initiated).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-mit-recurring"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-MIT-INSTALLMENT","title":"A merchant-initiated installment stored-credential transaction shall be identified as 'I', use Table ID 32 Sub Table 08 = 'C', POS Entry Mode '10', include Table ID 49 Sub Table 02 = 'M', and must not send CVV2 data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-mit-installment"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-MIT-UNSCHEDULED","title":"A merchant-initiated unscheduled stored-credential transaction shall not be identified as Installment or Recurring, and shall include Table ID 49 Sub Table 02 = 'M', Table ID 32 Sub Table 08 = 'C', and POS Entry Mode '10'.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-mit-unscheduled"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-CIT-INITIAL-ENTRY-MODE","title":"A cardholder-initiated recurring or installment stored-credential transaction shall use Table ID 32 Sub Table 08 = 'I' and Table ID 49 Sub Table 02 = 'C' (Cardholder Initiated) with the original POS Entry Mode on the initial transaction.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-cit-initial"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-CVV2-PROHIBITION","title":"CVV2 data must not be sent for MIT recurring, MIT installment, or CIT recurring/installment stored-credential transactions.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"100","element":"33","rule":"stored-credential-cvv2-prohibition"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPZ-NETWORK-REFERENCE-CARRYOVER","title":"The Visa/Amex Transaction ID and Discover Network Reference Number returned on the initial stored-credential authorization response shall be stored and included on all subsequent merchant-initiated transactions using that credential.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix Z","segment":"111","element":"113","rule":"stored-credential-reference-carryover"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPZ-INITIAL","covers":["BR-SEG100-APPZ-INITIAL-STORAGE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPZ-MIT","covers":["BR-SEG100-APPZ-MIT-RECURRING","BR-SEG100-APPZ-MIT-INSTALLMENT","BR-SEG100-APPZ-MIT-UNSCHEDULED"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPZ-CIT","covers":["BR-SEG100-APPZ-CIT-INITIAL-ENTRY-MODE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPZ-CVV2","covers":["BR-SEG100-APPZ-CVV2-PROHIBITION"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPZ-REFERENCE","covers":["BR-SEG100-APPZ-NETWORK-REFERENCE-CARRYOVER"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPZ-INITIAL","scenarioId":"TS-SEG100-APPZ-INITIAL","positive":"Initial storage carries Sub Table 08 Value 'I'","negative":["Initial storage omits Sub Table 08","Initial storage uses 'C' instead of 'I'"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPZ-MIT","scenarioId":"TS-SEG100-APPZ-MIT","positive":"MIT recurring/installment/unscheduled fields match the applicable pattern","negative":["Missing MIT indicator 'M'","wrong POS Entry Mode","Recurring and Installment both indicated","CVV2 present for MIT installment"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPZ-CIT","scenarioId":"TS-SEG100-APPZ-CIT","positive":"CIT initial transaction carries 'C' indicator and original POS Entry Mode","negative":["Missing CIT indicator","POS Entry Mode not preserved on initial transaction"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPZ-CVV2","scenarioId":"TS-SEG100-APPZ-CVV2","positive":"CVV2 absent on MIT/CIT recurring and installment transactions","negative":["CVV2 present on a prohibited stored-credential transaction"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPZ-REFERENCE","scenarioId":"TS-SEG100-APPZ-REFERENCE","positive":"Subsequent transaction carries the stored Transaction ID/Network Reference Number","negative":["Subsequent transaction omits or alters the stored reference"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated stored-credential AI artifact or approved MIT/CIT lifecycle fixture is currently available.",
+  "remaining": ["Obtain AI-generated MIT/CIT stored-credential request/response artifact sequences.","Validate MasterCard/Visa/Discover network-specific Table ID 56 additional-data variants when available."]
+}

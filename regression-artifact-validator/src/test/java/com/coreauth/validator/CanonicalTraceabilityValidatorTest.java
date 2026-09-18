@@ -52,7 +52,8 @@ class CanonicalTraceabilityValidatorTest {
     private static final String VALID_PACKAGE = """
             {
               "manifest": {"packageId":"ATL105-SEG100-001","specification":"ATL105","specificationVersion":"2026"},
-              "businessRequirements": [{"id":"BR-AI-017","title":"ATL105 identifier","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
+              "businessRequirements": [{"id":"BR-AI-017","title":"ATL105 identifier","category":"core-structure","applicability":"all-financial-requests","priority":"high","executionStatus":"EXECUTION_READY","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
+              "requirementCrosswalk": [{"testRequirementId":"BR-BASELINE-017","aiRequirementIds":["BR-AI-017"],"matchStatus":"CONFIRMED","matchReason":"Shared ATL105 source anchor"}],
               "testScenarios": [{"id":"SCN-TV-009","requirementIds":["BR-AI-017"],"sourceAnchors":[{"specification":"atl105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
               "testCases": [{"id":"TC-OTHER-42","scenarioIds":["SCN-TV-009"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
               "testData": [{"id":"TD-LOCAL-7","testCaseIds":["TC-OTHER-42"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}],"payload":{"request":{"messageType":"ATL105"}}}]
@@ -68,6 +69,96 @@ class CanonicalTraceabilityValidatorTest {
         ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
 
         assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void acceptsConfirmedRequirementCrosswalkWithRealAiRequirement() throws Exception {
+        Path file = Files.createTempFile("atl105-crosswalk-valid-", ".json");
+        Files.writeString(file, VALID_PACKAGE);
+
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void requiresOwnerForDeferredSmeCrosswalkReview() throws Exception {
+        Path file = Files.createTempFile("atl105-crosswalk-review-", ".json");
+        Files.writeString(file, VALID_PACKAGE);
+
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
+        artifactPackage.getRequirementCrosswalk().get(0).setMatchStatus(com.coreauth.validator.canonical.RequirementMatchStatus.REVIEW_REQUIRED);
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("reviewOwner is required"));
+    }
+
+    @Test
+    void validatesStrictExecutionContractAcrossBrToTestData() throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getManifest().setArtifactContractVersion("2");
+        artifactPackage.getManifest().setStrictExecutionContract(true);
+        artifactPackage.getTestScenarios().get(0).setStatus(com.coreauth.validator.canonical.ArtifactStatus.EXECUTION_READY);
+        artifactPackage.getTestCases().get(0).setStatus("EXECUTION_READY");
+        artifactPackage.getTestCases().get(0).setTestDataFile("TD-LOCAL-7.json");
+        CanonicalTestData data = artifactPackage.getTestData().get(0);
+        data.setFileName("TD-LOCAL-7.json");
+        data.setReadiness(com.coreauth.validator.canonical.TestDataReadiness.EXECUTABLE);
+        data.setResponse(new ObjectMapper().readTree("{\"financialResponse\":{\"responseCode\":\"00\"}}"));
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsExecutableTestDataWithoutResponseEnvelope() throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getManifest().setStrictExecutionContract(true);
+        artifactPackage.getTestScenarios().get(0).setStatus(com.coreauth.validator.canonical.ArtifactStatus.EXECUTION_READY);
+        artifactPackage.getTestCases().get(0).setStatus("EXECUTION_READY");
+        artifactPackage.getTestCases().get(0).setTestDataFile("TD-LOCAL-7.json");
+        CanonicalTestData data = artifactPackage.getTestData().get(0);
+        data.setFileName("TD-LOCAL-7.json");
+        data.setReadiness(com.coreauth.validator.canonical.TestDataReadiness.EXECUTABLE);
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("response envelope"));
+    }
+
+    @Test
+    void requiresNotBeforeDateWhenStatusIsScheduled() throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getBusinessRequirements().get(0).setExecutionStatus("SCHEDULED");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("notBeforeDate is required when status is SCHEDULED"));
+    }
+
+    @Test
+    void rejectsExecutionReadyBeforeFutureNotBeforeDate() throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getBusinessRequirements().get(0).setExecutionStatus("EXECUTION_READY");
+        artifactPackage.getBusinessRequirements().get(0).setNotBeforeDate("9999-06-01");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("cannot be EXECUTION_READY before notBeforeDate"));
+    }
+
+    @Test
+    void acceptsScheduledStatusWithFutureNotBeforeDate() throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getBusinessRequirements().get(0).setExecutionStatus("SCHEDULED");
+        artifactPackage.getBusinessRequirements().get(0).setNotBeforeDate("9999-06-01");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+
+        assertThat(result.errors()).noneMatch(error -> error.reason().contains("notBeforeDate")
+                || error.reason().contains("EXECUTION_READY before"));
     }
 
     @Test

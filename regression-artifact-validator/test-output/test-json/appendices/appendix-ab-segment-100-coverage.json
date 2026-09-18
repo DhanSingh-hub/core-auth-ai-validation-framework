@@ -1,0 +1,26 @@
+{
+  "appendix": "AB",
+  "title": "Purchase Repayment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to installment payments submitted by a third-party installment provider or payment facilitator (Buy-Now-Pay-Later / post-purchase repayment) for Visa and MasterCard Segment 100 transactions.",
+  "source": "docs/specs/extracted_text.txt Appendix AB-1; cross-referenced at Appendix I-42 and Appendix K-25",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAB-VALUE-SCOPE","title":"The Consumer Bill Payment/Purchase Repayment indicator value 'CB' shall be used only for Visa transactions, and value 'IR' shall be used only for MasterCard transactions.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-brand-scope"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","title":"For MasterCard Purchase Repayment transactions, the merchant shall submit the Installment Payment Indicator value 'I' in Segment 111 Table ID 013 (Special Payments Indicator Information).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-mastercard-installment-indicator"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","title":"For MasterCard Purchase Repayment transactions, the merchant shall submit the Merchant Name in Segment 111 Table ID 047 (Soft Descriptor) in the format 'Installment Provider name*Merchant name'.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-mastercard-merchant-name"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAB-ADVICE-CODE","title":"A decline for a merchant not registered for the Purchase Repayment program shall return Merchant Advice Code 22 ('Merchant does not qualify for product code') when the merchant sent the Merchant Advice Code acceptance indicator (Table ID 049 Sub Table 07 = 'Y').","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-advice-code-22"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAB-SCOPE","covers":["BR-SEG100-APPAB-VALUE-SCOPE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAB-MASTERCARD","covers":["BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAB-ADVICE","covers":["BR-SEG100-APPAB-ADVICE-CODE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAB-SCOPE","scenarioId":"TS-SEG100-APPAB-SCOPE","positive":"'CB' sent only on Visa; 'IR' sent only on MasterCard","negative":["'CB' sent on MasterCard","'IR' sent on Visa"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAB-MASTERCARD","scenarioId":"TS-SEG100-APPAB-MASTERCARD","positive":"Table ID 013 = 'I' with correctly formatted Table ID 047 merchant name","negative":["Missing installment indicator","wrong merchant-name format missing asterisk separator"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAB-ADVICE","scenarioId":"TS-SEG100-APPAB-ADVICE","positive":"Unregistered merchant with acceptance indicator 'Y' receives Advice Code 22","negative":["Advice Code returned without acceptance indicator sent","wrong advice code for unregistered merchant"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated Purchase Repayment AI artifact or third-party installment-provider fixture is currently available.",
+  "remaining": ["Obtain AI-generated Purchase Repayment request/response artifacts for Visa 'CB' and MasterCard 'IR' scenarios.","Confirm program-registration configuration source referenced by the Merchant Advice Code 22 rule."]
+}

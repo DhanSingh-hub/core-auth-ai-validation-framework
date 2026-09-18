@@ -1,0 +1,40 @@
+{
+  "modelId": "ATL105-SEG100-REQUEST-RESPONSE-LIFECYCLE-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "domains": {
+    "request": {
+      "purpose": "What the device sends to request a financial or specialized operation",
+      "primaryFields": ["SegmentType","SegmentLength","InformationByte","TerminalID","PromptCode","AccountNumber","CardDiscretionaryBlockData","PINBlockData","PumpNumber","FuelPurchaseAmount","NonFuelAmount","TaxAmount","CashAmount","SequenceNumber","ApprovalNumber","LocalDateTime","PartialApprovalIndicator"],
+      "companionSegments": ["101","102","103","104","111","123","130","135"],
+      "validationSources": ["Sections 11.1.1 and 12.1","Appendices A,D,E,F,G,I,J,L,M,O,Q,R,U,V"]
+    },
+    "response": {
+      "purpose": "What the host/authorizer returns for the request",
+      "primaryFields": ["ResponseCode","DownloadIndicator","SequenceNumber","ApprovedAmount","ApprovalNumber","AccountNumber","DeclineCode","AuthorizerCode","AuthorizerResponseCode","AdditionalInformationFlag","AdditionalInformation"],
+      "responseFamilies": ["standard-financial","totals","electronic-mail","proprietary-load","transarmor","emv-key-load","communications-test"],
+      "validationSources": ["Chapter 11 response layouts","Element 83","Appendices C,H,K,T"]
+    },
+    "lifecycle": {
+      "purpose": "How related requests and responses form a transaction flow",
+      "identityFields": ["SequenceNumber","TerminalID","AccountNumber","Amount","ApprovalNumber","PromptCode"],
+      "flowTypes": ["Authorization-Completion","Authorization-Cancellation","Purchase-Reversal/Void","Refund-Void-of-Return","Timeout-TOR","TOR-Retry","Staged-Wallet"],
+      "validationSources": ["Section 10","Appendix G","Appendix H","Appendix U"]
+    }
+  },
+  "boundaryRules": [
+    {"id":"BOUNDARY-REQUEST-RESPONSE","rule":"Do not validate response-only Element 83/26/7 fields as Segment 100 request fields."},
+    {"id":"BOUNDARY-RESPONSE-REQUEST","rule":"Do not treat a response code as a valid request Prompt Code transaction type."},
+    {"id":"BOUNDARY-LIFECYCLE","rule":"Do not certify lifecycle correlation from one isolated message or metadata-only claims."},
+    {"id":"BOUNDARY-COMPANION","rule":"Do not infer companion-segment requirements from transaction type alone."},
+    {"id":"BOUNDARY-SPECIALIZED","rule":"Do not certify EMV, eWIC, token, wallet, Moneris, TransArmor, or Premium Gift Card behavior using generic Segment 100 fixtures."}
+  ],
+  "artifactMapping": {
+    "requestJson":"test-data/*.json Financial Request",
+    "responseJson":"responses/*.json Financial Response",
+    "lifecycleJson":"ordered message collection with original/follow-up roles",
+    "brTsTcTd":"Each domain-specific rule retains its source anchor across all artifact levels"
+  },
+  "status":"READY_FOR_AI_ARTIFACT_INTAKE"
+}

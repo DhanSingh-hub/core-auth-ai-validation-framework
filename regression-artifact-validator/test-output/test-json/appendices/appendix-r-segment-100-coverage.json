@@ -1,0 +1,35 @@
+{
+  "appendix": "R",
+  "title": "EMV Chip Data Example",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to EMV transactions where Segment 100 is accompanied by required Segment 130 EMV Request Data.",
+  "source": "docs/specs/extracted_text.txt Appendix R-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPR-EMV-COMPANION","title":"An EMV Segment 100 transaction shall include Segment 130 EMV Request Data in Data Section 3.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.8.1","segment":"130","rule":"emv-segment-required"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPR-CHIP-LENGTH","title":"EMV Chip Data shall begin with a valid three-digit length consistent with the following encoded chip data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix R","segment":"130","element":"emv-chip-data","rule":"emv-chip-data-length"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPR-TLV-FORMAT","title":"EMV Chip Data shall preserve valid BCD-packed/hex TLV tag, length, and value structure.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix R","segment":"130","element":"emv-chip-data","rule":"emv-tlv-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPR-CROSS-FIELD","title":"EMV chip values such as authorized amount, transaction type, currency, and terminal country shall agree with the Segment 100 transaction context.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix R","segment":"100,130","element":"2,41,58,78,99,17","rule":"emv-segment-100-cross-field-consistency"},"status":"REVIEW_REQUIRED"}
+  ],
+  "representativeTags": ["9F06 AID","9F02 authorized amount","9F26 application cryptogram","82 application interchange profile","9F36 ATC","9F37 unpredictable number","95 terminal verification results","9C transaction type","5F2A transaction currency","9F1A terminal country","9A transaction date","9F33 terminal capabilities"],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPR-EMV-COMPANION","covers":["BR-SEG100-APPR-EMV-COMPANION"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPR-CHIP-DATA","covers":["BR-SEG100-APPR-CHIP-LENGTH","BR-SEG100-APPR-TLV-FORMAT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPR-CROSS-FIELD","covers":["BR-SEG100-APPR-CROSS-FIELD"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPR-EMV-COMPANION","scenarioId":"TS-SEG100-APPR-EMV-COMPANION","positive":"Segment 100 + Segment 130 with Element 63 count 02","negative":["EMV context without Segment 130","wrong segment count"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPR-CHIP-DATA","scenarioId":"TS-SEG100-APPR-CHIP-DATA","positive":"Valid length and TLV structure","negative":["length mismatch","malformed BCD/hex","invalid TLV length"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPR-CROSS-FIELD","scenarioId":"TS-SEG100-APPR-CROSS-FIELD","positive":"EMV tags agree with Segment 100 context","negative":["amount mismatch","currency mismatch","transaction-type mismatch"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id":"TD-SEG100-APPR-EMV-COMPANION","coversBr":"BR-SEG100-APPR-EMV-COMPANION","readiness":"EXECUTABLE","fileName":null,"reason":"Segment 130 presence and Element 63 count are structural checks; synthetic placeholder chip data is sufficient."},
+    {"id":"TD-SEG100-APPR-CHIP-LENGTH","coversBr":"BR-SEG100-APPR-CHIP-LENGTH","readiness":"EXECUTABLE","fileName":null,"reason":"Length-prefix validation is structural; does not require a genuine EMV card/kernel."},
+    {"id":"TD-SEG100-APPR-TLV-FORMAT","coversBr":"BR-SEG100-APPR-TLV-FORMAT","readiness":"EXECUTABLE","fileName":null,"reason":"BCD/hex TLV tag-length-value framing is structural and synthesizable."},
+    {"id":"TD-SEG100-APPR-CROSS-FIELD","coversBr":"BR-SEG100-APPR-CROSS-FIELD","readiness":"EXECUTABLE","fileName":null,"reason":"Amount/currency/transaction-type cross-check compares plaintext TLV values against Segment 100 fields; no cryptographic verification involved."},
+    {"id":"TD-SEG100-APPR-CRYPTOGRAM-AUTHENTICITY","coversBr":null,"readiness":"EXTERNAL_FIXTURE_REQUIRED","fileName":null,"reason":"No current BR claims cryptographic verification of the 9F26 Application Cryptogram (ARQC/TC); genuine verification requires a certified EMV kernel or HSM and cannot be synthesized. Tracked here so this boundary is explicit if such a BR is added later."}
+  ],
+  "testDataReadinessSummary": {"executable": 4, "externalFixtureRequired": 1, "reviewRequired": 0, "note": "All defined BRs validate structural/plaintext TLV content and are synthesizable. Cryptogram authenticity is out of scope and explicitly flagged as external-fixture-required."},
+  "testDataStatus": "Segment 130 presence and Element 63 compatibility are covered; complete EMV TLV and cross-field validation remains pending as synthetic data, not a cryptographic gap. Cryptogram authenticity (9F26) is explicitly out of scope pending a certified EMV kernel/HSM fixture.",
+  "remaining": ["Author synthetic EMV chip data covering length, TLV format, and cross-field consistency.","Obtain complete EMV tag requirements beyond this example appendix.","If cryptogram authenticity validation is ever required, source it from a certified EMV kernel/HSM, not AI generation."]
+}

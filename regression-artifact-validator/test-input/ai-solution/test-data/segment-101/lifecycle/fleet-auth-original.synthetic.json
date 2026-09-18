@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "artifactId": "SEG101-LIFECYCLE-FLEET-AUTH-ORIGINAL-001",
+    "purpose": "Segment 101 baseline happy-path: fleet-card authorization request with populated Fleet Data Segment as a Data Section 3 companion of Segment 100.",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"segment-type"},
+      {"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"},
+      {"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"section-3-companion-of-segment-100"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "060",
+      "cardTypeNote": "cardType 060 is a working placeholder for a fleet-eligible Appendix E code (PROVISIONAL P-03).",
+      "paymentNetwork": "FLEET",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST",
+      "hostPromptsSupported": false
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-03","P-04","P-06"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "086",
+      "InformationByte": "0",
+      "TerminalID": "FL500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "060"
+      },
+      "TrackData": "6900460430001112223:49125050707570",
+      "PINBlockData": "",
+      "PumpNumber": "03",
+      "FuelPurchaseAmount": "00003850",
+      "NonFuelAmount": "00000000",
+      "TaxAmount": "00000225",
+      "CashAmount": "00000000",
+      "SequenceNumber": "500101",
+      "ApprovalNumber": "",
+      "LocalDateTime": "2609171545",
+      "PartialApprovalIndicator": "0"
+    },
+    "Fleet Data Segment": {
+      "SegmentType": "101",
+      "SegmentLength": "041",
+      "Odometer": "00087652",
+      "VehicleNumber": "VH0018",
+      "JobNumber": "",
+      "DriverIdentificationNumber": "DRV00042",
+      "FleetEmployeeNumber": "EMP01997",
+      "LicenseNumber": "",
+      "JobId": "",
+      "DepartmentNumber": "",
+      "CustomerData": "",
+      "UserId": "USR000042",
+      "VehicleIdNumber": ""
+    }
+  }
+}

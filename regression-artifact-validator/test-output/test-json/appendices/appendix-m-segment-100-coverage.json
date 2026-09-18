@@ -1,0 +1,28 @@
+{
+  "appendix": "M",
+  "title": "Element Format Examples for EBT Program Data",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to eBT/eWIC Segment 103 Element 164 EBT Program Data associated with Segment 100 transactions.",
+  "source": "docs/specs/extracted_text.txt Appendix M-1 through M-4",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPM-TOTAL-LENGTH","title":"EBT Program Data Element 164 shall begin with a three-digit zero-filled total length matching all following program-data characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-total-length"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPM-TAG-LENGTH","title":"Each EBT Program Data subelement shall contain a valid tag, length, and detail payload whose length matches the declared length.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-tag-length-detail"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPM-HIP-AMOUNT","title":"HIP purchase/return program data shall use the source-defined account type, amount type, currency, descriptor, and zero-filled amount detail.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"hip-purchase-return-amount"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPM-MULTIPLE-SUBELEMENTS","title":"Element 164 shall support multiple valid program-data subelements with a total length covering all subelements.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"multiple-ebt-program-subelements"},"status":"PARTIALLY_COVERED"}
+  ],
+  "examples": [
+    {"name":"HIP purchase/return amount","tag":"50","accountType":"98","amountType":"40","currency":"840","descriptorValues":["0","C","D"]},
+    {"name":"HIP Internet shipping information","tag":"IT","detailLength":"37","composition":"28-character address plus 9-digit ZIP"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPM-SINGLE","covers":["BR-SEG100-APPM-TOTAL-LENGTH","BR-SEG100-APPM-TAG-LENGTH","BR-SEG100-APPM-HIP-AMOUNT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPM-MULTIPLE","covers":["BR-SEG100-APPM-MULTIPLE-SUBELEMENTS"],"status":"PARTIALLY_COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPM-SINGLE","scenarioId":"TS-SEG100-APPM-SINGLE","positive":"Valid HIP program data with matching total length","negative":["Wrong total length","invalid tag length","invalid account/amount type","invalid descriptor"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPM-MULTIPLE","scenarioId":"TS-SEG100-APPM-MULTIPLE","positive":"HIP amount and IT shipping subelements have matching combined length","negative":["Second subelement omitted from total length","detail length mismatch","malformed ZIP detail"],"status":"PARTIALLY_COVERED"}
+  ],
+  "testDataStatus": "eWIC/EBT Segment 103 validation exists at high level; Appendix M tagged Element 164 parsing is not yet implemented.",
+  "remaining": ["Implement a bounded Element 164 parser and validator.","Validate AI-generated EBT/eWIC Segment 103 data when available."]
+}

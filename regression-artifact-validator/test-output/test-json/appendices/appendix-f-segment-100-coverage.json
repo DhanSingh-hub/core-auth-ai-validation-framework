@@ -1,0 +1,27 @@
+{
+  "appendix": "F",
+  "title": "Valid Payment Systems Product Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Product Code Element 77 in Segment 102 when Segment 100 transaction context requires product/fuel data.",
+  "source": "docs/specs/extracted_text.txt Appendix F-1 onward",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPF-PRODUCT-CODE","title":"Each Product Code Segment 102 product shall use a valid Appendix F Product Code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix F","segment":"102","element":"77","rule":"valid-product-code"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPF-UNUSED-CODE","title":"Product Code 000 shall not be used as a product because Appendix F identifies it as unused.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix F","segment":"102","element":"77","rule":"unused-product-code-000"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPF-UNIQUE-FUEL","title":"Each type of fuel purchase shall use a unique Product Code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix F","segment":"102","element":"77","rule":"unique-fuel-product-code"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPF-PRODUCT-ORDER","title":"Fuel products shall precede nonfuel products, and EV fuel product data shall be first where applicable.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","element":"77","rule":"product-order"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPF-TOTAL-RECONCILIATION","title":"Product amounts shall reconcile to Segment 100 fuel, nonfuel, tax, and cash totals.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","element":"41,58,99,17","rule":"product-total-reconciliation"},"status":"COVERED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPF-PRODUCT-VALIDITY","covers":["BR-SEG100-APPF-PRODUCT-CODE","BR-SEG100-APPF-UNUSED-CODE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPF-FUEL-ORDER","covers":["BR-SEG100-APPF-UNIQUE-FUEL","BR-SEG100-APPF-PRODUCT-ORDER"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPF-TOTALS","covers":["BR-SEG100-APPF-TOTAL-RECONCILIATION"],"status":"COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPF-PRODUCT-VALIDITY","scenarioId":"TS-SEG100-APPF-PRODUCT-VALIDITY","positive":"Valid Appendix F product code","negative":["Unknown product code","unused code 000"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPF-FUEL-ORDER","scenarioId":"TS-SEG100-APPF-FUEL-ORDER","positive":"Unique fuel codes with fuel products first","negative":["Duplicate fuel code","nonfuel product before fuel product","EV fuel not first"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPF-TOTALS","scenarioId":"TS-SEG100-APPF-TOTALS","positive":"Product totals equal Segment 100 amounts","negative":["Product amount mismatch","tax total mismatch","fuel/nonfuel total mismatch"],"status":"COVERED"}
+  ],
+  "testDataStatus": "Segment 100 compatibility and amount rules exist; complete Appendix F code-table enumeration remains pending.",
+  "remaining": ["Transcribe and validate all applicable Appendix F product-code tables.","Validate AI-generated Segment 102 product data when available."]
+}

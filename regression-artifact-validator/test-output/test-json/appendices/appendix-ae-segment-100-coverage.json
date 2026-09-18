@@ -1,0 +1,26 @@
+{
+  "appendix": "AE",
+  "title": "Visa Estimated and Incremental Authorization Transactions",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Visa card-not-present Segment 100 transactions for MCC 4121/5411 (estimated/incremental) and MCC 5552 (EV incremental), and their subsequent incremental authorizations.",
+  "source": "docs/specs/extracted_text.txt Appendix AE-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAE-MCC-SCOPE","title":"Estimated and Incremental Authorization is permitted only for MCC 4121 and 5411 (card-not-present) and MCC 5552 (EV transactions).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"100","element":"78","rule":"estimated-incremental-mcc-scope"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAE-INITIAL-INDICATOR","title":"An estimated/initial authorization request for a permitted merchant shall include the estimated authorization indicator (Acquirer Trace Data Sub Table ID 09) when the final amount is unknown.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"111","element":"113","rule":"estimated-authorization-initial-indicator"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","title":"An incremental authorization request shall follow an estimated/initial authorization, must not resend the estimated-authorization indicator, and must carry the same Sequence Number, Transaction Identifier, and Terminal Transaction Number (Segment 111 Table ID 63) as the original estimated/initial request.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"111","element":"113","rule":"incremental-authorization-continuity"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAE-EXPIRATION-WINDOW","title":"An estimated authorization and its incremental authorizations expire 14 days after the initial estimated authorization for cruise/lodging/vehicle-rental merchants, or 7 days for other rental merchants, after which the merchant is subject to chargeback unless completion is initiated within that window.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"100","element":"78","rule":"estimated-authorization-expiration-window"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAE-SCOPE","covers":["BR-SEG100-APPAE-MCC-SCOPE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAE-INITIAL","covers":["BR-SEG100-APPAE-INITIAL-INDICATOR"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAE-INCREMENTAL","covers":["BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","BR-SEG100-APPAE-EXPIRATION-WINDOW"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAE-SCOPE","scenarioId":"TS-SEG100-APPAE-SCOPE","positive":"Estimated/incremental flow used only for MCC 4121/5411/5552","negative":["Estimated/incremental flow used for a non-permitted MCC"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAE-INITIAL","scenarioId":"TS-SEG100-APPAE-INITIAL","positive":"Initial request includes the estimated-authorization indicator when amount is unknown","negative":["Indicator omitted on an eligible estimated request"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPAE-INCREMENTAL","scenarioId":"TS-SEG100-APPAE-INCREMENTAL","positive":"Incremental request preserves Sequence Number/Transaction Identifier/Table ID 63 and omits the estimated indicator; completion within the 7/14-day window","negative":["Incremental request without a preceding estimated/initial authorization","Sequence Number or Terminal Transaction Number mismatch","estimated indicator resent on incremental request","completion outside the applicable expiration window"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated Visa Estimated/Incremental Authorization AI artifact or approved hotel/rental lifecycle fixture is currently available.",
+  "remaining": ["Obtain AI-generated estimated/initial and incremental authorization request/response sequences.","Validate the 7-day and 14-day expiration windows against actual completion timing."]
+}

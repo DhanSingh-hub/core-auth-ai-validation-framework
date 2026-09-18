@@ -1,0 +1,23 @@
+{
+  "appendix": "X",
+  "title": "Online Refund/Refund Authorization",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Merchandise Return (Transaction Type 7) Segment 100 transactions and their reversal/timeout-reversal follow-ups when a merchant participates in the Online Refund/Refund Authorization program.",
+  "source": "docs/specs/extracted_text.txt Appendix X-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPX-INDICATOR-TRIGGER","title":"A merchant participating in the Online Refund/Refund Authorization program must send the Online Refund/Refund Authorization Indicator in Variable Information Table ID 32 Sub Table 11 on a Merchandise Return transaction requesting online authorization; a merchant not wanting online approval must not send it.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix X","segment":"111","element":"113","rule":"online-refund-indicator-trigger"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPX-VALID-VALUE","title":"The Online Refund/Refund Authorization Indicator value must be 'Y' for Visa, MasterCard, Amex, and Discover.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix X","segment":"111","element":"113","rule":"online-refund-indicator-value"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPX-LIFECYCLE-PERSISTENCE","title":"When the Online Refund/Refund Authorization Indicator is present on a Merchandise Return, it must also be included in the subsequent reversal/follow-up transactions and in Timeout Reversals.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix X","segment":"111","element":"113","rule":"online-refund-lifecycle-persistence"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPX-INDICATOR","covers":["BR-SEG100-APPX-INDICATOR-TRIGGER","BR-SEG100-APPX-VALID-VALUE"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPX-LIFECYCLE","covers":["BR-SEG100-APPX-LIFECYCLE-PERSISTENCE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPX-INDICATOR","scenarioId":"TS-SEG100-APPX-INDICATOR","positive":"Participating merchant sends indicator 'Y' on Merchandise Return","negative":["Indicator omitted while participating","Value other than 'Y'","Indicator sent by a non-participating merchant"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPX-LIFECYCLE","scenarioId":"TS-SEG100-APPX-LIFECYCLE","positive":"Indicator carried into reversal/timeout-reversal follow-up","negative":["Indicator dropped on follow-up transaction"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment 100 Merchandise Return (Transaction Type 7) and Variable Information dependencies are documented; dedicated Table ID 32 Sub Table 11 validation is not yet implemented.",
+  "remaining": ["Confirm program participation configuration source for enabling this indicator per merchant.","Validate AI-generated Merchandise Return, reversal, and timeout-reversal artifacts once available."]
+}

@@ -45,11 +45,20 @@ public final class Segment100ValidationEvidenceReport {
         transactionCoverage.put("singleStepErrors", singleStepResult.errors().size());
         transactionCoverage.put("singleStepArtifactCount", countJson(singleStepDirectory));
 
-        ValidationResult cardTypeResult = new Segment100CardTypeCoverageValidator().validateDirectory(singleStepDirectory);
+        Segment100CardTypeCoverageReport.Report cardTypeResult = new Segment100CardTypeCoverageReport()
+            .generate(singleStepDirectory, "LOCAL|" + singleStepDirectory.toAbsolutePath().normalize() + "|working-tree");
         ObjectNode cardCoverage = root.putObject("cardTypeCoverage");
-        cardCoverage.put("expectedCardTypes", new Segment100CardTypeOracle().expectedCardTypes().size());
-        cardCoverage.put("status", status(cardTypeResult));
-        cardCoverage.put("errors", cardTypeResult.errors().size());
+        cardCoverage.put("expectedCardTypes", cardTypeResult.expectedCount());
+        cardCoverage.put("status", cardTypeResult.status());
+        cardCoverage.put("presentCount", cardTypeResult.present().size());
+        cardCoverage.put("missingCount", cardTypeResult.missing().size());
+        cardCoverage.put("duplicateCount", cardTypeResult.duplicates().size());
+        cardCoverage.put("invalidCount", cardTypeResult.invalid().size());
+        cardCoverage.put("provenance", cardTypeResult.provenance());
+        ArrayNode presentCodes = cardCoverage.putArray("present");
+        cardTypeResult.present().forEach(presentCodes::add);
+        ArrayNode missingCodes = cardCoverage.putArray("missing");
+        cardTypeResult.missing().forEach(missingCodes::add);
         cardCoverage.put("note", "AI artifact coverage is measured independently; the current generated baseline uses card type 020 only.");
 
         ObjectNode converter = root.putObject("converterPreflight");
