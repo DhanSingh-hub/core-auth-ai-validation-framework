@@ -1,0 +1,52 @@
+{
+  "catalogId": "ATL105-SEG103-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "103",
+  "segmentName": "EBT Data Segment",
+  "scope": "Segment 103 field-level rules, serialization, applicability, WIC/eWIC element structure, and EBT program-data structure",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 11734-11795 (Section 12.4), lines 19955-19965 (Element 18), lines 22015-22025 (Element 109), lines 23340-23480 (Elements 153, 154), lines 23788-23880 (Element 164)",
+  "rules": [
+    {"ruleId":"SEG103-R-001","title":"Segment 103 is a Data Section 3 companion segment usable in any Data Section 3 field slot","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.1,12.4","segment":"103","rule":"section-3-companion-any-slot"}},
+    {"ruleId":"SEG103-R-002","title":"Segment 103 is required when the transaction flow needs EBT-specific data","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"ebt-request-conditional"},"provisional":"P-01"},
+    {"ruleId":"SEG103-R-003","title":"Segment Type is 103","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"}},
+    {"ruleId":"SEG103-R-004","title":"Segment Length is 3 or 4 digits; 4 digits is required for EBT-with-eWIC transactions","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length"}},
+    {"ruleId":"SEG103-R-005","title":"Segment 103 maximum length is 3,334 alphanumeric characters","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length-max-3334"}},
+    {"ruleId":"SEG103-R-006","title":"Field order matches Section 12.4 (Segment Type, Segment Length, Clerk ID, Voucher ID, WIC Discount Amount, WIC Product Data, EBT Program Data)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"segment-103-field-order"}},
+    {"ruleId":"SEG103-R-007","title":"Request serialization: every Segment 103 field is separated by a Field Separator, including empty fields","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"request-field-separator-required"}},
+    {"ruleId":"SEG103-R-008","title":"Response serialization: there is no Field Separator between Segment 103 fields","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"response-no-field-separator"}},
+    {"ruleId":"SEG103-R-009","title":"Clerk ID, when populated, is numeric with maximum length 10","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"18","rule":"clerk-id"}},
+    {"ruleId":"SEG103-R-010","title":"Voucher ID, when populated, is numeric with maximum length 10","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"109","rule":"voucher-id"}},
+    {"ruleId":"SEG103-R-011","title":"WIC Discount Amount uses the positional format Account Type(97) + Amount Type(52) + Currency Code + signed Amount","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"}},
+    {"ruleId":"SEG103-R-012","title":"WIC Discount Amount maximum length is 40 bytes, composed of one or more 20-byte positional blocks","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-max-040"}},
+    {"ruleId":"SEG103-R-013","title":"WIC Product Data is bounded to 3,001 bytes and begins with a 4-digit Total Length subelement with maximum value 2997","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"},"provisional":"P-02"},
+    {"ruleId":"SEG103-R-014","title":"EBT Program Data is bounded to 267 bytes and begins with a 3-digit Total Length subelement with maximum value 264","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-total-length"}},
+    {"ruleId":"SEG103-R-015","title":"EBT Program Data contains 1 to 6 Program Data subelements, each bounded to 44 bytes","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-subelement-count"}},
+    {"ruleId":"SEG103-R-016","title":"EBT Program Data subelement TAG must be one of the documented values (50, IT for requests; 51, 52 for responses)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"},"provisional":"P-03","validTags":["50","IT","51","52"]},
+    {"ruleId":"SEG103-R-017","title":"EBT Program Data subelement with TAG 50 requires ACCOUNT TYPE fixed value 98 (not required when TAG is IT)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-account-type-98"},"provisional":"P-03"},
+    {"ruleId":"SEG103-R-018","title":"Segment 103 appears exactly once per message","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12","segment":"103","rule":"segment-occurrence"}},
+    {"ruleId":"SEG103-R-019","title":"Segment 103 originates at the device","class":"metadata","severity":"info","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"origin-device"}},
+    {"ruleId":"SEG103-R-020","title":"eWIC does not support Return transactions","class":"lifecycle","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"10.5.5","segment":"103","rule":"ewic-no-return"},"provisional":"P-04"},
+    {"ruleId":"SEG103-R-021","title":"eWIC operations use a recognized prompt-code set (3086, S086, E086, 0086, 8086) carried in the companion Segment 100 Prompt Code","class":"compatibility","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"10.5.5","segment":"100,103","rule":"ewic-prompt-code-enumeration"},"provisional":"P-05"}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["SEG103-R-002"],"blocks":["Item 3","Item 6"],"question":"Enumerate the exact EBT/SNAP/WIC/eWIC/HIP conditions (payment program, transaction type, clerk/voucher involvement) that make Segment 103 mandatory versus optional versus not-applicable."},
+    {"id":"P-02","impacts":["SEG103-R-013"],"blocks":["Item 5 MUT for element 154","Item 6"],"question":"Provide the full WIC Product Data subelement catalog beyond Earliest WIC Benefit Expiration Date (EF) and WIC Prescription Balance Information (EA) — specifically WIC UPC Exception/Denial Information and WIC UPC Purchase Information layouts."},
+    {"id":"P-03","impacts":["SEG103-R-016","SEG103-R-017"],"blocks":["Item 5 MUT for element 164","Item 6"],"question":"Confirm the complete EBT Program Data TAG catalog and per-tag Appendix M layout beyond 50 (HIP purchase/return amount), IT (HIP Internet shipping zip), 51 (HIP incentive earned/returned), and 52 (HIP month-to-date incentive earned)."},
+    {"id":"P-04","impacts":["SEG103-R-020"],"blocks":["Item 4"],"question":"Confirm the Appendix G transaction-type code(s) that represent an eWIC Return so the validator can reject/flag it deterministically instead of relying on narrative text alone."},
+    {"id":"P-05","impacts":["SEG103-R-021"],"blocks":["Item 3","Item 4"],"question":"Confirm the exact Segment 100 Prompt Code field composition rule that carries the eWIC operation codes (3086, S086, E086, 0086, 8086) so a cross-segment check can be implemented."},
+    {"id":"P-06","impacts":["SEG103-R-011"],"blocks":["Item 5 MUT for element 153 currency"],"question":"Confirm which Appendix L currency codes are valid for WIC Discount Amount (appendix-code-tables.md currently transcribes a partial Appendix L list)."},
+    {"id":"P-07","impacts":["AI-artifacts"],"blocks":["Item 2"],"question":"Location of AI-generated Segment 103 BR/TS/TC/TD packages (none supplied as of this training pass)."},
+    {"id":"P-08","impacts":["test-data"],"blocks":["Item 1","Item 3"],"question":"Availability of real Segment 103 sample JSONs, or approval to continue with synthesized .synthetic.json fixtures."}
+  ],
+  "itemProgress": {
+    "item1_coverageClosure":"COMPLETE",
+    "item2_artifactComparison":"BLOCKED_BY_P07",
+    "item3_independence":"BLOCKED_BY_P01_P05_P08",
+    "item4_traceabilityMatrix":"BLOCKED_BY_P04_P05",
+    "item5_mutationDefinition":"BLOCKED_BY_P02_P03_P06",
+    "item6_mutationExecution":"BLOCKED_BY_P02_P03",
+    "item7_validatorEnhancement":"NOT_STARTED",
+    "item8_consolidatedReport":"NOT_STARTED"
+  }
+}
