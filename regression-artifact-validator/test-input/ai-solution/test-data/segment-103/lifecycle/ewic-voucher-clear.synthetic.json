@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "artifactId": "SEG103-LIFECYCLE-EWIC-VOUCHER-CLEAR-003",
+    "purpose": "eWIC Voucher Clear sample carrying Clerk ID, Voucher ID, WIC Product Data (WIC Prescription Balance Information subelement), and an EBT Program Data HIP Internet-shipping subelement (TAG IT, no ACCOUNT TYPE required).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"109","rule":"voucher-id"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "050",
+      "cardTypeNote": "cardType 050 is a working placeholder for EBT WIC (PROVISIONAL P-01).",
+      "paymentNetwork": "EBT",
+      "lifecycleRole": "VOUCHER_CLEAR",
+      "messageFamily": "FINANCIAL_REQUEST",
+      "ewicPromptCode": "0086",
+      "ewicDataPresent": true
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-02","P-03"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "EB500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "050"
+      },
+      "SequenceNumber": "600103",
+      "LocalDateTime": "2609171555",
+      "PartialApprovalIndicator": "0"
+    },
+    "EBT Data Segment": {
+      "SegmentType": "103",
+      "SegmentLength": "0170",
+      "ClerkId": "0000045678",
+      "VoucherId": "0000011223",
+      "WicProductData": {
+        "totalLength": "0010",
+        "data": "EA01414200"
+      },
+      "EbtProgramData": {
+        "totalLength": "010",
+        "subelements": [
+          {"tag": "IT", "len": "06", "data": "075030"}
+        ]
+      }
+    }
+  }
+}

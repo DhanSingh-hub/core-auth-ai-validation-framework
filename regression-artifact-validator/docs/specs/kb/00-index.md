@@ -70,9 +70,10 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [segment-100-canonical-anchors.md](segment-100-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 100 scope
 - [segment-100/README.md](segment-100/README.md) - focused Segment 100 SME, technical business analysis, and flow-learning module
 - [segment-100/coverage/README.md](segment-100/coverage/README.md) - Segment 100 rule coverage, approval gates, and report design
+- [segment-101/README.md](segment-101/README.md) - focused Segment 101 (Fleet Data Segment) SME, technical business analysis, and flow-learning module
+- [segment-103/README.md](segment-103/README.md) - focused Segment 103 (EBT Data Segment) SME, technical business analysis, and flow-learning module; supersedes the retired flat `segment-103-ebt-sme-note.md`
 - [Test Validation Strategy Package](../../test-validation-strategy/README.md) - complete ATL105 validation strategy and Segment 100 descriptive business requirements
 - [segment-compatibility-matrix.md](segment-compatibility-matrix.md) - conditional compatibility of Segment 100 with currently mapped Section 3 segments
-- [segment-103-ebt-sme-note.md](segment-103-ebt-sme-note.md) - Segment 103 EBT/eWIC layout, POS flow, serialization rules, validation rules, and SME learning checklist
 - [13-data-elements.md](13-data-elements.md) - data dictionary from chapter 13.2 (elements 1-99 fully transcribed; 100-228 not yet done)
 - [appendix-code-tables.md](appendix-code-tables.md) - flat ENUM-style code tables (Appendices C, D, E, F, G, J, L)
 - [appendix-I-K-overview.md](appendix-I-K-overview.md) - Table ID index for Appendices I and K

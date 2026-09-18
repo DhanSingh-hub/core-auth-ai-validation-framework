@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "placeholder": true,
+    "provisionalReason": "Synthesized placeholder canonical BR/TS/TC/TD package for Item 2 (AI Artifact Comparison). Real AI-generated Segment 103 output has not been supplied yet (PROVISIONAL P-07). Every artifact below is anchored to a rule from segment-103-rule-catalog.json and marked PROVISIONAL. Once real AI output arrives, replace this file; Item 2 comparison logic remains unchanged.",
+    "provisionalDependencies": ["P-01","P-02","P-03","P-04","P-05","P-06","P-07","P-08"]
+  },
+  "manifest": {
+    "packageId": "ATL105-SEG103-ITEM-01-EBT-BASELINE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG103-CORE-001","title":"EBT Data Segment is a Data Section 3 companion segment usable in any field slot.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1,12.4","segment":"103","rule":"section-3-companion-any-slot"}]},
+    {"id":"BR-SEG103-CORE-003","title":"Segment Type is 103.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"}]},
+    {"id":"BR-SEG103-CORE-004","title":"Segment Length is 3 or 4 digits; 4 digits required for EBT-with-eWIC transactions.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length"}]},
+    {"id":"BR-SEG103-CORE-005","title":"Segment 103 maximum length is 3,334 alphanumeric characters.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length-max-3334"}]},
+    {"id":"BR-SEG103-FIELD-009","title":"Clerk ID is numeric max 10 when populated.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"18","rule":"clerk-id"}]},
+    {"id":"BR-SEG103-FIELD-010","title":"Voucher ID is numeric max 10 when populated.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"109","rule":"voucher-id"}]},
+    {"id":"BR-SEG103-WIC-011","title":"WIC Discount Amount uses the positional Account Type/Amount Type/Currency Code/signed Amount format.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"}]},
+    {"id":"BR-SEG103-WIC-013","title":"WIC Product Data begins with a 4-digit Total Length subelement bounded to 2997.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"}]},
+    {"id":"BR-SEG103-EBT-014","title":"EBT Program Data begins with a 3-digit Total Length subelement bounded to 264.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-total-length"}]},
+    {"id":"BR-SEG103-EBT-016","title":"EBT Program Data subelement TAG must be one of the documented values.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"}]},
+    {"id":"BR-SEG103-EBT-017","title":"EBT Program Data subelement with TAG 50 requires ACCOUNT TYPE 98.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-account-type-98"}]},
+    {"id":"BR-SEG103-STRUCT-018","title":"At most one Segment 103 per message.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"103","rule":"segment-occurrence"}]}
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG103-CORE-001","requirementIds":["BR-SEG103-CORE-003","BR-SEG103-CORE-004"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"},{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length"}]},
+    {"id":"SCN-SEG103-CORE-002","requirementIds":["BR-SEG103-CORE-005"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length-max-3334"}]},
+    {"id":"SCN-SEG103-FIELD-001","requirementIds":["BR-SEG103-FIELD-009"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"18","rule":"clerk-id"}]},
+    {"id":"SCN-SEG103-FIELD-002","requirementIds":["BR-SEG103-FIELD-010"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"109","rule":"voucher-id"}]},
+    {"id":"SCN-SEG103-WIC-001","requirementIds":["BR-SEG103-WIC-011"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"}]},
+    {"id":"SCN-SEG103-WIC-002","requirementIds":["BR-SEG103-WIC-013"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"}]},
+    {"id":"SCN-SEG103-EBT-001","requirementIds":["BR-SEG103-EBT-014","BR-SEG103-EBT-016","BR-SEG103-EBT-017"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-total-length"},{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"},{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-account-type-98"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG103-CORE-001","scenarioIds":["SCN-SEG103-CORE-001"],"expectedOutcome":"PASS","category":"field","tags":["segment-103","identity","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG103-CORE-002","scenarioIds":["SCN-SEG103-CORE-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-103","identity","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG103-CORE-003","scenarioIds":["SCN-SEG103-CORE-002"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-103","length","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length-max-3334"}]},
+    {"id":"TC-SEG103-FIELD-001","scenarioIds":["SCN-SEG103-FIELD-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-103","clerk-id","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"18","rule":"clerk-id"}]},
+    {"id":"TC-SEG103-FIELD-002","scenarioIds":["SCN-SEG103-FIELD-002"],"expectedOutcome":"FAIL","category":"field","tags":["segment-103","voucher-id","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"109","rule":"voucher-id"}]},
+    {"id":"TC-SEG103-WIC-001","scenarioIds":["SCN-SEG103-WIC-001"],"expectedOutcome":"PASS","category":"wic","tags":["segment-103","wic-discount","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"}]},
+    {"id":"TC-SEG103-WIC-002","scenarioIds":["SCN-SEG103-WIC-002"],"expectedOutcome":"PASS","category":"wic","tags":["segment-103","wic-product-data","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"}]},
+    {"id":"TC-SEG103-EBT-001","scenarioIds":["SCN-SEG103-EBT-001"],"expectedOutcome":"PASS","category":"ebt-program","tags":["segment-103","ebt-program-data","hip","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"}]}
+  ],
+  "testData": [
+    {"id":"TD-SEG103-CORE-001","testCaseIds":["TC-SEG103-CORE-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"85","rule":"segment-type"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-103/lifecycle/ebt-purchase-original.synthetic.json","provisional":"P-07","note":"payload sourced from Item 1 synthetic fixtures until real AI output arrives"}},
+    {"id":"TD-SEG103-WIC-001","testCaseIds":["TC-SEG103-WIC-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-103/lifecycle/ewic-purchase-completion.synthetic.json","provisional":"P-07"}},
+    {"id":"TD-SEG103-EBT-001","testCaseIds":["TC-SEG103-EBT-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-tag-enumeration"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-103/lifecycle/ewic-voucher-clear.synthetic.json","provisional":"P-07"}}
+  ]
+}

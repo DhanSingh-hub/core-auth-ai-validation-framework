@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "artifactId": "SEG103-LIFECYCLE-EBT-PURCHASE-ORIGINAL-001",
+    "purpose": "Segment 103 baseline happy-path: EBT purchase request carrying Clerk ID and Voucher ID as a Data Section 3 companion of Segment 100. No WIC-specific fields populated (3-digit Segment Length is sufficient).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"segment-type"},
+      {"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","rule":"clerk-id"},
+      {"specification":"ATL105","version":"2026-3","section":"11.1,12.4","segment":"103","rule":"section-3-companion-any-slot"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "050",
+      "cardTypeNote": "cardType 050 is a working placeholder for EBT WIC per the eWIC transaction model note (PROVISIONAL P-01).",
+      "paymentNetwork": "EBT",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST",
+      "ewicDataPresent": false
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-01","P-05"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "EB500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "050"
+      },
+      "SequenceNumber": "600101",
+      "LocalDateTime": "2609171545",
+      "PartialApprovalIndicator": "0"
+    },
+    "EBT Data Segment": {
+      "SegmentType": "103",
+      "SegmentLength": "018",
+      "ClerkId": "0000012345",
+      "VoucherId": "0000098765"
+    }
+  }
+}
