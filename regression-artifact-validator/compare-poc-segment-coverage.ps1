@@ -1,7 +1,8 @@
 param(
     [Parameter(Mandatory = $true)][string]$SegmentNumber,
     [string]$PocPipelineRoot = "C:\Users\F5H46GZ\Downloads\POC-DEMO\POC-DEMO\core-auth-test-generation-platform\src\pipeline",
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot "test-output\ai-artifacts\coverage-reports")
+    [string]$OutputDirectory = (Join-Path $PSScriptRoot "test-output\ai-artifacts\coverage-reports"),
+    [string]$ProfilePath = (Join-Path $PSScriptRoot "segment-profiles.json")
 )
 
 function Get-Tokens([string]$Text) {
@@ -27,13 +28,11 @@ function Get-TokenScore($LeftTokens, $RightTokens) {
     return [math]::Round($shared / [math]::Max($leftTokens.Count, $rightTokens.Count), 3)
 }
 
-# Segments whose Test Solution BRs live partly or wholly in an existing appendix evidence file
-# rather than (or in addition to) their own segment-<n>-core-structure-package.json.
-$extraTestSolutionFiles = @{
-    "111" = @("appendices\appendix-i-segment-100-coverage.json")
-    "130" = @("appendices\appendix-r-segment-100-coverage.json", "appendices\appendix-s-segment-100-coverage.json")
-    "135" = @("appendices\appendix-v-segment-100-coverage.json")
-}
+$profileRegistry = Get-Content $ProfilePath -Raw | ConvertFrom-Json
+$profile = $profileRegistry.segments.$SegmentNumber
+if ($null -eq $profile) { $profile = $profileRegistry.default }
+$baselineDescription = [string]$profile.baselineDescription
+$testSolutionPatterns = @($profile.testSolutionPatterns | ForEach-Object { $_ -replace "\{segment\}", $SegmentNumber })
 
 $aiCatalogPath = Join-Path $PSScriptRoot "test-output\ai-artifacts\business-requirements\POC-AI-ATL105-Segment-$SegmentNumber-Business-Requirements.json"
 $aiCatalog = Get-Content $aiCatalogPath -Raw | ConvertFrom-Json
@@ -45,11 +44,14 @@ foreach ($rule in $deepCatalog.business_rules) { $ruleById[$rule.rule_id] = $rul
 
 $testRequirementsById = @{}
 $testRoot = Join-Path $PSScriptRoot "test-output\test-json"
-$testFiles = @(Get-Item (Join-Path $testRoot "segment-$SegmentNumber-core-structure-package.json"))
-if ($extraTestSolutionFiles.ContainsKey($SegmentNumber)) {
-    foreach ($extra in $extraTestSolutionFiles[$SegmentNumber]) {
-        $testFiles += Get-Item (Join-Path $testRoot $extra)
-    }
+$testFiles = @()
+foreach ($pattern in $testSolutionPatterns) {
+    $testFiles += Get-ChildItem -Path $testRoot -Recurse -File -Filter ([System.IO.Path]::GetFileName($pattern)) |
+        Where-Object { $_.FullName.Substring($testRoot.Length + 1) -like ($pattern -replace '/', '\') }
+}
+$testFiles = @($testFiles | Select-Object -Unique)
+if ($testFiles.Count -eq 0) {
+    throw "No Test Solution files matched profile '$SegmentNumber' under '$testRoot'."
 }
 foreach ($testFile in $testFiles) {
     $document = Get-Content $testFile.FullName -Raw | ConvertFrom-Json
@@ -62,6 +64,19 @@ foreach ($testFile in $testFiles) {
                 sourceFile = $testFile.Name
                 sourceAnchors = $anchors
                 elements = @(Get-Elements $anchors)
+                tokens = @(Get-Tokens $requirement.title)
+            }
+        }
+    }
+    foreach ($artifact in @($document.transactionTypeArtifacts)) {
+        $requirement = $artifact.businessRequirement
+        if ($null -ne $requirement -and -not $testRequirementsById.ContainsKey($requirement.id)) {
+            $testRequirementsById[$requirement.id] = [PSCustomObject]@{
+                id = $requirement.id
+                title = $requirement.title
+                sourceFile = $testFile.Name
+                sourceAnchors = @()
+                elements = @()
                 tokens = @(Get-Tokens $requirement.title)
             }
         }
@@ -108,8 +123,20 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
     } else {
         "UNMATCHED_IN_TEST_SOLUTION"
     }
+    $matchReason = if ($null -eq $best) {
+        "No Test Solution candidate was available."
+    } elseif ($matchStatus -eq "MATCHED_ELEMENT_AND_SEMANTICS") {
+        "Heuristic match: shared element(s) [$($best.sharedElements -join ',')] and token score $($best.tokenScore) met the element-plus-semantics threshold (>= 0.1); validate the business meaning before acceptance."
+    } elseif ($matchStatus -eq "MATCHED_SEMANTICS_ONLY") {
+        "Heuristic match: token score $($best.tokenScore) met the semantics-only threshold (>= 0.45) without a shared element; validate source and scope before acceptance."
+    } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") {
+        "Partial candidate: shared element(s) [$($best.sharedElements -join ',')] or token score $($best.tokenScore) was plausible but did not meet a confirmed-match threshold; manual validation required."
+    } else {
+        "No confirmed match: no shared element and token score $($best.tokenScore) was below the potential-match threshold; determine whether the AI rule is missing, out of scope, or differently structured."
+    }
     $scenarios = if ($null -eq $scenarioByRequirementId[$aiRequirement.id]) { @() } else { @($scenarioByRequirementId[$aiRequirement.id]) }
     $scenarioStatus = if ($scenarios.Count -eq 0) { "MISSING_SCENARIO" } else { "SCENARIO_REVIEW_REQUIRED" }
+    $testSolutionAction = if ($matchStatus -match "^MATCHED") { "NO_ADDITION_REQUIRED" } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") { "VALIDATE_MATCH_OR_ADD_IF_VALID" } else { "VALIDATE_AND_ADD_IF_VALID" }
     $crosswalk += [PSCustomObject]@{
         aiRequirementId = $aiRequirement.id
         aiSourceRuleId = $aiRequirement.source_rule_id
@@ -122,6 +149,8 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
         scenarioIds = ($scenarios.id -join ",")
         scenarioStatus = $scenarioStatus
         testMatchStatus = $matchStatus
+        matchReason = $matchReason
+        testSolutionAction = $testSolutionAction
         testRequirementId = $(if ($null -eq $best) { $null } else { $best.requirement.id })
         testRequirementTitle = $(if ($null -eq $best) { $null } else { $best.requirement.title })
         testRequirementFile = $(if ($null -eq $best) { $null } else { $best.requirement.sourceFile })
@@ -137,7 +166,7 @@ $testGaps = @($testRequirementsById.Values | Where-Object { -not $matchedTestIds
 $summary = [ordered]@{
     generatedAt = (Get-Date -Format "o")
     segment = "$SegmentNumber"
-    comparisonScope = "POC approved requirements/scenarios filtered to Segment $SegmentNumber versus the Segment $SegmentNumber Test Solution core-structure baseline"
+    comparisonScope = "POC approved requirements/scenarios filtered to Segment $SegmentNumber versus the Segment $SegmentNumber Test Solution $($profile.baselineType) baseline"
     aiRequirements = $crosswalk.Count
     testSolutionRequirements = $testRequirementsById.Count
     aiRequirementsWithScenario = @($crosswalk | Where-Object { $_.scenarioStatus -eq "SCENARIO_REVIEW_REQUIRED" }).Count
@@ -149,6 +178,7 @@ $summary = [ordered]@{
     potentialMatches = @($crosswalk | Where-Object { $_.testMatchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED" }).Count
     unmatchedAiRequirements = @($crosswalk | Where-Object { $_.testMatchStatus -eq "UNMATCHED_IN_TEST_SOLUTION" }).Count
     testSolutionRequirementsWithoutConfirmedAiMatch = $testGaps.Count
+    aiRequirementsRequiringTestSolutionReview = @($crosswalk | Where-Object { $_.testSolutionAction -ne "NO_ADDITION_REQUIRED" }).Count
 }
 $summary.testSolutionRequirementsCovered = $summary.testSolutionRequirements - $summary.testSolutionRequirementsWithoutConfirmedAiMatch
 $summary.confirmedBrCoveragePercent = if ($summary.testSolutionRequirements -eq 0) { 0 } else { [math]::Round(100 * $summary.testSolutionRequirementsCovered / $summary.testSolutionRequirements, 1) }
@@ -170,23 +200,32 @@ $markdown = @(
     "- Confirmed AI-to-Test matches (semantics only): $($summary.matchedSemanticsOnly)",
     "- Potential matches requiring review: $($summary.potentialMatches)",
     "- AI BRs unmatched in Test Solution: $($summary.unmatchedAiRequirements)",
+    "- AI BRs requiring Test Solution validation/addition review: $($summary.aiRequirementsRequiringTestSolutionReview)",
     "- Test Solution BRs covered: $($summary.testSolutionRequirementsCovered) of $($summary.testSolutionRequirements)",
     "- Test Solution BRs without a confirmed AI match: $($summary.testSolutionRequirementsWithoutConfirmedAiMatch)",
-    "- **Confirmed BR coverage: $($summary.confirmedBrCoveragePercent)%**",
+    "- **Confirmed Test Solution baseline coverage: $($summary.confirmedBrCoveragePercent)% ($($summary.testSolutionRequirementsCovered)/$($summary.testSolutionRequirements))**",
     '',
     '## Scope Note',
     '',
-    "This Test Solution baseline is a core-structure baseline (Segment Type/Length, key structural/business rules) for Segment $SegmentNumber, not yet as exhaustive as the full Segment 100 appendix-level baseline. Coverage percentages reflect this narrower scope.",
+    "$baselineDescription Coverage percentages reflect the configured baseline scope and do not certify unreviewed AI-only requirements.",
     '',
     '## AI BR to Test Solution BR Crosswalk',
     '',
-    '| AI BR | AI rule | Scope | Scenarios | Scenario status | Test match | Test Solution BR | Test Solution title | Shared elements | AI statement |',
-    '|---|---|---|---:|---|---|---|---|---|---|'
+    '| AI BR | AI rule | Scope | Scenarios | Scenario status | Test match | Match reason | Test Solution BR | Test Solution title | Shared elements | AI statement |',
+    '|---|---|---|---:|---|---|---|---|---|---|---|'
 )
 foreach ($record in $crosswalk | Sort-Object aiRequirementId) {
     $statement = $record.aiStatement -replace '\|', '\\|' -replace "`r?`n", ' '
     $title = $record.testRequirementTitle -replace '\|', '\\|'
-    $markdown += "| $($record.aiRequirementId) | $($record.aiSourceRuleId) | $($record.aiScope) | $($record.scenarioCount) | $($record.scenarioStatus) | $($record.testMatchStatus) | $($record.testRequirementId) | $title | $($record.sharedElements) | $statement |"
+    $reason = $record.matchReason -replace '\|', '\\|'
+    $markdown += "| $($record.aiRequirementId) | $($record.aiSourceRuleId) | $($record.aiScope) | $($record.scenarioCount) | $($record.scenarioStatus) | $($record.testMatchStatus) | $reason | $($record.testRequirementId) | $title | $($record.sharedElements) | $statement |"
+}
+$markdown += @('', '## AI Requirements Requiring Test Solution Review', '', 'Every AI requirement without a confirmed Test Solution match is a red-flag candidate and remains REVIEW_REQUIRED. Validate its source evidence, semantic meaning, scope, scenario linkage, and testability; then map it to an existing Test Solution BR or add a new Test Solution BR only if the validation confirms it is valid. No item in this section is automatically added to the Test Solution or counted as accepted coverage.', '', '| AI BR | AI source rule | Source page | Scope | Confidence | Scenario status | Scenario count | Scenario IDs | Match status | Match reason | Candidate Test Solution BR | Candidate Test Solution title | Shared elements | Semantic score | Required action | Review status | Full AI requirement |', '|---|---|---:|---|---:|---|---:|---|---|---|---|---|---:|---|---|---|---|')
+foreach ($record in $crosswalk | Where-Object { $_.testSolutionAction -ne 'NO_ADDITION_REQUIRED' } | Sort-Object aiRequirementId) {
+    $statement = $record.aiStatement -replace '\|', '\\|' -replace "`r?`n", ' '
+    $candidateTitle = $record.testRequirementTitle -replace '\|', '\\|'
+    $reason = $record.matchReason -replace '\|', '\\|'
+    $markdown += "| $($record.aiRequirementId) | $($record.aiSourceRuleId) | $($record.aiSourcePage) | $($record.aiScope) | $($record.aiConfidence) | $($record.scenarioStatus) | $($record.scenarioCount) | $($record.scenarioIds) | $($record.testMatchStatus) | $reason | $($record.testRequirementId) | $candidateTitle | $($record.sharedElements) | $($record.semanticScore) | $($record.testSolutionAction) | REVIEW_REQUIRED | $statement |"
 }
 $markdown += @('', '## Test Solution BRs Without a Confirmed AI Match', '', '| Test Solution BR | Source file | Requirement |', '|---|---|---|')
 foreach ($gap in $testGaps) {
@@ -202,10 +241,13 @@ $confirmedMatches = $summary.matchedElementAndSemantics + $summary.matchedSemant
 $matrixRows = foreach ($record in $crosswalk | Sort-Object aiRequirementId) {
     $matchClass = $record.testMatchStatus.ToLowerInvariant()
     $scenarioClass = $record.scenarioStatus.ToLowerInvariant()
-    "<tr data-match='$matchClass' data-scenario='$scenarioClass'><td><code>$(Encode-Html $record.aiRequirementId)</code><small>$(Encode-Html $record.aiSourceRuleId)</small></td><td><span class='badge $matchClass'>$(Encode-Html $record.testMatchStatus)</span><code>$(Encode-Html $record.testRequirementId)</code><small>$(Encode-Html $record.testRequirementFile)</small></td><td>$(Encode-Html $record.testRequirementTitle)</td><td><span class='badge $scenarioClass'>$(Encode-Html $record.scenarioStatus)</span><small>$(Encode-Html $record.scenarioIds)</small></td><td>$(Encode-Html $record.sharedElements)</td><td>$(Encode-Html $record.aiStatement)</td></tr>"
+    "<tr data-match='$matchClass' data-scenario='$scenarioClass'><td><code>$(Encode-Html $record.aiRequirementId)</code><small>$(Encode-Html $record.aiSourceRuleId)</small></td><td><span class='badge $matchClass'>$(Encode-Html $record.testMatchStatus)</span><code>$(Encode-Html $record.testRequirementId)</code><small>$(Encode-Html $record.testRequirementFile)</small></td><td>$(Encode-Html $record.testRequirementTitle)</td><td>$(Encode-Html $record.matchReason)</td><td><span class='badge $scenarioClass'>$(Encode-Html $record.scenarioStatus)</span><small>$(Encode-Html $record.scenarioIds)</small></td><td>$(Encode-Html $record.sharedElements)</td><td>$(Encode-Html $record.aiStatement)</td></tr>"
 }
 $testGapRows = foreach ($gap in $testGaps) {
     "<tr><td><code>$(Encode-Html $gap.id)</code></td><td>$(Encode-Html $gap.sourceFile)</td><td>$(Encode-Html $gap.title)</td></tr>"
+}
+$aiReviewRows = foreach ($record in $crosswalk | Where-Object { $_.testSolutionAction -ne 'NO_ADDITION_REQUIRED' } | Sort-Object aiRequirementId) {
+    "<tr><td><code>$(Encode-Html $record.aiRequirementId)</code><small>$(Encode-Html $record.aiSourceRuleId)</small></td><td>$(Encode-Html $record.aiSourcePage)</td><td>$(Encode-Html $record.aiScope)</td><td>$(Encode-Html $record.aiConfidence)</td><td>$(Encode-Html $record.scenarioStatus)<small>$(Encode-Html $record.scenarioCount) / $(Encode-Html $record.scenarioIds)</small></td><td>$(Encode-Html $record.testMatchStatus)</td><td>$(Encode-Html $record.matchReason)</td><td><code>$(Encode-Html $record.testRequirementId)</code><small>$(Encode-Html $record.testRequirementTitle)</small></td><td>$(Encode-Html $record.sharedElements)</td><td>$(Encode-Html $record.semanticScore)</td><td>$(Encode-Html $record.testSolutionAction)</td><td>REVIEW_REQUIRED</td><td>$(Encode-Html $record.aiStatement)</td></tr>"
 }
 
 $html = @"
@@ -221,12 +263,13 @@ $html = @"
 </style>
 </head>
 <body>
-<header><h1>Segment $SegmentNumber BR Coverage Ratio</h1><p>Business Requirement coverage ratio between the POC AI Solution and the Segment $SegmentNumber Test Solution core-structure baseline. This report covers BR-level matching only. Generated $($summary.generatedAt).</p></header>
+<header><h1>Segment $SegmentNumber BR Coverage Ratio</h1><p>Business Requirement coverage ratio between the POC AI Solution and the Segment $SegmentNumber Test Solution $($profile.baselineType) baseline. This report covers BR-level matching only. Generated $($summary.generatedAt).</p></header>
 <main>
-<div class="notice"><strong>Scope:</strong> the Segment $SegmentNumber Test Solution baseline is a core-structure baseline, not yet as exhaustive as Segment 100's full appendix-level baseline. AI and Test Solution use independent BR IDs; green is a confirmed semantic/element match, amber is a potential match requiring SME review.</div>
-<div class="stats"><div class="stat"><strong>$($summary.aiRequirements)</strong><span>AI Segment $SegmentNumber BRs</span></div><div class="stat"><strong>$($summary.testSolutionRequirements)</strong><span>Expected Test Solution BRs</span></div><div class="stat $(if($summary.confirmedBrCoveragePercent -ge 50){'confirmed-stat'}else{'warn'})"><strong>$($summary.confirmedBrCoveragePercent)%</strong><span>Confirmed BR coverage ($($summary.testSolutionRequirementsCovered)/$($summary.testSolutionRequirements))</span></div><div class="stat warn"><strong>$($summary.aiRequirementsMissingScenario)</strong><span>AI BRs missing scenarios</span></div><div class="stat danger"><strong>$($summary.testSolutionRequirementsWithoutConfirmedAiMatch)</strong><span>Expected BRs lacking a confirmed AI match</span></div></div>
-<section class="panel"><h2>AI BR to Test Solution BR Mapping Matrix</h2><div class="filters"><input id="search" placeholder="Search BR ID, rule, title, or requirement text"></div><div class="table-wrap"><table id="matrix"><thead><tr><th>AI BR</th><th>Mapping status</th><th>Expected Test Solution BR</th><th>Scenario status</th><th>Shared elements</th><th>AI requirement</th></tr></thead><tbody>$($matrixRows -join "`n")</tbody></table></div></section>
+<div class="notice"><strong>Scope:</strong> $baselineDescription The percentage is confirmed coverage of the configured Test Solution baseline only. Every AI requirement without a confirmed match is a red-flag candidate for source validation and Test Solution addition.</div>
+<div class="stats"><div class="stat"><strong>$($summary.aiRequirements)</strong><span>AI Segment $SegmentNumber BRs</span></div><div class="stat"><strong>$($summary.testSolutionRequirements)</strong><span>Expected Test Solution BRs</span></div><div class="stat $(if($summary.confirmedBrCoveragePercent -ge 50){'confirmed-stat'}else{'warn'})"><strong>$($summary.confirmedBrCoveragePercent)%</strong><span>Confirmed Test Solution baseline coverage ($($summary.testSolutionRequirementsCovered)/$($summary.testSolutionRequirements))</span></div><div class="stat warn"><strong>$($summary.aiRequirementsMissingScenario)</strong><span>AI BRs missing scenarios</span></div><div class="stat danger"><strong>$($summary.aiRequirementsRequiringTestSolutionReview)</strong><span>AI BRs requiring Test Solution review</span></div></div>
+<section class="panel"><h2>AI BR to Test Solution BR Mapping Matrix</h2><div class="filters"><input id="search" placeholder="Search BR ID, rule, title, or requirement text"></div><div class="table-wrap"><table id="matrix"><thead><tr><th>AI BR</th><th>Mapping status</th><th>Expected Test Solution BR</th><th>Match reason</th><th>Scenario status</th><th>Shared elements</th><th>AI requirement</th></tr></thead><tbody>$($matrixRows -join "`n")</tbody></table></div></section>
 <section class="panel"><h2>Expected Test Solution BRs Missing from AI Coverage ($($summary.testSolutionRequirementsWithoutConfirmedAiMatch))</h2><div class="table-wrap"><table><thead><tr><th>Test Solution BR</th><th>Source package</th><th>Expected requirement</th></tr></thead><tbody>$($testGapRows -join "`n")</tbody></table></section>
+<section class="panel"><h2>AI Requirements Requiring Test Solution Review ($($summary.aiRequirementsRequiringTestSolutionReview))</h2><p>Every item remains REVIEW_REQUIRED. Validate source evidence, semantic meaning, scope, scenario linkage, and testability. Map it to an existing Test Solution BR or add and test a new BR only after validation confirms it is valid. Nothing in this queue is automatically added or counted as accepted coverage.</p><div class="table-wrap"><table><thead><tr><th>AI BR / source rule</th><th>Source page</th><th>Scope</th><th>Confidence</th><th>Scenario status / IDs</th><th>Match status</th><th>Match reason</th><th>Candidate Test Solution BR</th><th>Shared elements</th><th>Semantic score</th><th>Required action</th><th>Review status</th><th>Full AI requirement</th></tr></thead><tbody>$($aiReviewRows -join "`n")</tbody></table></div></section>
 </main>
 <script>
 const search=document.getElementById('search');
