@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "placeholder": false,
+    "provisionalReason": "Built from the real POC-AI-ATL105-Segment-104-Business-Requirements.json artifact, which explicitly scopes itself to a 'core-structure baseline' (Segment Type/Length/Max-Length only). Unlike Segment 101's fully-synthesized placeholder, this package reflects genuine (partial) AI output. The remaining 11 of 14 independent rule-catalog anchors have no AI-generated BR/TS/TC/TD yet; Item 2 will correctly report them as MISSING.",
+    "provisionalDependencies": ["P-01", "P-02"]
+  },
+  "manifest": {
+    "packageId": "ATL105-SEG104-ITEM-01-PURCHASE-CARD-BASELINE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {"id": "BR-SEG104-TYPE", "title": "Segment Type field in the Purchase Card Data Segment has fixed value 104.", "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "85", "rule": "segment-104-type-fixed-value"}]},
+    {"id": "BR-SEG104-LENGTH", "title": "Segment Length identifies the Purchase Card Data Segment's total length including Segment Type and Field Separators.", "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "84", "rule": "segment-104-length-format"}]},
+    {"id": "BR-SEG104-MAX-LENGTH", "title": "The Purchase Card Data Segment has a maximum length of 86 alphanumeric characters.", "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "rule": "segment-104-max-length"}]}
+  ],
+  "testScenarios": [
+    {"id": "TS-SEG104-TYPE", "requirementIds": ["BR-SEG104-TYPE"], "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "85", "rule": "segment-104-type-fixed-value"}]},
+    {"id": "TS-SEG104-LENGTH", "requirementIds": ["BR-SEG104-LENGTH", "BR-SEG104-MAX-LENGTH"], "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "84", "rule": "segment-104-length-format"}, {"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "rule": "segment-104-max-length"}]}
+  ],
+  "testCases": [
+    {"id": "TC-SEG104-TYPE", "scenarioIds": ["TS-SEG104-TYPE"], "expectedOutcome": "PASS", "category": "field", "tags": ["segment-104", "purchase-card", "positive"], "priority": "high", "status": "active", "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "85", "rule": "segment-104-type-fixed-value"}]},
+    {"id": "TC-SEG104-LENGTH", "scenarioIds": ["TS-SEG104-LENGTH"], "expectedOutcome": "FAIL", "category": "serialization", "tags": ["segment-104", "length", "negative"], "priority": "high", "status": "active", "sourceAnchors": [{"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "84", "rule": "segment-104-length-format"}]}
+  ],
+  "testData": [],
+  "testDataStatus": "Segment Type/Length structural checks are synthesizable; no dedicated purchase-card AI test-data artifacts are currently available (matches the real AI BR file's own statement).",
+  "remaining": ["Author full field-by-field Purchase Card Data Segment coverage (Purchase Code, PC Tax/Freight/Duty Amounts, Ship-to/from fields, Direct Marketing Invoice Number) beyond this core-structure baseline."]
+}
