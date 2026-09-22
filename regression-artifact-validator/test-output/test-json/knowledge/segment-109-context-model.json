@@ -1,0 +1,26 @@
+{
+  "modelId": "ATL105-SEG109-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "109",
+  "purpose": "Explicit context envelope for Electronic Mail artifacts.",
+  "requiredContext": {
+    "messageFamily": {"values":["ELECTRONIC_MAIL_REQUEST","ELECTRONIC_MAIL_RESPONSE"],"requiredFor":"all artifacts"},
+    "operation": {"values":["RETRIEVAL","PROPRIETARY_CARD_RETRIEVAL","SUBMISSION"],"requiredFor":"all request artifacts"},
+    "promptCode": {"values":{"RETRIEVAL":"981","PROPRIETARY_CARD_RETRIEVAL":"996","SUBMISSION":"995"},"requiredFor":"all request artifacts"},
+    "blockRole": {"values":["SINGLE","FIRST","MIDDLE","LAST"],"requiredFor":"multi-message artifacts; mapping REVIEW_REQUIRED"}
+  },
+  "conditionalContext": {
+    "informationByte": "Value catalog and mapping are REVIEW_REQUIRED.",
+    "operatorAuthorization": "Employee Number and Password applicability are REVIEW_REQUIRED.",
+    "textPayload": "Text Data encoding and fragmentation are REVIEW_REQUIRED.",
+    "responseOutcome": "Response Code and Download Indicator mapping are REVIEW_REQUIRED."
+  },
+  "validationRules": [
+    "Do not use FINANCIAL_REQUEST or Segment 100 context as Segment 109 proof.",
+    "Prompt Code must agree with the declared operation.",
+    "Missing required context is REVIEW_REQUIRED unless source proves it unnecessary.",
+    "AI fixtures are not independent source evidence."
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}

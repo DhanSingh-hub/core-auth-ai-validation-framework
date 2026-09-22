@@ -1,0 +1,31 @@
+{
+  "inventoryId": "ATL105-SEG109-FIELD-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "109",
+  "fieldCount": 14,
+  "source": "ATL105 Sections 12.8, 11.5, and 10.11; docs/specs/kb/segment-109-canonical-anchors.md",
+  "fields": [
+    {"order":1,"element":"85","name":"Segment Type","jsonField":"segmentType","requiredness":"REQUIRED","type":"N","length":"3","allowed":"109","rule":"segment-type"},
+    {"order":2,"element":"84","name":"Segment Length","jsonField":"segmentLength","requiredness":"REQUIRED","type":"N","length":"3","allowed":"serialized Segment 109 length including type and separators","rule":"segment-length"},
+    {"order":3,"element":"44","name":"Information Byte","jsonField":"informationByte","requiredness":"REQUIRED","type":"N","length":"1","allowed":"REVIEW_REQUIRED: SEG109-SME-002","rule":"information-byte"},
+    {"order":4,"element":"102","name":"Terminal Identifier","jsonField":"terminalIdentifier","requiredness":"REQUIRED","type":"AN","length":"variable","allowed":"REVIEW_REQUIRED: SEG109-SME-005","rule":"terminal-identifier"},
+    {"order":5,"element":"78","name":"Prompt Code","jsonField":"promptCode","requiredness":"REQUIRED","type":"N","length":"3","allowed":["981","996","995"],"rule":"electronic-mail-prompt-code"},
+    {"order":6,"element":"11","name":"Block Number","jsonField":"blockNumber","requiredness":"REQUIRED","type":"N","length":"3","allowed":"REVIEW_REQUIRED: SEG109-SME-004","rule":"block-number"},
+    {"order":7,"element":"32","name":"Employee Number","jsonField":"employeeNumber","requiredness":"CONDITIONAL","type":"N","length":"4","allowed":"synthetic or masked only","rule":"employee-number"},
+    {"order":8,"element":"65","name":"Password","jsonField":"password","requiredness":"CONDITIONAL","type":"AN","length":"6","allowed":"synthetic or masked only","rule":"password"},
+    {"order":9,"element":"86","name":"Sequence Number","jsonField":"sequenceNumber","requiredness":"REQUIRED","type":"N","length":"6","allowed":"request/response policy REVIEW_REQUIRED","rule":"sequence-number"},
+    {"order":10,"element":"50","name":"Local Time","jsonField":"localTime","requiredness":"CONDITIONAL","type":"N","length":"4","allowed":"REVIEW_REQUIRED: SEG109-SME-008","rule":"local-time"},
+    {"order":11,"element":"36","name":"Extract Date","jsonField":"extractDate","requiredness":"CONDITIONAL","type":"N","length":"6","allowed":"REVIEW_REQUIRED: SEG109-SME-008","rule":"extract-date"},
+    {"order":12,"element":"37","name":"Extract Time","jsonField":"extractTime","requiredness":"CONDITIONAL","type":"N","length":"4","allowed":"REVIEW_REQUIRED: SEG109-SME-008","rule":"extract-time"},
+    {"order":13,"element":"104","name":"Text Data Length","jsonField":"textDataLength","requiredness":"CONDITIONAL","type":"N","length":"3","allowed":"serialized Text Data length","rule":"text-data-length"},
+    {"order":14,"element":"103","name":"Text Data","jsonField":"textData","requiredness":"CONDITIONAL","type":"AN","length":"150","allowed":"sanitized content only","rule":"text-data"}
+  ],
+  "globalRules": [
+    {"id":"FIELD-ORDER","rule":"All 14 Segment 109 fields preserve Section 12.8 order."},
+    {"id":"EMPTY-SEPARATORS","rule":"Empty fields retain Field Separators."},
+    {"id":"REQUEST-RESPONSE-BOUNDARY","rule":"The request is separator-delimited; the response is positional and has no Field Separators."},
+    {"id":"NO-SECRETS","rule":"Credential-like values in test data are synthetic or masked."}
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}
