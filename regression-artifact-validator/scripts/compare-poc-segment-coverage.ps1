@@ -1,9 +1,10 @@
 param(
     [Parameter(Mandatory = $true)][string]$SegmentNumber,
     [string]$PocPipelineRoot = "C:\Users\F5H46GZ\Downloads\POC-DEMO\POC-DEMO\core-auth-test-generation-platform\src\pipeline",
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot "test-output\ai-artifacts\coverage-reports"),
-    [string]$ProfilePath = (Join-Path $PSScriptRoot "segment-profiles.json")
+    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) "test-output\ai-artifacts\coverage-reports"),
+    [string]$ProfilePath = (Join-Path (Split-Path $PSScriptRoot -Parent) "segment-profiles.json")
 )
+$RepoRoot = Split-Path $PSScriptRoot -Parent
 
 function Get-Tokens([string]$Text) {
     $stopWords = @("a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "is", "must", "of", "on", "or", "shall", "segment", "the", "to", "use", "with")
@@ -34,7 +35,7 @@ if ($null -eq $profile) { $profile = $profileRegistry.default }
 $baselineDescription = [string]$profile.baselineDescription
 $testSolutionPatterns = @($profile.testSolutionPatterns | ForEach-Object { $_ -replace "\{segment\}", $SegmentNumber })
 
-$aiCatalogPath = Join-Path $PSScriptRoot "test-output\ai-artifacts\business-requirements\POC-AI-ATL105-Segment-$SegmentNumber-Business-Requirements.json"
+$aiCatalogPath = Join-Path $RepoRoot "test-output\ai-artifacts\business-requirements\POC-AI-ATL105-Segment-$SegmentNumber-Business-Requirements.json"
 $aiCatalog = Get-Content $aiCatalogPath -Raw | ConvertFrom-Json
 $scenarioCatalog = Get-Content (Join-Path $PocPipelineRoot "scenarios\approved\approved_scenarios.json") -Raw | ConvertFrom-Json
 $deepCatalog = Get-Content (Join-Path $PocPipelineRoot "step4_deep_extraction\approved\deep_extraction_catalog.json") -Raw | ConvertFrom-Json
@@ -43,7 +44,7 @@ $ruleById = @{}
 foreach ($rule in $deepCatalog.business_rules) { $ruleById[$rule.rule_id] = $rule }
 
 $testRequirementsById = @{}
-$testRoot = Join-Path $PSScriptRoot "test-output\test-json"
+$testRoot = Join-Path $RepoRoot "test-output\test-json"
 $testFiles = @()
 foreach ($pattern in $testSolutionPatterns) {
     $testFiles += Get-ChildItem -Path $testRoot -Recurse -File -Filter ([System.IO.Path]::GetFileName($pattern)) |
@@ -85,6 +86,7 @@ foreach ($testFile in $testFiles) {
 
 $scenarioByRequirementId = @{}
 foreach ($scenario in $scenarioCatalog.scenarios) {
+    if ([string]::IsNullOrEmpty($scenario.requirement_id)) { continue }
     if ($null -eq $scenarioByRequirementId[$scenario.requirement_id]) { $scenarioByRequirementId[$scenario.requirement_id] = @() }
     $scenarioByRequirementId[$scenario.requirement_id] += $scenario
 }

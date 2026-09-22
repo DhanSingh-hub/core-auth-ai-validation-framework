@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "placeholder": true,
+    "provisionalReason": "Synthesized placeholder canonical BR/TS/TC/TD package for Item 2 (AI Artifact Comparison). Real AI-generated Segment 113 output has not been supplied yet (PROVISIONAL P-05). Every artifact below is anchored to a rule from segment-113-rule-catalog.json and marked PROVISIONAL. Once real AI output arrives, replace this file; Item 2 comparison logic remains unchanged.",
+    "provisionalDependencies": ["P-05"]
+  },
+  "manifest": {
+    "packageId": "ATL105-SEG113-ITEM-01-ECATELECHECK-BASELINE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG113-CORE-001","title":"Segment 113 is exclusive to the ECA/TeleCheck Service Transaction Request.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1,11.3.1","segment":"113","element":"63","rule":"ecatelecheck-transaction-exclusive"}]},
+    {"id":"BR-SEG113-CORE-003","title":"Segment Type is 113.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"}]},
+    {"id":"BR-SEG113-CORE-004","title":"Segment Length is 3 digits.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length"}]},
+    {"id":"BR-SEG113-CORE-005","title":"Segment 113 maximum length is 156 alphanumeric characters.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length-max-156"}]},
+    {"id":"BR-SEG113-FIELD-008","title":"ECA/TeleCheck Clerk ID is required, alphanumeric max 6.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"131","rule":"eca-clerk-id"}]},
+    {"id":"BR-SEG113-FIELD-011","title":"ECA/TeleCheck Trace ID, when populated, is alphanumeric max 22; required on Void requests.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"134","rule":"eca-trace-id"}]},
+    {"id":"BR-SEG113-STRUCT-015","title":"Segment 113 appears at most once per message.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"113","rule":"segment-occurrence"}]}
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG113-CORE-001","requirementIds":["BR-SEG113-CORE-003","BR-SEG113-CORE-004"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"},{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length"}]},
+    {"id":"SCN-SEG113-CORE-002","requirementIds":["BR-SEG113-CORE-005"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length-max-156"}]},
+    {"id":"SCN-SEG113-FIELD-001","requirementIds":["BR-SEG113-FIELD-008"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"131","rule":"eca-clerk-id"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG113-CORE-001","scenarioIds":["SCN-SEG113-CORE-001"],"expectedOutcome":"PASS","category":"field","tags":["segment-113","identity","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG113-CORE-002","scenarioIds":["SCN-SEG113-CORE-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-113","identity","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG113-FIELD-001","scenarioIds":["SCN-SEG113-FIELD-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-113","clerk-id","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"131","rule":"eca-clerk-id"}]}
+  ],
+  "testData": [
+    {"id":"TD-SEG113-CORE-001","testCaseIds":["TC-SEG113-CORE-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-113/lifecycle/ecatelecheck-check-purchase-original.synthetic.json","provisional":"P-05","note":"payload sourced from Item 1 synthetic fixtures until real AI output arrives"}},
+    {"id":"TD-SEG113-FIELD-001","testCaseIds":["TC-SEG113-FIELD-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"131","rule":"eca-clerk-id"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-113/lifecycle/ecatelecheck-void-with-trace-id.synthetic.json","provisional":"P-05"}}
+  ]
+}
