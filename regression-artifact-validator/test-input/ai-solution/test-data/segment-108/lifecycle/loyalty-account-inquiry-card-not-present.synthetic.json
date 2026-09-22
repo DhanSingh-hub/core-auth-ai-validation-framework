@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "artifactId": "SEG108-LIFECYCLE-LOYALTY-ACCOUNT-INQUIRY-CARD-NOT-PRESENT-001",
+    "purpose": "Segment 108 card-not-present account inquiry: Update Code = I with Street Address and Phone Number, Loyalty populated in lieu of Loyalty Account Number (Section 10.9.1.2), and Payment Tender Type = CS (loyalty-only / no second card).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"144","rule":"street-address"},
+      {"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"145","rule":"phone-number-loyalty"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}
+    ],
+    "context": {
+      "updateCode": "I",
+      "cardPresent": false,
+      "paymentTenderType": "CS",
+      "lifecycleRole": "ACCOUNT_INQUIRY",
+      "messageFamily": "LOYALTY_CARD_TRANSACTION_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-05","P-06"]
+  },
+  "Loyalty Card Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "LC500003",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "060"
+      },
+      "SequenceNumber": "700103",
+      "LocalDateTime": "2609221555",
+      "PartialApprovalIndicator": "0"
+    },
+    "Loyalty Card Data Segment": {
+      "SegmentType": "108",
+      "SegmentLength": "038",
+      "LoyaltyProgramId": "100200",
+      "StreetAddress": "12345",
+      "PhoneNumberLoyalty": "5551234567",
+      "UpdateCode": "I",
+      "PaymentTenderType": "CS",
+      "LoyaltyInformationVersion": "1"
+    }
+  }
+}
