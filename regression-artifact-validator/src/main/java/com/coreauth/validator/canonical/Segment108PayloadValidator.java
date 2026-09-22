@@ -21,10 +21,9 @@ import java.util.regex.Pattern;
  * Unlike Segment 103 (an optional Financial Transaction Request companion), Segment 108
  * belongs exclusively to the dedicated Loyalty Card Transaction Request, so the payload root
  * key is {@code "Loyalty Card Transaction Request"}, not {@code "Financial Request"}.
- * Wire-serialization-only rules (SEG108-R-002, 006, 007), the reserved Expiration Date field
- * (SEG108-R-016), metadata rules (SEG108-R-022), and cross-message/compatibility/lifecycle
- * rules (SEG108-R-023, 024) are cataloged but not enforced here; see the KB README for the
- * full list.
+ * Wire-serialization-only rules (SEG108-R-002, 006, 007), metadata rules (SEG108-R-022), and
+ * cross-message/compatibility/lifecycle rules (SEG108-R-023, 024) are cataloged but not
+ * enforced here; see the KB README for the full list.
  */
 public final class Segment108PayloadValidator {
     private static final String SOURCE = "Segment108Payload";
@@ -38,6 +37,7 @@ public final class Segment108PayloadValidator {
     private static final Pattern NUMERIC_MAX_10 = Pattern.compile("^[0-9]{1,10}$");
     private static final Pattern ALPHANUMERIC_MAX_38 = Pattern.compile("^[A-Za-z0-9]{1,38}$");
     private static final Pattern NUMERIC_FIXED_19 = Pattern.compile("^[0-9]{19}$");
+    private static final Pattern EXPIRATION_DATE_MMYY = Pattern.compile("^(0[1-9]|1[0-2])[0-9]{2}$");
 
     private static final int MAX_SEGMENT_LENGTH = 142;
 
@@ -155,6 +155,7 @@ public final class Segment108PayloadValidator {
         checkOptionalPattern(segment, "PhoneNumberLoyalty", NUMERIC_MAX_10, "numeric max 10 digits", "SEG108-R-015", result);
         checkOptionalPattern(segment, "LoyaltyTrack2Data", ALPHANUMERIC_MAX_38, "alphanumeric max 38 characters", "SEG108-R-018", result);
         checkOptionalPattern(segment, "UnitOfWork", NUMERIC_FIXED_19, "numeric fixed length 19", "SEG108-R-020", result);
+        checkOptionalPattern(segment, "ExpirationDate", EXPIRATION_DATE_MMYY, "numeric MMYY (month 01-12)", "SEG108-R-016", result);
 
         // SEG108-R-013: Update Code enumeration
         if (segment.has("UpdateCode")) {

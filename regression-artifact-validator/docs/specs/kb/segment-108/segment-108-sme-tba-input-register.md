@@ -10,13 +10,15 @@ These questions are required to turn the specification-backed starter catalog in
 | SEG108-SME-004 | Confirm whether Appendix K Table 008 (Loyalty Information — Version 1) and Table 010 (Loyalty Information — Version 2) receipt layouts are in scope for this Segment 108 training pass, or a separate Appendix K workstream. | Section 10.9.4 references these tables for loyalty receipts; they are not deeply transcribed in this KB pass. | Receipt/print-data coverage, if in scope. | REVIEW_REQUIRED |
 | SEG108-SME-005 | Provide real AI-generated Segment 108 BR/TS/TC/TD packages, or confirm the location of an external AI pipeline output for Segment 108. | No real AI Solution Team artifact has been ingested for Segment 108 as of this training pass; Item 2 (AI Artifact Comparison) needs real data to certify beyond a placeholder. | AI-to-Test crosswalk / coverage-ratio reporting. | REVIEW_REQUIRED |
 | SEG108-SME-006 | Provide real Segment 108 sample JSONs (Loyalty Purchase, Points Redemption, Coupon Redemption, Reversal, Account Inquiry, Totals Report), or approve continued use of synthesized `.synthetic.json` fixtures. | No real Segment 108 test data exists yet; this training pass proceeds with synthetic fixtures pending approval. | Item 1/3 baseline and independence tests. | REVIEW_REQUIRED |
+| SEG108-SME-007 | Confirm whether Element 146 (Expiration Date) is reserved/inert (per Section 12.7's field table note) or a real, format-validated field (per Section 13.2's element dictionary and Section 10.9.1.2's manual-entry default-value narrative). | The three sources disagree; needed to decide whether `SEG108-R-016` enforces MMYY format. | Expiration Date format scenarios. | **RESOLVED** — real field, MMYY format, default `1249`; Section 12.7's note is outdated/incomplete. |
 
 ## Already-Resolved Items (2026-09-22 intake)
 
 - Max length 142 vs 84 → **142 is authoritative** (SEG108-SME-001).
 - Segment 108 is exclusive to the Loyalty Card Transaction Request (not a Financial Transaction Request companion) → **confirmed**.
 - Street Address(144)+Phone(145) substituting for Loyalty Account Number(139) when the card is absent → **catalog only, not code-enforced** (matches how similar business-condition rules are treated for other segments).
-- Element 146 (Expiration Date), marked "reserved for future use" → **validator treats it as inert; no format enforced even if populated**.
+- Element 146 (Expiration Date) → **RESOLVED 2026-09-22 as a real MMYY field, default `1249`** (SEG108-SME-007); supersedes the earlier "reserved/inert" treatment.
+- Card Type `060` (Voyager Fleet), mistakenly used in early fixtures → corrected to `040` (Loyalty), the documented Card Type for loyalty transactions per Appendix E.
 
 ## Response Format
 

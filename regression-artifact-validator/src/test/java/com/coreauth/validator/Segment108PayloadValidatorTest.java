@@ -188,6 +188,29 @@ class Segment108PayloadValidatorTest {
     }
 
     @Test
+    void acceptsExpirationDateDefaultSentinelValue() {
+        ObjectNode payload = validLoyaltyPayload();
+        ((ObjectNode) payload.path("Loyalty Card Transaction Request").path("Loyalty Card Data Segment"))
+            .put("ExpirationDate", "1249");
+
+        ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsExpirationDateWithInvalidMonth() {
+        ObjectNode payload = validLoyaltyPayload();
+        ((ObjectNode) payload.path("Loyalty Card Transaction Request").path("Loyalty Card Data Segment"))
+            .put("ExpirationDate", "1349");
+
+        ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG108-R-016"));
+    }
+
+    @Test
     void rejectsMissingLoyaltyCardDataSegment() {
         ObjectNode payload = validLoyaltyPayload();
         ((ObjectNode) payload.path("Loyalty Card Transaction Request")).remove("Loyalty Card Data Segment");

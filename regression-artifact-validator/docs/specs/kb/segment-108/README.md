@@ -7,10 +7,16 @@
 
 ---
 
-## Learning Module Index (mirrors [Segment 103 Learning Module](../segment-103/README.md))
+## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)
 
 - [SME and Technical Business Analysis Note](segment-108-sme-tba-learning-note.md)
 - [Segment 108 End-to-End Flow](segment-108-flow.md)
+- [Account Number / Card-Not-Present Substitution Note](account-number-sme-tba-note.md)
+- [Account Number / Card-Not-Present Substitution Flow](account-number-flow.md)
+- [Prompt Code / Card Type Routing Note](prompt-code-sme-tba-note.md)
+- [Prompt Code / Card Type Routing Flow](prompt-code-flow.md)
+- [Lifecycle and Correlation Note](lifecycle-sme-tba-note.md)
+- [Lifecycle and Correlation Flow](lifecycle-flow.md)
 - [Coverage Closure](coverage/README.md)
 - [Companion-Segment Compatibility Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md)
 - [Companion-Segment Compatibility Flow](companion-compatibility/companion-segment-compatibility-flow.md)
@@ -18,6 +24,10 @@
 - [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
 - [Segment 108 Rule Catalog (authoritative)](coverage/segment-108-rule-catalog.json)
 - [SME/TBA Input Register](segment-108-sme-tba-input-register.md)
+
+### Segment 100 Topics Not Mirrored (and Why)
+
+- **Partial Approval** (Segment 100's `partial-approval-*` topic, Element 121): no specification text in Section 10.9 (Loyalty Card Processing Requirements) applies partial-approval capability to loyalty transactions. Not mirrored here; do not fabricate a Segment 108 partial-approval rule.
 
 ---
 
@@ -51,7 +61,7 @@
 | 8 | 143 | Update Code | AN, 1 | C | `update-code-enumeration` | `UpdateCode` |
 | 9 | 144 | Street Address | N, 5 | C | `street-address` | `StreetAddress` |
 | 10 | 145 | Phone Number, Loyalty | N, 10 | C | `phone-number-loyalty` | `PhoneNumberLoyalty` |
-| 11 | 146 | Expiration Date | N, 4 | C | `expiration-date-reserved` (reserved for future use) | `ExpirationDate` |
+| 11 | 146 | Expiration Date | N, 4 | C | `expiration-date-mmyy` (MMYY, default 1249) | `ExpirationDate` |
 | 12 | 148 | Payment Tender Type | AN, 2 | R | `payment-tender-type-enumeration` | `PaymentTenderType` |
 | 13 | 147 | Loyalty Track 2 Data | AN, 38 | O | `loyalty-track2-data` | `LoyaltyTrack2Data` |
 | 14 | 150 | Loyalty Information Version | N, 1 | O | `loyalty-information-version` | `LoyaltyInformationVersion` |
@@ -101,7 +111,7 @@ Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `s
 | SEG108-R-013 | Update Code enumeration (8 values) | field |
 | SEG108-R-014 | Street Address numeric max 5 | field |
 | SEG108-R-015 | Phone Number, Loyalty numeric max 10 | field |
-| SEG108-R-016 | Expiration Date reserved/inert | metadata |
+| SEG108-R-016 | Expiration Date numeric MMYY, default 1249 | field |
 | SEG108-R-017 | Payment Tender Type enumeration (15 values), required | field |
 | SEG108-R-018 | Loyalty Track 2 Data alphanumeric max 38 | field |
 | SEG108-R-019 | Loyalty Information Version 1 or 2, default 1 | field |
@@ -117,7 +127,7 @@ Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `s
 
 See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segment-108-sme-tba-input-register.md) for the authoritative, trackable list. Status as of 2026-09-22 intake:
 
-- **Resolved**: P-01 (max length 142), P-05 (Loyalty-Transaction-exclusive scope), P-06 (Street/Phone substitution not code-enforced).
+- **Resolved**: P-01 (max length 142), P-05 (Loyalty-Transaction-exclusive scope), P-06 (Street/Phone substitution not code-enforced), P-09 (Expiration Date is a real MMYY field, not reserved).
 - **Open**: P-02 (Update Code reversal-function mapping), P-03 (possible response-side presence — disputed without citation), P-04 (Appendix K Table 008/010 receipt layouts in/out of scope), P-07 (real AI artifacts), P-08 (real test data).
 
 ---
@@ -140,4 +150,6 @@ See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segm
 2. Do not assume the wire field order follows ascending element numbers — fields 12-13 are elements 148 then 147.
 3. Do not certify the Update Code enumeration as covering every advice function named in Section 10.9.3 — the "reversal" functions are `REVIEW_REQUIRED` pending `SEG108-SME-002`.
 4. Do not assert Segment 108 never appears in a response without flagging `SEG108-SME-003` as open — the SME intake explicitly disputed this without yet providing a citation.
-5. Do not treat Element 146 (Expiration Date) as an enforceable field — it is documented as reserved for future use.
+5. Do not treat Element 146 (Expiration Date) as reserved/inert — SME-confirmed 2026-09-22 (`SEG108-SME-007`/`P-09`) it is a real MMYY field with default value `1249`.
+6. Do not use Card Type `060` (Voyager Fleet) for Loyalty fixtures — the correct code is `040` (Loyalty); all Segment 108 fixtures use `040`.
+7. Do not assume Segment 100's Partial Approval Indicator (Element 121) applies to loyalty transactions — no specification text supports this; that topic is intentionally not mirrored here.
