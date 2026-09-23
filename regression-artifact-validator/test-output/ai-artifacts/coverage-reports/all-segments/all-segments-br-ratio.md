@@ -1,8 +1,8 @@
 ﻿# All Segments BR Coverage Ratio: AI Solution vs Test Solution
 
-- Test Solution BRs: **280**
-- AI BRs: **1684**
-- Confirmed Test Solution baseline coverage: **36.8% (103/280)**
-- Review queue: **507**
+- Test Solution BRs: **304**
+- AI BRs: **1817**
+- Confirmed Test Solution baseline coverage: **0.3% (1/304)**
+- Review queue: **1816**
 
 All candidates remain reviewable until independently validated.

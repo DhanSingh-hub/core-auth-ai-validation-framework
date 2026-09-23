@@ -114,8 +114,11 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
         }
     }
     $best = @($candidates | Sort-Object score, tokenScore -Descending | Select-Object -First 1)[0]
+    $isExactMatch = $null -ne $best -and $best.sharedElements.Count -gt 0 -and $best.tokenScore -eq 1.0
     $matchStatus = if ($null -eq $best) {
         "UNMATCHED_IN_TEST_SOLUTION"
+    } elseif ($isExactMatch) {
+        "MATCHED_EXACT_100"
     } elseif ($best.sharedElements.Count -gt 0 -and $best.tokenScore -ge 0.1) {
         "MATCHED_ELEMENT_AND_SEMANTICS"
     } elseif ($best.tokenScore -ge 0.45) {
@@ -127,8 +130,10 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
     }
     $matchReason = if ($null -eq $best) {
         "No Test Solution candidate was available."
+    } elseif ($matchStatus -eq "MATCHED_EXACT_100") {
+        "Exact 100% match: normalized semantic tokens are identical and shared source element(s) [$($best.sharedElements -join ',')] are present."
     } elseif ($matchStatus -eq "MATCHED_ELEMENT_AND_SEMANTICS") {
-        "Heuristic match: shared element(s) [$($best.sharedElements -join ',')] and token score $($best.tokenScore) met the element-plus-semantics threshold (>= 0.1); validate the business meaning before acceptance."
+        "Review-required partial match: shared element(s) [$($best.sharedElements -join ',')] and token score $($best.tokenScore) did not establish an exact 100% match."
     } elseif ($matchStatus -eq "MATCHED_SEMANTICS_ONLY") {
         "Heuristic match: token score $($best.tokenScore) met the semantics-only threshold (>= 0.45) without a shared element; validate source and scope before acceptance."
     } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") {
@@ -138,7 +143,7 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
     }
     $scenarios = if ($null -eq $scenarioByRequirementId[$aiRequirement.id]) { @() } else { @($scenarioByRequirementId[$aiRequirement.id]) }
     $scenarioStatus = if ($scenarios.Count -eq 0) { "MISSING_SCENARIO" } else { "SCENARIO_REVIEW_REQUIRED" }
-    $testSolutionAction = if ($matchStatus -match "^MATCHED") { "NO_ADDITION_REQUIRED" } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") { "VALIDATE_MATCH_OR_ADD_IF_VALID" } else { "VALIDATE_AND_ADD_IF_VALID" }
+    $testSolutionAction = if ($matchStatus -eq "MATCHED_EXACT_100") { "NO_ADDITION_REQUIRED" } elseif ($matchStatus -match "^MATCHED") { "VALIDATE_EXACT_MATCH_OR_ADD_IF_VALID" } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") { "VALIDATE_MATCH_OR_ADD_IF_VALID" } else { "VALIDATE_AND_ADD_IF_VALID" }
     $crosswalk += [PSCustomObject]@{
         aiRequirementId = $aiRequirement.id
         aiSourceRuleId = $aiRequirement.source_rule_id
@@ -162,7 +167,7 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
 }
 
 $matchedTestIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-foreach ($record in $crosswalk | Where-Object { $_.testMatchStatus -match "^MATCHED" }) { [void]$matchedTestIds.Add($record.testRequirementId) }
+foreach ($record in $crosswalk | Where-Object { $_.testMatchStatus -eq "MATCHED_EXACT_100" }) { [void]$matchedTestIds.Add($record.testRequirementId) }
 $testGaps = @($testRequirementsById.Values | Where-Object { -not $matchedTestIds.Contains($_.id) } | Sort-Object id)
 
 $summary = [ordered]@{
@@ -175,6 +180,7 @@ $summary = [ordered]@{
     aiRequirementsMissingScenario = @($crosswalk | Where-Object { $_.scenarioStatus -eq "MISSING_SCENARIO" }).Count
     aiScenarioCertificationStatus = "All linked scenarios are review-required: scenario catalog state is APPROVED but flagged_for_review is 7191, the scenarios use specification version 2025-3, and response oracles are Level C chatbot-sourced."
     confirmedIncorrectScenarios = "Not determinable from catalog metadata alone; no scenario is execution-certified."
+    exactMatched100 = @($crosswalk | Where-Object { $_.testMatchStatus -eq "MATCHED_EXACT_100" }).Count
     matchedElementAndSemantics = @($crosswalk | Where-Object { $_.testMatchStatus -eq "MATCHED_ELEMENT_AND_SEMANTICS" }).Count
     matchedSemanticsOnly = @($crosswalk | Where-Object { $_.testMatchStatus -eq "MATCHED_SEMANTICS_ONLY" }).Count
     potentialMatches = @($crosswalk | Where-Object { $_.testMatchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED" }).Count
@@ -182,7 +188,7 @@ $summary = [ordered]@{
     testSolutionRequirementsWithoutConfirmedAiMatch = $testGaps.Count
     aiRequirementsRequiringTestSolutionReview = @($crosswalk | Where-Object { $_.testSolutionAction -ne "NO_ADDITION_REQUIRED" }).Count
 }
-$summary.testSolutionRequirementsCovered = $summary.testSolutionRequirements - $summary.testSolutionRequirementsWithoutConfirmedAiMatch
+$summary.testSolutionRequirementsCovered = @($crosswalk | Where-Object { $_.testMatchStatus -eq "MATCHED_EXACT_100" } | Select-Object -ExpandProperty testRequirementId -Unique).Count
 $summary.confirmedBrCoveragePercent = if ($summary.testSolutionRequirements -eq 0) { 0 } else { [math]::Round(100 * $summary.testSolutionRequirementsCovered / $summary.testSolutionRequirements, 1) }
 
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
