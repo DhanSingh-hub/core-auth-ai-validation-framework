@@ -1,0 +1,73 @@
+Segment 104 (Purchase Card Data Segment) — Consolidated Validation Report
+===========================================================================
+Specification:    ATL105 2026-3, Section 12.5
+Generated:        2026-09-22T18:11:03.2732199+05:30
+Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)
+
+Item 1  Coverage Closure
+------------------------
+  Rule catalog:                 ATL105-SEG104-RULE-CATALOG-001
+  Rules extracted:              14
+  Baseline validator:           Segment104PayloadValidator
+  Baseline tests:               Segment104PayloadValidatorTest
+
+Item 2  AI Artifact Comparison
+------------------------------
+  AI anchors:                   3
+  Matched vs catalog:           3
+  Missing:                      11
+  Extra:                        0
+  Precision:                    100.00%
+  Recall:                       21.43%
+  Decision:                     REJECTED_MISSING_COVERAGE
+  Note: 11 of 14 rules are MISSING because the real AI-generated BR file
+        explicitly scopes itself to a core-structure baseline (see
+        docs/specs/kb/segment-104/README.md Section 4). This is an accurate
+        finding, not a defect.
+
+Item 3  Test-Data Independence
+------------------------------
+  Validator:                    Segment104IndependenceValidator
+  Coverage:                     Independence checks over canonical BR/TS/TC/TD
+
+Item 4  Traceability Matrix
+---------------------------
+  Total rules:                  14
+  Fully traced:                 0
+  Partially traced:             3
+  Missing BRs:                  11
+  Missing test cases:           0
+  Missing test data:            3
+  Completion percentage:        0.00%
+
+Item 5  Mutation Framework Definition
+-------------------------------------
+  Mutation tester:              Segment104MutationTester
+  Standard mutations defined:   10
+  Rule classes covered:         SEG104-R-001, R-004, R-005, R-006, R-007,
+                                R-008, R-009, R-010, R-011, R-020
+
+Item 6  Mutation Framework Execution
+------------------------------------
+  Packages tested:              2
+  Mutations executed:           20
+  Overall detection rate:       100.00%
+  Unique undetected mutations:  0
+
+Item 7  Validator Enhancement (target >= 85%)
+---------------------------------------------
+  Status:                       PASS; no enhancement required.
+
+Item 8  Consolidated Sign-Off
+-----------------------------
+  Production-readiness decision: READY_FOR_AI_ARTIFACT_INTAKE
+  PROVISIONAL items still open:
+    P-01  Ship-to/Ship-from Postal Code format (ZIP+4 vs any valid postal code)
+    P-02  Segment 104 cardinality (at most one per message, by analogy to Segment 101)
+
+  Framework is READY_FOR_AI_ARTIFACT_INTAKE. Full certification requires:
+  1. SME resolution of P-01 and P-02.
+  2. Real AI-generated Segment 104 packages covering all 14 catalog rules
+     (currently only Segment Type/Length/Max-Length are covered).
+  3. Real Segment 104 test data replacing the synthetic fixtures.
+  4. External ATL105 converter run against the real data.
