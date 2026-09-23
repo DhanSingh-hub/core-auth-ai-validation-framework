@@ -21,6 +21,20 @@ function Get-Elements($Anchors) {
     return @($elements | Select-Object -Unique)
 }
 
+function Get-Segments($Anchors, [string]$Text) {
+    $segments = @()
+    foreach ($anchor in @($Anchors)) {
+        if ($null -ne $anchor.segment) { $segments += [string]$anchor.segment }
+    }
+    $segments += [regex]::Matches($Text, '(?i)ENT-SEG-([A-Z0-9]+)') | ForEach-Object { $_.Groups[1].Value }
+    $segments += [regex]::Matches($Text, '(?i)(?:data )?segment(?: no\.?| number|)\s*(\d+|DL[1-8])') | ForEach-Object { $_.Groups[1].Value }
+    return @($segments | Where-Object { $_ } | ForEach-Object { $_.ToUpperInvariant() } | Select-Object -Unique)
+}
+
+function Get-FixedValues([string]$Text) {
+    return @([regex]::Matches($Text, '(?i)fixed value(?: is| of|:)?\s*[\x27\"]?([A-Z0-9?]+)') | ForEach-Object { $_.Groups[1].Value.ToUpperInvariant() } | Select-Object -Unique)
+}
+
 function Get-TokenScore($LeftTokens, $RightTokens) {
     $leftTokens = @($LeftTokens)
     $rightTokens = @($RightTokens)
@@ -65,6 +79,8 @@ foreach ($testFile in $testFiles) {
                 sourceFile = $testFile.Name
                 sourceAnchors = $anchors
                 elements = @(Get-Elements $anchors)
+                segments = @(Get-Segments $anchors $requirement.title)
+                fixedValues = @(Get-FixedValues $requirement.title)
                 tokens = @(Get-Tokens $requirement.title)
             }
         }
@@ -78,6 +94,8 @@ foreach ($testFile in $testFiles) {
                 sourceFile = $testFile.Name
                 sourceAnchors = @()
                 elements = @()
+                segments = @(Get-Segments @() $requirement.title)
+                fixedValues = @(Get-FixedValues $requirement.title)
                 tokens = @(Get-Tokens $requirement.title)
             }
         }
@@ -101,14 +119,23 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
             if ($_ -match "^ENT-ELEM-(\d+)$") { $Matches[1] }
         } | Where-Object { $_ } | Select-Object -Unique)
     }
+    $aiSegments = @(Get-Segments @() "$($aiRequirement.statement) $($sourceRule.related_entity_ids -join ' ')")
+    $aiFixedValues = @(Get-FixedValues $aiRequirement.statement)
 
     $candidates = foreach ($testRequirement in $testRequirementsById.Values) {
         $sharedElements = @($aiElements | Where-Object { $_ -in $testRequirement.elements })
         $tokenScore = Get-TokenScore $aiTokens $testRequirement.tokens
+        $sharedSegments = @($aiSegments | Where-Object { $_ -in $testRequirement.segments })
+        $fixedValueConflict = $aiFixedValues.Count -gt 0 -and $testRequirement.fixedValues.Count -gt 0 -and @($aiFixedValues | Where-Object { $_ -notin $testRequirement.fixedValues }).Count -gt 0
+        $segmentOwnershipCompatible = $aiSegments.Count -eq 0 -or $aiSegments -contains $SegmentNumber.ToUpperInvariant()
+        $businessContextCompatible = $segmentOwnershipCompatible -and $aiSegments.Count -gt 0 -and $testRequirement.segments.Count -gt 0 -and $sharedSegments.Count -gt 0 -and -not $fixedValueConflict
         $score = $tokenScore + $(if ($sharedElements.Count -gt 0) { 1.0 } else { 0.0 })
         [PSCustomObject]@{
             requirement = $testRequirement
             sharedElements = $sharedElements
+            sharedSegments = $sharedSegments
+            fixedValueConflict = $fixedValueConflict
+            businessContextCompatible = $businessContextCompatible
             tokenScore = $tokenScore
             score = $score
         }
@@ -116,10 +143,8 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
     $best = @($candidates | Sort-Object score, tokenScore -Descending | Select-Object -First 1)[0]
     $matchStatus = if ($null -eq $best) {
         "UNMATCHED_IN_TEST_SOLUTION"
-    } elseif ($best.sharedElements.Count -gt 0 -and $best.tokenScore -ge 0.1) {
+    } elseif ($best.businessContextCompatible -and $best.sharedElements.Count -gt 0 -and $best.tokenScore -ge 0.1) {
         "MATCHED_ELEMENT_AND_SEMANTICS"
-    } elseif ($best.tokenScore -ge 0.45) {
-        "MATCHED_SEMANTICS_ONLY"
     } elseif ($best.sharedElements.Count -gt 0 -or $best.tokenScore -ge 0.2) {
         "POTENTIAL_MATCH_REVIEW_REQUIRED"
     } else {
@@ -128,11 +153,11 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
     $matchReason = if ($null -eq $best) {
         "No Test Solution candidate was available."
     } elseif ($matchStatus -eq "MATCHED_ELEMENT_AND_SEMANTICS") {
-        "Heuristic match: shared element(s) [$($best.sharedElements -join ',')] and token score $($best.tokenScore) met the element-plus-semantics threshold (>= 0.1); validate the business meaning before acceptance."
+        "Confirmed business-equivalent match: shared element(s) [$($best.sharedElements -join ',')], compatible AI/Test Solution segment context [$($best.sharedSegments -join ',')], no fixed-value conflict, and semantic evidence score $($best.tokenScore)."
     } elseif ($matchStatus -eq "MATCHED_SEMANTICS_ONLY") {
-        "Heuristic match: token score $($best.tokenScore) met the semantics-only threshold (>= 0.45) without a shared element; validate source and scope before acceptance."
+        "Not business-equivalent confirmation: semantic score $($best.tokenScore) met a text-only threshold without a shared element; retained only for review."
     } elseif ($matchStatus -eq "POTENTIAL_MATCH_REVIEW_REQUIRED") {
-        "Partial candidate: shared element(s) [$($best.sharedElements -join ',')] or token score $($best.tokenScore) was plausible but did not meet a confirmed-match threshold; manual validation required."
+        "Business-equivalence review required: shared element(s) [$($best.sharedElements -join ',')], AI segments [$($aiSegments -join ',')], compared segment [$SegmentNumber], Test Solution segments [$($best.requirement.segments -join ',')], fixed-value conflict [$($best.fixedValueConflict)]."
     } else {
         "No confirmed match: no shared element and token score $($best.tokenScore) was below the potential-match threshold; determine whether the AI rule is missing, out of scope, or differently structured."
     }
@@ -147,6 +172,7 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
         aiStatement = $aiRequirement.statement
         aiConfidence = $aiRequirement.confidence_pct
         aiElements = ($aiElements -join ",")
+        aiSegments = ($aiSegments -join ",")
         scenarioCount = $scenarios.Count
         scenarioIds = ($scenarios.id -join ",")
         scenarioStatus = $scenarioStatus
@@ -158,6 +184,8 @@ foreach ($aiRequirement in $aiCatalog.requirements) {
         testRequirementFile = $(if ($null -eq $best) { $null } else { $best.requirement.sourceFile })
         sharedElements = $(if ($null -eq $best) { "" } else { $best.sharedElements -join "," })
         semanticScore = $(if ($null -eq $best) { 0.0 } else { $best.tokenScore })
+        testSegments = $(if ($null -eq $best) { "" } else { $best.requirement.segments -join "," })
+        businessContextCompatible = $(if ($null -eq $best) { $false } else { $best.businessContextCompatible })
     }
 }
 

@@ -2,7 +2,7 @@
 
 - Test Solution BRs: **339**
 - AI BRs: **1877**
-- Confirmed Test Solution baseline coverage: **40.4% (137/339)**
-- Review queue: **520**
+- Confirmed Test Solution baseline coverage: **12.4% (42/339)**
+- Review queue: **1805**
 
 All candidates remain reviewable until independently validated.
