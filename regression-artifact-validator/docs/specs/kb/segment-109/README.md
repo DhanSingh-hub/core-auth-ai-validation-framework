@@ -5,6 +5,8 @@
 **Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)  
 **Item Progress:** Item 1 - Coverage Closure started; Items 2-8 blocked pending the manual inputs in [Segment 109 SME/TBA Input Register](segment-109-sme-tba-input-register.md).
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ## Learning Module Index
 
 - [Segment 109 Rule Catalog (authoritative)](coverage/segment-109-rule-catalog.json)

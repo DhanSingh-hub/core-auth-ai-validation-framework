@@ -78,6 +78,27 @@ The validation package uses producer-local IDs plus shared `sourceAnchors`. IDs 
 
 The validator rejects missing or duplicate IDs, unresolved links, missing source anchors, orphaned artifacts, anchor mismatches, missing expected outcomes, and test data without a payload. `SourceAnchor.canonicalKey()` compares values case-insensitively and trims whitespace, so independently generated terminology can still converge on the same specification identity.
 
+## Independent Producer and Matching Rules
+
+The AI Solution and Test Solution are independent producers. They may use different local IDs, descriptions, generation logic, artifact counts, and internal workflows. Neither producer may copy requirements or test artifacts from the other. The canonical contract is a comparison boundary, not a shared generation source.
+
+The Test Solution owns comparison and coverage decisions. AI output is preserved unchanged, resolved through an intake adapter, and compared with the independently generated Test Solution package by canonical source anchors and validated business meaning.
+
+The only valid confirmed match is an evidence-supported business-equivalent match. Shared words, shared element numbers, text similarity, or AI confidence are insufficient. They may create a review candidate only. Unresolved, partial, conflicting, or heuristic matches must remain `REVIEW_REQUIRED` and must not count as confirmed coverage.
+
+## Implementation Plan
+
+1. **Freeze the contract:** require `manifest`, producer-local IDs, artifact type, lifecycle status, and complete `sourceAnchors` for BR, TS, TC, and TD artifacts.
+2. **Build producer adapters:** normalize AI and Test Solution formats into the canonical Java model without changing the original files.
+3. **Validate each package independently:** run schema, anchor, graph, readiness, negative-path, and mutation checks before comparison.
+4. **Implement deterministic matching:** compare canonical anchor keys first, then validate business context, applicability, transaction or lifecycle conditions, and rule equivalence.
+5. **Generate the crosswalk:** retain AI IDs, Test Solution IDs, anchor key, disposition, reason, evidence, and review owner for every comparison record.
+6. **Separate coverage metrics:** report total, eligible, anchorable, confirmed, review-required, AI-only, and Test-only populations with explicit denominators.
+7. **Create the review queue:** route unresolved or conflicting records to the appropriate SME; never auto-add AI requirements to the Test Solution.
+8. **Certify the comparison engine:** use known matches, known non-matches, conflicting anchors, missing anchors, duplicate anchors, and mutation cases as regression tests.
+9. **Make Java authoritative:** use the anchor-based Java comparison as the coverage authority; use PowerShell and HTML only to transform and present validated results.
+10. **Repeat per segment:** apply the same process to every ATL105 segment and retain segment-specific rules only as controlled addenda to the common contract.
+
 Requirement crosswalk entries are optional for legacy packages, but when present they must use `CONFIRMED`, `REVIEW_REQUIRED`, or `MISSING`. Confirmed entries must reference existing AI requirement IDs. `REVIEW_REQUIRED` entries must include a `reviewOwner`; unresolved SME decisions must remain review-required and must not be promoted to confirmed coverage.
 
 When `manifest.strictExecutionContract` is `true`, the validator also requires:

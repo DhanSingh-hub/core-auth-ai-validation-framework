@@ -5,6 +5,8 @@
 **Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../../../SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure complete; Items 2-8 executed with synthesized fixtures (see PROVISIONAL P-07, P-08)
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ---
 
 ## Learning Module Index (mirrors [Segment 101 Learning Module](../segment-101/README.md))

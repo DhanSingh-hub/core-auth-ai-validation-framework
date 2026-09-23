@@ -2,6 +2,8 @@
 
 This folder is the focused learning and analysis module for the ATL105 Purchase Card Data Segment (Segment 104). It follows the complete Segment 100 knowledge-base learning structure, with field modules adapted to Purchase Card data rather than copying unrelated Segment 100 account-entry or partial-approval topics.
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ## Training and Validation Entry Points
 
 - [Segment Training Methodology](../../../../../SEGMENT-100-TRAINING-METHODOLOGY.md)

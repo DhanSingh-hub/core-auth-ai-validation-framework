@@ -1,9 +1,11 @@
 # Segment 100 Training Methodology
-## Reusable Process for Other Segments
+## Detailed Reference for the Common LLM Segment Strategy
 
 **Specification:** ATL105 2026-3  
 **System under test:** AI Solution artifacts  
 **Independent oracle:** Test Solution rules derived from the specification
+
+> The common strategy for all ATL105 segments is [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). This document remains the detailed Segment 100 reference implementation. Other segments should follow the common strategy and maintain their own segment-specific addendum.
 
 ## 1. Boundary
 
@@ -14,6 +16,39 @@ BR -> TS -> TC -> converter-ready request/response JSON
 ```
 
 The Test Solution independently validates those artifacts. Test Solution fixtures are evidence for validator behavior, not AI output and not Fiserv production test data.
+
+## 1.1 Mandatory Test Solution Training Rule
+
+Every person, agent, or automation process that trains or updates the Test Solution must follow the same evidence-first process. No training instruction, prompt, example, generated artifact, or review decision may bypass a phase or silently change a previously agreed rule.
+
+The required process is:
+
+1. Identify the authoritative ATL105 source and record its page, section, segment, element, rule, applicability, and ambiguity status.
+2. Create or update the canonical source anchor before creating a business requirement.
+3. State the condition, behavior, valid representation, invalid representation, expected result, and exception boundary.
+4. Create the BR -> TS -> TC -> TD chain independently from the AI Solution.
+5. Mark unresolved, conflicting, or SME-dependent information as `REVIEW_REQUIRED`; never infer approval.
+6. Validate schema, source anchors, links, execution readiness, negative coverage, and mutation detection.
+7. Record the evidence and validation result before accepting the training outcome.
+
+This rule also applies when a test team member supplies new knowledge to an AI assistant. The assistant must request or identify the authoritative evidence, preserve the source anchor, distinguish fact from inference, and follow the same sequence. A training statement without evidence is guidance to investigate, not an accepted Test Solution rule.
+
+The Test Solution must remain independent: AI-generated requirements, scenarios, test cases, and test data may be compared after intake, but must not be copied into the Test Solution or used as its training oracle.
+
+## 1.2 Matching Responsibility
+
+Matching AI output to the Test Solution is the responsibility of the Test Solution validation framework. The AI Solution is an input producer and may provide its own local identifiers and claimed mappings, but it must not determine whether its output is covered.
+
+The framework must:
+
+- normalize both producers into the canonical artifact schema;
+- compare shared `sourceAnchors` using deterministic canonical keys;
+- confirm a match only when the anchor and business rule are equivalent;
+- classify partial, ambiguous, conflicting, or heuristic candidates as `REVIEW_REQUIRED`;
+- report `AI_ONLY`, `TEST_ONLY`, duplicate-source, malformed, and unresolved records;
+- preserve both producer-local IDs and the evidence supporting every disposition.
+
+Text similarity, shared field numbers, matching terminology, and AI-provided confidence may identify candidates for review, but may never produce `CONFIRMED` coverage.
 
 ## 2. Canonical BR Taxonomy
 

@@ -2,6 +2,8 @@
 
 This folder is the focused learning and analysis module for the ATL105 Totals Data Segment (Segment 105).
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ## Training Status
 
 Phase 1, specification analysis, is in progress. The initial rule catalog is derived from the ATL105 2026-3 Totals Request layout. It is not a production sign-off and does not confirm behavior that needs merchant, terminal, or settlement-policy knowledge.

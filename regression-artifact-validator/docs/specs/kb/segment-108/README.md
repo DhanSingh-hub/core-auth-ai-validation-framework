@@ -5,6 +5,8 @@
 **Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../../../SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure complete; SME intake held 2026-09-22 (3 of 8 open items resolved, see [SME/TBA Input Register](segment-108-sme-tba-input-register.md))
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)

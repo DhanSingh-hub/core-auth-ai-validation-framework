@@ -78,6 +78,8 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [segment-108/README.md](segment-108/README.md) - focused Segment 108 (Loyalty Card Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (Loyalty Card Transaction Request, not a Financial Transaction Request companion)
 - [segment-108/segment-108-sme-tba-input-register.md](segment-108/segment-108-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 108
 - [segment-113/README.md](segment-113/README.md) - focused Segment 113 (ECA/TeleCheck® Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (ECA/TeleCheck® Service Transaction Request, not a Financial Transaction Request companion)
+- [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) - common LLM training strategy for every ATL105 segment, with segment-specific addenda for specialized behavior
+- Placeholder modules: Segments 110, 111, 112, 114, 115, 118, 119, 120, 123, 130, 131, 132, 134, 135, 136, 139, 140, 141, 142, 143, 145, 146, 148, 149, 150, 151, 152, 153, 155, 156, 157, and DL1-DL8. Each placeholder README records the segment name and planned knowledge-base contents.
 - [Test Validation Strategy Package](../../test-validation-strategy/README.md) - complete ATL105 validation strategy and Segment 100 descriptive business requirements
 - [segment-compatibility-matrix.md](segment-compatibility-matrix.md) - conditional compatibility of Segment 100 with currently mapped Section 3 segments
 - [13-data-elements.md](13-data-elements.md) - data dictionary from chapter 13.2 (elements 1-99 fully transcribed; 100-228 not yet done)

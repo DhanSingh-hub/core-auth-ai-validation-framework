@@ -2,6 +2,8 @@
 
 This folder is the focused learning and analysis module for the ATL105 Product Code Data Segment (Segment 102), structured the same way as the [Segment 100 module](../segment-100/README.md).
 
+**Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
+
 ## Contents
 
 - [SME and Technical Business Analysis Note](segment-102-sme-tba-learning-note.md)
