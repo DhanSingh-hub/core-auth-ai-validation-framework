@@ -13,7 +13,7 @@ Does the message also carry another Data Section 3 companion segment
   v
 Is there a specification citation stating these two segments cannot coexist?
   |
-  no --> REVIEW_REQUIRED (do not auto-reject; escalate to SME per PROVISIONAL P-01)
+  no --> REVIEW_REQUIRED (no documented mutual-exclusion boundary; escalate any claimed conflict for review)
   |
   yes --> FAIL with the citation as the rule anchor (mirrors SEG101-R-003 pattern)
 ```

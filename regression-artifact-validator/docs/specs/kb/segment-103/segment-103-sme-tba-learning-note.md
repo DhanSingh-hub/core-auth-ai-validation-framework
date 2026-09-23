@@ -43,16 +43,7 @@ This request/response difference must be explicit in test data. A validator must
 
 ## 3. When Segment 103 Is Required
 
-Segment 103 is required when the transaction flow needs EBT-specific data. The transaction type alone is not enough to decide this. This is `SEG103-R-002`, and it is `[PROVISIONAL P-01]` until an SME enumerates the exact triggering conditions.
-
-Evaluate all of these questions:
-
-1. Is the payment or benefit program EBT, SNAP, cash benefit, WIC, or eWIC?
-2. Is the transaction a normal EBT purchase, an authorization/benefits inquiry, a balance inquiry, a completion, a reversal, or voucher clear?
-3. Is a clerk or voucher involved?
-4. Is the transaction carrying WIC discounts or product-level WIC results?
-5. Is the merchant using EBT program data such as HIP data?
-6. Does the source flow require Segment 103 in Data Section No. 3?
+Segment 103 is required (`SEG103-R-002`/`SEG103-R-024`) for Food Stamp Electronic Voucher (Voucher ID, Section 10.5.2.3) and for eWIC Purchase Completion / eWIC Voucher Clear (WIC Discount Amount / WIC Product Data, Section 10.5.5.6). It is optional — present only when Clerk ID, HIP program data, or eWIC query-response data is supplied — for every other transaction type listed in Section 10.5.3, and it is prohibited for eWIC Return (Section 10.5.5.1). See the [full applicability matrix](README.md#7-segment-103-applicability-matrix-resolves-seg103-r-002--seg103-r-024) and `Segment103ApplicabilityValidator`.
 
 A standard non-EBT purchase with no EBT-specific data should not receive Segment 103 merely because the card is present at a POS.
 
@@ -71,7 +62,7 @@ The specification distinguishes several eWIC operations:
 
 Additional eWIC facts:
 
-- eWIC does not support Return transactions according to the cited section (`SEG103-R-020`, `[PROVISIONAL P-04]` for the exact Appendix G code that represents a Return).
+- eWIC does not support Return transactions (`SEG103-R-020`) — this is an absolute prohibition per Section 10.5.5.1 ("These specifications do not support Return transactions"), enforced as a hard validation error, not a narrative caution.
 - Supported eWIC payment type is EBT WIC (`50`).
 - Supported eWIC authorizers include Nevada (`74`), Kentucky (`75`), and ACS WIC (`83`).
 - Attended self-checkout is treated as unattended by eWIC processors for POS Condition Code purposes.
@@ -90,7 +81,7 @@ Positions 5-7:   Currency Code
 Positions 8-20:  Amount with sign convention
 ```
 
-The amount uses the specification's `0`, `C`, or `D` amount-sign convention. The currency code must be valid under Appendix L (`[PROVISIONAL P-06]` — the appendix code table transcription in this KB is partial).
+The amount uses the specification's `0`, `C`, or `D` amount-sign convention. The currency code is validated against the full Appendix L table (`AppendixLCurrencyCodes.java`, resolves P-06).
 
 SME question: Is this amount a merchant discount/coupon adjustment, or is it the normal transaction amount in Segment 100? They are not interchangeable.
 
@@ -101,8 +92,8 @@ Element 154 carries eWIC product information and can contain:
 - Total Length (4-digit numeric subelement, maximum value 2997)
 - Earliest WIC Benefit Expiration Date (`EF`, 8 bytes, format `CCYYMMDD`)
 - WIC Prescription Balance Information (`EA`, up to 14 bytes)
-- WIC UPC Exception/Denial Information (catalog incomplete — `[PROVISIONAL P-02]`)
-- WIC UPC Purchase Information (catalog incomplete — `[PROVISIONAL P-02]`)
+- WIC UPC Exception/Denial Information (`PS`, up to 47 bytes)
+- WIC UPC Purchase Information (`PS`, up to 34 bytes; shares the `PS` identifier with Exception/Denial and is disambiguated only by an internal bit-map, which is out of scope for structural JSON validation — `SEG103-R-023` bounds both variants at the larger 47-byte maximum)
 
 It is variable length up to 3,001 bytes and is composed of tagged subelements. It is not a free-form product description.
 
@@ -117,7 +108,7 @@ Important POS behavior:
 
 Element 164 is used for EBT program-specific data and supports HIP-related behavior. It has a maximum length of 267 bytes and contains a 3-digit Total Length subelement (max value 264) plus one to six Program Data subelements, with each subelement limited to 44 bytes.
 
-The source identifies program-data tags including `50`, `51`, `52`, and `IT`. The exact interpretation depends on the program layout and Appendix M examples. Do not infer a tag's business meaning from the tag number alone (`[PROVISIONAL P-03]`).
+The full positional layout is confirmed against both Appendix M worked examples: for TAG `50`/`51`/`52`, the subelement is TAG(2)+LEN(2)+ACCOUNT TYPE(2, fixed `98`)+AMOUNT TYPE(2, equals the TAG value)+CURRENCY CODE(3, fixed `840`)+AMOUNT DESCRIPTOR(1, `0`/`C`/`D`)+DETAIL(12-digit amount); for TAG `IT`, the subelement is TAG(2)+LEN(2)+ADDRESS(28)+ZIP(9), and ACCOUNT TYPE/AMOUNT TYPE/CURRENCY CODE/AMOUNT DESCRIPTOR are explicitly not required. This resolves P-03 and is enforced by `SEG103-R-022`.
 
 SME question: Is the program-data payload being validated against the correct state/program layout, or is it only being checked for length?
 
@@ -164,18 +155,24 @@ Host outage
   -> Segment 103 carries applicable voucher/WIC data
 ```
 
-## 9. Validator Rules Implemented (`Segment103PayloadValidator`)
+## 9. Validator Rules Implemented
+
+`Segment103PayloadValidator`:
 
 - Segment type is exactly `103` (`SEG103-R-003`).
 - Segment 103 requires a Standard Segment (100) sibling (`SEG103-R-001`).
 - Segment length is 3 or 4 digits and within `001-3334` (`SEG103-R-004`, `SEG103-R-005`).
 - Clerk ID and Voucher ID, when populated, are numeric max 10 (`SEG103-R-009`, `SEG103-R-010`).
-- WIC Discount Amount follows the positional block format and 40-byte bound (`SEG103-R-011`, `SEG103-R-012`).
-- WIC Product Data's Total Length subelement is bounded and consistent with the payload (`SEG103-R-013`).
-- EBT Program Data's Total Length subelement is bounded, and each of the 1-6 subelements is bounded to 44 bytes with a recognized TAG (`SEG103-R-014` through `SEG103-R-017`).
+- WIC Discount Amount follows the positional block format, 40-byte bound, and Appendix L currency code (`SEG103-R-011`, `SEG103-R-012`).
+- WIC Product Data's Total Length subelement is bounded and consistent with the payload, and optional granular subelements are validated against the EF/EA/PS catalog (`SEG103-R-013`, `SEG103-R-023`).
+- EBT Program Data's Total Length subelement is bounded, each of the 1-6 subelements is bounded to 44 bytes with a recognized TAG, and the full Appendix M positional layout is validated when granular fields are supplied (`SEG103-R-014` through `SEG103-R-017`, `SEG103-R-022`).
 - Segment 103 appears at most once per message (`SEG103-R-018`).
 
-Rules not enforced in code (cataloged only, pending SME/TBA input or because they are wire-serialization concerns not representable in JSON test data): `SEG103-R-002`, `SEG103-R-006`, `SEG103-R-007`, `SEG103-R-008`, `SEG103-R-019`, `SEG103-R-020`, `SEG103-R-021`.
+`Segment103WireFormatValidator`: request/response field-separator rules, field order, device origin, eWIC prompt-code enumeration, and the hard eWIC-Return prohibition (`SEG103-R-006` through `SEG103-R-008`, `SEG103-R-019` through `SEG103-R-021`).
+
+`Segment103ApplicabilityValidator`: the resolved applicability matrix (`SEG103-R-002`, `SEG103-R-024`).
+
+Rule not enforced anywhere in code because Section 12.4 does not document a mutual-exclusion boundary for Segment 103 against another Data Section 3 segment: none — this is intentional, not a gap.
 
 ## 10. Suggested Segment 103 Test Scenarios
 

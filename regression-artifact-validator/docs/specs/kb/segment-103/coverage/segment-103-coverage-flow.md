@@ -36,4 +36,4 @@ For each rule:
   COVERED
 ```
 
-Aggregate result: coverage percentage = COVERED rules / total rules. Rules tagged `provisional` in the catalog cap at `REVIEW_REQUIRED` regardless of chain completeness, until the SME resolves the corresponding P-item.
+Aggregate result: coverage percentage = COVERED rules / total rules. P-01 through P-06 are resolved (see the rule catalog's `provisionalItems`); only rules gated on P-07/P-08 (real AI artifacts / real test data) remain capped at `REVIEW_REQUIRED`.

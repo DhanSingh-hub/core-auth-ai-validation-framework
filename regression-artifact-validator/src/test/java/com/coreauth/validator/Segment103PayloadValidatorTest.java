@@ -191,6 +191,145 @@ class Segment103PayloadValidatorTest {
             .anyMatch(error -> error.reason().contains("SEG103-R-001"));
     }
 
+    @Test
+    void rejectsWicDiscountAmountWithInvalidAppendixLCurrencyCode() {
+        ObjectNode payload = validEbtPayload();
+        ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .put("WicDiscountAmount", "9752999D000000000500");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG103-R-011") && error.reason().contains("currency"));
+    }
+
+    @Test
+    void acceptsWicDiscountAmountWithValidAppendixLCurrencyCode() {
+        ObjectNode payload = validEbtPayload();
+        // 840 = U.S. Dollar per Appendix L.
+        ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .put("WicDiscountAmount", "9752840D000000000500");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void acceptsEbtProgramDataFullAppendixMLayoutForTag50() {
+        // Appendix M worked example: TAG=50, LEN=20, ACCOUNT TYPE=98, AMOUNT TYPE=50,
+        // CURRENCY CODE=840, DESCRIPTOR=C, DETAIL=000000001234 ($12.34).
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "024");
+        ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
+        subelement.put("tag", "50").put("len", "20").put("accountType", "98")
+            .put("amountType", "50").put("currencyCode", "840")
+            .put("amountDescriptor", "C").put("detail", "000000001234");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsEbtProgramDataTag51WithMismatchedAmountType() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "024");
+        ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
+        subelement.put("tag", "51").put("len", "20")
+            .put("amountType", "52").put("currencyCode", "840")
+            .put("amountDescriptor", "C").put("detail", "000000000100");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG103-R-022") && error.reason().contains("amountType"));
+    }
+
+    @Test
+    void rejectsEbtProgramDataWithNonFixedCurrencyCode() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "024");
+        ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
+        subelement.put("tag", "50").put("len", "20")
+            .put("amountType", "50").put("currencyCode", "978")
+            .put("amountDescriptor", "C").put("detail", "000000001234");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG103-R-022") && error.reason().contains("840"));
+    }
+
+    @Test
+    void acceptsEbtProgramDataTagItAddressAndZipLayout() {
+        // Appendix M second worked example: TAG=IT, LEN=37, 28-char address + 9-char zip.
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "041");
+        ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
+        subelement.put("tag", "IT").put("len", "37")
+            .put("address", "A".repeat(28))
+            .put("zip", "Z".repeat(9));
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsEbtProgramDataTagItWithWrongAddressLength() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "030");
+        ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
+        subelement.put("tag", "IT").put("len", "37")
+            .put("address", "TOO SHORT")
+            .put("zip", "Z".repeat(9));
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG103-R-022") && error.reason().contains("address"));
+    }
+
+    @Test
+    void rejectsWicProductDataSubelementWithUnknownTag() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode wicProductData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("WicProductData");
+        wicProductData.put("totalLength", "0010");
+        wicProductData.put("data", "ZZ0141420020");
+        wicProductData.putArray("subelements").addObject().put("tag", "ZZ").put("data", "01414200");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG103-R-023"));
+    }
+
+    @Test
+    void acceptsWicProductDataSubelementWithEarliestExpirationDateTag() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode wicProductData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("WicProductData");
+        wicProductData.put("totalLength", "0008");
+        wicProductData.put("data", "20270101");
+        wicProductData.putArray("subelements").addObject().put("tag", "EF").put("data", "20270101");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
     private static ObjectNode validEbtPayload() {
         ObjectNode payload = MAPPER.createObjectNode();
         ObjectNode request = payload.putObject("Financial Request");

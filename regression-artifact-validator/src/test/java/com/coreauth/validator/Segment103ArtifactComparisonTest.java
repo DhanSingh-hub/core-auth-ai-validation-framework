@@ -61,7 +61,7 @@ class Segment103ArtifactComparisonTest {
             Catalog catalog = new Segment103RuleCatalogLoader().load(SEG103_RULE_CATALOG);
 
             assertThat(catalog.catalogId()).isEqualTo("ATL105-SEG103-RULE-CATALOG-001");
-            assertThat(catalog.rules()).hasSize(21);
+            assertThat(catalog.rules()).hasSize(24);
             assertThat(catalog.anchors())
                 .allMatch(a -> "ATL105".equals(a.getSpecification()) && "2026-3".equals(a.getVersion()));
         }

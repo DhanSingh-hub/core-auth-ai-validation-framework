@@ -30,4 +30,4 @@ Before implementation, confirm:
 3. A rule is not `COVERED` unless BR, scenario, test case, and test data all share the canonical anchor.
 4. `REVIEW_REQUIRED` must not be treated as a passing certification result.
 5. The Test Team owns the approval decision; the AI output does not approve itself.
-6. Rules blocked by `PROVISIONAL` items (P-01 through P-08) remain `REVIEW_REQUIRED` until the SME resolves the underlying question.
+6. Rules previously blocked by `PROVISIONAL` items P-01 through P-06 are now `COVERED`; their resolutions and spec citations are recorded in the catalog's `provisionalItems` array. Only P-07 (real AI artifacts) and P-08 (real test data) remain open, and both are external-delivery dependencies rather than open interpretation questions.
