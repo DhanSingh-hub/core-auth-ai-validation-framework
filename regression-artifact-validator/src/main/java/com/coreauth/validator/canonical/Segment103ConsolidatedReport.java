@@ -27,7 +27,7 @@ public final class Segment103ConsolidatedReport {
     private static final Path DEFAULT_TEST_INPUT =
         Paths.get("test-input", "ai-solution", "test-data", "segment-103");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("SEGMENT-103-CONSOLIDATED-REPORT.txt");
+        Paths.get("test-output", "consolidated-reports", "SEGMENT-103-CONSOLIDATED-REPORT.txt");
 
     public record ReportInputs(
         Path ruleCatalog,
@@ -85,6 +85,9 @@ public final class Segment103ConsolidatedReport {
 
         String readiness = decideReadiness(comparison, trace, mutation);
         String reportText = render(catalog, comparison, trace, mutation, readiness);
+        if (inputs.outputFile.getParent() != null) {
+            Files.createDirectories(inputs.outputFile.getParent());
+        }
         Files.writeString(inputs.outputFile, reportText);
 
         return new ReportSummary(

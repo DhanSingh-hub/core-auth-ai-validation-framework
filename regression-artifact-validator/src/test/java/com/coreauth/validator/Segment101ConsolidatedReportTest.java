@@ -3,7 +3,6 @@ package com.coreauth.validator;
 import com.coreauth.validator.canonical.Segment101ConsolidatedReport;
 import com.coreauth.validator.canonical.Segment101ConsolidatedReport.ReportInputs;
 import com.coreauth.validator.canonical.Segment101ConsolidatedReport.ReportSummary;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -20,11 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Segment101ConsolidatedReportTest {
 
     private static final Path DEFAULT_OUTPUT = Paths.get("test-output", "consolidated-reports", "SEGMENT-101-CONSOLIDATED-REPORT.txt");
-
-    @AfterEach
-    void cleanupDefaultOutput() throws IOException {
-        Files.deleteIfExists(DEFAULT_OUTPUT);
-    }
 
     @Test
     void generatesReportWithAllItemSections(@TempDir Path tmp) throws IOException {
