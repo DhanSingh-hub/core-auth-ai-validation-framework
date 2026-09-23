@@ -1,12 +1,12 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,13 +21,13 @@ import java.util.List;
 public final class Segment111ConsolidatedReport {
 
     private static final Path DEFAULT_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json");
+        Atl105Paths.ruleCatalog("111");
     private static final Path DEFAULT_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-111-item-01-baseline-package.json");
+        Atl105Paths.testJson("segment-111-item-01-baseline-package.json");
     private static final Path DEFAULT_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-111");
+        Atl105Paths.aiTestData("111");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("SEGMENT-111-CONSOLIDATED-REPORT.txt");
+        Atl105Paths.consolidatedReport("111");
 
     public record ReportInputs(
         Path ruleCatalog,
@@ -161,7 +161,7 @@ public final class Segment111ConsolidatedReport {
         sb.append("  Decision:                     ").append(comparison.overallDecision()).append("\n");
         sb.append("  Note: some catalog rules are not present because the available AI-generated core-structure package\n");
         sb.append("        explicitly scopes itself to a core-structure baseline (see\n");
-        sb.append("        docs/specs/kb/segment-111/README.md Section 4). This is an accurate\n");
+        sb.append("        specifications/ATL105/docs/specs/kb/segment-111/README.md Section 4). This is an accurate\n");
         sb.append("        finding, not a defect.\n\n");
 
         sb.append("Item 3  Test-Data Independence\n");
@@ -228,9 +228,3 @@ public final class Segment111ConsolidatedReport {
         System.out.println("Written: " + summary.reportPath().toAbsolutePath());
     }
 }
-
-
-
-
-
-

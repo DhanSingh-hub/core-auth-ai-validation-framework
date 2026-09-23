@@ -12,7 +12,7 @@ import java.util.List;
  * Loads the independently maintained Segment 113 rule catalog produced by Item 1.
  *
  * <p>Mirrors {@link Segment108RuleCatalogLoader}. The catalog file lives at
- * {@code docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
  */
 public final class Segment113RuleCatalogLoader {
     private final ObjectMapper mapper = new ObjectMapper();

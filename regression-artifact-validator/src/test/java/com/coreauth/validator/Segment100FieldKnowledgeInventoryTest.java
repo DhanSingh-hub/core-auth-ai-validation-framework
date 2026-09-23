@@ -13,7 +13,7 @@ class Segment100FieldKnowledgeInventoryTest {
 
     @Test
     void inventoryContainsAllSeventeenOrderedSegment100Fields() throws Exception {
-        JsonNode inventory = MAPPER.readTree(Path.of("test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json").toFile());
+        JsonNode inventory = MAPPER.readTree(Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json").toFile());
 
         assertThat(inventory.path("fieldCount").asInt()).isEqualTo(17);
         assertThat(inventory.path("fields")).hasSize(17);
@@ -24,7 +24,7 @@ class Segment100FieldKnowledgeInventoryTest {
 
     @Test
     void fieldInventoryContainsRequiredAndConditionalKnowledge() throws Exception {
-        JsonNode fields = MAPPER.readTree(Path.of("test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json").toFile()).path("fields");
+        JsonNode fields = MAPPER.readTree(Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json").toFile()).path("fields");
 
         assertThat(fields.findValuesAsText("requiredness")).contains("REQUIRED", "CONDITIONAL");
         assertThat(fields.findValuesAsText("rule")).contains(

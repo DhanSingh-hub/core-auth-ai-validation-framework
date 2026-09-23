@@ -3,10 +3,8 @@ package com.coreauth.validator.canonical;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Segment100MutationTestRunner: Execute mutation testing framework against all

@@ -162,7 +162,7 @@ public final class Segment103MutationTester {
                 if (!segment.isObject()) {
                     return root;
                 }
-                ObjectNode wicProductData = segment.with("WicProductData");
+                ObjectNode wicProductData = objectField(segment, "WicProductData");
                 wicProductData.put("totalLength", mutation.mutatedValue);
             }
             case EBT_PROGRAM_TAG_INVALID -> {
@@ -170,7 +170,7 @@ public final class Segment103MutationTester {
                 if (!segment.isObject()) {
                     return root;
                 }
-                ObjectNode ebtProgramData = segment.with("EbtProgramData");
+                ObjectNode ebtProgramData = objectField(segment, "EbtProgramData");
                 if (!ebtProgramData.has("totalLength")) {
                     ebtProgramData.put("totalLength", "044");
                 }
@@ -185,7 +185,7 @@ public final class Segment103MutationTester {
                 if (!segment.isObject()) {
                     return root;
                 }
-                ObjectNode ebtProgramData = segment.with("EbtProgramData");
+                ObjectNode ebtProgramData = objectField(segment, "EbtProgramData");
                 if (!ebtProgramData.has("totalLength")) {
                     ebtProgramData.put("totalLength", "044");
                 }
@@ -203,6 +203,11 @@ public final class Segment103MutationTester {
             }
         }
         return root;
+    }
+
+    private static ObjectNode objectField(ObjectNode parent, String field) {
+        JsonNode existing = parent.get(field);
+        return existing instanceof ObjectNode object ? object : parent.putObject(field);
     }
 
     private static MutationMetrics computeMetrics(List<MutationResult> results) {

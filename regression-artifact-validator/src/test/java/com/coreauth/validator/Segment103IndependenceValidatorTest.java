@@ -143,7 +143,7 @@ class Segment103IndependenceValidatorTest {
         void acceptsAiJsonReferencePayload() {
             CanonicalTestData d = validTestData("TD-11");
             ObjectNode refPayload = MAPPER.createObjectNode();
-            refPayload.put("aiJsonReference", "test-input/ai-solution/test-data/segment-103/lifecycle/ebt-purchase-original.synthetic.json");
+            refPayload.put("aiJsonReference", "specifications/ATL105/test-input/ai-solution/test-data/segment-103/lifecycle/ebt-purchase-original.synthetic.json");
             d.setPayload(refPayload);
             ValidationResult result = new Segment103IndependenceValidator().validate(pkgWith(d));
             assertThat(result.errors()).isEmpty();

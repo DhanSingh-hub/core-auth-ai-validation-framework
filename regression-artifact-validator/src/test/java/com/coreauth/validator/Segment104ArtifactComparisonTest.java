@@ -27,17 +27,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * maintained rule catalog produced by Item 1.
  *
  * <p>Note: the real AI package under test ({@code
- * test-output/test-json/segment-104-item-01-purchase-card-baseline-package.json}) is built
+ * specifications/ATL105/test-output/test-json/segment-104-item-01-purchase-card-baseline-package.json}) is built
  * from the genuine {@code POC-AI-ATL105-Segment-104-Business-Requirements.json} artifact,
  * which explicitly scopes itself to a core-structure baseline. 11 of 14 catalog rules are
- * therefore expected to be MISSING — an authentic finding, not a test-data defect.
+ * therefore expected to be MISSING ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â an authentic finding, not a test-data defect.
  */
 class Segment104ArtifactComparisonTest {
 
     private static final Path SEG104_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json");
     private static final Path SEG104_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json");
+        Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json");
 
     private static SourceAnchor anchor(String section, String segment, String element, String rule) {
         SourceAnchor a = new SourceAnchor();

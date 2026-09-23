@@ -11,10 +11,10 @@ class Segment100KnowledgeConsistencyCheckerTest {
     @Test
     void currentKnowledgeArtifactsHaveNoStructuralConflicts() throws Exception {
         var report = new Segment100KnowledgeConsistencyChecker().check(
-                Path.of("test-output/test-json/knowledge/segment-100-br-baseline-index.json"),
-                Path.of("test-output/test-json/knowledge/segment-100-context-model.json"),
-                Path.of("test-output/test-json"),
-                Path.of("docs/specs/kb/segment-100/coverage/segment-100-rule-catalog.json"));
+                Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-br-baseline-index.json"),
+                Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-context-model.json"),
+                Path.of("specifications/ATL105/test-output/test-json"),
+                Path.of("specifications/ATL105/docs/specs/kb/segment-100/coverage/segment-100-rule-catalog.json"));
 
         assertThat(report.duplicateIds()).isEmpty();
         assertThat(report.duplicateRecords()).isEmpty();

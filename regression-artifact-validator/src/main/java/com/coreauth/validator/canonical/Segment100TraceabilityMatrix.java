@@ -1,7 +1,5 @@
 package com.coreauth.validator.canonical;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,14 +42,12 @@ public final class Segment100TraceabilityMatrix {
         double completionPercentage
     ) {}
 
-    private final CanonicalArtifactPackage pkg;
     private final Map<String, CanonicalRequirement> brById;
     private final Map<String, CanonicalScenario> tsById;
     private final Map<String, CanonicalTestCase> tcById;
     private final Map<String, CanonicalTestData> tdById;
 
     public Segment100TraceabilityMatrix(CanonicalArtifactPackage pkg) {
-        this.pkg = pkg;
         this.brById = indexBy(pkg.getBusinessRequirements(), CanonicalRequirement::getId);
         this.tsById = indexBy(pkg.getTestScenarios(), CanonicalScenario::getId);
         this.tcById = indexBy(pkg.getTestCases(), CanonicalTestCase::getId);

@@ -1,12 +1,12 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,13 +21,13 @@ import java.util.List;
 public final class Segment113ConsolidatedReport {
 
     private static final Path DEFAULT_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-113", "coverage", "segment-113-rule-catalog.json");
+        Atl105Paths.ruleCatalog("113");
     private static final Path DEFAULT_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-113-item-01-ecatelecheck-baseline-package.json");
+        Atl105Paths.testJson("segment-113-item-01-ecatelecheck-baseline-package.json");
     private static final Path DEFAULT_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-113");
+        Atl105Paths.aiTestData("113");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("test-output", "consolidated-reports", "SEGMENT-113-CONSOLIDATED-REPORT.txt");
+        Atl105Paths.consolidatedReport("113");
 
     public record ReportInputs(
         Path ruleCatalog,
@@ -140,7 +140,7 @@ public final class Segment113ConsolidatedReport {
     ) {
         StringBuilder sb = new StringBuilder();
         String timestamp = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        sb.append("Segment 113 (ECA/TeleCheck Data Segment) — Consolidated Validation Report\n");
+        sb.append("Segment 113 (ECA/TeleCheck Data Segment) Ã¢â‚¬â€ Consolidated Validation Report\n");
         sb.append("==================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.12\n");
         sb.append("Generated:        ").append(timestamp).append('\n');

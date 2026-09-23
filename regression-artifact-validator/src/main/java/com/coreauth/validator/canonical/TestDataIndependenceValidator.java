@@ -2,10 +2,6 @@ package com.coreauth.validator.canonical;
 
 import com.coreauth.validator.validation.ValidationResult;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Validates that test data is independently traceable and complete.
  *

@@ -10,8 +10,6 @@ import com.coreauth.validator.canonical.Segment111RuleCatalogLoader.Catalog;
 import com.coreauth.validator.canonical.Segment111TraceabilityMatrix;
 import com.coreauth.validator.canonical.Segment111TraceabilityMatrix.MatrixReport;
 import com.coreauth.validator.canonical.SourceAnchor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -25,14 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Item 4 (Traceability Matrix) tests for {@link Segment111TraceabilityMatrix}.
  *
- * <p>Verifies BR → TS → TC → TD chain traceability against the Segment 111 rule catalog.
+ * <p>Verifies BR â†’ TS â†’ TC â†’ TD chain traceability against the Segment 111 rule catalog.
  */
 class Segment111TraceabilityMatrixTest {
 
     private static final Path SEG111_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json");
-    private static final Path SEG111_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-111-core-structure-package.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json");
 
     private static SourceAnchor anchor(String rule) {
         SourceAnchor a = new SourceAnchor();

@@ -214,14 +214,14 @@ $html = $html.Replace('<p class="chart-note"><strong>Legend:</strong> confirmed 
 $html = [regex]::Replace($html, '(?s)<div class="filtergroup"><label>Export</label>.*?</div>', '')
 $auxPanels = '<div class="aux-panels no-print"><div class="aux-panel"><h3>Export &amp; Pagination</h3><button id="csvButton" type="button">Download CSV</button><button id="printButton" type="button">Print report</button><label for="pageSize">Records per page</label><select id="pageSize"><option value="50">50</option><option value="100">100</option><option value="150">150</option><option value="200">200</option><option value="250">250</option><option value="500">500</option><option value="1000">1000</option><option value="all">All</option></select><button id="previousPage" type="button">Previous</button><span id="pageInfo">Page 1</span><button id="nextPage" type="button">Next</button></div></div>'
 $html = $html.Replace('<div class="table-wrap"><table id="matrix">', $auxPanels + '<div class="table-wrap"><table id="matrix">')
-$paginationScript = @"
+$paginationScript = @'
 <script>
 const pageSizeControl=document.getElementById('pageSize'),previousPage=document.getElementById('previousPage'),nextPage=document.getElementById('nextPage'),pageInfo=document.getElementById('pageInfo');let currentPage=1;
 function paginate(){const eligible=rows.filter(row=>row.dataset.filterVisible==='1');const size=pageSizeControl.value==='all'?Math.max(eligible.length,1):Number(pageSizeControl.value);const pages=Math.max(Math.ceil(eligible.length/size),1);currentPage=Math.min(currentPage,pages);rows.forEach(row=>{const index=eligible.indexOf(row);row.hidden=index<0||index<(currentPage-1)*size||index>=currentPage*size});pageInfo.textContent='Page '+currentPage+' of '+pages+' ('+eligible.length+' records)';previousPage.disabled=currentPage<=1;nextPage.disabled=currentPage>=pages;}
 function refreshPagination(){currentPage=1;applyFilters();rows.forEach(row=>{row.dataset.filterVisible=row.hidden?'0':'1'});paginate();}
 document.querySelectorAll('#filter1Dimension,#filter1Value,#filter2Dimension,#filter2Value,#filter3Dimension,#filter3Value,#matrixFilter,#matchStatusFilter,#scenarioStatusFilter,#search').forEach(control=>control.addEventListener('input',refreshPagination));pageSizeControl.addEventListener('change',refreshPagination);previousPage.addEventListener('click',()=>{if(currentPage>1){currentPage--;paginate()}});nextPage.addEventListener('click',()=>{currentPage++;paginate()});refreshPagination();
 </script>
-"@
+'@
 $html = $html.Replace('</body>', $paginationScript + '</body>')
 $html | Set-Content $htmlPath -Encoding utf8
 

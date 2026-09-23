@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Segment101MutationTesterTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Path SEG101_ROOT = Paths.get("test-input", "ai-solution", "test-data", "segment-101");
+    private static final Path SEG101_ROOT = Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-101");
 
     private JsonNode loadFixture(String relativePath) throws IOException {
         return new Segment101MutationTester().loadPayload(SEG101_ROOT.resolve(relativePath));

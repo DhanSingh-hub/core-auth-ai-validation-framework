@@ -78,9 +78,9 @@ class Segment111ConsolidatedReportTest {
     void writesReportFileToDisk(@TempDir Path tmp) throws IOException {
         Path output = tmp.resolve("SEGMENT-111-CONSOLIDATED-REPORT.txt");
         ReportInputs inputs = new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json"),
             packageFile(tmp),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-111"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-111"),
             output
         );
 
@@ -114,9 +114,9 @@ class Segment111ConsolidatedReportTest {
 
     private static ReportInputs inputsFor(Path tmp) throws IOException {
         return new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json"),
             packageFile(tmp),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-111"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-111"),
             tmp.resolve("SEGMENT-111-CONSOLIDATED-REPORT.txt")
         );
     }

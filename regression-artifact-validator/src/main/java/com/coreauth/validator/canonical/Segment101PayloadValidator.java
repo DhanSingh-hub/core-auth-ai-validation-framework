@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * Validates a Segment 101 (Fleet Data Segment) payload against ATL105 Section 12.2 rules.
  *
  * <p>Rule anchors correspond to {@code SEG101-R-###} in
- * {@code docs/specs/kb/segment-101/coverage/segment-101-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-101/coverage/segment-101-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
  * PROVISIONAL items P-01, P-02, P-03, P-05, P-06, P-07 are called out inline; those checks

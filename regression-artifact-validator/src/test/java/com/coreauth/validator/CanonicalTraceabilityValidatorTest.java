@@ -236,7 +236,7 @@ class CanonicalTraceabilityValidatorTest {
 
     @Test
     void validatesSegment100CompatibilityPackage() throws Exception {
-        Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+        Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                 "segment-100-compatibility-package.json").normalize();
 
         CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
@@ -251,7 +251,7 @@ class CanonicalTraceabilityValidatorTest {
 
     @Test
     void enforcesExactlyOneSegment100ForStandardFinancialRequests() throws Exception {
-        Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+        Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                 "segment-100-compatibility-package.json").normalize();
         CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
         CanonicalTestData data = artifactPackage.getTestData().get(0);
@@ -267,11 +267,11 @@ class CanonicalTraceabilityValidatorTest {
 
     @Test
     void delegatesSegment100CardinalityForNonStandardMessageCategories() throws Exception {
-        Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+        Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                 "segment-100-compatibility-package.json").normalize();
         CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
         ObjectNode payload = (ObjectNode) artifactPackage.getTestData().get(0).getPayload();
-        ObjectNode controls = (ObjectNode) payload.with("testControls");
+        ObjectNode controls = (ObjectNode) payload.putIfAbsent("testControls", null);
         controls.put("messageCategory", "TOTALS_REQUEST");
 
         ValidationResult result = new Segment100CompatibilityValidator().validate(artifactPackage);
@@ -281,7 +281,7 @@ class CanonicalTraceabilityValidatorTest {
 
     @Test
     void validatesAndFiltersRemainingSegment100Package() throws Exception {
-        Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+        Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                 "segment-100-remaining-package.json").normalize();
 
         CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
@@ -374,7 +374,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void reportsSegment100RuleCoverage() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-compatibility-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
 
@@ -392,7 +392,7 @@ class CanonicalTraceabilityValidatorTest {
 
                 @Test
                 void writesSegment100CoverageReports() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                     "segment-100-compatibility-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 com.coreauth.validator.canonical.SourceAnchor covered = anchor("11.8.1", null, "section-3-required-for-emv");
@@ -414,24 +414,24 @@ class CanonicalTraceabilityValidatorTest {
             @Test
             void generatesCommittedSegment100CoverageReports() throws Exception {
                 Path root = Path.of(System.getProperty("user.dir"));
-                Path packageOne = root.resolve("test-output/test-json/segment-100-compatibility-package.json");
-                Path packageTwo = root.resolve("test-output/test-json/segment-100-remaining-package.json");
-                Path packageThree = root.resolve("test-output/test-json/segment-100-item-01-message-length-package.json");
-                Path packageFour = root.resolve("test-output/test-json/segment-100-item-02-tpdu-header-package.json");
-                Path packageFive = root.resolve("test-output/test-json/segment-100-item-03-element-55-package.json");
-                Path packageSix = root.resolve("test-output/test-json/segment-100-item-04-data-section-1-package.json");
-                Path packageSeven = root.resolve("test-output/test-json/segment-100-item-05-identity-length-package.json");
-                Path packageEight = root.resolve("test-output/test-json/segment-100-item-06-terminal-identifier-package.json");
-                Path packageNine = root.resolve("test-output/test-json/segment-100-item-07-prompt-code-package.json");
-                Path packageTen = root.resolve("test-output/test-json/segment-100-item-08-account-entry-package.json");
-                Path packageEleven = root.resolve("test-output/test-json/segment-100-item-09-sequence-lifecycle-package.json");
-                Path packageTwelve = root.resolve("test-output/test-json/segment-100-item-10-partial-approval-package.json");
-                Path packageThirteen = root.resolve("test-output/test-json/segment-100-item-11-final-closure-package.json");
-                Path packageFourteen = root.resolve("test-output/test-json/segment-100-gap-closure-package.json");
-                Path packageFifteen = root.resolve("test-output/test-json/segment-100-ewic-gap-package.json");
-                Path packageSixteen = root.resolve("test-output/test-json/segment-100-response-code-package.json");
-                Path catalog = root.resolve("docs/specs/kb/segment-100/coverage/segment-100-rule-catalog.json").normalize();
-                Path output = root.resolve("test-output/traceability-matrix/segment-100");
+                Path packageOne = root.resolve("specifications/ATL105/test-output/test-json/segment-100-compatibility-package.json");
+                Path packageTwo = root.resolve("specifications/ATL105/test-output/test-json/segment-100-remaining-package.json");
+                Path packageThree = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-01-message-length-package.json");
+                Path packageFour = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-02-tpdu-header-package.json");
+                Path packageFive = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-03-element-55-package.json");
+                Path packageSix = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-04-data-section-1-package.json");
+                Path packageSeven = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-05-identity-length-package.json");
+                Path packageEight = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-06-terminal-identifier-package.json");
+                Path packageNine = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-07-prompt-code-package.json");
+                Path packageTen = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-08-account-entry-package.json");
+                Path packageEleven = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-09-sequence-lifecycle-package.json");
+                Path packageTwelve = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-10-partial-approval-package.json");
+                Path packageThirteen = root.resolve("specifications/ATL105/test-output/test-json/segment-100-item-11-final-closure-package.json");
+                Path packageFourteen = root.resolve("specifications/ATL105/test-output/test-json/segment-100-gap-closure-package.json");
+                Path packageFifteen = root.resolve("specifications/ATL105/test-output/test-json/segment-100-ewic-gap-package.json");
+                Path packageSixteen = root.resolve("specifications/ATL105/test-output/test-json/segment-100-response-code-package.json");
+                Path catalog = root.resolve("specifications/ATL105/docs/specs/kb/segment-100/coverage/segment-100-rule-catalog.json").normalize();
+                Path output = root.resolve("specifications/ATL105/test-output/traceability-matrix/segment-100");
 
                 Segment100CoverageReportWriter.ReportFiles files = new Segment100CoverageRelease().generate(
                     java.util.List.of(packageOne, packageTwo, packageThree, packageFour, packageFive, packageSix, packageSeven, packageEight, packageNine, packageTen, packageEleven, packageTwelve, packageThirteen, packageFourteen, packageFifteen, packageSixteen), catalog, output);
@@ -444,7 +444,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSegment100MessageLengthCases() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-01-message-length-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -467,7 +467,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSegment100TpduHeaderCases() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-02-tpdu-header-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -483,7 +483,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSegment100Element55Cases() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-03-element-55-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -496,7 +496,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSegment100Element63AndSeparators() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-04-data-section-1-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -511,7 +511,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSegment100IdentityAndLength() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-05-identity-length-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -525,7 +525,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesTerminalIdentifierAndDependencies() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-06-terminal-identifier-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -540,7 +540,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesPromptCodeAndDependencies() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-07-prompt-code-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -554,7 +554,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesAccountNumberEntryDependencies() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-08-account-entry-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -568,7 +568,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesSequenceAndLifecycleCorrelation() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-09-sequence-lifecycle-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -582,7 +582,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesPartialApprovalIndicatorAndContext() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-10-partial-approval-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);
@@ -596,7 +596,7 @@ class CanonicalTraceabilityValidatorTest {
 
             @Test
             void validatesFinalClosureArtifacts() throws Exception {
-                Path file = Path.of(System.getProperty("user.dir"), "test-output", "test-json",
+                Path file = Path.of(System.getProperty("user.dir"), "specifications", "ATL105", "test-output", "test-json",
                         "segment-100-item-11-final-closure-package.json").normalize();
                 CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(file);
                 ValidationResult traceability = new CanonicalTraceabilityValidator().validate(artifactPackage);

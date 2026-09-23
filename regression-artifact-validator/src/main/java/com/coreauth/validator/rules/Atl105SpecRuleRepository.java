@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 /**
  * Authoritative rules derived from the BUYPASS ATL105 Message Format Specification
- * (docs/specs/kb), keyed by JSON test-data field name rather than (context, segment, element)
+ * (specifications/ATL105/docs/specs/kb), keyed by JSON test-data field name rather than (context, segment, element)
  * - chapter 13 data element definitions apply globally regardless of which segment/context
  * carries them, so context and segment are ignored on lookup.
  *

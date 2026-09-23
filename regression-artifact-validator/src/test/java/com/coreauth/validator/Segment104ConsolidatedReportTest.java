@@ -18,8 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment104ConsolidatedReportTest {
 
-    private static final Path DEFAULT_OUTPUT = Paths.get("test-output", "consolidated-reports", "SEGMENT-104-CONSOLIDATED-REPORT.txt");
-
     @Test
     void generatesReportWithAllItemSections(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment104ConsolidatedReport().generate(inputsFor(tmp));
@@ -72,9 +70,9 @@ class Segment104ConsolidatedReportTest {
     void writesReportFileToDisk(@TempDir Path tmp) throws IOException {
         Path output = tmp.resolve("SEGMENT-104-CONSOLIDATED-REPORT.txt");
         ReportInputs inputs = new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json"),
-            Paths.get("test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json"),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-104"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-104"),
             output
         );
 
@@ -102,9 +100,9 @@ class Segment104ConsolidatedReportTest {
 
     private static ReportInputs inputsFor(Path tmp) {
         return new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json"),
-            Paths.get("test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json"),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-104"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-104"),
             tmp.resolve("SEGMENT-104-CONSOLIDATED-REPORT.txt")
         );
     }

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Segment100EwicArtifactTraceabilityTest {
     @Test
     void ewicGapPackageHasCompleteTraceability() throws Exception {
-        var packageFile = Path.of("test-output/test-json/segment-100-ewic-gap-package.json");
+        var packageFile = Path.of("specifications/ATL105/test-output/test-json/segment-100-ewic-gap-package.json");
         var result = new CanonicalTraceabilityValidator().validate(new CanonicalPackageLoader().load(packageFile));
 
         assertThat(result.errors()).isEmpty();

@@ -25,14 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Item 4 (Traceability Matrix) tests for {@link Segment103TraceabilityMatrix}.
  *
- * <p>Verifies BR → TS → TC → TD chain traceability against the Segment 103 rule catalog.
+ * <p>Verifies BR Ã¢â€ â€™ TS Ã¢â€ â€™ TC Ã¢â€ â€™ TD chain traceability against the Segment 103 rule catalog.
  */
 class Segment103TraceabilityMatrixTest {
 
     private static final Path SEG103_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-103", "coverage", "segment-103-rule-catalog.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-103", "coverage", "segment-103-rule-catalog.json");
     private static final Path SEG103_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-103-item-01-ebt-baseline-package.json");
+        Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-103-item-01-ebt-baseline-package.json");
 
     private static SourceAnchor anchor(String rule) {
         SourceAnchor a = new SourceAnchor();

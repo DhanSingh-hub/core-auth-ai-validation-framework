@@ -14,13 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Item 1 (Coverage Closure) baseline tests for {@link Segment103PayloadValidator}.
  *
- * <p>Anchored to {@code docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}
+ * <p>Anchored to {@code specifications/ATL105/docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}
  * and the synthetic fixtures under
- * {@code test-input/ai-solution/test-data/segment-103/}.
+ * {@code specifications/ATL105/test-input/ai-solution/test-data/segment-103/}.
  */
 class Segment103PayloadValidatorTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Path SEG103_ROOT = Paths.get("test-input", "ai-solution", "test-data", "segment-103");
+    private static final Path SEG103_ROOT = Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-103");
 
     @Test
     void acceptsEbtPurchaseOriginalHappyPath() {

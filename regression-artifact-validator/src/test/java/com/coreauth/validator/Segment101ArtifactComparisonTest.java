@@ -29,15 +29,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <p>Note: the AI package under test is a synthesized PROVISIONAL placeholder because no
  * real Segment 101 AI output is available yet (P-09). Once real AI output arrives, replace
- * {@code test-output/test-json/segment-101-item-01-fleet-baseline-package.json}; the tests
+ * {@code specifications/ATL105/test-output/test-json/segment-101-item-01-fleet-baseline-package.json}; the tests
  * remain valid.
  */
 class Segment101ArtifactComparisonTest {
 
     private static final Path SEG101_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-101", "coverage", "segment-101-rule-catalog.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-101", "coverage", "segment-101-rule-catalog.json");
     private static final Path SEG101_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-101-item-01-fleet-baseline-package.json");
+        Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-101-item-01-fleet-baseline-package.json");
 
     private static SourceAnchor anchor(String section, String segment, String element, String rule) {
         SourceAnchor a = new SourceAnchor();

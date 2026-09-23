@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://core-auth.local/contracts/artifact-package.schema.json",
+  "title": "Producer-Neutral Artifact Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contractVersion", "producer", "packageId", "specification", "specificationVersion", "artifacts"],
+  "properties": {
+    "contractVersion": {"const": "1.0.0"},
+    "producer": {"enum": ["AI_SOLUTION", "TEST_SOLUTION"]},
+    "packageId": {"type": "string", "minLength": 1},
+    "specification": {"const": "ATL105"},
+    "specificationVersion": {"type": "string", "minLength": 1},
+    "artifacts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/artifact"}
+    },
+    "crosswalk": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/crosswalkEntry"}
+    }
+  },
+  "$defs": {
+    "anchor": {"$ref": "canonical-anchor.schema.json"},
+    "artifact": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "artifactType", "producer", "sourceAnchors"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "artifactType": {"enum": ["BR", "TS", "TC", "TD"]},
+        "producer": {"enum": ["AI_SOLUTION", "TEST_SOLUTION"]},
+        "sourceAnchors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/anchor"}}
+      }
+    },
+    "crosswalkEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["testArtifactId", "aiArtifactIds", "matchStatus", "matchMethod", "evidence"],
+      "properties": {
+        "testArtifactId": {"type": "string", "minLength": 1},
+        "aiArtifactIds": {"type": "array", "items": {"type": "string"}},
+        "matchStatus": {"enum": ["CONFIRMED", "REVIEW_REQUIRED", "MISSING"]},
+        "matchMethod": {"enum": ["CANONICAL_ANCHOR", "SEMANTIC_ALIAS", "SME_DECISION"]},
+        "evidence": {"type": "string", "minLength": 1},
+        "reviewOwner": {"type": "string"}
+      },
+      "allOf": [{
+        "if": {"properties": {"matchStatus": {"const": "REVIEW_REQUIRED"}}},
+        "then": {"required": ["reviewOwner"]}
+      }]
+    }
+  }
+}

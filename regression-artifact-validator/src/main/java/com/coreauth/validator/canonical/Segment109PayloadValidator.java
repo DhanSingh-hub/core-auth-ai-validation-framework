@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Validates source-confirmed Electronic Mail Request Segment 109 rules.
  *
  * <p>Rules are anchored to {@code SEG109-R-001} through {@code SEG109-R-018} in
- * {@code docs/specs/kb/segment-109/coverage/segment-109-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-109/coverage/segment-109-rule-catalog.json}.
  * Rules requiring SME decisions remain outside of deterministic pass/fail checks.
  */
 public final class Segment109PayloadValidator {

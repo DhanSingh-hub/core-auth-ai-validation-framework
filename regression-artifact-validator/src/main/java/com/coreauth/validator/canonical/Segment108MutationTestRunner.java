@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  * Item 6 (Mutation Framework Execution) for Segment 108.
  *
  * <p>Batch-runs the standard mutation suite from {@link Segment108MutationTester} across every
- * synthetic AI JSON payload under {@code test-input/ai-solution/test-data/segment-108/} and
+ * synthetic AI JSON payload under {@code specifications/ATL105/test-input/ai-solution/test-data/segment-108/} and
  * aggregates detection metrics. Mirrors {@link Segment103MutationTestRunner}.
  */
 public final class Segment108MutationTestRunner {

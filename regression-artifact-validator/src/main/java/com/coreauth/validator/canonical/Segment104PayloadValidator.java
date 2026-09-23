@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * rules.
  *
  * <p>Rule anchors correspond to {@code SEG104-R-###} in
- * {@code docs/specs/kb/segment-104/coverage/segment-104-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-104/coverage/segment-104-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md,
  * replicating the {@link Segment101PayloadValidator} pattern. PROVISIONAL items P-01

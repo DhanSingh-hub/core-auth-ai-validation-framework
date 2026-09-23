@@ -1,12 +1,12 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,19 +15,19 @@ import java.util.List;
  * Item 8 (Consolidated Report) for Segment 104.
  *
  * <p>Generates {@code SEGMENT-104-CONSOLIDATED-REPORT.txt} at the module root, aggregating
- * Item 1–7 outcomes into a production-readiness sign-off. Mirrors
+ * Item 1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“7 outcomes into a production-readiness sign-off. Mirrors
  * {@link Segment101ConsolidatedReport}.
  */
 public final class Segment104ConsolidatedReport {
 
     private static final Path DEFAULT_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-104", "coverage", "segment-104-rule-catalog.json");
+        Atl105Paths.ruleCatalog("104");
     private static final Path DEFAULT_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-104-item-01-purchase-card-baseline-package.json");
+        Atl105Paths.testJson("segment-104-item-01-purchase-card-baseline-package.json");
     private static final Path DEFAULT_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-104");
+        Atl105Paths.aiTestData("104");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("test-output", "consolidated-reports", "SEGMENT-104-CONSOLIDATED-REPORT.txt");
+        Atl105Paths.consolidatedReport("104");
 
     public record ReportInputs(
         Path ruleCatalog,
@@ -140,7 +140,7 @@ public final class Segment104ConsolidatedReport {
     ) {
         StringBuilder sb = new StringBuilder();
         String timestamp = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        sb.append("Segment 104 (Purchase Card Data Segment) — Consolidated Validation Report\n");
+        sb.append("Segment 104 (Purchase Card Data Segment) ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Consolidated Validation Report\n");
         sb.append("===========================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.5\n");
         sb.append("Generated:        ").append(timestamp).append('\n');
@@ -164,7 +164,7 @@ public final class Segment104ConsolidatedReport {
         sb.append("  Decision:                     ").append(comparison.overallDecision()).append("\n");
         sb.append("  Note: 11 of 14 rules are MISSING because the real AI-generated BR file\n");
         sb.append("        explicitly scopes itself to a core-structure baseline (see\n");
-        sb.append("        docs/specs/kb/segment-104/README.md Section 4). This is an accurate\n");
+        sb.append("        specifications/ATL105/docs/specs/kb/segment-104/README.md Section 4). This is an accurate\n");
         sb.append("        finding, not a defect.\n\n");
 
         sb.append("Item 3  Test-Data Independence\n");

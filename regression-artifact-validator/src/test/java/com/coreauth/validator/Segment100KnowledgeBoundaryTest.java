@@ -13,7 +13,7 @@ class Segment100KnowledgeBoundaryTest {
 
     @Test
     void separatesRequestResponseAndLifecycleKnowledge() throws Exception {
-        JsonNode model = MAPPER.readTree(Path.of("test-output/test-json/knowledge/segment-100-request-response-lifecycle-knowledge.json").toFile());
+        JsonNode model = MAPPER.readTree(Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-request-response-lifecycle-knowledge.json").toFile());
 
         assertThat(model.path("domains").has("request")).isTrue();
         assertThat(model.path("domains").has("response")).isTrue();

@@ -47,7 +47,7 @@ public final class Atl105RuleRepository implements RuleSource {
         Set<String> emptyAllowedKeys = new HashSet<>();
 
         try (CSVReader reader = new CSVReader(new FileReader(csvPath.toFile()))) {
-            String[] header = reader.readNext(); // Segment,Context,SegmentType,Element,Value,Occurrences,Status,Note
+            reader.readNext(); // Skip header: Segment,Context,SegmentType,Element,Value,Occurrences,Status,Note
             String[] row;
             while ((row = reader.readNext()) != null) {
                 if (row.length < 6) continue;

@@ -4,7 +4,6 @@ import com.coreauth.validator.canonical.Segment103MutationTester;
 import com.coreauth.validator.canonical.Segment103MutationTester.MutationCase;
 import com.coreauth.validator.canonical.Segment103MutationTester.MutationResult;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment103MutationTesterTest {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Path SEG103_ROOT = Paths.get("test-input", "ai-solution", "test-data", "segment-103");
+    private static final Path SEG103_ROOT = Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-103");
 
     private JsonNode loadFixture(String relativePath) throws IOException {
         return new Segment103MutationTester().loadPayload(SEG103_ROOT.resolve(relativePath));

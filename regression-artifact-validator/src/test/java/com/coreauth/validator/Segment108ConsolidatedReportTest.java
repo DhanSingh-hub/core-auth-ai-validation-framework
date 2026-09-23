@@ -18,15 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment108ConsolidatedReportTest {
 
-    private static final Path DEFAULT_OUTPUT = Paths.get("test-output", "consolidated-reports", "SEGMENT-108-CONSOLIDATED-REPORT.txt");
-
     @Test
     void generatesReportWithAllItemSections(@TempDir Path tmp) throws IOException {
         Path output = tmp.resolve("SEGMENT-108-CONSOLIDATED-REPORT.txt");
         ReportInputs inputs = new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
-            Paths.get("test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-108"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-108"),
             output
         );
 
@@ -73,9 +71,9 @@ class Segment108ConsolidatedReportTest {
     void writesReportFileToDisk(@TempDir Path tmp) throws IOException {
         Path output = tmp.resolve("SEGMENT-108-CONSOLIDATED-REPORT.txt");
         ReportInputs inputs = new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
-            Paths.get("test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-108"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-108"),
             output
         );
 
@@ -103,9 +101,9 @@ class Segment108ConsolidatedReportTest {
 
     private static ReportInputs inputsFor(Path tmp) {
         return new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
-            Paths.get("test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-108"),
+            Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-108", "coverage", "segment-108-rule-catalog.json"),
+            Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-108-item-01-loyalty-baseline-package.json"),
+            Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-108"),
             tmp.resolve("SEGMENT-108-CONSOLIDATED-REPORT.txt")
         );
     }

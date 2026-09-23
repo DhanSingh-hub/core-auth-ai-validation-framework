@@ -17,8 +17,8 @@ class Atl105Segment100SchemaExampleTest {
 
     @Test
     void exampleConformsToAiHandoffSchema() throws Exception {
-        File schemaFile = new File(System.getProperty("user.dir"), "schemas/atl105-segment100-artifact-package.schema.json");
-        File exampleFile = new File(System.getProperty("user.dir"), "schemas/atl105-segment100-artifact-package.example.json");
+        File schemaFile = new File(System.getProperty("user.dir"), "specifications/ATL105/schemas/atl105-segment100-artifact-package.schema.json");
+        File exampleFile = new File(System.getProperty("user.dir"), "specifications/ATL105/schemas/atl105-segment100-artifact-package.example.json");
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode schemaNode = mapper.readTree(schemaFile);

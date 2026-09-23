@@ -8,8 +8,6 @@ import com.coreauth.validator.canonical.Segment111ArtifactComparison.ComparisonR
 import com.coreauth.validator.canonical.Segment111RuleCatalogLoader;
 import com.coreauth.validator.canonical.Segment111RuleCatalogLoader.Catalog;
 import com.coreauth.validator.canonical.SourceAnchor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -27,17 +25,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  * maintained rule catalog produced by Item 1.
  *
  * <p>Note: the real AI package under test ({@code
- * test-output/test-json/segment-111-core-structure-package.json}) is built
+ * specifications/ATL105/test-output/test-json/segment-111-core-structure-package.json}) is built
  * from the genuine {@code POC-AI-ATL105-Segment-111-Business-Requirements.json} artifact,
  * which explicitly scopes itself to a core-structure baseline. 11 of 7 catalog rules are
- * therefore expected to be MISSING — an authentic finding, not a test-data defect.
+ * therefore expected to be MISSING Ã¢â‚¬â€ an authentic finding, not a test-data defect.
  */
 class Segment111ArtifactComparisonTest {
 
     private static final Path SEG111_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json");
-    private static final Path SEG111_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-111-core-structure-package.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-111", "coverage", "segment-111-rule-catalog.json");
 
     private static SourceAnchor anchor(String section, String segment, String element, String rule) {
         SourceAnchor a = new SourceAnchor();

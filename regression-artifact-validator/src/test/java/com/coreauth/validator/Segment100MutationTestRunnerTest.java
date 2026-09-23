@@ -178,7 +178,7 @@ class Segment100MutationTestRunnerTest {
     void runAllPackagesReturnsReport() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -190,7 +190,7 @@ class Segment100MutationTestRunnerTest {
     void reportHasRequiredFields() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -207,7 +207,7 @@ class Segment100MutationTestRunnerTest {
     void reportIncludesAllPackages() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -222,7 +222,7 @@ class Segment100MutationTestRunnerTest {
     void reportComputesAggregateMetrics() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -243,7 +243,7 @@ class Segment100MutationTestRunnerTest {
     void reportTracksUndetectedMutations() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -266,7 +266,7 @@ class Segment100MutationTestRunnerTest {
     void generatesSummaryReport() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -283,7 +283,7 @@ class Segment100MutationTestRunnerTest {
     void generatesDetailedReport() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -299,7 +299,7 @@ class Segment100MutationTestRunnerTest {
     void detailedReportIncludesPackageDetails() throws Exception {
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 
@@ -330,7 +330,7 @@ class Segment100MutationTestRunnerTest {
       // This would only run if we had a corrupt JSON file; for now just verify structure
       var testJsonDir = testOutputPath.resolve("test-json").toFile();
       if (!testJsonDir.exists()) {
-        System.out.println("Skipping: test-output/test-json not available");
+        System.out.println("Skipping: specifications/ATL105/test-output/test-json not available");
         return;
       }
 

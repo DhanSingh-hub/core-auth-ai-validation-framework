@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * Validates a Segment 108 (Loyalty Card Data Segment) payload against ATL105 Section 12.7 rules.
  *
  * <p>Rule anchors correspond to {@code SEG108-R-###} in
- * {@code docs/specs/kb/segment-108/coverage/segment-108-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-108/coverage/segment-108-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
  * Unlike Segment 103 (an optional Financial Transaction Request companion), Segment 108

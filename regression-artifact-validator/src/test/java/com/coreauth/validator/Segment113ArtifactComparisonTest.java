@@ -25,15 +25,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <p>Note: the AI package under test is a synthesized PROVISIONAL placeholder because no
  * real Segment 113 AI output is available yet (P-05). Once real AI output arrives, replace
- * {@code test-output/test-json/segment-113-item-01-ecatelecheck-baseline-package.json}; the
+ * {@code specifications/ATL105/test-output/test-json/segment-113-item-01-ecatelecheck-baseline-package.json}; the
  * tests remain valid.
  */
 class Segment113ArtifactComparisonTest {
 
     private static final Path SEG113_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-113", "coverage", "segment-113-rule-catalog.json");
+        Paths.get("specifications", "ATL105", "docs", "specs", "kb", "segment-113", "coverage", "segment-113-rule-catalog.json");
     private static final Path SEG113_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-113-item-01-ecatelecheck-baseline-package.json");
+        Paths.get("specifications", "ATL105", "test-output", "test-json", "segment-113-item-01-ecatelecheck-baseline-package.json");
 
     private static SourceAnchor anchor(String section, String segment, String element, String rule) {
         SourceAnchor a = new SourceAnchor();

@@ -17,9 +17,9 @@ class Segment100ValidationEvidenceReportTest {
     void generatesEvidenceForCodesFlowsAndPendingGates() throws Exception {
         Path output = Files.createTempDirectory("segment-100-evidence-");
         Segment100ValidationEvidenceReport.ReportFiles files = new Segment100ValidationEvidenceReport().generate(
-                Path.of("test-input/ai-solution/test-data/segment-100/transaction-types"),
-                Path.of("test-input/ai-solution/test-data/segment-100/lifecycle"),
-                Path.of("test-output/test-json/segment-100-code-flow-br-ts-tc-testdata.json"),
+                Path.of("specifications/ATL105/test-input/ai-solution/test-data/segment-100/transaction-types"),
+                Path.of("specifications/ATL105/test-input/ai-solution/test-data/segment-100/lifecycle"),
+                Path.of("specifications/ATL105/test-output/test-json/segment-100-code-flow-br-ts-tc-testdata.json"),
                 output);
 
         JsonNode report = MAPPER.readTree(files.json().toFile());

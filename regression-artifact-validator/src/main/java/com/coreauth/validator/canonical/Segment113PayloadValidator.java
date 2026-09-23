@@ -11,14 +11,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Validates a Segment 113 (ECA/TeleCheck® Data Segment) payload against ATL105 Section 12.12 rules.
+ * Validates a Segment 113 (ECA/TeleCheckÂ® Data Segment) payload against ATL105 Section 12.12 rules.
  *
  * <p>Rule anchors correspond to {@code SEG113-R-###} in
- * {@code docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
  * Like Segment 108, Segment 113 belongs exclusively to its own dedicated message family
- * (the ECA/TeleCheck® Service Transaction Request), so the payload root key is
+ * (the ECA/TeleCheckÂ® Service Transaction Request), so the payload root key is
  * {@code "ECA/TeleCheck Service Transaction Request"}, not {@code "Financial Request"}.
  * Unlike Segment 108, Segment 113 is a CONDITIONAL member of its message family's Data
  * Section 3 (it need not always be present), and it has no field-order reversal quirk.

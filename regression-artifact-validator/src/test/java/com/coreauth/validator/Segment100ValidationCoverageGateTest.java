@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class Segment100ValidationCoverageGateTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final Path SINGLE_STEP_DIRECTORY = Path.of("test-input/ai-solution/test-data/segment-100/transaction-types");
-    private static final Path LIFECYCLE_DIRECTORY = Path.of("test-input/ai-solution/test-data/segment-100/lifecycle");
+    private static final Path SINGLE_STEP_DIRECTORY = Path.of("specifications/ATL105/test-input/ai-solution/test-data/segment-100/transaction-types");
+    private static final Path LIFECYCLE_DIRECTORY = Path.of("specifications/ATL105/test-input/ai-solution/test-data/segment-100/lifecycle");
 
     @Test
     void allThirteenTransactionTypeArtifactsPassConverterPreflight() throws Exception {
@@ -86,7 +86,7 @@ class Segment100ValidationCoverageGateTest {
 
     @Test
     void transactionTypeMatrixRemainsIndependentAndComplete() throws Exception {
-        Path matrixPath = Path.of("test-output/test-json/segment-100-code-flow-br-ts-tc-testdata.json");
+        Path matrixPath = Path.of("specifications/ATL105/test-output/test-json/segment-100-code-flow-br-ts-tc-testdata.json");
         JsonNode matrix = MAPPER.readTree(matrixPath.toFile());
         Set<String> matrixCodes = Set.copyOf(
                 java.util.stream.StreamSupport.stream(matrix.path("transactionTypeArtifacts").spliterator(), false)

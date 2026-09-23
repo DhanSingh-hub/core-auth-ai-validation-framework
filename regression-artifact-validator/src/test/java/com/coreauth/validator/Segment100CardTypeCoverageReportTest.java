@@ -37,7 +37,7 @@ class Segment100CardTypeCoverageReportTest {
 
     @Test
     void reportsCurrentBaselineAsIncompleteInsteadOfClaimingAiCoverage() throws Exception {
-        Path directory = Path.of("test-input/ai-solution/test-data/segment-100/transaction-types");
+        Path directory = Path.of("specifications/ATL105/test-input/ai-solution/test-data/segment-100/transaction-types");
 
         var report = new Segment100CardTypeCoverageReport().generate(directory, "LOCAL|current-baseline|working-tree");
 

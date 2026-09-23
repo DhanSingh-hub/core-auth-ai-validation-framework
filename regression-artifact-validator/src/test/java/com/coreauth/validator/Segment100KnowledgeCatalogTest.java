@@ -13,7 +13,7 @@ class Segment100KnowledgeCatalogTest {
 
     @Test
     void catalogProvidesOneEntryPointForSegment100Knowledge() throws Exception {
-        JsonNode catalog = MAPPER.readTree(Path.of("test-output/test-json/knowledge/SEGMENT-100-KNOWLEDGE-CATALOG.json").toFile());
+        JsonNode catalog = MAPPER.readTree(Path.of("specifications/ATL105/test-output/test-json/knowledge/SEGMENT-100-KNOWLEDGE-CATALOG.json").toFile());
 
         assertThat(catalog.path("knowledgeModules").size()).isGreaterThanOrEqualTo(9);
         assertThat(catalog.path("knowledgeCategories")).hasSize(10);

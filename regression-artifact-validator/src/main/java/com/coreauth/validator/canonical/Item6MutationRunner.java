@@ -18,7 +18,7 @@ public class Item6MutationRunner {
     System.out.println();
 
     // Use path relative to POM location (regression-artifact-validator folder)
-    var testOutputPath = Paths.get("test-output");
+    var testOutputPath = Paths.get("specifications", "ATL105", "test-output");
 
     System.out.println("Working Directory: " + System.getProperty("user.dir"));
     System.out.println("Test Output Path: " + testOutputPath.toAbsolutePath());

@@ -12,8 +12,8 @@ class AppendixCoverageConsistencyTest {
     @Test
     void allAppendixRecordsMatchTheCanonicalInventory() throws Exception {
         var report = new AppendixCoverageConsistency().validate(
-                Path.of("test-output/test-json/knowledge/segment-100-canonical-appendix-inventory.json"),
-                Path.of("test-output/test-json/appendices"));
+                Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-canonical-appendix-inventory.json"),
+                Path.of("specifications/ATL105/test-output/test-json/appendices"));
 
         assertThat(report.appendixCount()).isEqualTo(31);
         assertThat(report.missingFiles()).isEmpty();

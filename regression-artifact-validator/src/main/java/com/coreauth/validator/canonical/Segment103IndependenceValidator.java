@@ -11,7 +11,7 @@ import com.coreauth.validator.validation.ValidationResult;
  * canonical or AI JSON form).
  *
  * <p>Rule anchors correspond to {@code SEG103-R-###} in
- * {@code docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}.
  */
 public final class Segment103IndependenceValidator {
     private static final String SOURCE = "Segment103Independence";

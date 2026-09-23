@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Segment113MutationTestRunnerTest {
 
     private static final Path SEG113_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-113");
+        Paths.get("specifications", "ATL105", "test-input", "ai-solution", "test-data", "segment-113");
 
     @Nested
     class DiscoveryTests {

@@ -30,7 +30,7 @@ class Atl105JsonValidatorTest {
     static void setUp() throws IOException, com.opencsv.exceptions.CsvValidationException {
         // Phase 1: reference data is the CSV already generated from the ATL105 Visa sample report.
         Path csv = Paths.get(System.getProperty("user.dir"))
-            .resolve("..").resolve("reports").resolve("atl105-visa").resolve("ATL105 Visa - Field Values.csv").normalize();
+            .resolve("specifications").resolve("ATL105").resolve("reports").resolve("atl105-visa-legacy").resolve("ATL105 Visa - Field Values.csv").normalize();
         Atl105RuleRepository csvRules = Atl105RuleRepository.loadFromCsv(csv);
         assertThat(csvRules.ruleCount()).isGreaterThan(0);
 

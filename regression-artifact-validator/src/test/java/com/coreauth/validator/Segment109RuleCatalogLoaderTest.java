@@ -12,7 +12,7 @@ class Segment109RuleCatalogLoaderTest {
     @Test
     void loadsAllSegment109RulesWithSourceAnchors() throws Exception {
         Segment109RuleCatalogLoader.Catalog catalog = new Segment109RuleCatalogLoader().load(Path.of(
-            "docs", "specs", "kb", "segment-109", "coverage", "segment-109-rule-catalog.json"));
+            "specifications", "ATL105", "docs", "specs", "kb", "segment-109", "coverage", "segment-109-rule-catalog.json"));
 
         assertThat(catalog.catalogId()).isEqualTo("ATL105-SEG109-RULE-CATALOG-001");
         assertThat(catalog.rules()).hasSize(22);

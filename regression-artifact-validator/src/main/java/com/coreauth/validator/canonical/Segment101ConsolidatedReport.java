@@ -1,12 +1,12 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * Item 8 (Consolidated Report) for Segment 101.
  *
  * <p>Generates {@code SEGMENT-101-CONSOLIDATED-REPORT.txt} at the module root, aggregating
- * Item 1–7 outcomes into a production-readiness sign-off.
+ * Item 1Ã¢â‚¬â€œ7 outcomes into a production-readiness sign-off.
  *
  * <p>Mirrors the responsibilities of {@code Segment100ConsolidatedReport}-equivalents; the
  * Segment 100 project publishes {@code CONSOLIDATED-VALIDATION-REPORT.txt}.
@@ -23,13 +23,13 @@ import java.util.List;
 public final class Segment101ConsolidatedReport {
 
     private static final Path DEFAULT_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-101", "coverage", "segment-101-rule-catalog.json");
+        Atl105Paths.ruleCatalog("101");
     private static final Path DEFAULT_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-101-item-01-fleet-baseline-package.json");
+        Atl105Paths.testJson("segment-101-item-01-fleet-baseline-package.json");
     private static final Path DEFAULT_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-101");
+        Atl105Paths.aiTestData("101");
     private static final Path DEFAULT_OUTPUT =
-        Paths.get("test-output", "consolidated-reports", "SEGMENT-101-CONSOLIDATED-REPORT.txt");
+        Atl105Paths.consolidatedReport("101");
 
     public record ReportInputs(
         Path ruleCatalog,
@@ -139,7 +139,7 @@ public final class Segment101ConsolidatedReport {
     ) {
         StringBuilder sb = new StringBuilder();
         String timestamp = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        sb.append("Segment 101 (Fleet Data Segment) — Consolidated Validation Report\n");
+        sb.append("Segment 101 (Fleet Data Segment) Ã¢â‚¬â€ Consolidated Validation Report\n");
         sb.append("==================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.2\n");
         sb.append("Generated:        ").append(timestamp).append('\n');

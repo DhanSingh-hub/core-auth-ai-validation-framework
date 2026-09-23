@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * Validates a Segment 103 (EBT Data Segment) payload against ATL105 Section 12.4 rules.
  *
  * <p>Rule anchors correspond to {@code SEG103-R-###} in
- * {@code docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}.
+ * {@code specifications/ATL105/docs/specs/kb/segment-103/coverage/segment-103-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
  * Wire-serialization-only rules (SEG103-R-006, 007, 008) are cataloged but enforced by

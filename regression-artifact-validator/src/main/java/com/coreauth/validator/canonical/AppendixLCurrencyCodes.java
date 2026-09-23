@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * ATL105 Appendix L (Valid Currency Codes, Element No. 20) numeric code set.
  *
- * <p>Transcribed from {@code docs/specs/extracted_text.txt} lines 34456-34944 (Appendix L-1
+ * <p>Transcribed from {@code specifications/ATL105/docs/specs/extracted_text.txt} lines 34456-34944 (Appendix L-1
  * through L-9). Used by {@link Segment103PayloadValidator} to validate the WIC Discount Amount
  * (Element 153) Currency Code subfield instead of accepting any 3-digit value.
  */

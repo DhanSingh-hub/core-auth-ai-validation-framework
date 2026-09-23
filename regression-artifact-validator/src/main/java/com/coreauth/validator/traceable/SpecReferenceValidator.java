@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * Checks that a {@link SpecReference} actually points at rules that exist in the ATL105
- * knowledge base (docs/specs/kb) - catches hallucinated element numbers or appendix letters
+ * knowledge base (specifications/ATL105/docs/specs/kb) - catches hallucinated element numbers or appendix letters
  * before they're trusted as the justification for a test.
  */
 public final class SpecReferenceValidator {
@@ -55,11 +55,11 @@ public final class SpecReferenceValidator {
         for (SpecRuleReference rule : rules) {
             if (rule.getElementNumber() != null && !knownElementNumbers.contains(rule.getElementNumber())) {
                 result.addError("SpecReference", "elementNumber " + rule.getElementNumber()
-                        + " is not a known ATL105 data element (per docs/specs/kb/13-data-elements.md)");
+                        + " is not a known ATL105 data element (per specifications/ATL105/docs/specs/kb/13-data-elements.md)");
             }
             if (rule.getAppendixId() != null && !knownAppendices.contains(rule.getAppendixId())) {
                 result.addError("SpecReference", "appendixId '" + rule.getAppendixId()
-                        + "' is not a known ATL105 appendix (per docs/specs/kb/00-index.md)");
+                        + "' is not a known ATL105 appendix (per specifications/ATL105/docs/specs/kb/00-index.md)");
             }
             if (rule.getElementNumber() == null && rule.getAppendixId() == null) {
                 result.addWarning("spec rule reference has neither elementNumber nor appendixId - only a free-text description: "

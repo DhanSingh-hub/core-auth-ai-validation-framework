@@ -13,7 +13,7 @@ class Segment100ContextModelTest {
 
     @Test
     void contextModelDefinesRequiredAndConditionalDimensions() throws Exception {
-        JsonNode model = MAPPER.readTree(Path.of("test-output/test-json/knowledge/segment-100-context-model.json").toFile());
+        JsonNode model = MAPPER.readTree(Path.of("specifications/ATL105/test-output/test-json/knowledge/segment-100-context-model.json").toFile());
 
         assertThat(model.path("requiredContext").has("transactionType")).isTrue();
         assertThat(model.path("requiredContext").has("cardType")).isTrue();
