@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "artifactId": "SEG111-LIFECYCLE-VARIABLE-INFO-SINGLE-TABLE-001",
+    "purpose": "Segment 111 minimal happy-path: single Variable Information Section repetition (Table ID 047, 23-character value). Proves the envelope-only computed-length formula holds for one repetition.",
+    "sourceAnchors": [
+      {"specification": "ATL105", "version": "2026-3", "section": "12.10", "segment": "111", "rule": "segment-111-type-fixed-value"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "070",
+      "paymentNetwork": "PURCHASE_CARD",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-01"]
+  },
+  "request": {
+    "dataSection3": {
+      "variableInfoSegment": {
+        "segmentType": "111",
+        "segmentLength": "038",
+        "variableInformationSections": [
+          {"variableInformationIndicator": "047", "variableInformationLength": "023", "variableInformation": "ABCDEFGHIJKLMNOPQRSTUVW"}
+        ]
+      }
+    }
+  }
+}

@@ -8,6 +8,9 @@ if ($files.Count -eq 0) { throw "No segment crosswalk files found in '$ReportsDi
 $records = @()
 $segmentSummaries = @()
 function Get-MatchReason($sourceRecord) {
+    if ([double]$sourceRecord.semanticScore -eq 1.0 -and -not [string]::IsNullOrWhiteSpace([string]$sourceRecord.sharedElements)) {
+        return "Exact 100% match: normalized semantic tokens are identical and shared source element(s) [$($sourceRecord.sharedElements)] are present."
+    }
     if (-not [string]::IsNullOrWhiteSpace([string]$sourceRecord.matchReason)) { return [string]$sourceRecord.matchReason }
     switch -Regex ([string]$sourceRecord.testMatchStatus) {
         '^MATCHED_ELEMENT_AND_SEMANTICS$' { return 'Matched: shared source element and semantic evidence met the confirmed heuristic threshold; validate business meaning before acceptance.' }
@@ -26,8 +29,8 @@ foreach ($file in $files) {
         segment = $segment
         aiRequirements = [int]$document.summary.aiRequirements
         testSolutionRequirements = [int]$document.summary.testSolutionRequirements
-        confirmedMatches = [int]$document.summary.matchedElementAndSemantics + [int]$document.summary.matchedSemanticsOnly
-        baselineCovered = [int]$document.summary.testSolutionRequirementsCovered
+        confirmedMatches = @($document.aiToTestSolution | Where-Object { [double]$_.semanticScore -eq 1.0 -and -not [string]::IsNullOrWhiteSpace([string]$_.sharedElements) } | Select-Object -ExpandProperty testRequirementId -Unique).Count
+        baselineCovered = @($document.aiToTestSolution | Where-Object { [double]$_.semanticScore -eq 1.0 -and -not [string]::IsNullOrWhiteSpace([string]$_.sharedElements) } | Select-Object -ExpandProperty testRequirementId -Unique).Count
         potentialMatches = [int]$document.summary.potentialMatches
         unmatchedAiRequirements = [int]$document.summary.unmatchedAiRequirements
         missingScenarios = [int]$document.summary.aiRequirementsMissingScenario
@@ -44,10 +47,10 @@ foreach ($file in $files) {
             aiConfidence = $sourceRecord.aiConfidence
             scenarioStatus = $sourceRecord.scenarioStatus
             scenarioIds = $sourceRecord.scenarioIds
-            testMatchStatus = $sourceRecord.testMatchStatus
+            testMatchStatus = if ([double]$sourceRecord.semanticScore -eq 1.0 -and -not [string]::IsNullOrWhiteSpace([string]$sourceRecord.sharedElements)) { 'MATCHED_EXACT_100' } else { 'REVIEW_REQUIRED' }
             matchReason = Get-MatchReason $sourceRecord
             sharedElements = if ($null -ne $sourceRecord.sharedElements) { $sourceRecord.sharedElements } else { '' }
-            testSolutionAction = $sourceRecord.testSolutionAction
+            testSolutionAction = if ([double]$sourceRecord.semanticScore -eq 1.0 -and -not [string]::IsNullOrWhiteSpace([string]$sourceRecord.sharedElements)) { 'NO_ADDITION_REQUIRED' } else { 'VALIDATE_EXACT_MATCH_OR_ADD_IF_VALID' }
             testRequirementId = $sourceRecord.testRequirementId
             testRequirementTitle = $sourceRecord.testRequirementTitle
             semanticScore = $sourceRecord.semanticScore
@@ -72,7 +75,7 @@ $allCovered = ($segmentSummaries | Measure-Object baselineCovered -Sum).Sum
 $allPotential = ($segmentSummaries | Measure-Object potentialMatches -Sum).Sum
 $allUnmatched = ($segmentSummaries | Measure-Object unmatchedAiRequirements -Sum).Sum
 $allMissing = ($segmentSummaries | Measure-Object missingScenarios -Sum).Sum
-$allReview = ($segmentSummaries | Measure-Object reviewQueue -Sum).Sum
+$allReview = @($records | Where-Object { $_.testMatchStatus -ne 'MATCHED_EXACT_100' }).Count
 $allCoverage = if ($allTest -eq 0) { 0 } else { [math]::Round(100 * $allCovered / $allTest, 1) }
 $aiMappingCoverage = if ($allAi -eq 0) { 0 } else { [math]::Round(100 * $allMatches / $allAi, 1) }
 $summary = [ordered]@{

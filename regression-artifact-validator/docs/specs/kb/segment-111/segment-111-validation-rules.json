@@ -1,0 +1,30 @@
+{
+  "rulesetId": "SEG111-ENVELOPE-2026-3",
+  "specification": "ATL105",
+  "version": "2026-3",
+  "section": "12.10",
+  "scope": "Envelope-only rules. Appendix I Table-ID semantics for elements 111/113 are out of scope.",
+  "aiJsonPathHints": {
+    "container": "request.dataSection3.variableInfoSegment",
+    "segmentType": "request.dataSection3.variableInfoSegment.segmentType",
+    "segmentLength": "request.dataSection3.variableInfoSegment.segmentLength",
+    "variableInformationSection": "request.dataSection3.variableInfoSegment.variableInformationSection",
+    "variableInformationIndicator": "request.dataSection3.variableInfoSegment.variableInformationSection[].variableInformationIndicator",
+    "variableInformationLength": "request.dataSection3.variableInfoSegment.variableInformationSection[].variableInformationLength",
+    "variableInformation": "request.dataSection3.variableInfoSegment.variableInformationSection[].variableInformation"
+  },
+  "requirednessLegend": {"required":"MUST be present", "structural":"computed or serialization rule", "provisional":"requires SME confirmation"},
+  "fields": [
+    {"element":"85","name":"segmentType","requiredness":"required","ruleIds":["BR-SEG111-TYPE"]},
+    {"element":"84","name":"segmentLength","requiredness":"required","ruleIds":["BR-SEG111-LENGTH"]},
+    {"element":"111","name":"variableInformationIndicator","requiredness":"required","ruleIds":["BR-SEG111-INDICATOR"]},
+    {"element":"112","name":"variableInformationLength","requiredness":"required","ruleIds":["BR-SEG111-VARIABLE-LENGTH"]},
+    {"element":"113","name":"variableInformation","requiredness":"required","ruleIds":["BR-SEG111-VARIABLE-INFORMATION"]}
+  ],
+  "structuralRules": [
+    {"ruleId":"BR-SEG111-LENGTH","assertion":"3 + 3 + sum(3 + 3 + len(value)) + 3 equals segmentLength"},
+    {"ruleId":"BR-SEG111-MAX-LENGTH","assertion":"repeated section sum <= 991 and total segment length <= 999"},
+    {"ruleId":"BR-SEG111-REPETITION-SEPARATOR","assertion":"three separators total: two before section and one trailing; none inside/between repetitions"}
+  ],
+  "appendixISemantics": "Out of scope; cross-reference BR-SEG100-APPI-VARIABLE-TRIGGER only."
+}
