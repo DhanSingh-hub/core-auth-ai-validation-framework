@@ -49,9 +49,9 @@ class Segment103ConsolidatedReportTest {
     }
 
     @Test
-    void reportsAll21RulesInCatalog(@TempDir Path tmp) throws IOException {
+    void reportsAll24RulesInCatalog(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment103ConsolidatedReport().generate(inputsFor(tmp));
-        assertThat(summary.catalogRules()).isEqualTo(21);
+        assertThat(summary.catalogRules()).isEqualTo(24);
     }
 
     @Test

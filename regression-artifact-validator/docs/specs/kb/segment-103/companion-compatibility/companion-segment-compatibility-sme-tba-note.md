@@ -18,4 +18,4 @@ Segment 101 has a documented mutual-exclusion rule against Segment 145 (Enhanced
 
 ## Open Question
 
-Is there an undocumented business rule (outside the ATL105 specification, e.g., a client contract or a Petroleum Industry Processing Specifications-style external document) that constrains which programs can combine with EBT/WIC in the same message? Track this alongside PROVISIONAL P-01 in the [rule catalog](../coverage/segment-103-rule-catalog.json).
+Is there an undocumented business rule (outside the ATL105 specification, e.g., a client contract or a Petroleum Industry Processing Specifications-style external document) that constrains which programs can combine with EBT/WIC in the same message? This is a distinct, still-open question from the resolved Segment 103 applicability matrix (P-01, now `SEG103-R-024`) and should be tracked separately if raised.

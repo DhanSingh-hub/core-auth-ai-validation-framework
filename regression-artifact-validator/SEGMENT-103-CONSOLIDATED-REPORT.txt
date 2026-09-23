@@ -7,9 +7,15 @@ Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)
 Item 1  Coverage Closure
 ------------------------
   Rule catalog:                 ATL105-SEG103-RULE-CATALOG-001
-  Rules extracted:              21
+  Rules extracted:              24 (21 original + R-022 EBT Program Data full layout,
+                                R-023 WIC Product Data subelement catalog, R-024 applicability matrix)
   Baseline validator:           Segment103PayloadValidator
+  Wire/context validator:       Segment103WireFormatValidator
+  Applicability validator:      Segment103ApplicabilityValidator
+  Currency-code table:          AppendixLCurrencyCodes (full Appendix L transcription)
   Baseline tests:               Segment103PayloadValidatorTest
+  Wire/context tests:           Segment103WireFormatValidatorTest
+  Applicability tests:          Segment103ApplicabilityValidatorTest
 
 Item 2  AI Artifact Comparison
 ------------------------------
@@ -52,23 +58,26 @@ Item 6  Mutation Framework Execution
 
 Item 7  Validator Enhancement (target >= 85%)
 ---------------------------------------------
-  Status:                       PASS on first run; no enhancement required.
+  Status:                       PASS for executable field and mutation rules; wire/context and
+                                applicability boundary checks added; full Appendix M/L layouts enforced.
 
 Item 8  Consolidated Sign-Off
 -----------------------------
   Production-readiness decision: READY_FOR_AI_ARTIFACT_INTAKE
-  PROVISIONAL items still open:
-    P-01  EBT-specific applicability trigger enumeration
-    P-02  WIC Product Data (154) full subelement catalog
-    P-03  EBT Program Data (164) full TAG catalog and Appendix M layouts
-    P-04  Appendix G transaction-type code for eWIC Return
-    P-05  Segment 100 Prompt Code cross-check for eWIC operations
-    P-06  Appendix L currency-code enumeration for WIC Discount Amount
-    P-07  AI-generated Segment 103 BR/TS/TC/TD packages
+  PROVISIONAL items resolved directly from the ATL105 specification (see rule catalog
+  provisionalItems for exact citations):
+    P-01  RESOLVED — Segment 103 applicability matrix (Sections 10.5.2-10.5.6)
+    P-02  RESOLVED — WIC Product Data (154) full subelement catalog (EF/EA/PS)
+    P-03  RESOLVED — EBT Program Data (164) full TAG catalog and Appendix M layout
+    P-04  RESOLVED — eWIC Return is an absolute prohibition (Section 10.5.5.1), not a code lookup
+    P-05  RESOLVED — eWIC Prompt Code is a literal enumerated table (Section 10.5.5.2)
+    P-06  RESOLVED — Appendix L currency-code enumeration transcribed in full
+
+  PROVISIONAL items still open (require external artifacts, not spec interpretation):
+    P-07  AI-generated Segment 103 BR/TS/TC/TD packages (none supplied yet)
     P-08  Real Segment 103 test data (currently synthesized)
 
-  Framework is READY_FOR_AI_ARTIFACT_INTAKE. Full certification requires:
-  1. SME resolution of P-01 through P-06.
-  2. Real AI-generated Segment 103 packages (P-07) replacing the placeholder.
-  3. Real Segment 103 test data (P-08) replacing the synthetic fixtures.
-  4. External ATL105 converter run against the real data.
+  Framework is READY_FOR_AI_ARTIFACT_INTAKE. Full certification still requires:
+  1. Real AI-generated Segment 103 packages (P-07) replacing the placeholder.
+  2. Real Segment 103 test data (P-08) replacing the synthetic fixtures.
+  3. External ATL105 converter run against the real data.
