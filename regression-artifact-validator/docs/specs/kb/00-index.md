@@ -74,6 +74,9 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [segment-102/README.md](segment-102/README.md) - focused Segment 102 Product Code SME, technical business analysis, and flow-learning module
 - [segment-102/coverage/README.md](segment-102/coverage/README.md) - Segment 102 rule coverage, approval gates, and open manual-input items
 - [segment-103/README.md](segment-103/README.md) - focused Segment 103 (EBT Data Segment) SME, technical business analysis, and flow-learning module; supersedes the retired flat `segment-103-ebt-sme-note.md`
+- [segment-105/README.md](segment-105/README.md) - focused Segment 105 (Totals Data Segment) SME, technical business analysis, and flow-learning module
+- [segment-108/README.md](segment-108/README.md) - focused Segment 108 (Loyalty Card Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (Loyalty Card Transaction Request, not a Financial Transaction Request companion)
+- [segment-108/segment-108-sme-tba-input-register.md](segment-108/segment-108-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 108
 - [Test Validation Strategy Package](../../test-validation-strategy/README.md) - complete ATL105 validation strategy and Segment 100 descriptive business requirements
 - [segment-compatibility-matrix.md](segment-compatibility-matrix.md) - conditional compatibility of Segment 100 with currently mapped Section 3 segments
 - [13-data-elements.md](13-data-elements.md) - data dictionary from chapter 13.2 (elements 1-99 fully transcribed; 100-228 not yet done)

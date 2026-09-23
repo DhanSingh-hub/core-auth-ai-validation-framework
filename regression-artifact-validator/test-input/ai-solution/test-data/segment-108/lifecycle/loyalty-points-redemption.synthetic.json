@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "artifactId": "SEG108-LIFECYCLE-LOYALTY-POINTS-REDEMPTION-001",
+    "purpose": "Segment 108 points-redemption scenario: Update Code = P with Points to Redeem populated, exercising the numeric max-6 bound on Points to Redeem (SEG108-R-010).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"140","rule":"points-to-redeem"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"143","rule":"update-code-enumeration"}
+    ],
+    "context": {
+      "updateCode": "P",
+      "cardPresent": true,
+      "paymentTenderType": "MC",
+      "lifecycleRole": "POINTS_REDEMPTION",
+      "messageFamily": "LOYALTY_CARD_TRANSACTION_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-05"]
+  },
+  "Loyalty Card Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "LC500002",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "040"
+      },
+      "SequenceNumber": "700102",
+      "LocalDateTime": "2609221550",
+      "PartialApprovalIndicator": "0"
+    },
+    "Loyalty Card Data Segment": {
+      "SegmentType": "108",
+      "SegmentLength": "045",
+      "LoyaltyProgramId": "100200",
+      "LoyaltyAccountNumber": "400500600701",
+      "PointsToRedeem": "015000",
+      "UpdateCode": "P",
+      "PaymentTenderType": "MC",
+      "LoyaltyInformationVersion": "1"
+    }
+  }
+}
