@@ -1,0 +1,51 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-ALL-23-TRANSACTION-TYPE-TRAINING",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "100",
+    "source": "Appendix G: Valid Transaction Type Codes",
+    "status": "TEST_SOLUTION_TRAINING_BASELINE"
+  },
+  "trainingPolicy": {
+    "standardFinancialCodes": ["0", "3", "4", "5", "6", "7", "8", "A", "B", "C", "S", "U", "Z"],
+    "specialOrNonStandardCodes": ["9", "D", "E", "K", "L", "M", "N", "Q", "T", "V"],
+    "standardFinancialRequiresSegment100": true,
+    "specialCodesRequireSpecializedFlowValidation": true,
+    "transactionTypeAloneDoesNotDetermineCompanionSegments": true,
+    "lifecycleFollowUpsReuseOriginalSequenceNumber": true,
+    "aiOutputIsNotTheTrainingOracle": true
+  },
+  "transactionTypes": [
+    {"code":"0","name":"POS Purchase/Capture or Preauthorized Completion","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-0","testSolutionTraining":"single-step purchase plus completion, reversal, and timeout lifecycle"},
+    {"code":"3","name":"POS Authorization Only","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-3","testSolutionTraining":"authorization plus completion, cancellation, and timeout lifecycle"},
+    {"code":"4","name":"Customer-activated Purchase/Capture","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-4","testSolutionTraining":"single-step purchase plus reversal and timeout lifecycle"},
+    {"code":"5","name":"Customer-activated Authorization Only","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-5","testSolutionTraining":"authorization plus completion, cancellation, and timeout lifecycle"},
+    {"code":"6","name":"Mail/Phone Purchase","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-6","testSolutionTraining":"single-step purchase plus reversal and timeout lifecycle"},
+    {"code":"7","name":"Merchandise Return/Refund","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-7","testSolutionTraining":"refund plus void-of-return lifecycle"},
+    {"code":"8","name":"Purchase Reversal/Void","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-8","testSolutionTraining":"follow-up reversal with original transaction correlation"},
+    {"code":"A","name":"Account Verification","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-A","testSolutionTraining":"single-step account verification and field validation"},
+    {"code":"B","name":"Mail/Phone Authorization Only","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-B","testSolutionTraining":"authorization plus completion, cancellation, and timeout lifecycle"},
+    {"code":"C","name":"Mail/Phone Reversal/Void","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-C","testSolutionTraining":"follow-up reversal with original transaction correlation"},
+    {"code":"S","name":"Cancellation","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-S","testSolutionTraining":"authorization-only cancellation with original correlation"},
+    {"code":"U","name":"Void of Merchandise Return","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-U","testSolutionTraining":"refund followed by void-of-return lifecycle"},
+    {"code":"Z","name":"Time-out Reversal","class":"STANDARD_FINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-Z","testSolutionTraining":"timeout reversal and retry sequence correlation"},
+    {"code":"9","name":"Special Transactions","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-9","testSolutionTraining":"special-flow classification and manual-review boundary; not standard financial validation"},
+    {"code":"D","name":"RBC Loyalty Lookup","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-D","testSolutionTraining":"loyalty message-family and account-lookup flow validation"},
+    {"code":"E","name":"Balance Inquiry","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-E","testSolutionTraining":"balance-inquiry message-family and response-context validation"},
+    {"code":"K","name":"Activate Stored Value Card","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-K","testSolutionTraining":"stored-value activation flow and required data validation"},
+    {"code":"L","name":"Deactivate Stored Value Card","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-L","testSolutionTraining":"stored-value deactivation flow and required data validation"},
+    {"code":"M","name":"Balance Merge","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-M","testSolutionTraining":"stored-value balance-merge flow and correlation validation"},
+    {"code":"N","name":"Replace Card","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-N","testSolutionTraining":"stored-value replacement flow and account transition validation"},
+    {"code":"Q","name":"Recharge Card","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-Q","testSolutionTraining":"stored-value recharge flow and amount validation"},
+    {"code":"T","name":"Token Registration","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-T","testSolutionTraining":"token-registration flow and token lifecycle boundary validation"},
+    {"code":"V","name":"Loyalty Advice Function","class":"SPECIAL_NONFINANCIAL","sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-V","testSolutionTraining":"loyalty advice message-family and operation-specific validation"}
+  ],
+  "lifecycleScenarios": [
+    {"id":"AUTH-COMPLETION","originalCodes":["3","5","B"],"followUpCodes":["0"],"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-lifecycle-auth-completion"},
+    {"id":"PURCHASE-REVERSAL-VOID","originalCodes":["0","4","6"],"followUpCodes":["8","C"],"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-lifecycle-purchase-reversal"},
+    {"id":"REFUND-VOID-OF-RETURN","originalCodes":["7"],"followUpCodes":["U"],"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-lifecycle-refund-void"},
+    {"id":"AUTHORIZATION-CANCELLATION","originalCodes":["3","5","B"],"followUpCodes":["S"],"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-lifecycle-cancellation"},
+    {"id":"TIMEOUT-REVERSAL","originalCodes":["0","3","4","5","6","B"],"followUpCodes":["Z"],"sourceAnchor":"ATL105|2026-3|Appendix G|100|78|transaction-type-lifecycle-timeout"}
+  ]
+}

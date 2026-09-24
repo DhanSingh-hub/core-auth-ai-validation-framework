@@ -25,6 +25,8 @@ An agent or automation may perform Phases 1-4 (Source Inventory through Independ
 
 This document must be updated in the same change set whenever a training-relevant decision is made, not on request. This applies to (but is not limited to): adding or changing a phase or gate, adding a new artifact type (for example a field-alias crosswalk), changing required package field names or contract shapes, changing coverage-denominator or matching policy, or discovering a segment-package conformance defect. The update happens automatically as part of doing the work; do not wait for an explicit instruction to "update the training strategy."
 
+When aggregating existing Test Solution evidence, standalone `testDataId`/`testCaseId`/`scenarioId` inventories may be normalized into canonical `testData[]` plus review-required TS/TC placeholders. This normalization may not fabricate a BR, source anchor, execution status, or segment identity: derive the segment only from an unambiguous payload `segmentType`; otherwise retain `CONTEXT_REVIEW_REQUIRED` and preserve the original file as provenance.
+
 ## SME Decision Persistence
 
 All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
@@ -192,12 +194,22 @@ Every segment should eventually produce:
 - Scenario catalog
 - Test Case catalog
 - Request Test Data JSON catalog
+- Aggregate independent BR -> TS -> TC -> TD training package with source-file provenance
 - Traceability matrix
 - Independent coverage report
 - Field-alias crosswalk (evidence-based, may be partial or empty; never fabricated)
 - Mutation evidence
 - Manual-review queue
 - Final validation decision
+
+For Segment 100 transaction-context training, the Test Solution must maintain the complete Appendix G baseline of all 23 valid transaction-type codes. The baseline is stored at `specifications/ATL105/test-output/test-json/segment-100-all-23-transaction-type-training-baseline.json` and separates:
+
+- 13 standard financial codes requiring standard financial-flow validation and Segment 100 rules.
+- 10 special or non-financial codes requiring specialized message-family validation or explicit review boundaries.
+
+The transaction-type baseline is Test Solution-owned ATL105 evidence. It is not derived from AI output. Lifecycle groups such as authorization completion, purchase reversal/void, refund void-of-return, authorization cancellation, and timeout reversal are maintained separately and must preserve original-sequence correlation where the source requires it.
+
+For specification-wide training, the Test Solution also maintains `specifications/ATL105/test-output/test-json/all-segments-all-23-transaction-type-training-baseline.json`. This is a 48-segment by 23-code applicability matrix covering all numbered and download segments in the ATL105 inventory. Segment 100 entries are the executable transaction baseline; other segment/code combinations remain `CONTEXT_REVIEW_REQUIRED` until the segment rule catalog, message-family applicability, lifecycle evidence, and request Test Data JSON establish a valid segment-specific training package. This prevents the Test Solution from fabricating applicability merely because a transaction code exists in Appendix G.
 
 ## Completion Gate
 

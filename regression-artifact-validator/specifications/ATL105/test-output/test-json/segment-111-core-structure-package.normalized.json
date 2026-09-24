@@ -1,0 +1,190 @@
+{
+  "manifest" : {
+    "packageId" : "Variable Information Data Segment",
+    "specification" : "ATL105",
+    "specificationVersion" : "2026-3",
+    "strictExecutionContract" : false
+  },
+  "businessRequirements" : [ {
+    "id" : "BR-SEG111-TYPE",
+    "title" : "Segment Type field in the Variable Information Data Segment has fixed value 111.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "85",
+      "rule" : "segment-111-type-fixed-value"
+    } ]
+  }, {
+    "id" : "BR-SEG111-LENGTH",
+    "title" : "Segment Length identifies the Variable Information Data Segment's total length including Segment Type and Field Separators.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "84",
+      "rule" : "segment-111-length-format"
+    } ]
+  }, {
+    "id" : "BR-SEG111-MAX-LENGTH",
+    "title" : "The Variable Information Data Segment has a maximum length of 999 alphanumeric characters.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-max-length"
+    } ]
+  }, {
+    "id" : "BR-SEG111-REPETITION-SEPARATOR",
+    "title" : "Field Separators do not appear between elements within a Variable Information Section repetition or between repetitions; a single Field Separator follows the final repetition.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-repetition-separator"
+    } ]
+  } ],
+  "testScenarios" : [ {
+    "id" : "TS-SEG111-TYPE",
+    "requirementIds" : [ "BR-SEG111-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "85",
+      "rule" : "segment-111-type-fixed-value"
+    } ],
+    "status" : "APPROVED_FOR_REVIEW"
+  }, {
+    "id" : "TS-SEG111-LENGTH",
+    "requirementIds" : [ "BR-SEG111-LENGTH", "BR-SEG111-MAX-LENGTH" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "84",
+      "rule" : "segment-111-length-format"
+    }, {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-max-length"
+    } ],
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "TS-SEG111-SEPARATOR",
+    "requirementIds" : [ "BR-SEG111-REPETITION-SEPARATOR" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-repetition-separator"
+    } ],
+    "status" : "REVIEW_REQUIRED"
+  } ],
+  "testCases" : [ {
+    "id" : "TC-SEG111-TYPE",
+    "scenarioIds" : [ "TS-SEG111-TYPE" ],
+    "expectedOutcome" : "COVERED",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "85",
+      "rule" : "segment-111-type-fixed-value"
+    } ]
+  }, {
+    "id" : "TC-SEG111-SEPARATOR",
+    "scenarioIds" : [ "TS-SEG111-SEPARATOR" ],
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "status" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-repetition-separator"
+    } ]
+  }, {
+    "id" : "TC-TS-SEG111-LENGTH-REVIEW",
+    "scenarioIds" : [ "TS-SEG111-LENGTH" ],
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "status" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "84",
+      "rule" : "segment-111-length-format"
+    }, {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-max-length"
+    } ]
+  } ],
+  "testData" : [ {
+    "id" : "TD-TC-SEG111-TYPE",
+    "testCaseIds" : [ "TC-SEG111-TYPE" ],
+    "expectedValidation" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "85",
+      "rule" : "segment-111-type-fixed-value"
+    } ],
+    "payload" : {
+      "source" : "Segment 111 core-structure evidence; fixture required for execution"
+    }
+  }, {
+    "id" : "TD-TC-SEG111-SEPARATOR",
+    "testCaseIds" : [ "TC-SEG111-SEPARATOR" ],
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-repetition-separator"
+    } ],
+    "payload" : {
+      "source" : "Segment 111 core-structure evidence; fixture required for execution"
+    }
+  }, {
+    "id" : "TD-TC-TS-SEG111-LENGTH-REVIEW",
+    "testCaseIds" : [ "TC-TS-SEG111-LENGTH-REVIEW" ],
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "element" : "84",
+      "rule" : "segment-111-length-format"
+    }, {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.10",
+      "segment" : "111",
+      "rule" : "segment-111-max-length"
+    } ],
+    "payload" : {
+      "source" : "Segment 111 core-structure evidence; fixture required for execution"
+    }
+  } ],
+  "requirementCrosswalk" : [ ]
+}
