@@ -141,64 +141,64 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031462|REVIEW|MATCHED|TD-SEG100-ID-001|PASS|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`|
-|TD-TC-031476|REVIEW|MATCHED|TD-SEG100-ID-002|FAIL|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`|
-|TD-TC-031477|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031578|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031579|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031580|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031581|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031582|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031583|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031699|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031700|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031701|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031702|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031703|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031704|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031851|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031852|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031854|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031855|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031897|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031898|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031899|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031900|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031985|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031986|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031987|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032188|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032289|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032415|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032416|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032418|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032419|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032513|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032530|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032877|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032878|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032879|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032880|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032886|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032888|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032891|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032893|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032894|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033040|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033271|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033272|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033273|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033274|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033275|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032432|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032433|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032434|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032435|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032441|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032443|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032446|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032448|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-032449|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031462|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; alias crosswalk exists for this segment but no AI element name resolves to Test element 85 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-031476|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; alias crosswalk exists for this segment but no AI element name resolves to Test element 85 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-031477|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031578|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031579|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031580|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031581|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031582|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031583|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031699|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031700|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031701|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031702|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031703|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031704|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031851|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031852|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031854|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031855|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031897|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031898|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031899|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031900|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031985|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031986|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031987|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032188|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032289|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032415|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032416|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032418|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032419|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032513|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032530|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032877|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032878|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032879|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032880|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032886|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032888|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032891|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032893|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032894|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033040|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033271|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033272|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033273|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033274|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033275|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032432|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032433|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032434|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032435|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032441|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032443|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032446|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032448|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-032449|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
 ## SEG100-R-039 - CONFIRMED
 
@@ -324,21 +324,21 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-035653|REVIEW|MATCHED|TD-SEG100-E121-003|PASS|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`|
-|TD-TC-035654|REVIEW|MATCHED|TD-SEG100-E121-004|FAIL|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`|
-|TD-TC-035655|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035656|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035657|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035658|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035659|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035660|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035661|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035662|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035663|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035664|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035665|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035666|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035667|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035653|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-035654|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-004|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-035655|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035656|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035657|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035658|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035659|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035660|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035661|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035662|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035663|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035664|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035665|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035666|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035667|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
 ## SEG100-R-041 - CONFIRMED
 
@@ -409,19 +409,19 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033352|REVIEW|MATCHED|TD-SEG100-GAP-ACCOUNT-PASS|PASS|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`|
-|TD-TC-033353|REVIEW|MATCHED|TD-SEG100-GAP-ACCOUNT-FAIL|FAIL|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`|
-|TD-TC-033355|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033356|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033382|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033383|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033385|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033386|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035678|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035679|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035680|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035681|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-035682|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033352|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-ACCOUNT-PASS|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; alias crosswalk exists for this segment but no AI element name resolves to Test element 2 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/4 Test keys found by name).|
+|TD-TC-033353|33 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-ACCOUNT-FAIL|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; CONFIRMED via field-alias crosswalk - AI element name `AccountNumber` maps to Test element 2. JSON key-name overlap (fallback signal) 0%.|
+|TD-TC-033355|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033356|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033382|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033383|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033385|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033386|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035678|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035679|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035680|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035681|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-035682|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
 ## SEG100-R-043 - CONFIRMED
 
@@ -510,26 +510,26 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033927|REVIEW|MATCHED|TD-SEG100-GAP-CONDITIONAL-FIELDS|REVIEW|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|33\|encrypted-pin-block-data`|
-|TD-TC-033928|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033929|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033930|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033931|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033932|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033933|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033934|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033935|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033936|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033937|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033938|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033939|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033940|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033941|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033942|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033943|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-033944|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031030|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-031031|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033927|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|33\|encrypted-pin-block-data`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
+|TD-TC-033928|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033929|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033930|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033931|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033932|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033933|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033934|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033935|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033936|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033937|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033938|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033939|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033940|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033941|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033942|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033943|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-033944|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031030|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-031031|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
 ## SEG100-R-047 - CONFIRMED
 
@@ -591,26 +591,26 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034229|REVIEW|MATCHED|TD-SEG100-GAP-CONDITIONAL-FIELDS|REVIEW|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|99\|tax-amount`|
-|TD-TC-034230|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034231|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034232|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034233|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034234|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034774|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034775|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034777|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034778|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034753|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034754|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034755|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034756|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034757|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034758|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034769|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034770|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034772|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034773|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034229|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|99\|tax-amount`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
+|TD-TC-034230|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034231|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034232|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034233|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034234|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034774|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034775|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034777|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034778|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034753|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034754|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034755|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034756|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034757|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034758|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034769|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034770|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034772|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034773|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
 ## SEG100-R-060 - CONFIRMED
 
@@ -651,9 +651,9 @@ Only CONFIRMED business-requirement matches for Segment 100 are included: eviden
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034345|REVIEW|MATCHED|TD-SEG100-EWIC-PROMPTS|REVIEW|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-purchase-reversal`|
-|TD-TC-034346|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034347|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034348|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
-|TD-TC-034349|REVIEW|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034345|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-purchase-reversal`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: SegmentType, SegmentLength). JSON key-name overlap 0% (0/6 Test keys found by name).|
+|TD-TC-034346|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034347|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034348|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
+|TD-TC-034349|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 

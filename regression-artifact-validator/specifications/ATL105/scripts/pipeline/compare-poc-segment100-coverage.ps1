@@ -1,6 +1,6 @@
 param(
     [string]$PocPipelineRoot = "C:\Users\F5H46GZ\Downloads\POC-DEMO\POC-DEMO\core-auth-test-generation-platform\src\pipeline",
-    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) "test-output\ai-artifacts\coverage-reports"),
+    [string]$OutputDirectory = (Join-Path (Join-Path (Split-Path $PSScriptRoot -Parent) "test-output\ai-artifacts\coverage-reports") "segment-100"),
     [string]$ProfilePath = (Join-Path (Split-Path $PSScriptRoot -Parent) "segment-profiles.json")
 )
 

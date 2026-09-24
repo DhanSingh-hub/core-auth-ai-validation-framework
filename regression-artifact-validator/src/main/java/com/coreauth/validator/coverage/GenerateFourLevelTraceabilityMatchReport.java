@@ -40,6 +40,8 @@ public final class GenerateFourLevelTraceabilityMatchReport {
         JsonNode aiPackage = mapper.valueToTree(adapted.artifactPackage());
         ArtifactIndex ai = ArtifactIndex.fromCanonical(aiPackage);
         ArtifactIndex test = ArtifactIndex.fromFiles(mapper, Atl105Paths.testOutput().resolve("test-json"));
+        Map<String, List<String>> aiElementNamesByTestCase = new AiElementNamesLoader().load(traceability);
+        Map<String, Map<String, String>> aliasCrosswalkBySegment = new LinkedHashMap<>();
 
         ObjectNode report = mapper.createObjectNode();
         report.put("artifact", "four-level-ai-test-solution-traceability-match-report");
@@ -83,8 +85,11 @@ public final class GenerateFourLevelTraceabilityMatchReport {
             brMatch.set("brSideBySide", brPairs(mapping, ai, testRequirementsForMatch, mapper));
             brMatch.set("tsSideBySide", pairByAnchor(aiScenarios, testScenarios, "AI TS", "Test TS", "requirementIds", mapper));
             brMatch.set("tcSideBySide", pairByAnchor(aiTestCases, testTestCases, "AI TC", "Test TC", "expectedOutcome", mapper));
+            String segmentPrefix = mapping.testRequirementId().replaceFirst("^SEG(\\w+)-.*$", "$1");
+            Map<String, String> aliasCrosswalk = aliasCrosswalkBySegment.computeIfAbsent(segmentPrefix,
+                    ignored -> loadAliasCrosswalk(segmentPrefix, mapper));
             brMatch.set("tdSideBySide", pairTestDataByAnchorAndSchema(aiTestData, testTestData,
-                    deliveryRoot.resolve("Run2"), mapper));
+                    deliveryRoot.resolve("Run2"), aiElementNamesByTestCase, aliasCrosswalk, mapper));
         }
 
         addSummary(summaryByLevel, "TS", totals[0], totals[1], totals[2], totals[3]);
@@ -270,13 +275,14 @@ public final class GenerateFourLevelTraceabilityMatchReport {
     }
 
     /**
-     * Pairs test data by shared canonical anchor, then compares the real AI payload's leaf JSON key names
-     * against the Test Solution's expected payload key names (structure only, values are expected to differ).
-     * AI and Test currently use different field-naming schemas, so this is a leaf-name overlap, not a full-path
-     * or aliased comparison; a field-name alias crosswalk would make this exact.
+     * Pairs test data by shared canonical anchor, then confirms the match two ways: (1) element-name alias
+     * crosswalk — the AI's own observed field-name vocabulary (from key_values), normalized against the Test
+     * Solution rule's element number, when a crosswalk exists for the segment; (2) raw JSON leaf key-name
+     * overlap as a fallback signal when no crosswalk covers the field. Values are never compared, only keys/names.
      */
     private static ArrayNode pairTestDataByAnchorAndSchema(List<JsonNode> aiItems, List<JsonNode> testItems,
-                                                           Path aiRunRoot, ObjectMapper mapper) {
+                                                           Path aiRunRoot, Map<String, List<String>> aiElementNamesByTestCase,
+                                                           Map<String, String> aliasCrosswalk, ObjectMapper mapper) {
         ArrayNode pairs = mapper.createArrayNode();
         Set<String> consumedTestIds = new LinkedHashSet<>();
         for (JsonNode aiItem : aiItems) {
@@ -309,14 +315,48 @@ public final class GenerateFourLevelTraceabilityMatchReport {
             Set<String> extraInAi = new LinkedHashSet<>(aiKeys);
             extraInAi.removeAll(testKeys);
             double overlapPercent = testKeys.isEmpty() ? 0.0 : 100.0 * shared.size() / testKeys.size();
-            String reason = String.format(
-                    "Shares canonical anchor `%s`; JSON key-name overlap %.0f%% (%d/%d expected Test keys found by name in the AI payload; "
-                            + "%d Test keys not found, %d extra AI keys). Values are not compared. Leaf key NAMES only, "
-                            + "not full paths or aliases — AI and Test currently use different field-naming schemas.",
-                    sharedAnchor, overlapPercent, shared.size(), testKeys.size(), missingInAi.size(), extraInAi.size());
-            ObjectNode pair = pair(aiId, aiKeys.size() + " keys",
-                    overlapPercent >= 50.0 ? "MATCHED_STRUCTURAL" : "MATCHED_ANCHOR_ONLY", reason,
+
+            String expectedElement = expectedElementNumber(matchedTest, sharedAnchor);
+            Set<String> aiElementNames = elementNamesForTestData(aiItem, aiElementNamesByTestCase);
+            boolean elementConfirmed = false;
+            String matchedAiElementName = null;
+            if (expectedElement != null && !aliasCrosswalk.isEmpty()) {
+                for (String aiElementName : aiElementNames) {
+                    if (expectedElement.equals(aliasCrosswalk.get(aiElementName.toLowerCase(java.util.Locale.ROOT)))) {
+                        elementConfirmed = true;
+                        matchedAiElementName = aiElementName;
+                        break;
+                    }
+                }
+            }
+
+            String status;
+            String reason;
+            if (elementConfirmed) {
+                status = "MATCHED_ELEMENT_CONFIRMED";
+                reason = String.format(
+                        "Shares canonical anchor `%s`; CONFIRMED via field-alias crosswalk - AI element name `%s` maps to Test element %s. "
+                                + "JSON key-name overlap (fallback signal) %.0f%%.",
+                        sharedAnchor, matchedAiElementName, expectedElement, overlapPercent);
+            } else if (expectedElement != null && !aliasCrosswalk.isEmpty()) {
+                status = overlapPercent >= 50.0 ? "MATCHED_STRUCTURAL" : "MATCHED_ANCHOR_ONLY";
+                reason = String.format(
+                        "Shares canonical anchor `%s`; alias crosswalk exists for this segment but no AI element name "
+                                + "resolves to Test element %s (AI observed: %s). JSON key-name overlap %.0f%% (%d/%d Test keys found by name).",
+                        sharedAnchor, expectedElement, aiElementNames.isEmpty() ? "none" : String.join(", ", aiElementNames),
+                        overlapPercent, shared.size(), testKeys.size());
+            } else {
+                status = overlapPercent >= 50.0 ? "MATCHED_STRUCTURAL" : "MATCHED_ANCHOR_ONLY";
+                reason = String.format(
+                        "Shares canonical anchor `%s`; no field-alias crosswalk available for this segment/element yet, "
+                                + "falling back to JSON key-name overlap %.0f%% (%d/%d expected Test keys found by name; "
+                                + "%d Test keys not found, %d extra AI keys). Values are not compared.",
+                        sharedAnchor, overlapPercent, shared.size(), testKeys.size(), missingInAi.size(), extraInAi.size());
+            }
+
+            ObjectNode pair = pair(aiId, aiKeys.size() + " keys", status, reason,
                     matchedTest.path("id").asText(""), testKeys.size() + " keys", mapper);
+            pair.put("elementConfirmed", elementConfirmed);
             pair.put("keyOverlapPercent", Math.round(overlapPercent * 10) / 10.0);
             pair.set("missingKeysInAi", mapper.valueToTree(missingInAi));
             pair.set("extraKeysInAi", mapper.valueToTree(extraInAi));
@@ -331,6 +371,44 @@ public final class GenerateFourLevelTraceabilityMatchReport {
                     testId, testKeys.size() + " keys", mapper));
         }
         return pairs;
+    }
+
+    private static String expectedElementNumber(JsonNode matchedTest, String sharedAnchor) {
+        for (JsonNode anchor : matchedTest.path("sourceAnchors")) {
+            String element = anchor.path("element").asText(null);
+            if (element != null && !element.isBlank()) return element;
+        }
+        String[] parts = sharedAnchor.split("\\|", -1);
+        String element = parts.length > 4 ? parts[4] : "";
+        return element.isBlank() ? null : element;
+    }
+
+    private static Set<String> elementNamesForTestData(JsonNode aiTestData, Map<String, List<String>> aiElementNamesByTestCase) {
+        Set<String> names = new LinkedHashSet<>();
+        for (JsonNode testCaseId : aiTestData.path("testCaseIds")) {
+            names.addAll(aiElementNamesByTestCase.getOrDefault(testCaseId.asText(), List.of()));
+        }
+        return names;
+    }
+
+    private static Map<String, String> loadAliasCrosswalk(String segment, ObjectMapper mapper) {
+        Path file = Atl105Paths.root().resolve(Path.of("contract",
+                "segment-" + segment + "-field-alias-crosswalk.json"));
+        if (!Files.isRegularFile(file)) return Map.of();
+        try {
+            JsonNode root = mapper.readTree(file.toFile());
+            Map<String, String> result = new LinkedHashMap<>();
+            for (JsonNode alias : root.path("aliases")) {
+                String aiName = alias.path("aiElementName").asText(null);
+                String testElement = alias.path("testElementNumber").asText(null);
+                if (aiName != null && testElement != null) {
+                    result.put(aiName.toLowerCase(java.util.Locale.ROOT), testElement);
+                }
+            }
+            return result;
+        } catch (IOException e) {
+            return Map.of();
+        }
     }
 
     private static JsonNode loadAiPayload(JsonNode aiTestData, Path aiRunRoot, ObjectMapper mapper) {

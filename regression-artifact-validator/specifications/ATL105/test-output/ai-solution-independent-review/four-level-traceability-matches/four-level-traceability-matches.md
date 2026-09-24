@@ -173,8 +173,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034090|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E55-001|5 keys|Shares canonical anchor `ATL105\|2026-3\|11.1.1\|DATA-SECTION-1\|55\|message-format-version-identifier`; JSON key-name overlap 0% (0/5 expected Test keys found by name in the AI payload; 5 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-034091|22 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E55-002|5 keys|Shares canonical anchor `ATL105\|2026-3\|11.1.1\|DATA-SECTION-1\|55\|message-format-version-identifier`; JSON key-name overlap 0% (0/5 expected Test keys found by name in the AI payload; 5 Test keys not found, 22 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034090|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E55-001|5 keys|Shares canonical anchor `ATL105\|2026-3\|11.1.1\|DATA-SECTION-1\|55\|message-format-version-identifier`; alias crosswalk exists for this segment but no AI element name resolves to Test element 55 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/5 Test keys found by name).|
+|TD-TC-034091|22 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E55-002|5 keys|Shares canonical anchor `ATL105\|2026-3\|11.1.1\|DATA-SECTION-1\|55\|message-format-version-identifier`; alias crosswalk exists for this segment but no AI element name resolves to Test element 55 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/5 Test keys found by name).|
 |TD-TC-034092|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031130|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031131|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -316,8 +316,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031462|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-031476|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-031462|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; alias crosswalk exists for this segment but no AI element name resolves to Test element 85 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-031476|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|85\|segment-type`; alias crosswalk exists for this segment but no AI element name resolves to Test element 85 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
 |TD-TC-031477|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031578|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031579|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -455,8 +455,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034468|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|84\|segment-length`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-034469|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-004|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|84\|segment-length`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034468|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|84\|segment-length`; alias crosswalk exists for this segment but no AI element name resolves to Test element 84 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-034469|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-ID-004|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|84\|segment-length`; alias crosswalk exists for this segment but no AI element name resolves to Test element 84 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
 |TD-TC-034470|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034471|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034472|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -524,8 +524,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-032405|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E102-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|102\|terminal-identifier`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-032406|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E102-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|102\|terminal-identifier`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-032405|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E102-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|102\|terminal-identifier`; alias crosswalk exists for this segment but no AI element name resolves to Test element 102 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-032406|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E102-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|102\|terminal-identifier`; alias crosswalk exists for this segment but no AI element name resolves to Test element 102 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
 |TD-TC-032408|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032409|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 
@@ -567,8 +567,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034282|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-034283|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-002|6 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034282|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-034283|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-002|6 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/6 Test keys found by name).|
 |TD-TC-034284|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034285|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034286|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -668,8 +668,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-035643|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-001|8 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-indicator`; JSON key-name overlap 0% (0/8 expected Test keys found by name in the AI payload; 8 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-035644|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-002|6 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-indicator`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-035643|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-001|8 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-indicator`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/8 Test keys found by name).|
+|TD-TC-035644|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-002|6 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-indicator`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/6 Test keys found by name).|
 |TD-TC-035645|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035646|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035647|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -844,7 +844,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033319|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-003|8 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code-card-type`; JSON key-name overlap 0% (0/8 expected Test keys found by name in the AI payload; 8 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-033319|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E78-003|8 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|78\|prompt-code-card-type`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/8 Test keys found by name).|
 |||TEST_ONLY|TD-SEG100-E78-004|7 keys|No AI TD artifact shares a canonical anchor with this Test TD item|
 
 ## SEG100-R-034 - REVIEW_REQUIRED
@@ -900,9 +900,9 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-037320|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E2-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-037321|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E2-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-037322|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E2-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-037320|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-E2-001|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; CONFIRMED via field-alias crosswalk - AI element name `AccountNumber` maps to Test element 2. JSON key-name overlap (fallback signal) 0%.|
+|TD-TC-037321|33 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-E2-002|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; CONFIRMED via field-alias crosswalk - AI element name `AccountNumber` maps to Test element 2. JSON key-name overlap (fallback signal) 0%.|
+|TD-TC-037322|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-E2-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|10.1.1\|100\|2\|account-number-entry-method`; CONFIRMED via field-alias crosswalk - AI element name `AccountNumber` maps to Test element 2. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-037323|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-037324|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-037325|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1163,8 +1163,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031409|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E86-003|9 keys|Shares canonical anchor `ATL105\|2026-3\|10\|100\|86\|lifecycle-correlation`; JSON key-name overlap 0% (0/9 expected Test keys found by name in the AI payload; 9 Test keys not found, 6 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-031410|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E86-004|10 keys|Shares canonical anchor `ATL105\|2026-3\|10\|100\|86\|lifecycle-correlation`; JSON key-name overlap 0% (0/10 expected Test keys found by name in the AI payload; 10 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-031409|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E86-003|9 keys|Shares canonical anchor `ATL105\|2026-3\|10\|100\|86\|lifecycle-correlation`; alias crosswalk exists for this segment but no AI element name resolves to Test element 86 (AI observed: SegmentType, SegmentLength). JSON key-name overlap 0% (0/9 Test keys found by name).|
+|TD-TC-031410|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E86-004|10 keys|Shares canonical anchor `ATL105\|2026-3\|10\|100\|86\|lifecycle-correlation`; alias crosswalk exists for this segment but no AI element name resolves to Test element 86 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/10 Test keys found by name).|
 |TD-TC-031411|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031412|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031414|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1317,8 +1317,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-035653|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-035654|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-004|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; JSON key-name overlap 0% (0/7 expected Test keys found by name in the AI payload; 7 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-035653|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-003|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/7 Test keys found by name).|
+|TD-TC-035654|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-E121-004|7 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|121\|partial-approval-context`; alias crosswalk exists for this segment but no AI element name resolves to Test element 121 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/7 Test keys found by name).|
 |TD-TC-035655|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035656|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035657|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1402,8 +1402,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031243|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-INFO-BYTE-PASS|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|44\|information-byte`; JSON key-name overlap 0% (0/4 expected Test keys found by name in the AI payload; 4 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-033989|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-INFO-BYTE-FAIL|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|44\|information-byte`; JSON key-name overlap 0% (0/4 expected Test keys found by name in the AI payload; 4 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-031243|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-INFO-BYTE-PASS|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|44\|information-byte`; alias crosswalk exists for this segment but no AI element name resolves to Test element 44 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/4 Test keys found by name).|
+|TD-TC-033989|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-INFO-BYTE-FAIL|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|44\|information-byte`; alias crosswalk exists for this segment but no AI element name resolves to Test element 44 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/4 Test keys found by name).|
 |TD-TC-033990|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033991|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033992|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1491,8 +1491,8 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033352|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-ACCOUNT-PASS|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; JSON key-name overlap 0% (0/4 expected Test keys found by name in the AI payload; 4 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-033353|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-ACCOUNT-FAIL|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; JSON key-name overlap 0% (0/4 expected Test keys found by name in the AI payload; 4 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-033352|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-ACCOUNT-PASS|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; alias crosswalk exists for this segment but no AI element name resolves to Test element 2 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/4 Test keys found by name).|
+|TD-TC-033353|33 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-ACCOUNT-FAIL|4 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|2\|account-number`; CONFIRMED via field-alias crosswalk - AI element name `AccountNumber` maps to Test element 2. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-033355|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033356|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033382|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1627,7 +1627,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033927|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|33\|encrypted-pin-block-data`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-033927|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|33\|encrypted-pin-block-data`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-033928|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033929|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033930|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1699,7 +1699,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034352|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|79\|pump-lane-number`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034352|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|79\|pump-lane-number`; alias crosswalk exists for this segment but no AI element name resolves to Test element 12 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/3 Test keys found by name).|
 |TD-TC-034353|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034354|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034356|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1757,7 +1757,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033957|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|41\|fuel-purchase-amount`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-033957|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|41\|fuel-purchase-amount`; alias crosswalk exists for this segment but no AI element name resolves to Test element 12 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/3 Test keys found by name).|
 |TD-TC-033961|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033965|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033973|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1814,7 +1814,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034154|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|58\|nonfuel-amount`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034154|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|58\|nonfuel-amount`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-034155|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034157|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034145|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1887,7 +1887,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034229|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|99\|tax-amount`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034229|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|99\|tax-amount`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-034230|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034231|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034232|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -1958,7 +1958,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-033762|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|17\|cash-amount`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-033762|27 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|17\|cash-amount`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-033763|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033764|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-033765|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -2093,7 +2093,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034052|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|49\|local-date-time`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034052|39 keys|MATCHED_ELEMENT_CONFIRMED|TD-SEG100-GAP-CONDITIONAL-FIELDS|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.1\|100\|49\|local-date-time`; CONFIRMED via field-alias crosswalk - AI element name `CardDiscretionaryBlockData` maps to Test element 12. JSON key-name overlap (fallback signal) 0%.|
 |TD-TC-034053|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034054|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034058|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -2132,7 +2132,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-032191|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-authorization-cancellation`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 33 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-032191|33 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-authorization-cancellation`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/6 Test keys found by name).|
 
 ## SEG100-R-058 - REVIEW_REQUIRED
 
@@ -2170,7 +2170,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-032857|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-balance-inquiry`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-032857|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-balance-inquiry`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: SegmentType, SegmentLength, VariableInformation). JSON key-name overlap 0% (0/6 Test keys found by name).|
 |TD-TC-032858|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032860|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032861|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -2214,7 +2214,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034345|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-purchase-reversal`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 6 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034345|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-purchase-reversal`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: SegmentType, SegmentLength). JSON key-name overlap 0% (0/6 Test keys found by name).|
 |TD-TC-034346|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034347|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034348|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -2375,7 +2375,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-035929|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-voucher-clear`; JSON key-name overlap 0% (0/6 expected Test keys found by name in the AI payload; 6 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-035929|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG100-EWIC-PROMPTS|6 keys|Shares canonical anchor `ATL105\|2026-3\|10.5.5\|100\|78\|ewic-voucher-clear`; alias crosswalk exists for this segment but no AI element name resolves to Test element 78 (AI observed: AccountNumber, ApprovalNumber, CardDiscretionaryBlockData, CashAmount, FuelPurchaseAmount). JSON key-name overlap 0% (0/6 Test keys found by name).|
 |TD-TC-035930|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035932|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035933|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -2551,7 +2551,7 @@ Full artifact detail (all fields, both sides) is in the companion JSON file in t
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031946|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG103-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.4\|103\|85\|segment-type`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-031946|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG103-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.4\|103\|85\|segment-type`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/3 expected Test keys found by name; 3 Test keys not found, 39 extra AI keys). Values are not compared.|
 |TD-TC-032018|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032019|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032572|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -3460,7 +3460,7 @@ _No AI or Test Solution artifacts at this level._
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-034569|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG103-EBT-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|103\|164\|ebt-program-data-tag-enumeration`; JSON key-name overlap 0% (0/2 expected Test keys found by name in the AI payload; 2 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-034569|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG103-EBT-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|103\|164\|ebt-program-data-tag-enumeration`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/2 expected Test keys found by name; 2 Test keys not found, 11 extra AI keys). Values are not compared.|
 |TD-TC-034570|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034572|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-034573|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -5270,7 +5270,7 @@ _No AI or Test Solution artifacts at this level._
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-031971|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.7\|108\|85\|segment-type`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 39 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-031971|39 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.7\|108\|85\|segment-type`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/3 expected Test keys found by name; 3 Test keys not found, 39 extra AI keys). Values are not compared.|
 |TD-TC-031972|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-031973|22 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032482|6 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -6752,8 +6752,8 @@ _No AI or Test Solution artifacts at this level._
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-032830|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-FIELD-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|108\|148\|payment-tender-type-enumeration`; JSON key-name overlap 0% (0/2 expected Test keys found by name in the AI payload; 2 Test keys not found, 6 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
-|TD-TC-032831|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-FIELD-002|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|108\|148\|payment-tender-type-enumeration`; JSON key-name overlap 0% (0/2 expected Test keys found by name in the AI payload; 2 Test keys not found, 11 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-032830|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-FIELD-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|108\|148\|payment-tender-type-enumeration`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/2 expected Test keys found by name; 2 Test keys not found, 6 extra AI keys). Values are not compared.|
+|TD-TC-032831|11 keys|MATCHED_ANCHOR_ONLY|TD-SEG108-FIELD-002|2 keys|Shares canonical anchor `ATL105\|2026-3\|13.2\|108\|148\|payment-tender-type-enumeration`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/2 expected Test keys found by name; 2 Test keys not found, 11 extra AI keys). Values are not compared.|
 |TD-TC-032832|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032833|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032839|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -8158,7 +8158,7 @@ _No AI or Test Solution artifacts at this level._
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-032482|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG113-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.12\|113\|85\|segment-type`; JSON key-name overlap 0% (0/3 expected Test keys found by name in the AI payload; 3 Test keys not found, 6 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-032482|6 keys|MATCHED_ANCHOR_ONLY|TD-SEG113-CORE-001|3 keys|Shares canonical anchor `ATL105\|2026-3\|12.12\|113\|85\|segment-type`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/3 expected Test keys found by name; 3 Test keys not found, 6 extra AI keys). Values are not compared.|
 |TD-TC-032483|11 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032484|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032485|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
@@ -8872,7 +8872,7 @@ _No AI or Test Solution artifacts at this level._
 
 | AI ID | AI Detail | Status | Test ID | Test Detail | Reason |
 |---|---|---|---|---|---|
-|TD-TC-035932|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG113-FIELD-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|12.12,13.2\|113\|131\|eca-clerk-id`; JSON key-name overlap 0% (0/2 expected Test keys found by name in the AI payload; 2 Test keys not found, 27 extra AI keys). Values are not compared. Leaf key NAMES only, not full paths or aliases — AI and Test currently use different field-naming schemas.|
+|TD-TC-035932|27 keys|MATCHED_ANCHOR_ONLY|TD-SEG113-FIELD-001|2 keys|Shares canonical anchor `ATL105\|2026-3\|12.12,13.2\|113\|131\|eca-clerk-id`; no field-alias crosswalk available for this segment/element yet, falling back to JSON key-name overlap 0% (0/2 expected Test keys found by name; 2 Test keys not found, 27 extra AI keys). Values are not compared.|
 |TD-TC-035933|33 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-035935|39 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|
 |TD-TC-032034|27 keys|AI_ONLY|||No Test TD artifact shares a canonical anchor with this AI TD item|

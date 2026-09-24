@@ -1,6 +1,6 @@
 param(
     [string]$PocPipelineRoot = "C:\Users\F8VNU8Y\Downloads\CoreAuthTestingUI\CoreAuthTestingUI\CoreAuthTestingUI\src\pipeline",
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot "test-output\ai-artifacts\coverage-reports")
+    [string]$OutputDirectory = (Join-Path (Join-Path $PSScriptRoot "test-output\ai-artifacts\coverage-reports") "segment-103")
 )
 
 function Get-Tokens([string]$Text) {
