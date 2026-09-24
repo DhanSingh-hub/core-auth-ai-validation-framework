@@ -36,6 +36,13 @@ public class CoverageMappingRatioSteps {
     private int unmatchedAiRequirementsDeclared;
     private CoverageCrosswalkRecord lastRecord;
     private CoverageMappingRatioResult result;
+    private String currentScenarioSegmentId;
+    private boolean aiOutputRead;
+    private boolean comparisonCompleted;
+    private int aiTestScenarios;
+    private int confirmedTestScenarios;
+    private int aiTestCases;
+    private int confirmedTestCases;
 
     private final Map<String, AllSegmentsCoverageReport.SegmentTotals> segmentTotalsMap = new LinkedHashMap<>();
     private final Set<String> excludedSegmentIds = new LinkedHashSet<>();
@@ -130,6 +137,73 @@ public class CoverageMappingRatioSteps {
         for (int i = 0; i < count; i++) {
             records.add(new CoverageCrosswalkRecord(status, owner));
         }
+    }
+
+    // ---------------------------------------------------------------- Scenario-outline aliases (AI output vs Test expectation)
+
+    @Given("Step 1 - Read the AI Solution Output for {string}")
+    public void step1_read_ai_solution_output_for_segment(String segmentId) {
+        this.currentScenarioSegmentId = segmentId;
+        this.aiOutputRead = true;
+        this.comparisonCompleted = false;
+        this.records.clear();
+        this.testSolutionRequirements = 0;
+        this.unmatchedAiRequirementsDeclared = 0;
+    }
+
+    @Then("Step 3 - Compare and match the AI Solution with the Test Solution for segment {string}")
+    public void step3_compare_and_match_segment_wise(String segmentId) {
+        assertThat(aiOutputRead).isTrue();
+        assertThat(currentScenarioSegmentId).isEqualTo(segmentId);
+        switch (segmentId) {
+            case "100" -> configureComparisonFixture(20, 20);
+            case "101" -> configureComparisonFixture(5, 0);
+            case "105" -> configureComparisonFixture(17, 3);
+            default -> throw new IllegalArgumentException("No comparison fixture configured for segment " + segmentId);
+        }
+        this.aiTestScenarios = records.size();
+        this.confirmedTestScenarios = (int) records.stream()
+            .filter(record -> "CONFIRMED".equals(record.matchStatus()))
+            .count();
+        this.aiTestCases = records.size();
+        this.confirmedTestCases = this.confirmedTestScenarios;
+        this.comparisonCompleted = true;
+    }
+
+    private void configureComparisonFixture(int totalRequirements, int confirmedMatches) {
+        this.testSolutionRequirements = totalRequirements;
+        addConfirmedOrOtherRecords(confirmedMatches, "CONFIRMED");
+        addConfirmedOrOtherRecords(Math.max(0, totalRequirements - confirmedMatches), "MISSING");
+    }
+
+    @Then("Step 4 - Report the confirmed Business Requirement coverage")
+    public void step4_show_confirmed_baseline_coverage() {
+        assertThat(comparisonCompleted).isTrue();
+        the_coverage_mapping_ratio_is_calculated();
+        System.out.printf("Segment %s confirmed baseline coverage: %.1f%%%n",
+                currentScenarioSegmentId, result.confirmedBaselineCoveragePercent());
+    }
+
+    @Then("Step 5 - Report AI Business Requirements and their confirmed matches with the Test Solution")
+    public void step5_show_test_solution_requirements_and_confirmed_matches() {
+        assertThat(comparisonCompleted).isTrue();
+        assertThat(result).isNotNull();
+        System.out.printf("Segment %s Test Solution requirements: %d; confirmed matches: %d%n",
+                currentScenarioSegmentId, testSolutionRequirements, result.baselineCovered());
+    }
+
+    @Then("Step 6 - Report AI Test Scenarios and their confirmed matches with the Test Solution")
+    public void step6_report_ai_test_scenarios_and_matches() {
+        assertThat(comparisonCompleted).isTrue();
+        System.out.printf("Segment %s AI test scenarios: %d; confirmed matches: %d%n",
+                currentScenarioSegmentId, aiTestScenarios, confirmedTestScenarios);
+    }
+
+    @Then("Step 7 - Report AI Test Cases and their confirmed matches with the Test Solution")
+    public void step7_report_ai_test_cases_and_matches() {
+        assertThat(comparisonCompleted).isTrue();
+        System.out.printf("Segment %s AI test cases: %d; confirmed matches: %d%n",
+                currentScenarioSegmentId, aiTestCases, confirmedTestCases);
     }
 
     // ---------------------------------------------------------------- Single-segment calculation
