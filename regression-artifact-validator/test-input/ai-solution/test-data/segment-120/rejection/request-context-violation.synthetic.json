@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "artifactId": "SEG120-REJECTION-REQUEST-CONTEXT-VIOLATION-001",
+    "purpose": "Negative fixture: Segment 120 (Print Data 2 Segment) incorrectly placed under a request container. Must be rejected under SEG120-R-006 (response-only applicability).",
+    "sourceAnchors": [
+      {"specification": "ATL105", "version": "2026-3", "section": "12.18", "segment": "120", "element": "-", "rule": "response-only-applicability"}
+    ],
+    "context": {
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST"
+    },
+    "expected": "REJECT"
+  },
+  "request": {
+    "dataSection3": {
+      "printData2Segment": {
+        "segmentType": "120",
+        "segmentLength": "0041",
+        "printData": "THANK YOU FOR SHOPPING WITH US TODAY"
+      }
+    }
+  }
+}
