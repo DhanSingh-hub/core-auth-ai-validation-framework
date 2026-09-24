@@ -19,6 +19,10 @@ The Test Solution remains independent from the AI Solution. AI artifacts may be 
 
 The Test Solution owns matching and coverage decisions. AI-reported counts, confidence, approval labels, and coverage percentages are inputs under test, not acceptance evidence. Only an evidence-supported business-equivalent match may be `CONFIRMED`; heuristic, partial, conflicting, or unresolved matches remain `REVIEW_REQUIRED`.
 
+## Automatic Update Rule
+
+This document must be updated in the same change set whenever a training-relevant decision is made, not on request. This applies to (but is not limited to): adding or changing a phase or gate, adding a new artifact type (for example a field-alias crosswalk), changing required package field names or contract shapes, changing coverage-denominator or matching policy, or discovering a segment-package conformance defect. The update happens automatically as part of doing the work; do not wait for an explicit instruction to "update the training strategy."
+
 ## Required Training Record
 
 For every new or changed rule, the trainer must record:
@@ -149,6 +153,8 @@ Run the external converter or serializer only after intake, traceability, semant
 ## Segment Package Field-Name Conformance
 
 BR -> TS -> TC -> TD chain matching (Phase 5, Phase 8, Phase 8a) requires every segment's Test Solution package to use the same canonical link fields: `businessRequirements[].id`, `testScenarios[].requirementIds` (array), `testCases[].scenarioIds` (array), and `testData[].testCaseIds` (array) with a real `payload`. A package that uses a different shape (for example `covers` instead of `requirementIds`, a singular `scenarioId` instead of `scenarioIds`, or a narrative `testDataStatus` string instead of a `testData[]` array) silently breaks chain matching even when the rule catalog and prose are correct. `segment-111-core-structure-package.json` is a known example needing this normalization. Verify field-name conformance as part of a segment's completion gate.
+
+Before treating any `TestSolutionJsonFormatTest`-style package-conformance result as authoritative, run `mvn clean test` (not an incremental `test`). A stale compiled test class can report failures for exclusions or field names that the current source already handles correctly, producing a false-positive gap report.
 
 ## Segment-Specific Training Addendum
 

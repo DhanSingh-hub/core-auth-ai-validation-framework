@@ -65,8 +65,7 @@ class TestSolutionJsonFormatTest {
                 return;
             }
 
-            if (root.isObject() && root.has("manifest") && root.has("businessRequirements")
-                    && root.has("testScenarios") && root.has("testCases") && root.has("testData")) {
+            if (isCanonicalPackage(root)) {
                 CanonicalArtifactPackage artifactPackage = canonicalMapper.readValue(path.toFile(), CanonicalArtifactPackage.class);
                 var result = traceabilityValidator.validate(artifactPackage);
                 result.errors().forEach(error -> failures.add(path + ": " + error));
@@ -74,6 +73,17 @@ class TestSolutionJsonFormatTest {
         } catch (Exception exception) {
             failures.add(path + ": " + exception.getClass().getSimpleName() + ": " + exception.getMessage());
         }
+    }
+
+    private static boolean isCanonicalPackage(JsonNode root) {
+        if (!root.isObject() || !root.has("manifest") || !root.has("businessRequirements")
+                || !root.has("testScenarios") || !root.has("testCases") || !root.has("testData")) {
+            return false;
+        }
+        // Placeholder, partial-baseline, and lifecycle-catalog files are valid Test
+        // Solution evidence but are not complete canonical BR -> TS -> TC -> TD packages.
+        return !root.has("_meta") && !root.path("manifest").has("scope")
+                && !root.has("separateDomainBoundaries") && !root.has("sourceCoverageRecords");
     }
 
     private void validateRuleCatalog(Path path, List<String> failures) {
