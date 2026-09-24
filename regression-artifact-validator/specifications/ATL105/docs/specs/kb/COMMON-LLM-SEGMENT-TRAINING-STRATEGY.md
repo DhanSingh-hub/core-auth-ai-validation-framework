@@ -127,9 +127,28 @@ BR -> TS -> TC -> request Test Data JSON
 
 Report missing, duplicate, unsupported, malformed, contradictory, and review-required artifacts. AI-produced coverage is a claim under test, not the denominator.
 
+### Phase 8a: Field-Alias Crosswalk (Evidence-Based, Non-Authoritative)
+
+The Test Solution is trained and certified independently of the AI Solution's schema. The field-alias crosswalk does not change that: it is a separate, evidence-only comparison bridge built after independent training, never a source of Test Solution rules, requirements, or field names.
+
+Purpose: raw JSON key names rarely match between the AI Solution and the Test Solution (different schemas, casing, and nesting). A field-alias crosswalk lets the Test Solution recognize the AI's own field label for a canonical element it already owns, without adopting the AI's schema as truth.
+
+Process:
+
+1. Extract the AI Solution's own observed field-name vocabulary per segment directly from delivered AI artifacts (for example, `test_data.key_values[].element` in a traceability matrix, or the flattened leaf JSON key names of a resolvable AI test-data payload when no explicit field label exists). Record occurrence counts. Never invent a name the AI did not actually produce.
+2. Cross-reference each AI field name against the segment's own independently derived rule catalog (`sourceAnchor.element` and rule title). Only record an alias when the correspondence is unambiguous (the AI field name and the Test Solution rule title clearly describe the same specification field).
+3. Store the result as `specifications/ATL105/contract/segment-<segment>-field-alias-crosswalk.json`: `aiElementName`, `testElementNumber`, `testRuleId`, `testRule`, and `occurrencesObserved`. Follow the AI Solution's own naming for `aiElementName` (its schema, used only as a join key) — never rename or reshape a Test Solution field to match it.
+4. If a segment has no AI evidence for a field, do not create an alias entry for it. Record the gap instead of guessing; an empty or partial crosswalk is expected and must be stated in the segment's coverage note.
+5. Use the crosswalk only in comparison/reporting tooling to confirm a TS/TC/test-data-level match (`MATCHED_ELEMENT_CONFIRMED`) or to explain a mismatch. It must never be read by, or influence, the Test Solution's own validators, rule catalogs, or requirement derivation.
+6. Re-derive and extend the crosswalk whenever a new AI delivery is analyzed; do not treat a prior delivery's vocabulary as permanent if the AI Solution's schema changes.
+
 ### Phase 9: Converter and Execution Readiness
 
 Run the external converter or serializer only after intake, traceability, semantic, and review gates pass. Compare serialized request output with the canonical intent and source rules.
+
+## Segment Package Field-Name Conformance
+
+BR -> TS -> TC -> TD chain matching (Phase 5, Phase 8, Phase 8a) requires every segment's Test Solution package to use the same canonical link fields: `businessRequirements[].id`, `testScenarios[].requirementIds` (array), `testCases[].scenarioIds` (array), and `testData[].testCaseIds` (array) with a real `payload`. A package that uses a different shape (for example `covers` instead of `requirementIds`, a singular `scenarioId` instead of `scenarioIds`, or a narrative `testDataStatus` string instead of a `testData[]` array) silently breaks chain matching even when the rule catalog and prose are correct. `segment-111-core-structure-package.json` is a known example needing this normalization. Verify field-name conformance as part of a segment's completion gate.
 
 ## Segment-Specific Training Addendum
 
@@ -147,6 +166,7 @@ Each segment addendum should contain only behavior that is different or addition
 10. Segment-specific coverage denominator and acceptance gates
 11. AI artifact examples and expected normalization behavior
 12. Segment-specific validator and converter requirements
+13. Field-alias crosswalk status: evidence gathered, aliases confirmed, or explicitly "no AI evidence yet"
 
 ## Common Training Outputs
 
@@ -160,12 +180,13 @@ Every segment should eventually produce:
 - Request Test Data JSON catalog
 - Traceability matrix
 - Independent coverage report
+- Field-alias crosswalk (evidence-based, may be partial or empty; never fabricated)
 - Mutation evidence
 - Manual-review queue
 - Final validation decision
 
 ## Completion Gate
 
-A segment is training-ready for AI artifact intake only when its addendum has a source catalog, applicability/context matrix, BR-to-TS-to-TC-to-request-data chain, positive and negative examples, lifecycle model where applicable, mutation set, review boundaries, and independent coverage denominator.
+A segment is training-ready for AI artifact intake only when its addendum has a source catalog, applicability/context matrix, BR-to-TS-to-TC-to-request-data chain, positive and negative examples, lifecycle model where applicable, mutation set, review boundaries, an independent coverage denominator, and canonical link-field names (`requirementIds`, `scenarioIds`, `testData[].testCaseIds`) confirmed across every package file for that segment.
 
 A segment is not certified merely because its folder, README, or rule catalog exists.
