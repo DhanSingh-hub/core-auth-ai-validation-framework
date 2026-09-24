@@ -24,6 +24,12 @@ regression-artifact-validator/
 
 See [ATL105 Artifact Storage Policy](specifications/ATL105/docs/test-validation-strategy/ARTIFACT-STORAGE-POLICY.md) for ownership and retention rules.
 
+## Current validation state
+
+As of 2026-09-24, Run1 and Run2 are being reviewed as a single composite AI delivery. The Test Solution has generated independent crosswalks, segment validation reports, SME review queues, specification-version resolution evidence, and executive reporting under `specifications/ATL105/test-output/ai-solution-independent-review/`.
+
+The current state is **review required**, not execution-ready: the composite requirement identity is verified, but source-version correction, SME decisions, payload validation, and coverage reconciliation remain tracked evidence gates. See [RAID Log](specifications/ATL105/docs/test-validation-strategy/RAID-Log.md) and [composite Run1/Run2 feedback](specifications/ATL105/docs/test-validation-strategy/AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md) for the latest history.
+
 ## Producer-neutral contract
 
 - [Vocabulary](contract/vocabulary.json)

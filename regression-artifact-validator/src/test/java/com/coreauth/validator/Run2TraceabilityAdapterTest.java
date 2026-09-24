@@ -8,6 +8,7 @@ import com.coreauth.validator.coverage.IndependentRequirementBaseline;
 import com.coreauth.validator.coverage.Run2Crosswalk;
 import com.coreauth.validator.coverage.Run2CrosswalkLoader;
 import com.coreauth.validator.coverage.Run2CoverageAssessmentRunner;
+import com.coreauth.validator.coverage.Run2SpecificationVersionResolution;
 import com.coreauth.validator.coverage.Run2TraceabilityAdapter;
 import com.coreauth.validator.validation.ValidationResult;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,6 +68,37 @@ class Run2TraceabilityAdapterTest {
         assertThat(report.confirmedRequirementCoveragePercent()).isZero();
         assertThat(report.traceabilityValidation().errors())
                 .anyMatch(error -> error.reason().contains("does not match manifest version 2025-3"));
+    }
+
+    @Test
+    void appliesHashBoundSpecificationVersionResolution(@TempDir Path runRoot) throws Exception {
+        Path traceability = writeTraceability(runRoot, "2025-3");
+        Path authoritativeSource = Files.writeString(runRoot.resolve("ATL105-2026-3.pdf"), "Version 2026-3");
+        Run2SpecificationVersionResolution resolution = resolution(
+                traceability, authoritativeSource, sha256(traceability));
+
+        var adapted = new Run2TraceabilityAdapter().adapt(
+                traceability, runRoot, confirmedCrosswalk(anchor("2026-3")), resolution);
+
+        assertThat(adapted.declaredSpecificationVersion()).isEqualTo("2025-3");
+        assertThat(adapted.artifactPackage().getManifest().getSpecificationVersion()).isEqualTo("2026-3");
+        assertThat(adapted.versionResolutionId()).isEqualTo("TEST-RESOLUTION-1");
+        assertThat(adapted.artifactPackage().getBusinessRequirements().getFirst().getSourceAnchors())
+                .allMatch(value -> "2026-3".equals(value.getVersion()));
+    }
+
+    @Test
+    void rejectsVersionResolutionWhenBoundArtifactChanges(@TempDir Path runRoot) throws Exception {
+        Path traceability = writeTraceability(runRoot, "2025-3");
+        Path authoritativeSource = Files.writeString(runRoot.resolve("ATL105-2026-3.pdf"), "Version 2026-3");
+        Run2SpecificationVersionResolution resolution = resolution(
+                traceability, authoritativeSource, sha256(traceability));
+        Files.writeString(traceability, " ", java.nio.file.StandardOpenOption.APPEND);
+
+        assertThat(org.assertj.core.api.Assertions.catchThrowable(() -> new Run2TraceabilityAdapter().adapt(
+                traceability, runRoot, confirmedCrosswalk(anchor("2026-3")), resolution)))
+                .isInstanceOf(java.io.IOException.class)
+                .hasMessageContaining("artifact hash does not match resolution");
     }
 
     @Test
@@ -146,7 +181,8 @@ class Run2TraceabilityAdapterTest {
         Files.writeString(file, """
                 {
                   "artifact":"traceability_matrix",
-                  "spec":{"spec_id":"SRC-ATL105-PDF-001","spec_version":"%s"},
+                                                                        "spec":{"spec_id":"SRC-ATL105-PDF-001","spec_version":"%s",
+                                                                                "pdf_file":"BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-3_Latest.pdf"},
                   "summary":{"total_requirements":1},
                   "requirements":[{
                     "requirement_id":"AI-REQ-1",
@@ -169,6 +205,21 @@ class Run2TraceabilityAdapterTest {
                 """.formatted(version));
         return file;
     }
+
+        private static Run2SpecificationVersionResolution resolution(
+                        Path traceability, Path authoritativeSource, String traceabilityHash) throws Exception {
+                return new Run2SpecificationVersionResolution(
+                                "TEST-RESOLUTION-1", "METADATA_LABEL_DEFECT", "SRC-ATL105-PDF-001",
+                                "BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-3_Latest.pdf",
+                                "2025-3", "2026-3", authoritativeSource.toString(), sha256(authoritativeSource),
+                                "Fixture omits a run-local source hash", Map.of(
+                                                traceability.getFileName().toString(), traceabilityHash));
+        }
+
+        private static String sha256(Path file) throws Exception {
+                return HexFormat.of().withUpperCase().formatHex(
+                                MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(file)));
+        }
 
     private static Run2Crosswalk confirmedCrosswalk(SourceAnchor anchor) {
         return new Run2Crosswalk(List.of(new Run2Crosswalk.Mapping(

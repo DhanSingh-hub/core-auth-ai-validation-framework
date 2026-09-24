@@ -34,6 +34,11 @@ public final class Run2TraceabilityAdapter {
     private final ObjectMapper mapper = new ObjectMapper();
 
     public AdaptedRun adapt(Path traceabilityFile, Path runRoot, Run2Crosswalk crosswalk) throws IOException {
+        return adapt(traceabilityFile, runRoot, crosswalk, null);
+    }
+
+    public AdaptedRun adapt(Path traceabilityFile, Path runRoot, Run2Crosswalk crosswalk,
+                            Run2SpecificationVersionResolution versionResolution) throws IOException {
         Map<String, List<SourceAnchor>> mappedAnchors = mappedAnchors(crosswalk);
         Map<String, CanonicalRequirement> requirements = new LinkedHashMap<>();
         Map<String, CanonicalScenario> scenarios = new LinkedHashMap<>();
@@ -42,7 +47,9 @@ public final class Run2TraceabilityAdapter {
         Map<String, Path> payloadFiles = indexPayloadFiles(runRoot);
         String specification = "ATL105";
         String version = null;
+        String declaredVersion = null;
         String sourceId = null;
+        String sourcePdfFile = null;
 
         try (JsonParser parser = mapper.getFactory().createParser(traceabilityFile.toFile())) {
             require(parser.nextToken() == JsonToken.START_OBJECT, "Run2 traceability root must be an object");
@@ -52,7 +59,11 @@ public final class Run2TraceabilityAdapter {
                 if ("spec".equals(field)) {
                     JsonNode spec = mapper.readTree(parser);
                     sourceId = spec.path("spec_id").asText(null);
-                    version = spec.path("spec_version").asText(null);
+                    declaredVersion = spec.path("spec_version").asText(null);
+                    sourcePdfFile = spec.path("pdf_file").asText(null);
+                    version = versionResolution == null ? declaredVersion
+                        : versionResolution.resolve(traceabilityFile, runRoot, sourceId,
+                            sourcePdfFile, declaredVersion);
                 } else if ("requirements".equals(field)) {
                     require(parser.currentToken() == JsonToken.START_ARRAY, "Run2 requirements must be an array");
                     while (parser.nextToken() != JsonToken.END_ARRAY) {
@@ -80,7 +91,8 @@ public final class Run2TraceabilityAdapter {
         result.setTestCases(List.copyOf(testCases.values()));
         result.setTestData(List.copyOf(testData.values()));
         result.setRequirementCrosswalk(toCanonicalCrosswalk(crosswalk));
-        return new AdaptedRun(result, requirements.size(), scenarios.size(), testCases.size(), testData.size());
+        return new AdaptedRun(result, declaredVersion, versionResolution == null ? null
+            : versionResolution.resolutionId(), requirements.size(), scenarios.size(), testCases.size(), testData.size());
     }
 
     private void adaptOrphans(JsonNode orphans, String version,
@@ -321,7 +333,8 @@ public final class Run2TraceabilityAdapter {
         if (!condition) throw new IOException(message);
     }
 
-    public record AdaptedRun(CanonicalArtifactPackage artifactPackage, int requirements,
+    public record AdaptedRun(CanonicalArtifactPackage artifactPackage, String declaredSpecificationVersion,
+                             String versionResolutionId, int requirements,
                              int scenarios, int testCases, int testData) {
     }
 }
