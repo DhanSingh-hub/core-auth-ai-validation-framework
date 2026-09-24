@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "artifactId": "SEG120-LIFECYCLE-PRINT-DATA-FINANCIAL-RESPONSE-ORIGINAL-001",
+    "purpose": "Segment 120 minimal happy-path: Financial Transaction Response with a single Print Data 2 Segment as the final Data Section 3 companion segment. Proves the envelope-only computed-length formula (SEGMENT_LENGTH_FIELD_OVERHEAD + len(printData)) holds and that SEG120-R-007 ordering passes when Segment 120 is the last (and only) companion segment.",
+    "sourceAnchors": [
+      {"specification": "ATL105", "version": "2026-3", "section": "12.18", "segment": "120", "element": "85", "rule": "segment-type"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_TRANSACTION_RESPONSE"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-01", "P-02-WIDTH"]
+  },
+  "messageType": "FINANCIAL_TRANSACTION_RESPONSE",
+  "response": {
+    "dataSection3": {
+      "printData2Segment": {
+        "segmentType": "120",
+        "segmentLength": "0041",
+        "printData": "THANK YOU FOR SHOPPING WITH US TODAY"
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "analysisId": "SEG120-AI-VS-TEST-SOLUTION-001",
+  "segment": "120",
+  "segmentName": "Print Data 2 Segment",
+  "generatedAt": "2026-09-23T19:00:00+05:30",
+  "question": "The AI Solution produced 13 Segment 120 requirements (12 bucketed SEG-120 + 1 mis-bucketed UNASSIGNED); the Test Solution has 8 Segment 120 rules (SEG120-R-001..SEG120-R-008). Does the Test Solution semantically cover all 13 AI requirements?",
+  "bottomLine": {
+    "aiRequirementCount": 13,
+    "coveredByAtLeastOneRule": 13,
+    "notCovered": 0,
+    "coveragePct": 100.0,
+    "testRulesWithNoAiSupport": 0,
+    "testRulesWithAiSupport": 8
+  },
+  "coverageByDerivationMethod": [
+    {"method": "business_rule_derived", "aiCount": 7, "covered": 7, "notCovered": 0, "coveragePct": 100.0},
+    {"method": "field_constraint", "aiCount": 3, "covered": 3, "notCovered": 0, "coveragePct": 100.0},
+    {"method": "field_fixed_value", "aiCount": 1, "covered": 1, "notCovered": 0, "coveragePct": 100.0},
+    {"method": "relationship_derived", "aiCount": 2, "covered": 2, "notCovered": 0, "coveragePct": 100.0}
+  ],
+  "testRuleToAiRequirementCounts": [
+    {"ruleId": "SEG120-R-001", "aiRequirementsEnforced": 3},
+    {"ruleId": "SEG120-R-002", "aiRequirementsEnforced": 2},
+    {"ruleId": "SEG120-R-003", "aiRequirementsEnforced": 1},
+    {"ruleId": "SEG120-R-004", "aiRequirementsEnforced": 1},
+    {"ruleId": "SEG120-R-005", "aiRequirementsEnforced": 1},
+    {"ruleId": "SEG120-R-006", "aiRequirementsEnforced": 3},
+    {"ruleId": "SEG120-R-007", "aiRequirementsEnforced": 1},
+    {"ruleId": "SEG120-R-008", "aiRequirementsEnforced": 1}
+  ],
+  "aiRequirementToTestRule": [
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1257", "sourceRule": "BR-263-1", "method": "business_rule_derived", "statement": "The Print Data 2 Segment is only sent on Financial Transaction Response messages requiring large amounts of print data.", "coveredBy": ["SEG120-R-006"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1258", "sourceRule": "BR-263-2", "method": "business_rule_derived", "statement": "The Print Data 2 Segment always appears at the end of a Financial Transaction response.", "coveredBy": ["SEG120-R-007"], "flag": "RESOLVED_2026-09-23_AUTHORITATIVE_OVER_ATL105_COMPLETE_TEMPLATES_JSON"},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1259", "sourceRule": "BR-263-3", "method": "business_rule_derived", "statement": "The Print Data 2 Segment has a maximum length of 1,009 alphanumeric characters (01-1,009/a-z/A-Z).", "coveredBy": ["SEG120-R-004"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1260", "sourceRule": "BR-263-4", "method": "business_rule_derived", "statement": "There is a Field Separator between Field Nos. 1 and 2 and between Field Nos. 2 and 3 in the Print Data 2 Segment.", "coveredBy": ["SEG120-R-005"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1261", "sourceRule": "BR-263-5", "method": "business_rule_derived", "statement": "For Blackhawk phone activation and recharge, the Print Data field contains receipt text with a field delimiter '\\' following each line of text sent to the device.", "coveredBy": ["SEG120-R-008"], "flag": "MIS_BUCKETED_UNASSIGNED_IN_AI_PIPELINE"},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1262", "sourceRule": "BR-263-6", "method": "business_rule_derived", "statement": "Segment Type field contains fixed value '120' for the Print Data 2 Segment.", "coveredBy": ["SEG120-R-001"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:1778", "sourceRule": "BR-400-18", "method": "business_rule_derived", "statement": "Print Data 2 Segment (No. 120) Segment Length valid values are 001-1009.", "coveredBy": ["SEG120-R-002"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:3087", "sourceRule": "ENT-FIELD-120-1", "method": "field_constraint", "statement": "In Print Data 2 Segment (Data Segment No. 120), field 1 (Segment Type) is required and must be present.", "coveredBy": ["SEG120-R-001"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:3088", "sourceRule": "ENT-FIELD-120-1", "method": "field_fixed_value", "statement": "In Print Data 2 Segment (Data Segment No. 120), field 1 (Segment Type) must equal the fixed value 120.", "coveredBy": ["SEG120-R-001"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:3089", "sourceRule": "ENT-FIELD-120-2", "method": "field_constraint", "statement": "In Print Data 2 Segment (Data Segment No. 120), field 2 (Segment Length) is required and must be present.", "coveredBy": ["SEG120-R-002"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:3090", "sourceRule": "ENT-FIELD-120-3", "method": "field_constraint", "statement": "In Print Data 2 Segment (Data Segment No. 120), field 3 (Print Data) is required and must be present.", "coveredBy": ["SEG120-R-003"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:3711", "sourceRule": "REL-ENT-SEG-120-FINANCIAL_TRANSACTION_RESPONSE", "method": "relationship_derived", "statement": "The Financial Transaction Response transaction includes Print Data 2 Segment (Data Segment No. 120).", "coveredBy": ["SEG120-R-006"]},
+    {"reqId": "REQ-SRC-ATL105-PDF-001:4068", "sourceRule": "ENT-SEG-120", "method": "relationship_derived", "statement": "The EMV Financial Transaction Response transaction includes Print Data 2 Segment (Data Segment No. 120).", "coveredBy": ["SEG120-R-006"]}
+  ],
+  "note": "This analysis measures whether the Test Solution rule catalog semantically covers every AI-generated requirement statement (100%). It is the inverse of segment-120-ai-coverage-report.json, which measures whether each Test Solution rule has adequate AI-generated test EVIDENCE (0% COVERED, 75% PARTIALLY_COVERED, 25% REVIEW_REQUIRED as of the 2026-09-23 P-01/P-02-WIDTH resolution). Both are needed: a rule can be semantically covered here while still lacking negative-test evidence there."
+}

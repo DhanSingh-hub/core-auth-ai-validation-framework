@@ -1,0 +1,43 @@
+{
+  "reportId": "SEG120-AI-COVERAGE-REPORT-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "120",
+  "segmentName": "Print Data 2 Segment",
+  "generatedAt": "2026-09-23T19:00:00+05:30",
+  "aiSolutionSource": "src_Harit_Latest_AI_Sol/src/pipeline (step5_requirements/approved, scenarios/approved, test_generation/approved, traceability/markdown)",
+  "aiCatalogTotals": {
+    "businessRequirementsBucketedToSeg120": 12,
+    "businessRequirementsRelatedButUnassigned": 1,
+    "businessRequirementsRelatedButUnassignedNote": "REQ-SRC-ATL105-PDF-001:1261 (BR-263-5, Blackhawk '\\' delimiter) is bucketed UNASSIGNED by the pipeline's own segment-tagger even though its statement and scenario/test-case evidence are exclusively about Segment 120 Print Data.",
+    "scenariosLinked": 12,
+    "testCasesLinked": 106,
+    "testCasesPositive": 106,
+    "testCasesNegative": 0,
+    "testCasesPriorityP3": 106
+  },
+  "coverageSummary": {
+    "COVERED": 0,
+    "PARTIALLY_COVERED": 6,
+    "REVIEW_REQUIRED": 2,
+    "MISSING": 0,
+    "totalRules": 8
+  },
+  "ruleLevelCoverage": [
+    {"ruleId": "SEG120-R-001", "title": "Segment Type is 120", "class": "field", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 3, "reqIds": ["REQ-SRC-ATL105-PDF-001:1262", "REQ-SRC-ATL105-PDF-001:3087", "REQ-SRC-ATL105-PDF-001:3088"], "scenarioIds": ["SC-1843", "SC-3639"], "testCaseCount": 46, "testCaseSample": ["TC-4313", "TC-4314", "TC-12290", "TC-12291"], "provisional": [], "reason": "Full REQ->SC->TC chain exists (fixed-value + required-present assertions), but every test case is positive; no negative case (e.g. Segment Type = 121) was found in the approved catalog."},
+    {"ruleId": "SEG120-R-002", "title": "Segment Length present, exactly 4 digits, computed-length equality", "class": "field", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 2, "reqIds": ["REQ-SRC-ATL105-PDF-001:1778", "REQ-SRC-ATL105-PDF-001:3089"], "scenarioIds": ["SC-2356", "SC-3640"], "testCaseCount": 46, "testCaseSample": ["TC-7351", "TC-7352", "TC-12313", "TC-12314"], "provisional": [], "reason": "RESOLVED 2026-09-23 (P-02-WIDTH): field width confirmed fixed at 4 digits by Element 84 spec text (extracted_text.txt lines 21313-21340), no longer blocked. Full chain exists (46 test cases) but all are positive; no negative case (wrong width, non-numeric, out-of-range value) was found, so this is PARTIALLY_COVERED rather than COVERED."},
+    {"ruleId": "SEG120-R-003", "title": "Print Data is required", "class": "field", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 1, "reqIds": ["REQ-SRC-ATL105-PDF-001:3090"], "scenarioIds": ["SC-3641"], "testCaseCount": 2, "testCaseSample": ["TC-12336", "TC-12337"], "provisional": [], "reason": "Only a presence check exists; no negative case (Print Data omitted or exceeding 999 characters) was found."},
+    {"ruleId": "SEG120-R-004", "title": "Print Data <= 999 chars AND total Segment 120 <= 1009 characters (independent caps)", "class": "serialization", "severity": "error", "status": "REVIEW_REQUIRED", "reqCount": 1, "reqIds": ["REQ-SRC-ATL105-PDF-001:1259"], "scenarioIds": ["SC-1840"], "testCaseCount": 2, "testCaseSample": ["TC-4307", "TC-4308"], "provisional": ["P-02-RESIDUAL"], "reason": "Blocked by P-02-RESIDUAL: a 1-character arithmetic gap remains between the 999-character Print Data field cap and the 1,009-character total cap (1009-3-4-2=1000, not 999) that no test case exercises at the exact boundary."},
+    {"ruleId": "SEG120-R-005", "title": "Field separators between 1/2 and 2/3 only, no trailing separator", "class": "serialization", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 1, "reqIds": ["REQ-SRC-ATL105-PDF-001:1260"], "scenarioIds": ["SC-1841"], "testCaseCount": 2, "testCaseSample": ["TC-4309", "TC-4310"], "provisional": [], "reason": "A 2-test-case chain exists but both are positive; no negative case with a misplaced/extra/missing separator was found."},
+    {"ruleId": "SEG120-R-006", "title": "Segment 120 only present in Financial Transaction Response / EMV Financial Transaction Response", "class": "applicability", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 3, "reqIds": ["REQ-SRC-ATL105-PDF-001:1257", "REQ-SRC-ATL105-PDF-001:3711", "REQ-SRC-ATL105-PDF-001:4068"], "scenarioIds": ["SC-1838", "SC-4235", "SC-4493"], "testCaseCount": 4, "testCaseSample": ["TC-4303", "TC-4304", "TC-15548", "TC-16652"], "provisional": [], "reason": "Only positive 'segment present in a response' cases exist; no negative case proving Segment 120 is rejected on a request message was found."},
+    {"ruleId": "SEG120-R-007", "title": "Segment 120 is the final segment of Data Section 3", "class": "structure", "severity": "error", "status": "PARTIALLY_COVERED", "reqCount": 1, "reqIds": ["REQ-SRC-ATL105-PDF-001:1258"], "scenarioIds": ["SC-1839"], "testCaseCount": 2, "testCaseSample": ["TC-4305", "TC-4306"], "provisional": [], "reason": "RESOLVED 2026-09-23 (P-01): the ordering conflict with docs/atl105_complete_templates.json is assessed as a numeric-sort extraction artifact, not genuine wire order; the literal spec statement (BR-263-2) is authoritative and TC-4305/TC-4306 are now valid positive evidence. No longer blocked, but still PARTIALLY_COVERED because both test cases are positive and no negative case (Segment 120 not last) was found."},
+    {"ruleId": "SEG120-R-008", "title": "Print Data may contain '\\' Blackhawk line delimiter", "class": "content", "severity": "info", "status": "REVIEW_REQUIRED", "reqCount": 1, "reqIds": ["REQ-SRC-ATL105-PDF-001:1261"], "scenarioIds": ["SC-1842"], "testCaseCount": 2, "testCaseSample": ["TC-4311", "TC-4312"], "provisional": ["P-03"], "reason": "Blocked by P-03: whether delimiter well-formedness is in envelope scope is unresolved; the underlying REQ is also mis-bucketed as UNASSIGNED by the AI pipeline's own segment tagger."}
+  ],
+  "crossCuttingFindings": [
+    "Zero negative/violation test cases exist anywhere in the approved test_case_catalog.json for the 12 scenarios tied to Segment 120 (106 of 106 test cases are positive, priority P3). This caps every error-severity rule at PARTIALLY_COVERED at best until negative cases are generated.",
+    "REQ-SRC-ATL105-PDF-001:1261 (BR-263-5, the Blackhawk '\\' delimiter rule) is the only Segment 120-relevant requirement tagged UNASSIGNED instead of SEG-120 by the AI pipeline's own segment bucketer, despite its statement, scenario (SC-1842), and test cases (TC-4311, TC-4312) being exclusively about Segment 120 Print Data.",
+    "RESOLVED 2026-09-23: The apparent contradiction between the AI-generated message template file (docs/atl105_complete_templates.json) and the AI-generated requirement/test pair for ordering (BR-263-2 / SC-1839 / TC-4305, TC-4306) is assessed as a numeric-sort extraction artifact in the template file, not a genuine conflict. BR-263-2 ('Segment 120 always appears at the end') is treated as authoritative.",
+    "OPEN: a 1-character arithmetic gap remains between the 999-character Print Data field cap and the 1,009-character total-segment cap (1009-3-4-2=1000, not 999) -- see P-02-RESIDUAL."
+  ]
+}
+
