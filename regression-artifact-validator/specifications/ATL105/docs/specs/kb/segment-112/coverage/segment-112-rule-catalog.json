@@ -1,0 +1,26 @@
+{
+  "catalogId": "ATL105-SEG112-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "112",
+  "segmentName": "Additional Information Data Segment",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "scope": "Segment 112 core structure, repeating Additional Information section, and Financial Transaction Response placement/applicability boundary",
+  "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 12625-12676 (Section 12.11, page 244-245) and lines 22490-22530 (Element 115/116 dictionary entries, page 425-426). Derived directly from the ATL105 2026-3 specification text; no AI Solution artifact was read or copied to produce these rules.",
+  "rules": [
+    {"ruleId":"SEG112-R-001","title":"Segment Type is 112","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"85","rule":"segment-type"}},
+    {"ruleId":"SEG112-R-002","title":"Segment Length identifies the segment's total length including Segment Type and Field Separators","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"84","rule":"segment-length"}},
+    {"ruleId":"SEG112-R-003","title":"Segment 112 has a maximum length of 999 alphanumeric characters","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-max-length"}},
+    {"ruleId":"SEG112-R-004","title":"Segment 112 appears only at the end of a Financial Transaction response","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-position-financial-response"}},
+    {"ruleId":"SEG112-R-005","title":"BUYPASS originates transmission of Segment 112 content (host-originated, not device)","class":"metadata","severity":"info","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-origin-host"}},
+    {"ruleId":"SEG112-R-006","title":"The Additional Information section (elements 116/117/118) repeats once per Additional Information Indicator, up to a maximum of 990 bytes total","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"additional-information-section-repetition-max-990"}},
+    {"ruleId":"SEG112-R-007","title":"Additional Information Indicator (Element 116) identifies the type of additional information being transmitted","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"116","rule":"additional-information-indicator"}},
+    {"ruleId":"SEG112-R-008","title":"Additional Information Length (Element 117) identifies the length of the following Additional Information (Element 118)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"117","rule":"additional-information-length"}},
+    {"ruleId":"SEG112-R-009","title":"Additional Information (Element 118) is variable length and carries the value identified by its paired Indicator/Length","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"118","rule":"additional-information-value"}},
+    {"ruleId":"SEG112-R-010","title":"Segment 112 is required in a Financial Transaction Response only when Element 115 (Additional Information Data Segment Flag) equals 1","class":"compatibility","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13","segment":"100","element":"115","rule":"segment-112-required-when-flag-set"},"reviewNote":"Element 115 is defined in the shared element dictionary (section 13), used within the Segment 100 / Financial Transaction Response context. SME should confirm whether an equivalent applicability rule already exists in segment-100-rule-catalog.json before this is certified, to avoid a duplicate rule across two catalogs."}
+  ],
+  "openQuestions": [
+    "Value table for Element 116 (Additional Information Indicator) is only partially transcribed above (001=balance, 003=AVS, 004=CVV, plus others per the 20+ information types listed in section 12.11); a full enumerated value table should be added before certification.",
+    "Confirm whether Element 115's applicability rule belongs in segment-100-rule-catalog.json, segment-112-rule-catalog.json, or both, to avoid double-counting in the independent denominator."
+  ]
+}

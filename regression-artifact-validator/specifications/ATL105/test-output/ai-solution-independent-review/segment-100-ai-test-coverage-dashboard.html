@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATL105 Segment 100 AI to Test Coverage Dashboard</title>
+  <style>
+    :root {
+      --ink: #17212b;
+      --muted: #65717c;
+      --paper: #f4f7f8;
+      --panel: #ffffff;
+      --line: #d7e0e4;
+      --teal: #087f8c;
+      --blue: #3b6ea8;
+      --gold: #c88719;
+      --red: #bd4d4d;
+      --green: #2f8f65;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px Georgia, serif; line-height: 1.45; }
+    header { padding: 34px 6vw; background: var(--ink); color: white; border-bottom: 6px solid var(--teal); }
+    h1, h2 { font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; font-weight: 400; letter-spacing: 0; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 48px); line-height: 1; }
+    header p { color: #c8d9df; max-width: 900px; margin: 14px 0 0; }
+    main { max-width: 1500px; margin: auto; padding: 28px 5vw 60px; }
+    .notice { padding: 14px 18px; background: #fff8e8; border-left: 5px solid var(--gold); margin-bottom: 22px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 12px; margin-bottom: 22px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); padding: 16px; min-height: 105px; }
+    .stat strong { display: block; color: var(--blue); font: 36px/1 Impact, sans-serif; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; margin-bottom: 22px; }
+    .chart-box { min-height: 370px; }
+    canvas { display: block; width: 100%; max-width: 620px; height: 300px; margin: 0 auto; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: center; color: var(--muted); font-size: 13px; }
+    .legend i { display: inline-block; width: 12px; height: 12px; margin-right: 5px; vertical-align: -1px; }
+    .bar-row { display: grid; grid-template-columns: minmax(180px, 1fr) 2fr 85px; gap: 12px; align-items: center; margin: 15px 0; }
+    .bar-track { height: 25px; background: #e8eef0; }
+    .bar-fill { display: block; height: 100%; background: var(--teal); }
+    .bar-fill.review { background: var(--gold); }
+    .bar-fill.test-only { background: var(--red); }
+    .bar-fill.trace { background: var(--green); }
+    .bar-value { text-align: right; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: #e9f0f2; font-size: 13px; }
+    footer { color: var(--muted); font-size: 13px; padding-top: 8px; }
+    @media (max-width: 850px) { .stats, .charts { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .stats, .charts { grid-template-columns: 1fr; } .bar-row { grid-template-columns: 1fr; gap: 4px; } .bar-value { text-align: left; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Segment 100 AI to Test Coverage</h1>
+    <p>ATL105 independent-producer comparison. Confirmed matches are separated from review-required candidates and Test-only baseline requirements.</p>
+  </header>
+  <main>
+    <div class="notice"><strong>Review gate:</strong> heuristic and potential matches do not count as confirmed coverage until canonical source anchors and business equivalence are independently reviewed.</div>
+
+    <section class="stats" aria-label="Coverage summary">
+      <div class="stat"><strong>447</strong><span>AI BRs</span></div>
+      <div class="stat"><strong>232</strong><span>Test Solution BRs</span></div>
+      <div class="stat"><strong>19</strong><span>Confirmed AI/Test matches</span></div>
+      <div class="stat"><strong>5.6%</strong><span>Confirmed baseline coverage, 13/232</span></div>
+    </section>
+
+    <section class="charts">
+      <div class="panel chart-box">
+        <h2>AI BR Disposition</h2>
+        <canvas id="aiPie" width="620" height="300" aria-label="Pie chart showing confirmed and review-required AI business requirements"></canvas>
+        <div class="legend">
+          <span><i style="background:#2f8f65"></i>Confirmed: 19</span>
+          <span><i style="background:#c88719"></i>Review required: 428</span>
+          <span><i style="background:#bd4d4d"></i>Unmatched: 0</span>
+        </div>
+      </div>
+      <div class="panel chart-box">
+        <h2>Test Baseline Disposition</h2>
+        <canvas id="testPie" width="620" height="300" aria-label="Pie chart showing covered and Test-only baseline requirements"></canvas>
+        <div class="legend">
+          <span><i style="background:#2f8f65"></i>Covered: 13</span>
+          <span><i style="background:#bd4d4d"></i>Test-only: 219</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>AI to Test Comparison</h2>
+      <div class="bar-row"><span>AI BRs</span><div class="bar-track"><i class="bar-fill" style="width:100%"></i></div><span class="bar-value">447</span></div>
+      <div class="bar-row"><span>Test Solution BRs</span><div class="bar-track"><i class="bar-fill" style="width:51.9%"></i></div><span class="bar-value">232</span></div>
+      <div class="bar-row"><span>Confirmed matches</span><div class="bar-track"><i class="bar-fill trace" style="width:4.3%"></i></div><span class="bar-value">19</span></div>
+      <div class="bar-row"><span>Review-required matches</span><div class="bar-track"><i class="bar-fill review" style="width:95.7%"></i></div><span class="bar-value">428</span></div>
+      <div class="bar-row"><span>Test-only BRs</span><div class="bar-track"><i class="bar-fill test-only" style="width:94.4%"></i></div><span class="bar-value">219</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Four-Level Traceability</h2>
+      <table>
+        <thead><tr><th>Status</th><th>Count</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Covered</td><td>31</td><td>BR, scenario, test case, and test data evidence present.</td></tr>
+          <tr><td>Review required</td><td>27</td><td>Evidence exists but needs manual review or approval.</td></tr>
+          <tr><td>Missing</td><td>0</td><td>No missing traceability rows in the current matrix.</td></tr>
+        </tbody>
+      </table>
+      <div class="bar-row"><span>Covered</span><div class="bar-track"><i class="bar-fill trace" style="width:53.4%"></i></div><span class="bar-value">31</span></div>
+      <div class="bar-row"><span>Review required</span><div class="bar-track"><i class="bar-fill review" style="width:46.6%"></i></div><span class="bar-value">27</span></div>
+    </section>
+
+    <footer>Source reports: Segment 100 AI-to-Test crosswalk and Segment 100 independent traceability matrix. Generated for review, not certification.</footer>
+  </main>
+  <script>
+    function pie(canvasId, values, colors) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const total = values.reduce((a, b) => a + b, 0) || 1;
+      const cx = canvas.width / 2;
+      const cy = 145;
+      const radius = 105;
+      let start = -Math.PI / 2;
+      values.forEach((value, index) => {
+        const angle = (value / total) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, start, start + angle);
+        ctx.closePath();
+        ctx.fillStyle = colors[index];
+        ctx.fill();
+        start += angle;
+      });
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 0.52, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.fillStyle = '#17212b';
+      ctx.font = 'bold 22px Georgia';
+      ctx.textAlign = 'center';
+      ctx.fillText(total, cx, cy + 8);
+    }
+    pie('aiPie', [19, 428, 0], ['#2f8f65', '#c88719', '#bd4d4d']);
+    pie('testPie', [13, 219], ['#2f8f65', '#bd4d4d']);
+  </script>
+</body>
+</html>
