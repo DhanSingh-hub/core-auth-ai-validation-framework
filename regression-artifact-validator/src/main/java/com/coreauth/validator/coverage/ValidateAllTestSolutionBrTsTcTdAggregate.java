@@ -36,6 +36,7 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         Set<String> scenariosWithoutTestCase = new HashSet<>(scenarios.keySet());
         Set<String> testCasesWithoutData = new HashSet<>(testCases.keySet());
         Set<String> duplicateIds = new HashSet<>();
+        boolean hasReviewPlaceholders = false;
         Map<String, Integer> segmentCounts = new TreeMap<>();
 
         for (JsonNode scenario : root.path("testScenarios")) {
@@ -69,6 +70,7 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         duplicateIds.addAll(findDuplicateIds(root.path("testScenarios")));
         duplicateIds.addAll(findDuplicateIds(root.path("testCases")));
         duplicateIds.addAll(findDuplicateIds(root.path("testData")));
+        hasReviewPlaceholders = hasReviewPlaceholder(root);
 
         ObjectNode result = mapper.createObjectNode();
         result.put("artifact", "all-test-solution-br-ts-tc-td-chain-validation");
@@ -83,8 +85,11 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         result.put("duplicateArtifactIds", duplicateIds.size());
         result.put("fullyLinkedRequirements", requirements.size() - requirementsWithoutScenario.size());
         result.put("fullyLinkedTestCases", testCases.size() - testCasesWithoutData.size());
-        result.put("executionReady", requirementsWithoutScenario.isEmpty() && scenariosWithoutTestCase.isEmpty()
-                && testCasesWithoutData.isEmpty() && duplicateIds.isEmpty());
+        boolean structurallyComplete = requirementsWithoutScenario.isEmpty() && scenariosWithoutTestCase.isEmpty()
+            && testCasesWithoutData.isEmpty() && duplicateIds.isEmpty();
+        result.put("structurallyComplete", structurallyComplete);
+        result.put("hasReviewPlaceholders", hasReviewPlaceholders);
+        result.put("executionReady", structurallyComplete && !hasReviewPlaceholders);
         result.set("unlinkedRequirementIds", mapper.valueToTree(requirementsWithoutScenario));
         result.set("unlinkedScenarioIds", mapper.valueToTree(scenariosWithoutTestCase));
         result.set("unlinkedTestCaseIds", mapper.valueToTree(testCasesWithoutData));
@@ -117,6 +122,17 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         return duplicate;
     }
 
+    private static boolean hasReviewPlaceholder(JsonNode root) {
+        for (String collection : new String[]{"businessRequirements", "testScenarios", "testCases", "testData"}) {
+            for (JsonNode value : root.path(collection)) {
+                if ("REVIEW_REQUIRED".equals(value.path("status").asText())
+                        || value.path("trainingStatus").asText().endsWith("_REQUIRED")
+                        || "REVIEW_REQUIRED".equals(value.path("expectedValidation").asText())) return true;
+            }
+        }
+        return false;
+    }
+
     private static String markdown(JsonNode result) {
         return "# Aggregate Test Solution Chain Validation\n\n"
                 + "| Metric | Count |\n|---|---:|\n"
@@ -127,7 +143,9 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
                 + "| BR -> TS gaps | " + result.path("requirementsWithoutScenario").asInt() + " |\n"
                 + "| TS -> TC gaps | " + result.path("scenariosWithoutTestCase").asInt() + " |\n"
                 + "| TC -> TD gaps | " + result.path("testCasesWithoutData").asInt() + " |\n"
-                + "| Duplicate IDs | " + result.path("duplicateArtifactIds").asInt() + " |\n\n"
+                + "| Duplicate IDs | " + result.path("duplicateArtifactIds").asInt() + " |\n"
+                + "| Structural complete | " + result.path("structurallyComplete").asBoolean() + " |\n"
+                + "| Review placeholders | " + result.path("hasReviewPlaceholders").asBoolean() + " |\n\n"
                 + "Execution ready: **" + result.path("executionReady").asBoolean() + "**\n";
     }
 }
