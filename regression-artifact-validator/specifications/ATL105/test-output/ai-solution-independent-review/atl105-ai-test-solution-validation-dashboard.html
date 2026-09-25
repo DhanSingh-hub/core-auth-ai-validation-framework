@@ -33,6 +33,11 @@
     .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
     .panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; margin-bottom: 22px; }
     .chart-box { min-height: 370px; }
+    .summary-table-wrap { overflow-x: auto; }
+    .summary-table { min-width: 900px; }
+    .summary-table th, .summary-table td { white-space: nowrap; }
+    .summary-table th:not(:first-child), .summary-table td:not(:first-child) { text-align: right; }
+    .summary-table .metric-note { color: var(--muted); font-size: 12px; white-space: normal; text-align: left !important; }
     canvas { display: block; width: 100%; max-width: 620px; height: 300px; margin: 0 auto; }
     .legend { display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: center; color: var(--muted); font-size: 13px; }
     .legend i { display: inline-block; width: 12px; height: 12px; margin-right: 5px; vertical-align: -1px; }
@@ -133,19 +138,99 @@
         <button id="resetFilters" type="button">Reset filters</button>
         <details class="source-details">
           <summary>Data sources</summary>
-          <p>Segment readiness: <code>run2-weighted-executive-report.json</code> + <code>ai-only-sme-decision-register.json</code>.</p>
+          <p>Segment readiness: <code>run2-weighted-executive-report.json</code> + <code>semantic-br-decision-register.json</code>.</p>
           <p>Transactions: <code>all-segments-all-23-transaction-type-training-baseline.json</code>.</p>
-          <p>Artifact counts: <code>complete-all-test-solution-br-ts-tc-td-package.json</code>.</p>
+          <p>AI/Test comparison: <code>ai-test-many-to-many-coverage-matrix.json</code> + <code>semantic-br-decision-register.json</code>.</p>
+          <p>Automated validation: <code>four-level-traceability-matches.json</code> + <code>automated-test-validation-register.json</code>.</p>
+          <p>Source behavior metrics: <code>source-behavior-coverage-metrics.json</code> + <code>ai-behavior-decomposition.json</code>.</p>
+          <p>Independent BR package: <code>source-derived-requirement-inventory.json</code> + <code>complete-all-test-solution-br-ts-tc-td-package.json</code>.</p>
         </details>
       </aside>
       <div class="content-column">
     <section class="stats" aria-label="Coverage summary">
-      <div class="stat"><strong id="statRules">309</strong><span id="statRulesLabel">Independent rule BRs</span></div>
-      <div class="stat"><strong id="statBrArtifacts">314</strong><span id="statBrArtifactsLabel">Canonical BR artifacts</span></div>
-      <div class="stat"><strong id="statPending">748</strong><span id="statPendingLabel">SME decisions pending</span></div>
-      <div class="stat"><strong id="statPromoted">0</strong><span id="statPromotedLabel">Promoted SME decisions</span></div>
-      <div class="stat"><strong id="statGaps">0</strong><span id="statGapsLabel">BR / TS / TC / TD link gaps</span></div>
+      <div class="stat"><strong id="statRules">6473</strong><span id="statRulesLabel">AI-generated BRs</span></div>
+      <div class="stat"><strong id="statBrArtifacts">289</strong><span id="statBrArtifactsLabel">Independent Test BR rules</span></div>
+      <div class="stat"><strong id="statPending">6473</strong><span id="statPendingLabel">AI/Test decisions pending</span></div>
+      <div class="stat"><strong id="statPromoted">12</strong><span id="statPromotedLabel">AutomatedTestValidated groups</span></div>
+      <div class="stat"><strong id="statGaps">5725</strong><span id="statGapsLabel">AI BRs without exact atomic match</span></div>
       <div class="stat"><strong id="statReady">NO</strong><span id="statReadyLabel">Execution ready</span></div>
+    </section>
+
+    <section class="panel" id="executiveSummaryPanel">
+      <h2>Executive summary</h2>
+      <p style="color:var(--muted);margin-top:-8px">AI output is compared with independent Test Solution evidence. Automated match counts represent validated mapping groups, not raw BR counts.</p>
+      <div class="summary-table-wrap">
+        <table class="summary-table" aria-label="AI and independent Test Solution comparison summary">
+          <thead>
+            <tr>
+              <th>Artifact level</th>
+              <th>AI generated output</th>
+              <th>Independent Test Validation</th>
+              <th>Automated match</th>
+              <th>Automated no match</th>
+              <th>Missing count</th>
+              <th>AI-only artifacts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Business Rules</th>
+              <td>6,473</td>
+              <td>289</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>5,725</td>
+              <td>5,951</td>
+            </tr>
+            <tr>
+              <th scope="row">Business Requirements</th>
+              <td>6,473</td>
+              <td>314</td>
+              <td>147 AI BRs</td>
+              <td>6,326 AI BRs</td>
+              <td>5,725</td>
+              <td>5,951</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Scenarios</th>
+              <td>4,367</td>
+              <td>419</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Cases</th>
+              <td>2,143</td>
+              <td>469</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Data</th>
+              <td>1,868</td>
+              <td>492</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Groups</th>
+              <td>—</td>
+              <td>30 groups<br><small>19 BRs / 17 TSs / 21 TCs / 15 TDs</small></td>
+              <td>12 groups<br><small>12 BRs / 12 TSs / 17 TCs / 15 TDs</small></td>
+              <td>18 groups<br><small>7 BRs / 5 TSs / 4 TCs / 0 TDs</small></td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="metric-note">Missing count is the number of AI BRs without an exact atomic Test Rule candidate. Automated validation handles canonical-anchor matches with complete non-placeholder BR/TS/TC/TD chains; only unresolved semantic, source, or incomplete-chain mappings require SME review. Group BR/TS/TC/TD values are summed across mapping groups and are not unique global artifact counts.</p>
     </section>
 
     <section class="panel">
@@ -155,8 +240,9 @@
           <option value="all">All decisions</option><option value="pending">Pending</option><option value="promoted">Promoted</option>
         </select>
       </div>
-      <div class="bar-row"><span>Pending SME decisions</span><div class="bar-track"><i class="bar-fill review" style="width:100%"></i></div><span class="bar-value">748</span></div>
-      <div class="bar-row"><span>Promoted decisions</span><div class="bar-track"><i class="bar-fill trace" style="width:0%"></i></div><span class="bar-value">0</span></div>
+      <div class="bar-row"><span>Pending AI/Test semantic decisions</span><div class="bar-track"><i class="bar-fill review" style="width:100%"></i></div><span class="bar-value">6,473</span></div>
+      <div class="bar-row"><span>AutomatedTestValidated mapping groups</span><div class="bar-track"><i class="bar-fill trace" style="width:40%"></i></div><span class="bar-value">12/30 confirmed groups</span></div>
+      <div class="bar-row"><span>SME-required mapping entries</span><div class="bar-track"><i class="bar-fill review" style="width:70%"></i></div><span class="bar-value">70/100 entries</span></div>
       <div class="bar-row"><span>Rejected decisions</span><div class="bar-track"><i class="bar-fill test-only" style="width:0%"></i></div><span class="bar-value">0</span></div>
     </section>
 
@@ -165,18 +251,18 @@
         <h2>AI delivery disposition</h2>
         <canvas id="aiPie" width="620" height="300" aria-label="Pie chart showing confirmed and review-required AI business requirements"></canvas>
         <div class="legend">
-          <span><i style="background:#2f8f65"></i>Crosswalk referenced: 534</span>
-          <span><i style="background:#c88719"></i>AI-only: 5,939</span>
-          <span><i style="background:#bd4d4d"></i>Full-chain: 1,964</span>
+          <span><i style="background:#2f8f65"></i>Exact atomic candidates: 522</span>
+            <span><i style="background:#c88719"></i>Composite/ambiguous review: 226</span>
+            <span><i style="background:#bd4d4d"></i>No exact atomic match: 5,725</span>
         </div>
       </div>
       <div class="panel chart-box">
         <h2>Independent BR disposition</h2>
         <canvas id="testPie" width="620" height="300" aria-label="Pie chart showing covered and Test-only baseline requirements"></canvas>
         <div class="legend">
-          <span><i style="background:#2f8f65"></i>Rule denominator: 289</span>
-          <span><i style="background:#c88719"></i>BR artifacts: 314</span>
-          <span><i style="background:#bd4d4d"></i>Review placeholders: 290 TS</span>
+          <span><i style="background:#2f8f65"></i>Source-derived rules: 289</span>
+          <span><i style="background:#c88719"></i>Canonical BR artifacts: 314</span>
+          <span><i style="background:#bd4d4d"></i>SME-confirmed AI/Test matches: 0</span>
         </div>
       </div>
     </section>
@@ -184,15 +270,35 @@
     <section class="panel">
       <h2>Independent comparison</h2>
       <div class="bar-row"><span>AI BRs</span><div class="bar-track"><i class="bar-fill" style="width:100%"></i></div><span class="bar-value">6,473</span></div>
-      <div class="bar-row"><span>AI BRs linked to any crosswalk</span><div class="bar-track"><i class="bar-fill trace" style="width:8.2%"></i></div><span class="bar-value">534</span></div>
-      <div class="bar-row"><span>AI full-chain BRs</span><div class="bar-track"><i class="bar-fill trace" style="width:30.3%"></i></div><span class="bar-value">1,964</span></div>
-      <div class="bar-row"><span>Independent Test BR denominator</span><div class="bar-track"><i class="bar-fill review" style="width:4.5%"></i></div><span class="bar-value">289</span></div>
-      <div class="bar-row"><span>Confirmed Test coverage</span><div class="bar-track"><i class="bar-fill trace" style="width:10.4%"></i></div><span class="bar-value">30/289</span></div>
+      <div class="bar-row"><span>AI BRs with exact atomic Test Rule candidate</span><div class="bar-track"><i class="bar-fill trace" style="width:8.1%"></i></div><span class="bar-value">522</span></div>
+      <div class="bar-row"><span>AI BRs requiring composite/semantic review</span><div class="bar-track"><i class="bar-fill review" style="width:3.5%"></i></div><span class="bar-value">226</span></div>
+      <div class="bar-row"><span>AI BRs without exact atomic Test Rule</span><div class="bar-track"><i class="bar-fill test-only" style="width:88.5%"></i></div><span class="bar-value">5,725</span></div>
+      <div class="bar-row"><span>SME-confirmed AI/Test coverage</span><div class="bar-track"><i class="bar-fill trace" style="width:0%"></i></div><span class="bar-value">0/6,473</span></div>
+      <div class="bar-row"><span>AutomatedTestValidated AI BRs</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147/6,473</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Automated confidence ladder</h2>
+      <p style="color:var(--muted);margin-top:-8px">Deterministic statuses are promoted automatically; only unresolved evidence is routed to SME review.</p>
+      <div class="bar-row"><span>AUTOMATED_EXACT / validated chain</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147 AI BRs</span></div>
+      <div class="bar-row"><span>AUTOMATED_STRUCTURAL candidate</span><div class="bar-track"><i class="bar-fill trace" style="width:8.1%"></i></div><span class="bar-value">522 candidates</span></div>
+      <div class="bar-row"><span>AUTOMATED_PARTIAL / composite candidate</span><div class="bar-track"><i class="bar-fill review" style="width:3.5%"></i></div><span class="bar-value">226 candidates</span></div>
+      <div class="bar-row"><span>REVIEW_REQUIRED / unsupported or unresolved</span><div class="bar-track"><i class="bar-fill test-only" style="width:88.5%"></i></div><span class="bar-value">5,725 AI BRs</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Source behavior coverage</h2>
+      <p style="color:var(--muted);margin-top:-8px">Source behavior coverage is independent of AI BR volume.</p>
+      <div class="bar-row"><span>Source-rule denominator</span><div class="bar-track"><i class="bar-fill" style="width:100%"></i></div><span class="bar-value">289</span></div>
+      <div class="bar-row"><span>Confirmed source-rule mapping groups</span><div class="bar-track"><i class="bar-fill review" style="width:10.4%"></i></div><span class="bar-value">30/289</span></div>
+      <div class="bar-row"><span>Automated source-rule validation</span><div class="bar-track"><i class="bar-fill trace" style="width:4.2%"></i></div><span class="bar-value">12/289</span></div>
+      <div class="bar-row"><span>AI BRs fully explained by validated source rules</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147/6,473</span></div>
+      <p class="metric-note">Negative, boundary, conditional-applicability, and lifecycle evidence remain required where applicable. Missing scenario types route to SME_REQUIRED.</p>
     </section>
 
     <section class="panel" id="segmentReadinessPanel">
       <h2>Segment readiness</h2>
-      <p style="color:var(--muted);margin-top:-8px">This table is the filtered surface. Select a segment or decision state in the left rail. <strong id="visibleSegmentCount">10 segments visible</strong>.</p>
+      <p style="color:var(--muted);margin-top:-8px">This legacy readiness view remains filterable; the AI/Test comparison panel above is the current coverage assessment. <strong id="visibleSegmentCount">10 segments visible</strong>.</p>
       <table id="segmentReadinessTable">
         <thead><tr><th>Segment</th><th class="level-br">BR denominator</th><th class="level-ts">Confirmed</th><th class="level-tc">Full chain</th><th class="level-td">SME pending</th><th>Decision</th></tr></thead>
         <tbody>
@@ -249,12 +355,12 @@
       <table>
         <thead><tr><th>Status</th><th>Count</th><th>Meaning</th></tr></thead>
         <tbody>
-          <tr><td>Structural complete</td><td>309</td><td>Every independent BR has a BRâ†’TSâ†’TCâ†’TD path.</td></tr>
+          <tr><td>Structural complete</td><td>314</td><td>Every canonical Test Solution BR artifact has a structural BRâ†’TSâ†’TCâ†’TD path.</td></tr>
           <tr><td>Review required</td><td>290</td><td>TS placeholders remain and need independent derivation.</td></tr>
           <tr><td>Execution ready</td><td>0</td><td>Fixtures, semantic review, and SME promotion are still required.</td></tr>
         </tbody>
       </table>
-      <div class="bar-row"><span>Structural complete</span><div class="bar-track"><i class="bar-fill trace" style="width:100%"></i></div><span class="bar-value">309</span></div>
+      <div class="bar-row"><span>Structural complete</span><div class="bar-track"><i class="bar-fill trace" style="width:100%"></i></div><span class="bar-value">314</span></div>
       <div class="bar-row"><span>Review placeholders</span><div class="bar-track"><i class="bar-fill review" style="width:94.2%"></i></div><span class="bar-value">290</span></div>
     </section>
 
@@ -290,8 +396,8 @@
       ctx.textAlign = 'center';
       ctx.fillText(total, cx, cy + 8);
     }
-    pie('aiPie', [534, 5939, 1964], ['#2f8f65', '#c88719', '#bd4d4d']);
-    pie('testPie', [289, 314, 290], ['#2f8f65', '#39627a', '#c88719']);
+    pie('aiPie', [522, 226, 5725], ['#2f8f65', '#c88719', '#bd4d4d']);
+    pie('testPie', [289, 314, 0], ['#2f8f65', '#39627a', '#bd4d4d']);
     function updateFilters() {
       const segmentControl = document.getElementById('segmentFilter');
       const decisionControl = document.getElementById('decisionFilter');
@@ -351,17 +457,17 @@
         document.getElementById('statGapsLabel').textContent = 'Transaction TCs';
         document.getElementById('statReadyLabel').textContent = 'Transaction TD status';
       } else {
-        document.getElementById('statRules').textContent = aggregate ? '309' : selectedRules;
-        document.getElementById('statBrArtifacts').textContent = aggregate ? '314' : selectedCanonical;
-        document.getElementById('statPending').textContent = aggregate ? '748' : selectedPending;
-        document.getElementById('statPromoted').textContent = aggregate ? '0' : selectedConfirmed;
-        document.getElementById('statGaps').textContent = '0';
+        document.getElementById('statRules').textContent = aggregate ? '6473' : selectedRules;
+        document.getElementById('statBrArtifacts').textContent = aggregate ? '289' : selectedCanonical;
+        document.getElementById('statPending').textContent = aggregate ? '6473' : selectedPending;
+        document.getElementById('statPromoted').textContent = aggregate ? '12' : selectedConfirmed;
+        document.getElementById('statGaps').textContent = aggregate ? '5725' : '0';
         document.getElementById('statReady').textContent = 'NO';
-        document.getElementById('statRulesLabel').textContent = 'Independent rule BRs';
-        document.getElementById('statBrArtifactsLabel').textContent = 'Canonical BR artifacts';
-        document.getElementById('statPendingLabel').textContent = 'SME decisions pending';
-        document.getElementById('statPromotedLabel').textContent = 'Promoted SME decisions';
-        document.getElementById('statGapsLabel').textContent = 'BR / TS / TC / TD link gaps';
+        document.getElementById('statRulesLabel').textContent = 'AI-generated BRs';
+        document.getElementById('statBrArtifactsLabel').textContent = 'Independent Test BR rules';
+        document.getElementById('statPendingLabel').textContent = 'AI/Test decisions pending';
+        document.getElementById('statPromotedLabel').textContent = 'AutomatedTestValidated groups';
+        document.getElementById('statGapsLabel').textContent = 'AI BRs without exact atomic match';
         document.getElementById('statReadyLabel').textContent = 'Execution ready';
       }
     }
