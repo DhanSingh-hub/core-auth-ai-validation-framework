@@ -1,0 +1,38 @@
+{
+  "inventoryId": "ATL105-SEG118-FIELD-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "118",
+  "fieldCount": 13,
+  "source": "ATL105 Sections 11.7.6, 11.7.7, 12.16, 12.16.1-12.16.5; Chapter 13 element catalog; Appendix E; docs/specs/kb/segment-118-canonical-anchors.md",
+  "fields": [
+    {"order":1,"element":"85","name":"Segment Type","jsonField":"segmentType","requiredness":"REQUIRED","type":"N","length":"3","allowed":"118","rule":"segment-type"},
+    {"order":2,"element":"84","name":"Segment Length","jsonField":"segmentLength","requiredness":"REQUIRED","type":"N","length":"4","allowed":"serialized Segment 118 length including type and separators","rule":"segment-length-4-digits"},
+    {"order":3,"element":"86","name":"Sequence Number","jsonField":"sequenceNumber","requiredness":"REQUIRED","type":"N","length":"6","rule":"sequence-number"},
+    {"order":4,"element":"44","name":"Information Byte","jsonField":"informationByte","requiredness":"REQUIRED","type":"N","length":"1","allowed":"REVIEW_REQUIRED: SEG118-SME-001","rule":"information-byte"},
+    {"order":5,"element":"102","name":"Terminal Identifier","jsonField":"terminalIdentifier","requiredness":"REQUIRED","type":"AN","length":"13","rule":"terminal-identifier"},
+    {"order":6,"element":"78","name":"Prompt Code","jsonField":"promptCode","requiredness":"REQUIRED","type":"N","length":"3","allowed":["901","902","903","904","905"],"rule":"prompt-code-and-catalog"},
+    {"order":7,"element":"182","name":"Prompt Code, Pending","jsonField":"promptCodePending","requiredness":"REQUIRED","type":"N","length":"4","allowed":["0901","0902","0904","0981"],"rule":"prompt-code-pending-and-catalog"},
+    {"order":8,"element":"176","name":"Device Card Table Version","jsonField":"deviceCardTableVersion","requiredness":"REQUIRED","type":"N","length":"35","note":"7x5-digit sub-versions; value beginning with 99999 = no card table used at location","rule":"device-card-table-version"},
+    {"order":9,"element":"177","name":"Card Table Load Version","jsonField":"cardTableLoadVersion","requiredness":"REQUIRED","type":"N","length":"35","rule":"card-table-load-version"},
+    {"order":10,"element":"174","name":"Card Table Type","jsonField":"cardTableType","requiredness":"REQUIRED","type":"N","length":"4","allowed":["0001","0002","0003","0004","0005","0006"],"rule":"card-table-type-and-catalog"},
+    {"order":11,"element":"178","name":"Load Control Key","jsonField":"loadControlKey","requiredness":"REQUIRED","type":"AN","length":"60","rule":"load-control-key"},
+    {"order":12,"element":"179","name":"Host Discount Timestamp","jsonField":"hostDiscountTimestamp","requiredness":"REQUIRED","type":"N","length":"12 (CCYYMMDDHHMM)","rule":"host-discount-timestamp"},
+    {"order":13,"element":"11","name":"Block Number","jsonField":"blockNumber","requiredness":"CONDITIONAL","type":"N","length":"3","rule":"block-number"}
+  ],
+  "conditionalPayloads": [
+    {"promptCode":"901","name":"Custom Receipt Text Data","direction":"RESPONSE","fields":["165-StartDate","166-StartTime","165-EndDate","166-EndTime","168-NumberOfReceiptTextLines","169-ReceiptTextDataLength","170-ReceiptTextData"],"maxLength":220},
+    {"promptCode":"902","name":"Dynamic Card Table Data","direction":"RESPONSE","fields":["175-CardTableData"],"maxLength":3600},
+    {"promptCode":"903","name":"Site Configuration Data","direction":"REQUEST","fields":["180-SiteConfigurationData"],"maxLength":3600},
+    {"promptCode":"904","name":"Host Discount Data","direction":"RESPONSE","fields":["179-HostDiscountTimestamp","171-NumberOfDiscounts","165-StartDate","166-StartTime","165-EndDate","166-EndTime","173-BuypassCardType","183-CardBinRangeBeginning","184-CardBinRangeEnding","77-ProductCode","172-ProductDiscountAmount","77-ProductCode2","185-DiscountQuantityLimit","186-DiscountProgramDescription"],"maxLength":3600},
+    {"promptCode":"905","name":"Fuel Volume Data","direction":"REQUEST","fields":["201-FuelVolumeData"],"maxLength":3600}
+  ],
+  "globalRules": [
+    {"id":"FIELD-ORDER","rule":"All 13 Segment 118 core fields preserve Section 12.16 order."},
+    {"id":"REQUEST-SEPARATORS","rule":"Request fields 1-13 are separated by Field Separators, including empty fields; a Field Separator follows field 13."},
+    {"id":"RESPONSE-POSITIONAL","rule":"Response fields have no Field Separators (positional)."},
+    {"id":"MAX-LENGTH","rule":"Serialized Segment 118 content does not exceed 3,800 alphanumeric characters, request or response."},
+    {"id":"NO-SECRETS","rule":"Card-table, discount, receipt-text, and site-configuration data in test data are synthetic or masked."}
+  ],
+  "status": "READY_FOR_AI_INTAKE"
+}
