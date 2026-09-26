@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEG140-RULE-CATALOG-001",
+  "specification": "ATL105", "specificationVersion": "2026-3", "segment": "140", "segmentName": "Moneris Day End Batch Balance (Response) Segment",
+  "scope": "Segment 140 field-level rules: reiteration of request fields plus Moneris debit/credit/correction totals",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14597-14730 (Section 12.27)",
+  "rules": [
+    {"ruleId":"SEG140-R-001","title":"Segment 140 consists of a reiteration of the first 6 fields in the Segment 139 request, followed by a text response from Moneris, followed by the total of all debit transactions for this batch","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.27","segment":"139,140","rule":"reiteration-plus-totals"}},
+    {"ruleId":"SEG140-R-002","title":"Segment Type fixed 140, Segment Length 3 digits, both Device-sourced; fields 3 (Terminal Identifier), 5 (Moneris Terminal Identifier), 6 (Moneris Merchant ID) are Device-sourced echoes, while fields 4 (SPDH Header), 7 (Batch Number), 8-14 (Response Display, Number/Dollar totals) are Moneris-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.27","segment":"140","element":"85,84,102,206,207,208,214,216,217,218,219,220,221,222","rule":"mixed-sourcing-echo-plus-totals"},"note":"14 fields total — the richest field count of any segment trained in this batch. Field-level sourcing genuinely alternates between Device (echo) and Moneris (new data); do not assume uniform sourcing."},
+    {"ruleId":"SEG140-R-003","title":"Debit Dollar Value (218), Credit Dollar Value (220), and Corrections Dollar Value (222) use format +/-9(16)v99 (signed, up to 16 integer digits, 2 implied decimal digits)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.27","segment":"140","element":"218,220,222","rule":"signed-decimal-dollar-format"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment 140 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}
