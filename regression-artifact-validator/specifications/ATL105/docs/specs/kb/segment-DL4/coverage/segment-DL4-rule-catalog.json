@@ -1,0 +1,14 @@
+{
+  "catalogId": "ATL105-SEGDL4-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "DL4", "segmentName": "Software Dial Load Data Segment",
+  "scope": "Segment DL4 fixed-length, no-separator, self-delimited BUYPASS-managed software download-via-dial scheduling segment",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 17363-17447 (Section 12.45)",
+  "rules": [
+    {"ruleId":"SEGDL4-R-001","title":"Segment DL4 is used to download an application from a BUYPASS-supported device management system; vendors who support their own applications do NOT use this segment","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.45","segment":"DL4","rule":"buypass-managed-devices-only"}},
+    {"ruleId":"SEGDL4-R-002","title":"Segment DL4 maximum length is 52 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '@' (field 1), End-of-Data Indicator fixed '~' (last field)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.45","segment":"DL4","rule":"max-length-52-markers"}},
+    {"ruleId":"SEGDL4-R-003","title":"New Software Version(57,8), Software Terminal Record ID(95,13), Software Load Phone Number(91,18), Software Load Request Date(92,6), Software Load Request Time(93,4), Software Load Type(94,1) are all required, Host-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.45","segment":"DL4","element":"57,95,91,92,93,94","rule":"software-dial-load-schedule-fields"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment DL4 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

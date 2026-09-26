@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEGDL2-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "DL2", "segmentName": "Dial String Data Segment",
+  "scope": "Segment DL2 fixed-length, no-separator, self-delimited dual-phone-number dial string configuration segment",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 17208-17302 (Section 12.43)",
+  "rules": [
+    {"ruleId":"SEGDL2-R-001","title":"Segment DL2 maximum length is 69 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '!' (field 1), End-of-Data Indicator fixed '~' (last field)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.43","segment":"DL2","rule":"max-length-69-markers"}},
+    {"ruleId":"SEGDL2-R-002","title":"Dial String Type is fixed value 1; Primary Phone Number block (fields 3-7: Redial Count, Access Code [conditional], Pause Indicator [conditional, fixed 'B'], Phone Number, Dial String Terminator fixed 'A') is required","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.43","segment":"DL2","element":"28,82,1,66,75,27","rule":"primary-phone-number-block"}},
+    {"ruleId":"SEGDL2-R-003","title":"Secondary Phone Number block (fields 8-11) mirrors the Primary block's structure, terminated by a Dial String Terminator fixed 'F' (field 12); the secondary number is used only after all primary-number retry attempts are exhausted per the Asynchronous Communications Protocol Specifications error-recovery logic","class":"lifecycle","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.43","segment":"DL2","rule":"secondary-phone-fallback-logic"},"note":"PROVISIONAL: the detailed error-recovery logic is defined in a separate 'Asynchronous Communications Protocol Specifications' document not available in this KB pass. Pending SME confirmation (SEGDL2-SME-001) on scope."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["SEGDL2-R-003"],"blocks":["Item 1"],"question":"Is the Asynchronous Communications Protocol Specifications document (defining primary-to-secondary phone fallback logic) in scope for this training pass?","status":"OPEN"},
+    {"id":"P-02","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment DL2 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P02","item3_independence":"BLOCKED_BY_P02","item4_traceabilityMatrix":"BLOCKED_BY_P01","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

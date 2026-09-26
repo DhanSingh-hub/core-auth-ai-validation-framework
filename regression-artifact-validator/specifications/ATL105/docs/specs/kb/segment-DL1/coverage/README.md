@@ -1,0 +1,2 @@
+- [Rule Catalog](segment-DL1-rule-catalog.json) · [Coverage Note](segment-DL1-coverage-sme-tba-note.md) · [Coverage Flow](segment-DL1-coverage-flow.md)
+- [SME/TBA Input Register](../segment-DL1-sme-tba-input-register.md) · [AI-vs-Test Comparison](../segment-DL1-ai-vs-test-requirement-comparison.md)

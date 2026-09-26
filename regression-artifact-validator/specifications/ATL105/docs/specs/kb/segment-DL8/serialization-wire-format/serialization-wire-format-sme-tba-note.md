@@ -1,0 +1,1 @@
+No End-of-Data Indicator — framed by Segment Length Indicator (Element 84), exclusive of the Data Type Indicator's own length, same hybrid convention as Segment DL7. Repeating Floor Limit Data group is bounded at 24 RIDs / 624 bytes total.
