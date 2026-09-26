@@ -1,0 +1,1 @@
+Segment 102 is mutually exclusive with Segment 157 (SEG102-R-018) and not valid for Comdata cards (SEG102-R-019); its Product Amounts must reconcile with Segment 100's aggregate amounts (SEG102-R-015/016), and its product order/count should match Segment 143 when present (SEG102-R-025, provisional).

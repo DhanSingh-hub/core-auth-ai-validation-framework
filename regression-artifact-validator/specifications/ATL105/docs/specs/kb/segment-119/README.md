@@ -21,6 +21,9 @@
 - [Coverage Closure](coverage/README.md)
 - [Final Closure Note](final-closure-sme-tba-note.md)
 - [Final Closure Flow](final-closure-flow.md)
+- [SME/TBA Input Register](segment-119-sme-tba-input-register.md)
+- [AI-vs-Test Requirement Comparison](segment-119-ai-vs-test-requirement-comparison.md)
+- [Companion-Segment Compatibility Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md)
 - [Authoritative Rule Catalog](coverage/segment-119-rule-catalog.json)
 - [AI-vs-Test Coverage Report](../../../../test-output/ai-artifacts/coverage-reports/POC-AI-Segment-119-BR-Coverage-Ratio-Report.html)
 

@@ -1,0 +1,1 @@
+All fields are Field-Separator-delimited, including unpopulated optional fields (the separator is still sent). Segment Length includes Segment Type's length and all Field Separators. Max 186 characters.
