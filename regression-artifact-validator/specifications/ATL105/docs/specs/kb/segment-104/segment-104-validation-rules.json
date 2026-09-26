@@ -1,0 +1,35 @@
+{
+  "rulesetId": "ATL105-SEG104-VALIDATION-RULES-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "104",
+  "segmentName": "Purchase Card Data Segment",
+  "generatedFor": "Segment 104 Payload Validator (Item 1 baseline) and downstream Item 2-8 consumers",
+  "aiJsonPathHints": {
+    "baseSegmentContainer": "Financial Request.Purchase Card Data Segment",
+    "counterpartInSegment100Structure": "Financial Request.Standard Segment"
+  },
+  "requirednessLegend": {"R": "REQUIRED", "O": "OPTIONAL", "C": "CONDITIONAL"},
+  "fields": [
+    {"order": 1, "jsonField": "SegmentType", "element": "85", "name": "Segment Type", "type": "N", "minLen": 3, "maxLen": 3, "requiredness": "R", "allowedValues": ["104"], "ruleIds": ["SEG104-R-004"]},
+    {"order": 2, "jsonField": "SegmentLength", "element": "84", "name": "Segment Length", "type": "N", "minLen": 3, "maxLen": 3, "requiredness": "R", "allowedPattern": "^[0-9]{3}$", "numericMin": 1, "numericMax": 86, "ruleIds": ["SEG104-R-005", "SEG104-R-006"]},
+    {"order": 3, "jsonField": "PurchaseCode", "element": "80", "name": "Purchase Code", "type": "AN", "minLen": 0, "maxLen": 16, "requiredness": "C", "allowedPattern": "^[A-Za-z0-9]{0,16}$", "ruleIds": ["SEG104-R-007"]},
+    {"order": 4, "jsonField": "PcTaxAmount", "element": "74", "name": "PC Tax Amount", "type": "N", "minLen": 0, "maxLen": 7, "requiredness": "C", "allowedPattern": "^[0-9]{0,7}$", "note": "Variable length up to 7 digits with 2 assumed decimal places", "ruleIds": ["SEG104-R-008"]},
+    {"order": 5, "jsonField": "PcFreightAmount", "element": "73", "name": "PC Freight Amount", "type": "N", "minLen": 0, "maxLen": 7, "requiredness": "C", "allowedPattern": "^[0-9]{0,7}$", "note": "Variable length up to 7 digits with 2 assumed decimal places", "ruleIds": ["SEG104-R-009"]},
+    {"order": 6, "jsonField": "PcDutyAmount", "element": "72", "name": "PC Duty Amount", "type": "N", "minLen": 0, "maxLen": 7, "requiredness": "C", "allowedPattern": "^[0-9]{0,7}$", "note": "Variable length up to 7 digits with 2 assumed decimal places", "ruleIds": ["SEG104-R-010"]},
+    {"order": 7, "jsonField": "ShipToCountryCode", "element": "89", "name": "Ship-to Country Code", "type": "N", "minLen": 0, "maxLen": 3, "requiredness": "C", "allowedPattern": "^[0-9]{3}$", "note": "Fixed length of 3 digits when populated", "ruleIds": ["SEG104-R-011"]},
+    {"order": 8, "jsonField": "ShipToPostalCode", "element": "90", "name": "Ship-to Postal Code", "type": "AN", "minLen": 0, "maxLen": 10, "requiredness": "C", "allowedPattern": "^([0-9]{5}-[0-9]{4}|[A-Za-z0-9]{1,10})$", "provisional": "P-01", "ruleIds": ["SEG104-R-012"]},
+    {"order": 9, "jsonField": "ShipFromPostalCode", "element": "88", "name": "Ship-from Postal Code", "type": "AN", "minLen": 0, "maxLen": 10, "requiredness": "C", "allowedPattern": "^([0-9]{5}-[0-9]{4}|[A-Za-z0-9]{1,10})$", "provisional": "P-01", "ruleIds": ["SEG104-R-013"]},
+    {"order": 10, "jsonField": "DirectMarketingInvoiceNumber", "element": "29", "name": "Direct Marketing Invoice Number", "type": "AN", "minLen": 0, "maxLen": 10, "requiredness": "C", "allowedPattern": "^[A-Za-z0-9]{0,10}$", "ruleIds": ["SEG104-R-014"]}
+  ],
+  "structuralRules": [
+    {"id": "SEG104-R-001", "enforce": "Segment 104 requires a Segment 100 sibling in the same message"},
+    {"id": "SEG104-R-002", "enforce": "Purchase Card Data Segment object must be present in the document under validation"},
+    {"id": "SEG104-R-020", "enforce": "At most one Segment 104 per message (PROVISIONAL P-02)"}
+  ],
+  "provisionalItems": [
+    {"id": "P-01", "description": "Ship-to/Ship-from Postal Code: spec's 'Representation' text (nnnnn-nnnn, 9 digits + hyphen) conflicts with 'Valid Codes/Values: Any valid postal code' for an AN(10) field. Decision: accept either shape; flag anything else as a non-blocking warning pending SME confirmation of intended shipping regions."},
+    {"id": "P-02", "description": "Segment 104 cardinality: the spec does not explicitly state 'at most one per message' the way it does for Segment 101. Decision: enforce at most one per message by analogy to the Data Section 3 field-slot structure, pending SME confirmation."}
+  ],
+  "status": "READY_FOR_ITEM1_BASELINE_VALIDATOR"
+}

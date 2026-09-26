@@ -1,0 +1,23 @@
+{
+  "manifest":{"packageId":"ATL105-SEG100-ITEM-04-DATA-SECTION-1","specification":"ATL105","specificationVersion":"2026-3"},
+  "businessRequirements":[
+    {"id":"BR-SEG100-E63-001","title":"Element 63 must equal the number of serialized segments.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}]},
+    {"id":"BR-SEG100-E63-002","title":"Data Section 1 separators must surround Element 63 correctly.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}]}
+  ],
+  "testScenarios":[
+    {"id":"SCN-SEG100-E63-001","requirementIds":["BR-SEG100-E63-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}]},
+    {"id":"SCN-SEG100-E63-002","requirementIds":["BR-SEG100-E63-002"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}]}
+  ],
+  "testCases":[
+    {"id":"TC-SEG100-E63-001","scenarioIds":["SCN-SEG100-E63-001"],"expectedOutcome":"PASS","category":"serialization","tags":["segment-100","element-63","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}]},
+    {"id":"TC-SEG100-E63-002","scenarioIds":["SCN-SEG100-E63-001"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-100","element-63","count-mismatch"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}]},
+    {"id":"TC-SEG100-E63-003","scenarioIds":["SCN-SEG100-E63-002"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-100","element-63","separator"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}]},
+    {"id":"TC-SEG100-E63-004","scenarioIds":["SCN-SEG100-E63-002"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-100","element-63","separator"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}]}
+  ],
+  "testData":[
+    {"id":"TD-SEG100-E63-001","testCaseIds":["TC-SEG100-E63-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}],"payload":{"request":{"dataSection1":{"numberOfSegments":"02","fieldSeparators":{"betweenElements55And63":true,"afterElement63":true}},"dataSection2":{"standardSegment":{"segmentType":"100"}},"dataSection3":[{"segmentType":"130"}]},"testControls":{"validateDataSection1":true}}},
+    {"id":"TD-SEG100-E63-002","testCaseIds":["TC-SEG100-E63-002"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"63","rule":"number-of-segments"}],"payload":{"request":{"dataSection1":{"numberOfSegments":"01","fieldSeparators":{"betweenElements55And63":true,"afterElement63":true}},"dataSection2":{"standardSegment":{"segmentType":"100"}},"dataSection3":[{"segmentType":"130"}]},"testControls":{"validateDataSection1":true}}},
+    {"id":"TD-SEG100-E63-003","testCaseIds":["TC-SEG100-E63-003"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}],"payload":{"request":{"dataSection1":{"numberOfSegments":"01","fieldSeparators":{"betweenElements55And63":false,"afterElement63":true}},"dataSection2":{"standardSegment":{"segmentType":"100"}},"dataSection3":[]},"testControls":{"validateDataSection1":true}}},
+    {"id":"TD-SEG100-E63-004","testCaseIds":["TC-SEG100-E63-004"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"DATA-SECTION-1","element":"55-63","rule":"section-1-field-separators"}],"payload":{"request":{"dataSection1":{"numberOfSegments":"01","fieldSeparators":{"betweenElements55And63":true,"afterElement63":false}},"dataSection2":{"standardSegment":{"segmentType":"100"}},"dataSection3":[]},"testControls":{"validateDataSection1":true}}}
+  ]
+}

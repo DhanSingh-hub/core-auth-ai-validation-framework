@@ -1,0 +1,30 @@
+{
+  "appendix": "V",
+  "title": "Moneris Data Layout",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies when Segment 100 transaction context routes through Moneris and requires Segment 135 request or Segment 136 response data.",
+  "source": "docs/specs/extracted_text.txt Appendix V-1 through V-4",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPV-SEGMENT","title":"A Moneris-routed Segment 100 request/response shall include the applicable Moneris Data Segment 135/136.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"135,136","rule":"moneris-segment-required"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPV-REQUEST-TABLES","title":"Moneris request tables shall use the source-defined table IDs, fixed lengths, and Moneris terminal/merchant/context values.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"135","rule":"moneris-request-table-layout"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPV-COMPLETION","title":"Moneris completion data shall carry the authorization amount and sequence linkage required by the source tables.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"135","rule":"moneris-completion-linkage"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPV-SECURITY","title":"Moneris request/response data shall validate MAC, encryption-key indicators, and terminal capability fields according to the Moneris contract.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"135,136","rule":"moneris-security-data"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPV-SEQUENCE-LINK","title":"Moneris Table 006 Sequence Number (10 characters) shall match the Sequence Number used in the corresponding Segment 100 request (Element 86).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"100,135","element":"86","rule":"moneris-sequence-number-link"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPV-MAC-LENGTH","title":"The MAC field shall be a fixed 16-character value in both the Moneris request (Table 007) and response (Table 005).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix V","segment":"135,136","rule":"moneris-mac-length"},"status":"REVIEW_REQUIRED"}
+  ],
+  "requestTables": ["001 SPDH Header length 048","002 Moneris Terminal ID length 008","003 Moneris Merchant ID length 013","004 Language Indicator length 001","005 Auth Amount for Completion variable","006 Sequence Number length 010","007 MAC length 016","008 Application Account Type length 001","009 Terminal Capabilities length 002"],
+  "responseTables": ["001 SPDH Header length 048","002 Moneris Terminal ID length 008","003 Moneris Merchant ID length 013","004 Sequence Number length 010","005 MAC length 016","006 Encryption Key variable up to 051"],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPV-REQUEST","covers":["BR-SEG100-APPV-SEGMENT","BR-SEG100-APPV-REQUEST-TABLES"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPV-COMPLETION","covers":["BR-SEG100-APPV-COMPLETION","BR-SEG100-APPV-SEQUENCE-LINK"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPV-SECURITY","covers":["BR-SEG100-APPV-SECURITY","BR-SEG100-APPV-MAC-LENGTH"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPV-REQUEST","scenarioId":"TS-SEG100-APPV-REQUEST","positive":"Valid Moneris Segment 135 tables","negative":["missing Segment 135","wrong fixed length","invalid table ID","wrong merchant/terminal context"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPV-COMPLETION","scenarioId":"TS-SEG100-APPV-COMPLETION","positive":"Completion amount and sequence match authorization context; Table 006 Sequence Number equals Segment 100 Element 86","negative":["amount mismatch","sequence mismatch","Table 006 Sequence Number differs from Element 86"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPV-SECURITY","scenarioId":"TS-SEG100-APPV-SECURITY","positive":"MAC (16 characters), key indicators, and terminal flags match Moneris rules","negative":["MAC mismatch","MAC not 16 characters","invalid key indicator","wrong capability flags"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No Moneris AI artifact or approved Moneris external implementation contract is currently available.",
+  "remaining": ["Obtain Moneris routing and security implementation rules.","Validate AI-generated Segment 135/136 artifacts when available."]
+}

@@ -1,0 +1,58 @@
+{
+  "modelId": "ATL105-SEG100-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "purpose": "Explicit context envelope for AI-generated Segment 100 artifacts",
+  "requiredContext": {
+    "transactionType": {
+      "source": "Appendix G",
+      "values": ["0","3","4","5","6","7","8","A","B","C","S","U","Z"],
+      "requiredFor": "all financial Segment 100 artifacts"
+    },
+    "cardType": {
+      "source": "Appendix E",
+      "values": "36 financial Prompt Code card types",
+      "requiredFor": "all financial Prompt Code artifacts"
+    },
+    "paymentNetworkType": {
+      "source": "Section 5",
+      "values": ["ACH_PREAUTHORIZED_DEBIT","ATM_PIN_DEBIT","ATM_PINLESS_DEBIT","CHECK_GUARANTEE","CHECK_VERIFICATION_BUYPASS","CHECK_VERIFICATION_EXTERNAL","CREDIT_NONPROPRIETARY","CREDIT_PROPRIETARY","EBT_FOOD","EBT_CASH","EBT_EWIC","PROPRIETARY_CARD","PETROLEUM_PROPRIETARY","FLEET","STORED_VALUE","LOYALTY"],
+      "requiredFor": "network-sensitive artifacts"
+    },
+    "lifecycleRole": {
+      "values": ["ORIGINAL","COMPLETION","CANCELLATION","REVERSAL","VOID","TIMEOUT_ORIGINAL","TOR","NEXT_TRANSACTION","RETRY"],
+      "requiredFor": "multi-step artifacts"
+    },
+    "messageFamily": {
+      "values": ["FINANCIAL_REQUEST","FINANCIAL_RESPONSE","EBT_EWIC","EMV","TOKENIZED","DIGITAL_WALLET","MONERIS","TRANSARMOR","CA_KEY_LOAD"],
+      "requiredFor": "all artifacts"
+    }
+  },
+  "conditionalContext": {
+    "posEntryMode": "Appendix J Table 005",
+    "posConditionCode": "Appendix Q Table 030",
+    "specializedDomain": ["PREMIUM_GIFT_CARD","PAYMENT_TOKEN","TRANSARMOR_ADMIN","CA_PUBLIC_KEYS","DIGITAL_WALLET","MONERIS"],
+    "companionSegments": ["101","102","103","104","111","123","130","135"],
+    "responseCode": "Element 83 for financial responses",
+    "declineCode": "Element 26 for financial responses",
+    "authorizerCode": "Element 7 for responses"
+  },
+  "lifecycleContext": {
+    "originalSequenceNumber": "required for follow-up and retry artifacts",
+    "currentSequenceNumber": "required for every transaction artifact",
+    "terminalId": "required for device-bound lifecycle comparison",
+    "accountIdentity": "required when source flow requires identity correlation",
+    "amountContext": "requested or approved amount according to source flow",
+    "approvalReference": "required when lifecycle or response requires it"
+  },
+  "validationRules": [
+    "Do not infer payment network from card type alone.",
+    "Do not infer companion segments from transaction type alone.",
+    "Do not certify specialized domains without specializedDomain metadata and evidence.",
+    "Do not treat response codes as request transaction types.",
+    "Do not treat generic fixtures as AI artifact coverage.",
+    "Missing context is REVIEW_REQUIRED unless the source explicitly proves it is unnecessary."
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}

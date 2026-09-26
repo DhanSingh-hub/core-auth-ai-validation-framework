@@ -1,0 +1,2611 @@
+﻿[
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-001",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-001",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-001",
+        "expectedValidation":  "PASS",
+        "objective":  "Eligible minimal request.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-002",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-002",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-001",
+        "expectedValidation":  "FAIL",
+        "objective":  "Section 3 trigger makes the minimal structure ineligible.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  {
+                            "requiresSection3":  "variable-information"
+                        },
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-003",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-003",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-002",
+        "expectedValidation":  "PASS",
+        "objective":  "POS purchase/capture.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "0020"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-004",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-004",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-003",
+        "expectedValidation":  "PASS",
+        "objective":  "Preauthorized completion correlates to the original authorization.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  [
+                                  {
+                                      "role":  "original-authorization",
+                                      "promptCode":  "3020",
+                                      "sequenceNumber":  "100002",
+                                      "approvalNumber":  "APR001"
+                                  },
+                                  {
+                                      "role":  "completion",
+                                      "promptCode":  "0020",
+                                      "sequenceNumber":  "100002",
+                                      "approvalNumber":  "APR001"
+                                  }
+                              ],
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-005",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-005",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-004",
+        "expectedValidation":  "PASS",
+        "objective":  "POS authorization only.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "3020"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-006",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-006",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-005",
+        "expectedValidation":  "PASS",
+        "objective":  "Merchandise return/refund.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "7020",
+                                                                     "sequenceNumber":  "100003"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-007",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-007",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-006",
+        "expectedValidation":  "PASS",
+        "objective":  "Purchase reversal/void correlation.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  [
+                                  {
+                                      "role":  "original-purchase",
+                                      "promptCode":  "0020",
+                                      "sequenceNumber":  "100004",
+                                      "approvalNumber":  "APR004"
+                                  },
+                                  {
+                                      "role":  "purchase-void",
+                                      "promptCode":  "8020",
+                                      "sequenceNumber":  "100004",
+                                      "approvalNumber":  "APR004"
+                                  }
+                              ],
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-008",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-008",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-007",
+        "expectedValidation":  "PASS",
+        "objective":  "Void-of-return correlation.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  [
+                                  {
+                                      "role":  "original-refund",
+                                      "promptCode":  "7020",
+                                      "sequenceNumber":  "100005",
+                                      "approvalNumber":  "APR005"
+                                  },
+                                  {
+                                      "role":  "void-of-return",
+                                      "promptCode":  "U020",
+                                      "sequenceNumber":  "100005",
+                                      "approvalNumber":  "APR005"
+                                  }
+                              ],
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-009",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-009",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-008",
+        "expectedValidation":  "PASS",
+        "objective":  "Time-out reversal correlation.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  [
+                                  {
+                                      "role":  "timed-out-request",
+                                      "promptCode":  "0020",
+                                      "sequenceNumber":  "100006",
+                                      "approvalNumber":  ""
+                                  },
+                                  {
+                                      "role":  "timeout-reversal",
+                                      "promptCode":  "Z020",
+                                      "sequenceNumber":  "100006",
+                                      "approvalNumber":  ""
+                                  }
+                              ],
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-010",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-010",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-009",
+        "expectedValidation":  "PASS",
+        "objective":  "Account verification without purchase amount.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "A020",
+                                                                     "nonfuelAmount":  ""
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-011",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-011",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-010",
+        "expectedValidation":  "PASS",
+        "objective":  "Mail/phone purchase.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "6020",
+                                                                     "sequenceNumber":  "100007"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-012",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-012",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-011",
+        "expectedValidation":  "PASS",
+        "objective":  "Mail/phone authorization only.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "B020",
+                                                                     "sequenceNumber":  "100008"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-013",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-013",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-011",
+        "expectedValidation":  "PASS",
+        "objective":  "Mail/phone reversal.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "promptCode":  "C020",
+                                                                     "sequenceNumber":  "100009"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-014",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-014",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-012",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid TCP/IP Message Length.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-015",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-015",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-012",
+        "expectedValidation":  "FAIL",
+        "objective":  "Incorrect TCP/IP Message Length.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "messageLength":  "0001"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-016",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-016",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-012",
+        "expectedValidation":  "FAIL",
+        "objective":  "Reversed Message Length byte order.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "byteOrder":  "little-endian"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-017",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-017",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-012",
+        "expectedValidation":  "FAIL",
+        "objective":  "Incomplete Message Length field.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "messageLength":  "TRUNCATED_ONE_BYTE"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-018",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-018",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-012",
+        "expectedValidation":  "FAIL",
+        "objective":  "Header without declared payload.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "messageLength":  "0010"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+                             "wirePayload":  ""
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-019",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-019",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-013",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid TPDU Protocol ID.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "tpduProtocolId":  "60"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-020",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-020",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-013",
+        "expectedValidation":  "FAIL",
+        "objective":  "Invalid TPDU Protocol ID.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000",
+                                            "tpduProtocolId":  "61"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-021",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-021",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-013",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid reserved TPDU fields.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-022",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-022",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-013",
+        "expectedValidation":  "FAIL",
+        "objective":  "Non-zero reserved TPDU field.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduSourceAddress":  "0000",
+                                            "tpduDestinationAddress":  "0001"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-023",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-023",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-014",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid ATL105 identifier.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 },
+                                             "messageFormatVersionIdentifier":  "ATL105"
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-024",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-024",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-014",
+        "expectedValidation":  "FAIL",
+        "objective":  "Invalid message identifier.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 },
+                                             "messageFormatVersionIdentifier":  "ATL104"
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-025",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-025",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-014",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid one-segment count.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 },
+                                             "numberOfSegments":  "01"
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-026",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-026",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-014",
+        "expectedValidation":  "FAIL",
+        "objective":  "Incorrect segment count.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 },
+                                             "numberOfSegments":  "02"
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-027",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-027",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-014",
+        "expectedValidation":  "FAIL",
+        "objective":  "Missing Data Section 1 separator.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  false
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-028",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-028",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "PASS",
+        "objective":  "Exactly one Segment 100.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-029",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-029",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "FAIL",
+        "objective":  "Missing Segment 100.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  null
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-030",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-030",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "FAIL",
+        "objective":  "Duplicate Segment 100.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+                             "dataSection2.duplicateStandardSegment":  true
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-031",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-031",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid Segment Type.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "segmentType":  "100"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-032",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-032",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "FAIL",
+        "objective":  "Invalid Segment Type.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "segmentType":  "101"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-033",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-033",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "PASS",
+        "objective":  "Valid Segment 100 length.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-034",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-034",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-015",
+        "expectedValidation":  "FAIL",
+        "objective":  "Incorrect Segment 100 length.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "segmentLength":  "001"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-035",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-035",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-016",
+        "expectedValidation":  "PASS",
+        "objective":  "Required core Segment 100 fields populated.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-036",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-036",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-016",
+        "expectedValidation":  "FAIL",
+        "objective":  "Required terminal identifier missing.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "terminalIdentifier":  ""
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-037",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-037",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-016",
+        "expectedValidation":  "PASS",
+        "objective":  "Non-trailing empty field retains separator.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1",
+                                                                     "taxAmount":  ""
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+                             "serialization.nonTrailingEmptyFieldSeparator":  true
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-038",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-038",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-016",
+        "expectedValidation":  "PASS",
+        "objective":  "Unneeded trailing optional fields omitted.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  null,
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+                             "serialization.trailingOptionalFieldsOmitted":  true
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-039",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-039",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-017",
+        "expectedValidation":  "FAIL",
+        "objective":  "EMV request without Segment 130.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  {
+                            "isEmv":  true,
+                            "requiresSection3":  "emv-request-data-segment-130"
+                        },
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    },
+    {
+        "testDataId":  "TEST-DATA-ATL105-MIN-040",
+        "testCaseId":  "TEST-CASE-ATL105-MIN-040",
+        "scenarioId":  "TEST-SCN-ATL105-MIN-018",
+        "expectedValidation":  "FAIL",
+        "objective":  "Additional-data trigger without required Segment 3 data.",
+        "scope":  {
+                      "includes":  [
+                                       "TCP/IP Message Header",
+                                       "ATL105 Data Section No. 1",
+                                       "Segment 100"
+                                   ],
+                      "excludes":  [
+                                       "Data Section No. 3"
+                                   ],
+                      "messageModel":  "standard non-EMV financial transaction unless a test explicitly verifies ineligibility"
+                  },
+        "flowContext":  {
+                            "requiresSection3":  [
+                                                     "nfc-tokenization-123",
+                                                     "fleet-101",
+                                                     "product-102",
+                                                     "ebt-103",
+                                                     "purchase-card-104",
+                                                     "variable-information-111",
+                                                     "moneris-135"
+                                                 ]
+                        },
+        "lifecycleMessages":  null,
+        "request":  {
+                        "tcpIpHeader":  {
+                                            "messageLength":  "CALCULATE_FROM_FOLLOWING_PAYLOAD",
+                                            "byteOrder":  "network-big-endian",
+                                            "tpduProtocolId":  "60",
+                                            "tpduDestinationAddress":  "0000",
+                                            "tpduSourceAddress":  "0000"
+                                        },
+                        "dataSection1":  {
+                                             "messageFormatVersionIdentifier":  "ATL105",
+                                             "numberOfSegments":  "01",
+                                             "fieldSeparators":  {
+                                                                     "betweenElements55And63":  true,
+                                                                     "afterElement63":  true
+                                                                 }
+                                         },
+                        "dataSection2":  {
+                                             "standardSegment":  {
+                                                                     "segmentType":  "100",
+                                                                     "segmentLength":  "CALCULATE_FROM_SEGMENT_CONTENT",
+                                                                     "informationByte":  "0",
+                                                                     "terminalIdentifier":  "TSCA000001",
+                                                                     "promptCode":  "0020",
+                                                                     "accountNumber":  "4111111111111111",
+                                                                     "cardDiscretionaryBlockData":  "",
+                                                                     "encryptedPinBlockData":  "",
+                                                                     "pumpLaneNumber":  "",
+                                                                     "fuelPurchaseAmount":  "",
+                                                                     "nonfuelAmount":  "00001000",
+                                                                     "taxAmount":  "",
+                                                                     "cashAmount":  "",
+                                                                     "sequenceNumber":  "100001",
+                                                                     "approvalNumber":  "",
+                                                                     "localDateTime":  "0101261200",
+                                                                     "partialApprovalIndicator":  "1"
+                                                                 }
+                                         },
+                        "dataSection3":  [
+
+                                         ]
+                    },
+        "testControls":  {
+
+                         }
+    }
+]

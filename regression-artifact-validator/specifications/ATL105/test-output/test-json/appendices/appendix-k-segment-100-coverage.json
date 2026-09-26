@@ -1,0 +1,26 @@
+{
+  "appendix": "K",
+  "title": "Additional Information Data Layouts",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to additional information in financial responses associated with Segment 100 requests; controlled by Element 116 and carried in Element 118/Segment 118.",
+  "source": "docs/specs/extracted_text.txt Appendix K-1 onward",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPK-FLAG","title":"A financial response shall set the Additional Information Data Segment Flag consistently with whether Segment 118 follows.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11","segment":"FINANCIAL-RESPONSE","element":"116","rule":"additional-information-flag"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPK-TABLE-LAYOUT","title":"Additional Information Segment 118 shall use a valid Appendix K Table ID, length, and maximum data layout.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"116,118","rule":"additional-information-table-layout"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPK-BALANCE","title":"Balance Information Table ID 001 shall use its source-defined fixed layout when a financial response returns balance data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"balance-information-table-001"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPK-AVS-NVS","title":"AVS/NVS Additional Information Table ID 003 shall use the source-defined signed response representation and issuer response code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"avs-nvs-table-003"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPK-CARD-VERIFICATION","title":"Card Verification Additional Information shall use the source-defined Table ID 004 layout when the response returns CVV/CVC/CID/DTVV results.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"card-verification-table-004"},"status":"REVIEW_REQUIRED"}
+  ],
+  "representativeTableIds": ["001 balance","002 reserved","003 AVS/NVS","004 card verification","005 ECA trace ID","006 ECA denial record","008 loyalty","009 Visa product result","010 loyalty v2","020 host prompts","028 transaction identifier","030 merchant advice","038 transaction link identifier"],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPK-FLAG","covers":["BR-SEG100-APPK-FLAG"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPK-TABLES","covers":["BR-SEG100-APPK-TABLE-LAYOUT","BR-SEG100-APPK-BALANCE","BR-SEG100-APPK-AVS-NVS","BR-SEG100-APPK-CARD-VERIFICATION"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPK-FLAG","scenarioId":"TS-SEG100-APPK-FLAG","positive":"Flag and Segment 118 presence agree","negative":["Flag says absent while Segment 118 follows","Flag says present without Segment 118"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPK-TABLES","scenarioId":"TS-SEG100-APPK-TABLES","positive":"Table ID, length, and data layout are valid","negative":["Unknown Table ID","length mismatch","invalid AVS/NVS sign or response code"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Additional Information flag and response structure are known; dedicated Appendix K table-layout validation awaits response artifacts.",
+  "remaining": ["Validate AI-generated response artifacts containing Segment 118.","Enumerate each applicable Appendix K table used by Segment 100 transaction families."]
+}

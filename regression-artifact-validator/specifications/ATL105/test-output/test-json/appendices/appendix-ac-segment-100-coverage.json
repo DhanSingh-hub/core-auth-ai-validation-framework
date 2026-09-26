@@ -1,0 +1,22 @@
+{
+  "appendix": "AC",
+  "title": "Valid Country Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Segment 111 Table ID 59, which identifies the country in which the acquiring institution resides.",
+  "source": "docs/specs/extracted_text.txt Appendix AC-1 through AC-4",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAC-VALID-CODE","title":"A country reference in Table ID 59 shall use a valid three-digit country code from the Appendix AC list.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AC","segment":"111","element":"113","rule":"acquirer-country-code-valid"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAC-ACQUIRER-CONTEXT","title":"The Table ID 59 country code shall identify the country in which the acquiring institution resides, consistent with the merchant/acquirer configuration.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AC","segment":"111","element":"113","rule":"acquirer-country-code-context"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAC-VALID","covers":["BR-SEG100-APPAC-VALID-CODE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAC-CONTEXT","covers":["BR-SEG100-APPAC-ACQUIRER-CONTEXT"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAC-VALID","scenarioId":"TS-SEG100-APPAC-VALID","positive":"Three-digit code present in the Appendix AC list, e.g. 840 (United States)","negative":["Two-digit code","four-digit code","code not present in the Appendix AC list"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAC-CONTEXT","scenarioId":"TS-SEG100-APPAC-CONTEXT","positive":"Country code matches configured acquirer country","negative":["Country code conflicts with configured acquirer country"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "The Appendix AC country-code table is fully transcribed from source; acquirer-configuration cross-check awaits AI/configuration artifacts.",
+  "remaining": ["Validate AI-generated Table ID 59 data against the full Appendix AC country list.","Confirm acquirer-country configuration source for the context-consistency check."]
+}

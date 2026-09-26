@@ -1,0 +1,53 @@
+{
+  "modelId": "ATL105-SEG101-REQUEST-RESPONSE-LIFECYCLE-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "101",
+  "segmentName": "Fleet Data Segment",
+  "domains": {
+    "request": {
+      "purpose": "Fleet-card companion data the device sends alongside Segment 100 in a fleet-eligible financial transaction request",
+      "primaryFields": ["SegmentType","SegmentLength","Odometer","VehicleNumber","JobNumber","DriverIdentificationNumber","FleetEmployeeNumber","LicenseNumber","JobId","DepartmentNumber","CustomerData","UserId","VehicleIdNumber"],
+      "companionParent": "100",
+      "companionSiblings": ["102","111"],
+      "mutuallyExclusiveWith": ["145"],
+      "validationSources": ["Sections 11.1.1 and 12.2","Appendices E (card types), G (transaction types)","Section 10.6 defers program-specific rules to Petroleum Industry Processing Specifications"]
+    },
+    "authCompletion": {
+      "purpose": "Additional fleet-context data the device sends in an Auth Completion (0220) message when Host Prompts are supported",
+      "primaryFields": ["FleetTag1","FleetTag2","FleetTag3","FleetTag4","FleetTag5"],
+      "tagCatalog": ["DLS","DLN","PON","INV","TRP","UNT","TLH","DOB","ZIP","END","MID","VIN","TRA","HUB","TLR","CBA","VHT"],
+      "trigger": "Auth Completion message type AND Host Prompts supported flag AND fleet-program prompt request",
+      "validationSources": ["Section 12.2 fleet-tag table"]
+    },
+    "response": {
+      "purpose": "Fleet-specific response semantics are not defined in ATL105 Section 11 for Segment 101; response fields are carried by the outer financial response (see Segment 100 response knowledge). Program-specific response behavior may be defined in Petroleum Industry Processing Specifications.",
+      "primaryFields": [],
+      "status": "REVIEW_REQUIRED",
+      "validationSources": ["Section 11 response layouts do not enumerate Segment 101 fields"]
+    },
+    "lifecycle": {
+      "purpose": "How Segment 101 participates when related requests and responses form a fleet transaction flow",
+      "identityFields": ["SequenceNumber (from Segment 100)","TerminalID (from Segment 100)","AccountNumber (from Segment 100)","Amount (from Segment 100)","ApprovalNumber (from Segment 100)","PromptCode (from Segment 100)"],
+      "flowTypes": ["Authorization-Completion","Authorization-Cancellation","Purchase-Reversal","Timeout-TOR","TOR-Retry"],
+      "fleetSpecific": "Fleet Tags carry data captured at Host Prompt time; they are populated on Auth Completion and are not expected on subsequent cancellations or reversals unless the fleet program explicitly requires it.",
+      "validationSources": ["Section 10","Appendix G","Appendix H","Petroleum Industry Processing Specifications"]
+    }
+  },
+  "boundaryRules": [
+    {"id":"BOUNDARY-REQUEST-COMPLETION","rule":"Fleet Tags 1-5 are Auth Completion (0220) only; do not validate them as fields of the original request."},
+    {"id":"BOUNDARY-REQUEST-RESPONSE","rule":"Do not validate response-side fields as Segment 101 request fields; Segment 101 has no defined response layout in ATL105."},
+    {"id":"BOUNDARY-COMPANION","rule":"Do not certify Segment 101 without Segment 100 present in the same message."},
+    {"id":"BOUNDARY-MUTUAL-EXCLUSION","rule":"Segment 101 and Segment 145 must never coexist; reject any AI artifact that combines them."},
+    {"id":"BOUNDARY-SPECIALIZED","rule":"Do not certify Petroleum Industry Processing Specifications or Enhanced Fleet (145) behavior using generic Segment 101 fixtures."},
+    {"id":"BOUNDARY-CARD-TYPE","rule":"Do not certify Segment 101 for non-fleet card types (Appendix E fleet subset only)."}
+  ],
+  "artifactMapping": {
+    "requestJson":"test-data/*.json Financial Request that carries Segment 101 alongside Segment 100",
+    "authCompletionJson":"test-data/*.json Auth Completion that may carry Fleet Tags 1-5",
+    "responseJson":"outer financial response (validated by Segment 100 response knowledge)",
+    "lifecycleJson":"ordered message collection with fleet-tag population isolated to Auth Completion role",
+    "brTsTcTd":"Each domain-specific rule retains its source anchor across all artifact levels"
+  },
+  "status":"READY_FOR_AI_ARTIFACT_INTAKE"
+}

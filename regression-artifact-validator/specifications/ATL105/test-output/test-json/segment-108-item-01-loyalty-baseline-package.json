@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "placeholder": true,
+    "provisionalReason": "Synthesized placeholder canonical BR/TS/TC/TD package for Item 2 (AI Artifact Comparison). Real AI-generated Segment 108 output has not been supplied yet (PROVISIONAL P-07). Every artifact below is anchored to a rule from segment-108-rule-catalog.json and marked PROVISIONAL. Once real AI output arrives, replace this file; Item 2 comparison logic remains unchanged.",
+    "provisionalDependencies": ["P-01","P-02","P-03","P-04","P-05","P-06","P-07","P-08"]
+  },
+  "manifest": {
+    "packageId": "ATL105-SEG108-ITEM-01-LOYALTY-BASELINE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG108-CORE-001","title":"Segment 108 is exclusive to the Loyalty Card Transaction Request.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.2.1,13.2","segment":"108","element":"63","rule":"loyalty-transaction-exclusive"}]},
+    {"id":"BR-SEG108-CORE-003","title":"Segment Type is 108.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"}]},
+    {"id":"BR-SEG108-CORE-004","title":"Segment Length is 3 digits.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"84","rule":"segment-length"}]},
+    {"id":"BR-SEG108-CORE-005","title":"Segment 108 maximum length is 142 alphanumeric characters.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"84","rule":"segment-length-max-142"}]},
+    {"id":"BR-SEG108-FIELD-008","title":"Loyalty Program ID is required, numeric max 6.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"138","rule":"loyalty-program-id"}]},
+    {"id":"BR-SEG108-FIELD-009","title":"Loyalty Account Number is numeric max 24 when populated.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"139","rule":"loyalty-account-number"}]},
+    {"id":"BR-SEG108-FIELD-013","title":"Update Code, when populated, is one of the documented values.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"143","rule":"update-code-enumeration"}]},
+    {"id":"BR-SEG108-FIELD-017","title":"Payment Tender Type is required and one of the documented values.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}]},
+    {"id":"BR-SEG108-STRUCT-021","title":"At most one Segment 108 per message.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"108","rule":"segment-occurrence"}]}
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG108-CORE-001","requirementIds":["BR-SEG108-CORE-003","BR-SEG108-CORE-004"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"},{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"84","rule":"segment-length"}]},
+    {"id":"SCN-SEG108-CORE-002","requirementIds":["BR-SEG108-CORE-005"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"84","rule":"segment-length-max-142"}]},
+    {"id":"SCN-SEG108-FIELD-001","requirementIds":["BR-SEG108-FIELD-008"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"138","rule":"loyalty-program-id"}]},
+    {"id":"SCN-SEG108-FIELD-002","requirementIds":["BR-SEG108-FIELD-013"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"143","rule":"update-code-enumeration"}]},
+    {"id":"SCN-SEG108-FIELD-003","requirementIds":["BR-SEG108-FIELD-017"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG108-CORE-001","scenarioIds":["SCN-SEG108-CORE-001"],"expectedOutcome":"PASS","category":"field","tags":["segment-108","identity","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG108-CORE-002","scenarioIds":["SCN-SEG108-CORE-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-108","identity","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG108-CORE-003","scenarioIds":["SCN-SEG108-CORE-002"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-108","length","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"84","rule":"segment-length-max-142"}]},
+    {"id":"TC-SEG108-FIELD-001","scenarioIds":["SCN-SEG108-FIELD-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-108","loyalty-program-id","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"138","rule":"loyalty-program-id"}]},
+    {"id":"TC-SEG108-FIELD-002","scenarioIds":["SCN-SEG108-FIELD-002"],"expectedOutcome":"FAIL","category":"field","tags":["segment-108","update-code","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"143","rule":"update-code-enumeration"}]},
+    {"id":"TC-SEG108-FIELD-003","scenarioIds":["SCN-SEG108-FIELD-003"],"expectedOutcome":"PASS","category":"field","tags":["segment-108","payment-tender-type","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}]}
+  ],
+  "testData": [
+    {"id":"TD-SEG108-CORE-001","testCaseIds":["TC-SEG108-CORE-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-108/lifecycle/loyalty-purchase-original.synthetic.json","provisional":"P-07","note":"payload sourced from Item 1 synthetic fixtures until real AI output arrives"}},
+    {"id":"TD-SEG108-FIELD-001","testCaseIds":["TC-SEG108-FIELD-003"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-108/lifecycle/loyalty-points-redemption.synthetic.json","provisional":"P-07"}},
+    {"id":"TD-SEG108-FIELD-002","testCaseIds":["TC-SEG108-FIELD-003"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-108/lifecycle/loyalty-account-inquiry-card-not-present.synthetic.json","provisional":"P-07"}}
+  ]
+}

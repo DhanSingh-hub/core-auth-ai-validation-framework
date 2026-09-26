@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATL105 Visa - Transaction Flow Coverage</title>
+<style>
+* { box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background:#1B5E20; margin:20px; color:#222; }
+.card { background:#fff; padding:22px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,.15); margin-bottom:20px; }
+h1 { margin:0 0 6px; font-size:24px; } h2 { margin:0 0 14px; font-size:18px; color:#1B5E20; }
+.sub { color:#555; font-size:14px; margin:2px 0; }
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+.kpi { background:#f5f7f5; border-left:4px solid #388e3c; border-radius:6px; padding:14px; }
+.kpi .v { font-size:30px; font-weight:700; color:#1B5E20; } .kpi .l { font-size:12px; color:#666; text-transform:uppercase; }
+table { border-collapse:collapse; width:100%; font-size:14px; }
+th,td { border-bottom:1px solid #e3e3e3; padding:8px 10px; text-align:left; }
+th { background:#eef3ee; color:#1B5E20; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.fail { color:#d32f2f; font-weight:700; }
+.note { font-size:12px; color:#777; margin-top:8px; }
+.pill { display:inline-block; background:#e8f5e9; color:#1B5E20; border-radius:12px; padding:2px 10px; margin:2px; font-size:12px; }
+</style></head><body>
+
+<div class="card">
+  <h1>Transaction Flow Coverage Analysis</h1>
+  <div class="sub"><b>Spec:</b> ATL105 &nbsp; | &nbsp; <b>Card Type:</b> Credit Visa &nbsp; | &nbsp; <b>Platform:</b> BuyPass &nbsp; | &nbsp; <b>Suite:</b> Credit VISA Regression</div>
+  <div class="sub"><b>Source report:</b> ATL105 Visa.html &nbsp; | &nbsp; <b>Generated:</b> 2026-09-09 21:55</div>
+</div>
+
+<div class="card">
+  <h2>Coverage at a Glance</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">529</div><div class="l">Total Test Cases</div></div>
+    <div class="kpi"><div class="v">7</div><div class="l">Base Transaction Types</div></div>
+    <div class="kpi"><div class="v">15</div><div class="l">Distinct Flow Scenarios</div></div>
+    <div class="kpi"><div class="v" style="color:#388e3c">451</div><div class="l">Passed</div></div>
+    <div class="kpi"><div class="v" style="color:#d32f2f">78</div><div class="l">Failed</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>1. Base Transaction Type Coverage</h2>
+  <table><thead><tr><th>Transaction Type</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>Void</td><td class='num'>134</td><td class='num'>129</td><td class='num'><span class="fail">5</span></td><td class='num'>96%</td></tr>
+<tr><td>Authorization</td><td class='num'>127</td><td class='num'>86</td><td class='num'><span class="fail">41</span></td><td class='num'>68%</td></tr>
+<tr><td>Sale</td><td class='num'>70</td><td class='num'>67</td><td class='num'><span class="fail">3</span></td><td class='num'>96%</td></tr>
+<tr><td>Completion</td><td class='num'>68</td><td class='num'>65</td><td class='num'><span class="fail">3</span></td><td class='num'>96%</td></tr>
+<tr><td>Multi-step / Combined</td><td class='num'>56</td><td class='num'>34</td><td class='num'><span class="fail">22</span></td><td class='num'>61%</td></tr>
+<tr><td>Timeout (Reversal)</td><td class='num'>36</td><td class='num'>36</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Refund / Return</td><td class='num'>28</td><td class='num'>28</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Cancellation</td><td class='num'>9</td><td class='num'>5</td><td class='num'><span class="fail">4</span></td><td class='num'>56%</td></tr>
+<tr><td>Other</td><td class='num'>1</td><td class='num'>1</td><td class='num'>0</td><td class='num'>100%</td></tr></tbody></table>
+  <div class="note">Each TC is bucketed into exactly one type by keyword. "Multi-step / Combined" = a single row that exercises a chain (e.g. Auth&nbsp;&rarr;&nbsp;Completion); those chains are detailed in section 2.</div>
+</div>
+
+<div class="card">
+  <h2>2. Distinct End-to-End Flow Scenarios (15)</h2>
+  <table><thead><tr><th>Flow Scenario</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>Void</td><td class='num'>134</td><td class='num'>129</td><td class='num'><span class="fail">5</span></td><td class='num'>96%</td></tr>
+<tr><td>Authorization</td><td class='num'>127</td><td class='num'>86</td><td class='num'><span class="fail">41</span></td><td class='num'>68%</td></tr>
+<tr><td>Sale</td><td class='num'>70</td><td class='num'>67</td><td class='num'><span class="fail">3</span></td><td class='num'>96%</td></tr>
+<tr><td>Completion</td><td class='num'>68</td><td class='num'>65</td><td class='num'><span class="fail">3</span></td><td class='num'>96%</td></tr>
+<tr><td>Timeout</td><td class='num'>36</td><td class='num'>36</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Refund/Return</td><td class='num'>28</td><td class='num'>28</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Authorization → Completion</td><td class='num'>15</td><td class='num'>9</td><td class='num'><span class="fail">6</span></td><td class='num'>60%</td></tr>
+<tr><td>Cancellation</td><td class='num'>9</td><td class='num'>5</td><td class='num'><span class="fail">4</span></td><td class='num'>56%</td></tr>
+<tr><td>Refund/Return → Void</td><td class='num'>9</td><td class='num'>5</td><td class='num'><span class="fail">4</span></td><td class='num'>56%</td></tr>
+<tr><td>Authorization → Void</td><td class='num'>9</td><td class='num'>9</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Sale → Void</td><td class='num'>6</td><td class='num'>6</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Authorization → Cancellation</td><td class='num'>6</td><td class='num'>0</td><td class='num'><span class="fail">6</span></td><td class='num'>0%</td></tr>
+<tr><td>Sale → Timeout</td><td class='num'>5</td><td class='num'>5</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Authorization → Completion → Dup Completion</td><td class='num'>4</td><td class='num'>0</td><td class='num'><span class="fail">4</span></td><td class='num'>0%</td></tr>
+<tr><td>Authorization → Partial Completion</td><td class='num'>2</td><td class='num'>0</td><td class='num'><span class="fail">2</span></td><td class='num'>0%</td></tr>
+<tr><td>(unclassified)</td><td class='num'>1</td><td class='num'>1</td><td class='num'>0</td><td class='num'>100%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>3. Card-Entry Mode Coverage</h2>
+  <table><thead><tr><th>Entry Mode</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>Other/Unknown</td><td class='num'>314</td><td class='num'>264</td><td class='num'><span class="fail">50</span></td><td class='num'>84%</td></tr>
+<tr><td>Track 1</td><td class='num'>86</td><td class='num'>86</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Track 2</td><td class='num'>56</td><td class='num'>44</td><td class='num'><span class="fail">12</span></td><td class='num'>79%</td></tr>
+<tr><td>EMV (Chip)</td><td class='num'>28</td><td class='num'>28</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Keyed</td><td class='num'>19</td><td class='num'>19</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Manual</td><td class='num'>18</td><td class='num'>10</td><td class='num'><span class="fail">8</span></td><td class='num'>56%</td></tr>
+<tr><td>eWallet</td><td class='num'>8</td><td class='num'>0</td><td class='num'><span class="fail">8</span></td><td class='num'>0%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>4. CVM Level Coverage</h2>
+  <table><thead><tr><th>CVM</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>-</td><td class='num'>354</td><td class='num'>276</td><td class='num'><span class="fail">78</span></td><td class='num'>78%</td></tr>
+<tr><td>CVM3</td><td class='num'>64</td><td class='num'>64</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>CVM4</td><td class='num'>42</td><td class='num'>42</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>CVM1</td><td class='num'>38</td><td class='num'>38</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>CVM2</td><td class='num'>31</td><td class='num'>31</td><td class='num'>0</td><td class='num'>100%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>5. AFP (Automated Fuel) Coverage</h2>
+  <table><thead><tr><th>AFP Classification</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>-</td><td class='num'>488</td><td class='num'>424</td><td class='num'><span class="fail">64</span></td><td class='num'>87%</td></tr>
+<tr><td>AFP</td><td class='num'>24</td><td class='num'>24</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Non-AFP</td><td class='num'>17</td><td class='num'>3</td><td class='num'><span class="fail">14</span></td><td class='num'>18%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>6. Feature / Scenario Tag Coverage</h2>
+  <table><thead><tr><th>Feature Tag</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>AVS/CVV</td><td class='num'>96</td><td class='num'>55</td><td class='num'><span class="fail">41</span></td><td class='num'>57%</td></tr>
+<tr><td>Moneris Segment</td><td class='num'>16</td><td class='num'>0</td><td class='num'><span class="fail">16</span></td><td class='num'>0%</td></tr>
+<tr><td>Dup Completion</td><td class='num'>4</td><td class='num'>0</td><td class='num'><span class="fail">4</span></td><td class='num'>0%</td></tr>
+<tr><td>eWallet-ApplePay</td><td class='num'>4</td><td class='num'>0</td><td class='num'><span class="fail">4</span></td><td class='num'>0%</td></tr>
+<tr><td>eWallet-GooglePay</td><td class='num'>4</td><td class='num'>0</td><td class='num'><span class="fail">4</span></td><td class='num'>0%</td></tr>
+<tr><td>Merchandise Purchase</td><td class='num'>4</td><td class='num'>4</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Fuel Purchase</td><td class='num'>3</td><td class='num'>3</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Partial Approval</td><td class='num'>3</td><td class='num'>3</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>Partial Completion</td><td class='num'>2</td><td class='num'>0</td><td class='num'><span class="fail">2</span></td><td class='num'>0%</td></tr>
+<tr><td>$0 Cancellation</td><td class='num'>2</td><td class='num'>0</td><td class='num'><span class="fail">2</span></td><td class='num'>0%</td></tr>
+<tr><td>COF / MIT</td><td class='num'>1</td><td class='num'>0</td><td class='num'><span class="fail">1</span></td><td class='num'>0%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>7. Card / Merchant Profile Coverage (17 profiles)</h2>
+  <table><thead><tr><th>Profile Code</th><th>Total TCs</th><th>Passed</th><th>Failed</th><th>Pass %</th></tr></thead>
+  <tbody><tr><td>-</td><td class='num'>130</td><td class='num'>84</td><td class='num'><span class="fail">46</span></td><td class='num'>65%</td></tr>
+<tr><td>epviavs</td><td class='num'>64</td><td class='num'>38</td><td class='num'><span class="fail">26</span></td><td class='num'>59%</td></tr>
+<tr><td>vspvt16</td><td class='num'>40</td><td class='num'>40</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>viemca05</td><td class='num'>38</td><td class='num'>38</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>viemga07</td><td class='num'>35</td><td class='num'>35</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>etapvp</td><td class='num'>34</td><td class='num'>28</td><td class='num'><span class="fail">6</span></td><td class='num'>82%</td></tr>
+<tr><td>viemca07</td><td class='num'>28</td><td class='num'>28</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>viemga05</td><td class='num'>25</td><td class='num'>25</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>epvigepa</td><td class='num'>19</td><td class='num'>19</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>vspvp1</td><td class='num'>19</td><td class='num'>19</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>vspvt2r</td><td class='num'>19</td><td class='num'>19</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>epviget1</td><td class='num'>16</td><td class='num'>16</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>etapvt1</td><td class='num'>16</td><td class='num'>16</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>vigano05</td><td class='num'>15</td><td class='num'>15</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>epviget2</td><td class='num'>11</td><td class='num'>11</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>vigano07</td><td class='num'>10</td><td class='num'>10</td><td class='num'>0</td><td class='num'>100%</td></tr>
+<tr><td>vicano07</td><td class='num'>10</td><td class='num'>10</td><td class='num'>0</td><td class='num'>100%</td></tr></tbody></table>
+</div>
+
+<div class="card">
+  <h2>Method &amp; Notes</h2>
+  <div class="note">
+   &bull; Data extracted from the 529 top-level <code>TC:</code> entries in the report's Test Case Results tree.<br>
+   &bull; Pass/Fail taken from each TC's status colour (green=pass, red=fail): 451 pass / 78 fail.<br>
+   &bull; Flows are classified from the TC description text via keyword rules; multi-step chains are parsed from "followed by" and hyphenated verb pairs (e.g. Sale-Void).<br>
+   &bull; Full per-TC classification is in the companion file <code>ATL105_Visa_flow_analysis.csv</code>.
+  </div>
+</div>
+
+</body></html>

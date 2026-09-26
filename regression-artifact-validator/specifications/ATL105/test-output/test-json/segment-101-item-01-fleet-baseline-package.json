@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "placeholder": true,
+    "provisionalReason": "Synthesized placeholder canonical BR/TS/TC/TD package for Item 2 (AI Artifact Comparison). Real AI-generated Segment 101 output has not been supplied yet (PROVISIONAL P-09). Every artifact below is anchored to a rule from segment-101-rule-catalog.json and marked PROVISIONAL. Once real AI output arrives, replace this file; Item 2 comparison logic remains unchanged.",
+    "provisionalDependencies": ["P-01","P-02","P-03","P-04","P-05","P-06","P-07","P-08","P-09","P-10"]
+  },
+  "manifest": {
+    "packageId": "ATL105-SEG101-ITEM-01-FLEET-BASELINE",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3"
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG101-CORE-001","title":"Fleet Data Segment is a Data Section 3 companion of Segment 100.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"11.1.1","segment":"101","rule":"section-3-companion-of-segment-100"}]},
+    {"id":"BR-SEG101-CORE-002","title":"Fleet Data Segment is required in every fleet-card financial transaction request.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"}]},
+    {"id":"BR-SEG101-CORE-003","title":"Fleet Data Segment must not coexist with Enhanced Fleet Data Segment (145).","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"mutual-exclusion-enhanced-fleet"}]},
+    {"id":"BR-SEG101-CORE-004","title":"Segment Type is 101.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"85","rule":"segment-type"}]},
+    {"id":"BR-SEG101-CORE-005","title":"Segment Length is 3 digits representing the content length.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-length"}]},
+    {"id":"BR-SEG101-CORE-006","title":"Base Segment 101 max length is 61 alphanumeric characters.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-length-max-061-base"}]},
+    {"id":"BR-SEG101-CORE-007","title":"Field order matches Section 12.2 (base fields 1-13, tag fields 14-18).","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"segment-101-field-order"}]},
+    {"id":"BR-SEG101-FIELD-009","title":"Odometer is numeric max 8 digits when populated.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"64","rule":"odometer"}]},
+    {"id":"BR-SEG101-FIELD-018","title":"User ID is alphanumeric max 12 and non-zero when populated.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"162","rule":"user-id"}]},
+    {"id":"BR-SEG101-TAG-020","title":"Fleet Tag fields appear only in Auth Completion (0220) messages.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tags-auth-completion-only"}]},
+    {"id":"BR-SEG101-TAG-023","title":"Fleet Tag code must be one of the 17 valid codes.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-code-enumeration"}]},
+    {"id":"BR-SEG101-TAG-024","title":"Fleet Tag payload conforms to per-code format.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-per-code-format"}]},
+    {"id":"BR-SEG101-STRUCT-026","title":"At most one Segment 101 per message.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12","segment":"101","rule":"segment-occurrence"}]}
+  ],
+  "testScenarios": [
+    {"id":"SCN-SEG101-CORE-001","requirementIds":["BR-SEG101-CORE-002"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"}]},
+    {"id":"SCN-SEG101-CORE-002","requirementIds":["BR-SEG101-CORE-003"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"mutual-exclusion-enhanced-fleet"}]},
+    {"id":"SCN-SEG101-CORE-003","requirementIds":["BR-SEG101-CORE-004","BR-SEG101-CORE-005"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"85","rule":"segment-type"},{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-length"}]},
+    {"id":"SCN-SEG101-CORE-004","requirementIds":["BR-SEG101-CORE-006"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-length-max-061-base"}]},
+    {"id":"SCN-SEG101-FIELD-001","requirementIds":["BR-SEG101-FIELD-009"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"64","rule":"odometer"}]},
+    {"id":"SCN-SEG101-FIELD-002","requirementIds":["BR-SEG101-FIELD-018"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"162","rule":"user-id"}]},
+    {"id":"SCN-SEG101-TAG-001","requirementIds":["BR-SEG101-TAG-020","BR-SEG101-TAG-023","BR-SEG101-TAG-024"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tags-auth-completion-only"},{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-code-enumeration"},{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-per-code-format"}]}
+  ],
+  "testCases": [
+    {"id":"TC-SEG101-CORE-001","scenarioIds":["SCN-SEG101-CORE-001"],"expectedOutcome":"PASS","category":"applicability","tags":["segment-101","fleet","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"}]},
+    {"id":"TC-SEG101-CORE-002","scenarioIds":["SCN-SEG101-CORE-001"],"expectedOutcome":"FAIL","category":"applicability","tags":["segment-101","fleet","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"}]},
+    {"id":"TC-SEG101-CORE-003","scenarioIds":["SCN-SEG101-CORE-002"],"expectedOutcome":"FAIL","category":"compatibility","tags":["segment-101","segment-145","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"mutual-exclusion-enhanced-fleet"}]},
+    {"id":"TC-SEG101-CORE-004","scenarioIds":["SCN-SEG101-CORE-003"],"expectedOutcome":"PASS","category":"field","tags":["segment-101","identity","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG101-CORE-005","scenarioIds":["SCN-SEG101-CORE-003"],"expectedOutcome":"FAIL","category":"field","tags":["segment-101","identity","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"85","rule":"segment-type"}]},
+    {"id":"TC-SEG101-CORE-006","scenarioIds":["SCN-SEG101-CORE-004"],"expectedOutcome":"FAIL","category":"serialization","tags":["segment-101","length","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"84","rule":"segment-length-max-061-base"}]},
+    {"id":"TC-SEG101-FIELD-001","scenarioIds":["SCN-SEG101-FIELD-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-101","odometer","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"64","rule":"odometer"}]},
+    {"id":"TC-SEG101-FIELD-002","scenarioIds":["SCN-SEG101-FIELD-002"],"expectedOutcome":"FAIL","category":"field","tags":["segment-101","user-id","negative"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","element":"162","rule":"user-id"}]},
+    {"id":"TC-SEG101-TAG-001","scenarioIds":["SCN-SEG101-TAG-001"],"expectedOutcome":"PASS","category":"lifecycle","tags":["segment-101","fleet-tag","auth-completion","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-code-enumeration"},{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-per-code-format"}]},
+    {"id":"TC-SEG101-TAG-002","scenarioIds":["SCN-SEG101-TAG-001"],"expectedOutcome":"FAIL","category":"lifecycle","tags":["segment-101","fleet-tag","non-completion","negative"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tags-auth-completion-only"}]}
+  ],
+  "testData": [
+    {"id":"TD-SEG101-CORE-001","testCaseIds":["TC-SEG101-CORE-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-request-required"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-101/lifecycle/fleet-auth-original.synthetic.json","provisional":"P-09","note":"payload sourced from Item 1 synthetic fixtures until real AI output arrives"}},
+    {"id":"TD-SEG101-CORE-003","testCaseIds":["TC-SEG101-CORE-003"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101,145","rule":"mutual-exclusion-enhanced-fleet"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-101/rejection/fleet-and-145-mutual-exclusion.synthetic.json","provisional":"P-09"}},
+    {"id":"TD-SEG101-TAG-001","testCaseIds":["TC-SEG101-TAG-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.2","segment":"101","rule":"fleet-tag-code-enumeration"}],"payload":{"aiJsonReference":"test-input/ai-solution/test-data/segment-101/lifecycle/fleet-auth-completion.synthetic.json","provisional":"P-09"}}
+  ]
+}

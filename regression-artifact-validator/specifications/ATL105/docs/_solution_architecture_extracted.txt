@@ -1,0 +1,103 @@
+Core Auth Regression Automation Tool
+Solution Architecture
+Version: 1.0
+Date: 2026-09-02
+1. End Goal:Shivansh
+A platform that ingests structured payment specification documents and produces a complete, traceable regression test suite.
+Every generated test case traces back to the exact page and rule in the specification that justifies it. When a specification changes, the platform identifies which test cases are affected and regenerates only those. The same platform handles multiple specification formats without being rebuilt for each one.
+"
+The platform generates test cases. Execution, failure triage, and changes to the existing automation framework remain outside its scope.
+2. Target Architecture
+
+Target Architecture
+
+3. How a Specification Flows Through the Platform
+
+End-to-End Workflow
+The workflow above shows the complete path from specification document to approved test suite. Steps marked Phase 2 are additions that come in the second phase — the core path operates from Phase 1.
+Reading the workflow:
+Document Extraction reads text, tables, and images. Image content is read by OCR from Phase 1; visual interpretation of diagrams is added in Phase 2.
+Knowledge Extraction runs three extractions in parallel — message structure, field rules and values, and appendix code tables. Relationship extraction follows, because it matches against the message structure the first extraction produces.
+Requirement Derivation turns the approved knowledge into explicit functional requirement statements, each traceable to the specification rule it came from.
+Scenario Management generates the scenarios that test each requirement. Each proposed scenario passes through the same independent AI review used for the knowledge model, before reaching Scenario Approval.
+Test Prioritization ranks the approved scenarios by risk and business priority before any test case is built, so effort concentrates on the highest-value tests first.
+AI Enrichment and Independent AI Review operate as separate steps: one proposes meaning, the other verifies it and assigns a confidence score. Neither has final authority. If the review catches an issue, the platform retries that step once before the item reaches the expert — reducing how many avoidable mistakes reach human review, without changing who has final authority.
+Three approval points — Knowledge, Scenario, and Test Case — are where a subject matter expert validates the platform's output before it proceeds. Rejected work returns to the preceding step rather than restarting the pipeline.
+Scenario Approval and Test Case Approval require subject matter expert review before the platform proceeds.
+Every item carries its specification page and links forward to the requirement, scenario, and test case it produces — the same chain the Traceability Matrix in the final output represents.
+How review effort is managed. In Phase 1 every extracted item is reviewed and approved by a subject matter expert. Each review decision is recorded against the confidence score the platform assigned to that item, which builds an evidence base showing how reliably the score predicts correctness. From Phase 2 that evidence is used to set a confidence threshold: items scoring above it are presented for confirmation rather than detailed review, concentrating expert attention on the items that need it. The threshold is only introduced once the evidence supports it, and every item remains visible to the reviewer.
+What is produced: an approved test suite in the agreed JSON format, a traceability matrix mapping each test case to its source specification page, and a coverage report. All three are generated on every run.
+4. What Gets Built in Each Phase
+Platform Capabilities
+Legend — ● new build · ◐ enhanced · ○ operational · — not present
+
+Delivery Scope
+
+Phase 4 refreshes all supported specifications to their current versions and completes handover. No new capability is introduced.
+5. How Coverage Is Calculated
+
+Coverage Model
+Coverage is measured against the Approved Scenario Catalog — the list of business scenarios validated by a subject matter expert.
+How the catalog is built
+1.  The platform generates candidate scenarios from the approved knowledge model — every valid combination of transaction type, card type, entry mode, and feature settings, each one named and classified as a positive or negative test.
+2.  At Scenario Approval, the expert reviews the candidate list, removes scenarios that are not relevant, and adds scenarios that domain knowledge says must be tested but the platform did not generate.
+3.  Platform-generated and expert-added scenarios are merged and deduplicated into the Approved Scenario Catalog.
+Coverage formula
+Coverage = scenarios with a generated test case ÷ total scenarios in the Approved Scenario Catalog × 100
+Example
+
+Scenarios without a test case are those awaiting information the specification does not provide. Each is individually flagged with the source needed to resolve it, so the route to closing the gap is always visible.
+Why this basis. The denominator is a list a subject matter expert has personally reviewed and approved. Coverage is measured against what the business agrees should be tested — not against what the platform happened to generate. The same catalog is reused on every subsequent run, so coverage figures are directly comparable over time.
+The platform additionally reports parameter combination coverage as a secondary engineering completeness check across all valid field-value combinations.
+
+--- TABLE 1 ---
+Component | Purpose
+Specification Documents | The authoritative payment specification. Everything the platform generates is grounded in this source.
+Supporting Knowledge | Internal knowledge-base and documentation content, used only where the specification itself does not answer a question.
+Application Source Code | Confirms rules the system enforces in practice, including validations not fully documented in the specification.
+Spec Profiler | Reads a new specification once and produces a configuration describing how that specification is organised. This is what allows a new specification format to be onboarded without engineering work.
+Document Extractor | Reads the specification page by page — text, tables, and images — recording the page number for every item extracted.
+Knowledge Extraction | Builds a structured knowledge model: message fields, their rules and valid values, appendix code tables, and the mapping between message segments and transaction types.
+Knowledge Approval | A subject matter expert reviews and approves the extracted knowledge before it is used. Each item carries a confidence score so review effort concentrates where it is needed.
+Requirement Derivation | States each approved rule and constraint as an explicit, testable functional requirement, traceable to its specification source.
+Scenario Management | Generates candidate business scenarios that test each functional requirement, and manages expert review of that list.
+Scenario Approval | The expert removes scenarios that are not relevant and adds scenarios that domain knowledge says must be tested. The approved list becomes the basis for coverage.
+Test Prioritization | Ranks approved scenarios by risk and business priority so the highest-value tests are generated first.
+Test Generation | For each approved scenario, builds the complete request message and the expected response that the test will assert against.
+Test Case Approval | The generated batch is reviewed and approved before it enters the regression suite.
+Change Management | When a new specification version arrives, identifies precisely which test cases are affected and regenerates only those.
+Outputs | The generated test suite, a traceability matrix linking every test case to its specification source, and a coverage report.
+
+--- TABLE 2 ---
+Capability | Phase 1 | Phase 2 | Phase 3 | Depends on
+Spec Profiler | ● | ○ | ○ | —
+Text and Table Extraction | ● | ○ | ○ | —
+Image Extraction | ● OCR | ◐ Vision | ○ | —
+Knowledge Extraction | ● | ◐ | ○ | Spec Profiler
+Validation and Confidence Scoring | ● | ○ | ○ | Knowledge Extraction
+Knowledge Approval | ● | ○ | ○ | —
+Context Retrieval | ● Direct | ◐ Semantic | ○ | —
+Source Code Knowledge | — | ● | ◐ | Source code access
+Combination Engine | ● Pairwise | ○ | ◐ Three-way | Knowledge Approval
+Scenario Builder | ● | ○ | ○ | Combination Engine
+Scenario Approval | ● Review interface | ◐ Dashboard | ○ | —
+Test Prioritization | ● Rule-based | ◐ Spec-change-aware | ◐ Failure-history informed | Scenario Approval
+Test Case Composer | ● | ○ | ○ | Scenario Approval
+Expected Response Builder | ● Spec-based | ◐ Code rules | ◐ Baseline data | —
+Test Case Approval | ● | ○ | ○ | —
+Coverage Reporting | ● | ○ | ○ | Scenario Approval
+Change Management | — | ● | ○ | Phase 1 extraction
+Feedback Capture and Application | ● Captured | ◐ Applied | ◐ Automated | —
+
+--- TABLE 3 ---
+ | Phase 1 | Phase 2 | Phase 3
+Specifications covered | One specification | Two to three specifications | All agreed formats
+Data store | File-based | Relational database | Cloud-managed database
+Dashboard | Internal development view | Core views | Complete views
+Environment | Local | Local | Cloud production deployment
+
+--- TABLE 4 ---
+ | 
+Approved Scenario Catalog | 220
+Scenarios with a generated test case | 187
+Coverage | 85%

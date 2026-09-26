@@ -1,0 +1,53 @@
+{
+  "segment": "113",
+  "title": "ECA/TeleCheck\u00ae Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Conditional member of the ECA/TeleCheck Service Transaction Request's Data Section 3; exclusive to that message family (not a Financial Transaction Request companion).",
+  "source": "docs/specs/extracted_text.txt 12.12 ECA/TeleCheck Data Segment",
+  "scopeNote": "Full-catalog baseline: mirrors all 18 rules in docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json (structure, applicability, field, serialization, compatibility, lifecycle, and metadata classes).",
+  "businessRequirements": [
+    {"id":"BR-SEG113-R-001","title":"Segment 113 belongs exclusively to the ECA/TeleCheck Service Transaction Request; it is not a Financial Transaction Request companion","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.1.1,11.3.1","segment":"113","element":"63","rule":"ecatelecheck-transaction-exclusive"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-002","title":"Segment 113 is a conditional member of the ECA/TeleCheck Service Transaction Request's Data Section 3","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.3.1","segment":"113","rule":"ecatelecheck-request-conditional"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-003","title":"Segment Type is 113","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"85","rule":"segment-type"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-004","title":"Segment Length is 3 digits representing the segment content length","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-005","title":"Segment 113 maximum length is 156 alphanumeric characters","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","element":"84","rule":"segment-length-max-156"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-006","title":"Field order matches Section 12.12 ascending element order","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","rule":"segment-113-field-order"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-007","title":"All fields are separated by Field Separators; empty fields still send the separator","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","rule":"field-separator-required"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-008","title":"ECA/TeleCheck Clerk ID, required, is alphanumeric with maximum length 6","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"131","rule":"eca-clerk-id"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-009","title":"ECA/TeleCheck Product Code, when populated, is alphanumeric max 6, no documented enumeration","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"132","rule":"eca-product-code"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-010","title":"ECA/TeleCheck Phone Number, when populated, is numeric max 10","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"133","rule":"eca-phone-number"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-011","title":"ECA/TeleCheck Trace ID, when populated, is alphanumeric max 22; required on Void requests","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"134","rule":"eca-trace-id"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-012","title":"Merchant Trace ID, when populated, is alphanumeric max 25","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"135","rule":"merchant-trace-id"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-013","title":"Denial Record Number, when populated, is alphanumeric max 7","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"10.8.5,12.12,13.2","segment":"113","element":"136","rule":"denial-record-number"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-014","title":"Extended MICR Data, when populated, is alphanumeric max 65; supplements Segment 110's MICR Data when raw MICR exceeds 50 bytes","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113,110","element":"137","rule":"extended-micr-data"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-015","title":"Segment 113 appears at most once per message","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12","segment":"113","rule":"segment-occurrence"},"status":"COVERED"},
+    {"id":"BR-SEG113-R-016","title":"Segment 113 originates at the device","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.12","segment":"113","rule":"origin-device"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-017","title":"Segment 113's companions are Segment 110 (required) and Segment 111 (optional)","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.3.1","segment":"113,110,111","rule":"ecatelecheck-companion-segments"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG113-R-018","title":"Segment 113 does not appear in the ECA/TeleCheck Service Transaction Response","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.3.2","segment":"113","rule":"ecatelecheck-segment-request-only"},"status":"COVERED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG113-STRUCTURE","covers":["BR-SEG113-R-001","BR-SEG113-R-002","BR-SEG113-R-015"],"status":"COVERED"},
+    {"id":"TS-SEG113-IDENTITY-LENGTH","covers":["BR-SEG113-R-003","BR-SEG113-R-004","BR-SEG113-R-005"],"status":"COVERED"},
+    {"id":"TS-SEG113-SERIALIZATION","covers":["BR-SEG113-R-006","BR-SEG113-R-007"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG113-FIELDS","covers":["BR-SEG113-R-008","BR-SEG113-R-009","BR-SEG113-R-010","BR-SEG113-R-012","BR-SEG113-R-013"],"status":"COVERED"},
+    {"id":"TS-SEG113-TRACE-ID","covers":["BR-SEG113-R-011"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG113-EXTENDED-MICR","covers":["BR-SEG113-R-014"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG113-METADATA","covers":["BR-SEG113-R-016"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG113-COMPATIBILITY","covers":["BR-SEG113-R-017"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG113-RESPONSE","covers":["BR-SEG113-R-018"],"status":"COVERED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG113-STRUCTURE","scenarioId":"TS-SEG113-STRUCTURE","positive":"ECA/TeleCheck Data Segment present at most once, with Standard Segment sibling","negative":["Duplicate ECA/TeleCheck Data Segment","Missing Standard Segment sibling"],"status":"COVERED"},
+    {"id":"TC-SEG113-IDENTITY-LENGTH","scenarioId":"TS-SEG113-IDENTITY-LENGTH","positive":"SegmentType=113, SegmentLength 3 digits <=156","negative":["SegmentType != 113","Non-numeric SegmentLength","SegmentLength > 156"],"status":"COVERED"},
+    {"id":"TC-SEG113-SERIALIZATION","scenarioId":"TS-SEG113-SERIALIZATION","positive":"Fields serialized in ascending element order with trailing separators","negative":["Fields serialized out of order"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG113-FIELDS","scenarioId":"TS-SEG113-FIELDS","positive":"All optional alphanumeric/numeric fields within documented length bounds","negative":["Each field individually exceeds its documented max length or format"],"status":"COVERED"},
+    {"id":"TC-SEG113-TRACE-ID","scenarioId":"TS-SEG113-TRACE-ID","positive":"Trace ID populated on Void requests","negative":["Void request missing Trace ID (business condition, catalog only)"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG113-EXTENDED-MICR","scenarioId":"TS-SEG113-EXTENDED-MICR","positive":"Extended MICR Data populated alongside Segment 110's MICR Data when raw MICR > 50 bytes","negative":["Cross-segment condition not enforced (catalog only)"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG113-METADATA","scenarioId":"TS-SEG113-METADATA","positive":"Device-origin metadata cataloged","negative":[],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG113-COMPATIBILITY","scenarioId":"TS-SEG113-COMPATIBILITY","positive":"Segment 113 combined only with Segment 100, 110, and optionally 111","negative":["Segment 113 combined with a Financial Transaction Request companion (101/102/103/104/108)"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG113-RESPONSE","scenarioId":"TS-SEG113-RESPONSE","positive":"Segment 113 absent from ECA/TeleCheck Service Transaction Response","negative":["Segment 113 present in a response"],"status":"COVERED"}
+  ],
+  "testDataStatus": "Structure, identity/length, field-bound rules, and response-absence are covered by the synthetic lifecycle fixtures (ecatelecheck-check-purchase-original, ecatelecheck-void-with-trace-id, ecatelecheck-denial-record-decline) and the rejection fixture (duplicate-occurrence), all exercised by Segment113PayloadValidator and its 10-mutation suite (target 100% detection). Serialization/compatibility/metadata/cross-segment rules are cataloged but not code-enforced per SME direction.",
+  "remaining": ["Obtain real AI-generated Segment 113 BR/TS/TC/TD packages (SEG113-SME-005) to replace the placeholder."]
+}

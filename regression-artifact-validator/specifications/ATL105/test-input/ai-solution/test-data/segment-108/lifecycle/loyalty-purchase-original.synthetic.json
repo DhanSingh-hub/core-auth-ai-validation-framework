@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "artifactId": "SEG108-LIFECYCLE-LOYALTY-PURCHASE-ORIGINAL-001",
+    "purpose": "Segment 108 baseline happy-path: a dual-card (loyalty + payment) purchase with Update Code = S (Sale update) inside a dedicated Loyalty Card Transaction Request, paired only with Segment 100.",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"85","rule":"segment-type"},
+      {"specification":"ATL105","version":"2026-3","section":"12.7","segment":"108","element":"138","rule":"loyalty-program-id"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"108","element":"148","rule":"payment-tender-type-enumeration"}
+    ],
+    "context": {
+      "updateCode": "S",
+      "cardPresent": true,
+      "paymentTenderType": "VS",
+      "lifecycleRole": "SALE_UPDATE",
+      "messageFamily": "LOYALTY_CARD_TRANSACTION_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-05"]
+  },
+  "Loyalty Card Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "LC500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "040"
+      },
+      "SequenceNumber": "700101",
+      "LocalDateTime": "2609221545",
+      "PartialApprovalIndicator": "0"
+    },
+    "Loyalty Card Data Segment": {
+      "SegmentType": "108",
+      "SegmentLength": "042",
+      "LoyaltyProgramId": "100200",
+      "LoyaltyAccountNumber": "400500600700",
+      "UpdateCode": "S",
+      "PaymentTenderType": "VS",
+      "LoyaltyInformationVersion": "1"
+    }
+  }
+}

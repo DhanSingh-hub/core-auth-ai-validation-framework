@@ -1,0 +1,27 @@
+{
+  "rulesetId": "ATL105-SEG120-VALIDATION-RULES-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "120",
+  "segmentName": "Print Data 2 Segment",
+  "generatedFor": "Segment 120 Payload Validator (Item 1 baseline) and downstream Item 2-8 consumers",
+  "aiJsonPathHints": {
+    "baseSegmentContainer": "response.dataSection3.printData2Segment",
+    "counterpartMessages": ["Financial Transaction Response", "EMV Financial Transaction Response"],
+    "counterpartInSegment100Structure": "response.dataSection2.standardSegment"
+  },
+  "requirednessLegend": {"R": "REQUIRED", "O": "OPTIONAL", "C": "CONDITIONAL"},
+  "fields": [
+    {"order": 1, "jsonField": "segmentType", "element": "85", "name": "Segment Type", "type": "N", "minLen": 3, "maxLen": 3, "requiredness": "R", "allowedValues": ["120"], "ruleIds": ["SEG120-R-001"]},
+    {"order": 2, "jsonField": "segmentLength", "element": "84", "name": "Segment Length", "type": "N", "minLen": 4, "maxLen": 4, "requiredness": "R", "allowedPattern": "^[0-9]{4}$", "numericMin": 1, "numericMax": 1009, "ruleIds": ["SEG120-R-002", "SEG120-R-004"], "note": "RESOLVED 2026-09-23 (P-02-WIDTH): always exactly 4 digits, zero-padded. Element 84 spec text confirms Segment 120 is one of only 7 segments whose Segment Length is always 4 digits."},
+    {"order": 3, "jsonField": "printData", "element": "152", "name": "Print Data", "type": "AN", "minLen": 1, "maxLen": 999, "requiredness": "R", "note": "May contain '\\\\' line-delimited receipt text for Blackhawk phone activation/recharge (BR-263-5); delimiter content semantics tracked separately, see P-03. Both the 999-char field cap and the 1009-char total-segment cap are enforced independently pending P-02-RESIDUAL (a 1-character arithmetic gap between them).", "ruleIds": ["SEG120-R-003", "SEG120-R-008"], "provisional": "P-03"}
+  ],
+  "structuralRules": [
+    {"id": "SEG120-R-004", "enforce": "Print Data <= 999 characters AND total serialized Segment 120 length (Segment Type + Segment Length + Print Data + separators) <= 1009 alphanumeric characters, enforced as two independent caps", "provisional": "P-02-RESIDUAL", "provisionalNote": "1009 - 3 (type) - 4 (length, now confirmed fixed-width) - 2 (separators) = 1000, not 999 as the field table states for Print Data alone. This 1-character gap is unresolved; both caps are enforced independently rather than derived from each other."},
+    {"id": "SEG120-R-005", "enforce": "Exactly one field separator between Field 1/2 and one between Field 2/3; no trailing separator after Print Data"},
+    {"id": "SEG120-R-006", "enforce": "Segment 120 is present only in Financial Transaction Response and EMV Financial Transaction Response messages, never on a request"},
+    {"id": "SEG120-R-007", "enforce": "Segment 120 is the final segment of the Data Section 3 companion sequence", "resolved": "P-01", "resolvedNote": "RESOLVED 2026-09-23: docs/atl105_complete_templates.json orders response segments in strict ascending segment-number order (112,115,120,134,136,146,148,152,155 / EMV variant inserts 131) -- assessed as a numeric-sort extraction artifact, not genuine wire order. The literal spec statement (BR-263-2, 'always appears at the end') is authoritative and is now hard-enforced when an explicit segment order is present in test data."},
+    {"id": "SEG120-R-026-ANALOGUE", "enforce": "Cardinality of Segment 120 per message is not yet confirmed", "provisional": "P-04"}
+  ],
+  "status": "READY_FOR_ITEM1_BASELINE_VALIDATOR"
+}

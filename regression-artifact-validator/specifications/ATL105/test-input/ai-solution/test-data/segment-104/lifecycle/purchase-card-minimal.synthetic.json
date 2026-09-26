@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "artifactId": "SEG104-LIFECYCLE-PURCHASE-CARD-MINIMAL-001",
+    "purpose": "Segment 104 minimal happy-path: only the required identity fields (Segment Type, Segment Length) populated; all 8 conditional fields blank. Proves no interdependency is enforced across the conditional field set.",
+    "sourceAnchors": [
+      {"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "rule": "segment-104-type-fixed-value"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "070",
+      "paymentNetwork": "PURCHASE_CARD",
+      "lifecycleRole": "ORIGINAL_AUTH",
+      "messageFamily": "FINANCIAL_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-02"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "02",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "086",
+      "InformationByte": "0",
+      "TerminalID": "PC500002",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "070"
+      },
+      "SequenceNumber": "500202",
+      "PartialApprovalIndicator": "0"
+    },
+    "Purchase Card Data Segment": {
+      "SegmentType": "104",
+      "SegmentLength": "005",
+      "PurchaseCode": "",
+      "PcTaxAmount": "",
+      "PcFreightAmount": "",
+      "PcDutyAmount": "",
+      "ShipToCountryCode": "",
+      "ShipToPostalCode": "",
+      "ShipFromPostalCode": "",
+      "DirectMarketingInvoiceNumber": ""
+    }
+  }
+}

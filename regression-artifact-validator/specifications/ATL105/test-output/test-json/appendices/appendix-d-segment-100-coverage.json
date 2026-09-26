@@ -1,0 +1,32 @@
+{
+  "appendix": "D",
+  "title": "Valid State Codes",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies to Segment 100 Terminal Identifier and conditional card-discretionary/state-context data.",
+  "source": "docs/specs/extracted_text.txt Appendix D-1 through D-4",
+  "stateCodeSets": {
+    "unitedStates": "50 states plus District of Columbia",
+    "territories": ["GU", "PR", "VI"],
+    "military": ["AA", "AE", "AP", "XX"],
+    "canada": "Canadian provinces and territories",
+    "outsideUsCanada": ["NA"]
+  },
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPD-TERMINAL-STATE","title":"Terminal Identifier Element 102 shall contain a valid two-digit ANSI state code from Appendix D in its defined terminal identity structure.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"102","rule":"terminal-state-ansi-code"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPD-ALPHA-STATE","title":"Alphabetical state codes used in Card Discretionary Block Data or state context shall use an Appendix D alphabetical code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"12","rule":"card-discretionary-alpha-state-code"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPD-NON-US-STATE","title":"A non-US/non-Canada location using numeric state code 00 shall include Variable Information Table 041 country subdivision data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"102","rule":"non-us-country-subdivision"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPD-TERMINAL-STATE","covers":["BR-SEG100-APPD-TERMINAL-STATE"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPD-ALPHA-STATE","covers":["BR-SEG100-APPD-ALPHA-STATE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPD-NON-US-STATE","covers":["BR-SEG100-APPD-NON-US-STATE"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPD-TERMINAL-STATE","scenarioId":"TS-SEG100-APPD-TERMINAL-STATE","positive":"Terminal Identifier contains valid ANSI state code such as 06 for California","negative":["Invalid ANSI code","alphabetical code used where ANSI numeric code is required","malformed Terminal Identifier"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPD-ALPHA-STATE","scenarioId":"TS-SEG100-APPD-ALPHA-STATE","positive":"Card Discretionary data contains valid alphabetical state code","negative":["Invalid state abbreviation","wrong state-code family"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPD-NON-US-STATE","scenarioId":"TS-SEG100-APPD-NON-US-STATE","positive":"Numeric 00 is accompanied by Variable Information Table 041","negative":["Numeric 00 without Table 041"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Terminal Identifier format and dependency tests exist; complete Appendix D state-code enumeration and Table 041 execution require dedicated response/configuration evidence.",
+  "remaining": ["Validate all Appendix D code sets against AI-generated Terminal Identifier and Card Discretionary data.","Validate Table 041 through actual serialized Variable Information data."]
+}

@@ -1,0 +1,35 @@
+{
+  "inventoryId": "ATL105-SEG100-FIELD-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "100",
+  "fieldCount": 17,
+  "source": "ATL105 Section 12.1, docs/specs/kb/segment-100-canonical-anchors.md, docs/specs/kb/13-data-elements.md",
+  "fields": [
+    {"order":1,"element":"85","name":"Segment Type","jsonField":"segmentType","requiredness":"REQUIRED","type":"N","length":"3","allowed":"100","rule":"segment-type","appendixContext":[]},
+    {"order":2,"element":"84","name":"Segment Length","jsonField":"segmentLength","requiredness":"REQUIRED","type":"N","length":"3 or 4","allowed":"encoded Segment 100 length including separators","rule":"segment-length","appendixContext":["A"]},
+    {"order":3,"element":"44","name":"Information Byte","jsonField":"informationByte","requiredness":"REQUIRED","type":"AN","length":"1","allowed":["?","0","1"],"rule":"information-byte","appendixContext":[]},
+    {"order":4,"element":"102","name":"Terminal Identifier","jsonField":"terminalIdentifier","requiredness":"REQUIRED","type":"AN","length":"variable, max 22","allowed":"device type + ANSI state + merchant + device identity","rule":"terminal-identifier","appendixContext":["D","Q"]},
+    {"order":5,"element":"78","name":"Prompt Code","jsonField":"promptCode","requiredness":"REQUIRED","type":"AN","length":"3 or 4","allowed":"Appendix G transaction type + Appendix E card type or special family","rule":"prompt-code","appendixContext":["E","G"]},
+    {"order":6,"element":"2","name":"Account Number","jsonField":"accountNumber","requiredness":"REQUIRED","type":"ANS","length":"24-425 or flow-specific","allowed":"PAN, token, account, or flow identifier","rule":"account-number","appendixContext":["N","O","U"]},
+    {"order":7,"element":"12","name":"Card Discretionary Block Data","jsonField":"cardDiscretionaryBlockData","requiredness":"CONDITIONAL","type":"AN","length":"max 51","allowed":"expiration and discretionary/track data","rule":"card-discretionary-block-data","appendixContext":["D","N"]},
+    {"order":8,"element":"33","name":"Encrypted PIN Block Data","jsonField":"encryptedPinBlockData","requiredness":"CONDITIONAL","type":"AN","length":"36","allowed":"16-20 byte KSN plus 16-byte PIN block","rule":"encrypted-pin-block-data","appendixContext":["O"]},
+    {"order":9,"element":"79","name":"Pump/Lane Number","jsonField":"pumpLaneNumber","requiredness":"CONDITIONAL","type":"N","length":"max 2","allowed":"1-99 when fuel/lane context applies","rule":"pump-lane-number","appendixContext":["F"]},
+    {"order":10,"element":"41","name":"Fuel Purchase Amount","jsonField":"fuelPurchaseAmount","requiredness":"CONDITIONAL","type":"N","length":"max 8","allowed":"net fuel amount, two assumed decimals","rule":"fuel-purchase-amount","appendixContext":["F"]},
+    {"order":11,"element":"58","name":"Nonfuel Amount","jsonField":"nonfuelAmount","requiredness":"CONDITIONAL","type":"N","length":"max 8","allowed":"net nonfuel/noncash/nontax amount","rule":"nonfuel-amount","appendixContext":["F"]},
+    {"order":12,"element":"99","name":"Tax Amount","jsonField":"taxAmount","requiredness":"CONDITIONAL","type":"N","length":"max 8","allowed":"total tax amount","rule":"tax-amount","appendixContext":["F"]},
+    {"order":13,"element":"17","name":"Cash Amount","jsonField":"cashAmount","requiredness":"CONDITIONAL","type":"N","length":"max 8","allowed":"total cash amount","rule":"cash-amount","appendixContext":["F"]},
+    {"order":14,"element":"86","name":"Sequence Number","jsonField":"sequenceNumber","requiredness":"REQUIRED","type":"N","length":"6","allowed":"000001-999999; lifecycle identity persists","rule":"sequence-number","appendixContext":["G","H","U"]},
+    {"order":15,"element":"5","name":"Approval Number","jsonField":"approvalNumber","requiredness":"CONDITIONAL","type":"AN","length":"6","allowed":"approval/reference when flow requires it","rule":"approval-number","appendixContext":["C","G","H","V"]},
+    {"order":16,"element":"49","name":"Local Date and Local Time","jsonField":"localDateTime","requiredness":"CONDITIONAL","type":"N","length":"10","allowed":"MMDDYYHHMM when required","rule":"local-date-time","appendixContext":["G"]},
+    {"order":17,"element":"121","name":"Partial Approval Indicator","jsonField":"partialApprovalIndicator","requiredness":"REQUIRED","type":"N","length":"1","allowed":["0","1","5"],"rule":"partial-approval-indicator","appendixContext":["I","L"]}
+  ],
+  "globalRules": [
+    {"id":"FIELD-ORDER","rule":"All 17 fields preserve specification order."},
+    {"id":"EMPTY-SEPARATORS","rule":"Empty non-trailing fields retain their separators."},
+    {"id":"TRAILING-OPTIONALS","rule":"Unneeded trailing optional fields may be omitted when permitted."},
+    {"id":"REQUEST-RESPONSE-BOUNDARY","rule":"Request and response field rules are validated separately."},
+    {"id":"CONTEXT-REQUIRED","rule":"Conditional fields are evaluated from transaction, card, channel, lifecycle, and companion context."}
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}

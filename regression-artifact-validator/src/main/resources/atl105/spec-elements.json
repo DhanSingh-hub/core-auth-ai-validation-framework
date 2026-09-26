@@ -1,0 +1,279 @@
+[
+  {
+    "fieldName": "TerminalID",
+    "elementNumber": 102,
+    "elementName": "Terminal Identifier",
+    "kind": "PATTERN",
+    "pattern": "^[A-Za-z0-9]{1,22}$",
+    "notes": "Spec: AN, max 22 bytes (13 for Table/Phone/Date-Time/Software Load requests). Composite: Device Type(2)+State Code(2)+Merchant Number(6-15)+Device Number(3). CSV heuristic wrongly locked this to the exact 13-char values observed in sample data."
+  },
+  {
+    "fieldName": "SegmentType",
+    "elementNumber": 85,
+    "elementName": "Segment Type",
+    "kind": "ENUM",
+    "enumValues": ["100","101","102","103","104","105","108","109","111","112","116","118","119","120","123","130","131","132","134","157"],
+    "notes": "Spec also allows DL1-DL6 (Data Link segments); not included here since those are not plain numeric segment-type values."
+  },
+  {
+    "fieldName": "SegmentLength",
+    "elementNumber": 84,
+    "elementName": "Segment Length",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{3,4}$",
+    "notes": "Spec: N, 3 or 4 bytes depending on segment."
+  },
+  {
+    "fieldName": "InformationByte",
+    "elementNumber": 44,
+    "elementName": "Information Byte",
+    "kind": "ENUM",
+    "enumValues": ["?", "0", "1"],
+    "notes": "Spec: AN 1 byte. '?'=download, 0=single-message, 1=multimessage."
+  },
+  {
+    "fieldName": "CashAmount",
+    "elementNumber": 17,
+    "elementName": "Cash Amount",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,8}$",
+    "allowEmpty": true,
+    "notes": "Spec: N, up to 8 bytes variable, 2 assumed decimals."
+  },
+  {
+    "fieldName": "TaxAmount",
+    "elementNumber": 99,
+    "elementName": "Tax Amount",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,8}$",
+    "allowEmpty": true,
+    "notes": "Spec: N, up to 8 bytes (7 max for non-Amex), 2 assumed decimals."
+  },
+  {
+    "fieldName": "NonFuelAmount",
+    "elementNumber": 58,
+    "elementName": "Nonfuel Amount",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,8}$",
+    "allowEmpty": true,
+    "notes": "Spec: N, up to 8 bytes (7 max for non-Amex), 2 assumed decimals."
+  },
+  {
+    "fieldName": "FuelPurchaseAmount",
+    "elementNumber": 41,
+    "elementName": "Fuel Purchase Amount",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,8}$",
+    "allowEmpty": true,
+    "notes": "Spec: N, up to 8 bytes (7 max for non-Amex), 2 assumed decimals."
+  },
+  {
+    "fieldName": "SequenceNumber",
+    "elementNumber": 86,
+    "elementName": "Sequence Number",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{6}$",
+    "notes": "Spec: N, 6 bytes. Valid ranges 000001-999999 (normal) or 100000-199999 (multithreaded); range itself not enforced here, only shape."
+  },
+  {
+    "fieldName": "AccountNumber",
+    "elementNumber": 2,
+    "elementName": "Account Number",
+    "kind": "ANY",
+    "notes": "Spec: ANS, 24-425 bytes, varies by TransArmor mode/track data rules - too variable to safely pattern-match; left unchecked."
+  },
+  {
+    "fieldName": "ApprovalNumber",
+    "elementNumber": 5,
+    "elementName": "Approval Number",
+    "kind": "PATTERN",
+    "pattern": "^[A-Za-z0-9 ]{1,6}$",
+    "allowEmpty": true,
+    "notes": "Spec: AN, 6 bytes, space-filled. Empty on the initial Financial Request; populated on Completion/response once approved."
+  },
+  {
+    "fieldName": "NumberOfProducts",
+    "elementNumber": 62,
+    "elementName": "Number of Products",
+    "kind": "PATTERN",
+    "pattern": "^(0[1-9]|10)$",
+    "notes": "Spec: N, 2 bytes, 01-10."
+  },
+  {
+    "fieldName": "PartialApprovalIndicator",
+    "elementNumber": 121,
+    "elementName": "Partial Approval Indicator",
+    "kind": "ENUM",
+    "enumValues": ["0", "1", "5"],
+    "notes": "Spec: N, 1 byte. 0=not supported (default), 1=supported, 5=balance receipt only (Amex prepaid)."
+  },
+  {
+    "fieldName": "PINBlockData",
+    "elementNumber": 33,
+    "elementName": "Encrypted PIN Block Data",
+    "kind": "PATTERN",
+    "pattern": "^[A-Za-z0-9]{36}$",
+    "allowEmpty": true,
+    "notes": "Spec: AN, fixed 36 bytes (16-20 byte KSN + 16-byte PIN block). Empty when the transaction carries no PIN (e.g. credit, no debit/EBT PIN entry)."
+  },
+  {
+    "fieldName": "TrackData",
+    "elementNumber": 2,
+    "elementName": "Account Number (Track 1/2 data)",
+    "kind": "ANY",
+    "allowEmpty": true,
+    "notes": "Raw magnetic-stripe/EMV track 1 or 2 data (part of Element 2, Account Number). Too variable in length/format (PAN + separators + expiry + discretionary data) to safely pattern-match."
+  },
+  {
+    "fieldName": "ProductTableEntry > ProductAmount",
+    "elementNumber": 76,
+    "elementName": "Product Amount",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,12}$",
+    "notes": "Spec: N, up to 12 bytes, 2 assumed decimals."
+  },
+  {
+    "fieldName": "ProductTableEntry > ProductCode",
+    "elementNumber": 77,
+    "elementName": "Product Code",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{3}$",
+    "notes": "Spec: N, fixed 3 digits. Full enum lives in Appendix F, not yet fully transcribed in this KB, so only the 3-digit shape is enforced."
+  },
+  {
+    "fieldName": "ProductTableEntry > Quantity",
+    "elementNumber": 81,
+    "elementName": "Quantity",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,9}(\\.[0-9]{1,3})?$",
+    "notes": "Spec: N, up to 9 bytes, up to 3 assumed decimal places."
+  },
+  {
+    "fieldName": "ProductTableEntry > UnitOfMeasure",
+    "elementNumber": 106,
+    "elementName": "Unit of Measure",
+    "kind": "ENUM",
+    "enumValues": ["C","G","H","I","K","L","M","P","Q","U","W","Z","O","0","1","2","3","4","5","6","7","8","9"],
+    "notes": "Spec: A, 1 byte. 0-9 reserved for private use."
+  },
+  {
+    "fieldName": "ProductTableEntry > UnitPrice",
+    "elementNumber": 107,
+    "elementName": "Unit Price",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,9}$",
+    "notes": "Spec: N, up to 9 bytes, up to 3 assumed decimal places."
+  },
+  {
+    "fieldName": "PromptCode > TransactionType",
+    "elementNumber": 78,
+    "elementName": "Prompt Code (position 1)",
+    "kind": "ENUM",
+    "enumValues": ["0","3","4","5","6","7","8","9","A","B","C","D","E","K","L","M","N","Q","S","T","U","V","Z"],
+    "notes": "Spec: Appendix G, Valid Transaction Type Codes (position 1 of 3-4 char Prompt Code, Element 78)."
+  },
+  {
+    "fieldName": "PumpNumber",
+    "elementNumber": 79,
+    "elementName": "Pump/Lane Number",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,2}$",
+    "allowEmpty": true,
+    "notes": "Spec: N, up to 2 bytes variable, 1-99. Real sample data zero-pads (e.g. '05'). Empty on non-fuel/non-pump transactions."
+  },
+  {
+    "fieldName": "PromptCode > CardType",
+    "elementNumber": 14,
+    "elementName": "Card Type",
+    "kind": "ENUM",
+    "enumValues": ["001","011","012","013","020","040","041","045","046","050","051","052","053","055","056","057","058","059","060","061","064","070","071","072","073","074","075","077","078","079","080","081","083","084","085","086","088","090","091","092","093","094","095","096"],
+    "notes": "Spec: Appendix E, Valid Card Type Codes - full 43-code list verified directly against the spec text (Table Load Response + Financial Transaction Prompt Code tables combined)."
+  },
+  {
+    "fieldName": "ReceiptCardDescription",
+    "elementNumber": 200,
+    "elementName": "Receipt Card Description",
+    "kind": "PATTERN",
+    "pattern": "^[A-Za-z0-9 ]{1,10}$",
+    "notes": "Spec: AN, fixed 10 bytes, left-justified space-filled."
+  },
+  {
+    "fieldName": "ServiceLevel",
+    "elementNumber": 87,
+    "elementName": "Service Level",
+    "kind": "ENUM",
+    "enumValues": ["F","S","N","X","H","O","0","1","2","3","4","5","6","7","8","9"],
+    "notes": "Spec: A, 1 byte. 0-9 reserved for private use."
+  },
+  {
+    "fieldName": "SettlementType",
+    "elementNumber": 198,
+    "elementName": "Settlement Type",
+    "kind": "ENUM",
+    "enumValues": ["D", "S", "X"],
+    "notes": "Spec: AN, 1 byte. D=Dual message/credit, S=Single message/debit, X=Dual/non-traditional Signature Debit."
+  },
+  {
+    "fieldName": "SignatureRequired",
+    "elementNumber": 199,
+    "elementName": "Signature Required",
+    "kind": "ENUM",
+    "enumValues": ["T", "F"],
+    "allowEmpty": true,
+    "notes": "Spec: AN, 1 byte. T=required, F=not required, space=device software logic determines (represented here as empty)."
+  },
+  {
+    "fieldName": "CAPublicKeyFileChecksum",
+    "elementNumber": 187,
+    "elementName": "CA Public Key File Checksum",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{25}$",
+    "notes": "Spec: N, fixed length 25 bytes."
+  },
+  {
+    "fieldName": "EMVCardSequenceNumber",
+    "elementNumber": 188,
+    "elementName": "EMV Card Sequence Number",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{1,3}$",
+    "allowEmpty": true,
+    "notes": "Spec: AN, fixed 3 bytes, right-aligned zero-padded (000-099) per the spec text, but real sample data sends it without zero-padding (e.g. '25'), so 1-3 digits is accepted; or 3 spaces if EMV Tag 5F34 absent (represented here as empty)."
+  },
+  {
+    "fieldName": "EMVChipDataLength",
+    "elementNumber": 189,
+    "elementName": "EMV Chip Data Length",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{3}$",
+    "notes": "Spec: N, fixed 3 digits, 000-999."
+  },
+  {
+    "fieldName": "EMVChipData",
+    "elementNumber": 190,
+    "elementName": "EMV Chip Data",
+    "kind": "ANY",
+    "notes": "Spec: ANSB, up to 999 bytes of TLV-encoded binary EMV data - not representable as a simple pattern."
+  },
+  {
+    "fieldName": "EMVAddlInfo",
+    "elementNumber": 118,
+    "elementName": "EMV Additional Information",
+    "kind": "ANY",
+    "notes": "Spec: ANSB, up to 984 bytes; layout depends on Appendix T Table ID - too variable to pattern-match generically."
+  },
+  {
+    "fieldName": "LocalDateTime",
+    "elementNumber": 49,
+    "elementName": "Local Date and Local Time",
+    "kind": "PATTERN",
+    "pattern": "^[0-9]{10}$",
+    "notes": "Spec: N, fixed 10 bytes, MMDDYYHHMM."
+  },
+  {
+    "fieldName": "MonerisData",
+    "elementNumber": 213,
+    "elementName": "Moneris Data",
+    "kind": "ANY",
+    "notes": "Spec: AN, up to 100 bytes in <tag><len><data> format - too variable to pattern-match generically."
+  }
+]

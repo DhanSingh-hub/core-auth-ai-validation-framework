@@ -1,0 +1,31 @@
+{
+  "segment": "102",
+  "title": "Product Code Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Conditionally included in Data Section 3 for fuel/product transactions; not used for Comdata cards.",
+  "source": "docs/specs/extracted_text.txt 12.3 Product Code Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and cross-segment business rules only. Not field-by-field exhaustive.",
+  "businessRequirements": [
+    {"id":"BR-SEG102-TYPE","title":"Segment Type field in the Product Code Data Segment has fixed value 102.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","element":"85","rule":"segment-102-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG102-LENGTH","title":"Segment Length identifies the Product Code Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","element":"84","rule":"segment-102-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG102-FUEL-FIRST","title":"Fuel products (and the primary fuel product for multi-fuel transactions) must always be the first products in the segment.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","element":"77","rule":"segment-102-fuel-first"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG102-PRODUCT-LIMIT","title":"A maximum of ten products is allowed in the Product Code Data Segment.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102","rule":"segment-102-max-products"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG102-AMOUNT-RECONCILIATION","title":"The total of product amounts in Segment 102 must equal the sum of Fuel Purchase Amount, Nonfuel Amount, Tax Amount, and Cash Amount in Segment 100.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"100,102","element":"41,58,99,17","rule":"segment-102-amount-reconciliation"},"status":"COVERED"},
+    {"id":"BR-SEG102-ADJUSTED-MUTEX","title":"Segment 102 (Product Code Data Segment) and Segment 157 (Adjusted Product Code Data) are mutually exclusive; sending both causes a decline.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.3","segment":"102,157","rule":"segment-102-157-mutual-exclusion"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG102-TYPE","covers":["BR-SEG102-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG102-LENGTH","covers":["BR-SEG102-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG102-PRODUCTS","covers":["BR-SEG102-FUEL-FIRST","BR-SEG102-PRODUCT-LIMIT"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG102-RECONCILIATION","covers":["BR-SEG102-AMOUNT-RECONCILIATION"],"status":"COVERED"},
+    {"id":"TS-SEG102-MUTEX","covers":["BR-SEG102-ADJUSTED-MUTEX"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG102-TYPE","scenarioId":"TS-SEG102-TYPE","positive":"Segment Type = 102","negative":["Segment Type not equal to 102"],"status":"COVERED"},
+    {"id":"TC-SEG102-RECONCILIATION","scenarioId":"TS-SEG102-RECONCILIATION","positive":"Product amount total equals Segment 100 amount fields","negative":["Product amount total mismatch"],"status":"COVERED"},
+    {"id":"TC-SEG102-MUTEX","scenarioId":"TS-SEG102-MUTEX","positive":"Only one of Segment 102 or 157 present","negative":["Both Segment 102 and 157 present -> decline"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment Type and amount-reconciliation rules are covered by existing Segment 100 amount packages; fuel-ordering, product-limit, and 102/157 mutual exclusion need dedicated artifacts.",
+  "remaining": ["Author full field-by-field Product Code Data Segment coverage (Service Level, Unit of Measure, Quantity, Unit Price) beyond this core-structure baseline."]
+}

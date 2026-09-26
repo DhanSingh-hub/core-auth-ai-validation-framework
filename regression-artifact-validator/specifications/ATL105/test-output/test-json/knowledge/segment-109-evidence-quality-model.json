@@ -1,0 +1,12 @@
+{
+  "modelId":"ATL105-SEG109-EVIDENCE-QUALITY-001",
+  "segment":"109",
+  "dimensions":{"sourceEvidence":["SOURCE_CONFIRMED","SOURCE_DERIVED","UNKNOWN"],"implementationEvidence":["NOT_IMPLEMENTED","IMPLEMENTED_PARTIAL","IMPLEMENTED_TESTED"],"artifactEvidence":["NO_ARTIFACT","INDEPENDENT_FIXTURE_ONLY","AI_ARTIFACT_PENDING","AI_ARTIFACT_VALIDATED"],"reviewState":["AUTO_APPROVABLE","REVIEW_REQUIRED","BLOCKED"]},
+  "decisionRules":[
+    {"when":"SOURCE_CONFIRMED + IMPLEMENTED_TESTED + AI_ARTIFACT_VALIDATED","status":"COVERED"},
+    {"when":"SOURCE_CONFIRMED + INDEPENDENT_FIXTURE_ONLY","status":"READY_FOR_AI_INTAKE"},
+    {"when":"Conditional behavior without approved context","status":"REVIEW_REQUIRED"},
+    {"when":"Mandatory AI artifact or source decision is absent","status":"BLOCKED"}
+  ],
+  "currentPolicy":{"sourceRuleCatalog":"READY_FOR_AI_INTAKE","implementation":"NOT_IMPLEMENTED","aiArtifactIntake":"PENDING","smeReview":"REQUIRED"}
+}

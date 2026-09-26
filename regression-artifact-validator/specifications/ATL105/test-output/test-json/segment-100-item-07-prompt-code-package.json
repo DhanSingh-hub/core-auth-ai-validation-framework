@@ -1,0 +1,23 @@
+{
+  "manifest":{"packageId":"ATL105-SEG100-ITEM-07-PROMPT-CODE","specification":"ATL105","specificationVersion":"2026-3"},
+  "businessRequirements":[
+    {"id":"BR-SEG100-E78-001","title":"Prompt Code first position identifies a supported transaction type.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}]},
+    {"id":"BR-SEG100-E78-002","title":"Prompt Code remaining positions identify the expected card type or flow code.","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}]}
+  ],
+  "testScenarios":[
+    {"id":"SCN-SEG100-E78-001","requirementIds":["BR-SEG100-E78-001"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}]},
+    {"id":"SCN-SEG100-E78-002","requirementIds":["BR-SEG100-E78-002"],"sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}]}
+  ],
+  "testCases":[
+    {"id":"TC-SEG100-E78-001","scenarioIds":["SCN-SEG100-E78-001"],"expectedOutcome":"PASS","category":"field","tags":["segment-100","element-78","positive"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}]},
+    {"id":"TC-SEG100-E78-002","scenarioIds":["SCN-SEG100-E78-001"],"expectedOutcome":"FAIL","category":"field","tags":["segment-100","element-78","transaction-type"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}]},
+    {"id":"TC-SEG100-E78-003","scenarioIds":["SCN-SEG100-E78-002"],"expectedOutcome":"PASS","category":"dependency","tags":["segment-100","element-78","card-type"],"priority":"medium","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}]},
+    {"id":"TC-SEG100-E78-004","scenarioIds":["SCN-SEG100-E78-002"],"expectedOutcome":"FAIL","category":"dependency","tags":["segment-100","element-78","financial-boundary"],"priority":"high","status":"active","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}]}
+  ],
+  "testData":[
+    {"id":"TD-SEG100-E78-001","testCaseIds":["TC-SEG100-E78-001"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}],"payload":{"request":{"dataSection2":{"standardSegment":{"promptCode":"0020"}}},"testControls":{"validatePromptCode":true,"expectedTransactionType":"0"}}},
+    {"id":"TD-SEG100-E78-002","testCaseIds":["TC-SEG100-E78-002"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code"}],"payload":{"request":{"dataSection2":{"standardSegment":{"promptCode":"X020"}}},"testControls":{"validatePromptCode":true}}},
+    {"id":"TD-SEG100-E78-003","testCaseIds":["TC-SEG100-E78-003"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}],"payload":{"request":{"dataSection2":{"standardSegment":{"promptCode":"3020"}}},"testControls":{"validatePromptCode":true,"expectedTransactionType":"3","expectedCardType":"020"}}},
+    {"id":"TD-SEG100-E78-004","testCaseIds":["TC-SEG100-E78-004"],"expectedValidation":"FAIL","sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"12.1","segment":"100","element":"78","rule":"prompt-code-card-type"}],"payload":{"request":{"dataSection2":{"standardSegment":{"promptCode":"9020"}}},"testControls":{"validatePromptCode":true,"requiresFinancialTransaction":true}}}
+  ]
+}

@@ -1,0 +1,99 @@
+Segment 120 (Print Data 2 Segment) - Consolidated Validation Report
+===========================================================================
+Specification:    ATL105 2026-3, Section 12.18
+Generated:        2026-09-23T21:40:55.7206635+05:30
+Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)
+Note:             Segment 120 is a RESPONSE-side companion segment (Financial Transaction
+                  Response / EMV Financial Transaction Response, Data Section 3), unlike
+                  the request-side Segment 100/101/111 reports.
+
+Item 1  Coverage Closure
+------------------------
+  Rule catalog:                 ATL105-SEG120-RULE-CATALOG-001
+  Rules extracted:              8
+  Baseline validator:           Segment120PayloadValidator
+  Baseline tests:               Segment120PayloadValidatorTest
+
+Item 2  AI Artifact Comparison
+------------------------------
+  AI anchors:                   0
+  Matched vs catalog:           0
+  Missing:                      8
+  Extra:                        0
+  Precision:                    100.00%
+  Recall:                       0.00%
+  Decision:                     REJECTED_MISSING_COVERAGE
+  Note: no real AI-generated Segment 120 package has been supplied yet; the placeholder
+        package intentionally has zero anchors (see
+        docs/specs/kb/segment-120/coverage/README.md). This is an accurate
+        finding, not a defect.
+
+Item 3  Test-Data Independence
+------------------------------
+  Validator:                    Segment120IndependenceValidator
+  Coverage:                     Independence checks over canonical BR/TS/TC/TD
+
+Item 4  Traceability Matrix
+---------------------------
+  Total rules:                  8
+  Fully traced:                 0
+  Partially traced:             0
+  Missing BRs:                  8
+  Missing test cases:           0
+  Missing test data:            0
+  Completion percentage:        0.00%
+  Provisional/blocked rules:    4 of 8 (SEG120-R-002, R-004, R-007, R-008)
+    - still OPEN:                2
+    - RESOLVED:                  2
+
+Item 5  Mutation Framework Definition
+-------------------------------------
+  Mutation tester:              Segment120MutationTester
+  Standard mutations defined:   10
+  Rule classes covered:         SEG120-R-001, R-002, R-003, R-004, R-005,
+                                R-006, R-007, R-008 (all 8 catalog rules) via
+                                MUT-001..MUT-010
+  Note: MUT-009 reorders Segment 120 away from the final Data Section 3 position
+        (SEG120-R-007), included now that P-01 is resolved (was previously omitted
+        from the standard suite pending that resolution).
+
+Item 6  Mutation Framework Execution
+------------------------------------
+  Packages tested:              3
+  Mutations executed:           30
+  Overall detection rate:       100.00%
+  Unique undetected mutations:  0
+
+Item 7  Validator Enhancement (target >= 85%)
+---------------------------------------------
+  Status:                       PASS; no enhancement required.
+
+Item 8  Consolidated Sign-Off
+-----------------------------
+  Production-readiness decision: REVIEW_REQUIRED
+  PROVISIONAL items (from segment-120-rule-catalog.json provisionalItems):
+    P-01            RESOLVED 2026-09-23 (impacts SEG120-R-007) -- literal spec text
+                    (BR-263-2) 'always appears at the end' is authoritative;
+                    atl105_complete_templates.json ordering is a numeric-sort extraction
+                    artifact, not true wire order -- see
+                    docs/specs/kb/segment-120/coverage/segment-120-coverage-sme-tba-note.md.
+                    Hard-enforced (SEG120-R-007) and covered by mutation MUT-009.
+    P-02-WIDTH      RESOLVED 2026-09-23 (impacts SEG120-R-002) -- Segment Length is
+                    always exactly 4 digits, zero-padded (never variable 3-4 width).
+    P-02-RESIDUAL   OPEN (impacts SEG120-R-004) -- 1-character arithmetic gap between
+                    the 999-char Print Data field cap and the 1,009-char total-segment
+                    cap; both caps are enforced independently pending SME resolution.
+    P-03            OPEN (impacts SEG120-R-008) -- whether the Blackhawk '\' line
+                    delimiter convention needs envelope-level validation, or remains
+                    out of Item 1 scope (current behavior: out of scope, opaque text).
+    P-04            OPEN (impacts SEG120-R-006) -- Segment 120 cardinality per message
+                    is not yet confirmed (at most one, by analogy to Segment 101, vs
+                    unconstrained; current behavior: unconstrained).
+
+  Framework is REVIEW_REQUIRED. Full certification requires:
+  1. SME resolution of P-02-RESIDUAL, P-03, and P-04 (P-01 and P-02-WIDTH already
+     resolved 2026-09-23; see docs/specs/kb/segment-120/coverage/README.md).
+  2. Real AI-generated Segment 120 packages covering all 8 catalog rules
+     (coverage depends on the supplied AI package and remains independently reported).
+  3. Real Segment 120 test data replacing the synthetic fixtures.
+  4. External ATL105 converter run against the real data.

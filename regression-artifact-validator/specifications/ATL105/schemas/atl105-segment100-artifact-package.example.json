@@ -1,0 +1,106 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-AI-TX0-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "artifactContractVersion": "2",
+    "strictExecutionContract": true
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-AI-TX0-001",
+      "title": "A fleet transaction requiring fleet data must include Segment 101 with Segment 100.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "fleet-transactions-with-fleet-data",
+      "priority": "high",
+      "executionStatus": "EXECUTION_READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.1.1",
+          "segment": "101",
+          "rule": "fleet-data-required"
+        }
+      ]
+    }
+  ],
+  "requirementCrosswalk": [
+    {
+      "testRequirementId": "BR-SEG100-FLEET-001",
+      "aiRequirementIds": ["BR-AI-TX0-001"],
+      "matchStatus": "CONFIRMED",
+      "matchReason": "Shared ATL105 segment-101 source anchor and equivalent fleet-companion rule",
+      "reviewOwner": null
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "SCN-AI-TX0-001",
+      "requirementIds": ["BR-AI-TX0-001"],
+      "status": "EXECUTION_READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.1.1",
+          "segment": "101",
+          "rule": "fleet-data-required"
+        }
+      ]
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-AI-TX0-001",
+      "scenarioIds": ["SCN-AI-TX0-001"],
+      "expectedOutcome": "PASS",
+      "testDataFile": "TC-AI-TX0-001.json",
+      "category": "compatibility",
+      "tags": ["segment-100", "fleet"],
+      "priority": "high",
+      "status": "EXECUTION_READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.1.1",
+          "segment": "101",
+          "rule": "fleet-data-required"
+        }
+      ]
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-AI-TX0-001",
+      "testCaseIds": ["TC-AI-TX0-001"],
+      "expectedValidation": "PASS",
+      "fileName": "TC-AI-TX0-001.json",
+      "readiness": "EXECUTABLE",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.1.1",
+          "segment": "101",
+          "rule": "fleet-data-required"
+        }
+      ],
+      "payload": {
+        "request": {
+          "dataSection1": { "numberOfSegments": "02" },
+          "dataSection2": {
+            "standardSegment": { "segmentType": "100", "promptCode": "0020" }
+          },
+          "dataSection3": [
+            { "segmentType": "101", "vehicleId": "VEHICLE01" }
+          ]
+        }
+      },
+      "response": {
+        "financialResponse": { "responseCode": "0" }
+      }
+    }
+  ]
+}

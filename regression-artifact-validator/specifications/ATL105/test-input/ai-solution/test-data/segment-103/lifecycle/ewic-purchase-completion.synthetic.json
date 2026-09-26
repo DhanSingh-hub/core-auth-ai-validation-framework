@@ -1,0 +1,59 @@
+{
+  "_meta": {
+    "artifactId": "SEG103-LIFECYCLE-EWIC-PURCHASE-COMPLETION-002",
+    "purpose": "eWIC Purchase Completion (0086) sample carrying WIC Discount Amount, WIC Product Data, and EBT Program Data (HIP TAG 50). Validates SEG103-R-004 (4-digit Segment Length for eWIC), SEG103-R-011/012, SEG103-R-013, and SEG103-R-014 through SEG103-R-017.",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.4","segment":"103","element":"84","rule":"segment-length"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"153","rule":"wic-discount-amount-format"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"154","rule":"wic-product-data-total-length"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-total-length"},
+      {"specification":"ATL105","version":"2026-3","section":"13.2","segment":"103","element":"164","rule":"ebt-program-data-account-type-98"}
+    ],
+    "context": {
+      "transactionType": "0",
+      "cardType": "050",
+      "cardTypeNote": "cardType 050 is a working placeholder for EBT WIC (PROVISIONAL P-01).",
+      "paymentNetwork": "EBT",
+      "lifecycleRole": "PURCHASE_COMPLETION",
+      "messageFamily": "FINANCIAL_REQUEST",
+      "ewicPromptCode": "0086",
+      "ewicDataPresent": true
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-02","P-03","P-05","P-06"]
+  },
+  "Financial Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "2",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "EB500001",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "050"
+      },
+      "SequenceNumber": "600102",
+      "LocalDateTime": "2609171550",
+      "PartialApprovalIndicator": "0"
+    },
+    "EBT Data Segment": {
+      "SegmentType": "103",
+      "SegmentLength": "0180",
+      "ClerkId": "0000012345",
+      "VoucherId": "",
+      "WicDiscountAmount": "9752840D000000000500",
+      "WicProductData": {
+        "totalLength": "0016",
+        "data": "EF2027010112345Z"
+      },
+      "EbtProgramData": {
+        "totalLength": "044",
+        "subelements": [
+          {"tag": "50", "len": "14", "accountType": "98", "data": "00000000050000"}
+        ]
+      }
+    }
+  }
+}

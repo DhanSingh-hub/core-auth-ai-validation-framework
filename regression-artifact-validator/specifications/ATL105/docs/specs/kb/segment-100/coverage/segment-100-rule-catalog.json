@@ -1,0 +1,744 @@
+{
+  "catalogId" : "ATL105-SEG100-RULE-CATALOG-001",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "scope" : "Segment 100 core message, serialization, lifecycle, and companion-segment compatibility boundary",
+  "rules" : [ {
+    "ruleId" : "SEG100-R-001",
+    "title" : "Segment 100 is required exactly once",
+    "class" : "structure",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "100",
+      "rule" : "segment-100-required-once"
+    }
+  }, {
+    "ruleId" : "SEG100-R-002",
+    "title" : "EMV requires Segment 130",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.8.1",
+      "segment" : "130",
+      "rule" : "section-3-required-for-emv"
+    }
+  }, {
+    "ruleId" : "SEG100-R-003",
+    "title" : "Fleet data requires Segment 101",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "101",
+      "rule" : "fleet-data-required"
+    }
+  }, {
+    "ruleId" : "SEG100-R-004",
+    "title" : "Product or fuel data requires Segment 102",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "102",
+      "rule" : "product-or-fuel-data-required"
+    }
+  }, {
+    "ruleId" : "SEG100-R-005",
+    "title" : "Multiple applicable categories require every companion segment",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "101,102",
+      "rule" : "multiple-section-3-segments-required"
+    }
+  }, {
+    "ruleId" : "SEG100-R-006",
+    "title" : "Unknown segment combinations require review",
+    "class" : "compatibility",
+    "severity" : "review",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "UNKNOWN",
+      "rule" : "unknown-combination-requires-review"
+    }
+  }, {
+    "ruleId" : "SEG100-R-007",
+    "title" : "Element 63 equals serialized segment count",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "DATA-SECTION-1",
+      "element" : "63",
+      "rule" : "number-of-segments"
+    }
+  }, {
+    "ruleId" : "SEG100-R-008",
+    "title" : "Companion segments are not duplicated",
+    "class" : "structure",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "101",
+      "rule" : "companion-segment-non-duplication"
+    }
+  }, {
+    "ruleId" : "SEG100-R-009",
+    "title" : "Segments follow the applicable order",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "100",
+      "rule" : "segment-100-field-order"
+    }
+  }, {
+    "ruleId" : "SEG100-R-010",
+    "title" : "TCP/IP message length uses following payload length",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix A",
+      "segment" : "TCP-IP-HEADER",
+      "element" : "message-length",
+      "rule" : "message-length"
+    }
+  }, {
+    "ruleId" : "SEG100-R-011",
+    "title" : "TCP/IP message length uses network byte order",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix A",
+      "segment" : "TCP-IP-HEADER",
+      "element" : "message-length",
+      "rule" : "network-byte-order"
+    }
+  }, {
+    "ruleId" : "SEG100-R-012",
+    "title" : "TPDU Protocol ID is 0x60",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix A",
+      "segment" : "TCP-IP-HEADER",
+      "element" : "protocol-id",
+      "rule" : "tpdu-protocol-id"
+    }
+  }, {
+    "ruleId" : "SEG100-R-024",
+    "title" : "Reserved TPDU destination and source addresses are zero",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix A",
+      "segment" : "TCP-IP-HEADER",
+      "element" : "destination-source-address",
+      "rule" : "reserved-tpdu-addresses"
+    }
+  }, {
+    "ruleId" : "SEG100-R-013",
+    "title" : "Message format identifier is ATL105",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "DATA-SECTION-1",
+      "element" : "55",
+      "rule" : "message-format-version-identifier"
+    }
+  }, {
+    "ruleId" : "SEG100-R-014",
+    "title" : "Data Section 1 separators are present",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "DATA-SECTION-1",
+      "element" : "55-63",
+      "rule" : "section-1-field-separators"
+    }
+  }, {
+    "ruleId" : "SEG100-R-015",
+    "title" : "Segment Type is 100",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "85",
+      "rule" : "segment-type"
+    }
+  }, {
+    "ruleId" : "SEG100-R-016",
+    "title" : "Segment Length represents encoded Segment 100 content",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "84",
+      "rule" : "segment-length"
+    }
+  }, {
+    "ruleId" : "SEG100-R-017",
+    "title" : "Terminal Identifier has valid format",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "102",
+      "rule" : "terminal-identifier"
+    }
+  }, {
+    "ruleId" : "SEG100-R-018",
+    "title" : "Prompt Code represents transaction and card context",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "prompt-code"
+    }
+  }, {
+    "ruleId" : "SEG100-R-019",
+    "title" : "Sequence Number is six digits and persists through lifecycle",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "86",
+      "rule" : "sequence-number"
+    }
+  }, {
+    "ruleId" : "SEG100-R-020",
+    "title" : "Partial Approval Indicator uses an allowed value",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "121",
+      "rule" : "partial-approval-indicator"
+    }
+  }, {
+    "ruleId" : "SEG100-R-021",
+    "title" : "Empty non-trailing fields retain separators",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "rule" : "non-trailing-empty-field-separator"
+    }
+  }, {
+    "ruleId" : "SEG100-R-022",
+    "title" : "Unneeded trailing optional fields are omitted",
+    "class" : "serialization",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "rule" : "trailing-optional-fields-omitted"
+    }
+  }, {
+    "ruleId" : "SEG100-R-023",
+    "title" : "Lifecycle messages preserve required original references",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10",
+      "segment" : "100",
+      "rule" : "lifecycle-correlation"
+    }
+  }, {
+    "ruleId" : "SEG100-R-030",
+    "title" : "Terminal Identifier respects load-flow length dependency",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "102",
+      "rule" : "terminal-identifier-load-length"
+    }
+  }, {
+    "ruleId" : "SEG100-R-031",
+    "title" : "Terminal Identifier matches declared components",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "102",
+      "rule" : "terminal-identifier-components"
+    }
+  }, {
+    "ruleId" : "SEG100-R-033",
+    "title" : "Prompt Code card type or flow code matches expected context",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "prompt-code-card-type"
+    }
+  }, {
+    "ruleId" : "SEG100-R-034",
+    "title" : "Account Number representation agrees with POS entry method",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.1.1",
+      "segment" : "100",
+      "element" : "2",
+      "rule" : "account-number-entry-method"
+    }
+  }, {
+    "ruleId" : "SEG100-R-035",
+    "title" : "Tokenized or TransArmor Account Number representation is explicit",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.13",
+      "segment" : "100",
+      "element" : "2",
+      "rule" : "account-number-token-representation"
+    }
+  }, {
+    "ruleId" : "SEG100-R-037",
+    "title" : "Lifecycle follow-ups reuse the original Sequence Number and required approval context",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10",
+      "segment" : "100",
+      "element" : "86",
+      "rule" : "lifecycle-correlation"
+    }
+  }, {
+    "ruleId" : "SEG100-R-039",
+    "title" : "Partial Approval Indicator value 5 requires Amex prepaid balance-receipt context",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "121",
+      "rule" : "partial-approval-context"
+    }
+  }, {
+    "ruleId" : "SEG100-R-040",
+    "title" : "Information Byte uses a source-defined value",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "44",
+      "rule" : "information-byte"
+    }
+  }, {
+    "ruleId" : "SEG100-R-041",
+    "title" : "Account Number or identification value is present for the transaction context",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "2",
+      "rule" : "account-number"
+    }
+  }, {
+    "ruleId" : "SEG100-R-042",
+    "title" : "Card Discretionary Block Data follows conditional source rules",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "12",
+      "rule" : "card-discretionary-block-data"
+    }
+  }, {
+    "ruleId" : "SEG100-R-043",
+    "title" : "Encrypted PIN Block Data follows DUKPT representation when PIN applies",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "33",
+      "rule" : "encrypted-pin-block-data"
+    }
+  }, {
+    "ruleId" : "SEG100-R-044",
+    "title" : "Pump/Lane Number is valid when fuel or lane context applies",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "79",
+      "rule" : "pump-lane-number"
+    }
+  }, {
+    "ruleId" : "SEG100-R-045",
+    "title" : "Fuel Purchase Amount follows the net fuel amount rule",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "41",
+      "rule" : "fuel-purchase-amount"
+    }
+  }, {
+    "ruleId" : "SEG100-R-046",
+    "title" : "Nonfuel Amount follows the net nonfuel amount rule",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "58",
+      "rule" : "nonfuel-amount"
+    }
+  }, {
+    "ruleId" : "SEG100-R-047",
+    "title" : "Tax Amount follows the total tax amount rule",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "99",
+      "rule" : "tax-amount"
+    }
+  }, {
+    "ruleId" : "SEG100-R-048",
+    "title" : "Cash Amount follows the total cash amount rule",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "17",
+      "rule" : "cash-amount"
+    }
+  }, {
+    "ruleId" : "SEG100-R-049",
+    "title" : "Approval Number is present when the lifecycle requires approval reference",
+    "class" : "dependency",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "5",
+      "rule" : "approval-number"
+    }
+  }, {
+    "ruleId" : "SEG100-R-050",
+    "title" : "Local Date and Local Time use the source-defined representation when required",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.1",
+      "segment" : "100",
+      "element" : "49",
+      "rule" : "local-date-time"
+    }
+  }, {
+    "ruleId" : "SEG100-R-051",
+    "title" : "EBT flows requiring EBT data include Segment 103",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "103",
+      "rule" : "ebt-data-required"
+    }
+  }, {
+    "ruleId" : "SEG100-R-052",
+    "title" : "Purchase-card flows requiring purchase-card data include Segment 104",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11.1.1",
+      "segment" : "104",
+      "rule" : "purchase-card-data-required"
+    }
+  }, {
+    "ruleId" : "SEG100-R-053",
+    "title" : "Variable-information flows include Segment 111",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "segment" : "111",
+      "rule" : "variable-information-required",
+      "section" : "11.1.1"
+    }
+  }, {
+    "ruleId" : "SEG100-R-054",
+    "title" : "NFC tokenized flows include Segment 123",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "segment" : "123",
+      "rule" : "nfc-tokenization-required",
+      "section" : "11.1.1"
+    }
+  }, {
+    "ruleId" : "SEG100-R-055",
+    "title" : "Moneris authorizer flows include Segment 135",
+    "class" : "compatibility",
+    "severity" : "review",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "segment" : "135",
+      "rule" : "moneris-authorizer-required",
+      "section" : "11.1.1"
+    }
+  }, {
+    "ruleId" : "SEG100-R-056",
+    "title" : "eWIC Authorization uses Prompt Code 3086 and Segment 103",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-authorization"
+    }
+  }, {
+    "ruleId" : "SEG100-R-057",
+    "title" : "eWIC Authorization Cancellation uses Prompt Code S086 and Segment 103",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-authorization-cancellation"
+    }
+  }, {
+    "ruleId" : "SEG100-R-058",
+    "title" : "eWIC Balance Inquiry uses Prompt Code E086 and Segment 103",
+    "class" : "compatibility",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-balance-inquiry"
+    }
+  }, {
+    "ruleId" : "SEG100-R-059",
+    "title" : "eWIC Purchase Completion uses Prompt Code 0086 and original lifecycle identity",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-purchase-completion"
+    }
+  }, {
+    "ruleId" : "SEG100-R-060",
+    "title" : "eWIC Purchase Reversal/Void uses Prompt Code 8086",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-purchase-reversal"
+    }
+  }, {
+    "ruleId" : "SEG100-R-061",
+    "title" : "eWIC Segment 103 carries bounded WIC and EBT data",
+    "class" : "field",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.4",
+      "segment" : "103",
+      "rule" : "ewic-segment-103-data"
+    }
+  }, {
+    "ruleId" : "SEG100-R-062",
+    "title" : "eWIC Voucher Clear uses Prompt Code 0086 with applicable voucher data",
+    "class" : "lifecycle",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "10.5.5",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "ewic-voucher-clear"
+    }
+  }, {
+    "ruleId" : "SEG100-R-063",
+    "title" : "Financial responses support approved purchase/capture response codes",
+    "class" : "response",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "13.2",
+      "segment" : "FINANCIAL-RESPONSE",
+      "element" : "83",
+      "rule" : "response-code-0-4"
+    }
+  }, {
+    "ruleId" : "SEG100-R-064",
+    "title" : "Financial responses support approved authorization response codes",
+    "class" : "response",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "13.2",
+      "segment" : "FINANCIAL-RESPONSE",
+      "element" : "83",
+      "rule" : "response-code-2-3"
+    }
+  }, {
+    "ruleId" : "SEG100-R-065",
+    "title" : "Partial approval responses carry an approved amount",
+    "class" : "response",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "13.2",
+      "segment" : "FINANCIAL-RESPONSE",
+      "element" : "83",
+      "rule" : "response-code-F"
+    }
+  }, {
+    "ruleId" : "SEG100-R-066",
+    "title" : "Declined financial responses carry a decline code",
+    "class" : "response",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "13.2",
+      "segment" : "FINANCIAL-RESPONSE",
+      "element" : "83",
+      "rule" : "response-code-1-S"
+    }
+  } ]
+}

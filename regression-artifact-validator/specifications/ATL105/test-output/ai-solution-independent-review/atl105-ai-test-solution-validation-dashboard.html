@@ -1,0 +1,495 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATL105 Validation Cockpit</title>
+  <style>
+    :root {
+      --ink: #13232b;
+      --muted: #66757c;
+      --paper: #eef4f2;
+      --panel: #ffffff;
+      --line: #d7e0e4;
+      --teal: #0d7770;
+      --blue: #39627a;
+      --gold: #c67c28;
+      --red: #b64b4b;
+      --green: #237b5b;
+      --violet: #6b587d;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px Georgia, serif; line-height: 1.45; }
+    header { padding: 30px 6vw 26px; background: linear-gradient(115deg, #132f35, #214d50); color: white; border-bottom: 6px solid #d49a3a; }
+    h1, h2 { font-family: Georgia, serif; font-weight: 700; letter-spacing: 0; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 52px); line-height: 1; }
+    header p { color: #c8d9df; max-width: 900px; margin: 14px 0 0; }
+    main { max-width: 1500px; margin: auto; padding: 28px 5vw 60px; }
+    .notice { padding: 14px 18px; background: #fff8e8; border-left: 5px solid var(--gold); margin-bottom: 22px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 12px; margin-bottom: 22px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); padding: 16px; min-height: 105px; }
+    .stat strong { display: block; color: var(--blue); font: 36px/1 Impact, sans-serif; }
+    .stat span { color: var(--muted); font-size: 13px; }
+    .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); padding: 22px; margin-bottom: 22px; }
+    .chart-box { min-height: 370px; }
+    .summary-table-wrap { overflow-x: auto; }
+    .summary-table { min-width: 900px; }
+    .summary-table th, .summary-table td { white-space: nowrap; }
+    .summary-table th:not(:first-child), .summary-table td:not(:first-child) { text-align: right; }
+    .summary-table .metric-note { color: var(--muted); font-size: 12px; white-space: normal; text-align: left !important; }
+    canvas { display: block; width: 100%; max-width: 620px; height: 300px; margin: 0 auto; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: center; color: var(--muted); font-size: 13px; }
+    .legend i { display: inline-block; width: 12px; height: 12px; margin-right: 5px; vertical-align: -1px; }
+    .bar-row { display: grid; grid-template-columns: minmax(180px, 1fr) 2fr 85px; gap: 12px; align-items: center; margin: 15px 0; }
+    .bar-track { height: 25px; background: #e8eef0; }
+    .bar-fill { display: block; height: 100%; background: var(--teal); }
+    .bar-fill.review { background: var(--gold); }
+    .bar-fill.test-only { background: var(--red); }
+    .bar-fill.trace { background: var(--green); }
+    .bar-value { text-align: right; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: #e9f0f2; font-size: 13px; }
+    .segment-row.is-hidden { display: none; }
+    .transaction-row.is-hidden { display: none; }
+    .filter-hidden { display: none !important; }
+    .empty-filter { display: none; padding: 16px; color: var(--muted); background: #f7faf9; border: 1px dashed var(--line); }
+    .empty-filter.is-visible { display: block; }
+    footer { color: var(--muted); font-size: 13px; padding-top: 8px; }
+    .dashboard-shell { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 22px; align-items: start; }
+    .filter-rail { position: sticky; top: 18px; background: #17343a; color: #f1f7f5; padding: 18px; border: 1px solid #28555a; box-shadow: 0 10px 24px rgba(19,35,43,.12); }
+    .filter-rail h2 { margin: 0 0 4px; font-size: 20px; }
+    .filter-rail p { margin: 0 0 18px; color: #b9d2d0; font-size: 12px; }
+    .filter-rail label { display: block; margin: 15px 0 6px; color: #b9d2d0; font: 11px/1.2 Arial,sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+    .filter-rail select { width: 100%; padding: 9px 10px; border: 1px solid #5a8888; background: #24484d; color: #fff; font: 14px Georgia,serif; }
+    .filter-rail button { width: 100%; margin-top: 18px; padding: 10px; border: 1px solid #d49a3a; background: #d49a3a; color: #17343a; cursor: pointer; font-weight: bold; }
+    .filter-state { margin-top: 16px; padding-top: 14px; border-top: 1px solid #416b6d; color: #d9eae7; font-size: 12px; }
+    .source-details { margin-top: 16px; padding-top: 14px; border-top: 1px solid #416b6d; color: #d9eae7; font-size: 12px; }
+    .source-details summary { cursor: pointer; color: #fff; font-weight: bold; }
+    .source-details p { margin: 10px 0 0; color: #b9d2d0; }
+    .content-column { min-width: 0; }
+    @media (max-width: 850px) { .dashboard-shell { grid-template-columns: 190px minmax(0, 1fr); gap: 14px; } .stats, .charts { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 620px) { .dashboard-shell { grid-template-columns: 1fr; } .filter-rail { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; } .filter-rail h2, .filter-rail p, .filter-state, .filter-rail button { grid-column: 1 / -1; } .filter-rail label { margin-top: 8px; } }
+    @media (max-width: 560px) { .stats, .charts { grid-template-columns: 1fr; } .bar-row { grid-template-columns: 1fr; gap: 4px; } .bar-value { text-align: left; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="font:12px/1.2 Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#a9d8d2;margin-bottom:12px">ATL105 / 2026-3 / independent review</div>
+    <h1>Validation cockpit</h1>
+    <p>One view of independent Test Solution readiness, AI comparison, traceability closure, and the SME decisions still holding the gate.</p>
+  </header>
+  <main>
+    <div class="dashboard-shell">
+      <aside class="filter-rail" aria-label="Dashboard filters">
+        <h2>View filters</h2>
+        <p>Refine the filters without changing the underlying evidence.</p>
+        <label for="segmentFilter">Segment scope</label>
+        <select id="segmentFilter" onchange="updateFilters()">
+          <option value="all">All trained segments</option>
+          <option value="100">Segment 100</option>
+          <option value="101">Segment 101</option>
+          <option value="111">Segment 111</option>
+          <option value="112">Segment 112 draft</option>
+        </select>
+        <label for="decisionFilter">Decision state</label>
+        <select id="decisionFilter" onchange="updateFilters()">
+          <option value="all">All decision states</option>
+          <option value="pending">Pending SME</option>
+          <option value="confirmed">Confirmed only</option>
+          <option value="review">Review required</option>
+        </select>
+        <label for="artifactFilter">Artifact level</label>
+        <select id="artifactFilter" onchange="updateFilters()">
+          <option value="all">BR / TS / TC / TD</option>
+          <option value="br">Business Requirements</option>
+          <option value="ts">Test Scenarios</option>
+          <option value="tc">Test Cases</option>
+          <option value="td">Test Data</option>
+        </select>
+        <label for="transactionFilter">Transaction type</label>
+        <select id="transactionFilter" onchange="updateFilters()">
+          <option value="all">All 23 transaction types</option>
+          <option value="0">0 - POS Purchase/Capture</option>
+          <option value="3">3 - POS Authorization Only</option>
+          <option value="4">4 - Customer Purchase/Capture</option>
+          <option value="5">5 - Customer Authorization Only</option>
+          <option value="6">6 - Mail/Phone Purchase</option>
+          <option value="7">7 - Merchandise Return/Refund</option>
+          <option value="8">8 - Purchase Reversal/Void</option>
+          <option value="A">A - Account Verification</option>
+          <option value="B">B - Mail/Phone Authorization</option>
+          <option value="C">C - Mail/Phone Reversal/Void</option>
+          <option value="S">S - Cancellation</option>
+          <option value="U">U - Void Merchandise Return</option>
+          <option value="Z">Z - Time-out Reversal</option>
+          <option value="9">9 - Special Transactions</option>
+          <option value="D">D - RBC Loyalty Lookup</option>
+          <option value="E">E - Balance Inquiry</option>
+          <option value="K">K - Activate Stored Value Card</option>
+          <option value="L">L - Deactivate Stored Value Card</option>
+          <option value="M">M - Balance Merge</option>
+          <option value="N">N - Replace Card</option>
+          <option value="Q">Q - Recharge Card</option>
+          <option value="T">T - Token Registration</option>
+          <option value="V">V - Loyalty Advice</option>
+        </select>
+        <button id="resetFilters" type="button">Reset filters</button>
+        <details class="source-details">
+          <summary>Data sources</summary>
+          <p>Segment readiness: <code>run2-weighted-executive-report.json</code> + <code>semantic-br-decision-register.json</code>.</p>
+          <p>Transactions: <code>all-segments-all-23-transaction-type-training-baseline.json</code>.</p>
+          <p>AI/Test comparison: <code>ai-test-many-to-many-coverage-matrix.json</code> + <code>semantic-br-decision-register.json</code>.</p>
+          <p>Automated validation: <code>four-level-traceability-matches.json</code> + <code>automated-test-validation-register.json</code>.</p>
+          <p>Source behavior metrics: <code>source-behavior-coverage-metrics.json</code> + <code>ai-behavior-decomposition.json</code>.</p>
+          <p>Independent BR package: <code>source-derived-requirement-inventory.json</code> + <code>complete-all-test-solution-br-ts-tc-td-package.json</code>.</p>
+        </details>
+      </aside>
+      <div class="content-column">
+    <section class="stats" aria-label="Coverage summary">
+      <div class="stat"><strong id="statRules">6473</strong><span id="statRulesLabel">AI-generated BRs</span></div>
+      <div class="stat"><strong id="statBrArtifacts">289</strong><span id="statBrArtifactsLabel">Independent Test BR rules</span></div>
+      <div class="stat"><strong id="statPending">6473</strong><span id="statPendingLabel">AI/Test decisions pending</span></div>
+      <div class="stat"><strong id="statPromoted">12</strong><span id="statPromotedLabel">AutomatedTestValidated groups</span></div>
+      <div class="stat"><strong id="statGaps">5725</strong><span id="statGapsLabel">AI BRs without exact atomic match</span></div>
+      <div class="stat"><strong id="statReady">NO</strong><span id="statReadyLabel">Execution ready</span></div>
+    </section>
+
+    <section class="panel" id="executiveSummaryPanel">
+      <h2>Executive summary</h2>
+      <p style="color:var(--muted);margin-top:-8px">AI output is compared with independent Test Solution evidence. Automated match counts represent validated mapping groups, not raw BR counts.</p>
+      <div class="summary-table-wrap">
+        <table class="summary-table" aria-label="AI and independent Test Solution comparison summary">
+          <thead>
+            <tr>
+              <th>Artifact level</th>
+              <th>AI generated output</th>
+              <th>Independent Test Validation</th>
+              <th>Automated match</th>
+              <th>Automated no match</th>
+              <th>Missing count</th>
+              <th>AI-only artifacts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Business Rules</th>
+              <td>6,473</td>
+              <td>289</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>5,725</td>
+              <td>5,951</td>
+            </tr>
+            <tr>
+              <th scope="row">Business Requirements</th>
+              <td>6,473</td>
+              <td>314</td>
+              <td>147 AI BRs</td>
+              <td>6,326 AI BRs</td>
+              <td>5,725</td>
+              <td>5,951</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Scenarios</th>
+              <td>4,367</td>
+              <td>419</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Cases</th>
+              <td>2,143</td>
+              <td>469</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Test Data</th>
+              <td>1,868</td>
+              <td>492</td>
+              <td>12 groups</td>
+              <td>18 groups</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th scope="row">Groups</th>
+              <td>—</td>
+              <td>30 groups<br><small>19 BRs / 17 TSs / 21 TCs / 15 TDs</small></td>
+              <td>12 groups<br><small>12 BRs / 12 TSs / 17 TCs / 15 TDs</small></td>
+              <td>18 groups<br><small>7 BRs / 5 TSs / 4 TCs / 0 TDs</small></td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="metric-note">Missing count is the number of AI BRs without an exact atomic Test Rule candidate. Automated validation handles canonical-anchor matches with complete non-placeholder BR/TS/TC/TD chains; only unresolved semantic, source, or incomplete-chain mappings require SME review. Group BR/TS/TC/TD values are summed across mapping groups and are not unique global artifact counts.</p>
+    </section>
+
+    <section class="panel">
+      <div style="display:flex;justify-content:space-between;gap:16px;align-items:end;flex-wrap:wrap">
+        <div><h2 style="margin-bottom:4px">Review queue</h2><p style="margin:0;color:var(--muted)">The package is complete as a graph; the work now is evidence promotion.</p></div>
+        <select id="queueFilter" aria-label="Filter review queue" style="padding:9px 12px;border:1px solid var(--line);background:#fff;color:var(--ink)">
+          <option value="all">All decisions</option><option value="pending">Pending</option><option value="promoted">Promoted</option>
+        </select>
+      </div>
+      <div class="bar-row"><span>Pending AI/Test semantic decisions</span><div class="bar-track"><i class="bar-fill review" style="width:100%"></i></div><span class="bar-value">6,473</span></div>
+      <div class="bar-row"><span>AutomatedTestValidated mapping groups</span><div class="bar-track"><i class="bar-fill trace" style="width:40%"></i></div><span class="bar-value">12/30 confirmed groups</span></div>
+      <div class="bar-row"><span>SME-required mapping entries</span><div class="bar-track"><i class="bar-fill review" style="width:70%"></i></div><span class="bar-value">70/100 entries</span></div>
+      <div class="bar-row"><span>Rejected decisions</span><div class="bar-track"><i class="bar-fill test-only" style="width:0%"></i></div><span class="bar-value">0</span></div>
+      <div class="source-details" style="margin-top:18px;color:var(--muted)">
+        <strong>Related views</strong><br>
+        <a href="run2-sme-review-queue/run2-sme-review-queue.md">Review queue</a> |
+        <a href="../ai-artifacts/coverage-reports/all-segments/all-segments-br-ratio.html">Executive view</a> |
+        <a href="element-coverage-matrix.md">Element-level view (231 elements)</a>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="panel chart-box">
+        <h2>AI delivery disposition</h2>
+        <canvas id="aiPie" width="620" height="300" aria-label="Pie chart showing confirmed and review-required AI business requirements"></canvas>
+        <div class="legend">
+          <span><i style="background:#2f8f65"></i>Exact atomic candidates: 522</span>
+            <span><i style="background:#c88719"></i>Composite/ambiguous review: 226</span>
+            <span><i style="background:#bd4d4d"></i>No exact atomic match: 5,725</span>
+        </div>
+      </div>
+      <div class="panel chart-box">
+        <h2>Independent BR disposition</h2>
+        <canvas id="testPie" width="620" height="300" aria-label="Pie chart showing covered and Test-only baseline requirements"></canvas>
+        <div class="legend">
+          <span><i style="background:#2f8f65"></i>Source-derived rules: 289</span>
+          <span><i style="background:#c88719"></i>Canonical BR artifacts: 314</span>
+          <span><i style="background:#bd4d4d"></i>SME-confirmed AI/Test matches: 0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Independent comparison</h2>
+      <div class="bar-row"><span>AI BRs</span><div class="bar-track"><i class="bar-fill" style="width:100%"></i></div><span class="bar-value">6,473</span></div>
+      <div class="bar-row"><span>AI BRs with exact atomic Test Rule candidate</span><div class="bar-track"><i class="bar-fill trace" style="width:8.1%"></i></div><span class="bar-value">522</span></div>
+      <div class="bar-row"><span>AI BRs requiring composite/semantic review</span><div class="bar-track"><i class="bar-fill review" style="width:3.5%"></i></div><span class="bar-value">226</span></div>
+      <div class="bar-row"><span>AI BRs without exact atomic Test Rule</span><div class="bar-track"><i class="bar-fill test-only" style="width:88.5%"></i></div><span class="bar-value">5,725</span></div>
+      <div class="bar-row"><span>SME-confirmed AI/Test coverage</span><div class="bar-track"><i class="bar-fill trace" style="width:0%"></i></div><span class="bar-value">0/6,473</span></div>
+      <div class="bar-row"><span>AutomatedTestValidated AI BRs</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147/6,473</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Automated confidence ladder</h2>
+      <p style="color:var(--muted);margin-top:-8px">Deterministic statuses are promoted automatically; only unresolved evidence is routed to SME review.</p>
+      <div class="bar-row"><span>AUTOMATED_EXACT / validated chain</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147 AI BRs</span></div>
+      <div class="bar-row"><span>AUTOMATED_STRUCTURAL candidate</span><div class="bar-track"><i class="bar-fill trace" style="width:8.1%"></i></div><span class="bar-value">522 candidates</span></div>
+      <div class="bar-row"><span>AUTOMATED_PARTIAL / composite candidate</span><div class="bar-track"><i class="bar-fill review" style="width:3.5%"></i></div><span class="bar-value">226 candidates</span></div>
+      <div class="bar-row"><span>REVIEW_REQUIRED / unsupported or unresolved</span><div class="bar-track"><i class="bar-fill test-only" style="width:88.5%"></i></div><span class="bar-value">5,725 AI BRs</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Source behavior coverage</h2>
+      <p style="color:var(--muted);margin-top:-8px">Source behavior coverage is independent of AI BR volume.</p>
+      <div class="bar-row"><span>Source-rule denominator</span><div class="bar-track"><i class="bar-fill" style="width:100%"></i></div><span class="bar-value">289</span></div>
+      <div class="bar-row"><span>Confirmed source-rule mapping groups</span><div class="bar-track"><i class="bar-fill review" style="width:10.4%"></i></div><span class="bar-value">30/289</span></div>
+      <div class="bar-row"><span>Automated source-rule validation</span><div class="bar-track"><i class="bar-fill trace" style="width:4.2%"></i></div><span class="bar-value">12/289</span></div>
+      <div class="bar-row"><span>AI BRs fully explained by validated source rules</span><div class="bar-track"><i class="bar-fill trace" style="width:2.3%"></i></div><span class="bar-value">147/6,473</span></div>
+      <p class="metric-note">Negative, boundary, conditional-applicability, and lifecycle evidence remain required where applicable. Missing scenario types route to SME_REQUIRED.</p>
+    </section>
+
+    <section class="panel" id="segmentReadinessPanel">
+      <h2>Segment readiness</h2>
+      <p style="color:var(--muted);margin-top:-8px">This legacy readiness view remains filterable; the AI/Test comparison panel above is the current coverage assessment. <strong id="visibleSegmentCount">10 segments visible</strong>.</p>
+      <table id="segmentReadinessTable">
+        <thead><tr><th>Segment</th><th class="level-br">BR denominator</th><th class="level-ts">Confirmed</th><th class="level-tc">Full chain</th><th class="level-td">SME pending</th><th>Decision</th></tr></thead>
+        <tbody>
+          <tr class="segment-row" data-segment="100" data-denominator="58" data-canonical="58" data-confirmed="6" data-pending="65"><td>100</td><td class="level-br">58</td><td class="level-ts">6</td><td class="level-tc">6</td><td class="level-td">65</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="101" data-denominator="26" data-canonical="26" data-confirmed="0" data-pending="31"><td>101</td><td class="level-br">26</td><td class="level-ts">0</td><td class="level-tc">0</td><td class="level-td">31</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="102" data-denominator="25" data-canonical="25" data-confirmed="0" data-pending="44"><td>102</td><td class="level-br">25</td><td class="level-ts">0</td><td class="level-tc">0</td><td class="level-td">44</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="103" data-denominator="24" data-canonical="24" data-confirmed="11" data-pending="15"><td>103</td><td class="level-br">24</td><td class="level-ts">11</td><td class="level-tc">9</td><td class="level-td">15</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="104" data-denominator="14" data-canonical="14" data-confirmed="2" data-pending="14"><td>104</td><td class="level-br">14</td><td class="level-ts">2</td><td class="level-tc">2</td><td class="level-td">14</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="105" data-denominator="17" data-canonical="17" data-confirmed="3" data-pending="16"><td>105</td><td class="level-br">17</td><td class="level-ts">3</td><td class="level-tc">0</td><td class="level-td">16</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="108" data-denominator="24" data-canonical="24" data-confirmed="5" data-pending="21"><td>108</td><td class="level-br">24</td><td class="level-ts">5</td><td class="level-tc">5</td><td class="level-td">21</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="109" data-denominator="22" data-canonical="22" data-confirmed="0" data-pending="24"><td>109</td><td class="level-br">22</td><td class="level-ts">0</td><td class="level-tc">0</td><td class="level-td">24</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="111" data-denominator="7" data-canonical="8" data-confirmed="2" data-pending="748"><td>111</td><td class="level-br">7</td><td class="level-ts">2</td><td class="level-tc">2</td><td class="level-td">748</td><td>REVIEW_REQUIRED</td></tr>
+          <tr class="segment-row" data-segment="113" data-denominator="18" data-canonical="18" data-confirmed="1" data-pending="19"><td>113</td><td class="level-br">18</td><td class="level-ts">1</td><td class="level-tc">1</td><td class="level-td">19</td><td>REVIEW_REQUIRED</td></tr>
+        </tbody>
+      </table>
+      <div class="empty-filter" id="emptyFilter">No segment rows match the selected filters.</div>
+    </section>
+
+    <section class="panel" id="transactionCoveragePanel">
+      <h2>Transaction type coverage</h2>
+      <p style="color:var(--muted);margin-top:-8px">The 23-code inventory is an independent applicability baseline. <strong id="visibleTransactionCount">23 transaction types visible</strong>.</p>
+      <table id="transactionCoverageTable">
+        <thead><tr><th>Code</th><th>Transaction type</th><th>Class</th><th>Coverage posture</th></tr></thead>
+        <tbody>
+          <tr class="transaction-row" data-transaction="0" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>0</td><td>POS Purchase/Capture or Preauthorized Completion</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="3" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>3</td><td>POS Authorization Only</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="4" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>4</td><td>Customer-activated Purchase/Capture</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="5" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>5</td><td>Customer-activated Authorization Only</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="6" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>6</td><td>Mail/Phone Purchase</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="7" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>7</td><td>Merchandise Return/Refund</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="8" data-br="1" data-ts="1" data-tc="2" data-td="2"><td>8</td><td>Purchase Reversal/Void</td><td>Financial</td><td>Multi-step lifecycle review</td></tr>
+          <tr class="transaction-row" data-transaction="A" data-br="1" data-ts="1" data-tc="2" data-td="0"><td>A</td><td>Account Verification</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="B" data-br="1" data-ts="1" data-tc="3" data-td="2"><td>B</td><td>Mail/Phone Authorization Only</td><td>Financial</td><td>Segment 100 context baseline</td></tr>
+          <tr class="transaction-row" data-transaction="C" data-br="1" data-ts="1" data-tc="2" data-td="2"><td>C</td><td>Mail/Phone Reversal/Void</td><td>Financial</td><td>Multi-step lifecycle review</td></tr>
+          <tr class="transaction-row" data-transaction="S" data-br="1" data-ts="1" data-tc="2" data-td="2"><td>S</td><td>Cancellation</td><td>Financial</td><td>Multi-step lifecycle review</td></tr>
+          <tr class="transaction-row" data-transaction="U" data-br="1" data-ts="1" data-tc="2" data-td="2"><td>U</td><td>Void of Merchandise Return</td><td>Financial</td><td>Multi-step lifecycle review</td></tr>
+          <tr class="transaction-row" data-transaction="Z" data-br="1" data-ts="1" data-tc="2" data-td="2"><td>Z</td><td>Time-out Reversal</td><td>Financial</td><td>Multi-step lifecycle review</td></tr>
+          <tr class="transaction-row" data-transaction="9" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>9</td><td>Special Transactions</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="D" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>D</td><td>RBC Loyalty Lookup</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="E" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>E</td><td>Balance Inquiry</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="K" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>K</td><td>Activate Stored Value Card</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="L" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>L</td><td>Deactivate Stored Value Card</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="M" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>M</td><td>Balance Merge</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="N" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>N</td><td>Replace Card</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="Q" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>Q</td><td>Recharge Card</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="T" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>T</td><td>Token Registration</td><td>Non-financial</td><td>Context review required</td></tr>
+          <tr class="transaction-row" data-transaction="V" data-br="0" data-ts="0" data-tc="0" data-td="0"><td>V</td><td>Loyalty Advice Function</td><td>Non-financial</td><td>Context review required</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Four-Level Traceability</h2>
+      <table>
+        <thead><tr><th>Status</th><th>Count</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Structural complete</td><td>314</td><td>Every canonical Test Solution BR artifact has a structural BRâ†’TSâ†’TCâ†’TD path.</td></tr>
+          <tr><td>Review required</td><td>290</td><td>TS placeholders remain and need independent derivation.</td></tr>
+          <tr><td>Execution ready</td><td>0</td><td>Fixtures, semantic review, and SME promotion are still required.</td></tr>
+        </tbody>
+      </table>
+      <div class="bar-row"><span>Structural complete</span><div class="bar-track"><i class="bar-fill trace" style="width:100%"></i></div><span class="bar-value">314</span></div>
+      <div class="bar-row"><span>Review placeholders</span><div class="bar-track"><i class="bar-fill review" style="width:94.2%"></i></div><span class="bar-value">290</span></div>
+    </section>
+
+    <footer>Source: independent ATL105 rule catalogs, crosswalks, complete BRâ†’TSâ†’TCâ†’TD package, and SME decision register. Generated for review, not certification.</footer>
+      </div>
+    </div>
+  </main>
+  <script>
+    function pie(canvasId, values, colors) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const total = values.reduce((a, b) => a + b, 0) || 1;
+      const cx = canvas.width / 2;
+      const cy = 145;
+      const radius = 105;
+      let start = -Math.PI / 2;
+      values.forEach((value, index) => {
+        const angle = (value / total) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, start, start + angle);
+        ctx.closePath();
+        ctx.fillStyle = colors[index];
+        ctx.fill();
+        start += angle;
+      });
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 0.52, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.fillStyle = '#17212b';
+      ctx.font = 'bold 22px Georgia';
+      ctx.textAlign = 'center';
+      ctx.fillText(total, cx, cy + 8);
+    }
+    pie('aiPie', [522, 226, 5725], ['#2f8f65', '#c88719', '#bd4d4d']);
+    pie('testPie', [289, 314, 0], ['#2f8f65', '#39627a', '#bd4d4d']);
+    function updateFilters() {
+      const segmentControl = document.getElementById('segmentFilter');
+      const decisionControl = document.getElementById('decisionFilter');
+      const artifactControl = document.getElementById('artifactFilter');
+      const transactionControl = document.getElementById('transactionFilter');
+      const segment = segmentControl.selectedOptions[0].textContent;
+      const decision = decisionControl.selectedOptions[0].textContent;
+      const artifact = artifactControl.selectedOptions[0].textContent;
+      const transaction = transactionControl.selectedOptions[0].textContent;
+      let visibleRows = 0;
+      let selectedRules = 0;
+      let selectedCanonical = 0;
+      let selectedConfirmed = 0;
+      let selectedPending = 0;
+      document.querySelectorAll('.segment-row').forEach(row => {
+        const segmentMatch = segmentControl.value === 'all' || row.dataset.segment === segmentControl.value;
+        const confirmed = Number(row.dataset.confirmed);
+        const pending = Number(row.dataset.pending);
+        const decisionMatch = decisionControl.value === 'all'
+          || (decisionControl.value === 'pending' && pending > 0)
+          || (decisionControl.value === 'confirmed' && confirmed > 0)
+          || (decisionControl.value === 'review' && (pending > 0 || confirmed === 0));
+        const visible = segmentMatch && decisionMatch;
+        row.classList.toggle('is-hidden', !visible);
+        if (visible) {
+          visibleRows++;
+          selectedRules += Number(row.dataset.denominator);
+          selectedCanonical += Number(row.dataset.canonical);
+          selectedConfirmed += Number(row.dataset.confirmed);
+          selectedPending += Number(row.dataset.pending);
+        }
+      });
+      document.getElementById('emptyFilter').classList.toggle('is-visible', visibleRows === 0);
+      document.getElementById('visibleSegmentCount').textContent = `${visibleRows} segment${visibleRows === 1 ? '' : 's'} visible`;
+      document.querySelectorAll('.transaction-row').forEach(row => {
+        row.classList.toggle('is-hidden', transactionControl.value !== 'all' && row.dataset.transaction !== transactionControl.value);
+      });
+      const visibleTransactions = Array.from(document.querySelectorAll('.transaction-row')).filter(row => !row.classList.contains('is-hidden')).length;
+      document.getElementById('visibleTransactionCount').textContent = `${visibleTransactions} transaction type${visibleTransactions === 1 ? '' : 's'} visible`;
+      document.querySelectorAll('#segmentReadinessTable [class^="level-"]').forEach(cell => {
+        const level = artifactControl.value;
+        cell.classList.toggle('filter-hidden', level !== 'all' && !cell.classList.contains('level-' + level));
+      });
+      const aggregate = segmentControl.value === 'all' && decisionControl.value === 'all' && transactionControl.value === 'all';
+      if (transactionControl.value !== 'all') {
+        const selectedTransaction = document.querySelector(`.transaction-row[data-transaction="${transactionControl.value}"]`);
+        document.getElementById('statRules').textContent = selectedTransaction.dataset.br;
+        document.getElementById('statBrArtifacts').textContent = selectedTransaction.dataset.br;
+        document.getElementById('statPending').textContent = '0';
+        document.getElementById('statPromoted').textContent = selectedTransaction.dataset.ts;
+        document.getElementById('statGaps').textContent = selectedTransaction.dataset.tc;
+        document.getElementById('statReady').textContent = Number(selectedTransaction.dataset.td) > 0 ? 'REVIEW' : 'NO';
+        document.getElementById('statRulesLabel').textContent = 'Transaction BRs';
+        document.getElementById('statBrArtifactsLabel').textContent = 'Transaction BRs';
+        document.getElementById('statPendingLabel').textContent = 'Transaction SME pending';
+        document.getElementById('statPromotedLabel').textContent = 'Transaction TSs';
+        document.getElementById('statGapsLabel').textContent = 'Transaction TCs';
+        document.getElementById('statReadyLabel').textContent = 'Transaction TD status';
+      } else {
+        document.getElementById('statRules').textContent = aggregate ? '6473' : selectedRules;
+        document.getElementById('statBrArtifacts').textContent = aggregate ? '289' : selectedCanonical;
+        document.getElementById('statPending').textContent = aggregate ? '6473' : selectedPending;
+        document.getElementById('statPromoted').textContent = aggregate ? '12' : selectedConfirmed;
+        document.getElementById('statGaps').textContent = aggregate ? '5725' : '0';
+        document.getElementById('statReady').textContent = 'NO';
+        document.getElementById('statRulesLabel').textContent = 'AI-generated BRs';
+        document.getElementById('statBrArtifactsLabel').textContent = 'Independent Test BR rules';
+        document.getElementById('statPendingLabel').textContent = 'AI/Test decisions pending';
+        document.getElementById('statPromotedLabel').textContent = 'AutomatedTestValidated groups';
+        document.getElementById('statGapsLabel').textContent = 'AI BRs without exact atomic match';
+        document.getElementById('statReadyLabel').textContent = 'Execution ready';
+      }
+    }
+    window.updateFilters = updateFilters;
+    ['segmentFilter', 'decisionFilter', 'artifactFilter', 'transactionFilter'].forEach(id => {
+      document.getElementById(id).addEventListener('change', updateFilters);
+    });
+    document.getElementById('resetFilters').addEventListener('click', function () {
+      document.getElementById('segmentFilter').value = 'all';
+      document.getElementById('decisionFilter').value = 'all';
+      document.getElementById('artifactFilter').value = 'all';
+      document.getElementById('transactionFilter').value = 'all';
+      updateFilters();
+    });
+    updateFilters();
+  </script>
+</body>
+</html>
+

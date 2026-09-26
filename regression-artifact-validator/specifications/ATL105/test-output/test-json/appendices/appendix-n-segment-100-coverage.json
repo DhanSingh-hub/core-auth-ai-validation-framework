@@ -1,0 +1,26 @@
+{
+  "appendix": "N",
+  "title": "First Data Premium Gift Card Magnetic Stripe Data Layout",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Applies only when Segment 100 transaction context uses the First Data Premium Gift Card magnetic-stripe flow.",
+  "source": "docs/specs/extracted_text.txt Appendix N-1",
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPN-TRACK2-ACCOUNT","title":"Premium Gift Card Track II data shall contain a 16-digit Account Number using the assigned Premium Gift Card BIN structure.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-account-number"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPN-TRACK2-FORMAT","title":"Premium Gift Card Track II data shall preserve the source-defined separator, YYMM expiration, service code, PVV, discretionary data, and integrity characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-track2-layout"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPN-SERIAL-NUMBER","title":"Premium Gift Card serial-number derivation shall use the source-defined BIN, partial account, check digit, and discretionary-data components when the flow requires it.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2,12","rule":"premium-gift-serial-number-derivation"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS","title":"The Account Number field used for serial-number derivation shall decompose into a 6-byte BIN, a 9-byte Partial Account Number, and a 1-byte Visa modulo check digit, totaling the 16-digit Account Number.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-serial-component-lengths"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPN-SENTINEL-EXCLUSION","title":"The Track II Start Sentinel and End Sentinel characters shall be cut from the packet and shall not appear in the data transmitted to the host application.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-sentinel-exclusion"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPN-PVKI-UNUSED","title":"The Track II PVKI field is not currently used by the First Data Premium Gift Card system and shall not be validated as a meaningful business value.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-pvki-unused"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPN-TRACK2","covers":["BR-SEG100-APPN-TRACK2-ACCOUNT","BR-SEG100-APPN-TRACK2-FORMAT","BR-SEG100-APPN-SENTINEL-EXCLUSION","BR-SEG100-APPN-PVKI-UNUSED"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPN-SERIAL","covers":["BR-SEG100-APPN-SERIAL-NUMBER","BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPN-TRACK2","scenarioId":"TS-SEG100-APPN-TRACK2","positive":"Valid Premium Gift Card Track II structure with sentinels excluded from the transmitted packet","negative":["wrong account length","wrong separator","invalid expiration format","missing discretionary data","Start/End Sentinel present in transmitted data"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPN-SERIAL","scenarioId":"TS-SEG100-APPN-SERIAL","positive":"Serial number derives from 6-byte BIN + 9-byte partial account + 1-byte check digit","negative":["derivation mismatch","wrong BIN component length","wrong partial account length"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "No dedicated Premium Gift Card AI artifact or approved specialized fixture is currently available.",
+  "remaining": ["Confirm Premium Gift Card applicability and BIN values.","Obtain specialized AI-generated track-data artifacts before implementation certification."]
+}

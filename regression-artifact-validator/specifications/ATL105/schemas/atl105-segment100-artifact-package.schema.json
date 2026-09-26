@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://coreauth.example/schemas/atl105-segment100-artifact-package.schema.json",
+  "title": "ATL105 Segment 100 Canonical Artifact Package",
+  "description": "Output contract for the AI solution's Segment 100 BR -> TS -> TC -> TD package. This schema only constrains the shape of the final generated output; it does not prescribe how the AI derives it, so any internal model, prompting, or training approach may be used as long as the emitted JSON conforms to this schema.",
+  "type": "object",
+  "required": ["manifest", "businessRequirements", "testScenarios", "testCases", "testData"],
+  "additionalProperties": false,
+  "properties": {
+    "manifest": { "$ref": "#/$defs/manifest" },
+    "businessRequirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/businessRequirement" }
+    },
+    "requirementCrosswalk": {
+      "type": "array",
+      "description": "Explicit mapping of this package's BRs to the Test Solution's baseline BR IDs. Optional at submission time, but required before any BR can be counted as confirmed coverage.",
+      "items": { "$ref": "#/$defs/requirementCrosswalkEntry" }
+    },
+    "testScenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/testScenario" }
+    },
+    "testCases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/testCase" }
+    },
+    "testData": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/testData" }
+    }
+  },
+  "$defs": {
+    "manifest": {
+      "type": "object",
+      "required": ["packageId", "specification", "specificationVersion"],
+      "additionalProperties": true,
+      "properties": {
+        "packageId": { "type": "string", "minLength": 1 },
+        "specification": { "const": "ATL105" },
+        "specificationVersion": {
+          "type": "string",
+          "description": "Must match the Test Solution's active baseline version.",
+          "const": "2026-3"
+        },
+        "artifactContractVersion": { "type": "string" },
+        "strictExecutionContract": { "type": "boolean" }
+      }
+    },
+    "sourceAnchor": {
+      "type": "object",
+      "description": "Stable semantic identity shared across BR/TS/TC/TD regardless of local ID naming. At least one of section, segment, element, or rule is required in addition to specification and version.",
+      "required": ["specification", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "specification": { "const": "ATL105" },
+        "version": { "type": "string", "const": "2026-3" },
+        "section": { "type": "string" },
+        "segment": { "type": "string" },
+        "element": { "type": "string" },
+        "rule": { "type": "string" }
+      },
+      "anyOf": [
+        { "required": ["section"] },
+        { "required": ["segment"] },
+        { "required": ["element"] },
+        { "required": ["rule"] }
+      ]
+    },
+    "executionStatus": {
+      "type": "string",
+      "enum": ["DRAFT", "REVIEW_REQUIRED", "APPROVED_FOR_REVIEW", "EXECUTION_READY", "BLOCKED", "SCHEDULED"]
+    },
+    "brCategory": {
+      "type": "string",
+      "description": "Context-level classification. Field-level facts alone must not be submitted as a substitute for the context-level requirement in this category.",
+      "enum": [
+        "TRANSACTION_TYPE",
+        "COMPANION_DOMAIN",
+        "LIFECYCLE",
+        "RESPONSE_NETWORK",
+        "APPENDIX_APPLICABILITY",
+        "CORE_STRUCTURE"
+      ]
+    },
+    "businessRequirement": {
+      "type": "object",
+      "required": ["id", "title", "category", "applicability", "priority", "executionStatus", "sourceAnchors"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Must state the context-level rule (e.g. 'a fleet transaction requiring fleet data must include Segment 101 with Segment 100'), not only a field-value fact (e.g. 'Segment Type is fixed value 101')."
+        },
+        "category": { "$ref": "#/$defs/brCategory" },
+        "applicability": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The transaction type, card type, segment, or context this BR applies to, e.g. 'fleet-transactions-with-fleet-data' or 'all-financial-requests'."
+        },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "executionStatus": { "$ref": "#/$defs/executionStatus" },
+        "notBeforeDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Required when executionStatus is SCHEDULED. The rule is correctly specified but not live in production before this ISO-8601 date; do not mark EXECUTION_READY before it."
+        },
+        "sourceAnchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceAnchor" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "executionStatus": { "const": "SCHEDULED" } } },
+          "then": { "required": ["notBeforeDate"] }
+        }
+      ]
+    },
+    "matchStatus": {
+      "type": "string",
+      "enum": ["CONFIRMED", "REVIEW_REQUIRED", "MISSING"]
+    },
+    "requirementCrosswalkEntry": {
+      "type": "object",
+      "required": ["testRequirementId", "matchStatus", "matchReason"],
+      "additionalProperties": false,
+      "properties": {
+        "testRequirementId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The Test Solution's baseline BR ID this entry maps to, e.g. BR-SEG100-TX-0."
+        },
+        "aiRequirementIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "matchStatus": { "$ref": "#/$defs/matchStatus" },
+        "matchReason": { "type": "string", "minLength": 1 },
+        "reviewOwner": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "matchStatus": { "const": "CONFIRMED" } } },
+          "then": { "required": ["aiRequirementIds"], "properties": { "aiRequirementIds": { "minItems": 1 } } }
+        },
+        {
+          "if": { "properties": { "matchStatus": { "const": "REVIEW_REQUIRED" } } },
+          "then": { "required": ["reviewOwner"], "properties": { "reviewOwner": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "testScenario": {
+      "type": "object",
+      "required": ["id", "requirementIds", "sourceAnchors"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "requirementIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "status": { "$ref": "#/$defs/executionStatus" },
+        "sourceAnchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceAnchor" }
+        }
+      }
+    },
+    "expectedOutcome": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "PASS_WITH_REVIEW", "PASS_OR_FAIL", "PASS_OR_REVIEW", "REVIEW"]
+    },
+    "testCase": {
+      "type": "object",
+      "required": ["id", "scenarioIds", "expectedOutcome", "sourceAnchors"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "scenarioIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "expectedOutcome": { "$ref": "#/$defs/expectedOutcome" },
+        "testDataFile": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Filename of the single JSON test-data file dedicated to this test case, e.g. TC-SEG100-TX-0-PASS.json."
+        },
+        "category": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "status": { "$ref": "#/$defs/executionStatus" },
+        "sourceAnchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceAnchor" }
+        }
+      }
+    },
+    "readiness": {
+      "type": "string",
+      "enum": ["EXECUTABLE", "EXTERNAL_FIXTURE_REQUIRED", "REVIEW_REQUIRED"]
+    },
+    "testData": {
+      "type": "object",
+      "required": ["id", "testCaseIds", "expectedValidation", "fileName", "readiness", "sourceAnchors", "payload"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "testCaseIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "description": "Exactly one test case per test-data file; do not share one file across multiple cases.",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "expectedValidation": { "type": "string", "enum": ["PASS", "FAIL", "PASS_WITH_REVIEW", "REVIEW"] },
+        "fileName": { "type": "string", "minLength": 1 },
+        "readiness": { "$ref": "#/$defs/readiness" },
+        "sourceAnchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/sourceAnchor" }
+        },
+        "payload": {
+          "type": "object",
+          "required": ["request"],
+          "properties": {
+            "request": {
+              "type": "object",
+              "description": "Full converter-ready ATL105 request JSON, not an internal provenance dictionary keyed by field metadata."
+            }
+          }
+        },
+        "response": {
+          "type": "object",
+          "description": "Full converter-ready ATL105 response JSON. Required when readiness is EXECUTABLE."
+        }
+      },
+      "if": { "properties": { "readiness": { "const": "EXECUTABLE" } } },
+      "then": { "required": ["response"] }
+    }
+  }
+}

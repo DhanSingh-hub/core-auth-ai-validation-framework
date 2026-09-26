@@ -1,0 +1,26 @@
+{
+  "segment": "111",
+  "title": "Variable Information Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Conditionally included in Data Section 3 whenever a Segment 100 transaction/card/merchant context requires a Variable Information Table.",
+  "source": "docs/specs/extracted_text.txt 12.10 Variable Information Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length only. Table-ID-specific rules are already covered in the Appendix I evidence file; not duplicated here.",
+  "businessRequirements": [
+    {"id":"BR-SEG111-TYPE","title":"Segment Type field in the Variable Information Data Segment has fixed value 111.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.10","segment":"111","element":"85","rule":"segment-111-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG111-LENGTH","title":"Segment Length identifies the Variable Information Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.10","segment":"111","element":"84","rule":"segment-111-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG111-MAX-LENGTH","title":"The Variable Information Data Segment has a maximum length of 999 alphanumeric characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.10","segment":"111","rule":"segment-111-max-length"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG111-REPETITION-SEPARATOR","title":"Field Separators do not appear between elements within a Variable Information Section repetition or between repetitions; a single Field Separator follows the final repetition.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.10","segment":"111","rule":"segment-111-repetition-separator"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG111-TYPE","covers":["BR-SEG111-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG111-LENGTH","covers":["BR-SEG111-LENGTH","BR-SEG111-MAX-LENGTH"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG111-SEPARATOR","covers":["BR-SEG111-REPETITION-SEPARATOR"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG111-TYPE","scenarioId":"TS-SEG111-TYPE","positive":"Segment Type = 111","negative":["Segment Type not equal to 111"],"status":"COVERED"},
+    {"id":"TC-SEG111-SEPARATOR","scenarioId":"TS-SEG111-SEPARATOR","positive":"No separators within/between table repetitions; one trailing separator after the final repetition","negative":["Separator inserted between table elements","missing trailing separator"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testDataStatus": "Segment Type/trigger checks are already covered via Appendix I (BR-SEG100-APPI-VARIABLE-TRIGGER); this file adds only the segment-envelope rules not already captured there.",
+  "remaining": ["See appendix-i-segment-100-coverage.json for Table-ID-specific Variable Information rules; this file intentionally does not duplicate them."]
+}

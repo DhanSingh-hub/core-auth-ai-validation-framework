@@ -1,0 +1,37 @@
+{
+  "catalogId": "ATL105-SEG112-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "112",
+  "segmentName": "Additional Information Data Segment",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "scope": "Segment 112 core structure, repeating Additional Information section, and Financial Transaction Response placement/applicability boundary",
+  "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 12625-12676 (Section 12.11, page 244-245) and lines 22490-22530 (Element 115/116 dictionary entries, page 425-426). Derived directly from the ATL105 2026-3 specification text; no AI Solution artifact was read or copied to produce these rules.",
+  "relatedDocuments": {
+    "learningModuleIndex": "../README.md",
+    "smeInputRegister": "../segment-112-sme-tba-input-register.md",
+    "valueCatalogBusinessRequirements": "../additional-information-value-catalog-business-requirements.md",
+    "aiToTestCrosswalk": "segment-112-ai-to-test-requirement-crosswalk.md",
+    "canonicalAnchors": "../../segment-112-canonical-anchors.md"
+  },
+  "rules": [
+    {"ruleId":"SEG112-R-001","title":"Segment Type is 112","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"85","rule":"segment-type"}},
+    {"ruleId":"SEG112-R-002","title":"Segment Length identifies the segment's total length including Segment Type and Field Separators","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"84","rule":"segment-length"}},
+    {"ruleId":"SEG112-R-003","title":"Segment 112 has a maximum length of 999 alphanumeric characters","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-max-length"}},
+    {"ruleId":"SEG112-R-004","title":"Segment 112 appears only at the end of a Financial Transaction response","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-position-financial-response"}},
+    {"ruleId":"SEG112-R-005","title":"BUYPASS originates transmission of Segment 112 content (host-originated, not device)","class":"metadata","severity":"info","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"segment-112-origin-host"}},
+    {"ruleId":"SEG112-R-006","title":"The Additional Information section (elements 116/117/118) repeats once per Additional Information Indicator, up to a maximum of 990 bytes total","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","rule":"additional-information-section-repetition-max-990"}},
+    {"ruleId":"SEG112-R-007","title":"Additional Information Indicator (Element 116) identifies the type of additional information being transmitted","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"116","rule":"additional-information-indicator"}},
+    {"ruleId":"SEG112-R-008","title":"Additional Information Length (Element 117) identifies the length of the following Additional Information (Element 118)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"117","rule":"additional-information-length"}},
+    {"ruleId":"SEG112-R-009","title":"Additional Information (Element 118) is variable length and carries the value identified by its paired Indicator/Length","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.11","segment":"112","element":"118","rule":"additional-information-value"}},
+    {"ruleId":"SEG112-R-010","title":"Segment 112 is required in a Financial Transaction Response only when Element 115 (Additional Information Data Segment Flag) equals 1","class":"compatibility","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13","segment":"100","element":"115","rule":"segment-112-required-when-flag-set"},"reviewNote":"Element 115 is defined in the shared element dictionary (section 13), used within the Segment 100 / Financial Transaction Response context. SME should confirm whether an equivalent applicability rule already exists in segment-100-rule-catalog.json before this is certified, to avoid a duplicate rule across two catalogs."}
+  ],
+  "openQuestions": [
+    "SEG112-SME-001: RESOLVED 2026-09-26 — Field 1 (Segment Type, Element 85) Source: Device in the Section 12.11 field table is a transcription error; Host is authoritative for all 5 Segment 112 fields.",
+    "SEG112-SME-002: RESOLVED 2026-09-26 — Element 116 values 014, 015, and 033 are treated as reserved/invalid, same disposition as 002. The full 001-047 value table is transcribed in additional-information-value-catalog-business-requirements.md and segment-112-canonical-anchors.md.",
+    "SEG112-SME-003: Confirm whether Element 115's applicability rule (SEG112-R-010) belongs in segment-100-rule-catalog.json, segment-112-rule-catalog.json, or both. Preliminary finding: segment-100-rule-catalog.json currently has no Element 115 reference, so SEG112-R-010 is the sole current owner; confirm before certification. STILL OPEN.",
+    "SEG112-SME-004: RESOLVED 2026-09-26 — Appendix K's 47 Table-ID sub-layouts remain deferred to a separate workstream; not in scope for this pass.",
+    "SEG112-SME-005: RESOLVED 2026-09-26 — use the existing test-solution-independent-review/atomic-br-ai-crosswalk.csv extraction (309 rows tagged segment=112, 59 matched to this catalog) as the AI Solution input. See segment-112-ai-to-test-requirement-crosswalk.md.",
+    "SEG112-SME-006: Confirm whether ~6 AI-extracted rows tagged segment=112 that describe 'EMV Additional Information' (2,000/2,800-byte caps matching Segment 130/131, not Segment 112's 990-byte cap) should be excluded from the Segment 112 denominator. See segment-112-ai-to-test-requirement-crosswalk.md, section 'Likely Mis-Tagged Rows'. STILL OPEN."
+  ]
+}

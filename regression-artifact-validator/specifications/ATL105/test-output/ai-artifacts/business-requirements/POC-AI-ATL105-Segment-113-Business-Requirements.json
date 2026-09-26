@@ -1,0 +1,2374 @@
+﻿{
+    "manifest":  {
+                     "packageId":  "POC-AI-ATL105-SEGMENT-113-REQUIREMENTS",
+                     "specification":  "ATL105",
+                     "specificationVersion":  "2025-3",
+                     "segment":  "113",
+                     "segmentName":  "ECA/ TeleCheck Data Segment Format Â®",
+                     "generatedAt":  "2026-09-22T18:55:52.6196706+05:30",
+                     "sourceCatalog":  "step5_requirements/approved/requirement_catalog.json",
+                     "filterMethod":  "source_rule_id joins a deep-extraction business rule related to ENT-SEG-113 or one of its direct field entities",
+                     "totalRequirements":  60,
+                     "directSegmentRequirements":  9,
+                     "fieldRuleRequirements":  51
+                 },
+    "requirements":  [
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:785",
+                             "statement":  "A merchant authorization and check writer copy must be printed for each approved ECA/TeleCheck transaction.",
+                             "source_rule_id":  "BR-131-1",
+                             "source_page":  131,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Lifecycle",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "ECA/TeleCheck service transaction approved",
+                             "expected_behavior":  "Print merchant and check writer copies of authorization",
+                             "constraint_text":  "Print merchant and check writer copies of authorization",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:786",
+                             "statement":  "Check writer must sign merchant\u0027s copy before transaction is considered complete.",
+                             "source_rule_id":  "BR-131-2",
+                             "source_page":  131,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:signature required-\u003eENT-ELEM-199",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-113",
+                                                        "ENT-ELEM-199"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Signature required on merchant\u0027s copy",
+                             "constraint_text":  "Signature required on merchant\u0027s copy",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  79,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:788",
+                             "statement":  "Merchant Name, City/State/ZIP, Merchant Phone, ECA/TeleCheck Service Phone must appear on each receipt copy.",
+                             "source_rule_id":  "BR-131-4",
+                             "source_page":  131,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:merchant name-\u003eENT-ELEM-53",
+                                           "GROUNDED_FROM_TEXT:merchant phone-\u003eENT-ELEM-54",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-53",
+                                                        "ENT-ELEM-54",
+                                                        "ENT-ELEM-133"
+                                                    ],
+                             "segment_number":  "DL1",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "ECA/TeleCheck receipt",
+                             "expected_behavior":  "Fields must be present on each copy",
+                             "constraint_text":  "Fields must be present on each copy",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-DL1"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  71,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:789",
+                             "statement":  "Terminal ID, ECA/TeleCheck Merchant ID, Date/Time, Transaction Number, Trace ID, Approval Number required on receipt.",
+                             "source_rule_id":  "BR-131-5",
+                             "source_page":  131,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:approval number-\u003eENT-ELEM-5",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-102",
+                                                        "ENT-ELEM-134",
+                                                        "ENT-ELEM-5"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "ECA/TeleCheck receipt",
+                             "expected_behavior":  "Fields must be present on each copy",
+                             "constraint_text":  "Fields must be present on each copy",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  74,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:793",
+                             "statement":  "Additional recommended fields include Customer Telephone Number if prompted, Custom Field prompt/data, Merchant Trace ID.",
+                             "source_rule_id":  "BR-131-9",
+                             "source_page":  131,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.6,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "LOW_CONFIDENCE_EMISSION",
+                                           "GROUNDED_FROM_TEXT:merchant trace id-\u003eENT-ELEM-135",
+                                           "GROUNDED_FROM_TEXT:merchant trace-\u003eENT-ELEM-135",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-128",
+                                                        "ENT-ELEM-135"
+                                                    ],
+                             "segment_number":  "110",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Optional recommended fields",
+                             "expected_behavior":  "May include these fields on receipt",
+                             "constraint_text":  "May include these fields on receipt",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-110"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  48,
+                             "confidence_band":  "LOW",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.6",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:796",
+                             "statement":  "Denial Record Receipt prints details and Denial Record Number for consumer on transaction decline.",
+                             "source_rule_id":  "BR-132-2",
+                             "source_page":  132,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.6,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:denial record number-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:denial record-\u003eENT-ELEM-136",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-136"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Transaction decline scenario",
+                             "expected_behavior":  "Print Denial Record Number and details",
+                             "constraint_text":  "Print Denial Record Number and details",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  51,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.6",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:797",
+                             "statement":  "Denial Record number is used with all TeleCheck products.",
+                             "source_rule_id":  "BR-132-3",
+                             "source_page":  132,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:denial record number-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:denial record-\u003eENT-ELEM-136",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-136"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Denial Record number used across all TeleCheck products",
+                             "constraint_text":  "Denial Record number used across all TeleCheck products",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  61,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:798",
+                             "statement":  "Version 2 Denial Receipt must print Denial Record Number, Check Amount, NACHA Language, TeleCheck Phone Number if cashiers not using courtesy cards.",
+                             "source_rule_id":  "BR-132-4",
+                             "source_page":  132,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:denial record number-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:denial record-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:phone number-\u003eENT-ELEM-75",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-136",
+                                                        "ENT-ELEM-75"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Amount",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Cashiers NOT utilizing courtesy cards",
+                             "expected_behavior":  "Must print Denial Record Number, Check Amount, NACHA Language, TeleCheck Phone Number",
+                             "constraint_text":  "Must print Denial Record Number, Check Amount, NACHA Language, TeleCheck Phone Number",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  58,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:979",
+                             "statement":  "Data Section No. 3 contains none, one, or more of Check, Variable Information, or ECA/TeleCheck Data Segments.",
+                             "source_rule_id":  "BR-173-3",
+                             "source_page":  173,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-110",
+                                                        "ENT-SEG-111",
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "110",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segments 110, 111, 113 may appear zero or more times.",
+                             "constraint_text":  "Segments 110, 111, 113 may appear zero or more times.",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-110"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:983",
+                             "statement":  "ECA/TeleCheck Service Transaction Request contains segments in Field Nos. 4-6: Segments 110, 111, 113.",
+                             "source_rule_id":  "BR-174-4",
+                             "source_page":  174,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-110",
+                                                        "ENT-SEG-111",
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "110",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Transaction = ECA/TeleCheck Service Transaction Request",
+                             "expected_behavior":  "Segments 110, 111, 113 required",
+                             "constraint_text":  "Segments 110, 111, 113 required",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-110"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1134",
+                             "statement":  "Segment Type field has fixed value 100 for Standard Message Data Segment.",
+                             "source_rule_id":  "BR-220-5",
+                             "source_page":  220,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-100"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 100",
+                             "constraint_text":  "Segment Type = 100",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1135",
+                             "statement":  "Segment Length includes Segment Type\u0027s length and Field Separators.",
+                             "source_rule_id":  "BR-220-6",
+                             "source_page":  220,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Length value must account for Segment Type and Field Separators",
+                             "constraint_text":  "Segment Length value must account for Segment Type and Field Separators",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1146",
+                             "statement":  "Segment Type field has fixed value 101 identifying the Fleet Data Segment.",
+                             "source_rule_id":  "BR-223-4",
+                             "source_page":  223,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-101"
+                                                    ],
+                             "segment_number":  "101",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type fixed value = 101",
+                             "constraint_text":  "Segment Type fixed value = 101",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-101"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1165",
+                             "statement":  "A Field Separator always follows Segment Type and Segment Length; Field Separator follows Product Amount when it\u0027s the last element.",
+                             "source_rule_id":  "BR-226-12",
+                             "source_page":  226,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-76"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separator placement rules",
+                             "constraint_text":  "Field Separator placement rules",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  80,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1178",
+                             "statement":  "Segment Length should be 4 for EBT with eWIC data transactions.",
+                             "source_rule_id":  "BR-229-3",
+                             "source_page":  229,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "EBT with eWIC data transactions",
+                             "expected_behavior":  "Segment Length = 4",
+                             "constraint_text":  "Segment Length = 4",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1187",
+                             "statement":  "Segment Type field has a fixed value of 105 in Totals Data Segment.",
+                             "source_rule_id":  "BR-232-6",
+                             "source_page":  232,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 105",
+                             "constraint_text":  "Segment Type = 105",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1208",
+                             "statement":  "Element number 239 is used for Alternate MICR Indicator since element 131 is currently in use.",
+                             "source_rule_id":  "BR-240-3",
+                             "source_page":  240,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.3,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "UNRESOLVED_ENTITY_REF:ENT-ELEM-ALT-MICR",
+                                           "LIKELY_INVENTED_ID:ENT-ELEM-ALT-MICR",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-ALT-MICR",
+                                                        "ENT-ELEM-134"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Lifecycle",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Element 131 is already in use",
+                             "expected_behavior":  "Use element number 239 for Alternate MICR Indicator",
+                             "constraint_text":  "Use element number 239 for Alternate MICR Indicator",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  21,
+                             "confidence_band":  "LOW",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.3",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1215",
+                             "statement":  "A Field Separator exists between Field Nos. 1 and 2 and between Field No. 2 and Variable Information Section.",
+                             "source_rule_id":  "BR-243-3",
+                             "source_page":  243,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-111"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separators placed between Fields 1-2 and 2-Variable Info Section",
+                             "constraint_text":  "Field Separators placed between Fields 1-2 and 2-Variable Info Section",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1218",
+                             "statement":  "Segment Type (Field No. 1) has fixed value 111 identifying the Variable Information Data Segment.",
+                             "source_rule_id":  "BR-243-6",
+                             "source_page":  243,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-111"
+                                                    ],
+                             "segment_number":  "111",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type fixed value = 111",
+                             "constraint_text":  "Segment Type fixed value = 111",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-111"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1224",
+                             "statement":  "Segment Type field has fixed value 112 for Additional Information Data Segment.",
+                             "source_rule_id":  "BR-245-2",
+                             "source_page":  245,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-112"
+                                                    ],
+                             "segment_number":  "112",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 112",
+                             "constraint_text":  "Segment Type = 112",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-112"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1225",
+                             "statement":  "ECA/TeleCheck Trace ID must be present in all Void transaction requests.",
+                             "source_rule_id":  "BR-246-1",
+                             "source_page":  246,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace id-\u003eENT-ELEM-134",
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace-\u003eENT-ELEM-134",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-134",
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Lifecycle",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Transaction type = Void",
+                             "expected_behavior":  "ECA/TeleCheck Trace ID must be present",
+                             "constraint_text":  "ECA/TeleCheck Trace ID must be present",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  81,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1226",
+                             "statement":  "ECA/TeleCheck Data Segment has a maximum length of 156 alphanumeric characters.",
+                             "source_rule_id":  "BR-246-2",
+                             "source_page":  246,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Max length 156 characters",
+                             "constraint_text":  "Max length 156 characters",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1227",
+                             "statement":  "All fields in the segment are separated by Field Separators; unpopulated fields still send the Field Separator.",
+                             "source_rule_id":  "BR-246-3",
+                             "source_page":  246,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "DUPLICATE_STATEMENT_OF:BR-237-2",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Send Field Separator even if field empty",
+                             "constraint_text":  "Send Field Separator even if field empty",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  79,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1228",
+                             "statement":  "Extended MICR Data is conditional, used when MICR length is greater than 50-bytes.",
+                             "source_rule_id":  "BR-247-1",
+                             "source_page":  247,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:micr data-\u003eENT-ELEM-122",
+                                           "GROUNDED_FROM_TEXT:extended micr data-\u003eENT-ELEM-137",
+                                           "GROUNDED_FROM_TEXT:extended micr-\u003eENT-ELEM-137",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-137",
+                                                        "ENT-ELEM-122"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "MICR length \u003e 50 bytes",
+                             "expected_behavior":  "Extended MICR Data field is present",
+                             "constraint_text":  "Extended MICR Data field is present",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  58,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1238",
+                             "statement":  "There is a Field Separator between Field Nos. 1 and 2 and between Field Nos. 2 and 3.",
+                             "source_rule_id":  "BR-249-5",
+                             "source_page":  249,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-152"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separators required between fields 1-2 and 2-3",
+                             "constraint_text":  "Field Separators required between fields 1-2 and 2-3",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  85,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1246",
+                             "statement":  "Segment Type fixed value is 118 for the Proprietary Data Load Segment.",
+                             "source_rule_id":  "BR-251-7",
+                             "source_page":  251,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-118"
+                                                    ],
+                             "segment_number":  "118",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 118",
+                             "constraint_text":  "Segment Type = 118",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-118"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1282",
+                             "statement":  "Fuel Volume Data field length is determined by segment length in field 2, up to max 3,600.",
+                             "source_rule_id":  "BR-259-2",
+                             "source_page":  259,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-201",
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field length determined by segment length field",
+                             "constraint_text":  "Field length determined by segment length field",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  70,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1291",
+                             "statement":  "Segment Type fixed value is 119.",
+                             "source_rule_id":  "BR-260-7",
+                             "source_page":  260,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-119"
+                                                    ],
+                             "segment_number":  "119",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 119",
+                             "constraint_text":  "Segment Type = 119",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-119"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1301",
+                             "statement":  "A Field Separator exists between Field Nos. 1 and 2 and between Field Nos. 2 and 3.",
+                             "source_rule_id":  "BR-263-4",
+                             "source_page":  263,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-152"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separator required between these fields",
+                             "constraint_text":  "Field Separator required between these fields",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1323",
+                             "statement":  "Segment Type field has fixed value 131 for the EMV Response Data Segment.",
+                             "source_rule_id":  "BR-269-5",
+                             "source_page":  269,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-131"
+                                                    ],
+                             "segment_number":  "131",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Account / Card",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 131",
+                             "constraint_text":  "Segment Type = 131",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-131"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1330",
+                             "statement":  "Segment Type field fixed value is 134.",
+                             "source_rule_id":  "BR-273-3",
+                             "source_page":  273,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-134"
+                                                    ],
+                             "segment_number":  "134",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 134",
+                             "constraint_text":  "Segment Type = 134",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-134"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1335",
+                             "statement":  "Field Nos 1\u00262 and 2\u00263 are separated by Field Separators; segment should end with a field separator.",
+                             "source_rule_id":  "BR-274-1",
+                             "source_page":  274,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-135",
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-213"
+                                                    ],
+                             "segment_number":  "135",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Fields separated by Field Separators except within Field 3 data.",
+                             "constraint_text":  "Fields separated by Field Separators except within Field 3 data.",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-135"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1337",
+                             "statement":  "Segment Type field (Element 85) has fixed value 135 for Moneris Data Segment (Request).",
+                             "source_rule_id":  "BR-274-3",
+                             "source_page":  274,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-135"
+                                                    ],
+                             "segment_number":  "135",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type must equal 135.",
+                             "constraint_text":  "Segment Type must equal 135.",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-135"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1340",
+                             "statement":  "Segment Type field must have fixed value 139 for Moneris Day End Batch Balance Request Segment.",
+                             "source_rule_id":  "BR-276-1",
+                             "source_page":  276,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-139"
+                                                    ],
+                             "segment_number":  "139",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Amount",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 139",
+                             "constraint_text":  "Segment Type = 139",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-139"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1343",
+                             "statement":  "Segment Type field 1 must have fixed value 140.",
+                             "source_rule_id":  "BR-277-2",
+                             "source_page":  277,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-140"
+                                                    ],
+                             "segment_number":  "140",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 140",
+                             "constraint_text":  "Segment Type = 140",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-140"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1346",
+                             "statement":  "Segment Type fixed value is 141 for Moneris Day End Batch Close Request segment.",
+                             "source_rule_id":  "BR-279-3",
+                             "source_page":  279,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-141"
+                                                    ],
+                             "segment_number":  "141",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 141",
+                             "constraint_text":  "Segment Type = 141",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-141"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1356",
+                             "statement":  "A Field Separator always follows Segment Type and Segment Length, and the last Tax Amount per product.",
+                             "source_rule_id":  "BR-282-8",
+                             "source_page":  282,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:tax amount-\u003eENT-ELEM-99",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-99"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separator placement after Segment Type, Segment Length, and last Tax Amount",
+                             "constraint_text":  "Field Separator placement after Segment Type, Segment Length, and last Tax Amount",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  74,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1409",
+                             "statement":  "Segment Type field has fixed value 146 for Enhanced Fleet Response Segment.",
+                             "source_rule_id":  "BR-295-4",
+                             "source_page":  295,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-146"
+                                                    ],
+                             "segment_number":  "146",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 146",
+                             "constraint_text":  "Segment Type = 146",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-146"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1433",
+                             "statement":  "Fields 1-2, 2-3, and 3-4 are separated by Field Separators; segment ends with a field separator.",
+                             "source_rule_id":  "BR-303-1",
+                             "source_page":  303,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-149",
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84",
+                                                        "ENT-ELEM-102",
+                                                        "ENT-ELEM-241"
+                                                    ],
+                             "segment_number":  "149",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Fields must be separated by Field Separators except within field 4",
+                             "constraint_text":  "Fields must be separated by Field Separators except within field 4",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-149"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  80,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1435",
+                             "statement":  "Segment Type field has fixed value 149 for Fuel Price Update Request Segment.",
+                             "source_rule_id":  "BR-303-3",
+                             "source_page":  303,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-149"
+                                                    ],
+                             "segment_number":  "149",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Amount",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 149",
+                             "constraint_text":  "Segment Type = 149",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-149"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1436",
+                             "statement":  "Segment Type field 1 has fixed value 150 for Fuel Price Update Response Segment.",
+                             "source_rule_id":  "BR-304-1",
+                             "source_page":  304,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-150"
+                                                    ],
+                             "segment_number":  "150",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Amount",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Type = 150",
+                             "constraint_text":  "Segment Type = 150",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-150"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1437",
+                             "statement":  "Segment Length includes Segment Type\u0027s length and Field Separators.",
+                             "source_rule_id":  "BR-304-2",
+                             "source_page":  304,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "DUPLICATE_STATEMENT_OF:BR-220-6",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84",
+                                                        "ENT-SEG-150"
+                                                    ],
+                             "segment_number":  "150",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Length counts Segment Type length plus Field Separators",
+                             "constraint_text":  "Segment Length counts Segment Type length plus Field Separators",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-150"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  84,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1521",
+                             "statement":  "A Field Separator always follows Segment Type and Segment Length; sent even when field not populated.",
+                             "source_rule_id":  "BR-320-12",
+                             "source_page":  320,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-157",
+                                                        "ENT-ELEM-85",
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "157",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Field Separator required after Segment Type/Length even if empty",
+                             "constraint_text":  "Field Separator required after Segment Type/Length even if empty",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-157"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  70,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1564",
+                             "statement":  "Segment Length Indicator excludes the Data Type Indicator from its length calculation.",
+                             "source_rule_id":  "BR-332-2",
+                             "source_page":  332,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84",
+                                                        "ENT-SEG-DL7"
+                                                    ],
+                             "segment_number":  "DL7",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment length excludes Data Type Indicator",
+                             "constraint_text":  "Segment length excludes Data Type Indicator",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-DL7"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  70,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1669",
+                             "statement":  "For ECA/TeleCheck processing, refer to Data Element No. 131, ECA/TeleCheck Clerk ID, instead of Clerk ID.",
+                             "source_rule_id":  "BR-368-5",
+                             "source_page":  368,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:clerk id-\u003eENT-ELEM-18",
+                                           "GROUNDED_FROM_TEXT:eca telecheck clerk id-\u003eENT-ELEM-131",
+                                           "GROUNDED_FROM_TEXT:eca telecheck clerk-\u003eENT-ELEM-131",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-18",
+                                                        "ENT-ELEM-131"
+                                                    ],
+                             "segment_number":  "103",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "ECA/TeleCheck processing",
+                             "expected_behavior":  "Use ECA/TeleCheck Clerk ID (Element 131) instead",
+                             "constraint_text":  "Use ECA/TeleCheck Clerk ID (Element 131) instead",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-103"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  68,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1821",
+                             "statement":  "Segment Length has four digits only for segments 103, 114, 115, 118, 120, 130, and 131.",
+                             "source_rule_id":  "BR-399-1",
+                             "source_page":  399,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84",
+                                                        "ENT-SEG-103",
+                                                        "ENT-SEG-114",
+                                                        "ENT-SEG-115",
+                                                        "ENT-SEG-118",
+                                                        "ENT-SEG-120",
+                                                        "ENT-SEG-130",
+                                                        "ENT-SEG-131"
+                                                    ],
+                             "segment_number":  "103",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Segment is one of EBT, SKU, Print Data, Proprietary Data Load, Print Data 2, EMV Request, EMV Response",
+                             "expected_behavior":  "Segment Length field must be four digits",
+                             "constraint_text":  "Segment Length field must be four digits",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-103"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1822",
+                             "statement":  "Segment Length cannot have a length of 4 digits when sending any segment other than the listed seven.",
+                             "source_rule_id":  "BR-399-2",
+                             "source_page":  399,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Segment is not one of the seven listed segments",
+                             "expected_behavior":  "Segment Length must not be 4 digits",
+                             "constraint_text":  "Segment Length must not be 4 digits",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1823",
+                             "statement":  "Segment Length is calculated using lengths of all data elements plus Field Separators/Product Data Field Delimiters in the segment.",
+                             "source_rule_id":  "BR-399-3",
+                             "source_page":  399,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.8,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Length equals sum of element lengths and delimiters",
+                             "constraint_text":  "Segment Length equals sum of element lengths and delimiters",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  80,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.8"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1835",
+                             "statement":  "ECA/TeleCheck Data Segment length is 001-156.",
+                             "source_rule_id":  "BR-400-12",
+                             "source_page":  400,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.6,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-113"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Length 001-156",
+                             "constraint_text":  "Length 001-156",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  57,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.6",
+                                                        "minor_flags=-3"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1848",
+                             "statement":  "Segment Type is required for the TransArmor PKI Encryption and Tokenization Load Request.",
+                             "source_rule_id":  "BR-401-1",
+                             "source_page":  401,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85",
+                                                        "ENT-SEG-116"
+                                                    ],
+                             "segment_number":  "116",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Security",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "TransArmor PKI Encryption and Tokenization Load Request",
+                             "expected_behavior":  "Segment Type field is required",
+                             "constraint_text":  "Segment Type field is required",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-116"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1849",
+                             "statement":  "Segment Type value 106 and 107 are reserved for proprietary use.",
+                             "source_rule_id":  "BR-401-2",
+                             "source_page":  401,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-85"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Segment Type = 106 or 107",
+                             "expected_behavior":  "Reserved for proprietary use",
+                             "constraint_text":  "Reserved for proprietary use",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  90,
+                             "confidence_band":  "HIGH",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1989",
+                             "statement":  "When Additional Information Indicator = 005, ECA/TeleCheck Trace ID information is included.",
+                             "source_rule_id":  "BR-429-5",
+                             "source_page":  429,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:additional information indicator-\u003eENT-ELEM-116",
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace id-\u003eENT-ELEM-134",
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace-\u003eENT-ELEM-134",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-116",
+                                                        "ENT-ELEM-118",
+                                                        "ENT-ELEM-134"
+                                                    ],
+                             "segment_number":  "112",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Lifecycle",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Additional Information Indicator = 005",
+                             "expected_behavior":  "Trace ID info included",
+                             "constraint_text":  "Trace ID info included",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-112"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  78,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:1990",
+                             "statement":  "When Additional Information Indicator = 006, ECA/TeleCheck Denial Record Number information is included.",
+                             "source_rule_id":  "BR-429-6",
+                             "source_page":  429,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.9,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:additional information indicator-\u003eENT-ELEM-116",
+                                           "GROUNDED_FROM_TEXT:denial record number-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:denial record-\u003eENT-ELEM-136",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-116",
+                                                        "ENT-ELEM-118",
+                                                        "ENT-ELEM-136"
+                                                    ],
+                             "segment_number":  "112",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Lifecycle",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Additional Information Indicator = 006",
+                             "expected_behavior":  "Denial Record Number info included",
+                             "constraint_text":  "Denial Record Number info included",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-112"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  78,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.9",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2043",
+                             "statement":  "If MICR data \u003e 50 bytes and prompt code is ECA/TeleCheck check service, refer to ECA/TeleCheck Data Segment (Segment 113).",
+                             "source_rule_id":  "BR-434-4",
+                             "source_page":  434,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.85,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:micr data-\u003eENT-ELEM-122",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-122",
+                                                        "ENT-SEG-113",
+                                                        "ENT-ELEM-78"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "MICR data \u003e 50 bytes AND Prompt Code = ECA/TeleCheck check service",
+                             "expected_behavior":  "Use ECA/TeleCheck Data Segment 113",
+                             "constraint_text":  "Use ECA/TeleCheck Data Segment 113",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  79,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.85",
+                                                        "minor_flags=-6"
+                                                    ],
+                             "segmentScope":  "DIRECT_SEGMENT_113"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2049",
+                             "statement":  "ECA/ TeleCheck Clerk ID valid values range from 1 to 999999.",
+                             "source_rule_id":  "BR-437-1",
+                             "source_page":  437,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:clerk id-\u003eENT-ELEM-18",
+                                           "GROUNDED_FROM_TEXT:eca telecheck clerk id-\u003eENT-ELEM-131",
+                                           "GROUNDED_FROM_TEXT:eca telecheck clerk-\u003eENT-ELEM-131",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-131",
+                                                        "ENT-ELEM-18"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Value must be between 1 and 999999",
+                             "constraint_text":  "Value must be between 1 and 999999",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  58,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2050",
+                             "statement":  "Extended MICR Data must be populated in addition to MICR Data when raw MICR data exceeds the length.",
+                             "source_rule_id":  "BR-439-1",
+                             "source_page":  439,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:micr data-\u003eENT-ELEM-122",
+                                           "GROUNDED_FROM_TEXT:extended micr data-\u003eENT-ELEM-137",
+                                           "GROUNDED_FROM_TEXT:extended micr-\u003eENT-ELEM-137",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-137",
+                                                        "ENT-ELEM-122",
+                                                        "ENT-SEG-110"
+                                                    ],
+                             "segment_number":  "110",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  "Raw MICR data exceeds MICR Data field length",
+                             "expected_behavior":  "Extended MICR Data (Element 137) must also be populated",
+                             "constraint_text":  "Extended MICR Data (Element 137) must also be populated",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-110"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  58,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7",
+                                                        "minor_flags=-12"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2251",
+                             "statement":  "Segment Length value (078) identifies the length in bytes of the Standard Message Data Segment, including field separators.",
+                             "source_rule_id":  "BR-499-1",
+                             "source_page":  499,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-SEG-100",
+                                                        "ENT-ELEM-84"
+                                                    ],
+                             "segment_number":  "100",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Length must equal actual segment byte length including separators",
+                             "constraint_text":  "Segment Length must equal actual segment byte length including separators",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-100"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  70,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2263",
+                             "statement":  "Segment Length field identifies the length (017 bytes) of the Variable Information Data Segment, including Field Separators.",
+                             "source_rule_id":  "BR-503-3",
+                             "source_page":  503,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.7,
+                             "below_confidence_gate":  false,
+                             "requires_review":  false,
+                             "flags":  [
+
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-84",
+                                                        "ENT-SEG-111"
+                                                    ],
+                             "segment_number":  "111",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Message",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Segment Length = 017 bytes",
+                             "constraint_text":  "Segment Length = 017 bytes",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-111"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  70,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.7"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2716",
+                             "statement":  "ECA/TeleCheck Trace ID Table ID is fixed value 005, with fixed table length and maximum length 22.",
+                             "source_rule_id":  "BR-643-1",
+                             "source_page":  643,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.6,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace id-\u003eENT-ELEM-134",
+                                           "GROUNDED_FROM_TEXT:eca telecheck trace-\u003eENT-ELEM-134",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-134"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Table ID = 005, Max Length = 22",
+                             "constraint_text":  "Table ID = 005, Max Length = 22",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  51,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.6",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         },
+                         {
+                             "id":  "REQ-SRC-ATL105-PDF-001:2717",
+                             "statement":  "ECA/TeleCheck Denial Record Number Table ID is fixed value 006, with fixed table length and maximum length 7.",
+                             "source_rule_id":  "BR-643-2",
+                             "source_page":  643,
+                             "derivation_method":  "business_rule_derived",
+                             "confidence_score":  0.6,
+                             "below_confidence_gate":  true,
+                             "requires_review":  true,
+                             "flags":  [
+                                           "GROUNDED_FROM_TEXT:denial record number-\u003eENT-ELEM-136",
+                                           "GROUNDED_FROM_TEXT:denial record-\u003eENT-ELEM-136",
+                                           "BELOW_CONFIDENCE_GATE"
+                                       ],
+                             "related_entity_ids":  [
+                                                        "ENT-ELEM-136"
+                                                    ],
+                             "segment_number":  "113",
+                             "segment_inferred_from_text":  false,
+                             "category":  "Field",
+                             "requirement_type":  "Business Rule",
+                             "condition_element_id":  null,
+                             "condition_value":  null,
+                             "condition_value_parsed":  null,
+                             "condition_trigger":  null,
+                             "expected_behavior":  "Table ID = 006, Max Length = 7",
+                             "constraint_text":  "Table ID = 006, Max Length = 7",
+                             "scope_name":  null,
+                             "segment_ids":  [
+                                                 "ENT-SEG-113"
+                                             ],
+                             "segment_assignment_method":  "declared",
+                             "confidence_pct":  51,
+                             "confidence_band":  "MEDIUM",
+                             "confidence_factors":  [
+                                                        "prior_confidence_score=0.6",
+                                                        "minor_flags=-9"
+                                                    ],
+                             "segmentScope":  "SEGMENT_113_FIELD_RULE"
+                         }
+                     ]
+}

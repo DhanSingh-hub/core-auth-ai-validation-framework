@@ -1,0 +1,26 @@
+{
+  "segment": "130",
+  "title": "EMV Request Data Segment",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "applicability": "Always appears in Data Section 3 of an EMV Financial Transaction Request.",
+  "source": "docs/specs/extracted_text.txt 12.20 EMV Request Data Segment",
+  "scopeNote": "Core-structure baseline: Segment Type/Length and cryptogram-authenticity boundary only. Detailed TLV/cross-field rules already exist in appendix-r-segment-100-coverage.json.",
+  "businessRequirements": [
+    {"id":"BR-SEG130-TYPE","title":"Segment Type field in the EMV Request Data Segment has fixed value 130.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.20","segment":"130","element":"85","rule":"segment-130-type-fixed-value"},"status":"COVERED"},
+    {"id":"BR-SEG130-LENGTH","title":"Segment Length identifies the EMV Request Data Segment's total length including Segment Type and Field Separators.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.20","segment":"130","element":"84","rule":"segment-130-length-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG130-CHIP-DATA-LENGTH-FIELD","title":"EMV Chip Data Length (Element 189) identifies the length of the following EMV Chip Data field and must be a valid 000-999 value.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.20","segment":"130","element":"189","rule":"segment-130-chip-data-length-range"},"status":"COVERED"},
+    {"id":"BR-SEG130-CA-KEY-CHECKSUM","title":"CA Public Key File Checksum (Element 187) identifies the checksum received in the last CA Public Key download currently in use at host and device.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.20","segment":"130","element":"187","rule":"segment-130-ca-key-checksum"},"status":"EXTERNAL_FIXTURE_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG130-TYPE","covers":["BR-SEG130-TYPE"],"status":"COVERED"},
+    {"id":"TS-SEG130-LENGTH","covers":["BR-SEG130-LENGTH","BR-SEG130-CHIP-DATA-LENGTH-FIELD"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG130-CA-KEY","covers":["BR-SEG130-CA-KEY-CHECKSUM"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG130-TYPE","scenarioId":"TS-SEG130-TYPE","positive":"Segment Type = 130","negative":["Segment Type not equal to 130"],"status":"COVERED"},
+    {"id":"TC-SEG130-CHIP-LENGTH","scenarioId":"TS-SEG130-LENGTH","positive":"EMV Chip Data Length is a valid 000-999 value matching the following field","negative":["Length outside 000-999","length mismatch with actual chip data"],"status":"COVERED"}
+  ],
+  "testDataStatus": "Segment Type/Length and chip-data-length structural checks are synthesizable and covered. CA Public Key File Checksum authenticity requires a real production key file (see appendix-s-segment-100-coverage.json) and is EXTERNAL_FIXTURE_REQUIRED. Detailed TLV/cross-field EMV chip data rules already live in appendix-r-segment-100-coverage.json.",
+  "remaining": ["See appendix-r-segment-100-coverage.json for EMV chip data TLV/cross-field rules; this file intentionally does not duplicate them."]
+}
