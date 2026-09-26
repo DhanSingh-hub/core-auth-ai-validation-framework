@@ -1,0 +1,25 @@
+{
+  "modelId": "ATL105-SEG118-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "118",
+  "purpose": "Explicit context envelope for Proprietary Data Load Segment artifacts.",
+  "requiredContext": {
+    "messageFamily": {"values":["PROPRIETARY_DATA_LOAD_REQUEST","PROPRIETARY_DATA_LOAD_RESPONSE"],"requiredFor":"all artifacts"},
+    "promptCode": {"values":["901","902","903","904","905"],"requiredFor":"all artifacts","directionality":{"901":"RESPONSE_ONLY","902":"RESPONSE_ONLY","903":"REQUEST_ONLY","904":"RESPONSE_ONLY","905":"REQUEST_ONLY"}},
+    "cardTableType": {"values":{"0001":"BIN_TABLE","0002":"RULES_TABLE","0003":"RESTRICTIONS_TABLE","0004":"SAF_TABLE","0005":"PROMPT_TABLE","0006":"PRODUCT_TABLE"},"requiredFor":"Prompt Code 902 artifacts"}
+  },
+  "conditionalContext": {
+    "informationByte": "Value catalog and single/multimessage mapping are REVIEW_REQUIRED: SEG118-SME-001.",
+    "receiptTextEncoding": "Whether Receipt Text Data is fixed-20 or variable-per-length-field is REVIEW_REQUIRED: SEG118-SME-002.",
+    "blockLifecycle": "Block Number=0 final-message convention is confirmed only for Prompt Code 903; extension to 902/904 is REVIEW_REQUIRED: SEG118-SME-003."
+  },
+  "validationRules": [
+    "Do not use a generic Financial Transaction Request or Segment 100 context as Segment 118 proof; the request explicitly excludes Segment 100.",
+    "Prompt Code must agree with the declared payload direction (901/902/904 response-only; 903/905 request-only).",
+    "Card Table Type must be one of the six documented values when Prompt Code is 902.",
+    "Missing required context is REVIEW_REQUIRED unless source proves it unnecessary.",
+    "AI fixtures are not independent source evidence."
+  ],
+  "status": "READY_FOR_AI_ARTIFACT_INTAKE"
+}
