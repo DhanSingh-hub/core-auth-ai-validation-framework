@@ -1,0 +1,19 @@
+# Segment 110 SME/TBA Input Register
+
+These answers are required to convert the source-backed Segment 110 catalog into approved business requirements, fixtures, and validators. An unanswered item remains `REVIEW_REQUIRED`; it must not be inferred or treated as certified coverage.
+
+| ID | Manual input required | Why it is needed | Proposed test impact | Status |
+|---|---|---|---|---|
+| SEG110-SME-001 | ~~Confirm every message type/prompt code that may legitimately carry Segment 110 in Data Section 3.~~ | Section 11.3.1 (ECA/TeleCheck) lists it explicitly; Section 11.1.1 does not. | Applicability tests. | **RESOLVED 2026-09-26:** approved for any Financial Transaction Request Data Section 3. |
+| SEG110-SME-002 | Confirm the data segment that carries Extended MICR Data (Element 137) when raw MICR data exceeds 50 bytes, and whether Segment 110 fixtures must be paired with it. | Element 137 is documented in the Chapter 13 catalog as a companion of MICR Data (122) but is not one of Segment 110's 12 listed fields. | Cross-segment overflow and pairing tests. | REVIEW_REQUIRED |
+| SEG110-SME-003 | Define the machine-testable condition ( POS entry-mode flag, prompt code, or other field) that marks a check transaction as "manually entered"/"manually keyed", triggering Driver's License, State Code, and Check Number. | The source states the requirement in prose but the Segment 110 field table does not carry the triggering flag. | Conditional-presence and negative tests for the three fields. | REVIEW_REQUIRED |
+| SEG110-SME-004 | Confirm whether Date of Birth is required whenever Driver's License/State Code are present (as BR-130-3 and BR-365-4 in the supplied AI catalog suggest for Certegy transactions), or has its own narrower trigger. | Date of Birth is marked conditional but has no explicit "Processing Rules" text in the Chapter 13 catalog. | Conditional-presence and boundary tests. | REVIEW_REQUIRED |
+| SEG110-SME-005 | ~~Resolve the Element 239 numbering conflict~~ | Section 12.9 vs. Chapter 13 give two different definitions for element 239. | Value-catalog tests. | **RESOLVED 2026-09-26:** model as two distinct, segment-scoped entities; permanently REVIEW_REQUIRED by design, not a gap. |
+| SEG110-SME-006 | Provide a machine-checkable grammar (or an approved sample set) for TAC-format and RAW TOAD-format MICR data beyond the single illustrative example in Section 12.9. | Needed to validate MICR Data content, not just its length. | MICR-format positive/negative tests. | REVIEW_REQUIRED |
+| SEG110-SME-007 | Confirm whether MICR Data (Segment 110) and Account Number (Segment 100, Element 2) must match byte-for-byte when both are present. | The source states MICR data "is also included" in Account Number but does not state a co-validation rule. | Cross-segment consistency tests. | REVIEW_REQUIRED |
+| SEG110-SME-008 | Provide the path to AI-generated Segment 110 BR/TS/TC/TD packages, or confirm that the 94 entries filtered from the supplied `requirement_catalog.json` are the authoritative AI evidence set. | Item 2 must compare producer output against the independent specification oracle, not a self-supplied filter. | AI artifact comparison and Item 4 traceability. | REVIEW_REQUIRED |
+| SEG110-SME-009 | Provide one sanitized, converter-ready request example for each enabled flow: MICR-read, manually keyed personal check, manually keyed company check, and alternate-MICR-format submission; otherwise approve synthetic fixtures. | Needed for Item 1 baseline validation, Item 3 independence, and Item 6 mutation execution. | Baseline, isolation, and batch-mutation tests. | REVIEW_REQUIRED |
+
+## Response Format
+
+For each response, provide the ID, decision, source reference or configuration owner, target environment, approved date, and exceptions. Use masked or synthetic MICR data, driver's license numbers, dates of birth, and phone numbers. Do not include real check images, PANs, tokens, or production data.

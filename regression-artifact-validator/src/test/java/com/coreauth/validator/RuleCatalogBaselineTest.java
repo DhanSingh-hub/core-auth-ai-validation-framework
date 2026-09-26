@@ -24,7 +24,7 @@ class RuleCatalogBaselineTest {
 
         IndependentRequirementBaseline baseline = new RuleCatalogBaselineLoader().load(catalogs);
 
-        assertThat(catalogs).hasSize(13);
+        assertThat(catalogs).hasSize(14);
         assertThat(baseline.inScopeRequirements()).isNotEmpty();
         assertThat(baseline.validate().errors())
                 .as("rule catalogs must not contain missing IDs, incomplete anchors, or duplicate denominator anchors")
