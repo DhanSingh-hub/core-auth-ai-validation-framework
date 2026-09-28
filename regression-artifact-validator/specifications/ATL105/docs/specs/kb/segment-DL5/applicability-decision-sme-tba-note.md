@@ -1,0 +1,77 @@
+# Segment DL5 Applicability and Message-Family Decision: SME/TBA Learning Note
+
+**Segment:** DL5 — Software IP Load Data Segment  
+**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
+**Source sections:** 12.45, 12.46  
+**Oracle:** [segment-DL5-rule-catalog.json](coverage/segment-DL5-rule-catalog.json) (3 rules)  
+**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
+**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+
+Segment 100 analogue: `prompt-code-*` (the inclusion decision).
+
+## Core Idea
+
+Segment DL5 is valid only inside the message families and Data Sections the specification assigns to it. A structurally perfect segment placed in the wrong message is an invalid message, not a weak test.
+
+## Specification-Derived Rules (2)
+
+| Rule | Title | Section | Element | Status |
+|---|---|---|---|---|
+| `SEGDL5-R-001` | Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP; vendors who support their own applications do NOT use this segment | 12.46 | — | SPEC_DERIVED |
+| `SEGDL5-R-002` | Segment DL5 maximum length is 64 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '$' (field 1), End-of-Data Indicator fixed '~' (last field) | 12.46 | — | SPEC_DERIVED |
+
+## Catalog Notes
+
+_No catalog notes are recorded against these rules._
+
+## SME Reasoning
+
+Ask:
+
+1. Which message families may carry Segment DL5, and in which Data Section?
+2. Is Segment DL5 Required, Conditional, or Optional in each of those families?
+3. What business condition causes Segment DL5 to be included?
+4. Which companion segments may, must, or must not accompany it?
+5. Is absence of Segment DL5 ever legitimate, and how should that be diagnosed?
+
+## TBA Dependency Chain
+
+```text
+transaction / message family
+  -> Data Section placement
+  -> inclusion condition
+  -> companion-segment set
+  -> Element 63 (Number of Segments) count where applicable
+```
+
+A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
+
+Example derived from the catalog:
+
+```text
+Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP vendors who support their own applications do NOT use this segment
+  -> source: ATL105 2026-3 §12.46 (SEGDL5-R-001)
+  -> a violating payload shall fail validation citing SEGDL5-R-001
+```
+
+## Open Provisional Items
+
+_No open provisional items are linked to these rules._
+
+## Security and Test-Data Guidance
+
+- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
+- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
+- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
+
+## Current Validator Boundary
+
+No `SegmentDL5PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
+
+## Review Checklist
+
+- Is every rule traced to its source anchor (`SEGDL5-R-001`…)?
+- Does each requirement name an element, a condition, and an observable outcome?
+- Are provisional rules kept at `REVIEW_REQUIRED`?
+- Is the test data synthetic and complete enough to exercise the rule?
+- Is the negative case tested, not just the happy path?
