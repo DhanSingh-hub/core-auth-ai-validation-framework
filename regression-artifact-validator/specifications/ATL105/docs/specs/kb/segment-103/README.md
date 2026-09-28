@@ -204,3 +204,20 @@ P-01 through P-06 are **resolved** directly from the ATL105 specification text; 
 | eWIC Purchase Reversal/Void | OPTIONAL | Section 10.5.5.1 |
 | eWIC Voucher Clear | **REQUIRED** (WIC Discount Amount / WIC Product Data) | Section 10.5.5.1, 10.5.5.6 |
 | eWIC Return | **PROHIBITED** | Section 10.5.5.1: "These specifications do not support Return transactions." |
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-103-rule-catalog.json) (24 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 103 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-103-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-103-flow.md) |
+| Topic deep-dives | [applicability](applicability-sme-tba-note.md) · [ebt-program-data](ebt-program-data-sme-tba-note.md) · [ewic-prompt-lifecycle](ewic-prompt-lifecycle-sme-tba-note.md) · [sequence-lifecycle](sequence-lifecycle-sme-tba-note.md) · [voucher-lifecycle](voucher-lifecycle-sme-tba-note.md) · [wic-product-data](wic-product-data-sme-tba-note.md) |
+| Topic flows | [applicability](applicability-flow.md) · [ebt-program-data](ebt-program-data-flow.md) · [ewic-prompt-lifecycle](ewic-prompt-lifecycle-flow.md) · [sequence-lifecycle](sequence-lifecycle-flow.md) · [voucher-lifecycle](voucher-lifecycle-flow.md) · [wic-product-data](wic-product-data-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-103-business-requirements.md](segment-103-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-103-rule-catalog.json) |
