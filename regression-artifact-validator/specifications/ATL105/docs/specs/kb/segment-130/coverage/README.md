@@ -5,8 +5,8 @@ This folder defines the Segment 130 coverage work package, building on the pre-e
 ## Work Package
 
 ```text
-Authoritative Segment 130 rule catalog (16 rules)
-  -> canonical source anchors (Section 12.20, Appendix R, Appendix S)
+Authoritative Segment 130 rule catalog (23 rules)
+  -> canonical source anchors (Section 12.20, 11.8.1, 10.14.2-10.14.4, Appendix R, S, T)
   -> BR mapping (partially pre-existing: BR-SEG130-*, BR-SEG100-APPR-*, BR-SEG100-APPS-*)
   -> scenario mapping
   -> test-case mapping

@@ -1,8 +1,10 @@
 # Segment 130 Coverage Closure Flow
 
 ```text
-segment-130-rule-catalog.json (16 rules, several pre-adopted from
-segment-130-core-structure-package.json / appendix-r / appendix-s)
+segment-130-rule-catalog.json (23 rules: 16 pre-adopted from
+segment-130-core-structure-package.json / appendix-r / appendix-s,
+plus 7 derived in this pass from Sections 10.14.2-10.14.4,
+11.8.1, 12.21 and Appendix T)
   |
   v
 For each rule:
