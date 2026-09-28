@@ -105,3 +105,21 @@ The complete machine-readable set is in [coverage/segment-110-rule-catalog.json]
 2. Resolve the Element 239 (Alternate MICR IND vs. Enhanced Fleet Data) source conflict before any mutation or enhancement work depends on it.
 3. Add sanitized, converter-ready MICR-read and manually keyed check-transaction examples (personal and company Check Type) for each enabled flow.
 4. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-110-rule-catalog.json) (20 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 110 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-110-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-110-flow.md) |
+| Topic deep-dives | [alternate-micr-indicator](alternate-micr-indicator-sme-tba-note.md) · [check-identification-fields](check-identification-fields-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [micr-data](micr-data-sme-tba-note.md) |
+| Topic flows | [alternate-micr-indicator](alternate-micr-indicator-flow.md) · [check-identification-fields](check-identification-fields-flow.md) · [field-definitions](field-definitions-flow.md) · [micr-data](micr-data-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-110-business-requirements.md](segment-110-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-110-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-110-sme-tba-input-register.md) |
