@@ -155,3 +155,21 @@ See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segm
 5. Do not treat Element 146 (Expiration Date) as reserved/inert — SME-confirmed 2026-09-22 (`SEG108-SME-007`/`P-09`) it is a real MMYY field with default value `1249`.
 6. Do not use Card Type `060` (Voyager Fleet) for Loyalty fixtures — the correct code is `040` (Loyalty); all Segment 108 fixtures use `040`.
 7. Do not assume Segment 100's Partial Approval Indicator (Element 121) applies to loyalty transactions — no specification text supports this; that topic is intentionally not mirrored here.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-108-rule-catalog.json) (24 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 108 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-108-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-108-flow.md) |
+| Topic deep-dives | [account-number](account-number-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle](lifecycle-sme-tba-note.md) · [prompt-code](prompt-code-sme-tba-note.md) |
+| Topic flows | [account-number](account-number-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle](lifecycle-flow.md) · [prompt-code](prompt-code-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-108-business-requirements.md](segment-108-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-108-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-108-sme-tba-input-register.md) |
