@@ -129,3 +129,21 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 6. Do not use Card Type `070` (Valero Fleet) for ECA/TeleCheck fixtures — the correct check-processing codes are `041` (Certegy), `045` (Generic check), and `046` (ECA/TeleCheck Service); all Segment 113 fixtures use `046`.
 7. Do not treat Section 11.3.1's field-table "R" (Required) marking for Segment 113 as overriding its own narrative "none, one, or more" applicability language — SME-confirmed 2026-09-22 to keep Segment 113 conditional, not required (`SEG113-SME-007`).
 8. Do not assume Segment 100's Partial Approval Indicator (Element 121) applies to check/ECA-TeleCheck transactions — no specification text supports this; that topic is intentionally not mirrored here.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-113-rule-catalog.json) (18 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 113 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-113-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-113-flow.md) |
+| Topic deep-dives | [account-number](account-number-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle](lifecycle-sme-tba-note.md) · [prompt-code](prompt-code-sme-tba-note.md) |
+| Topic flows | [account-number](account-number-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle](lifecycle-flow.md) · [prompt-code](prompt-code-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-113-business-requirements.md](segment-113-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-113-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-113-sme-tba-input-register.md) |
