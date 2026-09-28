@@ -9,11 +9,17 @@ Segment 130 is the **EMV Request Data Segment** — the request-side vehicle for
 ```text
 EMV Financial Transaction Request
   Data Section 2: Segment 100 (standard transaction data)
-  Data Section 3: Segment 130 (REQUIRED — EMV chip data)
-                  + optionally 101 (Fleet) / 102 (Product Code) / 104 (Purchase Card) / 111 (Variable Information)
+  Data Section 3: Segment 130 (REQUIRED - EMV chip data), Field Nos. 4-8
+                  + up to four of: 101, 102, 103, 104, 111, 123,
+                                   135, 143, 145, 146, 151, 152, 153
 ```
 
-Note that Segment 103 (EBT) is **not** among Segment 130's companions — the EMV Financial Transaction Request's Data Section 3 list swaps EBT out in favor of Segment 130, unlike the generic Financial Transaction Request's list of {101,102,103,104,111}.
+**Correction (2026-09-28).** An earlier revision of this note stated that Segment 103 (EBT) is *not* among Segment 130's companions. That was wrong. It was derived from the abbreviated prose bullet list in Section 11.8.1, which is a partial summary immediately followed by "See the Data Section No. 3 table below for specifics." The authoritative table **does** list `103  EBT Data Segment  3,334  C`, and the Chapter 12 segment/transaction matrix independently marks 103 as valid for the EMV Financial Transaction Request column.
+
+Two genuine scope limits do apply:
+
+- **Five field slots, not six.** The EMV request uses Field Nos. 4-8, versus 4-9 for the generic Financial Transaction Request. Segment 130 plus at most four companions (`SEG130-R-018`). Element 63 therefore cannot exceed `06`.
+- **Reversals are exempt.** Section 10.14.2.4: *"EMV data is not required on Reversal transactions."* Segment 130 may legitimately be absent from an EMV Purchase Reversal or TOR (`SEG130-R-017`).
 
 ## 2. Segment 130 Layout
 
@@ -29,7 +35,7 @@ Note that Segment 103 (EBT) is **not** among Segment 130's companions — the EM
 | *(repeating)* EMV Additional Information Length | 192 | 3 | Required (when section present) | Length of the following information field |
 | *(repeating)* EMV Additional Information | 118 | Var. | Required (when section present) | The additional information payload — repeats up to 2,000 bytes total |
 
-Maximum Segment 130 length is **3,043 alphanumeric characters** per Section 12.20 (`SEG130-R-004`). Independent field-length arithmetic (fixed fields + repeating section + separators ≈ 3,044) closely corroborates this figure; a possible second figure in the generic Financial Transaction Request layout table could not be confidently transcribed from OCR and is flagged for visual confirmation (`[PROVISIONAL SEG130-SME-001]`), not asserted as a genuine conflict.
+Maximum Segment 130 length is **3,043 alphanumeric characters** (`SEG130-R-004`). This is now settled: Section 12.20 and the Element 84 valid-codes table both state 3,043, while the Section 11.8.1 layout table states **9,999**. The conflict is genuine — the layout table's Max.Len. column wraps after three characters, confirmed by sibling rows (103 renders `3,33`+`4` = 3,334; 151 renders `230`+`9` = 2,309). **3,043 is adopted** because two independent sources state it and exact field arithmetic (`3+4+25+3+3+999` fixed `+ 2,000` section `+ 6` separators) reproduces it precisely. `SEG130-SME-001` now carries only an administrative action: log a specification defect against the 11.8.1 table. See the [serialization note](serialization-wire-format/serialization-wire-format-sme-tba-note.md).
 
 ### A cross-segment quirk: Element 118 is reused
 
@@ -37,7 +43,18 @@ Segment 112's "Additional Information" field and Segment 130's "EMV Additional I
 
 ## 3. The EMV Additional Information Section (Repeating Group)
 
-This is structurally the same pattern as Segment 111's Variable Information Section: no Field Separators occur within or between repetitions, and exactly one Field Separator follows the **final** repetition. The section as a whole is capped at 2,000 bytes and is repeated **"by EMV Additional Information Indicator"** — i.e., each repetition's Indicator identifies what table/type of information follows (e.g., the AI/Test crosswalk references "Table ID 001" with EMVYES/EMVNOT values). `[PROVISIONAL SEG130-SME-006]` — the full Appendix T table catalog governing these Indicator values has not been transcribed into this KB pass.
+This is structurally the same pattern as Segment 111's Variable Information Section: no Field Separators occur within or between repetitions, and exactly one Field Separator follows the **final** repetition. The section as a whole is capped at 2,000 bytes in the request and is repeated **"by EMV Additional Information Indicator."**
+
+**Appendix T is now transcribed (former `SEG130-SME-006`, resolved).** Appendix T is present in the extracted specification text and defines exactly two indicator values:
+
+| Table ID | Name | Max Len | Values | Direction |
+| --- | --- | ---: | --- | --- |
+| `001` | EMV Table Data | 6 | `EMVYES` / `EMVNOT` | Request; if returned in a response, the device echoes it on any subsequent advice or batch upload request |
+| `002` | Card Authentication Results Code (CARC) | 1 | CARC value from Visa Bit 44.8 | Response-side; request legality unconfirmed (`SEG130-SME-007`) |
+
+Table `001` notifies the chip when the MasterCard X-Code system was unable to go online, ensuring correct processing by a card personalized for full-grade processing. Full detail in the [EMV Additional Information note](emv-additional-information-sme-tba-note.md).
+
+Note the request/response cap asymmetry: Segment 130's section is capped at **2,000** bytes, Segment 131's at **2,800** (`SEG130-R-023`).
 
 ## 4. EMV Chip Data: TLV Structure and Cross-Field Consistency
 
