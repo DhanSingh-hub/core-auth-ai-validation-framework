@@ -103,3 +103,21 @@ The complete machine-readable set is in [coverage/segment-109-rule-catalog.json]
 2. Add sanitized, converter-ready request/response examples for each enabled electronic-mail flow.
 3. Replace the in-memory Item 1 baseline data with approved fixture shapes once they are supplied.
 4. Continue Items 2-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-109-rule-catalog.json) (22 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 109 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-109-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-109-flow.md) |
+| Topic deep-dives | [conditional-authorization](conditional-authorization-sme-tba-note.md) · [prompt-code](prompt-code-sme-tba-note.md) · [sequence-lifecycle](sequence-lifecycle-sme-tba-note.md) · [terminal-identifier](terminal-identifier-sme-tba-note.md) |
+| Topic flows | [conditional-authorization](conditional-authorization-flow.md) · [prompt-code](prompt-code-flow.md) · [sequence-lifecycle](sequence-lifecycle-flow.md) · [terminal-identifier](terminal-identifier-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-109-business-requirements.md](segment-109-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-109-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-109-sme-tba-input-register.md) |
