@@ -131,3 +131,21 @@ A full extraction and side-by-side comparison of every AI Solution Team requirem
 5. Do not assert Segment 115 carries "Loyalty Print Data" as settled fact — this is an inference pending SME confirmation (`SEG115-SME-005`, open), and is directly linked to Segment 108's still-open `SEG108-SME-003`.
 6. Do not trust `source_rule_id` alone when cross-referencing older per-segment AI BR files — `BR-249-5` is a confirmed ID collision reused for two different statements (see `AI-DEFECT-115-001` in the rule catalog).
 
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-115-rule-catalog.json) (13 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 115 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-115-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-115-flow.md) |
+| Topic deep-dives | [applicability-decision](applicability-decision-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle-response-correlation](lifecycle-response-correlation-sme-tba-note.md) · [response-inclusion-condition](response-inclusion-condition-sme-tba-note.md) |
+| Topic flows | [applicability-decision](applicability-decision-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle-response-correlation](lifecycle-response-correlation-flow.md) · [response-inclusion-condition](response-inclusion-condition-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-115-business-requirements.md](segment-115-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-115-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-115-sme-tba-input-register.md) |
+| AI vs Test comparison | [Comparison](segment-115-ai-vs-test-requirement-comparison.md) |
