@@ -122,3 +122,21 @@ The complete machine-readable set is in [coverage/segment-116-rule-catalog.json]
 3. Resolve `SEG116-SME-002` and `SEG116-SME-003` using the external document.
 4. Add sanitized, converter-ready TransArmor Key/Key ID Load request/response examples once the field layout is known.
 5. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-116-rule-catalog.json) (9 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 116 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-116-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-116-flow.md) |
+| Topic deep-dives | [additional-transarmor-data](additional-transarmor-data-sme-tba-note.md) · [key-and-key-id-load](key-and-key-id-load-sme-tba-note.md) · [transarmor-load-response](transarmor-load-response-sme-tba-note.md) · [transarmor-request-envelope-lifecycle](transarmor-request-envelope-lifecycle-sme-tba-note.md) |
+| Topic flows | [additional-transarmor-data](additional-transarmor-data-flow.md) · [key-and-key-id-load](key-and-key-id-load-flow.md) · [transarmor-load-response](transarmor-load-response-flow.md) · [transarmor-request-envelope-lifecycle](transarmor-request-envelope-lifecycle-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-116-transarmor-business-requirements.md](segment-116-transarmor-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-116-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-116-sme-tba-input-register.md) |
