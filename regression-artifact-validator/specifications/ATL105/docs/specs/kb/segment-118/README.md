@@ -121,3 +121,21 @@ The complete machine-readable set is in [coverage/segment-118-rule-catalog.json]
 1. Provide answers for the items in the SME/TBA input register (Information Byte value catalog, Receipt Text Data encoding nuance, AI artifact authoritative source, and sanitized fixtures for each Prompt Code variant).
 2. Add sanitized, converter-ready request/response examples for each of the five Prompt Code flows.
 3. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-118-rule-catalog.json) (30 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 118 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-118-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-118-flow.md) |
+| Topic deep-dives | [block-lifecycle](block-lifecycle-sme-tba-note.md) · [card-table-load](card-table-load-sme-tba-note.md) · [custom-receipt-text](custom-receipt-text-sme-tba-note.md) · [host-discount-data](host-discount-data-sme-tba-note.md) · [site-configuration-and-fuel-volume](site-configuration-and-fuel-volume-sme-tba-note.md) |
+| Topic flows | [block-lifecycle](block-lifecycle-flow.md) · [card-table-load](card-table-load-flow.md) · [custom-receipt-text](custom-receipt-text-flow.md) · [host-discount-data](host-discount-data-flow.md) · [site-configuration-and-fuel-volume](site-configuration-and-fuel-volume-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-118-proprietary-load-business-requirements.md](segment-118-proprietary-load-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-118-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-118-sme-tba-input-register.md) |
