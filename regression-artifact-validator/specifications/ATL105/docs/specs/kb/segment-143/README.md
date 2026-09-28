@@ -27,3 +27,22 @@ See [SME/TBA Input Register](segment-143-sme-tba-input-register.md): Tax Type sc
 2. Do not emit empty Tax Type/Amount fields for an "N" tax — they must be structurally omitted.
 3. Do not use `\` between products, or Field Separator between same-product tax entries — the two delimiters are not interchangeable.
 4. Do not add value-level business-rule validation — the specification explicitly limits this segment to format-only checks.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-143-rule-catalog.json) (9 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 143 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-143-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-143-flow.md) |
+| Topic deep-dives | [applicability-decision](applicability-decision-sme-tba-note.md) · [conditional-dependency-rules](conditional-dependency-rules-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle-response-correlation](lifecycle-response-correlation-sme-tba-note.md) |
+| Topic flows | [applicability-decision](applicability-decision-flow.md) · [conditional-dependency-rules](conditional-dependency-rules-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle-response-correlation](lifecycle-response-correlation-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-143-business-requirements.md](segment-143-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-143-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-143-sme-tba-input-register.md) |
+| AI vs Test comparison | [Comparison](segment-143-ai-vs-test-requirement-comparison.md) |
