@@ -128,3 +128,22 @@ A full extraction and side-by-side comparison of every AI Solution Team requirem
 4. Segment Type fixed value 114 is **confirmed enforceable** (`SEG114-SME-004`, resolved 2026-09-26) even though Section 12.13 does not print an explicit "Fixed value: 114" phrase.
 5. Do not treat an AI Solution Team `POTENTIAL_MATCH_REVIEW_REQUIRED` or `MATCHED_SEMANTICS_ONLY` crosswalk result as a confirmed equivalence — every existing AI-to-Test crosswalk entry for Segment 114's `BR-248-*` statements matched against a **different segment's** rule (103, 104, 111, 101); see the [requirement comparison](segment-114-ai-vs-test-requirement-comparison.md).
 6. Segment 114 **can repeat** within a message, once per scanned SKU (`SEG114-SME-006`, resolved 2026-09-26) — do not enforce a zero-or-one occurrence limit.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-114-rule-catalog.json) (13 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 114 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-114-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-114-flow.md) |
+| Topic deep-dives | [applicability-decision](applicability-decision-sme-tba-note.md) · [conditional-dependency-rules](conditional-dependency-rules-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle-response-correlation](lifecycle-response-correlation-sme-tba-note.md) |
+| Topic flows | [applicability-decision](applicability-decision-flow.md) · [conditional-dependency-rules](conditional-dependency-rules-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle-response-correlation](lifecycle-response-correlation-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-114-business-requirements.md](segment-114-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-114-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-114-sme-tba-input-register.md) |
+| AI vs Test comparison | [Comparison](segment-114-ai-vs-test-requirement-comparison.md) |
