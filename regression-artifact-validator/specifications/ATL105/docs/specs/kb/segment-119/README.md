@@ -1,4 +1,4 @@
-# Segment 119 (Totals with Proprietary Data Load Data Segment) — Knowledge Base
+# Segment 119 (Totals with Proprietary Data Load Data Segment) â€” Knowledge Base
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../../../SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
@@ -14,8 +14,8 @@
 - [Totals Request Structure Flow](totals-request-structure-flow.md)
 - [Card-Bucket Totals Note](card-bucket-totals-sme-tba-note.md)
 - [Card-Bucket Totals Flow](card-bucket-totals-flow.md)
-- [Serialization and Wire-Format Note](serialization-wire-format-sme-tba-note.md)
-- [Serialization and Wire-Format Flow](serialization-wire-format-flow.md)
+- [Serialization and Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
+- [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
 - [Sequence/Lifecycle Note](sequence-lifecycle-sme-tba-note.md)
 - [Sequence/Lifecycle Flow](sequence-lifecycle-flow.md)
 - [Coverage Closure](coverage/README.md)
@@ -103,3 +103,22 @@ The specification defines up to 20 card buckets in a fixed order. Card types 1-1
 - real Segment 119 test data or approval of synthetic fixture provenance.
 
 Production certification is blocked until these gates are resolved.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-119-rule-catalog.json) (36 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 119 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-119-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-119-flow.md) |
+| Topic deep-dives | [card-bucket-totals](card-bucket-totals-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [sequence-lifecycle](sequence-lifecycle-sme-tba-note.md) · [totals-request-structure](totals-request-structure-sme-tba-note.md) |
+| Topic flows | [card-bucket-totals](card-bucket-totals-flow.md) · [field-definitions](field-definitions-flow.md) · [sequence-lifecycle](sequence-lifecycle-flow.md) · [totals-request-structure](totals-request-structure-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-119-business-requirements.md](segment-119-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-119-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-119-sme-tba-input-register.md) |
+| AI vs Test comparison | [Comparison](segment-119-ai-vs-test-requirement-comparison.md) |
