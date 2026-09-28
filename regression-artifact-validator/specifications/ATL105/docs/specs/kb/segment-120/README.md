@@ -83,3 +83,20 @@ condition under which this resolution should be revisited.
 - [Segment 101 knowledge base](../segment-101/README.md)
 - [Segment 111 knowledge base](../segment-111/README.md)
 - [Canonical artifact contract](../../../canonical-artifact-contract.md)
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-120-rule-catalog.json) (8 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 120 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-120-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-120-flow.md) |
+| Topic deep-dives | [field-definitions](field-definitions-sme-tba-note.md) · [print-data-content](print-data-content-sme-tba-note.md) · [response-placement](response-placement-sme-tba-note.md) · [segment-length-encoding](segment-length-encoding-sme-tba-note.md) |
+| Topic flows | [field-definitions](field-definitions-flow.md) · [print-data-content](print-data-content-flow.md) · [response-placement](response-placement-flow.md) · [segment-length-encoding](segment-length-encoding-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-120-business-requirements.md](segment-120-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-120-rule-catalog.json) |
