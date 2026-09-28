@@ -1,0 +1,22 @@
+{
+  "catalogId": "ATL105-SEG135-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "135",
+  "segmentName": "Moneris Data (Request) Segment",
+  "scope": "Segment 135 field-level rules and serialization within Moneris-authorizer-destined transactions",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14419-14471 (Section 12.24)",
+  "rules": [
+    {"ruleId":"SEG135-R-001","title":"Segment 135 is required only for transactions destined for the Moneris authorizer","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.1.1,12.24","segment":"135","rule":"moneris-destined-only"},"note":"Adopted from the pre-existing generic Financial Transaction Request layout table entry: 'Contains data required by the Moneris authorizer. It is required only for transactions destined for the Moneris authorizer.'"},
+    {"ruleId":"SEG135-R-002","title":"Segment Type is fixed value 135, sourced at the Device","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.24","segment":"135","element":"85","rule":"segment-type-fixed-135"}},
+    {"ruleId":"SEG135-R-003","title":"Segment Length Indicator is 3 digits, identifies the segment's length including Segment Type's length only (NOT explicitly including Field Separators, unlike most other segments' Segment Length description)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.24","segment":"135","element":"84","rule":"segment-length-indicator-excludes-separators"},"note":"PROVISIONAL: the wording difference ('including Segment Type's length' vs the usual 'including Segment Type's length and Field Separators') may be intentional or a drafting inconsistency. Pending SME confirmation (SEG135-SME-001)."},
+    {"ruleId":"SEG135-R-004","title":"Field Separators appear between fields 1-2 and 2-3; the segment as a whole should end with a trailing Field Separator; data fields contained WITHIN field 3 (Moneris Data) are NOT separated by Field Separators","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.24","segment":"135","rule":"separator-behavior-with-internal-tlv-exception"}},
+    {"ruleId":"SEG135-R-005","title":"Moneris Data (Element 213) is required, max 100 characters, in <tag><len><data> TLV-like format; full layout documented in Appendix V (Moneris Data layouts)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.24,AppendixV","segment":"135","element":"213","rule":"moneris-data-tlv-format"},"note":"PROVISIONAL: Appendix V (Moneris Data layouts) has not been transcribed into this KB pass. Pending SME confirmation (SEG135-SME-002) on scope."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["SEG135-R-003"],"blocks":[],"question":"Does Segment 135's Segment Length Indicator include Field Separators in its count, or only Segment Type's length as literally stated?","status":"OPEN"},
+    {"id":"P-02","impacts":["SEG135-R-005"],"blocks":["Item 1","Item 4"],"question":"Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass?","status":"OPEN"},
+    {"id":"P-03","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment 135 Test Team package was located (though an AI Solution Team BR package exists: POC-AI-ATL105-Segment-135-Business-Requirements.json). Confirm whether to treat it as canonical for Item 2.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P03","item3_independence":"BLOCKED_BY_P03","item4_traceabilityMatrix":"BLOCKED_BY_P02","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

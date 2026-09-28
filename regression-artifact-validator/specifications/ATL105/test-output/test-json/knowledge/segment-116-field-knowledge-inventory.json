@@ -1,0 +1,30 @@
+{
+  "inventoryId": "ATL105-SEG116-FIELD-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "116",
+  "fieldCount": "2 confirmed/pattern-derived of an unknown total (max length 50 bytes)",
+  "source": "ATL105 Chapter 13 element catalog (Elements 63, 84, 85, 86, 155, 156, 157), Appendix I-53/54; docs/specs/kb/segment-116-canonical-anchors.md. Sections 12.15 and 11.7.5 are stubs and contribute no field table.",
+  "fields": [
+    {"order":1,"element":"85","name":"Segment Type","jsonField":"segmentType","requiredness":"REQUIRED","type":"N","length":"3","allowed":"116","rule":"segment-type","confidence":"CONFIRMED"},
+    {"order":2,"element":"84","name":"Segment Length","jsonField":"segmentLength","requiredness":"REQUIRED (pattern)","type":"N","length":"variable","allowed":"serialized Segment 116 length including type and separators","rule":"segment-length-pattern-derived","confidence":"PATTERN_DERIVED_NOT_SEGMENT_SPECIFIC"},
+    {"order":"unknown","element":"86 (lead only)","name":"Sequence Number","jsonField":"sequenceNumber","requiredness":"REVIEW_REQUIRED","type":"N","length":"6","allowed":"REVIEW_REQUIRED: SEG116-SME-001","rule":"sequence-number-unconfirmed-lead","confidence":"AI_SUGGESTED_UNCONFIRMED"}
+  ],
+  "responseFields": [
+    {"element":"155","name":"Key ID","jsonField":"keyId","requiredness":"REQUIRED","type":"AN","length":"11 (fixed)","note":"Reused for all subsequent TransArmor transactions once approved.","confidence":"CONFIRMED_FIELD_DEFINITION_CONTAINER_UNCONFIRMED"},
+    {"element":"156","name":"Key Data Length","jsonField":"keyDataLength","requiredness":"REQUIRED","type":"N","length":"max 3 (000-999)","confidence":"CONFIRMED_FIELD_DEFINITION_CONTAINER_UNCONFIRMED"},
+    {"element":"157","name":"Key Data","jsonField":"keyData","requiredness":"REQUIRED","type":"AN","length":"max 999","note":"New key/Key ID on approval; error message on decline.","confidence":"CONFIRMED_FIELD_DEFINITION_CONTAINER_UNCONFIRMED"}
+  ],
+  "companionFields": [
+    {"segment":"111","tableId":"052","name":"Additional TransArmor Data","subTables":[
+      {"subTableId":"01","name":"KSN","length":"up to 40 bytes","requiredFor":["AES DUKPT","TDES","Ingenico OnGuard"]},
+      {"subTableId":"02","name":"Device Type","length":"up to 8 bytes","requiredFor":["AES DUKPT"],"optionalFor":["TDES","Ingenico OnGuard"]}
+    ]}
+  ],
+  "globalRules": [
+    {"id":"MAX-LENGTH","rule":"Serialized Segment 116 content does not exceed 50 alphanumeric characters."},
+    {"id":"NO-FIELD-TABLE","rule":"Fields beyond Segment Type/Segment Length are unknown without the external TransArmor document."},
+    {"id":"NO-SECRETS","rule":"Key IDs, Key Data, and KSN values in test data are synthetic or masked."}
+  ],
+  "status": "PARTIAL_READY_FOR_AI_INTAKE_LIMITED_BY_SOURCE"
+}

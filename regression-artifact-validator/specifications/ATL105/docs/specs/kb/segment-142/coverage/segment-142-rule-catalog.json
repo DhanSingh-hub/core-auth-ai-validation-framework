@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEG142-RULE-CATALOG-001",
+  "specification": "ATL105", "specificationVersion": "2026-3", "segment": "142", "segmentName": "Moneris Day End Batch Close (Response) Segment",
+  "scope": "Segment 142 field-level rules: reiteration of first 6 request fields plus a MAC-secured text response",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14858-14935 (Section 12.29)",
+  "rules": [
+    {"ruleId":"SEG142-R-001","title":"Segment 142 consists of a reiteration of the first 6 fields in the Segment 141 request, followed by a text response from Moneris","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.29","segment":"141,142","rule":"reiteration-plus-text-response"}},
+    {"ruleId":"SEG142-R-002","title":"Segment Type and Segment Length are Host-sourced (contrast Segment 140's Device-sourced Segment Type/Length, and Segment 141's fully-Device-sourced request)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.29","segment":"142","element":"85,84","rule":"segment-type-length-host-sourced"},"note":"Genuinely different from Segment 140 (Device-sourced Segment Type/Length despite also being a response) — do not assume uniform sourcing conventions across the Moneris response segments."},
+    {"ruleId":"SEG142-R-003","title":"Terminal Identifier, Moneris Terminal Identifier, Moneris Merchant ID are Device-sourced echoes; SPDH Header, Batch Number, Response Display are Moneris-sourced; MAC (Element 210, 16 characters) is Moneris-sourced and validates the response at the terminal","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.29","segment":"142","element":"102,206,207,208,214,216,210","rule":"batch-close-response-fields-with-mac"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment 142 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

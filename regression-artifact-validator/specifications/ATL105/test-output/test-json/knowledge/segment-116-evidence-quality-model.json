@@ -1,0 +1,13 @@
+{
+  "modelId":"ATL105-SEG116-EVIDENCE-QUALITY-001",
+  "segment":"116",
+  "dimensions":{"sourceEvidence":["SOURCE_CONFIRMED","SOURCE_DERIVED","PATTERN_DERIVED","UNKNOWN"],"implementationEvidence":["NOT_IMPLEMENTED","IMPLEMENTED_PARTIAL","IMPLEMENTED_TESTED"],"artifactEvidence":["NO_ARTIFACT","INDEPENDENT_FIXTURE_ONLY","AI_ARTIFACT_PENDING","AI_ARTIFACT_VALIDATED"],"reviewState":["AUTO_APPROVABLE","REVIEW_REQUIRED","BLOCKED"]},
+  "decisionRules":[
+    {"when":"SOURCE_CONFIRMED + IMPLEMENTED_TESTED + AI_ARTIFACT_VALIDATED","status":"COVERED"},
+    {"when":"SOURCE_CONFIRMED + INDEPENDENT_FIXTURE_ONLY","status":"READY_FOR_AI_INTAKE"},
+    {"when":"PATTERN_DERIVED without a segment-specific table","status":"REVIEW_REQUIRED"},
+    {"when":"UNKNOWN due to an external, unavailable document","status":"BLOCKED"},
+    {"when":"Two source passages conflict (e.g. Segment 116 vs 119 label)","status":"REVIEW_REQUIRED"}
+  ],
+  "currentPolicy":{"sourceRuleCatalog":"PARTIAL_READY_FOR_AI_INTAKE","implementation":"IMPLEMENTED_PARTIAL","aiArtifactIntake":"IN_PROGRESS","smeReview":"REQUIRED","externalDocument":"BLOCKED_NOT_OBTAINED"}
+}

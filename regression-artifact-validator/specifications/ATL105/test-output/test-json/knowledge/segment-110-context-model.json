@@ -1,0 +1,27 @@
+{
+  "modelId": "ATL105-SEG110-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "110",
+  "purpose": "Explicit context envelope for Check Data Segment artifacts.",
+  "requiredContext": {
+    "messageFamily": {"values":["ECA_TELECHECK_SERVICE_TRANSACTION_REQUEST"],"requiredFor":"all confirmed artifacts","reviewRequired":"GENERIC_FINANCIAL_TRANSACTION_REQUEST usage is REVIEW_REQUIRED: SEG110-SME-001"},
+    "entryMethod": {"values":["MICR_READ","MANUALLY_ENTERED"],"requiredFor":"all request artifacts","note":"Machine-testable trigger for MANUALLY_ENTERED is REVIEW_REQUIRED: SEG110-SME-003"},
+    "checkType": {"values":{"PERSONAL":"P","COMPANY":"C"},"requiredFor":"all request artifacts"},
+    "micrFormat": {"values":["TAC_BUY2_DEFAULT","RAW_TOAD_ALB1"],"requiredFor":"artifacts populating Alternate MICR IND","note":"Selector is element 239 field 12, whose identity conflicts with the Chapter 13 Enhanced Fleet Data definition: SEG110-SME-005"}
+  },
+  "conditionalContext": {
+    "driversLicenseBundle": "Driver's License, State Code, and Check Number applicability depend on the unresolved manually-entered trigger (SEG110-SME-003).",
+    "dateOfBirth": "Trigger separate from or bundled with the identification fields is REVIEW_REQUIRED (SEG110-SME-004).",
+    "micrOverflow": "Hosting segment for Extended MICR Data (Element 137) when MICR Data exceeds 50 bytes is REVIEW_REQUIRED (SEG110-SME-002).",
+    "segment100CrossReference": "Byte-identity requirement between MICR Data (110) and Account Number (100) is REVIEW_REQUIRED (SEG110-SME-007)."
+  },
+  "validationRules": [
+    "Do not use a generic Financial Transaction Request fixture as proof that Segment 110 may appear outside the ECA/TeleCheck envelope.",
+    "State Code must agree with the Appendix D catalog when Driver's License is present.",
+    "Check Type must be P or C; no other value is documented.",
+    "Missing required context is REVIEW_REQUIRED unless source proves it unnecessary.",
+    "AI fixtures are not independent source evidence."
+  ],
+  "status": "READY_FOR_AI_INTAKE"
+}

@@ -1,0 +1,1 @@
+Segment 102 header (Segment Type, Segment Length) is Field-Separator-delimited (SEG102-R-022); the repeating product entries use a Product Data Field Delimiter after Quantity and Unit Price (SEG102-R-020), and Product Amount separator placement depends on position within the segment (SEG102-R-021). Total segment length must not exceed 381 characters (SEG102-R-023).

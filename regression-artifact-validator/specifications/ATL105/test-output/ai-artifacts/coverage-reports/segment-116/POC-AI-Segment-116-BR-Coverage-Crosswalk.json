@@ -1,0 +1,59 @@
+{
+  "reportId": "ATL105-SEG116-SUPPLIED-PIPELINE-AI-COVERAGE-001",
+  "reportDate": "2026-09-26",
+  "aiRequirementSource": {
+    "path": "test-input/ai-solution/runs/2026-09-23/Run1/step5_requirements/approved/requirement_catalog.json",
+    "filter": "segment_number == '116' OR related_entity_ids contains 'ENT-SEG-116'",
+    "scopeLabel": "DIRECT_SEGMENT_116",
+    "segment116Requirements": 15,
+    "businessRuleRequirements": 6,
+    "fieldLevelAndDependencyRequirements": 9,
+    "testCaseCatalogPresent": false,
+    "testExecutionCoverageAsserted": false
+  },
+  "testSolution": {
+    "ruleCatalog": "docs/specs/kb/segment-116/coverage/segment-116-rule-catalog.json",
+    "canonicalRules": 9,
+    "sourceLimitation": "Sections 12.15 and 11.7.5 are stubs redirecting to an external TransArmor document not present in this workspace."
+  },
+  "coverage": {
+    "rulesWithAiEvidence": 8,
+    "rulesWithAiEvidencePercent": 88.9,
+    "directlyCoveredForBusinessRequirementMapping": 4,
+    "directlyCoveredPercent": 44.4,
+    "partiallyCovered": 2,
+    "partiallyCoveredPercent": 22.2,
+    "reviewRequired": 2,
+    "reviewRequiredPercent": 22.2,
+    "missing": 1,
+    "missingPercent": 11.1,
+    "releaseDecision": "NOT_READY_FOR_SEGMENT_116_CERTIFICATION"
+  },
+  "missingRules": ["SEG116-R-004"],
+  "crosswalk": [
+    {"ruleId": "SEG116-R-001", "aiEvidence": ["BR-385-1", "BR-388-7"], "status": "COVERED_FOR_BR_MAPPING"},
+    {"ruleId": "SEG116-R-002", "aiEvidence": ["BR-400-15"], "status": "COVERED_FOR_BR_MAPPING"},
+    {"ruleId": "SEG116-R-003", "aiEvidence": ["BR-401-1"], "status": "COVERED_FOR_BR_MAPPING"},
+    {"ruleId": "SEG116-R-004", "aiEvidence": [], "status": "MISSING"},
+    {"ruleId": "SEG116-R-005", "aiEvidence": ["BR-385-1"], "status": "PARTIALLY_COVERED"},
+    {"ruleId": "SEG116-R-006", "aiEvidence": ["BR-402-5", "REL-ENT-ELEM-86-ENT-SEG-116"], "status": "REVIEW_REQUIRED"},
+    {"ruleId": "SEG116-R-007", "aiEvidence": ["BR-453-1", "ENT-ELEM-155", "ENT-ELEM-156", "ENT-ELEM-157"], "status": "PARTIALLY_COVERED"},
+    {"ruleId": "SEG116-R-008", "aiEvidence": ["ENT-ELEM-ADDL-TRANSARMOR-DATA", "ENT-ELEM-SUBTABLE-KSN", "ENT-ELEM-SUBTABLE-DEVICETYPE"], "status": "COVERED_FOR_BR_MAPPING"},
+    {"ruleId": "SEG116-R-009", "aiEvidence": ["ENT-SEG-116"], "status": "REVIEW_REQUIRED"}
+  ],
+  "outOfScopeAiRequirements": [
+    {"id": "REQ-SRC-ATL105-PDF-001:607", "sourceRuleId": "BR-103-7", "disposition": "OUT_OF_SCOPE_CARD_DATA_STORAGE_COMPLIANCE_POLICY"}
+  ],
+  "independentFindings": [
+    {
+      "finding": "SEG116-R-009 source conflict corroborated by low AI confidence",
+      "description": "The AI catalog's own entry for 'the Totals with Proprietary Data Load Request transaction includes TransArmor Load Data Segment (Data Segment No. 116)' carries only 34% confidence, the lowest of any Segment 116 requirement, consistent with the independently found Section 11.4.1.2 vs. Element 85/Section 12.17 conflict.",
+      "impact": "Confirms the conflict is a genuine source artifact and that the AI pipeline itself flagged it as uncertain."
+    },
+    {
+      "finding": "SEG116-R-006 Sequence Number lead, unconfirmed",
+      "description": "AI requirements BR-402-5 and REL-ENT-ELEM-86-ENT-SEG-116 (80% confidence) suggest Sequence Number (Element 86) may be part of Segment 116, but this derives from Element 86's generic 'included on all transaction types' statement rather than a Segment 116-specific table.",
+      "impact": "Useful lead for whoever obtains the external TransArmor document; not sufficient to certify as a Segment 116 field on its own."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "catalogId": "ATL105-SEGDL8-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "DL8", "segmentName": "EMV Terminal Floor Limits Data Segment",
+  "scope": "Segment DL8 TLV download-data container with a repeating per-RID floor-limit structure, mirroring DL7's hybrid framing convention",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 17636-17650 (Section 12.49)",
+  "rules": [
+    {"ruleId":"SEGDL8-R-001","title":"Segment DL8 contains EMV floor limits (as RID) for the terminal; inclusion in a table load depends on a 'Special' flag set at the terminal level; the data is maintained at the BUYPASS Host, and changes to it set the table download flag for all terminals with the Special flag","class":"lifecycle","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.49","segment":"DL8","rule":"special-flag-gated-table-load"}},
+    {"ruleId":"SEGDL8-R-002","title":"Data Type Indicator is fixed value '%' (Element 24); Segment Length Indicator (Element 84, 3 digits) is EXCLUSIVE of the Data Type Indicator's length, same hybrid framing convention as Segment DL7 (no End-of-Data Indicator)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.49","segment":"DL8","element":"24,84","rule":"hybrid-framing-same-as-dl7"}},
+    {"ruleId":"SEGDL8-R-003","title":"Floor Limit Data repeats per RID, for a maximum of 24 RIDs, total variable length up to 624 bytes; each repetition contains RID (233,10, Host-sourced), Stand-in Indicator (234,1, Host-sourced), Floor Limit (235,12, Host-sourced, maximum allowable stand-in value), BUYPASS RID Card Type (236,3, Host-sourced)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.49","segment":"DL8","element":"233,234,235,236","rule":"per-rid-repeating-floor-limit-structure"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment DL8 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

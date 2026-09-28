@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEG141-RULE-CATALOG-001",
+  "specification": "ATL105", "specificationVersion": "2026-3", "segment": "141", "segmentName": "Moneris Day End Batch Close (Request) Segment",
+  "scope": "Segment 141 field-level rules for closing out each pay point to Moneris at day end",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14730-14858 (Section 12.28)",
+  "rules": [
+    {"ruleId":"SEG141-R-001","title":"Segment 141 is used to close out each pay point to Moneris; it should be sent once for each pay point at day end","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.28","segment":"141","rule":"batch-close-once-per-pay-point"}},
+    {"ruleId":"SEG141-R-002","title":"All fields are separated by Field Separator characters","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.28","segment":"141","rule":"all-fields-separated"},"note":"Unlike Segment 139, Segment 141 explicitly documents full field separation — do not assume the two segments share identical wire format."},
+    {"ruleId":"SEG141-R-003","title":"Segment Type fixed 141, Segment Length 3 digits, both Device-sourced; all 14 fields (Terminal Identifier, SPDH Header, Moneris Terminal/Merchant ID, Batch Number, Language Indicator, Number/Dollar totals for debits/credits/corrections) are Device-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.28","segment":"141","element":"85,84,102,206,207,208,214,215,217,218,219,220,221,222","rule":"batch-close-request-all-device-sourced"},"note":"Contrast Segment 140 (response), where sourcing alternates between Device and Moneris — the request-side Segment 141 is uniformly Device-sourced."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment 141 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

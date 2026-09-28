@@ -1,0 +1,1 @@
+No End-of-Data Indicator — framed by Segment Length Indicator (Element 84), which is exclusive of the Data Type Indicator's own length. Distinct from the DL1-DL6 Data-Type/End-of-Data marker convention.

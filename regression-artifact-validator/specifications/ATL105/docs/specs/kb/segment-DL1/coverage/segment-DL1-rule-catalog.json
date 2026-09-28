@@ -1,0 +1,16 @@
+{
+  "catalogId": "ATL105-SEGDL1-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "DL1", "segmentName": "Merchant Data Segment",
+  "scope": "Segment DL1 fixed-length, no-separator, self-delimited (Data Type + End-of-Data markers) download data segment",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 17101-17208 (Section 12.42)",
+  "rules": [
+    {"ruleId":"SEGDL1-R-001","title":"Segment DL1 maximum length is 399 alphanumeric characters; originates at BUYPASS (Host)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.42","segment":"DL1","rule":"max-length-399-origin-host"}},
+    {"ruleId":"SEGDL1-R-002","title":"Segment DL1 uses NO Field Separators; instead it is self-delimited by a Data Type Indicator ('#', field 1) and an End-of-Data Indicator ('~', last field) — a distinct delimiting convention from the numbered segments (85/84 Segment Type/Length pair)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.42","segment":"DL1","element":"24,34","rule":"data-type-end-of-data-markers-not-segment-type-length"},"note":"Segments DL1-DL6 use this Data-Type/End-of-Data marker convention instead of the Segment Type(85)/Segment Length(84) pair used by numbered segments 100-157."},
+    {"ruleId":"SEGDL1-R-003","title":"Merchant Name(53,24), Store Number(98,16), Address Line 1(3,24), Address Line 2(4,21), Merchant Phone Number(54,13) are all required, Host-sourced fixed-length fields","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.42","segment":"DL1","element":"53,98,3,4,54","rule":"merchant-identity-fields"}},
+    {"ruleId":"SEGDL1-R-004","title":"Number of Card Types (Element 59) identifies how many times field 8 (Card Type) repeats — Card Type may repeat 01-99 times","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.42","segment":"DL1","element":"59,14","rule":"card-type-repetition-01-99"}},
+    {"ruleId":"SEGDL1-R-005","title":"A Card Type value of '173' in this segment's repeating Card Type field (Element 14) conditionally triggers Segment DL6 (Store and Forward) in the same Table Load Response","class":"lifecycle","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.42,12.47","segment":"DL1,DL6","element":"14","rule":"card-type-173-triggers-dl6"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"question":"No dedicated Segment DL1 AI or Test package was located. Provide one, or approve synthesized fixtures.","status":"OPEN"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

@@ -1,0 +1,33 @@
+{
+  "inventoryId": "ATL105-SEG110-FIELD-KNOWLEDGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "110",
+  "fieldCount": 12,
+  "source": "ATL105 Section 12.9, Sections 11.1.1 and 11.3.1, Chapter 13 element catalog, Appendix D; docs/specs/kb/segment-110-canonical-anchors.md",
+  "fields": [
+    {"order":1,"element":"85","name":"Segment Type","jsonField":"segmentType","requiredness":"REQUIRED","type":"N","length":"3","allowed":"110","rule":"segment-type"},
+    {"order":2,"element":"84","name":"Segment Length","jsonField":"segmentLength","requiredness":"REQUIRED","type":"N","length":"3","allowed":"serialized Segment 110 length including type and separators","rule":"segment-length"},
+    {"order":3,"element":"122","name":"MICR Data","jsonField":"micrData","requiredness":"REQUIRED","type":"AN","length":"50","allowed":"first 50 bytes left-to-right on overflow; REVIEW_REQUIRED for overflow hosting segment: SEG110-SME-002","rule":"micr-data"},
+    {"order":4,"element":"123","name":"Driver's License","jsonField":"driversLicense","requiredness":"CONDITIONAL","type":"AN","length":"40","allowed":"REVIEW_REQUIRED: SEG110-SME-003","rule":"drivers-license"},
+    {"order":5,"element":"124","name":"State Code","jsonField":"stateCode","requiredness":"CONDITIONAL","type":"AN","length":"2","allowed":["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","GU","PR","VI","AA","AE","AP","XX","AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT","NA"],"rule":"state-code-and-catalog"},
+    {"order":6,"element":"125","name":"Date of Birth","jsonField":"dateOfBirth","requiredness":"CONDITIONAL","type":"N","length":"8 (MMDDYYYY)","allowed":"REVIEW_REQUIRED: SEG110-SME-004","rule":"date-of-birth"},
+    {"order":7,"element":"126","name":"Check Type","jsonField":"checkType","requiredness":"REQUIRED","type":"AN","length":"1","allowed":["P","C"],"rule":"check-type-and-catalog"},
+    {"order":8,"element":"127","name":"Check Number","jsonField":"checkNumber","requiredness":"CONDITIONAL","type":"AN","length":"8","allowed":"REVIEW_REQUIRED: SEG110-SME-003","rule":"check-number"},
+    {"order":9,"element":"128","name":"Customer Phone Number","jsonField":"customerPhoneNumber","requiredness":"OPTIONAL","type":"N","length":"10","allowed":"free numeric","rule":"customer-phone-number"},
+    {"order":10,"element":"129","name":"Customer Last Name","jsonField":"customerLastName","requiredness":"OPTIONAL","type":"AN","length":"24","allowed":"free alphanumeric","rule":"customer-last-name"},
+    {"order":11,"element":"130","name":"Check Issue Date","jsonField":"checkIssueDate","requiredness":"OPTIONAL","type":"N","length":"8 (MMDDYYYY)","allowed":"free numeric date","rule":"check-issue-date"},
+    {"order":12,"element":"239","name":"Alternate MICR IND","jsonField":"alternateMicrIndicator","requiredness":"OPTIONAL","type":"AN","length":"1","allowed":["Y"],"note":"Element number conflicts with Chapter 13 Enhanced Fleet Data (Segment 145): REVIEW_REQUIRED: SEG110-SME-005","rule":"alternate-micr-indicator"}
+  ],
+  "companionFields": [
+    {"element":"137","name":"Extended MICR Data","hostSegment":"REVIEW_REQUIRED: SEG110-SME-002","note":"Populated in addition to Element 122 when raw MICR data exceeds 50 bytes."},
+    {"element":"111-113 (Segment 111 sub-table 024)","name":"Manual Check MICR Type","hostSegment":"111","note":"Documents MICR format codes T$, 18, 09, 19; independently confirmed in Appendix I-17, not a Segment 110 field."}
+  ],
+  "globalRules": [
+    {"id":"FIELD-ORDER","rule":"All 12 Segment 110 fields preserve Section 12.9 order."},
+    {"id":"EMPTY-SEPARATORS","rule":"Empty fields retain Field Separators."},
+    {"id":"MAX-LENGTH","rule":"Serialized Segment 110 content does not exceed 168 alphanumeric characters."},
+    {"id":"NO-SECRETS","rule":"MICR line data, driver's license numbers, and dates of birth in test data are synthetic or masked."}
+  ],
+  "status": "READY_FOR_AI_INTAKE"
+}
