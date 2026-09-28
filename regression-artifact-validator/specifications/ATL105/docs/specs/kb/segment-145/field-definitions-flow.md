@@ -1,0 +1,22 @@
+# Segment 145 Field Definitions and Element Semantics Flow
+
+```mermaid
+flowchart TD
+    A[Segment 145 payload] --> B{Field Definitions and Element Semantics in scope?}
+    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
+    B -->|Yes| R1{SEG145-R-005 Segment Type is fixed value 145, Segment Lengt…}
+    R1 -->|Fail| X1[Reject citing SEG145-R-005]
+    R1 -->|Pass| R2{SEG145-R-006 Enhanced Fleet Data Element 239 is required, m…}
+    R2 -->|Fail| X2[Reject citing SEG145-R-006]
+    R2 -.->|Provisional| P2[REVIEW_REQUIRED]
+    R2 -->|Pass| R3{SEG145-R-007 Table 002 Non-Fuel Product Data product catego…}
+    R3 -->|Fail| X3[Reject citing SEG145-R-007]
+    R3 -->|Pass| R4{SEG145-R-008 Table 004 Prompt Data prompt tokens are author…}
+    R4 -->|Fail| X4[Reject citing SEG145-R-008]
+    R4 -.->|Provisional| P4[REVIEW_REQUIRED]
+    R4 -->|Pass| Z[Rules satisfied]
+```
+
+Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+
+Source: [segment-145-rule-catalog.json](coverage/segment-145-rule-catalog.json) · Note: [field-definitions-sme-tba-note.md](field-definitions-sme-tba-note.md)

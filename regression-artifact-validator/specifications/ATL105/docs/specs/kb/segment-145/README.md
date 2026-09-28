@@ -27,3 +27,22 @@ See [SME/TBA Input Register](segment-145-sme-tba-input-register.md).
 2. Do not assume non-Prompt-Table sub-segments are valid for Voyager EMV/Visa Fleet 2.0/Comdata/MasterCard Enhanced Fleet EMV.
 3. Do not assume all 5 authorizers share the same prompt-token catalog.
 4. Do not assume MasterCard Enhanced Fleet EMV's June 2026 availability notice is still current without confirmation.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-145-rule-catalog.json) (8 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 145 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-145-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-145-flow.md) |
+| Topic deep-dives | [applicability-decision](applicability-decision-sme-tba-note.md) · [conditional-dependency-rules](conditional-dependency-rules-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle-response-correlation](lifecycle-response-correlation-sme-tba-note.md) |
+| Topic flows | [applicability-decision](applicability-decision-flow.md) · [conditional-dependency-rules](conditional-dependency-rules-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle-response-correlation](lifecycle-response-correlation-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-145-business-requirements.md](segment-145-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-145-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-145-sme-tba-input-register.md) |
+| AI vs Test comparison | [Comparison](segment-145-ai-vs-test-requirement-comparison.md) |
