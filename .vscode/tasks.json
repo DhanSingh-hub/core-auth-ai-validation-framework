@@ -2,6 +2,16 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Git sync reminder (every 30 min)",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": ["-NoProfile", "-STA", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/scripts/git-sync-reminder.ps1"],
+			"isBackground": true,
+			"problemMatcher": [],
+			"presentation": { "reveal": "never", "panel": "dedicated" },
+			"runOptions": { "runOn": "folderOpen" }
+		},
+		{
 			"label": "Segment 101: Full mvn test",
 			"type": "shell",
 			"command": "$env:JAVA_HOME='C:\\Program Files\\Java\\jdk-26.0.2.1'; $env:PATH='C:\\Users\\F7OKAGW\\.tools\\maven\\apache-maven-3.9.9\\bin;'+$env:JAVA_HOME+'\\bin;'+$env:PATH; Set-Location 'regression-artifact-validator'; mvn.cmd test",
