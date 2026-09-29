@@ -578,6 +578,9 @@ regression-artifact-validator/
 - [ ] **Validator Enhancements:** All JSON path issues fixed, structural checks added
 - [ ] **Test Results:** All tests passing (100% pass rate, zero failures)
 - [ ] **Regressions:** No new failures in Item 1-6 tests
+- [ ] **Pre-existing Failures:** Any failure already on `Develop` is recorded with its root cause, not ignored (Lesson 6)
+- [ ] **Snapshot Assertions:** Tests that snapshot catalog size were updated in the same commit as the catalog change (Lesson 6)
+- [ ] **Spec Cross-Check:** Layout tables, segment sections, Chapter 13 elements and the Chapter 12 matrix reconciled; conflicts logged as PROVISIONAL (Lesson 7)
 - [ ] **Consolidated Report:** Generated and reviewed
 - [ ] **Documentation:** Rule catalog complete, SME notes clear
 - [ ] **Repository:** Changes committed and pushed to Develop branch
@@ -610,6 +613,16 @@ regression-artifact-validator/
 **Problem:** "Provisional" items took longer to resolve because they weren't flagged during Item 1.  
 **Solution:** During specification review, mark anything unclear with `[PROVISIONAL]` and note the exact question.  
 **Apply to New Segment:** Create a "Clarifications Needed" section in your rule catalog during Item 1.
+
+### Lesson 6: Assert Invariants, Not Snapshot Counts
+**Problem:** `RuleCatalogBaselineTest` hard-coded `hasSize(17)` and failed silently on `Develop` once 49 segments existed.  
+**Solution:** Assert an invariant that survives growth (one rule catalog per `kb/segment-*` folder). When you change a catalog, update every test that snapshots its size in the same commit.  
+**Apply to New Segment:** Search `src/test` for `hasSize(`, `isEqualTo(N)` and `catalogRules()` before adding or removing a rule.
+
+### Lesson 7: Cross-Check Specification Sources Against Each Other
+**Problem:** ATL105 disagrees with itself. Element 63 is fixed length 2 in §11.1.1 but "up to two digits" in Chapter 13; Segment 111's maximum length is 999 in §12.10 but 20 in §11.3.1.  
+**Solution:** Compare the layout table, the segment section, the Chapter 13 element definition, and the Chapter 12 matrix. Chapter 13 governs element format; otherwise record the rule as PROVISIONAL with an SME item.  
+**Apply to New Segment:** See `test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md` §6 and the 2026-09-29 tester note for the full checklist.
 
 ---
 

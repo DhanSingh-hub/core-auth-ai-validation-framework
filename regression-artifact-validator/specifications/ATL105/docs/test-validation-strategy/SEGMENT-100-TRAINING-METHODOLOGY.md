@@ -125,3 +125,49 @@ Run the real converter only after AI intake and review gates are complete. Compa
 ## 5. Completion Gate for a New Segment
 
 A segment is ready for AI artifact intake when its source catalog, applicability matrix, BR→TS→TC→TD chain, positive/negative tests, lifecycle model, response model, mutation set, and review boundaries are documented. Final certification still requires actual AI artifacts and the external converter where applicable.
+
+## 6. Lessons Learned: Keeping Tests and Catalogs Honest
+
+From the 2026-09-29 review. Evidence and the full findings table are in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md). Every tester training a segment follows these rules.
+
+### 6.1 Assert invariants, not snapshot counts
+
+`RuleCatalogBaselineTest` hard-coded `hasSize(17)` and went stale when the repository grew to 49 segments. Prefer an invariant that stays true as the project grows, such as "one rule catalog per `kb/segment-*` folder". If a count is genuinely part of the specification (for example Segment 100's 17 fields), cite the section in the assertion message.
+
+### 6.2 When you change a catalog, update every test that snapshots it
+
+Before adding or removing a rule, search `src/test` for `hasSize(`, `isEqualTo(N)` and `catalogRules()` against that catalog, and update them in the **same commit**. Adding `SEG111-R-008` required updating six assertions in three classes.
+
+### 6.3 Use the repository-wide catalog ID convention
+
+Catalog IDs are `ATL105-SEGxxx-RULE-CATALOG-001`. Do not assert, or create, the legacy `segment-xxx-rule-catalog` form.
+
+### 6.4 A failing test on `Develop` is a finding, not background noise
+
+Before starting work, run the suite and record any failure that already exists on `Develop` together with its root cause. Never mark it expected, skip it, or leave it for someone else.
+
+### 6.5 Cross-check every table against the element definition
+
+ATL105 states the same fact in several places, and they disagree. Always compare:
+
+| Check | Example conflict |
+|---|---|
+| The message-layout table (§11.x) against the segment section (§12.x) | Segment 101 maximum length: 308 in §11.1.1, 61 in §12.2 |
+| The layout table against the element definition (Chapter 13) | Element 63: fixed length 2 in §11.1.1, "up to two digits" in Chapter 13 |
+| The layout table against its own prose | §11.3.1 marks Segment 111 `R` but says "none, one, or more" |
+| The layout table against the Chapter 12 segment/transaction matrix | Segments 146 and 152 are listed in a request but are response-only |
+| The same segment in different messages | Segment 111: 999 in §12.10, 20 in the ECA/TeleCheck request |
+
+Chapter 13 is authoritative for an element's format. Where sources still conflict, record the rule as PROVISIONAL with an open SME item rather than choosing one.
+
+### 6.6 Compare lookalike elements before assuming a format
+
+Element 62 says "always precede single digits with a zero"; Element 63 says "variable length of up to two digits". Similar-looking elements often have different rules, so read the Chapter 13 entry for each field rather than copying a neighbour's pattern.
+
+### 6.7 Message templates are derived artifacts
+
+`atl105_complete_templates.json` is marked `human_review_required`. Before building on a template, check its segment list against the specification's layout table. Segment 113 was wrongly listed in the Financial Transaction Request template.
+
+### 6.8 If Maven is unavailable, verify rather than assume
+
+If the Nexus handshake fails, compile `src/main` with `javac` against the cached jars and run a throwaway harness that reproduces the changed assertions. Report that the JUnit suite itself was not run, and ask someone on the network to run `mvn test`.
