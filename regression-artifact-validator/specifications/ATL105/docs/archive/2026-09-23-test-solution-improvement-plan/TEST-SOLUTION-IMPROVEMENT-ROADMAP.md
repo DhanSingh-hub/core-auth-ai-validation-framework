@@ -1,4 +1,6 @@
 # Test Solution Improvements Roadmap
+
+> **ARCHIVED 2026-09-29.** Superseded by the [ATL105 Segment Training Handbook](../../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). Kept for history only; status figures and plans are a 2026-09-23 snapshot.
 ## Enabling Independent Review and Coverage Calculation of AI Solution
 
 **Status**: STRATEGIC PLAN

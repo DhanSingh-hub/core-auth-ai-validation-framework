@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.4 EBT Data Segment (pages 12-15) and Elements 18, 109, 153, 154, 164 (chapter 13.2)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** All spec-groundable provisional items (P-01 through P-06) are resolved directly from the ATL105 text — applicability matrix, full WIC Product Data and EBT Program Data layouts, eWIC Return prohibition, eWIC prompt-code enumeration, and Appendix L currency codes. Items 1, 3, 5, 6, and 7 are executable. Item 2 and the external-data replacement in Item 4 remain open only on P-07/P-08 (real AI artifacts / real test data), which are not resolvable from the specification and require external delivery.
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -11,7 +11,7 @@
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md))
 
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [SME and Technical Business Analysis Note](segment-103-sme-tba-learning-note.md)
 - [Segment 103 End-to-End Flow](segment-103-flow.md)

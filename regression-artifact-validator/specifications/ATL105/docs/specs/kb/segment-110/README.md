@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Sections:** 11.1.1 Financial Transactions Request (pages 11-3 to 11-4), 11.3.1 ECA/TeleCheck® Service Transaction Request (pages 11-13 to 11-14), 12.9 Check Data Segment (pages 12-25 to 12-29), Chapter 13 Data Element Descriptions (Elements 84, 85, 122-130, 136, 137, 239), and Appendix D (Valid State Codes)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)
 **Item Progress:** Item 1 - Coverage Closure started; Item 2 - AI Artifact Comparison in progress against the supplied requirement catalog; Items 3-8 blocked pending the manual inputs in [Segment 110 SME/TBA Input Register](segment-110-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

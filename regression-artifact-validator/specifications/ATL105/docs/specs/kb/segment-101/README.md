@@ -3,7 +3,7 @@
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.2 Fleet Data Segment (pages 12-9 to 12-11) and 11.1.1 Request companion-segment placement
 **External Program Reference (deferred by ATL105):** BUYPASS® Platform Petroleum Industry Processing Specifications (see Section 10.6)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure (rule catalog derived from specification; provisional items flagged for SME review)
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

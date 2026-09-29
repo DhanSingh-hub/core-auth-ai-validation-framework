@@ -1,12 +1,12 @@
 # Segment 119 (Totals with Proprietary Data Load Data Segment) â€” Knowledge Base
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../../../SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Training Status:** Specification-grounded baseline complete; manual policy gates remain `REVIEW_REQUIRED`; Run1 contains no `llm_phrased` Segment 119 requirements, so AI artifact coverage is currently unavailable rather than inferred.
 
 ## Learning Module Index
 
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 119 End-to-End Flow](segment-119-flow.md)
 - [Segment 119 SME/TBA Learning Note](segment-119-sme-tba-learning-note.md)

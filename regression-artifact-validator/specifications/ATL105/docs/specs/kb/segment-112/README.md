@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.11 Additional Information Data Segment (pages 12-30 to 12-31), Elements 115-118 (chapter 13.2, pages 424-429), Appendix K Additional Information Data Layouts (Table IDs 001-047)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure in progress. Core structure and repeating-section rules are derived directly from the specification text; full Element 116 value enumeration and Appendix K sub-table layouts remain `REVIEW_REQUIRED` (see [SME/TBA Input Register](segment-112-sme-tba-input-register.md)).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)  
 **Source Sections:** 10.11 Electronic Mail Processing (pages 10-60 to 10-61), 11.5 Electronic Mail (pages 11-21 to 11-23), and 12.8 Electronic Mail Data Segment (pages 12-23 to 12-24)  
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)  
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)  
 **Item Progress:** Item 1 - Coverage Closure started; Items 2-8 blocked pending the manual inputs in [Segment 109 SME/TBA Input Register](segment-109-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

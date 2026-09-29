@@ -1,5 +1,7 @@
 # Executive Summary: Test Solution Improvements for AI Run2 Review
 
+> **ARCHIVED 2026-09-29.** Superseded by the [ATL105 Segment Training Handbook](../../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). Kept for history only; status figures and plans are a 2026-09-23 snapshot.
+
 **User Question**: "What we need to improve from test solution side, so that we can best review and calculate coverage of AI Solution?"
 
 **Answer**: Test Solution requires 6 critical improvements across 4 phases to become the independent oracle for verifying AI Run2. Without these, cannot reliably review AI claims or calculate actual coverage.

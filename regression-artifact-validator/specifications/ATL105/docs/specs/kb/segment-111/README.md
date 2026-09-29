@@ -52,7 +52,7 @@ passed. Two provisional items remain open pending SME resolution: `P-01`
 
 ## Validation resources
 
-- [Training methodology](../../../SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [Training handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 - [Training questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 111 validation rules (JSON)](segment-111-validation-rules.json)
 - [Segment 111 rule catalog (JSON)](coverage/segment-111-rule-catalog.json)

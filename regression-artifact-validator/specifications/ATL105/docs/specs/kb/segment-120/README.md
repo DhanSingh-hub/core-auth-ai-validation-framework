@@ -64,7 +64,7 @@ condition under which this resolution should be revisited.
 
 ## Validation resources
 
-- [Training methodology](../../../SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [Training handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 - [Training questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 120 validation rules (JSON)](segment-120-validation-rules.json)
 - [Segment 120 rule catalog (JSON)](coverage/segment-120-rule-catalog.json)

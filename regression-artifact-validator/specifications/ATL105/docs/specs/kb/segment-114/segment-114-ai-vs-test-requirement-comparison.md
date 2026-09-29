@@ -1,6 +1,6 @@
 # Segment 114: AI-Generated vs Test-Generated Requirement Comparison
 
-This document extracts every AI Solution Team requirement statement that references Segment 114 (SKU Data Segment) from the ingested AI artifact pipeline and matches it against the Test Team's independently-derived rule catalog ([`segment-114-rule-catalog.json`](coverage/segment-114-rule-catalog.json)). It follows the same producer-neutral comparison principle as the [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) Item 2 ("AI Artifact Comparison"): the specification is the oracle, not the AI output.
+This document extracts every AI Solution Team requirement statement that references Segment 114 (SKU Data Segment) from the ingested AI artifact pipeline and matches it against the Test Team's independently-derived rule catalog ([`segment-114-rule-catalog.json`](coverage/segment-114-rule-catalog.json)). It follows the same producer-neutral comparison principle as the [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework) Item 2 ("AI Artifact Comparison"): the specification is the oracle, not the AI output.
 
 ## Evidence Sources
 

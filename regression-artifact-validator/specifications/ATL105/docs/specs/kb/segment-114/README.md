@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.13 SKU Data Segment (pages 12-34/248), 11.2 Loyalty Card Transactions (pages 11-11 to 11-13/171-172), 11.1.1 / 11.3.1 / 11.9.1 Data Section 3 companion lists, Element 149 (chapter 13.2)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure COMPLETE; SME intake held 2026-09-26 (6 of 6 open items resolved, see [SME/TBA Input Register](segment-114-sme-tba-input-register.md))
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

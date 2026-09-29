@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * <p>Rule anchors correspond to {@code SEG113-R-###} in
  * {@code specifications/ATL105/docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
  * Like Segment 108, Segment 113 belongs exclusively to its own dedicated message family
  * (the ECA/TeleCheckÂ® Service Transaction Request), so the payload root key is
  * {@code "ECA/TeleCheck Service Transaction Request"}, not {@code "Financial Request"}.

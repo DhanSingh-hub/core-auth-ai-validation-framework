@@ -2,9 +2,9 @@
 
 **Date:** 2026-09-29
 **Applies to:** All ATL105 segment training (100 through DL8)
-**Handbook:** [SEGMENT-100-TRAINING-METHODOLOGY.md](SEGMENT-100-TRAINING-METHODOLOGY.md) §6 "Lessons Learned: Keeping Tests and Catalogs Honest"
+**Handbook:** [ATL105 Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#lessons-learned), lessons L6-L13
 
-This note explains two test failures that were already on `Develop` and the specification defects found while fixing them. Section 6 of the handbook turns each finding into a rule for other testers.
+This note explains two test failures that were already on `Develop` and the specification defects found while fixing them. The handbook's Lessons Learned section turns each finding into a rule for other testers.
 
 ---
 

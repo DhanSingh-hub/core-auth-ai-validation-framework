@@ -7,7 +7,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 ## Training and Validation Entry Points
 
 - [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 100 BR Baseline Index](../../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json)
 - [Segment 100 Annexure BR Baseline](../../../../test-output/test-json/segment-100-annexure-br-baseline-package.json)

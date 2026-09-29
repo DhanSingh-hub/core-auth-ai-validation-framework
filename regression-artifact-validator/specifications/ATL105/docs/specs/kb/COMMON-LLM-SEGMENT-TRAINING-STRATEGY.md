@@ -1,9 +1,31 @@
-# Common LLM Segment Training Strategy
+# ATL105 Segment Training Handbook
 
 **Specification:** BUYPASS ATL105 2026-3
 **Applies to:** Every ATL105 data segment, numbered segment, and download segment (`DL1`-`DL8`)
 **System under test:** AI Solution artifacts
 **Independent oracle:** Core Auth Test Solution rules derived from the specification
+
+> **This is the single training handbook.** Every team member, agent, or automation that trains a segment follows this document and nothing else. It replaces the two `SEGMENT-100-TRAINING-METHODOLOGY.md` files (merged into it on 2026-09-29). The 2026-09-23 improvement-plan pack is archived; see [Handbook History](#handbook-history).
+
+## Contents
+
+1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
+2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
+3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy)
+4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
+5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
+6. Learn: [Lessons Learned](#lessons-learned), [Segment 100 Reference Implementation](#segment-100-reference-implementation), [Handbook History](#handbook-history)
+
+## How to Train a Segment (Start Here)
+
+1. Read this handbook end to end once. The governance sections are mandatory, not background.
+2. Check out the segment branch (`Segment_<NNN>`) from an up-to-date `Develop`. Run the test suite and record any failure that already exists (see [L10](#lessons-learned)).
+3. Open `kb/segment-<NNN>/` and the segment's entry in `specifications/ATL105/training-status.json` to see which gates are already passed.
+4. Work through the [Nine-Phase Strategy](#common-nine-phase-strategy) in order. Each phase is a gate in `training-status.json`; do not skip one.
+5. Build the Test Solution code with the [8-Item Framework](#test-solution-implementation-8-item-framework).
+6. Write anything that is specific to the segment in the segment's addendum (its `README.md` and SME/TBA register), not in this handbook.
+7. Pass the [Completion Gate](#completion-gate) and the [Sign-Off Checklist](#sign-off-checklist), then commit to the segment branch and merge to `Develop`.
+8. If you learn something that would help the next tester, add it to [Lessons Learned](#lessons-learned) in the same change (the [Automatic Update Rule](#automatic-update-rule)).
 
 ## Purpose
 
@@ -33,7 +55,7 @@ Knowledge-base BR coverage must preserve composite evidence as multiple `sourceE
 
 ## SME Decision Persistence
 
-All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
+All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
 
 The register is validated by `ValidateSmeDecisionRegister`; a decision register is invalid if decision IDs are duplicated, required evidence is absent, a promoted decision has no reviewer/date, or a promoted `CONFIRMED_MATCH`/`NEW_RULE` lacks a complete canonical source anchor.
 
@@ -54,6 +76,21 @@ Training supplied by a Test Team member to an assistant follows the same record.
 ## Controlled Improvement
 
 This standard may be improved when evidence shows that a gate is incomplete, ambiguous, inefficient, or unable to detect a defect. Proposed changes must identify the affected phase or gate, the observed evidence, the risk addressed, the compatibility impact, and the regression tests or examples required. The change becomes effective only after Test Team review and documentation in this common strategy; existing segment addenda must then be checked for alignment.
+
+## Matching Responsibility
+
+Matching AI output to the Test Solution is the responsibility of the Test Solution validation framework. The AI Solution is an input producer and may provide its own local identifiers and claimed mappings, but it must not determine whether its output is covered.
+
+The framework must:
+
+- normalize both producers into the canonical artifact schema;
+- compare shared `sourceAnchors` using deterministic canonical keys;
+- confirm a match only when the anchor and business rule are equivalent;
+- classify partial, ambiguous, conflicting, or heuristic candidates as `REVIEW_REQUIRED`;
+- report `AI_ONLY`, `TEST_ONLY`, duplicate-source, malformed, and unresolved records;
+- preserve both producer-local IDs and the evidence supporting every disposition.
+
+Text similarity, shared field numbers, matching terminology, and AI-provided confidence may identify candidates for review, but may never produce `CONFIRMED` coverage.
 
 ## Common Artifact Chain
 
@@ -86,7 +123,36 @@ The LLM shall:
 - Avoid treating AI confidence, generated counts, or AI coverage as approval.
 - Mark unsupported or ambiguous behavior for review instead of inventing values.
 
+## Canonical Source Anchors
+
+Every rule in a segment rule catalog (`kb/segment-<NNN>/coverage/segment-<NNN>-rule-catalog.json`) carries a structured `sourceAnchor`:
+
+```json
+{ "specification": "ATL105", "version": "2026-3", "section": "11.1.1", "segment": "100", "rule": "segment-100-required-once" }
+```
+
+Add `element` when the rule is about a single element. The anchor is created before the BR (Phase 1), is the only key used for AI-to-Test matching, and must resolve to a section present in the extracted ATL105 2026-3 text. Catalog IDs follow `ATL105-SEG<NNN>-RULE-CATALOG-001` and rule IDs follow `SEG<NNN>-R-<nnn>`.
+
+If the rule depends on an interpretation that the specification does not settle, mark it `PROVISIONAL`, add an open item to the catalog's `provisionalItems` and the segment's SME/TBA register, and keep it `REVIEW_REQUIRED`.
+
+## Canonical BR Taxonomy
+
+Classify every BR into one of these families. Segment 100 uses all of them; other segments use the families that apply. The Segment 100 reference index is [segment-100-br-baseline-index.json](../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json).
+
+1. `CORE-STRUCTURE`: segment identity, field order, lengths, separators, serialization.
+2. `CORE-FIELDS`: the segment's own fields (for Segment 100: terminal, Prompt Code, account, amounts, sequence, approval, time, partial approval).
+3. `TRANSACTION-TYPES`: financial transaction types, card types, Prompt Code composition.
+4. `LIFECYCLE`: completion, cancellation, reversal, void, refund, timeout, TOR, retries.
+5. `EBT-EWIC`: Segment 103, eWIC operations, WIC/EBT program data.
+6. `RESPONSES`: response code, approval, decline, partial approval, and response context.
+7. `ANNEXURE-CONDITIONAL`: Appendix A through T rules that apply only under a stated condition.
+8. `SEPARATE-DOMAINS`: TransArmor administration, CA keys, digital wallets, Premium Gift Card, and Moneris.
+
+Do not flatten conditional or separate-domain rules into universal segment rules.
+
 ## Common Nine-Phase Strategy
+
+Each phase is a gate in `training-status.json` `requiredGates`, in this order: `SOURCE_INVENTORY`, `SEGMENT_KNOWLEDGE_MODEL`, `CONTEXT_MATRIX`, `INDEPENDENT_BR_DERIVATION`, `TS_TC_TEST_DATA_CHAIN`, `LIFECYCLE_AND_SPECIALIZED_FLOWS`, `SERIALIZATION_AND_MUTATION`, `INDEPENDENT_AI_ARTIFACT_INTAKE`, `CONVERTER_AND_EXECUTION_READINESS`. A gate passes only with recorded evidence and a reviewer.
 
 ### Phase 1: Source Inventory
 
@@ -95,6 +161,10 @@ Capture specification version, section, page, segment, element, rule, applicabil
 ### Phase 2: Segment Knowledge Model
 
 Model the segment's identity, field order, requiredness, data type, length, valid values, separators, serialization, message family, request/response role, and external dependencies.
+
+Produce a machine-readable field inventory with one row for every ordered field: its canonical source rule, JSON representation, appendix dependencies, and validation status. The Segment 100 reference is [segment-100-field-knowledge-inventory.json](../../../test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json).
+
+Take each element's format (type, length, padding) from its Chapter 13 definition, then cross-check the §11 layout table, the §12 segment section, and the Chapter 12 segment/transaction matrix. Record any disagreement as `PROVISIONAL` (see [L7](#lessons-learned) and [L8](#lessons-learned)).
 
 ### Phase 3: Context Matrix
 
@@ -107,6 +177,8 @@ Record the dimensions that change segment behavior:
 - Lifecycle role and original transaction relationship
 - Merchant, terminal, program, or specialized domain
 - Appendix, code-table, and external-reference dependencies
+
+Transaction type alone must not determine the complete message. Produce an explicit context envelope for every artifact. Required dimensions are transaction type, card type, payment network, lifecycle role, and message family. Conditional dimensions are entry mode, POS condition, specialized domain, companion segments, and response context. The Segment 100 reference is [segment-100-context-model.json](../../../test-output/test-json/knowledge/segment-100-context-model.json).
 
 ### Phase 4: Independent BR Derivation
 
@@ -127,6 +199,8 @@ For each accepted BR, generate one or more focused Test Scenarios, Test Cases, a
 
 The request Test Data JSON contains requests, field values, calculated values, and lifecycle data. Response expectations belong to the Test Case or response-validation artifact unless the specification pack explicitly defines a separate response artifact.
 
+Every Test Case must state a precondition (Given), an action (When), an observable outcome (Then), a specific expected result, and a reference to its request Test Data ID. A Test Case missing any of these is `INVALID` for intake, whichever producer created it.
+
 ### Phase 6: Lifecycle and Specialized-Flow Training
 
 Train the LLM to preserve message order, sequence identifiers, original references, retries, reversals, completions, voids, cancellations, and follow-up dependencies. Keep specialized domains conditional, including EBT/eWIC, EMV, tokenization, wallets, fleet, loyalty, Moneris, TransArmor, and download flows.
@@ -134,6 +208,8 @@ Train the LLM to preserve message order, sequence identifiers, original referenc
 ### Phase 7: Serialization and Mutation
 
 Validate field order, separators, segment lengths, message lengths, counts, encoded values, binary/network values, and omission rules. Apply deliberate mutations to valid data and verify that the Test Solution detects the intended rule violation.
+
+Classify each mutation result as `CONFIRMED_CATCH` (the intended rule fired), `MISSED_CATCH` (no rule fired), or `FALSE_POSITIVE` (a different rule fired). The target is at least 85% detection overall and 100% for source-critical mutations. The standard mutation set is in [Item 5](#test-solution-implementation-8-item-framework).
 
 ### Phase 8: Independent AI Artifact Intake
 
@@ -144,6 +220,8 @@ BR -> TS -> TC -> request Test Data JSON
 ```
 
 Report missing, duplicate, unsupported, malformed, contradictory, and review-required artifacts. AI-produced coverage is a claim under test, not the denominator.
+
+Source locations and the required AI package layout are in [AI-ARTIFACT-INTAKE.md](../../test-validation-strategy/AI-ARTIFACT-INTAKE.md). Specialized appendix artifacts must declare a domain such as `MONERIS`, `DIGITAL_WALLET`, `PAYMENT_TOKEN`, `TRANSARMOR_ADMIN`, `CA_PUBLIC_KEYS`, or `PREMIUM_GIFT_CARD`. The intake gate must reject undeclared domains and must not certify generic segment JSON as specialized coverage.
 
 ### Phase 8a: Field-Alias Crosswalk (Evidence-Based, Non-Authoritative)
 
@@ -164,11 +242,65 @@ Process:
 
 Run the external converter or serializer only after intake, traceability, semantic, and review gates pass. Compare serialized request output with the canonical intent and source rules.
 
+## Test Solution Implementation: 8-Item Framework
+
+The nine phases define what must be known. The eight items define the Java code that proves it, in `regression-artifact-validator`. Build them in order; each item depends on the previous one. Copy the Segment 100 classes (`src/main/java/com/coreauth/validator/canonical/Segment100*.java`) as templates.
+
+| Item | Class (`canonical/`) | Test class | Proves |
+|---|---|---|---|
+| 1. Coverage closure | `Segment<NNN>PayloadValidator` | `Segment<NNN>PayloadValidatorTest` | Every catalog rule is an explicit check. Valid data passes. |
+| 2. AI artifact comparison | `Segment<NNN>ArtifactComparison` | `Segment<NNN>ArtifactComparisonTest` | AI packages normalize to the canonical model (manifest, BRs with anchors, TS->BR, TC->TS, TD->TC). |
+| 3. Test-data independence | `Segment<NNN>IndependenceValidator` | `Segment<NNN>IndependenceValidatorTest` | Test data validates on its own: schema, format, enum, cross-field, and semantic checks. |
+| 4. Traceability matrix | `Segment<NNN>TraceabilityMatrix` | `Segment<NNN>TraceabilityMatrixTest` | Every catalog rule has TS -> TC -> TD. Gaps are listed, and coverage is computed against the [Coverage Denominator](#coverage-denominator). |
+| 5. Mutation definition | `Segment<NNN>MutationTester` | `Segment<NNN>MutationTesterTest` | The 10 standard mutations below are defined for the segment. |
+| 6. Mutation execution | `Segment<NNN>MutationTestRunner` | `Segment<NNN>MutationTestRunnerTest` | Every mutation runs against every package, and the detection rate is reported. |
+| 7. Validator enhancement | (updates Item 1) | `Segment<NNN>ValidatorDetectionTest` | Detection reaches at least 85%, and every `MISSED_CATCH` is explained or fixed. |
+| 8. Consolidated report | `Segment<NNN>ConsolidatedReport` | `Segment<NNN>ConsolidatedReportTest` | Items 1-7 results, blockers, and open SME items are combined into `SEGMENT-<NNN>-CONSOLIDATED-REPORT.txt`. |
+
+Standard mutations (Item 5):
+
+| ID | Violation | Example |
+|---|---|---|
+| MUT-001 | Identity value changed | `segmentType` 100 -> 101 |
+| MUT-002 | Format | numeric field -> non-numeric |
+| MUT-003 | Length | 6 digits -> 5 digits |
+| MUT-004 | Invalid code | `promptCode` VIS -> BAD |
+| MUT-005 | Required field omitted | remove `sequenceNumber` |
+| MUT-006 | Pattern / character set | special characters in an alphanumeric field |
+| MUT-007 | Type mismatch | number where a string is required |
+| MUT-008 | Enumeration out of bounds | value outside the allowed set |
+| MUT-009 | Cross-field dependency | Element 63 does not match the actual segment count |
+| MUT-010 | Structural requirement | required structural field malformed |
+
+File layout for a segment:
+
+```text
+specifications/ATL105/docs/specs/kb/segment-<NNN>/   README.md (addendum), coverage/segment-<NNN>-rule-catalog.json, SME/TBA register
+specifications/ATL105/test-output/test-json/         segment-<NNN>-*-package.json (BR/TS/TC/TD packages)
+specifications/ATL105/test-output/consolidated-reports/SEGMENT-<NNN>-CONSOLIDATED-REPORT.txt
+specifications/ATL105/contract/                      segment-<NNN>-field-alias-crosswalk.json (Phase 8a)
+src/main/java/com/coreauth/validator/canonical/      Segment<NNN>*.java (Items 1-8)
+src/test/java/com/coreauth/validator/                Segment<NNN>*Test.java
+```
+
+Run `mvn clean test` after every item. The report is generated with `mvn exec:java -Dexec.mainClass=com.coreauth.validator.canonical.Segment<NNN>ConsolidatedReport`. If Maven cannot reach the repository, follow [L13](#lessons-learned).
+
 ## Segment Package Field-Name Conformance
 
 BR -> TS -> TC -> TD chain matching (Phase 5, Phase 8, Phase 8a) requires every segment's Test Solution package to use the same canonical link fields: `businessRequirements[].id`, `testScenarios[].requirementIds` (array), `testCases[].scenarioIds` (array), and `testData[].testCaseIds` (array) with a real `payload`. A package that uses a different shape (for example `covers` instead of `requirementIds`, a singular `scenarioId` instead of `scenarioIds`, or a narrative `testDataStatus` string instead of a `testData[]` array) silently breaks chain matching even when the rule catalog and prose are correct. `segment-111-core-structure-package.json` is a known example needing this normalization. Verify field-name conformance as part of a segment's completion gate.
 
 Before treating any `TestSolutionJsonFormatTest`-style package-conformance result as authoritative, run `mvn clean test` (not an incremental `test`). A stale compiled test class can report failures for exclusions or field names that the current source already handles correctly, producing a false-positive gap report.
+
+## Coverage Denominator
+
+A coverage percentage is meaningless without a stated denominator. Each segment addendum must declare:
+
+- **In scope:** the rule families that count toward completion (normally all field format, cardinality, conditional-applicability, and rejection rules in the segment catalog).
+- **Out of scope:** what the ATL105 message specification does not govern (for example performance, concurrency, and external-system internals).
+- **Exempted rules:** rules that are excluded, with the reason and approver.
+- **Required counts:** BRs, scenarios, test cases, and test cases with request data needed for completion.
+
+The denominator comes from the Test Solution rule catalog, never from AI output. AI requirements with no Test Solution anchor are reported as `AI_ONLY` and enter the denominator only through a `NEW_RULE` decision in the SME decision register.
 
 ## Segment-Specific Training Addendum
 
@@ -219,4 +351,82 @@ For specification-wide training, the Test Solution also maintains `specification
 
 A segment is training-ready for AI artifact intake only when its addendum has a source catalog, applicability/context matrix, BR-to-TS-to-TC-to-request-data chain, positive and negative examples, lifecycle model where applicable, mutation set, review boundaries, an independent coverage denominator, and canonical link-field names (`requirementIds`, `scenarioIds`, `testData[].testCaseIds`) confirmed across every package file for that segment.
 
-A segment is not certified merely because its folder, README, or rule catalog exists.
+A segment is not certified merely because its folder, README, or rule catalog exists. Final certification still requires actual AI artifacts and, where applicable, the external converter.
+
+## Sign-Off Checklist
+
+Complete this for every segment before merging to `Develop`:
+
+- [ ] **Specification coverage:** every segment rule is in the catalog with a complete `sourceAnchor`; unclear rules are `PROVISIONAL` with an SME item.
+- [ ] **Specification cross-check:** the layout table, segment section, Chapter 13 element definitions, and Chapter 12 matrix are reconciled, and conflicts are logged ([L7](#lessons-learned)).
+- [ ] **Items 1-8:** every class and test class exists and passes.
+- [ ] **Mutation detection:** at least 85% overall, 100% for source-critical mutations, and each `MISSED_CATCH` is explained.
+- [ ] **Traceability:** every catalog rule has BR -> TS -> TC -> TD, and coverage is reported against the declared denominator.
+- [ ] **Field-name conformance:** `requirementIds`, `scenarioIds`, and `testData[].testCaseIds` are used in every package file.
+- [ ] **Snapshot assertions:** every test that asserts a catalog size was updated in the same commit as the catalog ([L11](#lessons-learned)).
+- [ ] **Failures already on `Develop`:** recorded with their root cause, not ignored ([L10](#lessons-learned)).
+- [ ] **Full suite:** `mvn clean test` passes with no new failures, or the fallback in [L13](#lessons-learned) is documented.
+- [ ] **Training status:** `training-status.json` gates and blockers are updated, and the consolidated report is regenerated.
+- [ ] **Handbook:** any new lesson is added to this document in the same change.
+
+## Lessons Learned
+
+Every tester follows these rules. Add new lessons here, numbered in sequence, in the same change that discovered them.
+
+**L1. Mutate at the right JSON level.** Segment 100 mutation detection was 0% because mutations were applied from the payload root. Navigate the real path (`request` -> `dataSection1`/`dataSection2` -> segment object) and check the test-data structure before writing mutation tests.
+
+**L2. The specification is the oracle.** Making a validator pass AI output produces false validation. Build the rule catalog from the specification first, and use AI output only as input under test.
+
+**L3. Catalog cross-field rules explicitly.** Most Segment 100 validator enhancements were cross-field checks (for example Element 63 against the actual segment count). Give interdependencies their own rule category in Phase 2.
+
+**L4. Keep isolated debug tests ready.** When detection drops below 85%, create `Segment<NNN>ValidatorDetectionTest` immediately and test the failing mutation on its own.
+
+**L5. Mark ambiguities on day one.** `PROVISIONAL` items flagged late took longest to resolve. Record the exact question in the SME/TBA register while reading the specification.
+
+**L6. Compare lookalike elements before assuming a format.** Element 62 says "always precede single digits with a zero"; Element 63 says "variable length of up to two digits". Read the Chapter 13 entry for every field instead of copying a neighbouring field's pattern.
+
+**L7. Cross-check every table against the element definition.** ATL105 states the same fact in several places, and they disagree:
+
+| Check | Example conflict |
+|---|---|
+| Message-layout table (§11.x) against the segment section (§12.x) | Segment 101 maximum length: 308 in §11.1.1, 61 in §12.2 |
+| Layout table against the element definition (Chapter 13) | Element 63: fixed length 2 in §11.1.1, "up to two digits" in Chapter 13 |
+| Layout table against its own prose | §11.3.1 marks Segment 111 `R` but says "none, one, or more" |
+| Layout table against the Chapter 12 segment/transaction matrix | Segments 146 and 152 are listed in a request but are response-only |
+| The same segment in different messages | Segment 111: 999 in §12.10, 20 in the ECA/TeleCheck request |
+
+Chapter 13 is authoritative for an element's format. Where sources still conflict, record the rule as `PROVISIONAL` with an open SME item rather than choosing one.
+
+**L8. Message templates are derived artifacts.** `atl105_complete_templates.json` is marked `human_review_required`. Check a template's segment list against the specification's layout table before building on it. Segment 113 was wrongly listed in the Financial Transaction Request template.
+
+**L9. Use the repository-wide catalog ID convention.** Catalog IDs are `ATL105-SEG<NNN>-RULE-CATALOG-001`. Do not create or assert the legacy `segment-<nnn>-rule-catalog` form.
+
+**L10. A failing test on `Develop` is a finding, not background noise.** Run the suite before starting work. Record any failure that already exists with its root cause; never mark it expected, skip it, or leave it for someone else.
+
+**L11. Assert invariants, not snapshot counts.** `RuleCatalogBaselineTest` hard-coded `hasSize(17)` and went stale when the repository reached 49 segments. Prefer an invariant such as "one rule catalog per `kb/segment-*` folder". When you change a catalog, search `src/test` for `hasSize(`, `isEqualTo(N)`, and `catalogRules()` and update them in the same commit. If a count is part of the specification, cite the section in the assertion message.
+
+**L12. Coverage percentages need a Test Solution denominator.** A target such as "derive at least 90% of the requirements the AI extracted" makes AI output the oracle. Measure against the segment's own [Coverage Denominator](#coverage-denominator).
+
+**L13. If Maven is unavailable, verify rather than assume.** If the Nexus handshake fails, compile `src/main` with `javac` against the cached jars and run a throwaway harness that reproduces the changed assertions. Report that the JUnit suite itself was not run, and ask someone on the network to run `mvn clean test`.
+
+The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
+
+## Segment 100 Reference Implementation
+
+Segment 100 was trained first and is the worked example for every phase and item:
+
+- [Core rule catalog](segment-100/coverage/segment-100-rule-catalog.json)
+- [BR baseline index](../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json), [field inventory](../../../test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json), [context model](../../../test-output/test-json/knowledge/segment-100-context-model.json)
+- [Annexure BR baseline](../../../test-output/test-json/segment-100-annexure-br-baseline-package.json) and [multi-step flow catalog](../../../test-output/test-json/segment-100-multistep-flow-catalog.json)
+- [eWIC gap package](../../../test-output/test-json/segment-100-ewic-gap-package.json), [response-code package](../../../test-output/test-json/segment-100-response-code-package.json), [response family matrix](../../../test-output/test-json/atl105-response-code-family-matrix.json)
+- [Validation evidence](../../../test-output/traceability-matrix/segment-100/segment-100-validation-evidence.md)
+- Code: `src/main/java/com/coreauth/validator/canonical/Segment100*.java`
+
+The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
+
+## Handbook History
+
+| Date | Change |
+|---|---|
+| 2026-09-29 | Became the single handbook. Merged `docs/SEGMENT-100-TRAINING-METHODOLOGY.md` (8-item framework, mutation set, lessons 1-7, checklist) and `docs/test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md` (matching responsibility, BR taxonomy, Segment 100 evidence map, lessons 6.1-6.8), then deleted both and repointed all links here. |
+| 2026-09-29 | Archived the 2026-09-23 improvement-plan pack (gap analysis, roadmap, index, quick reference, executive summary, week-1 checklist) to [docs/archive/2026-09-23-test-solution-improvement-plan/](../../archive/2026-09-23-test-solution-improvement-plan/). Folded in: Test Case structure (Phase 5), mutation classification (Phase 7), and the coverage denominator. Not adopted: the "90% of AI-extracted BRs" target (see L12). Its status figures are a 2026-09-23 snapshot and are out of date. |

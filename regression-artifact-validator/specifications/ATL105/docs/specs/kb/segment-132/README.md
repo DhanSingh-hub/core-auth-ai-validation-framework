@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3
 **Source Section:** 12.22 CA Public Key File Segment (pages 12-57/271 to 272), 11.9.1 CA Public Key File Load Request
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 **Item Progress:** Item 1 in progress; 0 of 5 SME items resolved — see [SME/TBA Input Register](segment-132-sme-tba-input-register.md)
 
 ## Learning Module Index

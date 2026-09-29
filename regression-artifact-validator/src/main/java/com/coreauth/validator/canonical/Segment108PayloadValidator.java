@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * <p>Rule anchors correspond to {@code SEG108-R-###} in
  * {@code specifications/ATL105/docs/specs/kb/segment-108/coverage/segment-108-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
  * Unlike Segment 103 (an optional Financial Transaction Request companion), Segment 108
  * belongs exclusively to the dedicated Loyalty Card Transaction Request, so the payload root
  * key is {@code "Loyalty Card Transaction Request"}, not {@code "Financial Request"}.

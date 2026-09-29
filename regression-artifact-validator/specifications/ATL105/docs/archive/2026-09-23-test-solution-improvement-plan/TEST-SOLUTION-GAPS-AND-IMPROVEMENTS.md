@@ -1,5 +1,7 @@
 # Test Solution vs AI Solution: Gap Analysis & Required Improvements
 
+> **ARCHIVED 2026-09-29.** Superseded by the [ATL105 Segment Training Handbook](../../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). Kept for history only; status figures and plans are a 2026-09-23 snapshot.
+
 ## Current State: AI Run2 Available, Test Solution Not Ready
 
 ```

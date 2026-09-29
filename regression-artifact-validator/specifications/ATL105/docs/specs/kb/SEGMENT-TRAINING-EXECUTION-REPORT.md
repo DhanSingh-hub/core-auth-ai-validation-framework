@@ -1,6 +1,6 @@
 # ATL105 Segment Training — Consolidated Execution Report
 
-**Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework), Segment 100 used as the baseline standard throughout.
+**Methodology:** [ATL105 Segment Training Handbook](COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework) (8-Item Framework), Segment 100 used as the baseline standard throughout.
 **Repository:** `core-auth-ai-validation-framework` · **Integration branch:** `Develop`
 
 ## 1. Existing Segment Branches Identified (session start)

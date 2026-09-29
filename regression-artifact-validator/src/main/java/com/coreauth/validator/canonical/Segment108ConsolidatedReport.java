@@ -144,7 +144,7 @@ public final class Segment108ConsolidatedReport {
         sb.append("==================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.7\n");
         sb.append("Generated:        ").append(timestamp).append('\n');
-        sb.append("Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)\n\n");
+        sb.append("Methodology:      COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md (8-Item Framework)\n\n");
 
         sb.append("Item 1  Coverage Closure\n");
         sb.append("------------------------\n");

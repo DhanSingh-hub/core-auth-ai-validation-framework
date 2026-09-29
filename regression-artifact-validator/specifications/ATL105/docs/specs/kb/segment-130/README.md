@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.20 EMV Request Data Segment (pages 12-53/267 to 268), 11.8.1 EMV Financial Transaction Request, Appendix R (EMV Chip Data Example), Appendix S (CA Public Key File), Elements 84, 85, 118, 187-192
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure in progress, building on a **pre-existing partial Test Team baseline** (see Section 5). SME intake: **2 of 10 items resolved from source**, 7 open, 1 administrative (see [SME/TBA Input Register](segment-130-sme-tba-input-register.md))
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

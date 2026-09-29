@@ -1,4 +1,6 @@
 # Test Solution Immediate Action Checklist
+
+> **ARCHIVED 2026-09-29.** Superseded by the [ATL105 Segment Training Handbook](../../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). Kept for history only; status figures and plans are a 2026-09-23 snapshot.
 ## What to Improve This Week (Priority 1 — Unblock AI Review)
 
 **Goal**: Enable Test Solution to begin independent comparison of Run2 artifacts

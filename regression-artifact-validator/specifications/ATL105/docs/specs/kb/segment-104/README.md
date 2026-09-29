@@ -6,7 +6,7 @@ This folder is the focused learning and analysis module for the ATL105 Purchase 
 
 ## Training and Validation Entry Points
 
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [SME and Technical Business Analysis Note](segment-104-sme-tba-learning-note.md)
 - [Segment 104 End-to-End Flow](segment-104-flow.md)
 - [Coverage Closure](coverage/README.md)

@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Sections:** 11.7.5 TransArmor Key and Key ID Load (page 11-36, **stub only**), 12.15 TransArmor Load Data Segment (page 12-36, **stub only**), Chapter 13 Data Element Descriptions (Elements 55, 63, 84, 85, 155, 156, 157), Appendix I-53/54 (Segment 111 Table ID 052)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)
 **Item Progress:** Item 1 - Coverage Closure can only reach a partial baseline (envelope + Segment Type + max length); the field-by-field layout is not in this workspace's source extract. Item 2 - AI Artifact Comparison in progress against the supplied requirement catalog. Items 3-8 blocked, primarily by the missing external TransArmor document (see [Segment 116 SME/TBA Input Register](segment-116-sme-tba-input-register.md)).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

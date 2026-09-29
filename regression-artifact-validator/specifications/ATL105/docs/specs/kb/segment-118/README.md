@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Sections:** 11.7.6 Proprietary Data Load Request (pages 11-36 to 11-37), 11.7.7 Proprietary Data Load Response (pages 11-38 to 11-39), 12.16 Proprietary Data Load Segment (pages 12-37 to 12-45) with subsections 12.16.1-12.16.5, Chapter 13 Data Element Descriptions (Elements 11, 44, 55, 63, 77, 78, 83, 84, 85, 86, 102, 165-186, 201), and Appendix E (Valid Card Type Codes Used in Special Transaction Prompt Codes)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)
 **Item Progress:** Item 1 - Coverage Closure substantially complete (30 rules covering the full request/response envelope, all 13 core fields, and all five conditional Prompt-Code payload variants). Item 2 - AI Artifact Comparison in progress against the supplied requirement catalog (107 requirements). Items 3-8 blocked pending the manual inputs in [Segment 118 SME/TBA Input Register](segment-118-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)

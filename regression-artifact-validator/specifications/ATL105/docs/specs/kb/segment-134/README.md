@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3
 **Source Section:** 12.23 Transaction Attributes Data Segment (pages 12-59/273 to 274)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 **Item Progress:** Item 1 in progress; 0 of 3 SME items resolved — see [SME/TBA Input Register](segment-134-sme-tba-input-register.md)
 
 ## Learning Module Index
