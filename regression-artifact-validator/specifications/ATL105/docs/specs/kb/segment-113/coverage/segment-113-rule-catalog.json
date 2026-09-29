@@ -27,16 +27,16 @@
     {"ruleId":"SEG113-R-018","title":"Segment 113 does not appear in the ECA/TeleCheck\u00ae Service Transaction Response, which mirrors the generic Financial Transaction Response layout","class":"lifecycle","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.3.2","segment":"113","rule":"ecatelecheck-segment-request-only"}}
   ],
   "provisionalItems": [
-    {"id":"P-01","impacts":["SEG113-R-002"],"blocks":[],"question":"Element 63's processing-rule text lists only Segments 110/111 for ECA/TeleCheck Service Transaction Requests, but Section 11.3.1's own layout table also lists Segment 113. Which governs?","status":"RESOLVED","resolution":"User confirmed 2026-09-22: Section 11.3.1's table governs; Element 63's summary is incomplete."},
-    {"id":"P-02","impacts":["SEG113-R-009"],"blocks":[],"question":"Does Element 132 (ECA/TeleCheck Product Code) have a documented external valid-value list?","status":"RESOLVED","resolution":"User confirmed 2026-09-22: no external code table exists; treat as free-form alphanumeric, validate type/length only."},
-    {"id":"P-03","impacts":["SEG113-R-011"],"blocks":[],"question":"Should the validator enforce that Trace ID (134) is present specifically on Void transaction requests?","status":"RESOLVED","resolution":"User confirmed 2026-09-22: catalog only, not code-enforced."},
-    {"id":"P-04","impacts":["SEG113-R-014"],"blocks":[],"question":"Should the validator enforce the cross-segment (110<->113) Extended MICR Data / MICR Data relationship?","status":"RESOLVED","resolution":"User confirmed 2026-09-22: catalog only, not code-enforced."},
-    {"id":"P-05","impacts":["AI-artifacts"],"blocks":["Item 2"],"question":"Location of AI-generated Segment 113 BR/TS/TC/TD packages (none supplied as of this training pass).","status":"OPEN"},
-    {"id":"P-06","impacts":["test-data"],"blocks":["Item 1","Item 3"],"question":"Availability of real Segment 113 sample JSONs, or approval to continue with synthesized .synthetic.json fixtures.","status":"RESOLVED","resolution":"User confirmed 2026-09-22: proceed with synthetic placeholders, matching Segments 103/108."},
-    {"id":"P-07","impacts":["SEG113-R-002"],"blocks":[],"question":"Section 11.3.1's field table marks Segment 113 as 'R' (Required), but its narrative intro says Data Section 3 contains 'none, one, or more' of Segments 110/111/113 (implying optional). Which governs?","status":"RESOLVED","resolution":"User confirmed 2026-09-22: keep Segment 113 conditional (current validator behavior); it is populated when Card Type = 046 (ECA/TeleCheck) specifically, not required for every check-processing Card Type (041/045/046)."},
-    {"id":"P-08","impacts":["SEG113-R-017","SEG110-R-001"],"blocks":[],"question":"Is Segment 111 required in every ECA/TeleCheck Service Transaction Request? The Section 11.3.1 layout table marks it 'R' in Field No. 5, but the narrative intro says Data Section 3 contains 'none, one, or more' of Segments 110/111/113. P-07 settled this for Segment 113 only (conditional); it did not rule on Segment 111.","status":"OPEN"},
-    {"id":"P-09","impacts":["SEG113-R-001"],"blocks":[],"question":"May Segment 113 accompany a Financial Transaction Request? The Chapter 12 matrix marks 113 in the Financial Transaction Request column (like Segment 110) and Section 12.12 says it can appear in any Data Section 3 field, but the Section 11.1.1 table omits it. Cite the governing section.","status":"OPEN"},
-    {"id":"P-10","impacts":["SEG113-R-011"],"blocks":[],"question":"Are Void transactions supported for ECA/TeleCheck? Section 10.8.2 lists Purchase as the only supported check transaction, but Section 12.12 Field No. 7 (Trace ID, Element 134) must be present in 'all Void transaction requests'. If voids are supported, which Appendix G transaction type do they use (8, Purchase Reversal/Void)?","status":"OPEN"}
+    {"id":"P-01","status":"RESOLVED","impacts":["SEG113-R-002"],"blocks":[],"registerId":"SEG113-SME-001"},
+    {"id":"P-02","status":"RESOLVED","impacts":["SEG113-R-009"],"blocks":[],"registerId":"SEG113-SME-002"},
+    {"id":"P-03","status":"RESOLVED","impacts":["SEG113-R-011"],"blocks":[],"registerId":"SEG113-SME-003"},
+    {"id":"P-04","status":"RESOLVED","impacts":["SEG113-R-014"],"blocks":[],"registerId":"SEG113-SME-004"},
+    {"id":"P-05","status":"OPEN","impacts":["AI-artifacts"],"blocks":["Item 2"],"registerId":"SEG113-SME-005"},
+    {"id":"P-06","status":"RESOLVED","impacts":["test-data"],"blocks":["Item 1","Item 3"],"registerId":"SEG113-SME-006"},
+    {"id":"P-07","status":"RESOLVED","impacts":["SEG113-R-002"],"blocks":[],"registerId":"SEG113-SME-007"},
+    {"id":"P-08","status":"OPEN","impacts":["SEG113-R-017","SEG110-R-001"],"blocks":[],"registerId":"SEG113-SME-008"},
+    {"id":"P-09","status":"OPEN","impacts":["SEG113-R-001"],"blocks":[],"registerId":"SEG113-SME-009"},
+    {"id":"P-10","status":"OPEN","impacts":["SEG113-R-011"],"blocks":[],"registerId":"SEG113-SME-010"}
   ],
   "itemProgress": {
     "item1_coverageClosure":"COMPLETE",

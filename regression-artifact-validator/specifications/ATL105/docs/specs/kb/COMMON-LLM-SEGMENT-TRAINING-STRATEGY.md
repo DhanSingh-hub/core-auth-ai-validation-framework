@@ -10,7 +10,7 @@
 ## Contents
 
 1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
-2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
+2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
 3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy)
 4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
 5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
@@ -23,7 +23,7 @@
 3. Open `kb/segment-<NNN>/` and the segment's entry in `specifications/ATL105/training-status.json` to see which gates are already passed.
 4. Work through the [Nine-Phase Strategy](#common-nine-phase-strategy) in order. Each phase is a gate in `training-status.json`; do not skip one.
 5. Build the Test Solution code with the [8-Item Framework](#test-solution-implementation-8-item-framework).
-6. Write anything that is specific to the segment in the segment's addendum (its `README.md` and SME/TBA register), not in this handbook.
+6. Write anything that is specific to the segment in the segment's addendum (its `README.md`), not in this handbook. Record every open question in the [Communication Register](#communication-register).
 7. Pass the [Completion Gate](#completion-gate) and the [Sign-Off Checklist](#sign-off-checklist), then commit to the segment branch and merge to `Develop`.
 8. If you learn something that would help the next tester, add it to [Lessons Learned](#lessons-learned) in the same change (the [Automatic Update Rule](#automatic-update-rule)).
 
@@ -58,6 +58,34 @@ Knowledge-base BR coverage must preserve composite evidence as multiple `sourceE
 All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
 
 The register is validated by `ValidateSmeDecisionRegister`; a decision register is invalid if decision IDs are duplicated, required evidence is absent, a promoted decision has no reviewer/date, or a promoted `CONFIRMED_MATCH`/`NEW_RULE` lacks a complete canonical source anchor.
+
+## Communication Register
+
+Every question, discussion topic, and piece of feedback is recorded once, in [atl105-communication-register.json](../../../registers/atl105-communication-register.json). Do not keep a separate list in a report, README, or catalog.
+
+| Channel | ID | Use it for |
+|---|---|---|
+| `SME_QUERY` | `SEG<NNN>-SME-<nnn>` | A question only the SME/TBA can answer, such as an ambiguous or conflicting specification rule |
+| `TEST_TEAM` | `TT-<nnnn>` | A decision or task for the Test Team |
+| `AI_DEV_DISCUSSION` | `AID-<nnnn>` | A topic to agree with the AI developers before either side changes |
+| `AI_FEEDBACK` | `AIF-<nnnn>` | A correction the AI Solution Team must make in its next delivery |
+
+Register contents on 2026-09-29. For current figures, see the [register index](../../../registers/views/index.md).
+
+| Channel | IDs | Count | Status |
+|---|---|---|---|
+| Queries to the SME | `SEG<NNN>-SME-nnn` | 197 | 163 open, 3 reopened, 29 resolved, 2 deferred |
+| Test team discussion | `TT-nnnn` | 10 | 9 open, 1 resolved |
+| Open topics with the AI developers | `AID-nnnn` | 4 | 4 open |
+| Feedback to the AI team | `AIF-nnnn` | 11 | 11 open |
+
+How to use it:
+
+1. Add or update the item in the register JSON. Record the context, the test impact, the evidence, and any related item IDs. Statuses are `OPEN`, `IN_DISCUSSION`, `ANSWERED`, `REOPENED`, `RESOLVED`, `DEFERRED`, `WITHDRAWN`, and `SUPERSEDED`. A closed item needs a resolution, `resolvedBy`, and `resolvedOn`. When you reopen an item, add a `history` entry instead of overwriting the earlier answer.
+2. Regenerate the views with `GenerateCommunicationRegisterViews`. It writes the per-segment `kb/segment-<NNN>/segment-<NNN>-sme-tba-input-register.md` files and the channel views in [registers/views/](../../../registers/views/index.md). The views are generated: never edit them by hand.
+3. Run `CommunicationRegisterTest`. It fails if an ID is duplicated or malformed, a related item does not exist, a closed item has no resolution, a catalog and the register disagree, or a view is out of date.
+
+An SME answer that changes coverage is still recorded in the [SME decision register](#sme-decision-persistence). The communication register records that the question was answered; the decision register records the coverage decision.
 
 ## Required Training Record
 
@@ -133,7 +161,7 @@ Every rule in a segment rule catalog (`kb/segment-<NNN>/coverage/segment-<NNN>-r
 
 Add `element` when the rule is about a single element. The anchor is created before the BR (Phase 1), is the only key used for AI-to-Test matching, and must resolve to a section present in the extracted ATL105 2026-3 text. Catalog IDs follow `ATL105-SEG<NNN>-RULE-CATALOG-001` and rule IDs follow `SEG<NNN>-R-<nnn>`.
 
-If the rule depends on an interpretation that the specification does not settle, mark it `PROVISIONAL`, add an open item to the catalog's `provisionalItems` and the segment's SME/TBA register, and keep it `REVIEW_REQUIRED`.
+If the rule depends on an interpretation that the specification does not settle, mark it `PROVISIONAL`, keep it `REVIEW_REQUIRED`, and raise an `SME_QUERY` in the [Communication Register](#communication-register). In the catalog's `provisionalItems`, record only `id`, `status`, `impacts`, `blocks`, and `registerId`. The question and answer are written only in the register, and the catalog status must match the register status.
 
 ## Canonical BR Taxonomy
 
@@ -357,7 +385,8 @@ A segment is not certified merely because its folder, README, or rule catalog ex
 
 Complete this for every segment before merging to `Develop`:
 
-- [ ] **Specification coverage:** every segment rule is in the catalog with a complete `sourceAnchor`; unclear rules are `PROVISIONAL` with an SME item.
+- [ ] **Specification coverage:** every segment rule is in the catalog with a complete `sourceAnchor`; unclear rules are `PROVISIONAL` with an `SME_QUERY` in the communication register.
+- [ ] **Communication register:** every question, discussion topic, and feedback item from this work is in the register, the views are regenerated, and `CommunicationRegisterTest` passes.
 - [ ] **Specification cross-check:** the layout table, segment section, Chapter 13 element definitions, and Chapter 12 matrix are reconciled, and conflicts are logged ([L7](#lessons-learned)).
 - [ ] **Items 1-8:** every class and test class exists and passes.
 - [ ] **Mutation detection:** at least 85% overall, 100% for source-critical mutations, and each `MISSED_CATCH` is explained.
@@ -381,7 +410,7 @@ Every tester follows these rules. Add new lessons here, numbered in sequence, in
 
 **L4. Keep isolated debug tests ready.** When detection drops below 85%, create `Segment<NNN>ValidatorDetectionTest` immediately and test the failing mutation on its own.
 
-**L5. Mark ambiguities on day one.** `PROVISIONAL` items flagged late took longest to resolve. Record the exact question in the SME/TBA register while reading the specification.
+**L5. Mark ambiguities on day one.** `PROVISIONAL` items flagged late took longest to resolve. Record the exact question as an `SME_QUERY` in the [Communication Register](#communication-register) while reading the specification.
 
 **L6. Compare lookalike elements before assuming a format.** Element 62 says "always precede single digits with a zero"; Element 63 says "variable length of up to two digits". Read the Chapter 13 entry for every field instead of copying a neighbouring field's pattern.
 
@@ -415,6 +444,8 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L16. Read the Chapter 12 matrix from the PDF, not the extracted text.** `extracted_text.txt` collapses the spaces between the matrix's X marks, so you cannot tell which column an X belongs to. Extract the matrix pages (PDF pages 216-219) with a layout-preserving extractor, such as `pypdf`'s `extract_text(extraction_mode="layout")`, and map each X by its horizontal position against rows whose columns are known. This showed that Segment 113 is marked in the Financial Transaction Request column, which the extracted text had hidden.
 
+**L17. Write each question once.** Before the communication register, questions were kept in the catalog, the segment register, reports, and backlog files, and the copies drifted. The Segment 108, 109, and 115 catalogs numbered the same questions differently from their registers. The Segment 104 questions were only in a report. Write the question in the register and link to it everywhere else.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -436,3 +467,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 |---|---|
 | 2026-09-29 | Became the single handbook. Merged `docs/SEGMENT-100-TRAINING-METHODOLOGY.md` (8-item framework, mutation set, lessons 1-7, checklist) and `docs/test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md` (matching responsibility, BR taxonomy, Segment 100 evidence map, lessons 6.1-6.8), then deleted both and repointed all links here. |
 | 2026-09-29 | Archived the 2026-09-23 improvement-plan pack (gap analysis, roadmap, index, quick reference, executive summary, week-1 checklist) to [docs/archive/2026-09-23-test-solution-improvement-plan/](../../archive/2026-09-23-test-solution-improvement-plan/). Folded in: Test Case structure (Phase 5), mutation classification (Phase 7), and the coverage denominator. Not adopted: the "90% of AI-extracted BRs" target (see L12). Its status figures are a 2026-09-23 snapshot and are out of date. |
+| 2026-09-29 | Added the [Communication Register](#communication-register) and L17. The 43 segment SME/TBA registers became generated views, with new registers for Segments 100, 101, 103, 104, 111, and 120. Catalog `provisionalItems` now hold only a `registerId`. The AI feedback corrections became `AIF-` items, and `SME-REVIEW-BACKLOG.md` was archived as SEG100-SME-001. |
