@@ -333,7 +333,7 @@ class CanonicalTraceabilityValidatorTest {
                 artifactPackage.getTestData().get(0).setPayload(mapper.readTree("""
                                 {
                                     "request": {
-                                        "dataSection1": {"messageFormatVersionIdentifier":"ATL104","numberOfSegments":"1"},
+                                        "dataSection1": {"messageFormatVersionIdentifier":"ATL104","numberOfSegments":"0"},
                                         "dataSection2": {"standardSegment": {
                                             "segmentType":"101", "terminalIdentifier":"bad id", "promptCode":"2",
                                             "sequenceNumber":"ABC", "partialApprovalIndicator":"9"
@@ -507,6 +507,47 @@ class CanonicalTraceabilityValidatorTest {
                 assertThat(result.errors()).anyMatch(error -> error.reason().contains("declares 1 segments"));
                 assertThat(result.errors()).anyMatch(error -> error.reason().contains("between Elements 55 and 63"));
                 assertThat(result.errors()).anyMatch(error -> error.reason().contains("after Element 63"));
+            }
+
+            @Test
+            void acceptsUnpaddedSingleDigitElement63() throws Exception {
+                ValidationResult result = validateElement63("1", "");
+
+                assertThat(result.errors()).isEmpty();
+            }
+
+            @Test
+            void rejectsElement63OutsideStandardRange() throws Exception {
+                assertThat(validateElement63("0", "").errors())
+                        .anyMatch(error -> error.reason().contains("must be 1-7 for a standard request"));
+                assertThat(validateElement63("08", "").errors())
+                        .anyMatch(error -> error.reason().contains("must be 1-7 for a standard request"));
+                assertThat(validateElement63("123", "").errors())
+                        .anyMatch(error -> error.reason().contains("must be one or two digits"));
+            }
+
+            @Test
+            void capsElement63AtSixForEmvRequests() throws Exception {
+                ValidationResult result = validateElement63("07", "{\"segmentType\":\"130\"}");
+
+                assertThat(result.errors())
+                        .anyMatch(error -> error.reason().contains("must be 1-6 for an EMV request"));
+            }
+
+            private ValidationResult validateElement63(String numberOfSegments, String section3Segment) throws Exception {
+                CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+                artifactPackage.getTestData().get(0).setPayload(new ObjectMapper().readTree("""
+                        {
+                          "request": {
+                            "dataSection1": {"numberOfSegments": "%s",
+                              "fieldSeparators": {"betweenElements55And63": true, "afterElement63": true}},
+                            "dataSection2": {"standardSegment": {"segmentType": "100"}},
+                            "dataSection3": [%s]
+                          },
+                          "testControls": {"validateDataSection1": true}
+                        }
+                        """.formatted(numberOfSegments, section3Segment)));
+                return new DataSection1StructureValidator().validate(artifactPackage);
             }
 
             @Test
