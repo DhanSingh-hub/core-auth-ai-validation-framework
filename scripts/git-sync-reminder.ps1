@@ -1,9 +1,15 @@
 # Every 30 minutes: remind to commit and push, offer a pull request to Develop, and flag conflicts with Develop.
+# Every 15 minutes while on Develop: ask to switch to a child branch of Develop.
 # Started by the "Git sync reminder" VS Code task when the folder opens. It never commits or pushes.
 param(
     [int]$IntervalMinutes = 30,
+    [int]$DevelopIntervalMinutes = 15,
     [switch]$Once
 )
+
+$DevelopWarning = "You are working directly on Develop. Switch to a child branch of Develop and merge it back through " +
+    "a pull request; do not work on Develop directly. To switch: git switch -c <your-branch> (uncommitted changes move " +
+    "with you). This reminder repeats every $DevelopIntervalMinutes minutes while you are on Develop."
 
 Add-Type -AssemblyName System.Windows.Forms
 Set-Location (Split-Path -Parent $PSScriptRoot)
@@ -47,11 +53,12 @@ function Invoke-Check {
 
     if ($branch -eq 'main') {
         Show-Prompt ("You are on main. Do not commit or push to main: it is updated only by the weekly pull request " +
-            "from Develop. Switch to your own branch or to Develop.") $title 'OK' 'Warning' | Out-Null
+            "from Develop. Switch to a child branch of Develop.") $title 'OK' 'Warning' | Out-Null
         return
     }
 
     $notes = @()
+    if ($branch -eq 'Develop') { $notes += "- $DevelopWarning" }
     $dirty = @((Invoke-Git status --porcelain).Lines | Where-Object { $_ }).Count
     if ($dirty) { $notes += "- $dirty uncommitted file(s): commit them." }
 
@@ -81,7 +88,7 @@ function Invoke-Check {
         $text = (($notes + '') -join "`n") + "$ahead pushed commit(s) are not in Develop yet. Open a pull request to merge $branch into Develop now?"
         if ((Show-Prompt $text.Trim() $title 'YesNo' 'Question') -eq 'Yes') { Start-Process $prUrl }
     } elseif ($notes.Count) {
-        $icon = if ($conflicts.Count) { 'Warning' } else { 'Information' }
+        $icon = if ($conflicts.Count -or $branch -eq 'Develop') { 'Warning' } else { 'Information' }
         Show-Prompt ($notes -join "`n") $title 'OK' $icon | Out-Null
     }
 }
@@ -90,7 +97,17 @@ if (-not (Invoke-Git config --get core.hooksPath).Lines[0]) {
     Invoke-Git config core.hooksPath .githooks | Out-Null
 }
 
+# Wake every 15 minutes; run the full check every 30 and the Develop warning alone in between.
+$ticksPerCheck = [Math]::Max(1, [int]($IntervalMinutes / $DevelopIntervalMinutes))
+$tick = 0
 do {
-    if (-not $Once) { Start-Sleep -Seconds ($IntervalMinutes * 60) }
-    try { Invoke-Check } catch { Write-Warning $_ }
+    if (-not $Once) { Start-Sleep -Seconds ($DevelopIntervalMinutes * 60) }
+    $tick++
+    try {
+        if ($Once -or $tick % $ticksPerCheck -eq 0) {
+            Invoke-Check
+        } elseif ((Invoke-Git branch --show-current).Lines[0] -eq 'Develop') {
+            Show-Prompt $DevelopWarning 'Git reminder: Develop' 'OK' 'Warning' | Out-Null
+        }
+    } catch { Write-Warning $_ }
 } while (-not $Once)
