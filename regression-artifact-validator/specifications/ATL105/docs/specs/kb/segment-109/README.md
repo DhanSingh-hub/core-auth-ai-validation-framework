@@ -44,10 +44,10 @@
 | Segment number | 109 | Section 12.8 |
 | Segment name | Electronic Mail Data Segment | Section 12.8 heading |
 | Purpose | Carries electronic-mail-specific request data for retrieval or submission | Sections 10.11 and 11.5 |
-| Placement | Field 3 in Data Section No. 2 of an Electronic Mail Request | Section 11.5.1 |
+| Placement | Field No. 3 of an Electronic Mail Request, the only segment. The specification labels it Data Section No. 2; under the request data-section convention (TT-0014) it is Data Section 3 (SEG109-SME-012) | Sections 11.5.1, 12.8 |
 | Origin | Device | Section 12.8 |
 | Segment length range | 001-232 alphanumeric characters | Section 12.8 |
-| Request envelope | Data Section 1 has Elements 55 and 63; Data Section 2 carries Segment 109 | Section 11.5.1 |
+| Request envelope | Data Section 1 has Elements 55 and 63; Segment 109 follows in Field No. 3; no Segment 100 | Section 11.5.1 |
 | Response envelope | Variable-length, positional Electronic Mail Response; no field separators | Section 11.5.2 |
 
 ## 2. Field Layout

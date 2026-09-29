@@ -4,7 +4,7 @@
 
 These answers are required to convert the source-backed Segment 116 catalog into approved business requirements, fixtures, and validators. An unanswered item remains `REVIEW_REQUIRED`; it must not be inferred or treated as certified coverage.
 
-**Status:** 6 open (6 total).
+**Status:** 7 open (7 total).
 
 | ID | Question | Why it is needed | Test impact | Status | Resolution | Catalog |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -14,6 +14,7 @@ These answers are required to convert the source-backed Segment 116 catalog into
 | <a id="seg116-sme-004"></a>SEG116-SME-004 | Confirm the relationship between the Segment 111 "Additional TransArmor Data" sub-table (Table ID 052) and the Segment 116 Key/Key ID Load flow: always used together, or independent alternate mechanisms? | Needed to know whether Segment 116 test packages must be paired with a Segment 111 fixture. | Cross-segment pairing tests. | OPEN |  | `P-04`, SEG116-R-008 |
 | <a id="seg116-sme-005"></a>SEG116-SME-005 | Confirm that the 15 entries filtered from `test-input/ai-solution/runs/2026-09-23/Run1/step5_requirements/approved/requirement_catalog.json` for Segment 116 are the authoritative AI-generated requirement set, or provide an updated/approved AI artifact package. | Item 2 must compare producer output against the independent specification oracle, not a self-supplied filter. | AI artifact comparison and Item 4 traceability. | OPEN |  | `P-05` |
 | <a id="seg116-sme-006"></a>SEG116-SME-006 | Provide one sanitized, converter-ready TransArmor Key/Key ID Load request/response example, or approve clearly labelled synthetic fixtures for preliminary training, once `SEG116-SME-001` is resolved. | Needed for Item 1 baseline validation, Item 3 independence, and Item 6 mutation execution. | Baseline, isolation, and batch-mutation tests. | OPEN |  | `P-06` |
+| <a id="seg116-sme-007"></a>SEG116-SME-007 | The Element 63 (Number of Segments) processing rule says TransArmor Key Load requests are 'followed by Data Section No. 2, which contains Data Segment No. 116' and Communications Test requests by 'Data Section No. 2 which contains Element No. 120'. Is Segment 116 the only segment, in Field No. 3, and is the Data Section 2 label only descriptive for both messages? | Chapter 13, Element 63 (Number of Segments), Processing Rules. Section 11.7.5 (TransArmor) refers to a separate TransArmor document, and Section 11.6.1 (Communications Test) is a positional message with Element 55 at position 1 and Element 120 at position 9, with no Element 63 and no data sections. Every other request reserves Data Section 2 for Segment 100. | Under the request convention in TT-0014 the Test Solution treats Segment 116 as Data Section 3, Field No. 3, and follows Section 11.6.1's positional layout for the Communications Test. | OPEN |  |  |
 
 ## Response Format
 

@@ -57,8 +57,8 @@ Neither section contains a field table, a request/response message layout, or fi
 | Segment number | 116 | Chapter 13, Element 85 valid-codes table |
 | Segment name | TransArmor Load Data Segment | Section 12.15 heading |
 | Purpose | Key and Key ID Load for TransArmor PKI Encryption and Tokenization | Chapter 13, Element 85 processing rule |
-| Placement | Data Section 2 of the TransArmor PKI Encryption and Tokenization Load Request, directly following Data Section 1 (Elements 55, 63) | Chapter 13, Element 63 processing rule |
-| Request envelope shape (analogy, not shown directly) | Data Section 1 (Elements 55, 63) + Data Section 2 (Segment 116); likely no Segment 100 and no Data Section 3, by analogy with the Totals/Loyalty/Electronic Mail/ECA-TeleCheck/Communications-Test requests listed in the same source paragraph | Chapter 13, Element 63 processing rule - see `SEG116-SME-002` |
+| Placement | Field No. 3 of the TransArmor PKI Encryption and Tokenization Load Request, directly following Data Section 1 (Elements 55, 63). The Element 63 processing rule labels it Data Section 2; under the request data-section convention (TT-0014) it is Data Section 3 (SEG116-SME-007) | Chapter 13, Element 63 processing rule |
+| Request envelope shape (analogy, not shown directly) | Data Section 1 (Elements 55, 63) + Segment 116 in Field No. 3; likely no Segment 100 and no other segment, by analogy with the Totals/Loyalty/Electronic Mail/ECA-TeleCheck/Communications-Test requests listed in the same source paragraph | Chapter 13, Element 63 processing rule - see `SEG116-SME-002` |
 | Segment length range | 01-50 alphanumeric characters | Chapter 13, Element 84 length table |
 | Field-by-field layout | **Not available in this workspace.** Sections 12.15 and 11.7.5 redirect to the external TransArmor specification-updates document | Sections 12.15, 11.7.5 - see `SEG116-SME-001` |
 | Response | TransArmor Load Response; contains Key ID (155), Key Data Length (156), Key Data (157) | Chapter 13, Elements 155-157 |

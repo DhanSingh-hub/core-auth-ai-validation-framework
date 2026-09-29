@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 12 open (12 total).
+**Status:** 13 open (13 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -20,6 +20,7 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0010](#aif-0010) | Build ECA/TeleCheck Service Transaction Requests to the Section 11.3.1 layout | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0011](#aif-0011) | Build every test case with the Chapter 11 structure of its message | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0012](#aif-0012) | Build Totals Requests to the Section 11.4.1 layouts | OPEN | AI Solution Team | 2026-09-29 |
+| [AIF-0013](#aif-0013) | Associate an element with the Segment 151/152 Market Basket Data requirements | OPEN | AI Solution Team | 2026-09-29 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -273,3 +274,18 @@ Use the message names above as the root keys, as in the other message layouts (s
 - `AI delivery reporting/output/qe_shaped_test_data/TC-10023.json (Totals Request) and TC-10024.json (Totals with Proprietary Data Load Request)`
 
 **Related:** [AIF-0011](ai-feedback.md#aif-0011), [AID-0002](ai-dev-discussion.md#aid-0002), [SEG105-SME-007](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-007), [SEG105-SME-010](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-010), [SEG119-SME-001](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-001), [SEG119-SME-008](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-008)
+
+<a id="aif-0013"></a>
+## AIF-0013: Associate an element with the Segment 151/152 Market Basket Data requirements
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-29 by saurabhtw28
+- **Segments:** 151, 152
+- **Target delivery:** Next delivery after 2026-09-29 phase_1_single_leg
+
+The phase_1_single_leg requirements for segments 151 and 152 ('Market Basket Data') carry no ENT-ELEM-* entry in related_entity_ids; only the ENT-SEG-* entry is present. Every other full chain in the delivery resolves to an element. Without an element the requirement cannot be anchored to a rule, so it cannot enter anchored comparison.
+
+Our catalogs record element 85 for segment 151 and elements 84/85 for segment 152.
+
+**Related:** [AIF-0005](ai-feedback.md#aif-0005)

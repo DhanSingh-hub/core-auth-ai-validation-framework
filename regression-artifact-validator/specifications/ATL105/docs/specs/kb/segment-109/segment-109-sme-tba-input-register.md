@@ -4,7 +4,7 @@
 
 These answers are required to convert the source-backed Segment 109 catalog into approved business requirements, fixtures, and validators. An unanswered item remains `REVIEW_REQUIRED`; it must not be inferred or treated as certified coverage.
 
-**Status:** 11 open (11 total).
+**Status:** 12 open (12 total).
 
 | ID | Question | Why it is needed | Test impact | Status | Resolution | Catalog |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -19,6 +19,7 @@ These answers are required to convert the source-backed Segment 109 catalog into
 | <a id="seg109-sme-009"></a>SEG109-SME-009 | Explain how the 750-byte retrieval print-data cap and 217-byte submission-data cap map to Segment 109 Text Data, response Mail Text Data, and multi-block aggregation. | The source limits operation payloads while Segment 109 Text Data has a 150-character field limit. | Length, fragmentation, and response-content tests. | OPEN |  | `P-09`, SEG109-R-019, SEG109-R-020 |
 | <a id="seg109-sme-010"></a>SEG109-SME-010 | Provide one sanitized, converter-ready request/response pair for each enabled retrieval, proprietary-card retrieval, and submission flow; otherwise approve synthetic fixtures. | Needed for Item 1 baseline validation, Item 3 independence, and Item 6 mutation execution. | Baseline, isolation, and batch-mutation tests. | OPEN |  | `P-11` |
 | <a id="seg109-sme-011"></a>SEG109-SME-011 | Provide the path to AI-generated Segment 109 BR/TS/TC/TD packages. | Item 2 must compare producer output against the independent specification oracle. | AI artifact comparison and Item 4 traceability. | OPEN |  | `P-10` |
+| <a id="seg109-sme-012"></a>SEG109-SME-012 | Does the 'Data Section No. 2' label for Segment 109 have any processing meaning, or is an Electronic Mail Request laid out exactly like the Proprietary Data Load Request, whose single segment the specification places in Data Section 3? | Sections 11.5.1 (text and table) and 12.8 place Segment 109 in 'Field No. 3 in Data Section No. 2'; 12.8 then refers to Section 11.1 'for additional information about Data Section No. 3'. Every other request reserves Data Section 2 for Segment 100: Totals (11.4.1.1, 11.4.1.2) and Proprietary Data Load (11.7.6.1) requests have one non-100 segment in Field No. 3 and label it Data Section 3. Data sections carry no marker on the wire, so both labels serialize identically. | The Test Solution treats Segment 109 as Data Section 3, Field No. 3 under the request convention in TT-0014, and writes message-layout rules by field number. A different answer would only change the label cited in SEG109-R-001 and SEG109-R-003. | OPEN |  | SEG109-R-001, SEG109-R-003 |
 
 ## Response Format
 

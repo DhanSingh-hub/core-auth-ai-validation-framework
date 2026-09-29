@@ -4,7 +4,7 @@
 
 Items the Test Team can decide internally: process, tooling, fixtures and validator policy.
 
-**Status:** 9 open, 1 resolved (10 total).
+**Status:** 12 open, 2 resolved (14 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -18,6 +18,10 @@ Items the Test Team can decide internally: process, tooling, fixtures and valida
 | [TT-0008](#tt-0008) | Re-run Run2 validation after the 2026-09-29 validator fixes | OPEN | Test Team | 2026-09-29 |
 | [TT-0009](#tt-0009) | Fix six broken links found during the handbook consolidation | OPEN | Test Team | 2026-09-29 |
 | [TT-0010](#tt-0010) | Build the Segment 112 Java validator in this pass? | RESOLVED | Test Team | 2026-09-26 |
+| [TT-0011](#tt-0011) | Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs | OPEN | Test Team | 2026-09-29 |
+| [TT-0012](#tt-0012) | Populate element numbers in the Segment 156 rule catalog | OPEN | Test Team | 2026-09-29 |
+| [TT-0013](#tt-0013) | Decide the encoding for multi-element sourceAnchors in rule catalogs | OPEN | Test Team | 2026-09-29 |
+| [TT-0014](#tt-0014) | Adopt a request data-section convention: Data Section 2 holds only Segment 100 | RESOLVED | Test Team | 2026-09-29 |
 
 <a id="tt-0001"></a>
 ## TT-0001: Run the full JUnit suite on a machine with Nexus access
@@ -135,3 +139,56 @@ Decided during the 2026-09-26 SME/TBA intake: no, the Segment 112 pass is docume
 **Related:** [SEG112-SME-003](../../docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md#seg112-sme-003), [SEG112-SME-006](../../docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md#seg112-sme-006)
 
 **Resolution (2026-09-26, Test Team):** No; documentation-only pass. Revisit after SEG112-SME-003 and SEG112-SME-006.
+
+<a id="tt-0011"></a>
+## TT-0011: Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs
+
+- **Status:** OPEN
+- **Owner:** Test Team
+- **Raised:** 2026-09-29 by saurabhtw28
+- **Segments:** DL2, DL3, DL4, DL5, DL6
+
+The DL2-DL6 rule catalogs carry no sourceAnchor for element 24, even though our own knowledge base documents the Data Type Indicator as field 1 of each of these segments and records the distinct framing character per segment (DL4 '@', DL5 '$', DL6 '\'). Only SEGDL1-R-002 anchors element 24 (as the string '24,34'). Because the element is described in prose but never anchored, an AI requirement correctly identifying field 1 as required cannot be matched to any Test Solution rule for DL2-DL6.
+
+Add an element-24 anchored rule to each of the five catalogs, mirroring SEGDL1-R-002.
+
+<a id="tt-0012"></a>
+## TT-0012: Populate element numbers in the Segment 156 rule catalog
+
+- **Status:** OPEN
+- **Owner:** Test Team
+- **Raised:** 2026-09-29 by saurabhtw28
+- **Segments:** 156
+
+Every rule in ATL105-SEG156-RULE-CATALOG-001 (7 rules) has an empty 'element' on its sourceAnchor. Segment 156 is the only trained segment whose catalog records no element identity at all, so no element-level comparison against a producer artifact is possible for this segment.
+
+Populate sourceAnchor.element for each Segment 156 rule, including element 242 (EV Charging Data).
+
+<a id="tt-0013"></a>
+## TT-0013: Decide the encoding for multi-element sourceAnchors in rule catalogs
+
+- **Status:** OPEN
+- **Owner:** Test Team
+- **Raised:** 2026-09-29 by saurabhtw28
+
+Rule catalogs encode multi-element anchors as a comma-separated STRING, e.g. SEGDL1-R-002 element '24,34' and SEGDL1-R-003 element '53,98,3,4,54'. canonical-anchor.schema.json types 'element' as a single string, so this overloads the field and silently breaks any consumer doing an equality lookup: a tool searching for element '24' does not match the key '24,34'.
+
+Either (a) change 'element' to an array and update the schema, (b) emit one rule per element, or (c) document the delimiter in the schema and require consumers to split. Option (a) is preferred because it keeps one rule per business rule.
+
+<a id="tt-0014"></a>
+## TT-0014: Adopt a request data-section convention: Data Section 2 holds only Segment 100
+
+- **Status:** RESOLVED
+- **Owner:** Test Team
+- **Raised:** 2026-09-29 by saurabhtw28
+
+Cross-checked against every Chapter 11 layout in the PDF and every Chapter 12 placement statement.
+
+- Seven request layouts fit the convention: Financial (11.1.1), Loyalty (11.2.1), ECA/TeleCheck (11.3.1), EMV Financial (11.8.1) put Segment 100 alone in Data Section 2 and all other segments in Data Section 3; Totals (11.4.1.1, 11.4.1.2) and Proprietary Data Load (11.7.6.1) have no Data Section 2 ('do not contain Data Section No. 2 [Standard Message Data Segment (Data Segment No. 100)]') and place their single segment in Data Section 3, Field No. 3. Chapter 12 agrees for Segments 100 to 105, 108, 110, 111, 113, 114, 119, 130, 151 and 157.
+- The specification labels differently in four places: Electronic Mail (11.5.1 and 12.8 put Segment 109 in Data Section 2; SEG109-SME-012), CA Public Key File Load (11.9.1 contradicts itself; SEG132-SME-006), and the Element 63 processing rule for TransArmor and Communications Test (SEG116-SME-007).
+- Responses do not follow it: their Data Section 1 holds response elements, the Financial and EMV responses put Segments 112, 115, 120, 131 and 134 in Data Section 2, and the Proprietary Data Load response puts Segment 118 in Data Section 3. The Segment 131 conflict is SEG131-SME-001.
+- Communications Test, the Table, Phone, Date and Time, Software and Moneris Key loads, and all fixed-length responses have no data sections.
+
+**Related:** [SEG109-SME-012](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md#seg109-sme-012), [SEG116-SME-007](../../docs/specs/kb/segment-116/segment-116-sme-tba-input-register.md#seg116-sme-007), [SEG132-SME-006](../../docs/specs/kb/segment-132/segment-132-sme-tba-input-register.md#seg132-sme-006), [SEG131-SME-001](../../docs/specs/kb/segment-131/segment-131-sme-tba-input-register.md#seg131-sme-001)
+
+**Resolution (2026-09-29, Test Team):** Adopted for requests only. In every request that uses data sections, Data Section 1 holds Elements 55 and 63, Data Section 2 holds only Segment 100 (when present), and Data Section 3 holds every other segment. Responses and positional messages follow their own layouts. The four labelling exceptions are recorded as SME queries and do not change the convention.

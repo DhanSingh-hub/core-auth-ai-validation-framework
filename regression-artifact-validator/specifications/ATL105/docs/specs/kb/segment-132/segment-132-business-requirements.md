@@ -27,7 +27,7 @@ Requirements are derived **only** from the Segment 132 rule catalog and the ATL1
 
 | ID | Class | Requirement | Acceptance criteria | Source | Status |
 |---|---|---|---|---|---|
-| BR-SEG132-001 | applicability | Segment 132 belongs to the CA Public Key File Load Request's Data Section 3, alongside optional companions 101, 102, 104, 111 | Segment presence or absence matches the stated condition for the message family; a violation fails citing the rule ID. | `SEG132-R-001` §11.9.1 | REVIEW_REQUIRED |
+| BR-SEG132-001 | applicability | In a CA Public Key File Load Request Segment 132 is in Field No. 3; whether Segments 101, 102, 104 and 111 may accompany it is unresolved (PROVISIONAL) | Segment presence or absence matches the stated condition for the message family; a violation fails citing the rule ID. | `SEG132-R-001` §11.9.1 | REVIEW_REQUIRED |
 | BR-SEG132-002 | field | Segment Type is fixed value 132, sourced at the Device | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG132-R-002` §12.22 | SPEC_DERIVED |
 | BR-SEG132-003 | field | Segment Length is 3 digits (not 4 — Segment 132 is NOT one of the seven 4-digit-length segments) | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG132-R-003` §12.22 | SPEC_DERIVED |
 | BR-SEG132-004 | serialization | Segment 132 maximum length is 77 alphanumeric characters (01-77/a-z/A-Z) | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEG132-R-004` §12.22 | REVIEW_REQUIRED |

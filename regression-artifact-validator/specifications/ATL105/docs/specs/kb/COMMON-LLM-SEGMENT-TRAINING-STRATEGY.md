@@ -11,7 +11,7 @@
 
 1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
 2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
-3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy)
+3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [Data Sections](#request-data-section-convention), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy)
 4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
 5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
 6. Learn: [Lessons Learned](#lessons-learned), [Segment 100 Reference Implementation](#segment-100-reference-implementation), [Handbook History](#handbook-history)
@@ -74,10 +74,10 @@ Register contents on 2026-09-29. For current figures, see the [register index](.
 
 | Channel | IDs | Count | Status |
 |---|---|---|---|
-| Queries to the SME | `SEG<NNN>-SME-nnn` | 200 | 166 open, 3 reopened, 29 resolved, 2 deferred |
-| Test team discussion | `TT-nnnn` | 10 | 9 open, 1 resolved |
+| Queries to the SME | `SEG<NNN>-SME-nnn` | 203 | 169 open, 3 reopened, 29 resolved, 2 deferred |
+| Test team discussion | `TT-nnnn` | 14 | 12 open, 2 resolved |
 | Open topics with the AI developers | `AID-nnnn` | 4 | 4 open |
-| Feedback to the AI team | `AIF-nnnn` | 12 | 12 open |
+| Feedback to the AI team | `AIF-nnnn` | 13 | 13 open |
 
 How to use it:
 
@@ -162,6 +162,33 @@ Every rule in a segment rule catalog (`kb/segment-<NNN>/coverage/segment-<NNN>-r
 Add `element` when the rule is about a single element. The anchor is created before the BR (Phase 1), is the only key used for AI-to-Test matching, and must resolve to a section present in the extracted ATL105 2026-3 text. Catalog IDs follow `ATL105-SEG<NNN>-RULE-CATALOG-001` and rule IDs follow `SEG<NNN>-R-<nnn>`.
 
 If the rule depends on an interpretation that the specification does not settle, mark it `PROVISIONAL`, keep it `REVIEW_REQUIRED`, and raise an `SME_QUERY` in the [Communication Register](#communication-register). In the catalog's `provisionalItems`, record only `id`, `status`, `impacts`, `blocks`, and `registerId`. The question and answer are written only in the register, and the catalog status must match the register status.
+
+## Request Data Section Convention
+
+Decided by the Test Team on 2026-09-29 (TT-0014) after cross-checking every Chapter 11 layout and Chapter 12 placement statement in the PDF. In every **request** that uses data sections:
+
+| Data section | Contains |
+|---|---|
+| 1 | Element 55 (Message Format Version Identifier) and Element 63 (Number of Segments) |
+| 2 | Segment 100 only, in Field No. 3, when the message has it |
+| 3 | Every other segment, starting at Field No. 3 when there is no Segment 100 and Field No. 4 when there is |
+
+Seven request layouts follow this (11.1.1, 11.2.1, 11.3.1, 11.4.1.1, 11.4.1.2, 11.7.6.1 and 11.8.1), as do the Chapter 12 placement statements. The specification labels four cases differently; they are SME queries and do not change the convention:
+
+| Message | Specification label | Query |
+|---|---|---|
+| Electronic Mail Request | Segment 109 in Data Section 2 (11.5.1, 12.8) | SEG109-SME-012 |
+| CA Public Key File Load Request | 11.9.1 text and table contradict each other | SEG132-SME-006 |
+| TransArmor Key Load and Communications Test | The Element 63 processing rule puts Segment 116 and Element 120 in Data Section 2 | SEG116-SME-007 |
+
+The convention does not apply to responses, whose Data Section 1 holds response elements (the Financial and EMV responses put Segments 112, 115, 120, 131 and 134 in Data Section 2), or to positional messages without data sections: the Communications Test, the Table, Phone, Date and Time, Software and Moneris Key loads, and the fixed-length responses. For those, follow the section's own layout.
+
+**Writing message-layout rules.** Data sections have no marker on the wire, so a label cannot be validated:
+
+1. State the segment and its field number, for example "Segment 109 is the only segment, in Field No. 3". Take the data-section label from this convention.
+2. Where the specification labels the position differently, quote its label in the rule's `note` and cite the SME query. The rule stays enforceable.
+3. Validators check segment presence, order and Element 63, never data-section labels.
+4. Keep an existing rule's `sourceAnchor` unchanged when rewording it; the anchor is a matching key.
 
 ## Canonical BR Taxonomy
 
@@ -471,3 +498,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-29 | Archived the 2026-09-23 improvement-plan pack (gap analysis, roadmap, index, quick reference, executive summary, week-1 checklist) to [docs/archive/2026-09-23-test-solution-improvement-plan/](../../archive/2026-09-23-test-solution-improvement-plan/). Folded in: Test Case structure (Phase 5), mutation classification (Phase 7), and the coverage denominator. Not adopted: the "90% of AI-extracted BRs" target (see L12). Its status figures are a 2026-09-23 snapshot and are out of date. |
 | 2026-09-29 | Added the [Communication Register](#communication-register) and L17. The 43 segment SME/TBA registers became generated views, with new registers for Segments 100, 101, 103, 104, 111, and 120. Catalog `provisionalItems` now hold only a `registerId`. The AI feedback corrections became `AIF-` items, and `SME-REVIEW-BACKLOG.md` was archived as SEG100-SME-001. |
 | 2026-09-29 | Totals message layouts (Section 11.4): split the merged Totals Request template, added the Approved and Declined Totals Response templates, added message-level rules to Segments 105 and 119 with `TotalsRequestPayloadValidator`, and added L18. |
+| 2026-09-29 | Added the [Request Data Section Convention](#request-data-section-convention) (TT-0014) with SME queries SEG109-SME-012, SEG116-SME-007 and SEG132-SME-006, and the rule-writing principle; reworded SEG109-R-001, SEG109-R-003 and SEG116-R-005 by field number and made SEG132-R-001 PROVISIONAL. |
