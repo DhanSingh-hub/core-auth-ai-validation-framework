@@ -113,6 +113,41 @@ class Segment110PayloadValidatorTest {
         assertRule(payload, "SEG110-R-001");
     }
 
+    @Test
+    void acceptsEcaNumberOfSegmentsWithinRange() {
+        for (String value : new String[] {"1", "04", "4"}) {
+            ObjectNode payload = validRequest();
+            request(payload).put("NumberOfSegments", value);
+
+            assertThat(new Segment110PayloadValidator().validatePayload(payload).errors()).as(value).isEmpty();
+        }
+    }
+
+    @Test
+    void rejectsEcaNumberOfSegmentsOutsideRange() {
+        for (String value : new String[] {"0", "05"}) {
+            ObjectNode payload = validRequest();
+            request(payload).put("NumberOfSegments", value);
+
+            assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
+                    .as(value)
+                    .anyMatch(error -> error.reason().contains("must be 1-4"));
+        }
+    }
+
+    @Test
+    void rejectsNonNumericEcaNumberOfSegments() {
+        ObjectNode payload = validRequest();
+        request(payload).put("NumberOfSegments", "123");
+
+        assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("one or two digits"));
+    }
+
+    private static ObjectNode request(ObjectNode payload) {
+        return (ObjectNode) payload.path("ECA TeleCheck Service Transaction Request");
+    }
+
     private static void assertRule(ObjectNode payload, String ruleId) {
         ValidationResult result = new Segment110PayloadValidator().validatePayload(payload);
 

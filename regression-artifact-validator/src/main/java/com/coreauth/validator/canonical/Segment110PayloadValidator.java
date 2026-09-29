@@ -37,6 +37,8 @@ public final class Segment110PayloadValidator {
         "VT", "VA", "WA", "WV", "WI", "WY", "GU", "PR", "VI", "AA", "AE", "AP", "XX",
         "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT", "NA");
     private static final Set<String> VALID_CHECK_TYPES = Set.of("P", "C");
+    // Segment 100 + Data Section 3 Field Nos. 4-6 (110, 111, 113) per Section 11.3.1.
+    private static final int ECA_MAX_SEGMENTS = 4;
 
     private final ObjectMapper objectMapper;
 
@@ -82,6 +84,7 @@ public final class Segment110PayloadValidator {
 
         checkRequiredPresent(request, "MessageFormatVersionIdentifier", "SEG110-R-001", result);
         checkRequiredPresent(request, "NumberOfSegments", "SEG110-R-001", result);
+        checkEcaNumberOfSegments(text(request, "NumberOfSegments"), result);
 
         JsonNode segment = request.path("Check Data Segment");
         if (!segment.isObject()) {
@@ -155,6 +158,21 @@ public final class Segment110PayloadValidator {
         String value = text(node, field);
         if (value == null || value.isBlank()) {
             result.addError(SOURCE, "ECA TeleCheck Service Transaction Request." + field + " is required (" + ruleId + ")");
+        }
+    }
+
+    private static void checkEcaNumberOfSegments(String value, ValidationResult result) {
+        if (value == null || value.isBlank()) {
+            return;
+        }
+        if (!value.matches(DataSection1StructureValidator.ELEMENT_63_PATTERN)) {
+            result.addError(SOURCE, "ECA TeleCheck Service Transaction Request.NumberOfSegments must be one or two digits (SEG110-R-001)");
+            return;
+        }
+        int declared = Integer.parseInt(value);
+        if (declared < 1 || declared > ECA_MAX_SEGMENTS) {
+            result.addError(SOURCE, "ECA TeleCheck Service Transaction Request.NumberOfSegments declares " + declared
+                    + " but must be 1-" + ECA_MAX_SEGMENTS + " (SEG110-R-001)");
         }
     }
 

@@ -185,12 +185,12 @@ class Segment111TraceabilityMatrixTest {
             CanonicalArtifactPackage pkg = new CanonicalArtifactPackage();
             MatrixReport report = new Segment111TraceabilityMatrix(pkg).generateMatrix(catalog.anchors());
 
-            assertThat(report.metrics().totalRules()).isEqualTo(7);
+            assertThat(report.metrics().totalRules()).isEqualTo(8);
             // No test data exists yet for the 3 core-structure rules that do have BR/TS/TC,
             // so none can be FULLY_TRACED; they land in PARTIALLY_TRACED instead.
             assertThat(report.metrics().fullyTraced()).isEqualTo(0);
             assertThat(report.metrics().partiallyTraced()).isEqualTo(0);
-            assertThat(report.metrics().missingBusinessRequirements()).isEqualTo(7);
+            assertThat(report.metrics().missingBusinessRequirements()).isEqualTo(8);
             assertThat(report.metrics().completionPercentage()).isEqualTo(0.0);
         }
     }
