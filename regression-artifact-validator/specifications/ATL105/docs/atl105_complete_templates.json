@@ -3,7 +3,7 @@
   "architecture_alignment": "Output of Steps 1+2+3 — feeds into Step 5 (Canonical Knowledge Assembly) and Step 6 (Scenario Derivation)",
   "source_id": "SRC-ATL105-PDF-001",
   "assembled_at": "2026-09-10T12:43:14.806510",
-  "total_transaction_types": 11,
+  "total_transaction_types": 14,
   "total_segments_defined": 41,
   "total_elements_defined": 230,
   "state": "EXTRACTED",
@@ -7218,13 +7218,14 @@
     },
     "Totals Request": {
       "transaction_type": "Totals Request",
-      "segment_count": 2,
+      "segment_count": 1,
+      "number_of_segments_fixed_value": "01",
       "segments": [
         {
           "segment_number": "105",
           "segment_name": "Totals Data Segment",
           "segment_type_value": "105",
-          "presence_in_message": "PRESENT",
+          "presence_in_message": "PROVISIONAL",
           "fields": [
             {
               "field_no": "1",
@@ -7452,7 +7453,14 @@
             "source_id": "SRC-ATL105-PDF-001",
             "page": 227
           }
-        },
+        }
+      ]
+    },
+    "Totals with Proprietary Data Load Request": {
+      "transaction_type": "Totals with Proprietary Data Load Request",
+      "segment_count": 1,
+      "number_of_segments_fixed_value": "01",
+      "segments": [
         {
           "segment_number": "119",
           "segment_name": "Totals with Proprietary Data Load Data Segment",
@@ -7713,6 +7721,253 @@
           }
         }
       ]
+    },
+    "Approved Totals Response": {
+      "transaction_type": "Approved Totals Response",
+      "segment_count": 0,
+      "segments": [],
+      "layout": "SINGLE_BLOCK_FIXED_LENGTH",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 173
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "105",
+          "element_ref": "ENT-ELEM-105",
+          "name": "Totals Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 6,
+          "description": "Identifies the requested type of totals. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 173
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 8,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 173
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "42",
+          "element_ref": "ENT-ELEM-42",
+          "name": "Grand Total",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 14,
+          "length": 8,
+          "description": "Identifies the final total amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "5",
+          "element_no": "38",
+          "element_ref": "ENT-ELEM-38",
+          "name": "Fee Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 22,
+          "length": 8,
+          "description": "Identifies the fee amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "6",
+          "element_no": "56",
+          "element_ref": "ENT-ELEM-56",
+          "name": "Net Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 30,
+          "length": 8,
+          "description": "Identifies the difference between Grand Total and Fee Amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "7",
+          "element_no": "13",
+          "element_ref": "ENT-ELEM-13",
+          "name": "Card Label",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 38,
+          "length": 4,
+          "description": "Identifies the card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "8",
+          "element_no": "16",
+          "element_ref": "ENT-ELEM-16",
+          "name": "Card Type Total Count",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 42,
+          "length": 5,
+          "description": "Identifies the transaction count for a particular card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "9",
+          "element_no": "15",
+          "element_ref": "ENT-ELEM-15",
+          "name": "Card Type Total Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 47,
+          "length": 8,
+          "description": "Identifies the total amount for a particular card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        }
+      ],
+      "repeating_group": {
+        "fields": [
+          "7",
+          "8",
+          "9"
+        ],
+        "card_labels_in_order": [
+          "CC",
+          "TE",
+          "DS",
+          "AO",
+          "DB",
+          "FL",
+          "CS",
+          "PR",
+          "CK",
+          "EF",
+          "EC",
+          "SV1",
+          "SV2",
+          "SV3",
+          "SV4",
+          "ECA",
+          "EWIC",
+          "EK"
+        ],
+        "occurrence": "Sent once per card label in the order shown, whether or not totals accumulated, except ECA, EWIC and EK, which are sent only if they have totals."
+      },
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 173
+      }
+    },
+    "Declined Totals Response": {
+      "transaction_type": "Declined Totals Response",
+      "segment_count": 0,
+      "segments": [],
+      "layout": "SINGLE_BLOCK_FIXED_LENGTH",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "105",
+          "element_ref": "ENT-ELEM-105",
+          "name": "Totals Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 6,
+          "description": "Identifies the requested type of totals. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 8,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "101",
+          "element_ref": "ENT-ELEM-101",
+          "name": "Terminal Display/Printer Message",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 14,
+          "length": 31,
+          "description": "Identifies the decline message for a Declined Totals Response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 175
+      }
     },
     "Electronic Mail": {
       "transaction_type": "Electronic Mail",

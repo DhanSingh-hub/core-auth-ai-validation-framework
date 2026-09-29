@@ -4,7 +4,7 @@
 
 These questions are required to turn the specification-backed starter catalog into approved Segment 105 business requirements and test data. Each response must cite a source, configuration, or named business owner. Unanswered items remain `REVIEW_REQUIRED` and must not be auto-approved.
 
-**Status:** 9 open (9 total).
+**Status:** 10 open (10 total).
 
 | ID | Question | Why it is needed | Test impact | Status | Resolution | Catalog |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -17,6 +17,7 @@ These questions are required to turn the specification-backed starter catalog in
 | <a id="seg105-sme-007"></a>SEG105-SME-007 | Confirm whether one Segment 105 is always the sole data segment for Totals Request, or when Segment 119 is used instead. | The template includes a Segment 119 totals alternative with similar leading fields. | Missing/duplicate/wrong-segment and compatibility tests. | OPEN |  |  |
 | <a id="seg105-sme-008"></a>SEG105-SME-008 | Define duplicate request, timeout, retry, and partial-response behavior for totals operations. | No lifecycle/retry behavior may be inferred from financial-transaction rules. | Ordered lifecycle and idempotency tests. | OPEN |  |  |
 | <a id="seg105-sme-009"></a>SEG105-SME-009 | Provide one sanitized, converter-ready Totals Request and matching Totals Response for every enabled Totals Date operation. | Needed to prove JSON mapping and serialization against a real approved message shape. | Baseline fixtures, artifact comparison, and external converter validation. | OPEN |  |  |
+| <a id="seg105-sme-010"></a>SEG105-SME-010 | Can a Totals Request ever be sent without Segment 105, or is Segment 105 effectively required? | The Section 11.4.1.1 layout table marks Segment 105 as Conditional ('Sent only on transactions requiring totals data'). The same table fixes Element 63 (Number of Segments) at 01, and the message has no Data Section 2 and no other Data Section 3 segment, so a Totals Request without Segment 105 would carry no segment at all. | Until answered, every Totals Request must carry Segment 105 (SEG105-R-022, PROVISIONAL) and a Totals Request without it is rejected. | OPEN |  | `P-01`, SEG105-R-022, SEG105-R-019 |
 
 ## Response Format
 

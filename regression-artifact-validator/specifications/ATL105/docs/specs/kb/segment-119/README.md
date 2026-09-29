@@ -36,11 +36,14 @@
 | Purpose | Request Totals and provide current Card Table Version and Host Discount data | Section 12.17 |
 | Placement | Data Section 3, Field No. 3 | Sections 11.4.1.2 and 12.17 |
 | Data Section 2 | Absent from the Totals with Proprietary Data Load Request | Section 11.4.1.2 |
+| Number of Segments (Element 63) | Fixed `01`: Segment 119 is the only segment (`SEG119-R-037`) | Section 11.4.1.2 |
 | Origin | Device; Host Discount Timestamp is identified as host-sourced | Section 12.17 |
 | Segment Type | Fixed `119` | Element 85 / Section 12.17 |
 | Prompt Code | Fixed `990` | Element 78 / Section 12.17 |
-| Length | `001-493` alphanumeric; Element 84 is 3 digits | Element 84 / Section 12.17 |
+| Length | `001-493` alphanumeric; Element 84 is 3 digits. PROVISIONAL: the Section 11.4.1.2 table gives 389 (`SEG119-R-038`, SEG119-SME-008) | Element 84 / Section 12.17 |
 | Selection | Only when an approved proprietary-data-load totals selection applies | Manual policy gate `SEG119-R-031` |
+
+The Section 11.4.1.2 text names "Data Segment No. 116" for this message. Its layout table, Section 12.17 and the Chapter 12 matrix all give Segment 119, and Segment 116 is the TransArmor Load Data Segment (Section 12.15), so 116 is treated as a typo.
 
 ## Field Layout
 
@@ -75,6 +78,8 @@
 - A Field Separator follows the final occurrence of Card Type Total Amount.
 - Segment Length includes Segment Type and the applicable Field Separators.
 
+PROVISIONAL (`SEG119-R-039`, SEG119-SME-009): the rules above follow the Section 12.17 note (Fields 1-17 separated, bucket Fields 18-20). The table above it numbers the bucket as Fields 17-19, which leaves 16 separated fields.
+
 ## Card-Bucket Rules
 
 The specification defines up to 20 card buckets in a fixed order. Card types 1-15 appear in all approved responses. Card types 16-20 appear only when data occurs. Categories marked with `*` are non-financial and their amounts are excluded from Grand Total.
@@ -83,13 +88,13 @@ The specification defines up to 20 card buckets in a fixed order. Card types 1-1
 
 | Item | Status | Evidence |
 |---:|---|---|
-| 1 Coverage Closure | Complete baseline | 36-rule catalog and field inventory |
+| 1 Coverage Closure | Complete baseline | 39-rule catalog and field inventory |
 | 2 AI Artifact Comparison | Blocked | Run1 has zero `llm_phrased` Segment 119 requirements; no standalone AI package supplied |
-| 3 Test-Data Independence | Synthetic baseline permitted | User approved synthetic fixtures; none currently supplied |
+| 3 Test-Data Independence | Synthetic baseline permitted | User approved synthetic fixtures; message-level fixtures in `test-input/ai-solution/test-data/segment-119/message/` |
 | 4 Traceability Matrix | Baseline defined | Requires Segment 119 BR/TS/TC/TD package |
 | 5 Mutation Definition | Catalog categories defined | Field value, omission, separator, bucket, and boundary mutations |
 | 6 Mutation Execution | Not executable yet | No Segment 119 Test Solution fixtures/classes exist |
-| 7 Validator Enhancement | Not started | Depends on fixture and mutation execution |
+| 7 Validator Enhancement | Message level only | `TotalsRequestPayloadValidator` checks the Section 11.4.1.2 structure; no field-level Segment 119 validator yet |
 | 8 Consolidated Sign-Off | Review-gated | Manual policy gates and real artifacts remain open |
 
 ## Manual Input Register
@@ -99,6 +104,8 @@ The specification defines up to 20 card buckets in a fixed order. Card types 1-1
 - `SEG119-R-033`: Grand Total/card-bucket reconciliation policy;
 - `SEG119-R-034`: retry, duplicate, timeout, and failure behavior;
 - `SEG119-R-035`: merchant settlement cutoff and timezone behavior;
+- SEG119-SME-008: maximum length, 493 or 389;
+- SEG119-SME-009: card-bucket field numbering, 17-19 or 18-20;
 - real Segment 119 AI BR/TS/TC/TD package;
 - real Segment 119 test data or approval of synthetic fixture provenance.
 

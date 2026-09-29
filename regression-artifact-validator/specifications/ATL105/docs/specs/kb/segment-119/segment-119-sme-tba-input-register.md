@@ -4,7 +4,7 @@
 
 Consolidated from the existing Manual Input Register in [README.md](README.md) (`SEG119-R-031` through `SEG119-R-035`).
 
-**Status:** 7 open (7 total).
+**Status:** 9 open (9 total).
 
 | ID | Question | Why it is needed | Test impact | Status | Resolution | Catalog |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -15,6 +15,8 @@ Consolidated from the existing Manual Input Register in [README.md](README.md) (
 | <a id="seg119-sme-005"></a>SEG119-SME-005 | Merchant settlement cutoff and timezone behavior. |  |  | OPEN |  |  |
 | <a id="seg119-sme-006"></a>SEG119-SME-006 | Provide a real Segment 119 AI BR/TS/TC/TD package. |  |  | OPEN |  |  |
 | <a id="seg119-sme-007"></a>SEG119-SME-007 | Provide real Segment 119 test data or approve synthetic-fixture provenance. |  |  | OPEN |  |  |
+| <a id="seg119-sme-008"></a>SEG119-SME-008 | What is the maximum length of Segment 119: 493 characters (Section 12.17) or 389 (the Section 11.4.1.2 layout table)? | Section 12.17 states 'a maximum length of 493 alphanumeric characters (001-493)'. The Section 11.4.1.2 Totals with Proprietary Data Load Request table gives Segment 119 a length of 389. Both were read from the PDF (pages 11-17 and 12-46). | Until answered, lengths above 493 are rejected (SEG119-R-004) and lengths from 390 to 493 produce a warning (SEG119-R-038). | OPEN |  | `P-01`, SEG119-R-004, SEG119-R-038 |
+| <a id="seg119-sme-009"></a>SEG119-SME-009 | In Segment 119, which fields are separated and which repeat: Fields 1-16 separated with the card bucket as Fields 17-19 (the Section 12.17 table), or Fields 1-17 separated with the bucket as Fields 18-20 (its note)? Does a Field Separator follow the last card bucket? | The Section 12.17 table lists 19 fields, with Card Label, Card Type Total Count and Card Type Total Amount as Fields 17-19. The note above it says 'Field Nos. 1-17 are separated by Field Separators ... Field Nos. 18-20 are not separated ... A Field Separator follows the last occurrence of Field No. 20.' Segment 105, which has the same bucket, is consistent: its table and note both use Fields 15-17. | The serialized layout and Segment Length of every Segment 119 message depend on the answer. The knowledge base currently uses both numberings (SEG119-R-005 and SEG119-R-007 follow the note; SEG119-R-027 follows the table). | OPEN |  | `P-02`, SEG119-R-005, SEG119-R-007, SEG119-R-027, SEG119-R-039 |
 
 ## Response Format
 

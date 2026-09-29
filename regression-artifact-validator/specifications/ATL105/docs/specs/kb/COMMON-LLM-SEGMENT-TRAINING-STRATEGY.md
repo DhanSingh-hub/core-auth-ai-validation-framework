@@ -74,10 +74,10 @@ Register contents on 2026-09-29. For current figures, see the [register index](.
 
 | Channel | IDs | Count | Status |
 |---|---|---|---|
-| Queries to the SME | `SEG<NNN>-SME-nnn` | 197 | 163 open, 3 reopened, 29 resolved, 2 deferred |
+| Queries to the SME | `SEG<NNN>-SME-nnn` | 200 | 166 open, 3 reopened, 29 resolved, 2 deferred |
 | Test team discussion | `TT-nnnn` | 10 | 9 open, 1 resolved |
 | Open topics with the AI developers | `AID-nnnn` | 4 | 4 open |
-| Feedback to the AI team | `AIF-nnnn` | 11 | 11 open |
+| Feedback to the AI team | `AIF-nnnn` | 12 | 12 open |
 
 How to use it:
 
@@ -446,6 +446,8 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L17. Write each question once.** Before the communication register, questions were kept in the catalog, the segment register, reports, and backlog files, and the copies drifted. The Segment 108, 109, and 115 catalogs numbered the same questions differently from their registers. The Segment 104 questions were only in a report. Write the question in the register and link to it everywhere else.
 
+**L18. A checker's label is not evidence; open the payload.** The structure checker reported the 1,680 AI Totals test cases as "payload is a Financial Request". That label was produced for every non-financial test case, whatever the payload held. Opening the files showed an empty `Financial Request` shell with `NumSegments` 0 and no segment. Before reporting a defect, open at least one failing artifact of each kind and describe what it contains.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -468,3 +470,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-29 | Became the single handbook. Merged `docs/SEGMENT-100-TRAINING-METHODOLOGY.md` (8-item framework, mutation set, lessons 1-7, checklist) and `docs/test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md` (matching responsibility, BR taxonomy, Segment 100 evidence map, lessons 6.1-6.8), then deleted both and repointed all links here. |
 | 2026-09-29 | Archived the 2026-09-23 improvement-plan pack (gap analysis, roadmap, index, quick reference, executive summary, week-1 checklist) to [docs/archive/2026-09-23-test-solution-improvement-plan/](../../archive/2026-09-23-test-solution-improvement-plan/). Folded in: Test Case structure (Phase 5), mutation classification (Phase 7), and the coverage denominator. Not adopted: the "90% of AI-extracted BRs" target (see L12). Its status figures are a 2026-09-23 snapshot and are out of date. |
 | 2026-09-29 | Added the [Communication Register](#communication-register) and L17. The 43 segment SME/TBA registers became generated views, with new registers for Segments 100, 101, 103, 104, 111, and 120. Catalog `provisionalItems` now hold only a `registerId`. The AI feedback corrections became `AIF-` items, and `SME-REVIEW-BACKLOG.md` was archived as SEG100-SME-001. |
+| 2026-09-29 | Totals message layouts (Section 11.4): split the merged Totals Request template, added the Approved and Declined Totals Response templates, added message-level rules to Segments 105 and 119 with `TotalsRequestPayloadValidator`, and added L18. |

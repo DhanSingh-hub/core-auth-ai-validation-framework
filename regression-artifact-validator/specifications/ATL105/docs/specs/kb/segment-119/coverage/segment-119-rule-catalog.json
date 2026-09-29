@@ -464,6 +464,60 @@
       "specification" : "ATL105",
       "version" : "2026-3"
     }
+  }, {
+    "ruleId" : "SEG119-R-037",
+    "title" : "In a Totals with Proprietary Data Load Request, Element 63 (Number of Segments) is 01, so Segment 119 is the only data segment",
+    "class" : "structure",
+    "severity" : "error",
+    "sourceAnchor" : {
+      "section" : "11.4.1.2,13",
+      "segment" : "119",
+      "element" : "63",
+      "rule" : "totals-pdl-request-segment-count",
+      "specification" : "ATL105",
+      "version" : "2026-3"
+    },
+    "note" : "Section 11.4.1.2 gives the fixed value 01. Chapter 13 allows up to two digits, so the validator accepts 1 or 01, as for every other message."
+  }, {
+    "ruleId" : "SEG119-R-038",
+    "title" : "Segment 119 maximum length is 493 in Section 12.17 but 389 in the Section 11.4.1.2 layout table",
+    "class" : "serialization",
+    "severity" : "review",
+    "status" : "PROVISIONAL",
+    "sourceAnchor" : {
+      "section" : "11.4.1.2,12.17",
+      "segment" : "119",
+      "element" : "84",
+      "rule" : "max-length-conflict-389-493",
+      "specification" : "ATL105",
+      "version" : "2026-3"
+    },
+    "note" : "Until SEG119-SME-008 is answered the validator rejects lengths above 493 (SEG119-R-004) and warns above 389."
+  }, {
+    "ruleId" : "SEG119-R-039",
+    "title" : "The repeating card-bucket fields are numbered 17-19 in the Section 12.17 table but 18-20 in its separator note",
+    "class" : "serialization",
+    "severity" : "review",
+    "status" : "PROVISIONAL",
+    "sourceAnchor" : {
+      "section" : "12.17",
+      "segment" : "119",
+      "rule" : "card-bucket-field-numbering-conflict",
+      "specification" : "ATL105",
+      "version" : "2026-3"
+    },
+    "note" : "The table lists 19 fields: 16 separated fields, then the Card Label, Card Type Total Count and Card Type Total Amount bucket as Fields 17-19. The note says Fields 1-17 are separated and Fields 18-20 repeat. SEG119-R-005 and SEG119-R-007 follow the note; SEG119-R-027 follows the table. Pending SEG119-SME-009."
+  } ],
+  "provisionalItems" : [ {
+    "id" : "P-01",
+    "status" : "OPEN",
+    "impacts" : [ "SEG119-R-004", "SEG119-R-038" ],
+    "registerId" : "SEG119-SME-008"
+  }, {
+    "id" : "P-02",
+    "status" : "OPEN",
+    "impacts" : [ "SEG119-R-005", "SEG119-R-007", "SEG119-R-027", "SEG119-R-039" ],
+    "registerId" : "SEG119-SME-009"
   } ],
   "manualInputStatus" : {
     "resolvedByUser" : [ "SEG119-R-002", "SEG119-R-028", "SEG119-R-029", "SEG119-R-013", "SEG119-R-014", "SEG119-R-036" ],

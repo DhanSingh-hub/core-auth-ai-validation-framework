@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 11 open (11 total).
+**Status:** 12 open (12 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -19,6 +19,7 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0009](#aif-0009) | Build Loyalty Card Transaction Requests to the Section 11.2.1 layout | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0010](#aif-0010) | Build ECA/TeleCheck Service Transaction Requests to the Section 11.3.1 layout | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0011](#aif-0011) | Build every test case with the Chapter 11 structure of its message | OPEN | AI Solution Team | 2026-09-29 |
+| [AIF-0012](#aif-0012) | Build Totals Requests to the Section 11.4.1 layouts | OPEN | AI Solution Team | 2026-09-29 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -233,7 +234,7 @@ An ECA/TeleCheck Service Transaction Request contains Segment 100, Segment 110 (
 
 Structure validation of all 22,789 AI test cases against the ATL105 Chapter 11 layouts marks 17,678 as INVALID.
 
-- 9,722 test cases contain no segment at all. Most are in families that do carry segments on the wire, such as `Financial Transaction` (1,150), Totals Request (841), Totals with Proprietary Data Load Request (839), Financial Transaction Response (600), Electronic Mail Request (588) and the Proprietary Data Load request and response (583 and 581).
+- 9,722 test cases contain no segment at all. Most are in families that do carry segments on the wire, such as `Financial Transaction` (1,150), Totals Request (841) and Totals with Proprietary Data Load Request (839) (see AIF-0012), Financial Transaction Response (600), Electronic Mail Request (588) and the Proprietary Data Load request and response (583 and 581).
 - In the four request families that require Segment 100 (Financial, EMV Financial, Loyalty Card and ECA/TeleCheck, 8,010 cases), 43 of each lack Segment 100.
 - 2,299 of 2,347 EMV Financial Transaction Requests are INVALID. Loyalty and ECA/TeleCheck requests are covered by AIF-0009 and AIF-0010.
 - The message family is labelled 35 different ways (see AID-0002).
@@ -244,4 +245,31 @@ Every test case must carry the segments its message layout requires, with Elemen
 
 - `specifications/ATL105/reports/coverage/FTR-Structure-Validation-TestCases.csv`
 
-**Related:** [AID-0002](ai-dev-discussion.md#aid-0002), [AIF-0009](ai-feedback.md#aif-0009), [AIF-0010](ai-feedback.md#aif-0010)
+**Related:** [AID-0002](ai-dev-discussion.md#aid-0002), [AIF-0009](ai-feedback.md#aif-0009), [AIF-0010](ai-feedback.md#aif-0010), [AIF-0012](ai-feedback.md#aif-0012)
+
+<a id="aif-0012"></a>
+## AIF-0012: Build Totals Requests to the Section 11.4.1 layouts
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-29 by saurabhtw28
+- **Segments:** 105, 119
+- **Target delivery:** Next delivery after 2026-09-23 Run1+Run2
+
+ATL105 defines two Totals requests. Neither has Data Section 2 or Segment 100, and in both Element 63 (Number of Segments) is fixed at 01:
+
+- **Totals Request** (Section 11.4.1.1): Segment 105 (Totals Data Segment) alone in Data Section 3 Field No. 3, maximum length 409.
+- **Totals with Proprietary Data Load Request** (Section 11.4.1.2): Segment 119 (Totals with Proprietary Data Load Data Segment) alone in Data Section 3 Field No. 3.
+
+A message carries one of the two segments, never both. The Chapter 12 matrix marks both in its single Totals Request column.
+
+All 1,680 Totals test cases in the delivery (841 Totals Request, 839 Totals with Proprietary Data Load Request) have the same empty payload: `{"Financial Request": {"MessageType": "ATL105", "NumSegments": "0"}}`. None carries Segment 105 or 119, Element 63 is 0 instead of 01, and the root key is the generic `Financial Request` instead of the message name.
+
+Use the message names above as the root keys, as in the other message layouts (see AID-0002).
+
+**Evidence:**
+
+- `specifications/ATL105/reports/coverage/FTR-Structure-Validation-TestCases.csv`
+- `AI delivery reporting/output/qe_shaped_test_data/TC-10023.json (Totals Request) and TC-10024.json (Totals with Proprietary Data Load Request)`
+
+**Related:** [AIF-0011](ai-feedback.md#aif-0011), [AID-0002](ai-dev-discussion.md#aid-0002), [SEG105-SME-007](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-007), [SEG105-SME-010](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-010), [SEG119-SME-001](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-001), [SEG119-SME-008](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-008)

@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "artifactId": "SEG105-MESSAGE-TOTALS-REQUEST-VALID-001",
+    "purpose": "Totals Request per Section 11.4.1.1: Data Sections 1 and 3 only, Segment 105 alone in Field No. 3, Element 63 = 01. Synthetic values. Totals Date 333333 requests totals for the most recent date with activity. SegmentLength 106 counts 58 characters in Fields 1-14, their 14 Field Separators, and two 17-character card buckets (Card Label padded to 4).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.1","segment":"105","rule":"sections-1-and-3-no-section-2"},
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.1,12.6","segment":"105","rule":"sole-segment-field-3"},
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.1,13","segment":"105","element":"63","rule":"totals-request-segment-count"},
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.1,12.6","segment":"105","element":"84","rule":"max-length-409"}
+    ],
+    "context": {"messageFamily": "TOTALS_REQUEST"},
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-01"]
+  },
+  "Totals Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "01",
+    "Totals Data Segment": {
+      "SegmentType": "105",
+      "SegmentLength": "106",
+      "InformationByte": "0",
+      "TerminalID": "TL500001",
+      "PromptCode": "990",
+      "EmployeeNumber": "",
+      "Password": "",
+      "TotalsDate": "333333",
+      "HardwareVersion": "HW01",
+      "SoftwareVersion": "SW010203",
+      "FirmwareVersion": "FW010203",
+      "SequenceNumber": "000123",
+      "CurrencyCode": "",
+      "GrandTotal": "00012550",
+      "CategoryTotals": [
+        {"CardLabel": "CC", "CardTypeTotalCount": "00003", "CardTypeTotalAmount": "00010050"},
+        {"CardLabel": "DB", "CardTypeTotalCount": "00001", "CardTypeTotalAmount": "00002500"}
+      ]
+    }
+  }
+}

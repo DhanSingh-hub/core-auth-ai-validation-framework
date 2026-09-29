@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 163 open, 3 reopened, 29 resolved, 2 deferred (197 total).
+**Status:** 166 open, 3 reopened, 29 resolved, 2 deferred (200 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -51,6 +51,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | [SEG105-SME-007](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-007) | Confirm whether one Segment 105 is always the sole data segment for Totals Request, or when Segment 119 is used instead. | The template includes a Segment 119 totals alternative with similar leading fields. | OPEN |  | 2026-09-18 |
 | [SEG105-SME-008](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-008) | Define duplicate request, timeout, retry, and partial-response behavior for totals operations. | No lifecycle/retry behavior may be inferred from financial-transaction rules. | OPEN |  | 2026-09-18 |
 | [SEG105-SME-009](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-009) | Provide one sanitized, converter-ready Totals Request and matching Totals Response for every enabled Totals Date operation. | Needed to prove JSON mapping and serialization against a real approved message shape. | OPEN |  | 2026-09-18 |
+| [SEG105-SME-010](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-010) | Can a Totals Request ever be sent without Segment 105, or is Segment 105 effectively required? | The Section 11.4.1.1 layout table marks Segment 105 as Conditional ('Sent only on transactions requiring totals data'). The same table fixes Element 63 (Number of Segments) at 01, and the message has no Data Section 2 and no other Data Section 3 segment, so a Totals Request without Segment 105 would carry no segment at all. | OPEN | `P-01`, SEG105-R-022, SEG105-R-019 | 2026-09-29 |
 
 ## Segment 108 ([register](../../docs/specs/kb/segment-108/segment-108-sme-tba-input-register.md))
 
@@ -166,6 +167,8 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | [SEG119-SME-005](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-005) | Merchant settlement cutoff and timezone behavior. |  | OPEN |  | 2026-09-26 |
 | [SEG119-SME-006](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-006) | Provide a real Segment 119 AI BR/TS/TC/TD package. |  | OPEN |  | 2026-09-26 |
 | [SEG119-SME-007](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-007) | Provide real Segment 119 test data or approve synthetic-fixture provenance. |  | OPEN |  | 2026-09-26 |
+| [SEG119-SME-008](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-008) | What is the maximum length of Segment 119: 493 characters (Section 12.17) or 389 (the Section 11.4.1.2 layout table)? | Section 12.17 states 'a maximum length of 493 alphanumeric characters (001-493)'. The Section 11.4.1.2 Totals with Proprietary Data Load Request table gives Segment 119 a length of 389. Both were read from the PDF (pages 11-17 and 12-46). | OPEN | `P-01`, SEG119-R-004, SEG119-R-038 | 2026-09-29 |
+| [SEG119-SME-009](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-009) | In Segment 119, which fields are separated and which repeat: Fields 1-16 separated with the card bucket as Fields 17-19 (the Section 12.17 table), or Fields 1-17 separated with the bucket as Fields 18-20 (its note)? Does a Field Separator follow the last card bucket? | The Section 12.17 table lists 19 fields, with Card Label, Card Type Total Count and Card Type Total Amount as Fields 17-19. The note above it says 'Field Nos. 1-17 are separated by Field Separators ... Field Nos. 18-20 are not separated ... A Field Separator follows the last occurrence of Field No. 20.' Segment 105, which has the same bucket, is consistent: its table and note both use Fields 15-17. | OPEN | `P-02`, SEG119-R-005, SEG119-R-007, SEG119-R-027, SEG119-R-039 | 2026-09-29 |
 
 ## Segment 120 ([register](../../docs/specs/kb/segment-120/segment-120-sme-tba-input-register.md))
 

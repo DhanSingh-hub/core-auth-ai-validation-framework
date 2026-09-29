@@ -34,6 +34,7 @@ Each correction is tracked as an `AIF-` item in the [ATL105 communication regist
 | [AIF-0009](../../registers/views/ai-feedback.md#aif-0009) | Build Loyalty Card Transaction Requests to the Section 11.2.1 layout |
 | [AIF-0010](../../registers/views/ai-feedback.md#aif-0010) | Build ECA/TeleCheck Service Transaction Requests to the Section 11.3.1 layout |
 | [AIF-0011](../../registers/views/ai-feedback.md#aif-0011) | Build every test case with the Chapter 11 structure of its message |
+| [AIF-0012](../../registers/views/ai-feedback.md#aif-0012) | Build Totals Requests to the Section 11.4.1 layouts |
 
 ## Requested next-delivery acceptance package
 

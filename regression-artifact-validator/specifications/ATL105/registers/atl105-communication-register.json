@@ -811,6 +811,30 @@
       "raisedBy": "Sehgal"
     },
     {
+      "id": "SEG105-SME-010",
+      "channel": "SME_QUERY",
+      "segments": [
+        "105"
+      ],
+      "subject": "Can a Totals Request ever be sent without Segment 105, or is Segment 105 effectively required?",
+      "context": "The Section 11.4.1.1 layout table marks Segment 105 as Conditional ('Sent only on transactions requiring totals data'). The same table fixes Element 63 (Number of Segments) at 01, and the message has no Data Section 2 and no other Data Section 3 segment, so a Totals Request without Segment 105 would carry no segment at all.",
+      "impact": "Until answered, every Totals Request must carry Segment 105 (SEG105-R-022, PROVISIONAL) and a Totals Request without it is rejected.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "catalogItem": "P-01",
+        "rules": [
+          "SEG105-R-022",
+          "SEG105-R-019"
+        ]
+      },
+      "relatedItems": [
+        "SEG105-SME-007"
+      ]
+    },
+    {
       "id": "SEG108-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -2545,6 +2569,50 @@
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
       "raisedBy": "Rishabh Kumar"
+    },
+    {
+      "id": "SEG119-SME-008",
+      "channel": "SME_QUERY",
+      "segments": [
+        "119"
+      ],
+      "subject": "What is the maximum length of Segment 119: 493 characters (Section 12.17) or 389 (the Section 11.4.1.2 layout table)?",
+      "context": "Section 12.17 states 'a maximum length of 493 alphanumeric characters (001-493)'. The Section 11.4.1.2 Totals with Proprietary Data Load Request table gives Segment 119 a length of 389. Both were read from the PDF (pages 11-17 and 12-46).",
+      "impact": "Until answered, lengths above 493 are rejected (SEG119-R-004) and lengths from 390 to 493 produce a warning (SEG119-R-038).",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "catalogItem": "P-01",
+        "rules": [
+          "SEG119-R-004",
+          "SEG119-R-038"
+        ]
+      }
+    },
+    {
+      "id": "SEG119-SME-009",
+      "channel": "SME_QUERY",
+      "segments": [
+        "119"
+      ],
+      "subject": "In Segment 119, which fields are separated and which repeat: Fields 1-16 separated with the card bucket as Fields 17-19 (the Section 12.17 table), or Fields 1-17 separated with the bucket as Fields 18-20 (its note)? Does a Field Separator follow the last card bucket?",
+      "context": "The Section 12.17 table lists 19 fields, with Card Label, Card Type Total Count and Card Type Total Amount as Fields 17-19. The note above it says 'Field Nos. 1-17 are separated by Field Separators ... Field Nos. 18-20 are not separated ... A Field Separator follows the last occurrence of Field No. 20.' Segment 105, which has the same bucket, is consistent: its table and note both use Fields 15-17.",
+      "impact": "The serialized layout and Segment Length of every Segment 119 message depend on the answer. The knowledge base currently uses both numberings (SEG119-R-005 and SEG119-R-007 follow the note; SEG119-R-027 follows the table).",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "catalogItem": "P-02",
+        "rules": [
+          "SEG119-R-005",
+          "SEG119-R-007",
+          "SEG119-R-027",
+          "SEG119-R-039"
+        ]
+      }
     },
     {
       "id": "SEG120-SME-001",
@@ -4785,7 +4853,7 @@
         "100"
       ],
       "subject": "Build every test case with the Chapter 11 structure of its message",
-      "detail": "Structure validation of all 22,789 AI test cases against the ATL105 Chapter 11 layouts marks 17,678 as INVALID.\n\n- 9,722 test cases contain no segment at all. Most are in families that do carry segments on the wire, such as `Financial Transaction` (1,150), Totals Request (841), Totals with Proprietary Data Load Request (839), Financial Transaction Response (600), Electronic Mail Request (588) and the Proprietary Data Load request and response (583 and 581).\n- In the four request families that require Segment 100 (Financial, EMV Financial, Loyalty Card and ECA/TeleCheck, 8,010 cases), 43 of each lack Segment 100.\n- 2,299 of 2,347 EMV Financial Transaction Requests are INVALID. Loyalty and ECA/TeleCheck requests are covered by AIF-0009 and AIF-0010.\n- The message family is labelled 35 different ways (see AID-0002).\n\nEvery test case must carry the segments its message layout requires, with Element 63 equal to the segments present.",
+      "detail": "Structure validation of all 22,789 AI test cases against the ATL105 Chapter 11 layouts marks 17,678 as INVALID.\n\n- 9,722 test cases contain no segment at all. Most are in families that do carry segments on the wire, such as `Financial Transaction` (1,150), Totals Request (841) and Totals with Proprietary Data Load Request (839) (see AIF-0012), Financial Transaction Response (600), Electronic Mail Request (588) and the Proprietary Data Load request and response (583 and 581).\n- In the four request families that require Segment 100 (Financial, EMV Financial, Loyalty Card and ECA/TeleCheck, 8,010 cases), 43 of each lack Segment 100.\n- 2,299 of 2,347 EMV Financial Transaction Requests are INVALID. Loyalty and ECA/TeleCheck requests are covered by AIF-0009 and AIF-0010.\n- The message family is labelled 35 different ways (see AID-0002).\n\nEvery test case must carry the segments its message layout requires, with Element 63 equal to the segments present.",
       "status": "OPEN",
       "owner": "AI Solution Team",
       "raisedOn": "2026-09-29",
@@ -4797,7 +4865,35 @@
       "relatedItems": [
         "AID-0002",
         "AIF-0009",
-        "AIF-0010"
+        "AIF-0010",
+        "AIF-0012"
+      ]
+    },
+    {
+      "id": "AIF-0012",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "105",
+        "119"
+      ],
+      "subject": "Build Totals Requests to the Section 11.4.1 layouts",
+      "detail": "ATL105 defines two Totals requests. Neither has Data Section 2 or Segment 100, and in both Element 63 (Number of Segments) is fixed at 01:\n\n- **Totals Request** (Section 11.4.1.1): Segment 105 (Totals Data Segment) alone in Data Section 3 Field No. 3, maximum length 409.\n- **Totals with Proprietary Data Load Request** (Section 11.4.1.2): Segment 119 (Totals with Proprietary Data Load Data Segment) alone in Data Section 3 Field No. 3.\n\nA message carries one of the two segments, never both. The Chapter 12 matrix marks both in its single Totals Request column.\n\nAll 1,680 Totals test cases in the delivery (841 Totals Request, 839 Totals with Proprietary Data Load Request) have the same empty payload: `{\"Financial Request\": {\"MessageType\": \"ATL105\", \"NumSegments\": \"0\"}}`. None carries Segment 105 or 119, Element 63 is 0 instead of 01, and the root key is the generic `Financial Request` instead of the message name.\n\nUse the message names above as the root keys, as in the other message layouts (see AID-0002).",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-23 Run1+Run2",
+      "evidence": [
+        "specifications/ATL105/reports/coverage/FTR-Structure-Validation-TestCases.csv",
+        "AI delivery reporting/output/qe_shaped_test_data/TC-10023.json (Totals Request) and TC-10024.json (Totals with Proprietary Data Load Request)"
+      ],
+      "relatedItems": [
+        "AIF-0011",
+        "AID-0002",
+        "SEG105-SME-007",
+        "SEG105-SME-010",
+        "SEG119-SME-001",
+        "SEG119-SME-008"
       ]
     }
   ]
