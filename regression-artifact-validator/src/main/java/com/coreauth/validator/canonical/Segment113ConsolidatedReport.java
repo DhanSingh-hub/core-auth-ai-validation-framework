@@ -209,7 +209,10 @@ public final class Segment113ConsolidatedReport {
         sb.append("-----------------------------\n");
         sb.append("  Production-readiness decision: ").append(readiness).append('\n');
         sb.append("  PROVISIONAL items still open:\n");
-        sb.append("    P-05  AI-generated Segment 113 BR/TS/TC/TD packages\n\n");
+        sb.append("    P-05  AI-generated Segment 113 BR/TS/TC/TD packages\n");
+        sb.append("    P-08  Whether Segment 111 is required in every ECA/TeleCheck request\n");
+        sb.append("    P-09  Financial Transaction Request presence (reopened 2026-09-29: Chapter 12 matrix lists 113)\n");
+        sb.append("    P-10  Whether ECA/TeleCheck voids are supported (Section 10.8.2 lists Purchase only)\n\n");
         sb.append("  Resolved 2026-09-22: P-01 (Section 11.3.1 table governs over Element 63's\n");
         sb.append("  incomplete summary), P-02 (Product Code free-form, no enum), P-03 (Void-\n");
         sb.append("  requires-Trace-ID cataloged only), P-04 (cross-segment Extended MICR Data\n");

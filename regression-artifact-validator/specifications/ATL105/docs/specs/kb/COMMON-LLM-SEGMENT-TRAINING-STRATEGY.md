@@ -409,6 +409,12 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L13. If Maven is unavailable, verify rather than assume.** If the Nexus handshake fails, compile `src/main` with `javac` against the cached jars and run a throwaway harness that reproduces the changed assertions. Report that the JUnit suite itself was not run, and ask someone on the network to run `mvn clean test`.
 
+**L14. An SME answer is not a citation.** Before asking an SME to confirm that a segment is exclusive to one message, check the Chapter 12 segment/transaction matrix and the Element 63 processing rules, and put that evidence in the question. The Segment 108 and 114 "Loyalty-only" decisions were confirmed without either source, and both contradict the matrix. A decision recorded without a section reference stays `REVIEW_REQUIRED`.
+
+**L15. Keep repository paths under 260 characters.** On Windows, git cannot check out a longer path. A contributor whose checkout failed then committed the missing files as deletions (commit `7986b73` removed 66 files, 36 of them long paths), which broke tests that used them. Keep new file names short, and before committing check `git status` for deletions you did not make.
+
+**L16. Read the Chapter 12 matrix from the PDF, not the extracted text.** `extracted_text.txt` collapses the spaces between the matrix's X marks, so you cannot tell which column an X belongs to. Extract the matrix pages (PDF pages 216-219) with a layout-preserving extractor, such as `pypdf`'s `extract_text(extraction_mode="layout")`, and map each X by its horizontal position against rows whose columns are known. This showed that Segment 113 is marked in the Financial Transaction Request column, which the extracted text had hidden.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation

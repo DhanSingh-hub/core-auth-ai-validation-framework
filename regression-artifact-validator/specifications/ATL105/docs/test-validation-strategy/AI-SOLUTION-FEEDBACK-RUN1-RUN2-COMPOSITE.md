@@ -120,6 +120,30 @@ Against the current 235-rule independent denominator for ten trained segments:
 
 The AI team should prioritize missing rules and broken BR -> TS -> TC -> TD chains rather than increasing raw artifact counts.
 
+### 9. Build Loyalty Card Transaction Requests to the Section 11.2.1 layout
+
+Added 2026-09-29. Evidence: `specifications/ATL105/reports/coverage/FTR-Structure-Validation-TestCases.csv`.
+
+A Loyalty Card Transaction Request contains Segment 100 (required), Segment 108 (required, Data Section 3 Field No. 4), and optionally Segment 114 (Field No. 5). Element 63 is therefore 2 or 3.
+
+- 2,112 test cases are labelled as Loyalty Card Transactions. 2,026 of them contain only Segment 100, and no test case among all 22,789 contains Segment 108.
+- The other 86 Loyalty test cases have no segments (4), Segment 114 alone (2), or unrelated segments such as 133 and 140-144.
+- 9 test cases contain Segment 114 without Segment 100 or 108, across seven message families; some repeat Segment 114 up to four times.
+- The message family is labelled two ways: `Loyalty Card Transaction` (1,057) and `Loyalty Card Transaction Request` (1,055). Use `Loyalty Card Transaction Request`.
+
+Not a defect: `REL-ENT-SEG-114-FINANCIAL_TRANSACTION_REQUEST` (Segment 114 in a Financial Transaction Request). The Chapter 12 segment/transaction matrix supports it; the Test Solution is confirming this with the SME (SEG114-SME-002).
+
+### 10. Build ECA/TeleCheck Service Transaction Requests to the Section 11.3.1 layout
+
+Added 2026-09-29. Evidence: `specifications/ATL105/reports/coverage/FTR-Structure-Validation-TestCases.csv`.
+
+An ECA/TeleCheck Service Transaction Request contains Segment 100, Segment 110 (Check Data, Field No. 4), Segment 111 (Variable Information, Field No. 5, maximum 20 bytes in this message), and the conditional Segment 113 (Field No. 6). Element 63 is therefore 3 or 4. Use the message name `ECA/TeleCheck Service Transaction Request`.
+
+- 1,699 test cases are labelled as ECA/TeleCheck Service Transaction Requests. 1,656 of them contain only Segments 100 and 111, so none of those carries the required Segment 110.
+- Only 2 contain Segment 110 or 113 (TC-3119 has only Segment 110, TC-3122 only Segment 113), and neither contains Segment 100. No test case has the complete 100 + 110 + 111 layout.
+- The remaining 41 have no segments (2) or carry unrelated segments (for example 131-143) instead.
+- For voids, use an Appendix G transaction type (8, Purchase Reversal/Void) and populate the ECA/TeleCheck Trace ID. Whether ECA/TeleCheck voids are supported at all is being confirmed with the SME (SEG113-SME-010).
+
 ## Requested next-delivery acceptance package
 
 Please provide:

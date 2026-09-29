@@ -44,7 +44,7 @@ Segment 114 has only 3 fields (Segment Type, Segment Length, SKU Data) and no fi
 | Origin | Device | Section 12.13 opening |
 | Segment length range | 001–1010 alphanumeric characters (`a-z`/`A-Z`) | Section 12.13 opening; see `SEG114-R-005` for a conflicting "1009" figure in the Loyalty Card Transaction Request layout table |
 | Included when | Loyalty Card Transaction Request, optional | Section 11.2.1 Data Section 3 table (Field No. 5, Entry `O`) |
-| Message family | Loyalty Card Transaction Request only — **not** documented as a Financial Transaction Request, ECA/TeleCheck Service Transaction Request, or CA Public Key File Load Request companion | Sections 11.1.1, 11.3.1, 11.9.1 Data Section 3 companion lists (none list Segment 114) |
+| Message family | Loyalty Card Transaction Request (optional, Field No. 5). Financial / EMV Financial Transaction Request presence is **REVIEW_REQUIRED** (P-02, reopened 2026-09-29) | Section 11.2.1; the Chapter 12 segment/transaction matrix marks 114 in the Financial and EMV Financial request columns, and Element 63's Financial processing rule defers to Chapter 12; only the Section 11.1.1 table omits it |
 | Required co-segment | Segment 108 (Loyalty Card Data Segment) — always present whenever Segment 114 is present | Section 11.2.1 Data Section 3 table (Field No. 4 = 108, Required; Field No. 5 = 114, Optional) |
 
 ---
@@ -71,7 +71,7 @@ Rule ID prefix: `SEG114-R-###`. Every rule carries a canonical source anchor: `s
 
 | Rule ID | Title | Class |
 |---|---|---|
-| SEG114-R-001 | Exclusive to Loyalty Card Transaction Request Data Section 3 | structure |
+| SEG114-R-001 | Exclusive to Loyalty Card Transaction Request Data Section 3 (PROVISIONAL, P-02 reopened) | structure |
 | SEG114-R-002 | Optional, Field No. 5, alongside required Segment 108 | applicability |
 | SEG114-R-003 | Segment Type identifies 114 (context-inferred, not a printed "Fixed value") | field |
 | SEG114-R-004 | Segment Length is 4 digits, valid values 0001-1010 | field |
@@ -80,9 +80,9 @@ Rule ID prefix: `SEG114-R-###`. Every rule carries a canonical source anchor: `s
 | SEG114-R-007 | Field Separators required, including trailing | serialization |
 | SEG114-R-008 | SKU Data alphanumeric max 1000, required | field |
 | SEG114-R-009 | Originates at the device | metadata |
-| SEG114-R-010 | May repeat, once per scanned SKU (resolved 2026-09-26) | structure |
+| SEG114-R-010 | May repeat, once per scanned SKU (PROVISIONAL, P-06 reopened: no citation) | structure |
 | SEG114-R-011 | Never appears without Segment 108 | compatibility |
-| SEG114-R-012 | AI-asserted Financial Transaction Request companion REJECTED (resolved 2026-09-26) | compatibility |
+| SEG114-R-012 | AI-asserted Financial Transaction Request companion (PROVISIONAL, P-02 reopened: the AI may be right) | compatibility |
 | SEG114-R-013 | Not present in the Loyalty Card Transaction Response (resolved 2026-09-26) | lifecycle |
 
 ---
@@ -92,11 +92,11 @@ Rule ID prefix: `SEG114-R-###`. Every rule carries a canonical source anchor: `s
 See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segment-114-sme-tba-input-register.md) for the authoritative, trackable list. All 6 items were resolved during the 2026-09-26 SME/TBA intake:
 
 - **P-01 / SEG114-SME-001**: RESOLVED — 1010 is authoritative; the layout table's 1009 is a spec typo.
-- **P-02 / SEG114-SME-002**: RESOLVED — the AI-asserted Financial Transaction Request relationship is rejected as an AI defect.
+- **P-02 / SEG114-SME-002**: **REOPENED 2026-09-29** — the Chapter 12 matrix lists Segment 114 in the Financial and EMV Financial Transaction Request columns, so the AI-asserted relationship may be correct. Previously rejected on 2026-09-26.
 - **P-03 / SEG114-SME-003**: RESOLVED — confirmed request-only, never in the response.
 - **P-04 / SEG114-SME-004**: RESOLVED — SegmentType == 114 is enforced as a hard rule.
 - **P-05 / SEG114-SME-005**: RESOLVED — proceed with synthesized `.synthetic.json` fixtures pending real data.
-- **P-06 / SEG114-SME-006**: RESOLVED — Segment 114 can repeat, once per scanned SKU; not limited to zero-or-one.
+- **P-06 / SEG114-SME-006**: **REOPENED 2026-09-29** — repeatability was confirmed on 2026-09-26 without a citation; Section 11.2.1 shows a single Field No. 5 slot. Until a citation is supplied, SEG108-R-025 caps a Loyalty request at 3 segments.
 
 ---
 
@@ -122,12 +122,12 @@ A full extraction and side-by-side comparison of every AI Solution Team requirem
 
 ## 7. Do-Not-Assume Rules
 
-1. Do not certify a Financial Transaction Request + Segment 114 combination as supported — no specification citation in Sections 11.1.1, 11.3.1, or 11.9.1 lists Segment 114 among their Data Section 3 companions; the AI Solution Team's `REL-ENT-SEG-114-FINANCIAL_TRANSACTION_REQUEST` statement is **REJECTED** (`SEG114-SME-002`, resolved 2026-09-26) and must be reported back to the AI Solution Team as a defect.
+1. Do not certify or reject a Financial Transaction Request carrying Segment 114 until P-02 is answered: the Chapter 12 matrix allows it, while the Section 11.1.1 table omits it. Do **not** report `REL-ENT-SEG-114-FINANCIAL_TRANSACTION_REQUEST` to the AI Solution Team as a defect (`SEG114-SME-002`, reopened 2026-09-29).
 2. Do not certify Segment 114 appearing without Segment 108 — its only documented context (Section 11.2.1) always pairs it with the required Segment 108.
 3. Max length is **confirmed 1010** (`SEG114-SME-001`, resolved 2026-09-26); the 1009 figure in the Loyalty Card Transaction Request layout table is a spec typo.
 4. Segment Type fixed value 114 is **confirmed enforceable** (`SEG114-SME-004`, resolved 2026-09-26) even though Section 12.13 does not print an explicit "Fixed value: 114" phrase.
 5. Do not treat an AI Solution Team `POTENTIAL_MATCH_REVIEW_REQUIRED` or `MATCHED_SEMANTICS_ONLY` crosswalk result as a confirmed equivalence — every existing AI-to-Test crosswalk entry for Segment 114's `BR-248-*` statements matched against a **different segment's** rule (103, 104, 111, 101); see the [requirement comparison](segment-114-ai-vs-test-requirement-comparison.md).
-6. Segment 114 **can repeat** within a message, once per scanned SKU (`SEG114-SME-006`, resolved 2026-09-26) — do not enforce a zero-or-one occurrence limit.
+6. Segment 114 repeatability is unconfirmed (`SEG114-SME-006`, reopened 2026-09-29): a Loyalty request is validated against the Section 11.2.1 layout (at most one Segment 114) until a citation is supplied.
 
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index

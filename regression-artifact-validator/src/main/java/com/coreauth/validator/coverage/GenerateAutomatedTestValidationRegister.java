@@ -20,7 +20,7 @@ public final class GenerateAutomatedTestValidationRegister {
     public static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Path reviewRoot = Atl105Paths.testOutput().resolve("ai-solution-independent-review");
-        Path source = reviewRoot.resolve(Path.of("four-level-traceability-matches", "four-level-traceability-matches.json"));
+        Path source = reviewRoot.resolve(Path.of("four-level-matches", "four-level-traceability-matches.json"));
         JsonNode report = mapper.readTree(source.toFile());
         ArrayNode mappings = mapper.createArrayNode();
         Map<String, Integer> statuses = new TreeMap<>();
@@ -65,7 +65,7 @@ public final class GenerateAutomatedTestValidationRegister {
         output.put("specificationVersion", "2026-3");
         output.put("authority", "INDEPENDENT_TEST_SOLUTION");
         output.put("aiArtifactsIncluded", true);
-        output.put("sourceReport", "four-level-traceability-matches/four-level-traceability-matches.json");
+        output.put("sourceReport", "four-level-matches/four-level-traceability-matches.json");
         output.put("statusDefinition", "AutomatedTestValidated means the confirmed AI/Test mapping has non-empty BR, TS, TC, and TD evidence on both sides and no review placeholders in the matched Test chain.");
         output.put("smeApprovalRequiredForAutomatedStatus", false);
         output.put("smeApprovalRequiredForUnresolvedMappings", true);

@@ -109,7 +109,7 @@ The complete machine-readable set is in [coverage/segment-110-rule-catalog.json]
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index
 
-Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-110-rule-catalog.json) (20 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-110-rule-catalog.json) (21 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
 
 | Segment 100 component | Segment 110 |
 |---|---|

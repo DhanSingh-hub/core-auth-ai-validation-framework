@@ -44,7 +44,7 @@
 | Origin | Device | Section 12.12 opening |
 | Segment length range | 001–156 alphanumeric characters | Section 12.12 opening |
 | Included when | ECA/TeleCheck® Service Transaction Request, alongside Segment 110 (required) and Segment 111 (optional) | Section 11.3.1 Data Section 3 table |
-| Message family | ECA/TeleCheck® Service Transaction Request — NOT a Financial Transaction Request companion | Section 11.1.1 companion list (101/102/103/104/111 only) vs Section 11.3.1 (110/111/113) |
+| Message family | ECA/TeleCheck® Service Transaction Request (conditional, Field No. 6). Financial Transaction Request presence is **REVIEW_REQUIRED** (P-09, reopened 2026-09-29) | Section 11.3.1; the Chapter 12 matrix marks 113 in the Financial Transaction Request column (like Segment 110) and Section 12.12 says it can appear in any Data Section 3 field; only the Section 11.1.1 table omits it |
 | Companion segments | Segment 110 (Check Data Segment, required), Segment 111 (Variable Information Data Segment, optional) | Section 11.3.1 Data Section 3 table |
 
 ---
@@ -73,7 +73,7 @@ Rule ID prefix: `SEG113-R-###`. Every rule carries a canonical source anchor: `s
 
 | Rule ID | Title | Class |
 |---|---|---|
-| SEG113-R-001 | Exclusive to ECA/TeleCheck Service Transaction Request | structure |
+| SEG113-R-001 | Exclusive to ECA/TeleCheck Service Transaction Request (PROVISIONAL, P-09 reopened) | structure |
 | SEG113-R-002 | Conditional member of that request's Data Section 3 | applicability |
 | SEG113-R-003 | Segment Type is 113 | field |
 | SEG113-R-004 | Segment Length is 3 digits | field |
@@ -104,6 +104,8 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 - **P-04** (cross-segment Extended MICR Data enforcement) → catalog only, not code-enforced.
 - **P-05** (real AI artifacts) → still OPEN, pending intake.
 - **P-06** (real test data) → resolved to proceed with synthetic placeholders.
+- **P-09** (Financial Transaction Request presence) → **OPEN**, reopened 2026-09-29: the Chapter 12 matrix and Section 12.12 allow it; only the Section 11.1.1 table omits it.
+- **P-10** (are ECA/TeleCheck voids supported?) → **OPEN**: Section 10.8.2 lists Purchase only, but the Trace ID field is required on Void requests.
 
 ---
 
@@ -121,7 +123,7 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 
 ## 6. Do-Not-Assume Rules
 
-1. Do not certify a Segment 113 + Segment 101/102/103/104/108 combination as a supported message — no specification citation supports this; Segment 113's message family is exclusive.
+1. Do not certify or reject a Financial Transaction Request carrying Segment 113 until P-09 is answered: the Chapter 12 matrix and Section 12.12 allow it, while the Section 11.1.1 table omits it.
 2. Do not treat Element 63's incomplete summary as authoritative over Section 11.3.1's explicit layout table — SME-confirmed resolution favors 11.3.1.
 3. Do not invent an enumeration for Element 132 (ECA/TeleCheck Product Code) — confirmed free-form.
 4. Do not enforce the Void-requires-Trace-ID or cross-segment Extended-MICR-Data business conditions in the payload validator — both are cataloged only per SME direction.

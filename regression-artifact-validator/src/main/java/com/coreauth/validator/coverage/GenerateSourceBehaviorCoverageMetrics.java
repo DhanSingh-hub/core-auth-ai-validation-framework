@@ -21,7 +21,7 @@ public final class GenerateSourceBehaviorCoverageMetrics {
         JsonNode inventory = mapper.readTree(Atl105Paths.testOutput().resolve(Path.of(
                 "test-solution-independent-review", "source-derived-requirement-inventory.json")).toFile());
         JsonNode report = mapper.readTree(root.resolve(Path.of(
-                "four-level-traceability-matches", "four-level-traceability-matches.json")).toFile());
+                "four-level-matches", "four-level-traceability-matches.json")).toFile());
         Set<String> confirmedRules = new HashSet<>();
         Set<String> validatedRules = new HashSet<>();
         Set<String> behaviorTypes = new HashSet<>();

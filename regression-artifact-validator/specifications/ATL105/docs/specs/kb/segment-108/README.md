@@ -44,7 +44,7 @@
 | Origin | Device | Section 12.7 opening |
 | Segment length range | 001–142 alphanumeric characters | Section 12.7 opening + Element 84 valid-values table (`SEG108-SME-001` resolved 2026-09-22) |
 | Included when | Every Loyalty Card Transaction Request (Required) | Section 11.2.1 Data Section 3 table |
-| Message family | Loyalty Card Transaction Request — NOT a Financial Transaction Request companion | Element 63 processing rules (Financial Transaction Requests list 101/102/103/104/111; Loyalty Card Transaction Requests list 108 only) |
+| Message family | Loyalty Card Transaction Request (required, Field No. 4). Financial / EMV Financial Transaction Request presence is **REVIEW_REQUIRED** (P-05, reopened 2026-09-29) | Section 11.2.1; the Chapter 12 segment/transaction matrix marks 108 in the Financial and EMV Financial request columns, and Element 63's Financial processing rule defers to Chapter 12; only the Section 11.1.1 table omits it |
 | Sole optional companion | Segment 114 (SKU Data Segment) | Section 11.2.1 Data Section 3 table |
 
 ---
@@ -94,11 +94,11 @@ Maximum Segment 108 length is **142 alphanumeric characters**. Note that positio
 
 ## 3. Rule Set — Approved (Directly Derived from Specification)
 
-Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `spec | version | section | segment | element | rule`. See [the authoritative catalog](coverage/segment-108-rule-catalog.json) for the full machine-readable list (24 rules).
+Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `spec | version | section | segment | element | rule`. See [the authoritative catalog](coverage/segment-108-rule-catalog.json) for the full machine-readable list (25 rules).
 
 | Rule ID | Title | Class |
 |---|---|---|
-| SEG108-R-001 | Exclusive to Loyalty Card Transaction Request | structure |
+| SEG108-R-001 | Exclusive to Loyalty Card Transaction Request (PROVISIONAL, P-05 reopened) | structure |
 | SEG108-R-002 | Required in every Loyalty Card Transaction Request | applicability |
 | SEG108-R-003 | Segment Type is 108 | field |
 | SEG108-R-004 | Segment Length is 3 digits | field |
@@ -122,6 +122,7 @@ Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `s
 | SEG108-R-022 | Originates at the device | metadata |
 | SEG108-R-023 | Sole optional companion is Segment 114 | compatibility |
 | SEG108-R-024 | Not present in the Loyalty Card Transaction Response | lifecycle |
+| SEG108-R-025 | Element 63 is 2-3 and equals the segments present (100, 108, optional 114) | structure |
 
 ---
 
@@ -129,8 +130,8 @@ Rule ID prefix: `SEG108-R-###`. Every rule carries a canonical source anchor: `s
 
 See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segment-108-sme-tba-input-register.md) for the authoritative, trackable list. Status as of 2026-09-22 intake:
 
-- **Resolved**: P-01 (max length 142), P-05 (Loyalty-Transaction-exclusive scope), P-06 (Street/Phone substitution not code-enforced), P-09 (Expiration Date is a real MMYY field, not reserved).
-- **Open**: P-02 (Update Code reversal-function mapping), P-03 (possible response-side presence — disputed without citation), P-04 (Appendix K Table 008/010 receipt layouts in/out of scope), P-07 (real AI artifacts), P-08 (real test data).
+- **Resolved**: P-01 (max length 142), P-06 (Street/Phone substitution not code-enforced), P-09 (Expiration Date is a real MMYY field, not reserved).
+- **Open**: P-02 (Update Code reversal-function mapping), P-03 (possible response-side presence — disputed without citation), P-04 (Appendix K Table 008/010 receipt layouts in/out of scope), P-05 (Financial Transaction Request presence, reopened 2026-09-29), P-07 (real AI artifacts), P-08 (real test data), P-10 (142 maximum is below the 15-field total), P-11 (trailing Field Separator position).
 
 ---
 
@@ -148,7 +149,7 @@ See the catalog's `provisionalItems` array and the [SME/TBA Input Register](segm
 
 ## 6. Do-Not-Assume Rules
 
-1. Do not certify a Segment 108 + Segment 101/102/103/104/111 combination as a Financial Transaction Request companion — no specification citation supports this; Segment 108's message family is exclusive (Element 63 processing rules).
+1. Do not certify or reject a Financial Transaction Request carrying Segment 108 until P-05 is answered: the Chapter 12 matrix and Section 10.9.2 allow it, while the Section 11.1.1 table omits it.
 2. Do not assume the wire field order follows ascending element numbers — fields 12-13 are elements 148 then 147.
 3. Do not certify the Update Code enumeration as covering every advice function named in Section 10.9.3 — the "reversal" functions are `REVIEW_REQUIRED` pending `SEG108-SME-002`.
 4. Do not assert Segment 108 never appears in a response without flagging `SEG108-SME-003` as open — the SME intake explicitly disputed this without yet providing a citation.

@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "artifactId": "SEG113-LIFECYCLE-DENIAL-RECORD-DECLINE-001",
+    "purpose": "Segment 113 scenario paired with a denial-record decline: Denial Record Number (136) and Merchant Trace ID (135) populated, Extended MICR Data (137) populated to exercise the 65-byte-bound field.",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"10.8.5,12.12,13.2","segment":"113","element":"136","rule":"denial-record-number"},
+      {"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113,110","element":"137","rule":"extended-micr-data"}
+    ],
+    "context": {
+      "transactionType": "check-purchase-declined",
+      "lifecycleRole": "DENIAL_RECORD",
+      "messageFamily": "ECATELECHECK_SERVICE_TRANSACTION_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-04"]
+  },
+  "ECA/TeleCheck Service Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "4",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "EC500003",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "046"
+      },
+      "SequenceNumber": "800103",
+      "LocalDateTime": "2609221555",
+      "PartialApprovalIndicator": "0"
+    },
+    "Check Data Segment": {
+      "SegmentType": "110",
+      "SegmentLength": "040",
+      "MICRData": "123456789012345",
+      "CheckType": "P"
+    },
+    "Variable Information Data Segment": {
+      "SegmentType": "111",
+      "SegmentLength": "020",
+      "VariableInformationSections": [
+        {"VariableInformationIndicator": "047", "VariableInformationLength": "005", "VariableInformation": "CHK01"}
+      ]
+    },
+    "ECA/TeleCheck Data Segment": {
+      "SegmentType": "113",
+      "SegmentLength": "090",
+      "EcaClerkId": "123456",
+      "MerchantTraceId": "MTRACE0000000001",
+      "DenialRecordNumber": "DR12345",
+      "ExtendedMicrData": "123456789012345678901234567890123456789012345678901234567890ABCDE"
+    }
+  }
+}

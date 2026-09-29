@@ -212,13 +212,16 @@ public final class Segment108ConsolidatedReport {
         sb.append("    P-02  Update Code mapping for the two undocumented reversal advice functions\n");
         sb.append("    P-03  Possible response-side presence of Segment 108 (disputed, no citation yet)\n");
         sb.append("    P-04  Appendix K Table 008/010 loyalty-receipt layouts in/out of scope\n");
+        sb.append("    P-05  Financial Transaction Request presence (reopened 2026-09-29: Chapter 12 matrix lists 108)\n");
         sb.append("    P-07  AI-generated Segment 108 BR/TS/TC/TD packages\n");
-        sb.append("    P-08  Real Segment 108 test data (currently synthesized)\n\n");
-        sb.append("  Resolved 2026-09-22: P-01 (max length 142), P-05 (message-family exclusivity),\n");
-        sb.append("  P-06 (Street/Phone substitution cataloged only, not code-enforced).\n\n");
+        sb.append("    P-08  Real Segment 108 test data (currently synthesized)\n");
+        sb.append("    P-10  Maximum length 142 is below the 15-field maximum (about 163)\n");
+        sb.append("    P-11  Trailing Field Separator after Field No. 13 vs 15\n\n");
+        sb.append("  Resolved 2026-09-22: P-01 (max length 142), P-06 (Street/Phone substitution cataloged\n");
+        sb.append("  only, not code-enforced), P-09 (Expiration Date is a real MMYY field).\n\n");
 
         sb.append("  Framework is READY_FOR_AI_ARTIFACT_INTAKE. Full certification requires:\n");
-        sb.append("  1. SME resolution of P-02, P-03, and P-04.\n");
+        sb.append("  1. SME resolution of P-02, P-03, P-04, P-05, P-10, and P-11.\n");
         sb.append("  2. Real AI-generated Segment 108 packages (P-07) replacing the placeholder.\n");
         sb.append("  3. Real Segment 108 test data (P-08) replacing the synthetic fixtures.\n");
         sb.append("  4. External ATL105 converter run against the real data.\n");

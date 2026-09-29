@@ -187,7 +187,7 @@ class Segment108TraceabilityMatrixTest {
 
             MatrixReport report = new Segment108TraceabilityMatrix(pkg).generateMatrix(catalog.anchors());
 
-            assertThat(report.metrics().totalRules()).isEqualTo(24);
+            assertThat(report.metrics().totalRules()).isEqualTo(25);
             assertThat(report.metrics().fullyTraced()).isGreaterThan(0);
             // PROVISIONAL: full recall requires real AI packages (P-07). Placeholder covers major rules only.
             assertThat(report.metrics().completionPercentage()).isGreaterThan(5.0);

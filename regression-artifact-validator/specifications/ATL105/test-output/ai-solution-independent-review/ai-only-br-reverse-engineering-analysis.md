@@ -17,7 +17,7 @@ Source artifacts:
 - AI requirement inventory: `ai-only-requirements-register.csv`
 - AI-only analysis: `ai-only-requirements-analysis.json`
 - Trained-segment triage: `ai-only-trained-segment-triage.csv`
-- Existing AI/Test four-level matrix: `four-level-traceability-matches/four-level-traceability-matches.json`
+- Existing AI/Test four-level matrix: `four-level-matches/four-level-traceability-matches.json`
 - Test Solution KB BR package: `../test-solution-independent-review/knowledge-base-br-coverage-package.json`
 - Complete Test Solution chain package: `../test-solution-independent-review/complete-all-test-solution-br-ts-tc-td-package.json`
 - SME decision register: `ai-only-sme-decision-register.json`

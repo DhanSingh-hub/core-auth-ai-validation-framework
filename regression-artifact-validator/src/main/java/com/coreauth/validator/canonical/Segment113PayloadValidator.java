@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * {@code specifications/ATL105/docs/specs/kb/segment-113/coverage/segment-113-rule-catalog.json}.
  *
  * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
- * Like Segment 108, Segment 113 belongs exclusively to its own dedicated message family
+ * Segment 113 is validated inside its own dedicated message family
  * (the ECA/TeleCheckÂ® Service Transaction Request), so the payload root key is
  * {@code "ECA/TeleCheck Service Transaction Request"}, not {@code "Financial Request"}.
  * Unlike Segment 108, Segment 113 is a CONDITIONAL member of its message family's Data

@@ -108,44 +108,78 @@ class Segment110PayloadValidatorTest {
     @Test
     void rejectsMissingCheckDataSegment() {
         ObjectNode payload = validRequest();
-        ((ObjectNode) payload.path("ECA TeleCheck Service Transaction Request")).remove("Check Data Segment");
+        request(payload).remove("Check Data Segment");
 
         assertRule(payload, "SEG110-R-001");
     }
 
     @Test
-    void acceptsEcaNumberOfSegmentsWithinRange() {
-        for (String value : new String[] {"1", "04", "4"}) {
+    void acceptsEcaRequestWithConditionalSegment113() {
+        for (String value : new String[] {"4", "04"}) {
             ObjectNode payload = validRequest();
-            request(payload).put("NumberOfSegments", value);
+            request(payload).put("NumSegments", value);
+            request(payload).putObject("ECA/TeleCheck Data Segment").put("SegmentType", "113");
 
             assertThat(new Segment110PayloadValidator().validatePayload(payload).errors()).as(value).isEmpty();
         }
     }
 
     @Test
-    void rejectsEcaNumberOfSegmentsOutsideRange() {
-        for (String value : new String[] {"0", "05"}) {
+    void rejectsNumSegmentsOutsideEcaRange() {
+        for (String value : new String[] {"2", "05"}) {
             ObjectNode payload = validRequest();
-            request(payload).put("NumberOfSegments", value);
+            request(payload).put("NumSegments", value);
 
             assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
                     .as(value)
-                    .anyMatch(error -> error.reason().contains("must be 1-4"));
+                    .anyMatch(error -> error.reason().contains("SEG110-R-021") && error.reason().contains("must be 3-4"));
         }
     }
 
     @Test
-    void rejectsNonNumericEcaNumberOfSegments() {
+    void rejectsNumSegmentsThatDoNotMatchSegmentsPresent() {
         ObjectNode payload = validRequest();
-        request(payload).put("NumberOfSegments", "123");
+        request(payload).put("NumSegments", "04");
 
         assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("SEG110-R-021") && error.reason().contains("contains 3 segments"));
+    }
+
+    @Test
+    void rejectsMissingOrNonNumericNumSegments() {
+        ObjectNode missing = validRequest();
+        request(missing).remove("NumSegments");
+        ObjectNode nonNumeric = validRequest();
+        request(nonNumeric).put("NumSegments", "123");
+
+        assertThat(new Segment110PayloadValidator().validatePayload(missing).errors())
+                .anyMatch(error -> error.reason().contains("SEG110-R-021") && error.reason().contains("is required"));
+        assertThat(new Segment110PayloadValidator().validatePayload(nonNumeric).errors())
                 .anyMatch(error -> error.reason().contains("one or two digits"));
     }
 
+    @Test
+    void rejectsMissingVariableInformationSegment() {
+        ObjectNode payload = validRequest();
+        request(payload).remove("Variable Information Data Segment");
+        request(payload).put("NumSegments", "02");
+
+        assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("SEG110-R-021") && error.reason().contains("(111) is required"));
+    }
+
+    @Test
+    void rejectsSegmentNotListedForEcaRequest() {
+        ObjectNode payload = validRequest();
+        request(payload).put("NumSegments", "04");
+        request(payload).putObject("Loyalty Card Data Segment").put("SegmentType", "108");
+
+        assertThat(new Segment110PayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("SEG110-R-021") && error.reason().contains("Segment 108"));
+    }
+
     private static ObjectNode request(ObjectNode payload) {
-        return (ObjectNode) payload.path("ECA TeleCheck Service Transaction Request");
+        return (ObjectNode) payload.path("ECA/TeleCheck Service Transaction Request");
     }
 
     private static void assertRule(ObjectNode payload, String ruleId) {
@@ -156,19 +190,20 @@ class Segment110PayloadValidatorTest {
 
     private static ObjectNode validRequest() {
         ObjectNode payload = MAPPER.createObjectNode();
-        ObjectNode request = payload.putObject("ECA TeleCheck Service Transaction Request");
-        request.put("MessageFormatVersionIdentifier", "ATL105");
-        request.put("NumberOfSegments", "03");
-        request.putObject("Standard Message Data Segment");
+        ObjectNode request = payload.putObject("ECA/TeleCheck Service Transaction Request");
+        request.put("MessageType", "ATL105");
+        request.put("NumSegments", "03");
+        request.putObject("Standard Segment").put("SegmentType", "100");
         ObjectNode segment = request.putObject("Check Data Segment");
         segment.put("SegmentType", "110");
         segment.put("SegmentLength", "060");
         segment.put("MICRData", "T123456780T0301123D456D7O");
         segment.put("CheckType", "P");
+        request.putObject("Variable Information Data Segment").put("SegmentType", "111");
         return payload;
     }
 
     private static ObjectNode segment(ObjectNode payload) {
-        return (ObjectNode) payload.path("ECA TeleCheck Service Transaction Request").path("Check Data Segment");
+        return (ObjectNode) request(payload).path("Check Data Segment");
     }
 }

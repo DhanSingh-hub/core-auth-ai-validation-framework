@@ -185,10 +185,10 @@ Already communicated in `AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md`, restated 
 | `run2-br-ts-tc-td-gap-details.csv` | All 4,509 gap rows (requirement, segment, trace_status, reason, page, counts) |
 | `run2-orphan-scenarios.csv` | All 102 orphan scenarios |
 | `run2-traceability-gap-analysis.json` | Independently recomputed link-gap counts (machine-readable) |
-| `matched-business-requirements/all-matched-business-requirements.{md,csv,json}` | All 100 matched BR mappings, 749 AI↔Test links |
-| `four-level-traceability-matches/four-level-traceability-matches.{md,json}` | Full BR/TS/TC/TD side-by-side comparison, all 100 mappings |
-| `four-level-traceability-matches/confirmed-traceability-matches.{md,json}` | Same comparison, filtered to the 30 `CONFIRMED` BRs only |
-| `four-level-traceability-matches/confirmed-traceability-matches-segment-100.{md,json}` | Segment 100 only, confirmed BRs |
+| `matched-brs/all-matched-business-requirements.{md,csv,json}` | All 100 matched BR mappings, 749 AI↔Test links |
+| `four-level-matches/four-level-traceability-matches.{md,json}` | Full BR/TS/TC/TD side-by-side comparison, all 100 mappings |
+| `four-level-matches/confirmed-traceability-matches.{md,json}` | Same comparison, filtered to the 30 `CONFIRMED` BRs only |
+| `four-level-matches/confirmed-traceability-matches-segment-100.{md,json}` | Segment 100 only, confirmed BRs |
 | `run2-executive-report/run2-weighted-executive-report.{md,json,html}` | Section 5/7 weighted summary |
 | `run2-segment-reports/segment-*-run2-review.md` | Per-segment crosswalk detail (10 files) |
 | `run2-sme-review-queue/run2-sme-review-queue.md` | All 263 open SME/remediation items |

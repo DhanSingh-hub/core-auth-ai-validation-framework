@@ -25,7 +25,7 @@ public final class GenerateMatchedBusinessRequirementsReport {
                 Path.of("ai-solution", "runs", "2026-09-23"));
         Path reviewRoot = Atl105Paths.testOutput().resolve("ai-solution-independent-review");
         Path outputRoot = args.length == 0
-                ? reviewRoot.resolve("matched-business-requirements")
+                ? reviewRoot.resolve("matched-brs")
                 : Path.of(args[0]);
         Files.createDirectories(outputRoot);
 

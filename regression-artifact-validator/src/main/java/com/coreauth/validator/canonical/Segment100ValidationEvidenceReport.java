@@ -83,7 +83,7 @@ public final class Segment100ValidationEvidenceReport {
         addFlow(flows, "AUTHORIZATION_COMPLETION", Segment100MultiStepCoverageValidator.Flow.AUTHORIZATION_COMPLETION,
                 lifecycleDirectory, "authorization-completion-authorization.source.json", "authorization-completion-completion.valid.json", "authorization-completion-completion.source.json");
         addFlow(flows, "AUTHORIZATION_CANCELLATION", Segment100MultiStepCoverageValidator.Flow.AUTHORIZATION_CANCELLATION,
-            lifecycleDirectory, "authorization-cancellation-authorization.synthetic.json", "authorization-cancellation-cancellation.synthetic.json", null);
+            lifecycleDirectory, "auth-cancel-authorization.synthetic.json", "auth-cancel-cancellation.synthetic.json", null);
         addFlow(flows, "AUTHORIZATION_VOID", Segment100MultiStepCoverageValidator.Flow.AUTHORIZATION_VOID,
                 lifecycleDirectory, "authorization-void-authorization.source.json", "authorization-void-void.valid.json", "authorization-void-void.source.json");
         addFlow(flows, "REFUND_VOID_OF_RETURN", Segment100MultiStepCoverageValidator.Flow.REFUND_VOID_OF_RETURN,
