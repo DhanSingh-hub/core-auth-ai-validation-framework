@@ -11,7 +11,7 @@
 
 1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
 2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
-3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [Data Sections](#request-data-section-convention), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy)
+3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [Data Sections](#request-data-section-convention), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy), [Independent Review Process](#independent-review-process)
 4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
 5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
 6. Learn: [Lessons Learned](#lessons-learned), [Segment 100 Reference Implementation](#segment-100-reference-implementation), [Handbook History](#handbook-history)
@@ -278,6 +278,93 @@ Report missing, duplicate, unsupported, malformed, contradictory, and review-req
 
 Source locations and the required AI package layout are in [AI-ARTIFACT-INTAKE.md](../../test-validation-strategy/AI-ARTIFACT-INTAKE.md). Specialized appendix artifacts must declare a domain such as `MONERIS`, `DIGITAL_WALLET`, `PAYMENT_TOKEN`, `TRANSARMOR_ADMIN`, `CA_PUBLIC_KEYS`, or `PREMIUM_GIFT_CARD`. The intake gate must reject undeclared domains and must not certify generic segment JSON as specialized coverage.
 
+### Independent Review Process
+
+Apply this process to every AI delivery review, phase-1 probe, message-template review, and re-review after a producer correction. The review is performed by the Test Solution; producer status labels and self-verification are evidence to inspect, never the verdict.
+
+#### 1. Freeze and scope the evidence
+
+- Record delivery ID/revision, specification version, producer, received date, exact input paths, and hashes when available.
+- Preserve the producer's files unchanged. Keep generated review reports separate from producer inputs.
+- State the review scope explicitly: segment/message family, BR/TS/TC/TD/mapping stages, exclusions, and whether the sample is representative, exhaustive, or only a probe.
+- Do not infer missing stages from filenames, counts, README claims, or another delivery.
+
+#### 2. Establish the independent oracle
+
+- Read the applicable ATL105 PDF sections and cross-check layout tables, element definitions, segment definitions, transaction matrix, and appendices where relevant.
+- Read the Test Solution rule catalog, context/applicability model, validators, and current open SME decisions.
+- Mark each oracle rule `CONFIRMED`, `PROVISIONAL`/`REVIEW_REQUIRED`, or `OUT_OF_SCOPE`; do not turn unresolved specification conflicts into pass/fail facts.
+- Confirm templates against the PDF before using them as expected-message evidence. Templates are derived artifacts, not the specification.
+
+#### 3. Reconstruct the complete producer chain
+
+Follow actual IDs and files, not aggregate claims:
+
+```text
+source anchor -> BR -> TS -> TC -> physical TD -> mapping to Test Solution rule
+```
+
+For every link, verify identity and cardinality: all BR IDs referenced by each TS; all TS IDs referenced by each TC; all TC IDs resolved to physical TD files; and every mapping resolved against an independently owned rule. Check request/response roles, message family, transaction context, segment set/order, Element 63 where applicable, version continuity, and source-anchor identity. Record orphan, duplicate, fan-out, many-to-many, and missing links rather than silently repairing them.
+
+Open physical payloads. Validate their root/envelope, fields, segment composition, values, lengths, encoding, and conditional/lifecycle rules. Run the relevant Test Solution validator when one exists. A producer `PASS` does not substitute for executing the independent validator.
+
+#### 4. Classify each finding
+
+Use a finding per defect and name its evidence and affected stage. At minimum distinguish:
+
+| Finding class | Meaning |
+|---|---|
+| `SOURCE_CONFLICT` | ATL105 statements conflict or leave behavior unresolved; raise an SME query. |
+| `TEST_SOLUTION_GAP` | The independent catalog, rule, validator, fixture, or mapping oracle is missing/incorrect; do not blame the producer for that gap. |
+| `AI_ARTIFACT_DEFECT` | The producer artifact contradicts confirmed source behavior or the agreed artifact contract. |
+| `CHAIN_GAP` | A BR/TS/TC/TD/mapping link or physical file is absent, orphaned, duplicated, or inconsistent. |
+| `PROVENANCE_OR_VERSION_GAP` | Source, revision, specification version, producer ID, or physical artifact identity cannot be established. |
+| `REVIEW_REQUIRED` | Evidence is incomplete, heuristic, ambiguous, or depends on an unresolved decision. It is not a confirmed match or a pass. |
+
+One symptom may have multiple causes. Separate, for example, an AI missing anchor from a Test Solution rule that lacks an element anchor; do not report the former as a producer defect until both sides are checked.
+
+#### 5. Determine the review outcome
+
+Assign an overall outcome and per-chain/per-rule disposition:
+
+- `ACCEPTED`: in-scope required stages exist; physical payloads pass independent checks; mappings are evidence-supported; no unresolved blocker affects the claim.
+- `ACCEPTED_WITH_GAPS`: the explicitly accepted scope passes, and remaining gaps are enumerated, bounded, and not represented as coverage.
+- `REVIEW_REQUIRED`: a material question or evidence gap prevents a reliable decision.
+- `REJECTED_NOT_INTAKE_READY`: a required stage is absent/invalid, physical data fails a confirmed rule, mappings are materially wrong, or a claimed pass cannot be reproduced.
+- `NOT_ASSESSED`: scope/evidence is insufficient to make a verdict.
+
+Report denominators and numerators, excluded records, examples, validator/test commands and results, and limitations. Never call AI-output-relative coverage independent specification coverage.
+
+#### 6. Record and route findings
+
+- Record SME questions, Test Team decisions, developer discussion topics, and AI feedback exactly once in the [Communication Register](#communication-register); connect related IDs.
+- Put detailed evidence in a machine-readable review report under `specifications/ATL105/test-output/ai-solution-independent-review/`, and give each finding a stable ID, severity, class, evidence paths/IDs, impact, owner/channel, and required disposition.
+- Generated views are regenerated from the register; do not edit them by hand.
+- Keep producer files immutable. Corrections to the Test Solution oracle are made in Test Solution-owned catalogs/code and recorded as such.
+
+#### 7. Re-review and improve the review process every time
+
+For each completed review, conduct a short reviewer retrospective before closing it:
+
+1. Record which check found each material defect and which checks missed or misclassified one.
+2. Decide whether the cause is a source ambiguity, oracle gap, tool defect, evidence problem, or reviewer/process omission.
+3. Add or update a focused regression test, schema check, or review step for every repeatable failure mode.
+4. Update this handbook in the same change when the reusable process, finding taxonomy, outcome criteria, evidence contract, or a gate changes. Add a numbered lesson for a new generalizable rule; keep delivery-specific examples in the review report.
+5. Re-run the affected check against the current delivery and the relevant prior fixture/report. Record the reviewer, date, command, result, and remaining limitation.
+
+The review process is therefore iterative but controlled: improve a gate from evidence, test that improvement, document it, and do not retroactively promote old findings without re-running the new check.
+
+#### Review Deliverable Checklist
+
+- [ ] Scope, delivery revision, source version, producer, inputs, provenance, and exclusions recorded.
+- [ ] Independent source/rule oracle identified; unresolved source issues remain review-gated.
+- [ ] Actual BR -> TS -> TC -> physical TD -> mapping chain reconstructed.
+- [ ] Physical payloads independently validated; producer `PASS` not treated as acceptance evidence.
+- [ ] Findings classified, evidenced, severity/impact assigned, and register IDs linked.
+- [ ] Outcome, denominators, exclusions, commands, results, and limitations reported.
+- [ ] Retrospective completed; reusable process improvements, regression tests, handbook/lesson changes recorded.
+- [ ] Re-review checks pass or remaining blockers are explicitly retained.
+
 ### Phase 8a: Field-Alias Crosswalk (Evidence-Based, Non-Authoritative)
 
 The Test Solution is trained and certified independently of the AI Solution's schema. The field-alias crosswalk does not change that: it is a separate, evidence-only comparison bridge built after independent training, never a source of Test Solution rules, requirements, or field names.
@@ -422,6 +509,7 @@ Complete this for every segment before merging to `Develop`:
 - [ ] **Snapshot assertions:** every test that asserts a catalog size was updated in the same commit as the catalog ([L11](#lessons-learned)).
 - [ ] **Failures already on `Develop`:** recorded with their root cause, not ignored ([L10](#lessons-learned)).
 - [ ] **Full suite:** `mvn clean test` passes with no new failures, or the fallback in [L13](#lessons-learned) is documented.
+- [ ] **Independent review:** when AI artifacts are in scope, the [Independent Review Process](#independent-review-process) deliverable checklist is complete and the verdict is reflected in `training-status.json`.
 - [ ] **Training status:** `training-status.json` gates and blockers are updated, and the consolidated report is regenerated.
 - [ ] **Handbook:** any new lesson is added to this document in the same change.
 
@@ -504,4 +592,5 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-29 | Totals message layouts (Section 11.4): split the merged Totals Request template, added the Approved and Declined Totals Response templates, added message-level rules to Segments 105 and 119 with `TotalsRequestPayloadValidator`, and added L18. |
 | 2026-09-29 | Added the [Request Data Section Convention](#request-data-section-convention) (TT-0014) with SME queries SEG109-SME-012, SEG116-SME-007 and SEG132-SME-006, and the rule-writing principle; reworded SEG109-R-001, SEG109-R-003 and SEG116-R-005 by field number and made SEG132-R-001 PROVISIONAL. |
 | 2026-09-30 | Started Section 11.5 Electronic Mail: corrected the Segment 109 envelope validator, split the request/response templates, added six fixtures, and independently rejected the AI BR -> TS -> TC -> TD -> mapping chain as not intake-ready (L19, AIF-0014/AIF-0015). |
+| 2026-09-30 | Added the repeatable [Independent Review Process](#independent-review-process), including full-chain evidence checks, finding taxonomy, outcome criteria, required review deliverable, and a retrospective/improvement loop for every review. |
 | 2026-09-30 | Download segments DL1-DL8 retrained against Segment 100 and the §11.7 download layouts: rewrote the generated topic notes and flows, added message-placement, lifecycle and element-format rules, and raised the specification conflicts as SME queries. Added L20. |
