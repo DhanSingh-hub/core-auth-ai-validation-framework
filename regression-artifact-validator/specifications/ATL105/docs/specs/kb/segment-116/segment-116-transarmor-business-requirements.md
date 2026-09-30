@@ -12,7 +12,7 @@ These are requirements for the TransArmor Key/Key ID Load dimension of the platf
 
 | ID | Requirement | Acceptance criteria |
 |---|---|---|
-| TA-116-001 | A TransArmor PKI Encryption and Tokenization Load Request shall contain Segment 116 in Data Section 2. | `TransArmor Request.Data Section 2.SegmentType` is `116`. |
+| TA-116-001 | A TransArmor PKI Encryption and Tokenization Load Request shall contain Segment 116 in Field No. 3. | `TransArmor Request.Segment 116.SegmentType` is `116`. |
 | TA-116-002 | Segment 116's Segment Type shall be the fixed value `116`. | `SegmentType == "116"`. |
 | TA-116-003 | Segment 116's serialized length shall not exceed 50 alphanumeric characters. | `len(serialized Segment 116) <= 50`. |
 | TA-116-004 | Segment 116 shall not be confused with Segment 119 (Totals with Proprietary Data Load Data Segment), regardless of the Section 11.4.1.2 label. | A fixture labeled "(Data Segment No. 116)" for a Totals-with-load request is rejected or relabeled to 119. |

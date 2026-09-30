@@ -30,9 +30,9 @@ Requirements are derived **only** from the Segment 109 rule catalog and the ATL1
 
 | ID | Class | Requirement | Acceptance criteria | Source | Status |
 |---|---|---|---|---|---|
-| BR-SEG109-001 | structure | Electronic Mail Request has Data Section 1 followed by Data Section 2 containing Segment 109 | The segment's structural position and composition match the rule. | `SEG109-R-001` §11.5.1 | SPEC_DERIVED |
+| BR-SEG109-001 | structure | An Electronic Mail Request contains Data Section 1 (Elements 55 and 63) and Segment 109 as its only segment, in Field No. 3; it has no Segment 100 | The segment's structural position and composition match the rule. | `SEG109-R-001` §11.5.1 | SPEC_DERIVED |
 | BR-SEG109-002 | structure | Data Section 1 contains required Message Format Version Identifier (Element 55) and Number of Segments (Element 63), separated and followed by a Field Separator | The segment's structural position and composition match the rule. | `SEG109-R-002` §11.5.1 | SPEC_DERIVED |
-| BR-SEG109-003 | applicability | Segment 109 is field 3 in Data Section 2 and is sent only for transactions requiring electronic mail | Segment presence or absence matches the stated condition for the message family; a violation fails citing the rule ID. | `SEG109-R-003` §11.5.1 | REVIEW_REQUIRED |
+| BR-SEG109-003 | applicability | Segment 109 is in Field No. 3 and is sent only for transactions requiring electronic mail | Segment presence or absence matches the stated condition for the message family; a violation fails citing the rule ID. | `SEG109-R-003` §11.5.1 | REVIEW_REQUIRED |
 | BR-SEG109-004 | field | Segment Type is fixed value 109 | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG109-R-004` §12.8 | SPEC_DERIVED |
 | BR-SEG109-005 | field | Segment Length is three numeric characters and includes Segment Type and Field Separators | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG109-R-005` §12.8 | SPEC_DERIVED |
 | BR-SEG109-006 | serialization | Segment 109 maximum length is 232 alphanumeric characters | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEG109-R-006` §12.8 | SPEC_DERIVED |

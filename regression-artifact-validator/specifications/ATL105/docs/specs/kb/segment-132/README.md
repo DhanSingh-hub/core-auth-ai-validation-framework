@@ -25,7 +25,7 @@
 | Placement | Data Section 3 of the CA Public Key File Load Request |
 | Origin | Device |
 | Segment length range | 01–77 alphanumeric characters (field-sum reconciliation provisional) |
-| Message family | CA Public Key File Load Request only; companions 101/102/104/111 |
+| Message family | CA Public Key File Load Request only; companions 101/102/104/111 per the 11.9.1 text, none per its table (PROVISIONAL, SEG132-SME-006) |
 
 ## 2. Field Layout (10 fields — see [rule catalog](coverage/segment-132-rule-catalog.json) for all 12 rules)
 

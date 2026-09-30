@@ -3,7 +3,7 @@
   "architecture_alignment": "Output of Steps 1+2+3 — feeds into Step 5 (Canonical Knowledge Assembly) and Step 6 (Scenario Derivation)",
   "source_id": "SRC-ATL105-PDF-001",
   "assembled_at": "2026-09-10T12:43:14.806510",
-  "total_transaction_types": 14,
+  "total_transaction_types": 17,
   "total_segments_defined": 41,
   "total_elements_defined": 230,
   "state": "EXTRACTED",
@@ -7216,6 +7216,366 @@
         }
       ]
     },
+    "Communications Test Request": {
+      "transaction_type": "Communications Test Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_STX_ETX_NO_FIELD_SEPARATORS",
+      "transaction_type_code": "900",
+      "fields": [
+        {"field_no":"1","element_no":"55","element_ref":"ENT-ELEM-55","name":"Message Format Version Identifier","entry":"R","fixed_value":"ATL105","position":1,"length":6,"description":"Identifies the type and release version of the message format. Source: Device","source":{"source_id":"SRC-ATL105-PDF-001","page":184}},
+        {"field_no":"2","element_no":"63","element_ref":"ENT-ELEM-63","name":"Number of Segments","entry":"R","fixed_value":"0","position":7,"length":2,"description":"No BUYPASS-defined data segment is present; Element 120 follows the field separator. Source: Device","source":{"source_id":"SRC-ATL105-PDF-001","page":184}},
+        {"field_no":"3","element_no":"120","element_ref":"ENT-ELEM-120","name":"Network Management Message","entry":"R","fixed_value":"COMMTEST","position":9,"length":8,"description":"Identifies the communications test message from the device. Source: Device","source":{"source_id":"SRC-ATL105-PDF-001","page":184}}
+      ],
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":184},
+      "notes":["STX precedes the fields; ETX follows COMMTEST; no Segment 120 object is used."]
+    },
+    "Communications Test Response": {
+      "transaction_type": "Communications Test Response",
+      "segment_count": 0,
+      "layout": "POSITIONAL_STX_ETX_FIXED_LENGTH_NO_FIELD_SEPARATORS",
+      "fields": [
+        {"field_no":"1","element_no":"83","element_ref":"ENT-ELEM-83","name":"Response Code","entry":"R","fixed_value":"1","position":1,"length":1,"description":"Indicates a single-message response. Source: Host","source":{"source_id":"SRC-ATL105-PDF-001","page":185}},
+        {"field_no":"2","element_no":"30","element_ref":"ENT-ELEM-30","name":"Download Indicator","entry":"R","fixed_value":"0","position":2,"length":1,"description":"Indicates whether a download is required. Source: Host","source":{"source_id":"SRC-ATL105-PDF-001","page":185}},
+        {"field_no":"3","element_no":"100","element_ref":"ENT-ELEM-100","name":"Terminal Display Communications Message","entry":"C","fixed_value":"COMM_TEST_PASSED","position":3,"length":16,"description":"Identifies the message for display at the transmitting device. Source: Host","source":{"source_id":"SRC-ATL105-PDF-001","page":185}}
+      ],
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":185},
+      "notes":["STX precedes the fields; ETX follows the response; no Field Separators."]
+    },
+    "Electronic Mail Request": {
+      "transaction_type": "Electronic Mail Request",
+      "segment_count": 1,
+      "segments": [
+        {
+          "segment_number": "109",
+          "segment_name": "Electronic Mail Data Segment",
+          "segment_type_value": "109",
+          "presence_in_message": "PROVISIONAL",
+          "fields": [
+            {
+              "field_no": "1",
+              "element_no": "85",
+              "element_ref": "ENT-ELEM-85",
+              "name": "Segment Type",
+              "entry": "R",
+              "fixed_value": "109",
+              "description": "Identifies the type of data segment being formatted. Fixed value: 109 Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "2",
+              "element_no": "84",
+              "element_ref": "ENT-ELEM-84",
+              "name": "Segment Length",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the data segment’s length, including Segment Type’s length and Field Separators. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "3",
+              "element_no": "44",
+              "element_ref": "ENT-ELEM-44",
+              "name": "Information Byte",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Indicates whether the request is a single- message request or a multimessage request. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "4",
+              "element_no": "102",
+              "element_ref": "ENT-ELEM-102",
+              "name": "Terminal Identifier",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the device by Device Type, State Code, BUYPASS Merchant Number, and Device Number. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "5",
+              "element_no": "78",
+              "element_ref": "ENT-ELEM-78",
+              "name": "Prompt Code",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the request’s format type. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "6",
+              "element_no": "11",
+              "element_ref": "ENT-ELEM-11",
+              "name": "Block Number",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "7",
+              "element_no": "32",
+              "element_ref": "ENT-ELEM-32",
+              "name": "Employee Number",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies a BUYPASS customer’s employee. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "8",
+              "element_no": "65",
+              "element_ref": "ENT-ELEM-65",
+              "name": "Password",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the end-of-day function’s password. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "9",
+              "element_no": "86",
+              "element_ref": "ENT-ELEM-86",
+              "name": "Sequence Number",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "10",
+              "element_no": "50",
+              "element_ref": "ENT-ELEM-50",
+              "name": "Local Time",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the time of the request. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "11",
+              "element_no": "36",
+              "element_ref": "ENT-ELEM-36",
+              "name": "Extract Date",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the date the information was extracted. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "12",
+              "element_no": "37",
+              "element_ref": "ENT-ELEM-37",
+              "name": "Extract Time",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the time the information was extracted. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "13",
+              "element_no": "104",
+              "element_ref": "ENT-ELEM-104",
+              "name": "Text Data Length",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies Text Data’s length. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "14",
+              "element_no": "103",
+              "element_ref": "ENT-ELEM-103",
+              "name": "Text Data",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the request’s data. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            }
+          ],
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 232
+          }
+        }
+      ],
+      "number_of_segments_fixed_value": "01"
+    },
+    "Electronic Mail Response": {
+      "transaction_type": "Electronic Mail Response",
+      "segment_count": 0,
+      "layout": "VARIABLE_LENGTH_FIXED_POSITION_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "30",
+          "element_ref": "ENT-ELEM-30",
+          "name": "Download Indicator",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 1,
+          "description": "Indicates whether a download is required; and, if so, whether it is a partial or full download. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "45",
+          "element_ref": "ENT-ELEM-45",
+          "name": "Initiation Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 3,
+          "length": 6,
+          "description": "Identifies the date the transaction was initiated. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "46",
+          "element_ref": "ENT-ELEM-46",
+          "name": "Initiation Time",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 9,
+          "length": 4,
+          "description": "Identifies the time the transaction was initiated. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "5",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 13,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "6",
+          "element_no": "11",
+          "element_ref": "ENT-ELEM-11",
+          "name": "Block Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 19,
+          "length": 3,
+          "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "7",
+          "element_no": "52",
+          "element_ref": "ENT-ELEM-52",
+          "name": "Mail Text Data Length",
+          "entry": "C",
+          "fixed_value": null,
+          "position": 22,
+          "length": 3,
+          "description": "Identifies the Mail Text Data length. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "8",
+          "element_no": "51",
+          "element_ref": "ENT-ELEM-51",
+          "name": "Mail Text Data",
+          "entry": "C",
+          "fixed_value": null,
+          "position": 25,
+          "length": "Var.",
+          "description": "Identifies the data in the response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 178
+      },
+      "notes": [
+        "No Field Separators. Mail Text Data is variable length."
+      ]
+    },
     "Totals Request": {
       "transaction_type": "Totals Request",
       "segment_count": 1,
@@ -7968,206 +8328,6 @@
         "source_id": "SRC-ATL105-PDF-001",
         "page": 175
       }
-    },
-    "Electronic Mail": {
-      "transaction_type": "Electronic Mail",
-      "segment_count": 1,
-      "segments": [
-        {
-          "segment_number": "109",
-          "segment_name": "Electronic Mail Data Segment",
-          "segment_type_value": "109",
-          "presence_in_message": "PRESENT",
-          "fields": [
-            {
-              "field_no": "1",
-              "element_no": "85",
-              "element_ref": "ENT-ELEM-85",
-              "name": "Segment Type",
-              "entry": "R",
-              "fixed_value": "109",
-              "description": "Identifies the type of data segment being formatted. Fixed value: 109 Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "2",
-              "element_no": "84",
-              "element_ref": "ENT-ELEM-84",
-              "name": "Segment Length",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the data segment’s length, including Segment Type’s length and Field Separators. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "3",
-              "element_no": "44",
-              "element_ref": "ENT-ELEM-44",
-              "name": "Information Byte",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Indicates whether the request is a single- message request or a multimessage request. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "4",
-              "element_no": "102",
-              "element_ref": "ENT-ELEM-102",
-              "name": "Terminal Identifier",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the device by Device Type, State Code, BUYPASS Merchant Number, and Device Number. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "5",
-              "element_no": "78",
-              "element_ref": "ENT-ELEM-78",
-              "name": "Prompt Code",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the request’s format type. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "6",
-              "element_no": "11",
-              "element_ref": "ENT-ELEM-11",
-              "name": "Block Number",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "7",
-              "element_no": "32",
-              "element_ref": "ENT-ELEM-32",
-              "name": "Employee Number",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies a BUYPASS customer’s employee. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "8",
-              "element_no": "65",
-              "element_ref": "ENT-ELEM-65",
-              "name": "Password",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the end-of-day function’s password. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "9",
-              "element_no": "86",
-              "element_ref": "ENT-ELEM-86",
-              "name": "Sequence Number",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "10",
-              "element_no": "50",
-              "element_ref": "ENT-ELEM-50",
-              "name": "Local Time",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the time of the request. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "11",
-              "element_no": "36",
-              "element_ref": "ENT-ELEM-36",
-              "name": "Extract Date",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the date the information was extracted. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "12",
-              "element_no": "37",
-              "element_ref": "ENT-ELEM-37",
-              "name": "Extract Time",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the time the information was extracted. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "13",
-              "element_no": "104",
-              "element_ref": "ENT-ELEM-104",
-              "name": "Text Data Length",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies Text Data’s length. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "14",
-              "element_no": "103",
-              "element_ref": "ENT-ELEM-103",
-              "name": "Text Data",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the request’s data. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            }
-          ],
-          "source": {
-            "source_id": "SRC-ATL105-PDF-001",
-            "page": 232
-          }
-        }
-      ]
     },
     "Financial Transaction Response": {
       "transaction_type": "Financial Transaction Response",

@@ -17,11 +17,11 @@ Segment 132 is valid only inside the message families and Data Sections the spec
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG132-R-001` | Segment 132 belongs to the CA Public Key File Load Request's Data Section 3, alongside optional companions 101, 102, 104, 111 | 11.9.1 | — | REVIEW_REQUIRED |
+| `SEG132-R-001` | In a CA Public Key File Load Request Segment 132 is in Field No. 3; whether Segments 101, 102, 104 and 111 may accompany it is unresolved | 11.9.1 | — | REVIEW_REQUIRED |
 
 ## Catalog Notes
 
-- `SEG132-R-001` — PROVISIONAL: the exact R/O/C designation for Segment 132 within the CA Public Key File Load Request's own Data Section 3 table was not captured with full certainty during extraction (the segment name strongly implies Required, mirroring Segment 100/108/130's 'anchor segment' pattern, but this should be confirmed rather than assumed). Pending SME confirmation (SEG132-SME-001).
+- `SEG132-R-001` — PROVISIONAL: Section 11.9.1 contradicts itself. Its text lists Segments 101, 102, 104, 111 and 132 in Data Section 3 after Segment 100; its table fixes Element 63 at 01, excludes Segment 100, and puts Segment 132 alone in Field No. 3. The exact R/O/C designation is also unconfirmed. Pending SME confirmation (SEG132-SME-006, SEG132-SME-001).
 
 ## SME Reasoning
 
@@ -48,8 +48,8 @@ A requirement such as "the field is valid" is untestable. A useful requirement n
 Example derived from the catalog:
 
 ```text
-Segment 132 belongs to the CA Public Key File Load Request's Data Section 3, alongside optional companions 101, 102, 104, 111
-  -> source: ATL105 2026-3 §11.9.1 (SEG132-R-001)
+In a CA Public Key File Load Request Segment 132 is in Field No. 3; whether Segments 101, 102, 104 and 111 may accompany it is unresolved
+  -> source: ATL105 2026-3 §11.9.1 (SEG132-R-001, PROVISIONAL)
   -> a violating payload shall fail validation citing SEG132-R-001
 ```
 

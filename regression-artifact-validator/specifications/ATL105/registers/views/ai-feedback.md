@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 12 open (12 total).
+**Status:** 15 open (15 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -20,6 +20,9 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0010](#aif-0010) | Build ECA/TeleCheck Service Transaction Requests to the Section 11.3.1 layout | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0011](#aif-0011) | Build every test case with the Chapter 11 structure of its message | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0012](#aif-0012) | Build Totals Requests to the Section 11.4.1 layouts | OPEN | AI Solution Team | 2026-09-29 |
+| [AIF-0013](#aif-0013) | Associate an element with the Segment 151/152 Market Basket Data requirements | OPEN | AI Solution Team | 2026-09-29 |
+| [AIF-0014](#aif-0014) | Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain | OPEN | AI Solution Team | 2026-09-30 |
+| [AIF-0015](#aif-0015) | Correct the phase-1 Electronic Mail Request payload before claiming verification PASS | OPEN | AI Solution Team | 2026-09-30 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -273,3 +276,57 @@ Use the message names above as the root keys, as in the other message layouts (s
 - `AI delivery reporting/output/qe_shaped_test_data/TC-10023.json (Totals Request) and TC-10024.json (Totals with Proprietary Data Load Request)`
 
 **Related:** [AIF-0011](ai-feedback.md#aif-0011), [AID-0002](ai-dev-discussion.md#aid-0002), [SEG105-SME-007](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-007), [SEG105-SME-010](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md#seg105-sme-010), [SEG119-SME-001](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-001), [SEG119-SME-008](../../docs/specs/kb/segment-119/segment-119-sme-tba-input-register.md#seg119-sme-008)
+
+<a id="aif-0013"></a>
+## AIF-0013: Associate an element with the Segment 151/152 Market Basket Data requirements
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-29 by saurabhtw28
+- **Segments:** 151, 152
+- **Target delivery:** Next delivery after 2026-09-29 phase_1_single_leg
+
+The phase_1_single_leg requirements for segments 151 and 152 ('Market Basket Data') carry no ENT-ELEM-* entry in related_entity_ids; only the ENT-SEG-* entry is present. Every other full chain in the delivery resolves to an element. Without an element the requirement cannot be anchored to a rule, so it cannot enter anchored comparison.
+
+Our catalogs record element 85 for segment 151 and elements 84/85 for segment 152.
+
+**Related:** [AIF-0005](ai-feedback.md#aif-0005)
+
+<a id="aif-0014"></a>
+## AIF-0014: Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-30 by saurabhtw28
+- **Segments:** 109
+- **Target delivery:** Next delivery after 2026-09-29 phase_1_single_leg
+
+The Segment 109 AI delivery is not intake-ready for the Electronic Mail message structure. Run1 contains 61 requirements for Segment 109 and Run2 traceability links 182 scenarios and 340 test cases to those requirements, but none of the 340 linked payloads contains Segment 109. 247 payloads are empty `Financial Request` shells with `NumSegments` 0; the remaining linked payloads carry unrelated segments or message families. All 340 were marked PASS by the producer's verification.
+
+The 90 test cases labelled `Electronic Mail Request` are also empty or structurally unrelated. The chain must be rebuilt and verified as BR -> TS -> TC -> TD -> mapping: use the canonical message root `Electronic Mail Request`, `MessageType`, `NumSegments` equal to the segment count, Segment 109 in Field No. 3, and a valid Prompt Code (981 retrieval, 996 proprietary-card retrieval, or 995 submission). Do not count a producer PASS as acceptance evidence until the payload is independently validated.
+
+**Evidence:**
+
+- `specifications/ATL105/test-output/ai-solution-independent-review/segment-109-ai-chain-verification.json`
+- `AI delivery reporting/output/traceability_matrix_full.json`
+- `AI delivery reporting/output/qe_shaped_test_data/TC-0625.json (representative empty Electronic Mail payload)`
+
+**Related:** [AIF-0011](ai-feedback.md#aif-0011), [AID-0002](ai-dev-discussion.md#aid-0002), [SEG109-SME-012](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md#seg109-sme-012)
+
+<a id="aif-0015"></a>
+## AIF-0015: Correct the phase-1 Electronic Mail Request payload before claiming verification PASS
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-30 by saurabhtw28
+- **Segments:** 109
+- **Target delivery:** Next delivery after 2026-09-29 phase_1_single_leg
+
+The 2026-09-29 phase_1_single_leg Segment 109 chain has a valid Terminal Identifier requirement, but its generated request data is not a valid Electronic Mail Request: the request has no Data Section 1 object, uses Prompt Code `0` instead of 981, 995 or 996, leaves Segment Length null, and is nevertheless marked PASS. The Electronic Mail request envelope must use root `Electronic Mail Request`, `MessageType` and `NumSegments`, with Segment 109 present in Field No. 3.
+
+**Evidence:**
+
+- `specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/chains/segment_109.json`
+- `specifications/ATL105/test-output/ai-solution-independent-review/phase1-single-leg-validation.json`
+
+**Related:** [AIF-0014](ai-feedback.md#aif-0014), [SEG109-SME-012](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md#seg109-sme-012)

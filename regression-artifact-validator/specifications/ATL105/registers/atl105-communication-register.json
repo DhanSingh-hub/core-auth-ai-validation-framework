@@ -1360,6 +1360,29 @@
       }
     },
     {
+      "id": "SEG109-SME-012",
+      "channel": "SME_QUERY",
+      "segments": [
+        "109"
+      ],
+      "subject": "Does the 'Data Section No. 2' label for Segment 109 have any processing meaning, or is an Electronic Mail Request laid out exactly like the Proprietary Data Load Request, whose single segment the specification places in Data Section 3?",
+      "context": "Sections 11.5.1 (text and table) and 12.8 place Segment 109 in 'Field No. 3 in Data Section No. 2'; 12.8 then refers to Section 11.1 'for additional information about Data Section No. 3'. Every other request reserves Data Section 2 for Segment 100: Totals (11.4.1.1, 11.4.1.2) and Proprietary Data Load (11.7.6.1) requests have one non-100 segment in Field No. 3 and label it Data Section 3. Data sections carry no marker on the wire, so both labels serialize identically.",
+      "impact": "The Test Solution treats Segment 109 as Data Section 3, Field No. 3 under the request convention in TT-0014, and writes message-layout rules by field number. A different answer would only change the label cited in SEG109-R-001 and SEG109-R-003.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "rules": [
+          "SEG109-R-001",
+          "SEG109-R-003"
+        ]
+      },
+      "relatedItems": [
+        "TT-0014"
+      ]
+    },
+    {
       "id": "SEG110-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -2378,6 +2401,25 @@
       }
     },
     {
+      "id": "SEG116-SME-007",
+      "channel": "SME_QUERY",
+      "segments": [
+        "116"
+      ],
+      "subject": "The Element 63 (Number of Segments) processing rule says TransArmor Key Load requests are 'followed by Data Section No. 2, which contains Data Segment No. 116' and Communications Test requests by 'Data Section No. 2 which contains Element No. 120'. Is Segment 116 the only segment, in Field No. 3, and is the Data Section 2 label only descriptive for both messages?",
+      "context": "Chapter 13, Element 63 (Number of Segments), Processing Rules. Section 11.7.5 (TransArmor) refers to a separate TransArmor document, and Section 11.6.1 (Communications Test) is a positional message with Element 55 at position 1 and Element 120 at position 9, with no Element 63 and no data sections. Every other request reserves Data Section 2 for Segment 100.",
+      "impact": "Under the request convention in TT-0014 the Test Solution treats Segment 116 as Data Section 3, Field No. 3, and follows Section 11.6.1's positional layout for the Communications Test.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "relatedItems": [
+        "SEG116-SME-001",
+        "SEG116-SME-002",
+        "TT-0014"
+      ]
+    },
+    {
       "id": "SEG118-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -3245,6 +3287,30 @@
           "AI-artifacts, test-data"
         ]
       }
+    },
+    {
+      "id": "SEG132-SME-006",
+      "channel": "SME_QUERY",
+      "segments": [
+        "132"
+      ],
+      "subject": "Section 11.9.1 contradicts itself. Does a CA Public Key File Load Request carry only Segment 132, in Field No. 3, with no Segment 100 and none of Segments 101, 102, 104 or 111?",
+      "context": "The 11.9.1 text repeats the Financial Transaction Request wording: Data Section 2 'contains ... Standard Message Data Segment (Data Segment No. 100)', and Data Section 3 lists Segments 101, 102, 104, 111 and 132. The 11.9.1 table fixes Element 63 at 01, places Segment 132 under a 'Data Section No. 2' heading at position 10 (Field No. 3), and notes 'This request does not contain the Standard Message Data Segment (Data Segment No. 100)'. Read from the PDF, pages 11-49 to 11-51.",
+      "impact": "SEG132-R-001 is PROVISIONAL until answered: it records the table reading (Segment 132 alone in Field No. 3, Data Section 3 under TT-0014) but does not enforce or reject companion Segments 101, 102, 104 and 111.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "catalogItem": "P-06",
+        "rules": [
+          "SEG132-R-001"
+        ]
+      },
+      "relatedItems": [
+        "SEG132-SME-001",
+        "TT-0014"
+      ]
     },
     {
       "id": "SEG134-SME-001",
@@ -5379,6 +5445,175 @@
         "SEG105-SME-010",
         "SEG119-SME-001",
         "SEG119-SME-008"
+      ]
+    },
+    {
+      "id": "TT-0011",
+      "channel": "TEST_TEAM",
+      "segments": [
+        "DL2",
+        "DL3",
+        "DL4",
+        "DL5",
+        "DL6"
+      ],
+      "subject": "Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs",
+      "detail": "The DL2-DL6 rule catalogs carry no sourceAnchor for element 24, even though our own knowledge base documents the Data Type Indicator as field 1 of each of these segments and records the distinct framing character per segment (DL4 '@', DL5 '$', DL6 '\\'). Only SEGDL1-R-002 anchors element 24 (as the string '24,34'). Because the element is described in prose but never anchored, an AI requirement correctly identifying field 1 as required cannot be matched to any Test Solution rule for DL2-DL6.\n\nAdd an element-24 anchored rule to each of the five catalogs, mirroring SEGDL1-R-002.",
+      "evidence": "phase_1_single_leg cross-check: AI requirements REQ-SRC-ATL105-PDF-001:0805/0806/0807/0808/0809 (DL2-DL6, field 1 'Data Type Indicator', element 24, pages 326-331) returned ELEMENT_ABSENT_FROM_TS_CATALOG. KB confirms the field is documented, e.g. kb/segment-dl4|dl5|dl6/*.md 'Framing | Data Type Indicator ... (no Field Separators)'. See test-output/ai-solution-independent-review/phase1-ai-team-feedback.json.",
+      "impact": "Five AI requirements were initially reported as unmatched against our catalogs. The gap is ours, not the producer's; feedback overstated AI defects until corrected.",
+      "status": "OPEN",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "rules": [
+          "SEGDL1-R-002"
+        ]
+      }
+    },
+    {
+      "id": "TT-0012",
+      "channel": "TEST_TEAM",
+      "segments": [
+        "156"
+      ],
+      "subject": "Populate element numbers in the Segment 156 rule catalog",
+      "detail": "Every rule in ATL105-SEG156-RULE-CATALOG-001 (7 rules) has an empty 'element' on its sourceAnchor. Segment 156 is the only trained segment whose catalog records no element identity at all, so no element-level comparison against a producer artifact is possible for this segment.\n\nPopulate sourceAnchor.element for each Segment 156 rule, including element 242 (EV Charging Data).",
+      "evidence": "phase_1_single_leg cross-check: AI requirement REQ-SRC-ATL105-PDF-001:0849 (segment 156, field 3 'EV Charging Data', element 242, page 314) returned TS_CATALOG_HAS_NO_ELEMENT_NUMBERS. Catalog scan: all 7 rules have element '-'.",
+      "impact": "Segment 156 cannot participate in element-anchored coverage comparison.",
+      "status": "OPEN",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28"
+    },
+    {
+      "id": "TT-0013",
+      "channel": "TEST_TEAM",
+      "segments": [],
+      "subject": "Decide the encoding for multi-element sourceAnchors in rule catalogs",
+      "detail": "Rule catalogs encode multi-element anchors as a comma-separated STRING, e.g. SEGDL1-R-002 element '24,34' and SEGDL1-R-003 element '53,98,3,4,54'. canonical-anchor.schema.json types 'element' as a single string, so this overloads the field and silently breaks any consumer doing an equality lookup: a tool searching for element '24' does not match the key '24,34'.\n\nEither (a) change 'element' to an array and update the schema, (b) emit one rule per element, or (c) document the delimiter in the schema and require consumers to split. Option (a) is preferred because it keeps one rule per business rule.",
+      "evidence": "This bug produced a false 'unmatched' verdict for DL1 element 24 and segment 157 element 87 during the phase_1_single_leg cross-check, and a false 'matched' verdict for segments 151/152 whose rules carry no element at all.",
+      "impact": "Element-level coverage comparison is unreliable until the encoding is unambiguous. Affects every consumer of the rule catalogs, not just this review.",
+      "status": "OPEN",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "rules": [
+          "SEGDL1-R-002",
+          "SEGDL1-R-003"
+        ]
+      }
+    },
+    {
+      "id": "TT-0014",
+      "channel": "TEST_TEAM",
+      "segments": [],
+      "subject": "Adopt a request data-section convention: Data Section 2 holds only Segment 100",
+      "detail": "Cross-checked against every Chapter 11 layout in the PDF and every Chapter 12 placement statement.\n\n- Seven request layouts fit the convention: Financial (11.1.1), Loyalty (11.2.1), ECA/TeleCheck (11.3.1), EMV Financial (11.8.1) put Segment 100 alone in Data Section 2 and all other segments in Data Section 3; Totals (11.4.1.1, 11.4.1.2) and Proprietary Data Load (11.7.6.1) have no Data Section 2 ('do not contain Data Section No. 2 [Standard Message Data Segment (Data Segment No. 100)]') and place their single segment in Data Section 3, Field No. 3. Chapter 12 agrees for Segments 100 to 105, 108, 110, 111, 113, 114, 119, 130, 151 and 157.\n- The specification labels differently in four places: Electronic Mail (11.5.1 and 12.8 put Segment 109 in Data Section 2; SEG109-SME-012), CA Public Key File Load (11.9.1 contradicts itself; SEG132-SME-006), and the Element 63 processing rule for TransArmor and Communications Test (SEG116-SME-007).\n- Responses do not follow it: their Data Section 1 holds response elements, the Financial and EMV responses put Segments 112, 115, 120, 131 and 134 in Data Section 2, and the Proprietary Data Load response puts Segment 118 in Data Section 3. The Segment 131 conflict is SEG131-SME-001.\n- Communications Test, the Table, Phone, Date and Time, Software and Moneris Key loads, and all fixed-length responses have no data sections.",
+      "status": "RESOLVED",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "resolution": "Adopted for requests only. In every request that uses data sections, Data Section 1 holds Elements 55 and 63, Data Section 2 holds only Segment 100 (when present), and Data Section 3 holds every other segment. Responses and positional messages follow their own layouts. The four labelling exceptions are recorded as SME queries and do not change the convention.",
+      "resolvedOn": "2026-09-29",
+      "resolvedBy": "Test Team",
+      "relatedItems": [
+        "SEG109-SME-012",
+        "SEG116-SME-007",
+        "SEG132-SME-006",
+        "SEG131-SME-001"
+      ]
+    },
+    {
+      "id": "AIF-0013",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "151",
+        "152"
+      ],
+      "subject": "Associate an element with the Segment 151/152 Market Basket Data requirements",
+      "detail": "The phase_1_single_leg requirements for segments 151 and 152 ('Market Basket Data') carry no ENT-ELEM-* entry in related_entity_ids; only the ENT-SEG-* entry is present. Every other full chain in the delivery resolves to an element. Without an element the requirement cannot be anchored to a rule, so it cannot enter anchored comparison.\n\nOur catalogs record element 85 for segment 151 and elements 84/85 for segment 152.",
+      "evidence": "phase_1_single_leg: REQ-SRC-ATL105-PDF-001:0846 (SC-0043/TC-000033) and REQ-SRC-ATL105-PDF-001:0847 (SC-0044/TC-000034) both returned AI_NO_ELEMENT. 35 of 37 full chains resolved an element; these two did not.",
+      "impact": "Two of 37 chains cannot be element-anchored against the Test Solution baseline.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-29",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-29 phase_1_single_leg",
+      "relatedItems": [
+        "AIF-0005"
+      ]
+    },
+    {
+      "id": "AIF-0014",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "109"
+      ],
+      "subject": "Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain",
+      "detail": "The Segment 109 AI delivery is not intake-ready for the Electronic Mail message structure. Run1 contains 61 requirements for Segment 109 and Run2 traceability links 182 scenarios and 340 test cases to those requirements, but none of the 340 linked payloads contains Segment 109. 247 payloads are empty `Financial Request` shells with `NumSegments` 0; the remaining linked payloads carry unrelated segments or message families. All 340 were marked PASS by the producer's verification.\n\nThe 90 test cases labelled `Electronic Mail Request` are also empty or structurally unrelated. The chain must be rebuilt and verified as BR -> TS -> TC -> TD -> mapping: use the canonical message root `Electronic Mail Request`, `MessageType`, `NumSegments` equal to the segment count, Segment 109 in Field No. 3, and a valid Prompt Code (981 retrieval, 996 proprietary-card retrieval, or 995 submission). Do not count a producer PASS as acceptance evidence until the payload is independently validated.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-29 phase_1_single_leg",
+      "evidence": [
+        "specifications/ATL105/test-output/ai-solution-independent-review/segment-109-ai-chain-verification.json",
+        "AI delivery reporting/output/traceability_matrix_full.json",
+        "AI delivery reporting/output/qe_shaped_test_data/TC-0625.json (representative empty Electronic Mail payload)"
+      ],
+      "relatedItems": [
+        "AIF-0011",
+        "AID-0002",
+        "SEG109-SME-012"
+      ]
+    },
+    {
+      "id": "AIF-0015",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "109"
+      ],
+      "subject": "Correct the phase-1 Electronic Mail Request payload before claiming verification PASS",
+      "detail": "The 2026-09-29 phase_1_single_leg Segment 109 chain has a valid Terminal Identifier requirement, but its generated request data is not a valid Electronic Mail Request: the request has no Data Section 1 object, uses Prompt Code `0` instead of 981, 995 or 996, leaves Segment Length null, and is nevertheless marked PASS. The Electronic Mail request envelope must use root `Electronic Mail Request`, `MessageType` and `NumSegments`, with Segment 109 present in Field No. 3.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-29 phase_1_single_leg",
+      "evidence": [
+        "specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/chains/segment_109.json",
+        "specifications/ATL105/test-output/ai-solution-independent-review/phase1-single-leg-validation.json"
+      ],
+      "relatedItems": [
+        "AIF-0014",
+        "SEG109-SME-012"
+      ]
+    },
+    {
+      "id": "TT-0015",
+      "channel": "TEST_TEAM",
+      "segments": [
+        "100",
+        "109",
+        "116",
+        "118"
+      ],
+      "subject": "Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators",
+      "detail": "Segment 109, Segment 100, Segment 116 and Segment 118 validators use legacy `MessageFormatVersionIdentifier` and `NumberOfSegments` keys, while the repository AI JSON contract uses `MessageType` and `NumSegments`. Segment 109 was independently corrected in this pass; the other validators still need the same review and focused tests. Check the corresponding root keys and preserve each message family's own structure.",
+      "status": "OPEN",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "rules": [
+          "SEG100-R-001"
+        ]
+      },
+      "relatedItems": [
+        "AIF-0014",
+        "AIF-0015"
       ]
     }
   ]
