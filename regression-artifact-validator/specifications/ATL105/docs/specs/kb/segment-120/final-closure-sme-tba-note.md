@@ -19,7 +19,7 @@ Segment 120 uses a **4-digit** Segment Length (Element 84). Element 84's definit
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG120-R-004` | Print Data must not exceed 999 characters AND total serialized Segment 120 length (Segment Type + Segment Length + Print Data + separators) must not exceed 1,009 alphanumeric characters -- both caps enforced independently | 12.18 | - | REVIEW_REQUIRED |
+| `SEG120-R-004` | Print Data must not exceed 999 characters AND total serialized Segment 120 length (Segment Type + Segment Length + Print Data + separators) must not exceed 1,009 alphanumeric characters -- both caps enforced independent… | 12.18 | - | REVIEW_REQUIRED |
 | `SEG120-R-005` | Exactly one Field Separator appears between Field 1 and Field 2, and exactly one between Field 2 and Field 3; there is no trailing separator after Print Data | 12.18 | - | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields

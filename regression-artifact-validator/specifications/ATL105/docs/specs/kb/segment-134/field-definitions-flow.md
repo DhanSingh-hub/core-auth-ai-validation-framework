@@ -4,15 +4,15 @@
 flowchart TD
     A[Segment 134 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG134-R-004 Segment Type is fixed value 134, Segment Length is 4 digits}
+    B -->|Yes| R1{SEG134-R-004 Segment Type is fixed value 134, Segment Lengt…}
     R1 -->|Fail| X1[Reject citing SEG134-R-004]
     R1 -.->|Provisional| P1[REVIEW_REQUIRED]
-    R1 -->|Pass| R2{SEG134-R-005 Settlement Type (Element 198) is required, 1 character, valid values D (Dual message), S (Single message), X (Non-traditional Signature Debit — availability must be confirmed with First Data Project/Relationship Manager)}
+    R1 -->|Pass| R2{SEG134-R-005 Settlement Type Element 198 is required, 1 cha…}
     R2 -->|Fail| X2[Reject citing SEG134-R-005]
     R2 -.->|Provisional| P2[REVIEW_REQUIRED]
-    R2 -->|Pass| R3{SEG134-R-006 Signature Required (Element 199) is required, 1 character, valid values T (required), F (not required), Space (device software logic determines)}
+    R2 -->|Pass| R3{SEG134-R-006 Signature Required Element 199 is required, 1…}
     R3 -->|Fail| X3[Reject citing SEG134-R-006]
-    R3 -->|Pass| R4{SEG134-R-007 Receipt Card Description (Element 200) is required, 10 characters, left-justified and space-filled (e.g., 'STAR      ')}
+    R3 -->|Pass| R4{SEG134-R-007 Receipt Card Description Element 200 is requir…}
     R4 -->|Fail| X4[Reject citing SEG134-R-007]
     R4 -->|Pass| Z[Rules satisfied]
 ```

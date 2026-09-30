@@ -21,7 +21,7 @@ Each Segment 156 field is a specific ATL105 data element with its own type, leng
 | `SEG156-R-004` | Time-based sub-tables (02 Total Time Plugged In, 03 Total Charging Time, 04 Start Time of Charge, 05 Finish Time of Charge) all use fixed 6-character hhmmss format, hh 00-99, mm/ss 00-59 | 12.40 | — | SPEC_DERIVED |
 | `SEG156-R-005` | Charging Reason Code (Table 07) uses a documented Visa-specific enumeration (010-023, 100, 200); other card networks' valid values are not documented here | 12.40 | — | SPEC_DERIVED |
 | `SEG156-R-006` | Connector Type (Table 12) uses a documented Visa-defined enumeration (001-003, 100-103, 200) | 12.40 | — | SPEC_DERIVED |
-| `SEG156-R-007` | Additional numeric measurement sub-tables exist: 06 Charging Power Output Capacity (kW), 08 Estimated KM/Miles Added, 09 Carbon Footprint (CO2e grams), 10 Estimated Vehicle KM/Miles Available, 11 Maximum Power Dispensed — all variable-length numeric fields with documented max lengths | 12.40 | — | SPEC_DERIVED |
+| `SEG156-R-007` | Additional numeric measurement sub-tables exist: 06 Charging Power Output Capacity (kW), 08 Estimated KM/Miles Added, 09 Carbon Footprint (CO2e grams), 10 Estimated Vehicle KM/Miles Available, 11 Maximum Power Dispensed… | 12.40 | — | SPEC_DERIVED |
 
 ## Catalog Notes
 

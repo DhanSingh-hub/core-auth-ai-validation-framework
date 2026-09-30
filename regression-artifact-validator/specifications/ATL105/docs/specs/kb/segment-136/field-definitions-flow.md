@@ -4,12 +4,12 @@
 flowchart TD
     A[Segment 136 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG136-R-002 Segment Type is fixed value 136, sourced at the Device (as documented — despite this being a Response segment, the field table lists Source: Device for both Segment Type and Segment Length)}
+    B -->|Yes| R1{SEG136-R-002 Segment Type is fixed value 136, sourced at th…}
     R1 -->|Fail| X1[Reject citing SEG136-R-002]
     R1 -.->|Provisional| P1[REVIEW_REQUIRED]
-    R1 -->|Pass| R2{SEG136-R-003 Segment Length Indicator is 3 digits, identifies the segment's length including Segment Type's length}
+    R1 -->|Pass| R2{SEG136-R-003 Segment Length Indicator is 3 digits, identifi…}
     R2 -->|Fail| X2[Reject citing SEG136-R-003]
-    R2 -->|Pass| R3{SEG136-R-005 Moneris Data (Element 213) is required, max 100 characters, in <tag><len><data> format; full layout documented in Appendix V (Moneris Data layouts)}
+    R2 -->|Pass| R3{SEG136-R-005 Moneris Data Element 213 is required, max 100…}
     R3 -->|Fail| X3[Reject citing SEG136-R-005]
     R3 -->|Pass| Z[Rules satisfied]
 ```

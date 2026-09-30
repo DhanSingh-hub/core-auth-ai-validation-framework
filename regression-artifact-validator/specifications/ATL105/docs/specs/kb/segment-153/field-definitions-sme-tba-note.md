@@ -18,7 +18,7 @@ Each Segment 153 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG153-R-002` | Segment Type fixed 153, Segment Length 3 digits (includes Segment Type's length), both Device-sourced | 12.38 | 85,84 | SPEC_DERIVED |
-| `SEG153-R-003` | Network Token Data (Element 239) is required, max 999 characters, cataloged as 6 fixed sub-tables: 001 (Network Token, 013-018 bytes), 002 (Expiration Date, fixed 004), 003 (Provisional Fee Indicator, fixed 001), 004 (Input Indicator, fixed 001), 005 (Eligible Indicator, fixed 001), 006 (PAN Indicator, fixed 001) | 12.38 | 239 | SPEC_DERIVED |
+| `SEG153-R-003` | Network Token Data (Element 239) is required, max 999 characters, cataloged as 6 fixed sub-tables: 001 (Network Token, 013-018 bytes), 002 (Expiration Date, fixed 004), 003 (Provisional Fee Indicator, fixed 001), 004 (I… | 12.38 | 239 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

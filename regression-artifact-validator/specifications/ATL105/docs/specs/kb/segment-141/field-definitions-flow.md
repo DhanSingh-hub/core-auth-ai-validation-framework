@@ -4,7 +4,7 @@
 flowchart TD
     A[Segment 141 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG141-R-003 Segment Type fixed 141, Segment Length 3 digits, both Device-sourced; all 14 fields (Terminal Identifier, SPDH Header, Moneris Terminal/Merchant ID, Batch Number, Language Indicator, Number/Dollar totals for debits/credits/corrections) are Device-sourced}
+    B -->|Yes| R1{SEG141-R-003 Segment Type fixed 141, Segment Length 3 digit…}
     R1 -->|Fail| X1[Reject citing SEG141-R-003]
     R1 -->|Pass| Z[Rules satisfied]
 ```

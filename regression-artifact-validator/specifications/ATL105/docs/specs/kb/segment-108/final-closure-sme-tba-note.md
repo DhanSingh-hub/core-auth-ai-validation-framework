@@ -20,7 +20,7 @@ Segment 108 uses a **3-digit** Segment Length (Element 84). Element 84's definit
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG108-R-005` | Segment 108 maximum length is 142 alphanumeric characters | 12.7 | 84 | SPEC_DERIVED |
-| `SEG108-R-006` | Field order matches Section 12.7 (Segment Type, Segment Length, Loyalty Program ID, Loyalty Account Number, Points to Redeem, Coupon ID, Coupon Amount, Update Code, Street Address, Phone Number Loyalty, Expiration Date, Payment Tender Type, Loyalty Track 2 Data, Loyalty Information Version, Unit of Work) | 12.7 | — | SPEC_DERIVED |
+| `SEG108-R-006` | Field order matches Section 12.7 (Segment Type, Segment Length, Loyalty Program ID, Loyalty Account Number, Points to Redeem, Coupon ID, Coupon Amount, Update Code, Street Address, Phone Number Loyalty, Expiration Date,… | 12.7 | — | SPEC_DERIVED |
 | `SEG108-R-007` | All fields are separated by Field Separators, including a separator following the last field; empty fields still send the separator | 12.7 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields

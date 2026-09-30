@@ -19,7 +19,7 @@ Each Segment 115 field is a specific ATL105 data element with its own type, leng
 |---|---|---|---|---|
 | `SEG115-R-003` | Segment Type is fixed value 115 | 12.14 | 85 | SPEC_DERIVED |
 | `SEG115-R-004` | Segment Length is 4 digits, one of exactly seven segments across the specification requiring a 4-digit Segment Length (103, 114, 115, 118, 120, 130, 131) | 12.14 | 84 | SPEC_DERIVED |
-| `SEG115-R-008` | Print Data (Element 152) is required and identifies the print data being transmitted to the device; per Section 12.14's note this field carries the terms & conditions text for Blackhawk phone activation and recharge receipts | 12.14,13.2 | 152 | REVIEW_REQUIRED |
+| `SEG115-R-008` | Print Data (Element 152) is required and identifies the print data being transmitted to the device; per Section 12.14's note this field carries the terms & conditions text for Blackhawk phone activation and recharge rec… | 12.14,13.2 | 152 | REVIEW_REQUIRED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

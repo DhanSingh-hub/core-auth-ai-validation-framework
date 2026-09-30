@@ -27,7 +27,7 @@ Requirements are derived **only** from the Segment 153 rule catalog and the ATL1
 |---|---|---|---|---|---|
 | BR-SEG153-001 | structure | Segment 153 contains Network Token Data for the transaction; may hold multiple TLV-encoded sub-segments (standard sub-segment type, length, value) | The segment's structural position and composition match the rule. | `SEG153-R-001` §12.38 | SPEC_DERIVED |
 | BR-SEG153-002 | field | Segment Type fixed 153, Segment Length 3 digits (includes Segment Type's length), both Device-sourced | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG153-R-002` §12.38 | SPEC_DERIVED |
-| BR-SEG153-003 | field | Network Token Data (Element 239) is required, max 999 characters, cataloged as 6 fixed sub-tables: 001 (Network Token, 013-018 bytes), 002 (Expiration Date, fixed 004), 003 (Provisional Fee Indicator, fixed 001), 004 (Input Indicator, fixed 001), 005 (Eligible Indicator, fixed 001), 006 (PAN Indicator, fixed 001) | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG153-R-003` §12.38 | SPEC_DERIVED |
+| BR-SEG153-003 | field | Network Token Data (Element 239) is required, max 999 characters, cataloged as 6 fixed sub-tables: 001 (Network Token, 013-018 bytes), 002 (Expiration Date, fixed 004), 003 (Provisional Fee Indicator, fixed 001), 004 (Input Indicator, fixed 001), 005 (Eligibl… | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG153-R-003` §12.38 | SPEC_DERIVED |
 
 ## Required negative coverage
 

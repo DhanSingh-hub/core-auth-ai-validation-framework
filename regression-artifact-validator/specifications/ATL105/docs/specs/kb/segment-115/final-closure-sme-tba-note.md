@@ -21,7 +21,7 @@ Segment 115 uses a **4-digit** Segment Length (Element 84). Element 84's definit
 |---|---|---|---|---|
 | `SEG115-R-005` | Segment 115 maximum length is 1,009 alphanumeric characters (01-1,009/a-z/A-Z) | 12.14 | 84 | REVIEW_REQUIRED |
 | `SEG115-R-006` | Field order is Segment Type, Segment Length, Print Data (only 3 fields; same shape as Segment 114) | 12.14 | — | SPEC_DERIVED |
-| `SEG115-R-007` | Only two Field Separators exist in Segment 115: one between Field Nos. 1 and 2, and one between Field Nos. 2 and 3. There is NO trailing Field Separator after Field No. 3 (Print Data) — unlike every other segment documented so far (108, 114), which explicitly send a trailing separator | 12.14 | — | SPEC_DERIVED |
+| `SEG115-R-007` | Only two Field Separators exist in Segment 115: one between Field Nos. 1 and 2, and one between Field Nos. 2 and 3. There is NO trailing Field Separator after Field No. 3 (Print Data) — unlike every other segment docume… | 12.14 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields
 
@@ -33,7 +33,7 @@ The Segment 115 catalog references trailing-field handling — see the serializa
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG115-R-012` | Segment 115 is plausibly the wire-format vehicle for 'Loyalty Print Data' returned during a Segment 108 Account Inquiry (Update Code I) or Totals Report (Update Code T) flow, inferred from the shared Loyalty Information Version = 2 trigger condition | 10.9,11.1.2 | — | REVIEW_REQUIRED |
+| `SEG115-R-012` | Segment 115 is plausibly the wire-format vehicle for 'Loyalty Print Data' returned during a Segment 108 Account Inquiry (Update Code I) or Totals Report (Update Code T) flow, inferred from the shared Loyalty Information… | 10.9,11.1.2 | — | REVIEW_REQUIRED |
 | `SEG115-R-013` | Whether Segment 115 can appear in the Loyalty Card Transaction Response (Section 11.2.2, which states it mirrors the generic Financial Transaction Response) is inferred but not explicitly restated for Segment 115 | 11.2.2 | — | REVIEW_REQUIRED |
 
 These rules require **paired messages** in the test data. A test-control flag asserting "correlated" or "echoed" is not evidence.

@@ -4,9 +4,9 @@
 flowchart TD
     A[Segment 139 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG139-R-002 Segment Type is fixed value 139, Segment Length is 3 digits, both sourced at the Device}
+    B -->|Yes| R1{SEG139-R-002 Segment Type is fixed value 139, Segment Lengt…}
     R1 -->|Fail| X1[Reject citing SEG139-R-002]
-    R1 -->|Pass| R2{SEG139-R-003 Terminal Identifier (Element 102), SPDH Header (Element 206), Moneris Terminal Identifier (Element 207), Moneris Merchant ID (Element 208), Batch Number (Element 214), and Language Indicator (Element 215) are all required, Device-sourced}
+    R1 -->|Pass| R2{SEG139-R-003 Terminal Identifier Element 102 , SPDH Header…}
     R2 -->|Fail| X2[Reject citing SEG139-R-003]
     R2 -->|Pass| Z[Rules satisfied]
 ```

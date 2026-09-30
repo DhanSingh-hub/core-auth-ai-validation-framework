@@ -2,12 +2,12 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 115 payload] --> B{Lifecycle, Response and Message Correlation in scope?}
+    A[Segment 115 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG115-R-012 Segment 115 is plausibly the wire-format vehicle for 'Loyalty Print Data' returned during a Segment 108 Account Inquiry (Update Code I) or Totals Report (Update Code T) flow, inferred from the shared Loyalty Information Version = 2 trigger condition}
+    B -->|Yes| R1{SEG115-R-012 Segment 115 is plausibly the wire-format vehic…}
     R1 -->|Fail| X1[Reject citing SEG115-R-012]
     R1 -.->|Provisional| P1[REVIEW_REQUIRED]
-    R1 -->|Pass| R2{SEG115-R-013 Whether Segment 115 can appear in the Loyalty Card Transaction Response (Section 11.2.2, which states it mirrors the generic Financial Transaction Response) is inferred but not explicitly restated for Segment 115}
+    R1 -->|Pass| R2{SEG115-R-013 Whether Segment 115 can appear in the Loyalty…}
     R2 -->|Fail| X2[Reject citing SEG115-R-013]
     R2 -.->|Provisional| P2[REVIEW_REQUIRED]
     R2 -->|Pass| Z[Rules satisfied]

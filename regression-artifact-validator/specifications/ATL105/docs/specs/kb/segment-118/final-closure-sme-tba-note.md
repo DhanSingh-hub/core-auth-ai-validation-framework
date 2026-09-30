@@ -21,7 +21,7 @@ Segment 118 uses a **4-digit** Segment Length (Element 84). Element 84's definit
 |---|---|---|---|---|
 | `SEG118-R-002` | Segment 118 has a maximum length of 3,800 alphanumeric characters (01-3,800) in a Request | 12.16 | — | SPEC_DERIVED |
 | `SEG118-R-003` | Segment 118 has a maximum length of 3,800 alphanumeric characters (01-3,800) in a Response | 12.16 | — | SPEC_DERIVED |
-| `SEG118-R-005` | In a Proprietary Data Load Request, all of fields 1-13 are separated by Field Separators, including unpopulated fields, and a Field Separator follows field 13; in a Proprietary Data Load Response, there are no Field Separators between fields (positional) | 12.16 | — | SPEC_DERIVED |
+| `SEG118-R-005` | In a Proprietary Data Load Request, all of fields 1-13 are separated by Field Separators, including unpopulated fields, and a Field Separator follows field 13; in a Proprietary Data Load Response, there are no Field Sep… | 12.16 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields
 
@@ -41,9 +41,9 @@ At least one catalog rule states that separators are absent within part of this 
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG118-R-025` | A Proprietary Data Load Response contains Data Section 1 (Response Code 83 pos.1 len.1, Download Indicator 30 pos.2 len.1, Initiation Date 45 pos.3 len.6, Initiation Time 46 pos.9 len.4, Sequence Number 86 pos.13 len.6, all Required) and Data Section 3 (field 6, Segment 118, Required) | 11.7.7 | 83,30,45,46,86 | SPEC_DERIVED |
-| `SEG118-R-026` | Response Code (Element 83) values specific to the Proprietary Data Load context: H (Approved, proprietary data retrieval more pending), O (Approved, proprietary data load more pending), T (Approved, proprietary data load, no more data pending), U (Declined, proprietary data load, no more data pending), X (Declined, proprietary data load, proceed to next pending Prompt Code), Y (Approved, proprietary data load, proceed to next pending Prompt Code) | Chapter13-Element83 | 83 | SPEC_DERIVED |
-| `SEG118-R-030` | Response Code (Element 83) values V (Declined, Totals with Proprietary Custom Receipt Text data pending) and W (Approved, Totals with Proprietary Custom Receipt Text pending) indicate that a Prompt Code 901 (Custom Receipt Text) load is pending, analogous to the Host Discount D/E/M/N pattern | Chapter13-Element83 | 83 | SPEC_DERIVED |
+| `SEG118-R-025` | A Proprietary Data Load Response contains Data Section 1 (Response Code 83 pos.1 len.1, Download Indicator 30 pos.2 len.1, Initiation Date 45 pos.3 len.6, Initiation Time 46 pos.9 len.4, Sequence Number 86 pos.13 len.6,… | 11.7.7 | 83,30,45,46,86 | SPEC_DERIVED |
+| `SEG118-R-026` | Response Code (Element 83) values specific to the Proprietary Data Load context: H (Approved, proprietary data retrieval more pending), O (Approved, proprietary data load more pending), T (Approved, proprietary data loa… | Chapter13-Element83 | 83 | SPEC_DERIVED |
+| `SEG118-R-030` | Response Code (Element 83) values V (Declined, Totals with Proprietary Custom Receipt Text data pending) and W (Approved, Totals with Proprietary Custom Receipt Text pending) indicate that a Prompt Code 901 (Custom Rece… | Chapter13-Element83 | 83 | SPEC_DERIVED |
 
 These rules require **paired messages** in the test data. A test-control flag asserting "correlated" or "echoed" is not evidence.
 

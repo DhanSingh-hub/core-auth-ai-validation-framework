@@ -18,7 +18,7 @@ Each Segment 148 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG148-R-002` | Segment Type fixed 148, Segment Length includes Segment Type's length; both Host-sourced | 12.33 | 85,84 | SPEC_DERIVED |
-| `SEG148-R-004` | Available Product Information (Element 240) is a fixed-format 17-character sub-structure: Restriction Code (2-3 AN, fuel product group codes 00/01/06/07/08/10/11/12/13), '=' filler, Restriction Code Amount (1-5 AN), ',' filler, Restriction Code Quantity (1-5 AN), space filler, Restriction Code Unit of Measure (1 AN) | 12.33 | 240 | SPEC_DERIVED |
+| `SEG148-R-004` | Available Product Information (Element 240) is a fixed-format 17-character sub-structure: Restriction Code (2-3 AN, fuel product group codes 00/01/06/07/08/10/11/12/13), '=' filler, Restriction Code Amount (1-5 AN), ','… | 12.33 | 240 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

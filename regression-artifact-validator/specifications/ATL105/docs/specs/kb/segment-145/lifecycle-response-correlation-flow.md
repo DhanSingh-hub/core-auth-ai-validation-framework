@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 145 payload] --> B{Lifecycle, Response and Message Correlation in scope?}
+    A[Segment 145 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG145-R-004 MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation only and must not be used in live production transactions}
+    B -->|Yes| R1{SEG145-R-004 MasterCard Enhanced Fleet EMV functionality wa…}
     R1 -->|Fail| X1[Reject citing SEG145-R-004]
     R1 -.->|Provisional| P1[REVIEW_REQUIRED]
     R1 -->|Pass| Z[Rules satisfied]

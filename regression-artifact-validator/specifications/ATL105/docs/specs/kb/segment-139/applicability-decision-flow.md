@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 139 payload] --> B{Applicability and Message-Family Decision in scope?}
+    A[Segment 139 payload] --> B{Applicability and Message-Family Decisi… in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG139-R-001 Segment 139 is used to retrieve debit totals for the previous period, to be used in the day end batch close transaction (Segment 141)}
+    B -->|Yes| R1{SEG139-R-001 Segment 139 is used to retrieve debit totals f…}
     R1 -->|Fail| X1[Reject citing SEG139-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```

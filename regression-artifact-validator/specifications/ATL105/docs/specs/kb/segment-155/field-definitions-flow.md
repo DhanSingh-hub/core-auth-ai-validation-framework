@@ -4,9 +4,9 @@
 flowchart TD
     A[Segment 155 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG155-R-004 Card Status (Table 004) valid values: A (New Acct# & Exp Date), E (New Exp Date), Q (Contact Cardholder), C (Closed), U (Unknown Card)}
+    B -->|Yes| R1{SEG155-R-004 Card Status Table 004 valid values: A New Acct…}
     R1 -->|Fail| X1[Reject citing SEG155-R-004]
-    R1 -->|Pass| R2{SEG155-R-005 Account Updater Result Code (Table 006) is a fixed 6-character code from a documented enumeration (VAU001 through VAU016, non-contiguous — VAU015 absent), applicable only to Visa}
+    R1 -->|Pass| R2{SEG155-R-005 Account Updater Result Code Table 006 is a fix…}
     R2 -->|Fail| X2[Reject citing SEG155-R-005]
     R2 -->|Pass| Z[Rules satisfied]
 ```

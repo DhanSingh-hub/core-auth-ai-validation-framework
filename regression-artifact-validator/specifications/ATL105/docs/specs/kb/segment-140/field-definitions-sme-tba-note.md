@@ -17,7 +17,7 @@ Each Segment 140 field is a specific ATL105 data element with its own type, leng
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG140-R-002` | Segment Type fixed 140, Segment Length 3 digits, both Device-sourced; fields 3 (Terminal Identifier), 5 (Moneris Terminal Identifier), 6 (Moneris Merchant ID) are Device-sourced echoes, while fields 4 (SPDH Header), 7 (Batch Number), 8-14 (Response Display, Number/Dollar totals) are Moneris-sourced | 12.27 | 85,84,102,206,207,208,214,216,217,218,219,220,221,222 | SPEC_DERIVED |
+| `SEG140-R-002` | Segment Type fixed 140, Segment Length 3 digits, both Device-sourced; fields 3 (Terminal Identifier), 5 (Moneris Terminal Identifier), 6 (Moneris Merchant ID) are Device-sourced echoes, while fields 4 (SPDH Header), 7 (… | 12.27 | 85,84,102,206,207,2… | SPEC_DERIVED |
 | `SEG140-R-003` | Debit Dollar Value (218), Credit Dollar Value (220), and Corrections Dollar Value (222) use format +/-9(16)v99 (signed, up to 16 integer digits, 2 implied decimal digits) | 12.27 | 218,220,222 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)

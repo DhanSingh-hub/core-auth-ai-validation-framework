@@ -17,9 +17,9 @@ Segment 145 is valid only inside the message families and Data Sections the spec
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG145-R-001` | Segment 145 carries fleet data for enhanced fleet offerings (Wex OTR, Comdata, Voyager EMV, Visa Fleet 2.0, MasterCard Enhanced Fleet EMV); it may hold multiple TLV-encoded sub-segments (sub-segment type, sub-segment length, sub-segment value) | 12.31 | — | SPEC_DERIVED |
+| `SEG145-R-001` | Segment 145 carries fleet data for enhanced fleet offerings (Wex OTR, Comdata, Voyager EMV, Visa Fleet 2.0, MasterCard Enhanced Fleet EMV); it may hold multiple TLV-encoded sub-segments (sub-segment type, sub-segment le… | 12.31 | — | SPEC_DERIVED |
 | `SEG145-R-002` | Merchants should NOT send Segment 101 (Fleet Data Segment) and Segment 145 (Enhanced Fleet Request Segment) together in the same message | 12.31 | — | SPEC_DERIVED |
-| `SEG145-R-003` | Only the Prompt Table sub-segment (Table ID 004) is valid for Voyager EMV, Visa Fleet 2.0, Comdata, and MasterCard Enhanced Fleet EMV transactions — other sub-segment tables (001, 002, 006, 007, 008) are restricted to different authorizer contexts not enumerated by this restriction | 12.31 | — | REVIEW_REQUIRED |
+| `SEG145-R-003` | Only the Prompt Table sub-segment (Table ID 004) is valid for Voyager EMV, Visa Fleet 2.0, Comdata, and MasterCard Enhanced Fleet EMV transactions — other sub-segment tables (001, 002, 006, 007, 008) are restricted to d… | 12.31 | — | REVIEW_REQUIRED |
 
 ## Catalog Notes
 

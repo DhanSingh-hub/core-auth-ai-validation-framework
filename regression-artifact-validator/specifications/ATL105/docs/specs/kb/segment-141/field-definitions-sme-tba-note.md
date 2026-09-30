@@ -17,7 +17,7 @@ Each Segment 141 field is a specific ATL105 data element with its own type, leng
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG141-R-003` | Segment Type fixed 141, Segment Length 3 digits, both Device-sourced; all 14 fields (Terminal Identifier, SPDH Header, Moneris Terminal/Merchant ID, Batch Number, Language Indicator, Number/Dollar totals for debits/credits/corrections) are Device-sourced | 12.28 | 85,84,102,206,207,208,214,215,217,218,219,220,221,222 | SPEC_DERIVED |
+| `SEG141-R-003` | Segment Type fixed 141, Segment Length 3 digits, both Device-sourced; all 14 fields (Terminal Identifier, SPDH Header, Moneris Terminal/Merchant ID, Batch Number, Language Indicator, Number/Dollar totals for debits/cred… | 12.28 | 85,84,102,206,207,2… | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

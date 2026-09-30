@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 132 payload] --> B{Applicability and Message-Family Decision in scope?}
+    A[Segment 132 payload] --> B{Applicability and Message-Family Decisi… in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG132-R-001 In a CA Public Key File Load Request Segment 132 is in Field No. 3; whether Segments 101, 102, 104 and 111 may accompany it is unresolved}
+    B -->|Yes| R1{SEG132-R-001 Segment 132 belongs to the CA Public Key File…}
     R1 -->|Fail| X1[Reject citing SEG132-R-001]
     R1 -.->|Provisional| P1[REVIEW_REQUIRED]
     R1 -->|Pass| Z[Rules satisfied]

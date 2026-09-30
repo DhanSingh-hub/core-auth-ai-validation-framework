@@ -18,8 +18,8 @@ Each Segment 146 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG146-R-001` | Segment Type fixed 146, Segment Length includes Segment Type's length; both Device-sourced (despite this being a response segment, mirroring the sourcing pattern already flagged for Segments 131/136) | 12.32 | 85,84 | REVIEW_REQUIRED |
-| `SEG146-R-002` | Enhanced Fleet Data (Element 239) is required, max 999 characters, cataloged as: Table 001 (Response Flags, incl. Settlement Indicator: CP/DB/DF/RC/RF/FN), Table 002 (Non-Fuel Product Limits, NOT present in Comdata responses), Table 003 (Fuel Product Limits, using Appendix F product codes), Table 004 (Prompt Formats, using documented edit masks), Table 005 (Customer Information: name/city/state/account code), Table 010 (Additional Response Data: FNAM/LNAM/ATHN/ACCT/DMSG) | 12.32 | 239 | SPEC_DERIVED |
-| `SEG146-R-004` | Table 004 (Prompt Formats) uses a documented edit-mask grammar: '?' (re-prompt), 'A'/'B' (alphanumeric, treated identically since 2015-01-02), 'N' (numeric only), 'I' (free format), 'O' (optional response), 'Z' (capture but don't resend), 'T' (data type N=Number/S=String), 'Mn'/'Xn' (min/max), 'Vn' (exact match), 'Pn' (pattern match using @ /# /* /literal) | 12.32 | 239 | SPEC_DERIVED |
+| `SEG146-R-002` | Enhanced Fleet Data (Element 239) is required, max 999 characters, cataloged as: Table 001 (Response Flags, incl. Settlement Indicator: CP/DB/DF/RC/RF/FN), Table 002 (Non-Fuel Product Limits, NOT present in Comdata resp… | 12.32 | 239 | SPEC_DERIVED |
+| `SEG146-R-004` | Table 004 (Prompt Formats) uses a documented edit-mask grammar: '?' (re-prompt), 'A'/'B' (alphanumeric, treated identically since 2015-01-02), 'N' (numeric only), 'I' (free format), 'O' (optional response), 'Z' (capture… | 12.32 | 239 | SPEC_DERIVED |
 | `SEG146-R-005` | Table 003 (Fuel Product Limits) uses standard product codes from ATL105 Appendix F (Valid Payment Systems Product Codes) — unlike Table 002's non-fuel category codes | 12.32,AppendixF | 239 | REVIEW_REQUIRED |
 
 ## Element Definitions (ATL105 Chapter 13)

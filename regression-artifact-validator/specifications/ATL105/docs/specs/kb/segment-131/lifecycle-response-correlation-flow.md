@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 131 payload] --> B{Lifecycle, Response and Message Correlation in scope?}
+    A[Segment 131 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG131-R-007 CA Public Key File Checksum (Element 187) is required and is explicitly echoed from the Request (Segment 130's CA Public Key File Checksum)}
+    B -->|Yes| R1{SEG131-R-007 CA Public Key File Checksum Element 187 is req…}
     R1 -->|Fail| X1[Reject citing SEG131-R-007]
     R1 -->|Pass| Z[Rules satisfied]
 ```

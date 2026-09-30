@@ -6,7 +6,7 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG119-R-008 Segment Type is fixed value 119}
     R1 -->|Fail| X1[Reject citing SEG119-R-008]
-    R1 -->|Pass| R2{SEG119-R-009 Segment Length is required and includes Segment Type and Field Separators}
+    R1 -->|Pass| R2{SEG119-R-009 Segment Length is required and includes Segmen…}
     R2 -->|Fail| X2[Reject citing SEG119-R-009]
     R2 -->|Pass| R3{SEG119-R-010 Information Byte is required}
     R3 -->|Fail| X3[Reject citing SEG119-R-010]
