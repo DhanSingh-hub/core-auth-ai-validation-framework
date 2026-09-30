@@ -19,7 +19,7 @@ Segment 143 uses a **3-digit** Segment Length (Element 84). Element 84's definit
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG143-R-008` | A dual-delimiter scheme is used: a Field Separator ('▲') follows the LAST tax amount for each product and signals moving to the next product (or end of segment for the last product); a Tax by Product Field Delimiter ('\… | 12.30 | — | SPEC_DERIVED |
+| `SEG143-R-008` | A dual-delimiter scheme is used: a Field Separator ('▲') follows the LAST tax amount for each product and signals moving to the next product (or end of segment for the last product); a Tax by Product Field Delimiter ('\') follows a tax amount when there is ANOTHER tax amount for the SAME product | 12.30 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields
 
