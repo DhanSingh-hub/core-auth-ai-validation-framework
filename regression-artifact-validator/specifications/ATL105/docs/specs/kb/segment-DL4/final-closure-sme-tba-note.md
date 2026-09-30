@@ -1,50 +1,29 @@
 # Segment DL4 Final Closure: Serialization and Lifecycle Learning Note
 
-**Segment:** DL4 — Software Dial Load Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.45  
-**Oracle:** [segment-DL4-rule-catalog.json](coverage/segment-DL4-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Segment:** DL4 — Software Dial Load Data Segment · **Sources:** 12.45, 11.7.4.2, 10.10 · **Oracle:** [rule catalog](coverage/segment-DL4-rule-catalog.json) · **Benchmark:** Segment 100 [final-closure note](../segment-100/final-closure-sme-tba-note.md)
 
-## Why Closure Is Separate
+## Corrections to the Previous Closure Note
 
-Field rules prove each value is individually valid. Closure proves the **whole segment** can be parsed without positional drift, and that it belongs to a coherent message exchange.
+| Earlier statement | Correct DL4 behaviour | Evidence |
+|---|---|---|
+| "Segment DL4 uses a 3-digit Segment Length (Element 84)" | No Segment Length; framed by `@` and `~` | 12.45 layout |
+| "An empty middle field keeps its separator" | No separators | 12.45 note |
+| "No lifecycle rules catalogued" | Software update processing is catalogued | `SEGDL4-R-007`, `R-008` |
+| DL4 and DL5 "mutually exclusive" | Both Required in the Software Load Response | 11.7.4.2, 10.10 step 4 |
 
-## Segment Length Encoding
+## Position Map (assuming an 18-character phone field, `SEGDL4-SME-003`)
 
-Segment DL4 uses a **3-digit** Segment Length (Element 84). Element 84's definition permits four digits only for Segments 103, 114, 115, 118, 120, 130 and 131; every other segment uses three.
-
-## Serialization Rules From The Catalog
-
-_The Segment DL4 catalog contains no `serialization` rules. Separator behaviour must therefore be confirmed against the Section 12 layout note for this segment before a closure validator is written._
-
-## Empty Fields and Trailing Fields
-
-An empty field in the middle of a separator-delimited segment still occupies a position: its separator must remain, or every later field shifts.
-
-The Segment DL4 catalog states **no** trailing-optional-field omission allowance. Do not port Segment 100's trailing-suffix rule to this segment without SME confirmation.
-
-## Lifecycle and Response Correlation
-
-_No `lifecycle` or `response` rules are catalogued for Segment DL4. Closure is therefore structural only._
-
-## Certification Meaning
-
-- **Serialization rules** prove the segment parses without desynchronization.
-- **Lifecycle rules** prove the segment belongs to a coherent exchange.
-- Anything requiring production keys, certified kernels, or live host behaviour is explicitly out of scope rather than silently assumed.
+| Positions | Field |
+|---|---|
+| 1 | `@` |
+| 2-9 | New Software Version |
+| 10-22 | Software Terminal Record ID |
+| 23-40 | Software Load Phone Number |
+| 41-46 | Request Date MMDDYY |
+| 47-50 | Request Time HHMM |
+| 51 | Software Load Type |
+| 52 | `~` |
 
 ## Closure Gate
 
-Segment DL4 is not closeable while these remain open:
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL4 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## SME/TBA Review Questions
-
-- Does every empty non-trailing field keep its separator?
-- Is the Segment Length encoded with exactly 3 digits and does it include the Segment Type and separators?
-- Are repeating or separator-free regions handled by their own rule?
-- Do lifecycle rules have genuine paired messages in the test data?
-- Are all provisional items above either resolved or kept at `REVIEW_REQUIRED`?
+DL4 is not closeable while `SEGDL4-SME-001` to `SEGDL4-SME-003` are open.

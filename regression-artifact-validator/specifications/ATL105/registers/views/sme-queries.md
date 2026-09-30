@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 174 open, 3 reopened, 29 resolved, 2 deferred (208 total).
+**Status:** 176 open, 3 reopened, 29 resolved, 2 deferred (210 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -388,6 +388,8 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEGDL4-SME-001](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md#segdl4-sme-001) | Provide a dedicated Segment DL4 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL4 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-01` | 2026-09-26 |
+| [SEGDL4-SME-002](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md#segdl4-sme-002) | Which exchange carries DL4 and DL5? Section 10.10 step 4 says BUYPASS answers a Table Load request with DL4 and DL5 after the profile 'DLL' bit is set, but Section 11.7.4 and the Chapter 12 matrix place them only in the Software Load Response (Software Load Request, merchant load flag SOFT). Also, both are Required in 11.7.4.2: how does the device choose between the Software Load Phone Number (DL4) and the Software Load IP/URL Address (DL5)? | Section 10.10 steps 1-8, Section 11.7.4 / 11.7.4.2, Chapter 12 segment/transaction matrix. The earlier KB claim that DL4 and DL5 are mutually exclusive has no source and was withdrawn. | OPEN | `P-02`, SEGDL4-R-006, SEGDL4-R-007 | 2026-09-30 |
+| [SEGDL4-SME-003](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md#segdl4-sme-003) | Software Load Phone Number (Element 91) is 'variable length of up to eighteen' characters, DL4 has no Field Separators, and the next field is the 6-digit Software Load Request Date. Is the phone number padded to 18 (and with what character), or how does the device find where it ends? | Section 12.45 note and Section 13.2 Element 91. The 52-character maximum assumes 18 characters. | OPEN | `P-03`, SEGDL4-R-004, SEGDL4-R-005 | 2026-09-30 |
 
 ## Segment DL5 ([register](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md))
 

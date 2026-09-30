@@ -2,15 +2,21 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL4 payload] --> B{Applicability and Message-Family Decisi… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL4-R-001 Segment DL4 is used to download an application…}
-    R1 -->|Fail| X1[Reject citing SEGDL4-R-001]
-    R1 -->|Pass| R2{SEGDL4-R-002 Segment DL4 maximum length is 52 alphanumeric…}
-    R2 -->|Fail| X2[Reject citing SEGDL4-R-002]
-    R2 -->|Pass| Z[Rules satisfied]
+    A[Host is building a download response] --> B{Device application managed by BUYPASS device management system?}
+    B -->|No - vendor-managed| N1[DL4 must NOT be sent - SEGDL4-R-001]
+    B -->|Yes| C{Which response?}
+    C -->|Software Load Response| D{Merchant load flag SOFT?}
+    D -->|No| N2[Error block + terminating block; no DL4 - SEGDL4-R-006]
+    D -->|Yes| E["')' + DL4 + DL5 - both Required"]
+    C -->|Table Load Response| F[10.10 step 4 says DL4/DL5 answer a Table Load request]
+    F --> R1[REVIEW_REQUIRED - SEGDL4-SME-002]
+    C -->|Phone / Date and Time Load| N3[DL4 must NOT be present]
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+| Message | DL4 | Evidence |
+|---|---|---|
+| Software Load Response | **R**, with DL5 | 11.7.4.2 field 2; Chapter 12 matrix |
+| Table Load Response | Conflict | 10.10 step 4 vs 11.7.1.2 layout (no DL4) |
+| Phone / Date and Time Load Response | Not allowed | 11.7.2.2, 11.7.3.2 |
 
 Source: [segment-DL4-rule-catalog.json](coverage/segment-DL4-rule-catalog.json) · Note: [applicability-decision-sme-tba-note.md](applicability-decision-sme-tba-note.md)
