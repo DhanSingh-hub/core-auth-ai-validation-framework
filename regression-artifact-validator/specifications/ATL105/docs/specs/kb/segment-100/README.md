@@ -29,6 +29,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
 - [Final Closure SME Note](final-closure-sme-tba-note.md)
 - [Final Closure Flow](final-closure-flow.md)
+- [Response Code (Element 83) Training](response-code-training.md)
 
 ## Scope
 

@@ -73,6 +73,10 @@ class Atl105MessageTemplateCatalogTest {
 
         assertThat(segmentNumbers(templates.path("Financial Transaction Request")))
             .containsExactly("100", "101", "102", "103", "104", "111", "123", "135", "143", "145", "146", "151", "152", "153");
+        assertThat(templates.path("Financial Transaction Request").path("approved_extensions").get(0).path("segment_number").asText())
+            .isEqualTo("110");
+        assertThat(templates.path("Financial Transaction Request").path("approved_extensions").get(0).path("decision").asText())
+            .contains("SEG110-R-001");
         assertThat(segmentNumbers(templates.path("EMV Financial Transaction Request")))
             .containsExactly("100", "101", "102", "103", "104", "111", "123", "130", "135", "143", "145", "146", "151", "152", "153");
     }
@@ -145,6 +149,28 @@ class Atl105MessageTemplateCatalogTest {
         assertThat(tableResponse.path("blocks").get(3).path("condition").asText()).contains("Card Type 173");
         assertThat(pdlRequest.path("promptCodes").toString()).contains("903", "905", "request only");
         assertThat(pdlResponse.path("promptCodes").toString()).contains("901", "902", "904", "response only");
+    }
+
+    @Test
+    void sourceLengthConflictsRemainVisibleInMessageTemplates() throws IOException {
+        JsonNode templates = readCatalog().path("message_templates");
+        assertThat(templates.path("EMV Financial Transaction Request").path("source_conflicts").toString())
+            .contains("9,999", "3,043");
+        assertThat(templates.path("EMV Financial Transaction Response").path("source_conflicts").toString())
+            .contains("3,850", "3,834");
+        assertThat(templates.path("Totals with Proprietary Data Load Request").path("source_conflicts").toString())
+            .contains("389", "493");
+    }
+
+    @Test
+    void segment105RuleAnchorsUseNumberedSourceSections() throws IOException {
+        JsonNode catalog = MAPPER.readTree(Path.of("specifications", "ATL105", "docs", "specs", "kb", "segment-105", "coverage", "segment-105-rule-catalog.json").toFile());
+        for (JsonNode rule : catalog.path("rules")) {
+            if (rule.path("ruleId").asText().matches("SEG105-R-(0[1-9]|1[0-7])")) {
+                assertThat(rule.path("sourceAnchor").path("section").asText())
+                    .as(rule.path("ruleId").asText()).matches("(?:11|12|13)(?:\\.[0-9]+)+(?:,(?:11|12|13)(?:\\.[0-9]+)+)*");
+            }
+        }
     }
 
     private static java.util.List<String> segmentNumbers(JsonNode template) {

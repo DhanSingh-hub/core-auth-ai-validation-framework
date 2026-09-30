@@ -1,0 +1,127 @@
+{
+  "artifact": "ATL105-49-SEGMENT-MESSAGE-VALIDATION-CROSS-AUDIT-001",
+  "auditDate": "2026-09-30",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "scope": "Cross-check of all 49 segment training modules, their rule catalogs, Section 11 message templates, source anchors, validator/test inventory, and independent Test BR/TS/TC/TD evidence.",
+  "verdict": "REVIEW_REQUIRED_NOT_INTAKE_READY",
+  "approval": {
+    "humanApprovalRecorded": false,
+    "templateCatalogState": "EXTRACTED",
+    "templateCatalogHumanReviewRequired": true,
+    "section11LayoutCount": 31,
+    "section11LayoutIndexStatus": "SOURCE_RECONCILED_NOT_APPROVED"
+  },
+  "inventory": {
+    "trainingStatusSegmentCount": 49,
+    "ruleCatalogCount": 49,
+    "cataloguedRuleCount": 601,
+    "substantiveModules": 48,
+    "sourceStubOnlyModules": ["116"],
+    "segmentsTrainedForIntake": 0,
+    "segmentsWithOpenBlockers": 44,
+    "numericSegmentRuleCatalogs": 41,
+    "downloadSegmentRuleCatalogs": ["DL1", "DL2", "DL3", "DL4", "DL5", "DL6", "DL7", "DL8"]
+  },
+  "sourceAnchorVerification": {
+    "catalogs": 49,
+    "rules": 601,
+    "incompleteAnchors": 0,
+    "duplicateAnchors": 0,
+    "unsupportedVersionCatalogs": 0,
+    "exactMatchMissingSectionRecords": 72,
+    "missingSectionInterpretation": "The verifier does exact matching of the complete section string. Many records use valid composite section strings such as 11.4.1.1,12.6 or Chapter/Appendix aliases. The 72 findings are not automatically classified as invalid; each composite/alias needs an explicit resolution or verifier enhancement. Structural check remains true, semantic source verification requires human review."
+  },
+  "validatorAndTestInventory": {
+    "numericSegmentsWithDedicatedNamedPayloadOrWireValidator": 12,
+    "numericSegmentsWithDedicatedNamedTestClass": 12,
+    "numericSegmentCatalogsWithoutDedicatedNamedValidator": ["102", "105", "112", "114", "115", "119", "123", "130", "131", "132", "134", "135", "136", "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156", "157"],
+    "downloadSegmentsWithoutDedicatedNamedValidator": ["DL1", "DL2", "DL3", "DL4", "DL5", "DL6", "DL7", "DL8"],
+    "qualification": "Generic message-family validators/tests exist for some of these modules (for example Totals, load envelopes, and Communications Test), and Segment 100 has extensive shared/context validation. They do not establish deterministic field-level validation for every listed segment rule."
+  },
+  "businessRequirementAndChainEvidence": {
+    "approvedAtomicTestSolutionBusinessRequirements": 0,
+    "pendingSourceDecisionItems": 6473,
+    "draftAllTestSolutionPackageBusinessRequirements": 314,
+    "draftPackageIndependentRuleDenominator": 309,
+    "draftPackageScenarios": 419,
+    "draftPackageTestCases": 469,
+    "draftPackageTestDataRecords": 492,
+    "placeholderScenarios": 290,
+    "placeholderTestCases": 305,
+    "placeholderTestDataRecords": 338,
+    "draftPackageExecutionReady": false,
+    "sourceDerivedInventoryCatalogs": 13,
+    "sourceDerivedInventoryRules": 289,
+    "assessment": "BR creation/approval is not complete for all 49 segments. The approved atomic BR artifact is empty. The 314-BR package is draft, covers a denominator of 309 rather than the current 601 catalogued rules, and contains placeholder downstream artifacts. Do not report these records as approved or executable coverage."
+  },
+  "verifiedFindings": [
+    {
+      "id": "AUDIT-001",
+      "severity": "BLOCKER",
+      "area": "business-requirements-and-execution-chain",
+      "finding": "No approved independent atomic Test Solution BRs exist; the existing draft package has placeholder downstream evidence and is not execution-ready.",
+      "evidence": ["approved-atomic-test-solution-business-requirements.json", "complete-all-test-solution-br-ts-tc-td-package.json", "training-status.json"]
+    },
+    {
+      "id": "AUDIT-002",
+      "severity": "HIGH",
+      "area": "segment-rule-validation",
+      "finding": "Dedicated segment-named field/payload validators and tests exist for only 12 of 41 numeric segment catalogs. Generic transaction/load validators do not prove every segment rule is executable.",
+      "evidence": ["src/main/java/com/coreauth/validator/canonical", "src/test/java/com/coreauth/validator", "specifications/ATL105/docs/specs/kb/segment-*/coverage/segment-*-rule-catalog.json"]
+    },
+    {
+      "id": "AUDIT-003",
+      "severity": "HIGH",
+      "area": "business-requirement-denominator",
+      "finding": "Independent BR package denominator and inventory are stale relative to the current catalog: 309/289 rules represented in package/inventory versus 601 currently catalogued rules.",
+      "evidence": ["complete-all-test-solution-br-ts-tc-td-package.json", "source-derived-requirement-inventory.json", "training-status.json"]
+    },
+    {
+      "id": "AUDIT-004",
+      "severity": "MEDIUM",
+      "area": "source-anchor-verification",
+      "finding": "Automated source verifier reports 72 section-presence misses due to exact comparison of composite section labels/aliases. The structural anchor checks pass, but these 72 source links need normalized or manually resolved evidence.",
+      "evidence": ["src/main/java/com/coreauth/validator/coverage/VerifyKnowledgeBaseAgainstAtl105.java", "specifications/ATL105/docs/specs/kb/segment-105/coverage/segment-105-rule-catalog.json"]
+    },
+    {
+      "id": "AUDIT-005",
+      "severity": "MEDIUM",
+      "area": "section11-extension",
+      "finding": "Segment 110 is not a row in the literal Section 11.1.1 Financial request table. It is captured separately as an SME-approved extension from the broader Section 12.9 applicability rule; preserve that distinction.",
+      "evidence": ["specifications/ATL105/docs/atl105_complete_templates.json", "specifications/ATL105/docs/specs/kb/segment-110/coverage/segment-110-rule-catalog.json"]
+    },
+    {
+      "id": "AUDIT-006",
+      "severity": "REVIEW_REQUIRED",
+      "area": "source-conflicts",
+      "finding": "Known message-table/segment-definition length conflicts are now explicit in template metadata and remain unresolved: Segment 119 389 vs 493, Segment 130 9999 vs 3043, and Segment 131 3850 vs 3834.",
+      "evidence": ["specifications/ATL105/docs/atl105_complete_templates.json", "specifications/ATL105/docs/specs/extracted_text.txt", "specifications/ATL105/docs/specs/kb/segment-119/coverage/segment-119-rule-catalog.json", "specifications/ATL105/docs/specs/kb/segment-130/coverage/segment-130-rule-catalog.json"]
+    },
+    {
+      "id": "AUDIT-007",
+      "severity": "FIXED_IN_THIS_AUDIT",
+      "area": "segment105-source-anchors",
+      "finding": "SEG105-R-001 through SEG105-R-017 previously used the prose label Totals Request as the source section. Anchors now identify Section 12.6; message-layout rules retain Section 11.4.1.1 anchors.",
+      "evidence": ["specifications/ATL105/docs/specs/kb/segment-105/coverage/segment-105-rule-catalog.json"]
+    }
+  ],
+  "testedChanges": {
+    "segment105NonnumericSectionAnchorsRemaining": 0,
+    "cataloguedSection11LengthsAndSegment110ExtensionHaveRegressionTests": true,
+    "focusedTestsPassing": 75
+  },
+  "limitations": [
+    "This is a repository-evidence audit, not human/SME approval.",
+    "Not all 601 rules were individually re-derived against every PDF field/value in this pass; source-anchor structural validation and targeted message/anchor checks were run.",
+    "The template catalog remains EXTRACTED and human_review_required.",
+    "TransArmor Segment 116 remains blocked on an external specification; CA Public Key File Load request placement remains provisional under SEG132-SME-006."
+  ],
+  "nextActions": [
+    "Review and approve independent BR decisions, then derive and validate non-placeholder TS/TC/TD evidence for all 49 modules.",
+    "Prioritize dedicated field validators/tests for the 29 listed numeric segment IDs, followed by DL1-DL8 segment-level layouts.",
+    "Bring the 309/289 draft denominators and packages into reconciliation with the current 601-rule catalog inventory.",
+    "Resolve 72 composite/alias source-section verifier findings or improve the verifier to normalize source-section lists.",
+    "Obtain the external TransArmor specification and the outstanding SME decisions before claiming complete certification."
+  ]
+}

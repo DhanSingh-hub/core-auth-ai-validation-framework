@@ -2330,6 +2330,9 @@
       ],
       "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between each segment field in request serialization"],
       "message_length_maximum": 4000,
+      "approved_extensions": [
+        {"segment_number":"110","segment_name":"Check Data Segment","data_section":3,"presence_in_message":"SME_APPROVED_EXTENSION","source_section":"12.9","decision":"SEG110-R-001 / SEG110-SME-001 confirms Segment 110 is valid in any Financial Transaction Request Data Section 3, beyond the enumerated Section 11.1.1 table."}
+      ],
       "segments": [
         {"segment_number":"100","segment_name":"Standard Message Data Segment","data_section":2,"presence_in_message":"R","max_length":218},
         {"segment_number":"101","segment_name":"Fleet Data Segment","data_section":3,"presence_in_message":"C","max_length":308},
@@ -5551,7 +5554,10 @@
       ],
       "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between each segment field in request serialization"],
       "message_length_maximum": 4000,
-      "source_conflicts": ["Section 11.8.1 prose omits Segment 103 while the Data Section 3 table includes it; use the table inventory and retain this conflict for review."],
+      "source_conflicts": [
+        "Section 11.8.1 prose omits Segment 103 while the Data Section 3 table includes it; use the table inventory and retain this conflict for review.",
+        "Section 11.8.1 Data Section 3 table gives Segment 130 maximum 9,999; Sections 12.20 and 13.2 Element 84 give 3,043. The Segment 130 rule catalog adopts 3,043 based on two source locations and exact field arithmetic; retain the message-table discrepancy."
+      ],
       "segments": [
         {"segment_number":"100","segment_name":"Standard Message Data Segment","data_section":2,"presence_in_message":"R","max_length":619},
         {"segment_number":"101","segment_name":"Fleet Data Segment","data_section":3,"presence_in_message":"C","max_length":308},
@@ -8009,6 +8015,10 @@
       ],
       "section_11_data_section_map": {"1":["55","63"],"2":[],"3":["119"]},
       "source_conflict": "Section 11.4.1.2 prose names Segment 116; its message layout table names Segment 119. This entry follows the table and retains the conflict for review.",
+      "source_conflicts": [
+        "Section 11.4.1.2 prose names Segment 116; its message layout table names Segment 119. This entry follows the table.",
+        "Section 11.4.1.2 message table gives Segment 119 maximum length 389; Section 12.17 and Element 84 give 493. Preserve both values pending resolution; the segment rule catalog records the open max-length conflict."
+      ],
       "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2"],
       "segments": [
         {
@@ -9181,8 +9191,11 @@
         {"segment_number":"112","segment_name":"Additional Information Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Element 115 indicates Segment 112 follows","max_length":349},
         {"segment_number":"115","segment_name":"Print Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Print Data follows when request Loyalty Version Number is 2","max_length":999},
         {"segment_number":"120","segment_name":"Print Data 2 Segment","data_section":2,"presence_in_message":"C","presence_condition":"Print Data follows when request Loyalty Version Number is 2","max_length":999},
-        {"segment_number":"131","segment_name":"EMV Response Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"EMV response data applies","max_length":3850},
+        {"segment_number":"131","segment_name":"EMV Response Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"EMV response data applies","max_length":3850,"source_conflict":"Section 11.8.2 table gives 3,850; Section 12.21 and Element 84 give 3,834. Preserve the Section 11 value here and retain both source values for review."},
         {"segment_number":"134","segment_name":"Transaction Attributes Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Transaction attribute data applies","max_length":12}
+      ],
+      "source_conflicts": [
+        "Section 11.8.2 lists Segment 131 with maximum 3,850; Section 12.21 and Element 84 list 3,834. This template preserves the Section 11.8.2 table value; do not treat the mismatch as resolved."
       ],
       "extracted_candidate_segments": [
         {

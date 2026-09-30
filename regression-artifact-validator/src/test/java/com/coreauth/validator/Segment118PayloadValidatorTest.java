@@ -72,11 +72,25 @@ class Segment118PayloadValidatorTest {
 
     @Test
     void acceptsDocumentedProprietaryLoadResponseCodes() {
-        for (String responseCode : new String[]{"H", "O", "T", "U", "V", "W", "X", "Y"}) {
+        for (String responseCode : new String[]{"H", "O", "T", "U", "X", "Y"}) {
             ObjectNode payload = validResponse("902");
             ((ObjectNode) payload.path("Proprietary Data Load Response")).put("ResponseCode", responseCode);
             segment(payload).put("CardTableData", "DATA");
             assertNoErrors(payload);
+        }
+    }
+
+    @Test
+    void rejectsTotalsPendingCodesAsProprietaryLoadResponseCodes() {
+        for (String responseCode : new String[]{"V", "W"}) {
+            ObjectNode payload = validResponse("901");
+            ((ObjectNode) payload.path("Proprietary Data Load Response")).put("ResponseCode", responseCode);
+            ObjectNode segment = segment(payload);
+            segment.put("StartDate", "20260101"); segment.put("StartTime", "0000");
+            segment.put("EndDate", "20261231"); segment.put("EndTime", "2359");
+            segment.put("NumberOfReceiptTextLines", "01");
+            segment.putArray("ReceiptTextLines").addObject().put("ReceiptTextDataLength", "01").put("ReceiptTextData", "X");
+            assertRule(payload, "SEG118-R-026");
         }
     }
 

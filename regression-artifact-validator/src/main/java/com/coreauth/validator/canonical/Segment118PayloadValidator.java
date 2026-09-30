@@ -105,7 +105,7 @@ public final class Segment118PayloadValidator {
     private static void validateResponse(JsonNode response, ValidationResult result) {
         checkRequiredPresent(response, "ResponseCode", "SEG118-R-025", result);
         String responseCode = text(response, "ResponseCode");
-        if (responseCode != null && !Set.of("H", "O", "T", "U", "V", "W", "X", "Y").contains(responseCode)) {
+        if (responseCode != null && !Set.of("H", "O", "T", "U", "X", "Y").contains(responseCode)) {
             result.addError(SOURCE, "Proprietary Data Load Response.ResponseCode is not in the documented PDL response catalog (SEG118-R-026, SEG118-R-030)");
         }
         checkRequiredPresent(response, "DownloadIndicator", "SEG118-R-025", result);

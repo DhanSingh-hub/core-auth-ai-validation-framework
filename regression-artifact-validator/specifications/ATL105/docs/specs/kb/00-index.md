@@ -69,6 +69,8 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [11-financial-transaction-request-sections.md](11-financial-transaction-request-sections.md) - TCP/IP header distinction, standard financial-request sections, Segment 100-only eligibility, and Section 3 conditions
 - [segment-100-canonical-anchors.md](segment-100-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 100 scope
 - [segment-100/README.md](segment-100/README.md) - focused Segment 100 SME, technical business analysis, and flow-learning module
+- [segment-100/response-code-training.md](segment-100/response-code-training.md) - source-derived Element 83 code families, contextual overlaps, and validation scope
+- [element-83-response-code/README.md](element-83-response-code/README.md) - dedicated Element 83 message-family training and [code 0 purchase/capture coverage](element-83-response-code/response-code-0-approved-purchase-capture.md)
 - [segment-100/coverage/README.md](segment-100/coverage/README.md) - Segment 100 rule coverage, approval gates, and report design
 - [segment-101/README.md](segment-101/README.md) - focused Segment 101 (Fleet Data Segment) SME, technical business analysis, and flow-learning module
 - [segment-102/README.md](segment-102/README.md) - focused Segment 102 Product Code SME, technical business analysis, and flow-learning module
