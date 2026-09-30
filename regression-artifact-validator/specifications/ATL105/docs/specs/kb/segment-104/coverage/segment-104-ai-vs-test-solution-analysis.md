@@ -38,13 +38,13 @@ How many AI BRs each Test Solution rule enforces.
 | `SEG104-R-006` | Purchase Card Data Segment max length is 86 alphanumeric characters. | serialization | 3 |
 | `SEG104-R-007` | Purchase Code is alphanumeric, max 16 characters, when populated. | field | 1 |
 | `SEG104-R-008` | PC Tax Amount is numeric, up to 7 digits with 2 assumed decimal places, when populated. | field | 1 |
-| `SEG104-R-009` | PC Freight Amount is numeric, up to 7 digits with 2 assumed decimal places, when popula... | field | 1 |
+| `SEG104-R-009` | PC Freight Amount is numeric, up to 7 digits with 2 assumed decimal places, when populated. | field | 1 |
 | `SEG104-R-010` | PC Duty Amount is numeric, up to 7 digits with 2 assumed decimal places, when populated. | field | 2 |
 | `SEG104-R-011` | Ship-to Country Code is a fixed length of 3 digits, when populated. | field | 1 |
-| `SEG104-R-012` | Ship-to Postal Code format is PROVISIONAL (P-01): strict US ZIP+4 or general alphanumer... | field | 1 |
-| `SEG104-R-013` | Ship-from Postal Code format is PROVISIONAL (P-01): strict US ZIP+4 or general alphanum... | field | 1 |
+| `SEG104-R-012` | Ship-to Postal Code format is PROVISIONAL (P-01): strict US ZIP+4 or general alphanumeric up to 10 characters; non-conforming values are flagged for SME review rather than hard-rejected. | field | 1 |
+| `SEG104-R-013` | Ship-from Postal Code format is PROVISIONAL (P-01): strict US ZIP+4 or general alphanumeric up to 10 characters; non-conforming values are flagged for SME review rather than hard-rejected. | field | 1 |
 | `SEG104-R-014` | Direct Marketing Invoice Number is alphanumeric, max 10 characters, when populated. | field | 1 |
-| `SEG104-R-020` | At most one Segment 104 per message. PROVISIONAL (P-02): not explicitly stated in the s... | structure | 0 |
+| `SEG104-R-020` | At most one Segment 104 per message. PROVISIONAL (P-02): not explicitly stated in the spec text the way Segment 101's cardinality is; enforced by analogy to the Data Section 3 slot structure pending SME confirmation. | structure | 0 |
 
 ### Test Solution rules with NO AI BR support
 
