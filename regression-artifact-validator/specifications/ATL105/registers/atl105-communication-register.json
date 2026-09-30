@@ -5599,6 +5599,29 @@
       ]
     },
     {
+      "id": "AIF-0016",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "118"
+      ],
+      "subject": "Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads",
+      "detail": "The supplied Segment 118 artifacts are not intake-ready. Run1 has 107 direct Segment 118 requirements. Run2 links 608 trace rows to 148 scenarios and 578 test cases, but all 578 physical payloads use the generic Financial Request root and none contains Segment 118; this remains true for cases labelled Proprietary Data Load Request or Response. The trace rows all declare ATL105 2025-3 rather than the authoritative 2026-3 source. The cases are spread across 28 transaction-family labels, so those assignments do not establish Segment 118 coverage. The phase-1 single-leg probe also stops before TC/TD: the resolver's fallback candidates do not list Segment 118 in their message templates. Rebuild and independently verify the complete BR -> TS -> TC -> TD -> mapping chain using the dedicated Proprietary Data Load Request/Response envelopes and Segment 118 in the specification-defined position. Do not count synthetic Test Solution fixtures or producer PASS results as AI evidence.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after the 2026-09-29 phase_1_single_leg run",
+      "evidence": [
+        "specifications/ATL105/test-output/ai-solution-independent-review/segment-118-ai-chain-verification.json",
+        "AI delivery reporting/output/traceability_matrix_full.json",
+        "AI delivery reporting/output/qe_shaped_test_data/"
+      ],
+      "relatedItems": [
+        "SEG118-SME-005",
+        "TT-0015"
+      ]
+    },
+    {
       "id": "TT-0015",
       "channel": "TEST_TEAM",
       "segments": [

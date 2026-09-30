@@ -11,7 +11,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 189 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 223 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
-| `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
+| `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 
 ## SME/TBA Input Registers by Segment
 

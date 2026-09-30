@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 15 open (15 total).
+**Status:** 16 open (16 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -23,6 +23,7 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0013](#aif-0013) | Associate an element with the Segment 151/152 Market Basket Data requirements | OPEN | AI Solution Team | 2026-09-29 |
 | [AIF-0014](#aif-0014) | Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0015](#aif-0015) | Correct the phase-1 Electronic Mail Request payload before claiming verification PASS | OPEN | AI Solution Team | 2026-09-30 |
+| [AIF-0016](#aif-0016) | Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads | OPEN | AI Solution Team | 2026-09-30 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -330,3 +331,22 @@ The 2026-09-29 phase_1_single_leg Segment 109 chain has a valid Terminal Identif
 - `specifications/ATL105/test-output/ai-solution-independent-review/phase1-single-leg-validation.json`
 
 **Related:** [AIF-0014](ai-feedback.md#aif-0014), [SEG109-SME-012](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md#seg109-sme-012)
+
+<a id="aif-0016"></a>
+## AIF-0016: Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-09-30 by saurabhtw28
+- **Segments:** 118
+- **Target delivery:** Next delivery after the 2026-09-29 phase_1_single_leg run
+
+The supplied Segment 118 artifacts are not intake-ready. Run1 has 107 direct Segment 118 requirements. Run2 links 608 trace rows to 148 scenarios and 578 test cases, but all 578 physical payloads use the generic Financial Request root and none contains Segment 118; this remains true for cases labelled Proprietary Data Load Request or Response. The trace rows all declare ATL105 2025-3 rather than the authoritative 2026-3 source. The cases are spread across 28 transaction-family labels, so those assignments do not establish Segment 118 coverage. The phase-1 single-leg probe also stops before TC/TD: the resolver's fallback candidates do not list Segment 118 in their message templates. Rebuild and independently verify the complete BR -> TS -> TC -> TD -> mapping chain using the dedicated Proprietary Data Load Request/Response envelopes and Segment 118 in the specification-defined position. Do not count synthetic Test Solution fixtures or producer PASS results as AI evidence.
+
+**Evidence:**
+
+- `specifications/ATL105/test-output/ai-solution-independent-review/segment-118-ai-chain-verification.json`
+- `AI delivery reporting/output/traceability_matrix_full.json`
+- `AI delivery reporting/output/qe_shaped_test_data/`
+
+**Related:** [SEG118-SME-005](../../docs/specs/kb/segment-118/segment-118-sme-tba-input-register.md#seg118-sme-005), [TT-0015](test-team-discussion.md#tt-0015)
