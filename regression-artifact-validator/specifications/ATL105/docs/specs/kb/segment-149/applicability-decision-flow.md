@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 149 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 149 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG149-R-001 Segment 149 contains data required by the Comd…}
+    B -->|Yes| R1{SEG149-R-001 Segment 149 contains data required by the Comdata authorizer for fuel price updates}
     R1 -->|Fail| X1[Reject citing SEG149-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```

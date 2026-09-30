@@ -4,7 +4,7 @@
 flowchart TD
     A[Segment 149 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG149-R-003 Segment Type fixed 149, Segment Length 3 digit…}
+    B -->|Yes| R1{SEG149-R-003 Segment Type fixed 149, Segment Length 3 digits, Terminal Identifier (var.), Price Data (var., pipe-delimited tag:value pairs e.g. 'CASS:03.00') all Device-sourced}
     R1 -->|Fail| X1[Reject citing SEG149-R-003]
     R1 -->|Pass| Z[Rules satisfied]
 ```
