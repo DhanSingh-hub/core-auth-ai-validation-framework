@@ -33,7 +33,7 @@ The catalog describes repeating content. Repetitions frequently use different se
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG145-R-004` | MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation… | 12.31 | — | REVIEW_REQUIRED |
+| `SEG145-R-004` | MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation only and must not be used in live production transactions | 12.31 | — | REVIEW_REQUIRED |
 
 These rules require **paired messages** in the test data. A test-control flag asserting "correlated" or "echoed" is not evidence.
 
