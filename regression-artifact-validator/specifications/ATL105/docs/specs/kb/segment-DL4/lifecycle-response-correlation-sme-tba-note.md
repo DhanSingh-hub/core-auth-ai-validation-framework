@@ -1,66 +1,33 @@
 # Segment DL4 Lifecycle, Response and Message Correlation: SME/TBA Learning Note
 
-**Segment:** DL4 — Software Dial Load Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.45  
-**Oracle:** [segment-DL4-rule-catalog.json](coverage/segment-DL4-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `sequence-lifecycle-*` (cross-message correlation).
+**Segment:** DL4 — Software Dial Load Data Segment · **Sources:** 10.10, 11.7, 11.7.4, 13.2 (Element 30) · **Oracle:** [rule catalog](coverage/segment-DL4-rule-catalog.json) · **Benchmark:** Segment 100 [sequence-lifecycle note](../segment-100/sequence-lifecycle-sme-tba-note.md)
 
 ## Core Idea
 
-Some Segment DL4 rules can only be proven across two or more related messages. A single message, or a test-control flag claiming correlation, is description rather than evidence.
+DL4 is the middle step of an eight-step software update process (10.10). A DL4 fixture without the preceding Download Indicator `1` and the following scheduled load / Table Load is only a structural test.
 
-## Specification-Derived Rules (0)
+## Software Update Processing (10.10)
 
-_The Segment DL4 rule catalog contains **no** `lifecycle/response/operational` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+| Step | Actor | Event | Observable in ATL105? |
+|---|---|---|---|
+| 1 | BUYPASS | Profile bit set: device must request a DLL | No (profile) |
+| 2 | BUYPASS | Download Indicator (Element 30) `1` in the next transaction response | Yes |
+| 3 | Device | Sends a load request (Table Load per 10.10; Software Load per 11.7.4) | Yes |
+| 4 | BUYPASS | Responds with DL4 and DL5 | Yes |
+| 5 | Device | Stores Version, Record ID, Phone or IP/URL, Date, Time | No |
+| 6 | Device | At the scheduled time, dials the device management system for a full load | No (not BUYPASS) |
+| 7 | Device | After the load, requests a Table Load | Yes |
+| 8 | BUYPASS | Sends the Table Load without requiring the profile bit | Yes |
 
-## Catalog Notes
+Notes: at most three attempts; an unsuccessful attempt prints the "decline" message.
 
-_No catalog notes are recorded against these rules._
+## Correlation Points
 
-## SME Reasoning
+- Steps 2, 3, 4, 7 and 8 are ATL105 messages and belong in one lifecycle test-data record.
+- The New Software Version in DL4 should become the Software Version (Element 96) the device reports in its step-7 Table Load Request. The source does not state this; treat as `REVIEW_REQUIRED`.
 
-Ask:
+## SME Questions
 
-1. Which Segment DL4 values must be echoed, preserved, or referenced in a related message?
-2. Which message is the original and which is the follow-up or response?
-3. Does the test data contain both messages, or only a claim that they correlate?
-4. What happens when the follow-up or response is missing, late, or mismatched?
-5. Is any correlation value environment-specific (test vs production)?
-
-## TBA Dependency Chain
-
-```text
-original message (Segment DL4)
-  -> host processing
-  -> response / follow-up message
-  -> echoed or preserved values
-  -> correlation assertion
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL4 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL4PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+1. `SEGDL4-SME-002`: Table Load or Software Load request at step 3?
+2. Does the step-7 Table Load Request carry the new Software Version?
+3. Does "full load" at step 6 apply when Software Load Type is `P`?

@@ -2,24 +2,21 @@
 
 ```mermaid
 flowchart TD
-    A[Build ordered Segment DL4 fields] --> B{Field empty?}
-    B -->|Middle field| C[Keep field separator]
-    B -->|Trailing field| D[No omission allowance catalogued - keep position]
-    C --> F
-    D --> F
-    B -->|No| F[Serialize value]
-    F --> G{Segment Length is 3 digits and correct?}
-    G -->|No| X1[Reject serialization]
-    G -->|Yes| I
-    I{Lifecycle or response rules catalogued?}
-    I -->|No| Z[Structural closure complete]
-    I -->|Yes| J[Load paired messages]
-    J --> K{Correlated values consistent?}
-    K -->|No| X2[Reject lifecycle mismatch]
-    K -->|Yes| Z
-    Z --> P{Open provisional items: 1}
+    A[Structured DL4 values] --> B["Emit '@'"]
+    B --> C[Version 8 + Record ID 13 - no Field Separators]
+    C --> D{Phone Number length < 18?}
+    D -->|Yes| R1[Padding open - SEGDL4-SME-003 - REVIEW_REQUIRED]
+    D -->|No| E[Emit Phone Number]
+    R1 --> E
+    E --> F[Date 6 + Time 4 + Load Type 1]
+    F --> G["Emit '~'"]
+    G --> H{Length <= 52 and no FS / Segment Length?}
+    H -->|No| X1[Reject - SEGDL4-R-002 / R-004]
+    H -->|Yes| I["Software Load Response: ')' DL4 DL5"]
+    I --> J{DL5 present and lifecycle context recorded?}
+    J -->|No| X2[Reject or REVIEW - SEGDL4-R-006 / R-007]
+    J -->|Yes| Z[Closure complete]
+    Z --> P{Open provisional items: P-01..P-03}
     P -->|Any open| R[Keep affected rules REVIEW_REQUIRED]
     P -->|None| S[Eligible for sign-off]
 ```
-
-Serialization rules: 0 · Lifecycle/response rules: 0 · Open provisional items: 1

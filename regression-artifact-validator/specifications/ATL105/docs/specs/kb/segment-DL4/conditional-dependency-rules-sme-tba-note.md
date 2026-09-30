@@ -1,66 +1,24 @@
 # Segment DL4 Conditional Fields and Cross-Field Dependencies: SME/TBA Learning Note
 
-**Segment:** DL4 — Software Dial Load Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.45  
-**Oracle:** [segment-DL4-rule-catalog.json](coverage/segment-DL4-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `partial-approval-*` (a conditional feature with cross-field consequences).
+**Segment:** DL4 — Software Dial Load Data Segment · **Sources:** 12.45, 12.46, 11.7.4.2, 10.10 · **Oracle:** [rule catalog](coverage/segment-DL4-rule-catalog.json) · **Benchmark:** Segment 100 [partial-approval note](../segment-100/partial-approval-sme-tba-note.md)
 
 ## Core Idea
 
-Conditional rules are where Segment DL4 validation most often fails silently: a field that is correct in isolation can be wrong because of the value of another field or another segment.
+DL4 has no Conditional fields. Its dependencies are with the device model, with DL5, and with time.
 
-## Specification-Derived Rules (0)
+| Dependency | Trigger | Consequence | Rule / status |
+|---|---|---|---|
+| Device model → DL4 | Vendor-managed device | No DL4 | `SEGDL4-R-001` |
+| DL4 ↔ DL5 | Software Load Response | Both segments present | `SEGDL4-R-006` |
+| DL4 ↔ DL5 values | Same scheduled load | Version, Record ID, Date, Time, Load Type expected to agree | Derived, `REVIEW_REQUIRED` |
+| Request Date/Time → attempt | Scheduled time reached | Device dials Software Load Phone Number | `SEGDL4-R-007` |
+| Attempts → decline | 3 unsuccessful attempts | Device prints "decline" | `SEGDL4-R-008` |
+| Download Indicator → request | Response with Download Indicator `1` | Device requests the load | `SEGDL4-R-007` |
 
-_The Segment DL4 rule catalog contains **no** `dependency/interdependency/conditional` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+The previous version of this note recorded "no conditional rules" — the device-model and DL4/DL5 dependencies were missing.
 
-## Catalog Notes
+## SME Questions
 
-_No catalog notes are recorded against these rules._
-
-## SME Reasoning
-
-Ask:
-
-1. Which fields are Conditional, and what exact condition makes each one required?
-2. Which values must agree with another field in Segment DL4?
-3. Which values must agree with Segment 100 or another companion segment?
-4. Is the dependency stated in the specification, or inferred and therefore provisional?
-5. What is the expected outcome when the dependency is violated — reject, decline, or ignore?
-
-## TBA Dependency Chain
-
-```text
-triggering field / segment value
-  -> conditional field requirement
-  -> cross-field agreement
-  -> cross-segment agreement
-  -> validator outcome
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL4 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL4PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+1. Must DL4 and DL5 carry identical Version / Record ID / Date / Time / Load Type?
+2. What happens if the Request Date/Time is already in the past when received?
+3. `SEGDL4-SME-002`: how does the device choose dial (DL4) vs IP (DL5)?
