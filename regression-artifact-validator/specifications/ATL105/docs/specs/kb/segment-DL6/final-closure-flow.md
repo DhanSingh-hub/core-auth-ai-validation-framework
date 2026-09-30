@@ -2,24 +2,21 @@
 
 ```mermaid
 flowchart TD
-    A[Build ordered Segment DL6 fields] --> B{Field empty?}
-    B -->|Middle field| C[Keep field separator]
-    B -->|Trailing field| D[No omission allowance catalogued - keep position]
-    C --> F
-    D --> F
-    B -->|No| F[Serialize value]
-    F --> G{Segment Length is 3 digits and correct?}
-    G -->|No| X1[Reject serialization]
-    G -->|Yes| I
-    I{Lifecycle or response rules catalogued?}
-    I -->|No| Z[Structural closure complete]
-    I -->|Yes| J[Load paired messages]
-    J --> K{Correlated values consistent?}
-    K -->|No| X2[Reject lifecycle mismatch]
-    K -->|Yes| Z
-    Z --> P{Open provisional items: 2}
+    A[Structured DL6 values] --> B["Emit '\'"]
+    B --> C[Start Time 4 + End Time 4 - no Field Separators]
+    C --> D["Emit '~'"]
+    D --> E{Length?}
+    E -->|10| R1[REVIEW_REQUIRED - stated max 9, SEGDL6-SME-003]
+    E -->|Other| X1[Reject - SEGDL6-R-002]
+    R1 --> F
+    E -->|9| F[Place after '*' closing Data Block 3]
+    F --> G["Append End-of-Load '*'"]
+    G --> H{DL1 in same response has 173?}
+    H -->|No| X2[Reject - SEGDL6-R-001]
+    H -->|Yes| Z[Closure complete]
+    Z --> P{Open provisional items: P-01..P-05}
     P -->|Any open| R[Keep affected rules REVIEW_REQUIRED]
     P -->|None| S[Eligible for sign-off]
 ```
 
-Serialization rules: 0 · Lifecycle/response rules: 0 · Open provisional items: 2
+A 9-character DL6 cannot hold `\` + 4 + 4 + `~`; the "9" branch exists only if the SME confirms a different layout.

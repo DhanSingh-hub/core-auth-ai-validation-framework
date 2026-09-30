@@ -4594,6 +4594,7 @@
         "DL6"
       ],
       "subject": "Confirm whether End Time's citation of Element 166 (same as Start Time) is intentional element-number reuse or a transcription error.",
+      "context": "Section 13.2 names Element 166 'Start Time or End Time' (HHMM, 0000-2359), which supports intentional reuse, but its purpose and processing rules mention only Segment 118 custom receipt text / host discount data, not DL6.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
@@ -4625,6 +4626,75 @@
         ],
         "impacts": [
           "AI-artifacts, test-data"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL6-SME-003",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL6"
+      ],
+      "subject": "Section 12.47 and the Table Load Response (11.7.1.2) give DL6 a maximum length of 9, but its four fields sum to 10 ('\\' + Start Time 4 + End Time 4 + '~'). Which is correct?",
+      "context": "Section 12.47 introduction and field list; Section 11.7.1.2 field 8 Max. Len.",
+      "impact": "Sets the length expectation and blocks the DL6 length-mutation set.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-03",
+        "rules": [
+          "SEGDL6-R-002"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL6-SME-004",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL6"
+      ],
+      "subject": "DL6 field 1 says 'Indicates that software IP load data follows' (copied from DL5), Element 34 lists End-of-Data only for DL1-DL5, and End Time has no Source. Please confirm DL6 is framed by '\\' and '~' and that End Time is Host-sourced.",
+      "context": "Section 12.47 fields 1, 3, 4; Section 13.2 Elements 24 and 34.",
+      "impact": "Confirms the framing a DL6 validator must enforce.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-04",
+        "rules": [
+          "SEGDL6-R-002"
+        ],
+        "blocks": [
+          "Item 7"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL6-SME-005",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL6"
+      ],
+      "subject": "Store and Forward blocking applies 'for a designated range of time each day' (Appendix E, Card Type 173). May Start Time be later than End Time (window crossing midnight, e.g. 2300-0500)? What does Start Time = End Time mean? Are the times device-local or BUYPASS host time?",
+      "context": "Appendix E Card Type 173; Section 12.47 fields 2-3; Section 13.2 Element 166.",
+      "impact": "Defines valid, invalid and boundary blocking windows for DL6 test data.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-05",
+        "rules": [
+          "SEGDL6-R-007"
+        ],
+        "blocks": [
+          "Item 5"
         ]
       }
     },

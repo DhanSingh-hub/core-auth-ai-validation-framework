@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 178 open, 3 reopened, 29 resolved, 2 deferred (212 total).
+**Status:** 181 open, 3 reopened, 29 resolved, 2 deferred (215 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -403,8 +403,11 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
-| [SEGDL6-SME-001](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-001) | Confirm whether End Time's citation of Element 166 (same as Start Time) is intentional element-number reuse or a transcription error. |  | OPEN | `P-01`, SEGDL6-R-003 | 2026-09-26 |
+| [SEGDL6-SME-001](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-001) | Confirm whether End Time's citation of Element 166 (same as Start Time) is intentional element-number reuse or a transcription error. | Section 13.2 names Element 166 'Start Time or End Time' (HHMM, 0000-2359), which supports intentional reuse, but its purpose and processing rules mention only Segment 118 custom receipt text / host discount data, not DL6. | OPEN | `P-01`, SEGDL6-R-003 | 2026-09-26 |
 | [SEGDL6-SME-002](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-002) | Provide a dedicated Segment DL6 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL6 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-02` | 2026-09-26 |
+| [SEGDL6-SME-003](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-003) | Section 12.47 and the Table Load Response (11.7.1.2) give DL6 a maximum length of 9, but its four fields sum to 10 ('\' + Start Time 4 + End Time 4 + '~'). Which is correct? | Section 12.47 introduction and field list; Section 11.7.1.2 field 8 Max. Len. | OPEN | `P-03`, SEGDL6-R-002 | 2026-09-30 |
+| [SEGDL6-SME-004](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-004) | DL6 field 1 says 'Indicates that software IP load data follows' (copied from DL5), Element 34 lists End-of-Data only for DL1-DL5, and End Time has no Source. Please confirm DL6 is framed by '\' and '~' and that End Time is Host-sourced. | Section 12.47 fields 1, 3, 4; Section 13.2 Elements 24 and 34. | OPEN | `P-04`, SEGDL6-R-002 | 2026-09-30 |
+| [SEGDL6-SME-005](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-005) | Store and Forward blocking applies 'for a designated range of time each day' (Appendix E, Card Type 173). May Start Time be later than End Time (window crossing midnight, e.g. 2300-0500)? What does Start Time = End Time mean? Are the times device-local or BUYPASS host time? | Appendix E Card Type 173; Section 12.47 fields 2-3; Section 13.2 Element 166. | OPEN | `P-05`, SEGDL6-R-007 | 2026-09-30 |
 
 ## Segment DL7 ([register](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md))
 
