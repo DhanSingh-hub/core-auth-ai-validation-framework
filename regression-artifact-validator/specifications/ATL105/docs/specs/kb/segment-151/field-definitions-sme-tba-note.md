@@ -18,7 +18,7 @@ Each Segment 151 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG151-R-004` | Segment Type fixed 151, sourced at Host (despite the segment overall 'originating at the device' per the opening statement) — a sourcing inconsistency | 12.36 | 85 | REVIEW_REQUIRED |
-| `SEG151-R-005` | Segment Length is 4 digits (not 3), max 2300 characters; Market Basket Data (unnumbered element) consists of one DV dataset followed by up to 10 PI datasets, with full format defined in a separate 'Buypass Incomm Market… | 12.36 | — | REVIEW_REQUIRED |
+| `SEG151-R-005` | Segment Length is 4 digits (not 3), max 2300 characters; Market Basket Data (unnumbered element) consists of one DV dataset followed by up to 10 PI datasets, with full format defined in a separate 'Buypass Incomm Market Basket Data format' document | 12.36 | — | REVIEW_REQUIRED |
 
 ## Element Definitions (ATL105 Chapter 13)
 
