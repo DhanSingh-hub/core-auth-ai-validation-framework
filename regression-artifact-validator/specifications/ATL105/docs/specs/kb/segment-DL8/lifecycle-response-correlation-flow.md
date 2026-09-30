@@ -1,14 +1,19 @@
 # Segment DL8 Lifecycle, Response and Message Correlation Flow
 
 ```mermaid
-flowchart TD
-    A[Segment DL8 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL8-R-001 Segment DL8 contains EMV floor limits as RID f…}
-    R1 -->|Fail| X1[Reject citing SEGDL8-R-001]
-    R1 -->|Pass| Z[Rules satisfied]
+sequenceDiagram
+    participant Ops as BUYPASS floor-limit maintenance
+    participant H as BUYPASS Host
+    participant D as Terminal with Special
+    Ops->>H: Change EMV floor-limit data
+    H->>H: Set table download flag for every terminal with the Special
+    D->>H: Next transaction
+    H-->>D: Response with Download Indicator = 1 (per 11.7)
+    D->>H: Table Load Request
+    H-->>D: Table load including DL8 (position - SEGDL8-SME-002)
+    Note over D: Store per-RID stand-in rule and floor limit
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+Rules: `SEGDL8-R-001`. The Download Indicator step is inferred from 11.7 and is `REVIEW_REQUIRED` for DL8.
 
 Source: [segment-DL8-rule-catalog.json](coverage/segment-DL8-rule-catalog.json) · Note: [lifecycle-response-correlation-sme-tba-note.md](lifecycle-response-correlation-sme-tba-note.md)
