@@ -17,7 +17,7 @@ Some Segment 145 rules can only be proven across two or more related messages. A
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG145-R-004` | MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation… | 12.31 | — | REVIEW_REQUIRED |
+| `SEG145-R-004` | MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation only and must not be used in live production transactions | 12.31 | — | REVIEW_REQUIRED |
 
 ## Catalog Notes
 
