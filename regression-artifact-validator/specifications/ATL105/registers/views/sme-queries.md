@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 176 open, 3 reopened, 29 resolved, 2 deferred (210 total).
+**Status:** 178 open, 3 reopened, 29 resolved, 2 deferred (212 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -396,6 +396,8 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEGDL5-SME-001](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md#segdl5-sme-001) | Provide a dedicated Segment DL5 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL5 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-01` | 2026-09-26 |
+| [SEGDL5-SME-002](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md#segdl5-sme-002) | What is the maximum length of DL5: 64 (Section 12.46, which equals the sum of its field lengths) or 66 (Software Load Response layout, 11.7.4.2)? | Section 12.46 introduction and field list versus Section 11.7.4.2 field 3 Max. Len. | OPEN | `P-02`, SEGDL5-R-002 | 2026-09-30 |
+| [SEGDL5-SME-003](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md#segdl5-sme-003) | Element 114 Software Load IP/URL Address is 'fixed length of 30', but its purpose reads 'the terminal number used to access the device management system' and its valid values are '01-999, a-z, A-Z', which exclude '.', ':' and '/'. What content and characters are valid, and how is a shorter address padded to 30? | Section 12.46 field 4 and Section 13.2 Element 114. | OPEN | `P-03`, SEGDL5-R-005 | 2026-09-30 |
 
 ## Segment DL6 ([register](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md))
 

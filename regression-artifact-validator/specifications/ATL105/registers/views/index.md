@@ -8,7 +8,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 176 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 210 |
+| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 178 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 212 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 9 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 10 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 12 |
@@ -60,7 +60,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | DL2 | 4 | 0 | 0 | 0 | 4 | [segment-DL2](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md) |
 | DL3 | 4 | 0 | 0 | 0 | 4 | [segment-DL3](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md) |
 | DL4 | 3 | 0 | 0 | 0 | 3 | [segment-DL4](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md) |
-| DL5 | 1 | 0 | 0 | 0 | 1 | [segment-DL5](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md) |
+| DL5 | 3 | 0 | 0 | 0 | 3 | [segment-DL5](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md) |
 | DL6 | 2 | 0 | 0 | 0 | 2 | [segment-DL6](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md) |
 | DL7 | 2 | 0 | 0 | 0 | 2 | [segment-DL7](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md) |
 | DL8 | 1 | 0 | 0 | 0 | 1 | [segment-DL8](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md) |
