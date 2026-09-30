@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 114 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
+    A[Segment 114 payload] --> B{Lifecycle, Response and Message Correlation in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG114-R-013 Segment 114 does not appear in the Loyalty Car…}
+    B -->|Yes| R1{SEG114-R-013 Segment 114 does not appear in the Loyalty Card Transaction Response, which mirrors the generic Financial Transaction Response layout}
     R1 -->|Fail| X1[Reject citing SEG114-R-013]
     R1 -->|Pass| Z[Rules satisfied]
 ```
