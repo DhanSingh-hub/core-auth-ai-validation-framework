@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 153 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 153 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG153-R-001 Segment 153 contains Network Token Data for th…}
+    B -->|Yes| R1{SEG153-R-001 Segment 153 contains Network Token Data for the transaction; may hold multiple TLV-encoded sub-segments (standard sub-segment type, length, value)}
     R1 -->|Fail| X1[Reject citing SEG153-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```
