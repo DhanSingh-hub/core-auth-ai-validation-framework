@@ -4374,6 +4374,78 @@
       }
     },
     {
+      "id": "SEGDL3-SME-002",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL3"
+      ],
+      "subject": "DL3 field 6 Password: Section 12.44 says 'Source: Device' and 'the end-of-day function's password', but the Date and Time Load Response (11.7.3.2) says 'Source: Host' and 'the device password used for requesting host totals'. Which is correct, and does the host send the merchant-profile password in this host-originated segment?",
+      "context": "Section 12.44 field 6 versus Section 11.7.3.2 field 6 and Section 13.2 Element 65. The existing rule SEGDL3-R-003 relies on the Device-sourced reading.",
+      "impact": "Decides whether SEGDL3-R-003 is kept, rewritten or withdrawn, and whether Password is a host-provided test value.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-02",
+        "rules": [
+          "SEGDL3-R-003",
+          "SEGDL3-R-006"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL3-SME-003",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL3"
+      ],
+      "subject": "The Date and Time Load Response (11.7.3.2) lists fields 1-6 (':' through Password, positions 1-22) with no End-of-Data Indicator, while DL3 (12.44) ends with '~' (23 characters). Does the Date and Time Load Response carry the '~'?",
+      "context": "Section 11.7.3.2 layout versus Section 12.44 field 7 and the Chapter 12 matrix, which lists DL3 for the Date and Time Load Response.",
+      "impact": "Decides the expected length (22 or 23) and last byte of every Date and Time Load Response fixture.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-03",
+        "rules": [
+          "SEGDL3-R-001",
+          "SEGDL3-R-007"
+        ],
+        "blocks": [
+          "Item 5",
+          "Item 7"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL3-SME-004",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL3"
+      ],
+      "subject": "Current Time (Element 22) and Cut Time (Element 23) are HHMM, but their valid values are listed as hour 01-24 and minute 01-60. Are 0000-2359 (as Element 166 uses) the valid clock values, or is 2400 / minute 60 accepted and 00 rejected?",
+      "context": "Section 13.2 Elements 22, 23 and 166.",
+      "impact": "Defines the boundary values for DL3 time fields in positive and negative test data.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-04",
+        "rules": [
+          "SEGDL3-R-005"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
       "id": "SEGDL4-SME-001",
       "channel": "SME_QUERY",
       "segments": [

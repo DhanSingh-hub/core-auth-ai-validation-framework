@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 171 open, 3 reopened, 29 resolved, 2 deferred (205 total).
+**Status:** 174 open, 3 reopened, 29 resolved, 2 deferred (208 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -379,6 +379,9 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEGDL3-SME-001](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md#segdl3-sme-001) | Provide a dedicated Segment DL3 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL3 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-01` | 2026-09-26 |
+| [SEGDL3-SME-002](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md#segdl3-sme-002) | DL3 field 6 Password: Section 12.44 says 'Source: Device' and 'the end-of-day function's password', but the Date and Time Load Response (11.7.3.2) says 'Source: Host' and 'the device password used for requesting host totals'. Which is correct, and does the host send the merchant-profile password in this host-originated segment? | Section 12.44 field 6 versus Section 11.7.3.2 field 6 and Section 13.2 Element 65. The existing rule SEGDL3-R-003 relies on the Device-sourced reading. | OPEN | `P-02`, SEGDL3-R-003, SEGDL3-R-006 | 2026-09-30 |
+| [SEGDL3-SME-003](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md#segdl3-sme-003) | The Date and Time Load Response (11.7.3.2) lists fields 1-6 (':' through Password, positions 1-22) with no End-of-Data Indicator, while DL3 (12.44) ends with '~' (23 characters). Does the Date and Time Load Response carry the '~'? | Section 11.7.3.2 layout versus Section 12.44 field 7 and the Chapter 12 matrix, which lists DL3 for the Date and Time Load Response. | OPEN | `P-03`, SEGDL3-R-001, SEGDL3-R-007 | 2026-09-30 |
+| [SEGDL3-SME-004](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md#segdl3-sme-004) | Current Time (Element 22) and Cut Time (Element 23) are HHMM, but their valid values are listed as hour 01-24 and minute 01-60. Are 0000-2359 (as Element 166 uses) the valid clock values, or is 2400 / minute 60 accepted and 00 rejected? | Section 13.2 Elements 22, 23 and 166. | OPEN | `P-04`, SEGDL3-R-005 | 2026-09-30 |
 
 ## Segment DL4 ([register](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md))
 
