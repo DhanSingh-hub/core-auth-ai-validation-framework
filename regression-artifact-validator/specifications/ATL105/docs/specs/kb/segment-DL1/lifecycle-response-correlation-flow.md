@@ -1,14 +1,23 @@
 # Segment DL1 Lifecycle, Response and Message Correlation Flow
 
 ```mermaid
-flowchart TD
-    A[Segment DL1 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL1-R-005 A Card Type value of '173' in this segment's r…}
-    R1 -->|Fail| X1[Reject citing SEGDL1-R-005]
-    R1 -->|Pass| Z[Rules satisfied]
+sequenceDiagram
+    participant D as Device
+    participant H as BUYPASS Host
+    D->>H: Financial transaction request
+    H-->>D: Response with Download Indicator (Element 30) = 1
+    Note over D: Manual download request is also allowed
+    D->>H: Table Load Request ('?', Terminal Identifier, Load Type 'P', HW/SW/FW versions)
+    alt Merchant load flag = TABL
+        H-->>D: Table Load Response: ')' DL1 [DL2] [DL3] '*' [DL6 '*']
+        Note over D: DL1 Card Types configure acceptance and features
+        Note over D: Card Type 173 -> DL6 blocking window applies
+    else Flag not set
+        H-->>D: Error message block + terminating block (no DL1)
+    end
+    D->>H: Very next transaction uses the downloaded data
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+Rules: `SEGDL1-R-005`, `SEGDL1-R-008`, `SEGDL1-R-012`. Open: `SEGDL1-SME-003` (End-of-Load count when DL6 is sent).
 
 Source: [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) · Note: [lifecycle-response-correlation-sme-tba-note.md](lifecycle-response-correlation-sme-tba-note.md)

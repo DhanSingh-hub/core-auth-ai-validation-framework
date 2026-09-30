@@ -2,58 +2,71 @@
 
 **Segment:** DL1 — Merchant Data Segment  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.42, 12.47  
-**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (5 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Source sections:** 12.42, 11.7.1, 11.7.1.2, 13.2, Appendix E  
+**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (12 rules)  
+**Benchmark:** [Segment 100 financial card-type business requirements](../segment-100/financial-card-type-business-requirements.md)
 
 ## Scope and provenance
 
-This catalog restates each Segment DL1 specification rule as an independently testable business requirement with acceptance criteria and a required negative case. It mirrors the structure of the Segment 100 [financial card-type business requirements](../segment-100/financial-card-type-business-requirements.md).
-
-Requirements are derived **only** from the Segment DL1 rule catalog and the ATL105 specification. AI-generated artifacts and JSON test fixtures are not used as requirement evidence.
+Each requirement restates one catalog rule as an independently testable statement with a positive and a negative representation. Requirements are derived only from the ATL105 specification; AI artifacts are not requirement evidence. A rule linked to an open provisional item stays `REVIEW_REQUIRED` and must not be certified.
 
 ## Rule composition
 
 | Class | Rules |
 |---|---:|
-| structure | 2 |
-| serialization | 1 |
-| field | 1 |
-| lifecycle | 1 |
-| **Total** | **5** |
+| structure | 3 |
+| serialization | 2 |
+| field | 4 |
+| applicability | 1 |
+| lifecycle | 2 |
+| **Total** | **12** |
 
 ## Requirements
 
-| ID | Class | Requirement | Acceptance criteria | Source | Status |
-|---|---|---|---|---|---|
-| BR-SEGDL1-001 | serialization | Segment DL1 maximum length is 399 alphanumeric characters; originates at BUYPASS (Host) | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEGDL1-R-001` §12.42 | SPEC_DERIVED |
-| BR-SEGDL1-002 | structure | Segment DL1 uses NO Field Separators; instead it is self-delimited by a Data Type Indicator ('#', field 1) and an End-of-Data Indicator ('~', last field) — a distinct delimiting convention from the numbered segments (85/84 Segment Type/Length pair) | The segment's structural position and composition match the rule. | `SEGDL1-R-002` §12.42 | SPEC_DERIVED |
-| BR-SEGDL1-003 | field | Merchant Name(53,24), Store Number(98,16), Address Line 1(3,24), Address Line 2(4,21), Merchant Phone Number(54,13) are all required, Host-sourced fixed-length fields | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEGDL1-R-003` §12.42 | SPEC_DERIVED |
-| BR-SEGDL1-004 | structure | Number of Card Types (Element 59) identifies how many times field 8 (Card Type) repeats — Card Type may repeat 01-99 times | The segment's structural position and composition match the rule. | `SEGDL1-R-004` §12.42 | SPEC_DERIVED |
-| BR-SEGDL1-005 | lifecycle | A Card Type value of '173' in this segment's repeating Card Type field (Element 14) conditionally triggers Segment DL6 (Store and Forward) in the same Table Load Response | Paired messages are present and the correlated values agree. | `SEGDL1-R-005` §12.42,12.47 | SPEC_DERIVED |
+| ID | Class | Requirement | Valid representation | Invalid representation | Source | Status |
+|---|---|---|---|---|---|---|
+| BR-SEGDL1-001 | serialization | DL1 shall not exceed 399 characters and is host-originated | 111 characters with 3 Card Types | 400 characters (100 Card Types) | `SEGDL1-R-001` §12.42 | SPEC_DERIVED |
+| BR-SEGDL1-002 | structure | DL1 shall begin with `#` and end with `~` and carry no Segment Type/Length | `#...~` | Starts `100`, or missing `~` | `SEGDL1-R-002` §12.42 | SPEC_DERIVED |
+| BR-SEGDL1-003 | field | Merchant Name, Store Number, Address Line 1, Address Line 2 and Merchant Phone Number shall all be present at their element widths | All five present | Merchant Name missing | `SEGDL1-R-003` §12.42 | REVIEW_REQUIRED (P-02) |
+| BR-SEGDL1-004 | structure | The number of Card Type occurrences shall equal Number of Card Types (01-99) | `03` + 3 codes | `03` + 2 codes; `00`; 100 codes | `SEGDL1-R-004` §12.42 | SPEC_DERIVED |
+| BR-SEGDL1-005 | lifecycle | A Card Type `173` shall be accompanied by DL6 in the same Table Load Response, and DL6 shall not appear without it | `173` + DL6 | `173` without DL6; DL6 without `173` | `SEGDL1-R-005` §12.42, §12.47 | SPEC_DERIVED |
+| BR-SEGDL1-006 | serialization | DL1 fields shall be concatenated without Field Separators | `#NAME...` | FS (`0x1C`) between fields | `SEGDL1-R-006` §12.42 | REVIEW_REQUIRED (P-02) |
+| BR-SEGDL1-007 | applicability | DL1 shall be Data Block 1 of the Table Load Response, after `)`, and in no other message | `)` + DL1 in Table Load Response | DL1 in a Phone Load Response | `SEGDL1-R-007` §11.7.1.2 | SPEC_DERIVED |
+| BR-SEGDL1-008 | lifecycle | DL1 shall be returned only when the merchant load flag is `TABL` | Flag `TABL` → DL1 present | Flag not set → DL1 present | `SEGDL1-R-008` §11.7.1 | SPEC_DERIVED |
+| BR-SEGDL1-009 | field | Every Card Type shall be an Appendix E Table Load code | `020`, `164`, `173` | `999`, `02A` | `SEGDL1-R-009` Appendix E | REVIEW_REQUIRED (P-04) |
+| BR-SEGDL1-010 | field | Address Line 2 shall follow City(1-12) space State(14-15) space ZIP(17-21) | `SPRINGFIELD  IL 62701` | `SPRINGFIELD,IL,62701` | `SEGDL1-R-010` §13.2 | SPEC_DERIVED |
+| BR-SEGDL1-011 | field | Merchant Phone Number shall be `(nnn)nnn-nnnn`; Store Number shall be numeric and non-zero | `(555)555-0100`; `0000000000001234` | `5555550100`; `000000000000000A` | `SEGDL1-R-011` §13.2 | SPEC_DERIVED |
+| BR-SEGDL1-012 | structure | The Table Load Response shall order `)` DL1, DL2, DL3, `*`, then DL6 and `*` when triggered | `)` DL1 DL2 DL3 `*` | DL3 before DL1; DL6 before `*` | `SEGDL1-R-012` §11.7.1.2 | REVIEW_REQUIRED (P-03) |
 
 ## Required negative coverage
 
-| ID | Violates | Mutation class | Expected result |
-|---|---|---|---|
-| BR-SEGDL1-NEG-001 | `SEGDL1-R-001` | MUT-003 length violation | Validation error citing SEGDL1-R-001 |
-| BR-SEGDL1-NEG-002 | `SEGDL1-R-002` | MUT-001 wrong fixed value | Validation error citing SEGDL1-R-002 |
-| BR-SEGDL1-NEG-003 | `SEGDL1-R-003` | MUT-003 length violation | Validation error citing SEGDL1-R-003 |
-| BR-SEGDL1-NEG-004 | `SEGDL1-R-004` | MUT-010 structural requirement | Validation error citing SEGDL1-R-004 |
-| BR-SEGDL1-NEG-005 | `SEGDL1-R-005` | MUT-010 structural requirement | Validation error citing SEGDL1-R-005 |
+| ID | Violates | Mutation class | Mutation | Expected result |
+|---|---|---|---|---|
+| BR-SEGDL1-NEG-001 | `SEGDL1-R-001` | MUT-003 Length | 100 Card Types (length 402) | Fail citing SEGDL1-R-001 / R-004 |
+| BR-SEGDL1-NEG-002 | `SEGDL1-R-002` | MUT-001 Identity value | `#` → `!` | Fail citing SEGDL1-R-002 |
+| BR-SEGDL1-NEG-003 | `SEGDL1-R-003` | MUT-005 Required field omitted | Remove Merchant Name | Fail citing SEGDL1-R-003 |
+| BR-SEGDL1-NEG-004 | `SEGDL1-R-004` | MUT-009 Cross-field dependency | Number of Card Types `03`, two codes | Fail citing SEGDL1-R-004 |
+| BR-SEGDL1-NEG-005 | `SEGDL1-R-005` | MUT-009 Cross-field dependency | `173` present, DL6 removed | Fail citing SEGDL1-R-005 |
+| BR-SEGDL1-NEG-006 | `SEGDL1-R-006` | MUT-010 Structural requirement | Insert FS after Merchant Name | Fail citing SEGDL1-R-006 |
+| BR-SEGDL1-NEG-007 | `SEGDL1-R-007` | MUT-010 Structural requirement | Place DL1 in a Phone Load Response | Fail citing SEGDL1-R-007 |
+| BR-SEGDL1-NEG-008 | `SEGDL1-R-008` | MUT-009 Cross-field dependency | Flag not `TABL`, DL1 returned | Fail citing SEGDL1-R-008 |
+| BR-SEGDL1-NEG-009 | `SEGDL1-R-009` | MUT-008 Enumeration out of bounds | Card Type `999` | Fail or REVIEW citing SEGDL1-R-009 |
+| BR-SEGDL1-NEG-010 | `SEGDL1-R-010` | MUT-006 Pattern | State Code at positions 13-14 | Fail citing SEGDL1-R-010 |
+| BR-SEGDL1-NEG-011 | `SEGDL1-R-011` | MUT-002 Format | Phone `5555550100   ` | Fail citing SEGDL1-R-011 |
+| BR-SEGDL1-NEG-012 | `SEGDL1-R-012` | MUT-010 Structural requirement | DL6 before End-of-Load of block 3 | Fail or REVIEW citing SEGDL1-R-012 |
 
-## Requirements that must not be certified yet
+## Coverage denominator
 
-_None — every rule is directly specification-derived._
+- **In scope:** all 12 catalog rules.
+- **Out of scope:** device card-acceptance behaviour after the load, merchant-profile administration at BUYPASS, and DL2/DL3/DL6 field rules (owned by their segments).
+- **Required counts for completion:** 12 BRs, at least 12 scenarios, 24 test cases (one positive and one negative per rule), and 24 request/response test-data records.
 
 ## Open SME items
 
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL1 AI or Test package was located. Provide one, or approve synthesized fixtures.
+`SEGDL1-SME-001` (package), `SEGDL1-SME-002` (padding), `SEGDL1-SME-003` (End-of-Load count), `SEGDL1-SME-004` (Card Type set). See the [input register](segment-DL1-sme-tba-input-register.md).
 
 ## Implementation traceability
 
 - Rule catalog: [coverage/segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json)
-- Validator: _not yet implemented_
-- Tests: _none yet_
-- BR IDs in this file are positional against the catalog; if the catalog changes, regenerate this file.
+- Validator: _not yet implemented_ (`SegmentDL1PayloadValidator`, blocked on `SEGDL1-SME-002`)
+- BR IDs are positional against the catalog; if the catalog changes, update this file in the same commit.

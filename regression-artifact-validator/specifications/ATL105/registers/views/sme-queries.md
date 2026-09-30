@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 166 open, 3 reopened, 29 resolved, 2 deferred (200 total).
+**Status:** 169 open, 3 reopened, 29 resolved, 2 deferred (203 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -361,6 +361,9 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEGDL1-SME-001](../../docs/specs/kb/segment-DL1/segment-DL1-sme-tba-input-register.md#segdl1-sme-001) | Provide a dedicated Segment DL1 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL1 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-01` | 2026-09-26 |
+| [SEGDL1-SME-002](../../docs/specs/kb/segment-DL1/segment-DL1-sme-tba-input-register.md#segdl1-sme-002) | Segment DL1 has no Field Separators and 'when a field is not populated, the next field immediately follows', but Merchant Name (53), Address Line 1 (3) and Store Number (98) are 'fixed length of up to N'. Are these fields always padded to full width (spaces for AN, leading zeros for Store Number), or can they be shorter? | Section 12.42 layout note and Section 13.2 element definitions. The parser cannot find the next field boundary without a padding rule, and the 399-character maximum assumes full widths. | OPEN | `P-02`, SEGDL1-R-003, SEGDL1-R-006 | 2026-09-30 |
+| [SEGDL1-SME-003](../../docs/specs/kb/segment-DL1/segment-DL1-sme-tba-input-register.md#segdl1-sme-003) | The Table Load Response layout (11.7.1.2) shows End-of-Load Indicator '*' after DL3 (field 7) and again after DL6 (field 9), and says the response 'contains four data blocks'. When DL1 carries Card Type 173, is '*' sent twice (after DL3 and after DL6) or only once at the end? When DL2/DL3 are omitted, how many blocks are sent? | Section 11.7.1.2 fields 1-9 and Section 12.47 note. | OPEN | `P-03`, SEGDL1-R-005, SEGDL1-R-012 | 2026-09-30 |
+| [SEGDL1-SME-004](../../docs/specs/kb/segment-DL1/segment-DL1-sme-tba-input-register.md#segdl1-sme-004) | Appendix E says Table Load Response Card Types are 001-086 (accepted cards) and 127-168 (features), but its table also lists 088-096, 150, 171, 173 and 174. Is the table the complete valid set for DL1 field 8? | Appendix E introduction versus the 'Valid Card Type Codes Used in the Table Load Response' table. | OPEN | `P-04`, SEGDL1-R-009 | 2026-09-30 |
 
 ## Segment DL2 ([register](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md))
 

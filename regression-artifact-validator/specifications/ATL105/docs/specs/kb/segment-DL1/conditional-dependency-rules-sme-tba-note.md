@@ -1,66 +1,43 @@
 # Segment DL1 Conditional Fields and Cross-Field Dependencies: SME/TBA Learning Note
 
-**Segment:** DL1 — Merchant Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.42, 12.47  
-**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (5 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `partial-approval-*` (a conditional feature with cross-field consequences).
+**Segment:** DL1 — Merchant Data Segment · **Sources:** 12.42, 12.47, 11.7.1.2 · **Oracle:** [rule catalog](coverage/segment-DL1-rule-catalog.json) · **Benchmark:** Segment 100 [partial-approval note](../segment-100/partial-approval-sme-tba-note.md) (a conditional feature with cross-field consequences)
 
 ## Core Idea
 
-Conditional rules are where Segment DL1 validation most often fails silently: a field that is correct in isolation can be wrong because of the value of another field or another segment.
+DL1 has no Conditional (`C`) fields — all nine are `R`. Its dependencies are between fields and across segments:
 
-## Specification-Derived Rules (0)
+| Dependency | Trigger | Consequence | Rule |
+|---|---|---|---|
+| Count ↔ occurrences | Number of Card Types = N | Exactly N Card Type values, then `~` | `SEGDL1-R-004` |
+| Card Type → segment | Any Card Type = `173` | DL6 must follow in the same Table Load Response | `SEGDL1-R-005` |
+| Segment → Card Type (reverse) | DL6 present | At least one DL1 Card Type = `173` | `SEGDL1-R-005`, `SEGDL6-R-001` |
+| Load flag → segment | Merchant load flag `TABL` | DL1 returned; otherwise no DL1 | `SEGDL1-R-008` |
 
-_The Segment DL1 rule catalog contains **no** `dependency/interdependency/conditional` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+The earlier version of this note recorded "no conditional rules" — that was a gap: the count/occurrence and `173` → DL6 dependencies are cross-field and cross-segment rules and are now catalogued explicitly (Lesson L3).
 
-## Catalog Notes
+## Why the Count Matters More Here Than in Segment 100
 
-_No catalog notes are recorded against these rules._
+With no separators and no Segment Length, Number of Card Types is the only way a parser knows where the Card Type list ends. A wrong count does not produce a "bad value" — it moves the `~` and corrupts the next data block.
 
-## SME Reasoning
+## SME Questions
 
-Ask:
+1. Can the same Card Type appear twice in the list? The source does not prohibit it; treat duplicates as `REVIEW_REQUIRED`.
+2. Is the order of Card Types meaningful to the device?
+3. If `173` is present but the merchant has no blocking window configured, does the host omit `173` or send DL6 with a default window?
 
-1. Which fields are Conditional, and what exact condition makes each one required?
-2. Which values must agree with another field in Segment DL1?
-3. Which values must agree with Segment 100 or another companion segment?
-4. Is the dependency stated in the specification, or inferred and therefore provisional?
-5. What is the expected outcome when the dependency is violated — reject, decline, or ignore?
-
-## TBA Dependency Chain
+## TBA Decomposition
 
 ```text
-triggering field / segment value
-  -> conditional field requirement
-  -> cross-field agreement
-  -> cross-segment agreement
-  -> validator outcome
+BR:  If DL1 contains Card Type 173, the same Table Load Response shall contain DL6 (SEGDL1-R-005).
+TS:  Merchant with Store and Forward blocking enabled.
+TC+: DL1 Card Types 020,173; DL6 '\' 2300 0500 '~' present. Expected PASS.
+TC-: DL1 Card Types 020,173; DL6 absent. Expected FAIL citing SEGDL1-R-005.
+TC-: DL1 Card Types 020 only; DL6 present. Expected FAIL citing SEGDL1-R-005 / SEGDL6-R-001.
+TD:  Table Load Response JSON holding both DL1 and (optionally) DL6 blocks.
 ```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL1 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL1PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
 
 ## Review Checklist
 
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+- Does every `173` fixture contain both segments in one response object, not two separate files?
+- Is the reverse case (DL6 without `173`) tested?
+- Is the count mutation tested both ways (count too high and too low)?

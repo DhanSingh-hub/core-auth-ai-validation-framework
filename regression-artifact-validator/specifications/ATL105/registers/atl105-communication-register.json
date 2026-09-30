@@ -4185,6 +4185,78 @@
       }
     },
     {
+      "id": "SEGDL1-SME-002",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL1"
+      ],
+      "subject": "Segment DL1 has no Field Separators and 'when a field is not populated, the next field immediately follows', but Merchant Name (53), Address Line 1 (3) and Store Number (98) are 'fixed length of up to N'. Are these fields always padded to full width (spaces for AN, leading zeros for Store Number), or can they be shorter?",
+      "context": "Section 12.42 layout note and Section 13.2 element definitions. The parser cannot find the next field boundary without a padding rule, and the 399-character maximum assumes full widths.",
+      "impact": "Blocks the DL1 parser/validator and the length-mutation set; short-value fixtures stay REVIEW_REQUIRED.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-02",
+        "rules": [
+          "SEGDL1-R-003",
+          "SEGDL1-R-006"
+        ],
+        "blocks": [
+          "Item 5",
+          "Item 7"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL1-SME-003",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL1"
+      ],
+      "subject": "The Table Load Response layout (11.7.1.2) shows End-of-Load Indicator '*' after DL3 (field 7) and again after DL6 (field 9), and says the response 'contains four data blocks'. When DL1 carries Card Type 173, is '*' sent twice (after DL3 and after DL6) or only once at the end? When DL2/DL3 are omitted, how many blocks are sent?",
+      "context": "Section 11.7.1.2 fields 1-9 and Section 12.47 note.",
+      "impact": "Decides the expected Table Load Response framing for the DL1 + DL6 lifecycle fixture.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-03",
+        "rules": [
+          "SEGDL1-R-005",
+          "SEGDL1-R-012"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL1-SME-004",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL1"
+      ],
+      "subject": "Appendix E says Table Load Response Card Types are 001-086 (accepted cards) and 127-168 (features), but its table also lists 088-096, 150, 171, 173 and 174. Is the table the complete valid set for DL1 field 8?",
+      "context": "Appendix E introduction versus the 'Valid Card Type Codes Used in the Table Load Response' table.",
+      "impact": "Defines the valid/invalid Card Type sets for DL1 positive and negative test data.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-04",
+        "rules": [
+          "SEGDL1-R-009"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
       "id": "SEGDL2-SME-001",
       "channel": "SME_QUERY",
       "segments": [

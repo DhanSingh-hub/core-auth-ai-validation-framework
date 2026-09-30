@@ -2,15 +2,23 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL1 payload] --> B{Applicability and Message-Family Decisi… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL1-R-002 Segment DL1 uses NO Field Separators instead i…}
-    R1 -->|Fail| X1[Reject citing SEGDL1-R-002]
-    R1 -->|Pass| R2{SEGDL1-R-004 Number of Card Types Element 59 identifies how…}
-    R2 -->|Fail| X2[Reject citing SEGDL1-R-004]
-    R2 -->|Pass| Z[Rules satisfied]
+    A[Host is building a download response] --> B{Which load?}
+    B -->|Phone Load / Date and Time Load / Software Load| N1[DL1 must NOT be present - SEGDL1-R-007]
+    B -->|Table Load| C{Merchant load flag = TABL?}
+    C -->|No| N2[Error message block + terminating block only; DL1 absent - SEGDL1-R-008]
+    C -->|Yes| D["Emit ')' Start-of-Data Block Indicator"]
+    D --> E[Emit DL1 as Data Block 1 - Required]
+    E --> F{DL1 present and first block?}
+    F -->|No| X1[Fail SEGDL1-R-007]
+    F -->|Yes| G[Continue with DL2 / DL3 / End-of-Load / DL6 decisions - SEGDL1-R-012]
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+| Message | DL1 | Evidence |
+|---|---|---|
+| Table Load Response (11.7.1.2) | **R**, Data Block 1 | Layout field 2; Chapter 12 matrix |
+| Phone Load Response (11.7.2.2) | Not allowed | Layout lists DL2 only |
+| Date and Time Load Response (11.7.3.2) | Not allowed | Layout lists DL3 fields only |
+| Software Load Response (11.7.4.2) | Not allowed | Layout lists DL4 and DL5 only |
+| Any request message | Not allowed | DL1 originates at BUYPASS |
 
 Source: [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) · Note: [applicability-decision-sme-tba-note.md](applicability-decision-sme-tba-note.md)
