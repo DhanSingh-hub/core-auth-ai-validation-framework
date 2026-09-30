@@ -1,66 +1,34 @@
 # Segment DL8 Field Definitions and Element Semantics: SME/TBA Learning Note
 
-**Segment:** DL8 — EMV Terminal Floor Limits Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.49  
-**Oracle:** [segment-DL8-rule-catalog.json](coverage/segment-DL8-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Segment:** DL8 — EMV Terminal Floor Limits Data Segment · **Sources:** 12.49, 13.2 · **Oracle:** [rule catalog](coverage/segment-DL8-rule-catalog.json) · **Benchmark:** Segment 100 [account-number note](../segment-100/account-number-sme-tba-note.md)
 
-Segment 100 analogue: `account-number-*` (the core data carrier).
+## Element Definitions (Chapter 13)
 
-## Core Idea
+| Field | Element | Name | Type | Length | Representation / valid values | Rule |
+|---|---|---|---|---|---|---|
+| 1 | 24 | Data Type Indicator | AN | 1 | `%` identifies DL8 | R-002 |
+| 2 | 84 | Segment Length | N | 3 | Three digits; excludes `%` | R-002, R-005 |
+| 3 | 233 | RID | AN | 10 | Fixed 10; "a valid EMV Registered Application Provider identifier" | R-004 |
+| 4 | 234 | Stand-in Indicator | N | 1 | 1 No stand-in, 2 Domestic only, 3 Domestic & Foreign | R-004 |
+| 5 | 235 | Floor Limit | N | 12 | Fixed 12; 000000000000-999999999999; maximum allowable stand-in value | R-004 |
+| 6 | 236 | BUYPASS RID Card Type | AN | 3 | Fixed 3; appears only in DL8; no values listed | R-004 |
 
-Each Segment DL8 field is a specific ATL105 data element with its own type, length and valid-value rules. A field is only testable when its element definition is known; a field name in a JSON payload is not evidence of conformance.
+## Findings From the Cross-Check
 
-## Specification-Derived Rules (0)
+| Finding | Item |
+|---|---|
+| An EMV RID is 5 bytes; 10 AN suggests hexadecimal text | `SEGDL8-SME-003` |
+| Element 236 has no valid-value list | `SEGDL8-SME-003` |
+| Floor Limit decimal places are not stated (other amount elements use two assumed decimals) | Keep amount semantics `REVIEW_REQUIRED` |
+| Stand-in `1` with a non-zero Floor Limit | `SEGDL8-SME-003` |
 
-_The Segment DL8 rule catalog contains **no** `field/content/test-data/unclassified` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+## Positive, Negative and Boundary Values
 
-## Catalog Notes
+| Field | Valid | Invalid | Boundary / review |
+|---|---|---|---|
+| RID | `A000000003`, `A000000004` (public RIDs) | 9 or 11 characters | Lower-case hex (REVIEW) |
+| Stand-in Indicator | `1`, `2`, `3` | `0`, `4`, `A` | — |
+| Floor Limit | `000000005000` | `5000`, `00000000500A` | `000000000000`, `999999999999` |
+| BUYPASS RID Card Type | `020` | 2 or 4 characters | Codes outside Appendix E (REVIEW) |
 
-_No catalog notes are recorded against these rules._
-
-## SME Reasoning
-
-Ask:
-
-1. Which element number does each field carry, and does the payload preserve it?
-2. Is the value fixed-length or variable-length, and is the length measured in bytes or characters?
-3. Is the field Required, Optional, or Conditional, and what triggers the condition?
-4. Does the valid-value set come from Chapter 13 or from an appendix table?
-5. Is any value cardholder- or key-sensitive and therefore synthetic-only in test data?
-
-## TBA Dependency Chain
-
-```text
-element definition (Chapter 13)
-  -> field position in Segment DL8
-  -> type / length / valid values
-  -> R / O / C entry rule
-  -> serialization and separator handling
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL8 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL8PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+RIDs are public registered identifiers, not cardholder data; floor-limit amounts must still be synthetic.

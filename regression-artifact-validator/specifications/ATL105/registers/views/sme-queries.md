@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 184 open, 3 reopened, 29 resolved, 2 deferred (218 total).
+**Status:** 186 open, 3 reopened, 29 resolved, 2 deferred (220 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -424,6 +424,8 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEGDL8-SME-001](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md#segdl8-sme-001) | Provide a dedicated Segment DL8 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL8 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-01` | 2026-09-26 |
+| [SEGDL8-SME-002](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md#segdl8-sme-002) | Section 12.49 says DL8 is included 'in a table load' when a terminal-level Special is set, but DL8 is not in the Table Load Response layout (11.7.1.2) or the Chapter 12 matrix. Where does DL8 go in the Table Load Response (before or after End-of-Load '*', relative to DL6)? What is the Special called in the terminal profile? Why is its Segment Length 'Source: Device'? | Section 12.49, Section 11.7.1.2, Chapter 12 matrix (DL1-DL6 only), Section 13.2 Element 84. | OPEN | `P-02`, SEGDL8-R-001, SEGDL8-R-002 | 2026-09-30 |
+| [SEGDL8-SME-003](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md#segdl8-sme-003) | RID (Element 233) is AN fixed 10: is it the 5-byte EMV RID written as 10 hexadecimal characters (e.g. A000000003)? BUYPASS RID Card Type (Element 236) lists no valid values: are they the Appendix E Card Type codes? Is a non-zero Floor Limit valid with Stand-in Indicator 1 (No Stand-in)? | Section 12.49 fields 3-6 and Section 13.2 Elements 233-236. | OPEN | `P-03`, SEGDL8-R-004 | 2026-09-30 |
 
 ## Segment 104 ([register](../../docs/specs/kb/segment-104/segment-104-sme-tba-input-register.md))
 

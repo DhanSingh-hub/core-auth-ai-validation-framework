@@ -2,25 +2,16 @@
 
 ```mermaid
 flowchart TD
-    A[Build ordered Segment DL8 fields] --> B{Field empty?}
-    B -->|Middle field| C[Keep field separator]
-    B -->|Trailing field| D[No omission allowance catalogued - keep position]
-    C --> F
-    D --> F
-    B -->|No| F[Serialize value]
-    F --> G{Segment Length is 3 digits and correct?}
-    G -->|No| X1[Reject serialization]
-    G -->|Yes| H[Validate repeating-section boundaries]
-    H --> I
-    I{Lifecycle or response rules catalogued?}
-    I -->|No| Z[Structural closure complete]
-    I -->|Yes| J[Load paired messages]
-    J --> K{Correlated values consistent?}
-    K -->|No| X2[Reject lifecycle mismatch]
-    K -->|Yes| Z
-    Z --> P{Open provisional items: 1}
+    A[Structured DL8 groups] --> B{1-24 groups?}
+    B -->|No| X1[Reject - SEGDL8-R-003]
+    B -->|Yes| C[Serialize each group: RID 10 + Stand-in 1 + Floor Limit 12 + Card Type 3]
+    C --> D[Concatenate groups - N x 26 bytes]
+    D --> E[Compute Segment Length - counting per SEGDL7-SME-005]
+    E --> F["Emit '%' + 3-digit Segment Length + groups (no '~')"]
+    F --> G{Parse back yields the same groups?}
+    G -->|No| X2[Reject - SEGDL8-R-004 / R-005]
+    G -->|Yes| Z[Segment closure complete - message position still open]
+    Z --> P{Open provisional items: P-01..P-03}
     P -->|Any open| R[Keep affected rules REVIEW_REQUIRED]
     P -->|None| S[Eligible for sign-off]
 ```
-
-Serialization rules: 0 · Lifecycle/response rules: 1 · Open provisional items: 1
