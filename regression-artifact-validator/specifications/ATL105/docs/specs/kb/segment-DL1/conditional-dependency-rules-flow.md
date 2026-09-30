@@ -2,10 +2,19 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL1 payload] --> B{Conditional Fields and Cross-Field Depe… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
+    A[DL1 payload] --> B[Read Number of Card Types N - Element 59]
+    B --> C{N in 01-99?}
+    C -->|No| X4a[Fail SEGDL1-R-004]
+    C -->|Yes| D[Read exactly N x 3 characters of Card Type]
+    D --> E{"Next character is '~'?"}
+    E -->|No: more or fewer codes| X4b[Fail SEGDL1-R-004]
+    E -->|Yes| F{Any Card Type = 173?}
+    F -->|Yes| G{DL6 in the same Table Load Response?}
+    G -->|No| X5a[Fail SEGDL1-R-005 missing DL6]
+    G -->|Yes| OK[Dependencies satisfied]
+    F -->|No| H{DL6 present anyway?}
+    H -->|Yes| X5b[Fail SEGDL1-R-005 unexpected DL6]
+    H -->|No| OK
 ```
-
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
 
 Source: [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) · Note: [conditional-dependency-rules-sme-tba-note.md](conditional-dependency-rules-sme-tba-note.md)

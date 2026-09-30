@@ -1,86 +1,43 @@
 # Segment DL1 Applicability and Message-Family Decision: SME/TBA Learning Note
 
-**Segment:** DL1 — Merchant Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.42, 12.47  
-**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (5 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `prompt-code-*` (the inclusion decision).
+**Segment:** DL1 — Merchant Data Segment · **Sources:** 11.7, 11.7.1, 11.7.1.2, 12.42 · **Oracle:** [rule catalog](coverage/segment-DL1-rule-catalog.json) · **Benchmark:** Segment 100 [prompt-code note](../segment-100/prompt-code-sme-tba-note.md) (the inclusion decision)
 
 ## Core Idea
 
-Segment DL1 is valid only inside the message families and Data Sections the specification assigns to it. A structurally perfect segment placed in the wrong message is an invalid message, not a weak test.
+For Segment 100 the question is "which companions does this transaction need?". For DL1 the question is simpler but stricter: DL1 exists in exactly one message — the Table Load Response — and there it is Required as Data Block 1. A structurally perfect DL1 in any other message is an invalid message.
 
-## Specification-Derived Rules (2)
+## Rules
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL1-R-002` | Segment DL1 uses NO Field Separators; instead it is self-delimited by a Data Type Indicator ('#', field 1) and an End-of-Data Indicator ('~', last field) — a distinct delimiting convention from the numbered segments (85… | 12.42 | 24,34 | SPEC_DERIVED |
-| `SEGDL1-R-004` | Number of Card Types (Element 59) identifies how many times field 8 (Card Type) repeats — Card Type may repeat 01-99 times | 12.42 | 59,14 | SPEC_DERIVED |
+| Rule | Statement | Status |
+|---|---|---|
+| `SEGDL1-R-007` | DL1 is Required, Data Block 1 after `)`, Table Load Response only | SPEC_DERIVED |
+| `SEGDL1-R-008` | Table Load only when merchant load flag is `TABL`; otherwise error + terminating block, no DL1 | SPEC_DERIVED |
+| `SEGDL1-R-002` | DL1 is recognised by Data Type Indicator `#` (the device parses blocks by this indicator) | SPEC_DERIVED |
 
-## Element Definitions (ATL105 Chapter 13)
+## Download Trigger Context (11.7)
 
-| Element | Name | Type | Max length | Representation | Valid values |
-|---|---|---|---|---|---|
-| 24 | Data Type Indicator | AN | 1 byte | Fixed length of one alphanumeric character | Code Description # Identifies the Merchant Data Segment (No. DL1). ! Identifies the Dial String Data Segment (No. DL2). : Identifies the Date and Tim… |
-| 34 | End-of-Data Indicator | A | 1 byte | Fixed length of one alpha character | ~ |
-| 59 | Number of Card Types | N | 2 bytes | Fixed length of up to 2 digits | 01–99 |
-| 14 | Card Type | AN | 3 bytes | Fixed length of three alphanumeric characters | For a list of valid entries, please see Appendix E. Valid Card Type Codes. |
+- A download can be requested manually at the device or automatically when a host response carries Download Indicator (Element 30) `1` ("request a partial load").
+- The Table Load Request uses Load Type `P`; there is no separate "full load" request.
+- The information in the download is used in the very next transaction, and device software should not be activated until at least one successful Table Load.
 
-## Catalog Notes
+## SME Questions
 
-- `SEGDL1-R-002` — Segments DL1-DL6 use this Data-Type/End-of-Data marker convention instead of the Segment Type(85)/Segment Length(84) pair used by numbered segments 100-157.
+1. For each fixture, is the merchant load flag `TABL`? The expected response is completely different when it is not.
+2. What is the exact content of the "error message block" returned when the flag is not set? (Not defined in 11.7.1; keep negative expectations at "no DL1".)
+3. Was the load requested manually or triggered by Download Indicator `1`? Record it as lifecycle context.
 
-## SME Reasoning
-
-Ask:
-
-1. Which message families may carry Segment DL1, and in which Data Section?
-2. Is Segment DL1 Required, Conditional, or Optional in each of those families?
-3. What business condition causes Segment DL1 to be included?
-4. Which companion segments may, must, or must not accompany it?
-5. Is absence of Segment DL1 ever legitimate, and how should that be diagnosed?
-
-## TBA Dependency Chain
+## TBA Decomposition
 
 ```text
-transaction / message family
-  -> Data Section placement
-  -> inclusion condition
-  -> companion-segment set
-  -> Element 63 (Number of Segments) count where applicable
+BR:  DL1 shall appear only as Data Block 1 of a Table Load Response (SEGDL1-R-007).
+TS:  Table Load for a merchant with load flag TABL.
+TC+: Response = ')' + DL1 + ... ; Expected PASS.
+TC-: Phone Load Response containing '#...~'; Expected FAIL citing SEGDL1-R-007.
+TD:  Response JSON with messageType TABLE_LOAD_RESPONSE, dataBlocks[0].segment = DL1.
 ```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
-
-```text
-Segment DL1 uses NO Field Separators instead it is self-delimited by a Data Type Indicator ' ', field 1 and an End-of-Data Indicator '~', last field — a distinct delimiting convention from the numbered segments 85/84 Segment Type/Length pair
-  -> source: ATL105 2026-3 §12.42 (SEGDL1-R-002)
-  -> a violating payload shall fail validation citing SEGDL1-R-002
-```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL1PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
 
 ## Review Checklist
 
-- Is every rule traced to its source anchor (`SEGDL1-R-002`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+- Does every DL1 fixture declare the message type and the load flag?
+- Is there a negative fixture for DL1 in a non-Table-Load response and for flag ≠ `TABL`?
+- Is DL1 always the first data block?

@@ -1,64 +1,49 @@
 # Segment DL1 Final Closure: Serialization and Lifecycle Learning Note
 
-**Segment:** DL1 — Merchant Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.42, 12.47  
-**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (5 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Segment:** DL1 — Merchant Data Segment · **Sources:** 12.42, 11.7.1.2, 13.2 (Element 84) · **Oracle:** [rule catalog](coverage/segment-DL1-rule-catalog.json) · **Benchmark:** Segment 100 [final-closure note](../segment-100/final-closure-sme-tba-note.md)
 
 ## Why Closure Is Separate
 
-Field rules prove each value is individually valid. Closure proves the **whole segment** can be parsed without positional drift, and that it belongs to a coherent message exchange.
+Field rules prove each value is valid. Closure proves the whole segment parses without positional drift and sits correctly in the Table Load Response.
 
-## Segment Length Encoding
+## Corrections to the Previous Closure Note
 
-Segment DL1 uses a **3-digit** Segment Length (Element 84). Element 84's definition permits four digits only for Segments 103, 114, 115, 118, 120, 130 and 131; every other segment uses three.
+The earlier generated note applied numbered-segment rules that do **not** apply to DL1:
 
-## Serialization Rules From The Catalog
+| Earlier statement | Correct DL1 behaviour | Evidence |
+|---|---|---|
+| "Segment DL1 uses a 3-digit Segment Length (Element 84)" | DL1 has **no** Segment Length; it is framed by `#` and `~` | 12.42 layout; Element 84 is not in the DL1 field list |
+| "An empty middle field keeps its separator" | DL1 has no separators; "when a field is not populated, the next field immediately follows" | 12.42 note |
+| "Repeating content uses different separator rules" | The Card Type repetition is bounded only by Number of Card Types | 12.42 field 7/8 |
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL1-R-001` | Segment DL1 maximum length is 399 alphanumeric characters; originates at BUYPASS (Host) | 12.42 | — | SPEC_DERIVED |
+## Serialization Rules
 
-## Empty Fields and Trailing Fields
-
-An empty field in the middle of a separator-delimited segment still occupies a position: its separator must remain, or every later field shifts.
-
-The Segment DL1 catalog states **no** trailing-optional-field omission allowance. Do not port Segment 100's trailing-suffix rule to this segment without SME confirmation.
-
-## Repeating Sections
-
-The catalog describes repeating content. Repetitions frequently use different separator rules from the fixed fields; validate the repetition boundary separately from the fixed-field separators.
-
-## Separator-Free Content
-
-At least one catalog rule states that separators are absent within part of this segment. A parser that expects a separator between every field will mis-parse it.
-
-## Lifecycle and Response Correlation
-
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL1-R-005` | A Card Type value of '173' in this segment's repeating Card Type field (Element 14) conditionally triggers Segment DL6 (Store and Forward) in the same Table Load Response | 12.42,12.47 | 14 | SPEC_DERIVED |
-
-These rules require **paired messages** in the test data. A test-control flag asserting "correlated" or "echoed" is not evidence.
-
-## Certification Meaning
-
-- **Serialization rules** prove the segment parses without desynchronization.
-- **Lifecycle rules** prove the segment belongs to a coherent exchange.
-- Anything requiring production keys, certified kernels, or live host behaviour is explicitly out of scope rather than silently assumed.
+| Rule | Check |
+|---|---|
+| `SEGDL1-R-001` | Length ≤ 399 = 102 + 3 × N with N ≤ 99 (if fields are full width) |
+| `SEGDL1-R-002` | First character `#`, last character `~` |
+| `SEGDL1-R-006` | No Field Separator anywhere in the segment |
+| `SEGDL1-R-004` | Exactly N Card Types before `~` |
+| `SEGDL1-R-012` | Data Block 1 after `)`; End-of-Load `*` after the last block |
 
 ## Closure Gate
 
-Segment DL1 is not closeable while these remain open:
+DL1 is not closeable while these remain open:
 
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL1 AI or Test package was located. Provide one, or approve synthesized fixtures.
+- `SEGDL1-SME-001` — no AI/Test package or approved synthetic fixtures.
+- `SEGDL1-SME-002` — padding of "up to N" fields (blocks the parser and length mutations).
+- `SEGDL1-SME-003` — End-of-Load count with DL6.
+- `SEGDL1-SME-004` — complete Appendix E Table Load Card Type set.
+
+## Certification Meaning
+
+- Serialization closure proves DL1 parses without desynchronization.
+- Lifecycle closure proves DL1 belongs to a Table Load Request/Response pair and that DL6 appears exactly when `173` is present.
+- Device behaviour after the load (card acceptance, feature activation) is out of scope for message validation.
 
 ## SME/TBA Review Questions
 
-- Does every empty non-trailing field keep its separator?
-- Is the Segment Length encoded with exactly 3 digits and does it include the Segment Type and separators?
-- Are repeating or separator-free regions handled by their own rule?
-- Do lifecycle rules have genuine paired messages in the test data?
-- Are all provisional items above either resolved or kept at `REVIEW_REQUIRED`?
+- Is there any Field Separator or Segment Length in the serialized DL1? (There must not be.)
+- Does the parse of fields 2-6 land exactly on Number of Card Types?
+- Does the `~` come immediately after the N-th Card Type?
+- Are all provisional items resolved or kept at `REVIEW_REQUIRED`?

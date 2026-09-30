@@ -1,82 +1,34 @@
 # Segment DL1 Lifecycle, Response and Message Correlation: SME/TBA Learning Note
 
-**Segment:** DL1 — Merchant Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.42, 12.47  
-**Oracle:** [segment-DL1-rule-catalog.json](coverage/segment-DL1-rule-catalog.json) (5 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `sequence-lifecycle-*` (cross-message correlation).
+**Segment:** DL1 — Merchant Data Segment · **Sources:** 11.7, 11.7.1, 11.7.1.2, 12.47, 13.2 (Elements 30, 35, 97) · **Oracle:** [rule catalog](coverage/segment-DL1-rule-catalog.json) · **Benchmark:** Segment 100 [sequence-lifecycle note](../segment-100/sequence-lifecycle-sme-tba-note.md)
 
 ## Core Idea
 
-Some Segment DL1 rules can only be proven across two or more related messages. A single message, or a test-control flag claiming correlation, is description rather than evidence.
+Segment 100 lifecycle is original → follow-up. DL1 lifecycle is trigger → request → response → next transaction. DL1 can only be proven with the paired Table Load Request and the full Table Load Response; a lone DL1 string is not lifecycle evidence.
 
-## Specification-Derived Rules (1)
+## Lifecycle Steps
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL1-R-005` | A Card Type value of '173' in this segment's repeating Card Type field (Element 14) conditionally triggers Segment DL6 (Store and Forward) in the same Table Load Response | 12.42,12.47 | 14 | SPEC_DERIVED |
+| Step | Message | What to assert | Rule |
+|---|---|---|---|
+| 1 | Host response with Download Indicator `1` (or manual request) | Device is instructed to request a partial load | context |
+| 2 | Table Load Request | `?` + Terminal Identifier (13) + Load Type `P` + Hardware (4), Software (8), Firmware (8) Version; no DL segment | `SEGDL1-R-008` |
+| 3 | Table Load Response | Load flag `TABL` → `)` DL1 [DL2] [DL3] `*`; otherwise no DL1 | `SEGDL1-R-007`, `SEGDL1-R-008` |
+| 4 | Same response, Data Block 4 | Card Type `173` → DL6 + `*` | `SEGDL1-R-005`, `SEGDL1-R-012` |
+| 5 | Next transaction | Device uses the downloaded configuration | out of scope for message validation |
 
-## Element Definitions (ATL105 Chapter 13)
+## Correlation Points
 
-| Element | Name | Type | Max length | Representation | Valid values |
-|---|---|---|---|---|---|
-| 14 | Card Type | AN | 3 bytes | Fixed length of three alphanumeric characters | For a list of valid entries, please see Appendix E. Valid Card Type Codes. |
+- The Table Load Response has no sequence number; correlation to the request is by session (the device stays online). Test data must therefore keep request and response in one lifecycle record.
+- The DL1 Card Type list and DL6 must be in the **same** response object.
+- For TCP/IP the `)` indicator appears only before Data Block 1; for dial-up it precedes each block.
 
-## Catalog Notes
+## SME Questions
 
-_No catalog notes are recorded against these rules._
-
-## SME Reasoning
-
-Ask:
-
-1. Which Segment DL1 values must be echoed, preserved, or referenced in a related message?
-2. Which message is the original and which is the follow-up or response?
-3. Does the test data contain both messages, or only a claim that they correlate?
-4. What happens when the follow-up or response is missing, late, or mismatched?
-5. Is any correlation value environment-specific (test vs production)?
-
-## TBA Dependency Chain
-
-```text
-original message (Segment DL1)
-  -> host processing
-  -> response / follow-up message
-  -> echoed or preserved values
-  -> correlation assertion
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
-
-```text
-A Card Type value of '173' in this segment's repeating Card Type field Element 14 conditionally triggers Segment DL6 Store and Forward in the same Table Load Response
-  -> source: ATL105 2026-3 §12.42,12.47 (SEGDL1-R-005)
-  -> a violating payload shall fail validation citing SEGDL1-R-005
-```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL1PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
+1. `SEGDL1-SME-003`: is End-of-Load `*` sent after DL3 and again after DL6?
+2. When the host truncates the response to "a subset of the complete table load containing only dial string information", is DL1 still sent? (11.7 text says the response may be a dial-string-only subset; the Table Load layout marks DL1 `R`.) Keep this case `REVIEW_REQUIRED`.
 
 ## Review Checklist
 
-- Is every rule traced to its source anchor (`SEGDL1-R-005`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+- Does each lifecycle fixture contain the request and the response?
+- Is the load flag recorded as test precondition?
+- Are TCP/IP and dial framing tested separately?
