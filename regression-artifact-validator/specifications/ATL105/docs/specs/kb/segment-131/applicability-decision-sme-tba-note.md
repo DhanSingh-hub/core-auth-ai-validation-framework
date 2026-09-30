@@ -17,10 +17,10 @@ Segment 131 is valid only inside the message families and Data Sections the spec
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG131-R-001` | Section 12.21 states Segment 131 'always appears in Field No. 4 in Data Section No. 3', but the EMV Financial Transaction Response's own layout table places it at Field No. 17/18/19/20 of Data Section No. 2 (following S… | 12.21,11.1.2-EMV | — | REVIEW_REQUIRED |
+| `SEG131-R-001` | Section 12.21 states Segment 131 'always appears in Field No. 4 in Data Section No. 3', but the EMV Financial Transaction Response's own layout table places it at Field No. 17/18/19/20 of Data Section No. 2 (following Segments 112, 115, and 120) — these two placement statements are contradictory | 12.21,11.1.2-EMV | — | REVIEW_REQUIRED |
 | `SEG131-R-002` | Segment 131 is response-only and conditional: it follows in the EMV Financial Transaction Response only when EMV data is required, alongside Segments 112 and 115/120 | 11.1.2-EMV | — | SPEC_DERIVED |
-| `SEG131-R-009` | The EMV Additional Information Section (fields 6-8: Indicator, Length, Information) repeats per EMV Additional Information Indicator for a maximum total length of 2,800 bytes — a DIFFERENT cap than Segment 130's 2,000-b… | 12.21 | 191,192,118 | SPEC_DERIVED |
-| `SEG131-R-012` | In the EMV Financial Transaction Response, Segment 131 always follows Segment 130's response counterpart context — i.e., it appears after Segments 112 (Field 16/17/18) and 115/120 (Field 17/18/19) when those are also pr… | 11.1.2-EMV | — | SPEC_DERIVED |
+| `SEG131-R-009` | The EMV Additional Information Section (fields 6-8: Indicator, Length, Information) repeats per EMV Additional Information Indicator for a maximum total length of 2,800 bytes — a DIFFERENT cap than Segment 130's 2,000-byte limit for the structurally identical section | 12.21 | 191,192,118 | SPEC_DERIVED |
+| `SEG131-R-012` | In the EMV Financial Transaction Response, Segment 131 always follows Segment 130's response counterpart context — i.e., it appears after Segments 112 (Field 16/17/18) and 115/120 (Field 17/18/19) when those are also present | 11.1.2-EMV | — | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 
