@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 141 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 141 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG141-R-001 Segment 141 is used to close out each pay poin…}
+    B -->|Yes| R1{SEG141-R-001 Segment 141 is used to close out each pay point to Moneris; it should be sent once for each pay point at day end}
     R1 -->|Fail| X1[Reject citing SEG141-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```
