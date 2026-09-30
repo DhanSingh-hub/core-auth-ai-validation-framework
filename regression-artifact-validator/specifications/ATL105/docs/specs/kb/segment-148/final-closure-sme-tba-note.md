@@ -19,7 +19,7 @@ Segment 148 uses a **3-digit** Segment Length (Element 84). Element 84's definit
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG148-R-003` | Segment 148 maximum length is documented as 23 characters in the opening statement but the valid-values range given is 001-999 — a numeric inconsistency; Available Product Information (Element 240) itself is 17 characte… | 12.33 | — | REVIEW_REQUIRED |
+| `SEG148-R-003` | Segment 148 maximum length is documented as 23 characters in the opening statement but the valid-values range given is 001-999 — a numeric inconsistency; Available Product Information (Element 240) itself is 17 characters | 12.33 | — | REVIEW_REQUIRED |
 
 ## Empty Fields and Trailing Fields
 
