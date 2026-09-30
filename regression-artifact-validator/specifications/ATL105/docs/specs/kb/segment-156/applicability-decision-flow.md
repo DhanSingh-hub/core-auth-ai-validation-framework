@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 156 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 156 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG156-R-001 Segment 156 is sent only for an EV charging tr…}
+    B -->|Yes| R1{SEG156-R-001 Segment 156 is sent only for an EV charging transaction (EV fuel code in Segment 102 Product Code Segment), and is applicable to the Visa card type only}
     R1 -->|Fail| X1[Reject citing SEG156-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```
