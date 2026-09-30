@@ -2,13 +2,18 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL7 payload] --> B{Applicability and Message-Family Decisi… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL7-R-001 Segment DL7 is identified by the special chara…}
-    R1 -->|Fail| X1[Reject citing SEGDL7-R-001]
-    R1 -->|Pass| Z[Rules satisfied]
+    A[Host has supplemental terminal data] --> B{Which message carries DL7?}
+    B -->|Not stated in 11.7 layouts or Chapter 12 matrix| R1[REVIEW_REQUIRED - SEGDL7-SME-004]
+    R1 --> C{Test as isolated segment}
+    C --> D["Validate '^' + Segment Length + Download Data only"]
+    B -->|Request message| X1[Fail - DL7 is download data from the host]
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+| Evidence | What it says about placement |
+|---|---|
+| 12.48 | Layout only; no message named |
+| Element 24 | `^` identifies DL7 in "a host response" |
+| 11.7.1.2 Table Load Response | Lists DL1, DL2, DL3, DL6 only |
+| Chapter 12 matrix | Lists DL1-DL6 only |
 
 Source: [segment-DL7-rule-catalog.json](coverage/segment-DL7-rule-catalog.json) · Note: [applicability-decision-sme-tba-note.md](applicability-decision-sme-tba-note.md)
