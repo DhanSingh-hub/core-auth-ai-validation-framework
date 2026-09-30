@@ -18,7 +18,7 @@ Segment 143 is valid only inside the message families and Data Sections the spec
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG143-R-001` | When a Financial Transaction request includes Segment 143, a Product Code Data Segment (Segment 102) MUST also be present, and each entry in Segment 102 should have a corresponding entry in Segment 143, in the same order | 12.30 | — | SPEC_DERIVED |
-| `SEG143-R-005` | Tax by Product Data repeats per product for a maximum of 10 products, total variable length up to 360 bytes; each product entry contains Product Code (77) plus up to 3 tax sub-entries (Inclusive/Exclusive flag, Tax Type… | 12.30 | 77,223,224,225,226,… | SPEC_DERIVED |
+| `SEG143-R-005` | Tax by Product Data repeats per product for a maximum of 10 products, total variable length up to 360 bytes; each product entry contains Product Code (77) plus up to 3 tax sub-entries (Inclusive/Exclusive flag, Tax Type, Tax Amount) | 12.30 | 77,223,224,225,226,227,228,229,230,231 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 143 payload] --> B{Conditional Fields and Cross-Field Depe… in scope?}
+    A[Segment 143 payload] --> B{Conditional Fields and Cross-Field Dependencies in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
 ```
 
