@@ -4,7 +4,7 @@
 
 Items the Test Team can decide internally: process, tooling, fixtures and validator policy.
 
-**Status:** 12 open, 2 resolved (14 total).
+**Status:** 13 open, 2 resolved (15 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ Items the Test Team can decide internally: process, tooling, fixtures and valida
 | [TT-0012](#tt-0012) | Populate element numbers in the Segment 156 rule catalog | OPEN | Test Team | 2026-09-29 |
 | [TT-0013](#tt-0013) | Decide the encoding for multi-element sourceAnchors in rule catalogs | OPEN | Test Team | 2026-09-29 |
 | [TT-0014](#tt-0014) | Adopt a request data-section convention: Data Section 2 holds only Segment 100 | RESOLVED | Test Team | 2026-09-29 |
+| [TT-0015](#tt-0015) | Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators | OPEN | Test Team | 2026-09-30 |
 
 <a id="tt-0001"></a>
 ## TT-0001: Run the full JUnit suite on a machine with Nexus access
@@ -192,3 +193,15 @@ Cross-checked against every Chapter 11 layout in the PDF and every Chapter 12 pl
 **Related:** [SEG109-SME-012](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md#seg109-sme-012), [SEG116-SME-007](../../docs/specs/kb/segment-116/segment-116-sme-tba-input-register.md#seg116-sme-007), [SEG132-SME-006](../../docs/specs/kb/segment-132/segment-132-sme-tba-input-register.md#seg132-sme-006), [SEG131-SME-001](../../docs/specs/kb/segment-131/segment-131-sme-tba-input-register.md#seg131-sme-001)
 
 **Resolution (2026-09-29, Test Team):** Adopted for requests only. In every request that uses data sections, Data Section 1 holds Elements 55 and 63, Data Section 2 holds only Segment 100 (when present), and Data Section 3 holds every other segment. Responses and positional messages follow their own layouts. The four labelling exceptions are recorded as SME queries and do not change the convention.
+
+<a id="tt-0015"></a>
+## TT-0015: Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators
+
+- **Status:** OPEN
+- **Owner:** Test Team
+- **Raised:** 2026-09-30 by saurabhtw28
+- **Segments:** 100, 109, 116, 118
+
+Segment 109, Segment 100, Segment 116 and Segment 118 validators use legacy `MessageFormatVersionIdentifier` and `NumberOfSegments` keys, while the repository AI JSON contract uses `MessageType` and `NumSegments`. Segment 109 was independently corrected in this pass; the other validators still need the same review and focused tests. Check the corresponding root keys and preserve each message family's own structure.
+
+**Related:** [AIF-0014](ai-feedback.md#aif-0014), [AIF-0015](ai-feedback.md#aif-0015)

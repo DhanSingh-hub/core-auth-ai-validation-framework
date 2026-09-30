@@ -5059,6 +5059,77 @@
       "relatedItems": [
         "AIF-0005"
       ]
+    },
+    {
+      "id": "AIF-0014",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "109"
+      ],
+      "subject": "Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain",
+      "detail": "The Segment 109 AI delivery is not intake-ready for the Electronic Mail message structure. Run1 contains 61 requirements for Segment 109 and Run2 traceability links 182 scenarios and 340 test cases to those requirements, but none of the 340 linked payloads contains Segment 109. 247 payloads are empty `Financial Request` shells with `NumSegments` 0; the remaining linked payloads carry unrelated segments or message families. All 340 were marked PASS by the producer's verification.\n\nThe 90 test cases labelled `Electronic Mail Request` are also empty or structurally unrelated. The chain must be rebuilt and verified as BR -> TS -> TC -> TD -> mapping: use the canonical message root `Electronic Mail Request`, `MessageType`, `NumSegments` equal to the segment count, Segment 109 in Field No. 3, and a valid Prompt Code (981 retrieval, 996 proprietary-card retrieval, or 995 submission). Do not count a producer PASS as acceptance evidence until the payload is independently validated.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-29 phase_1_single_leg",
+      "evidence": [
+        "specifications/ATL105/test-output/ai-solution-independent-review/segment-109-ai-chain-verification.json",
+        "AI delivery reporting/output/traceability_matrix_full.json",
+        "AI delivery reporting/output/qe_shaped_test_data/TC-0625.json (representative empty Electronic Mail payload)"
+      ],
+      "relatedItems": [
+        "AIF-0011",
+        "AID-0002",
+        "SEG109-SME-012"
+      ]
+    },
+    {
+      "id": "AIF-0015",
+      "channel": "AI_FEEDBACK",
+      "segments": [
+        "109"
+      ],
+      "subject": "Correct the phase-1 Electronic Mail Request payload before claiming verification PASS",
+      "detail": "The 2026-09-29 phase_1_single_leg Segment 109 chain has a valid Terminal Identifier requirement, but its generated request data is not a valid Electronic Mail Request: the request has no Data Section 1 object, uses Prompt Code `0` instead of 981, 995 or 996, leaves Segment Length null, and is nevertheless marked PASS. The Electronic Mail request envelope must use root `Electronic Mail Request`, `MessageType` and `NumSegments`, with Segment 109 present in Field No. 3.",
+      "status": "OPEN",
+      "owner": "AI Solution Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "targetDelivery": "Next delivery after 2026-09-29 phase_1_single_leg",
+      "evidence": [
+        "specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/chains/segment_109.json",
+        "specifications/ATL105/test-output/ai-solution-independent-review/phase1-single-leg-validation.json"
+      ],
+      "relatedItems": [
+        "AIF-0014",
+        "SEG109-SME-012"
+      ]
+    },
+    {
+      "id": "TT-0015",
+      "channel": "TEST_TEAM",
+      "segments": [
+        "100",
+        "109",
+        "116",
+        "118"
+      ],
+      "subject": "Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators",
+      "detail": "Segment 109, Segment 100, Segment 116 and Segment 118 validators use legacy `MessageFormatVersionIdentifier` and `NumberOfSegments` keys, while the repository AI JSON contract uses `MessageType` and `NumSegments`. Segment 109 was independently corrected in this pass; the other validators still need the same review and focused tests. Check the corresponding root keys and preserve each message family's own structure.",
+      "status": "OPEN",
+      "owner": "Test Team",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "saurabhtw28",
+      "links": {
+        "rules": [
+          "SEG100-R-001"
+        ]
+      },
+      "relatedItems": [
+        "AIF-0014",
+        "AIF-0015"
+      ]
     }
   ]
 }

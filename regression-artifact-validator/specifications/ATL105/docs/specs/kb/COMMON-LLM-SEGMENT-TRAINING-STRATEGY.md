@@ -75,9 +75,9 @@ Register contents on 2026-09-29. For current figures, see the [register index](.
 | Channel | IDs | Count | Status |
 |---|---|---|---|
 | Queries to the SME | `SEG<NNN>-SME-nnn` | 203 | 169 open, 3 reopened, 29 resolved, 2 deferred |
-| Test team discussion | `TT-nnnn` | 14 | 12 open, 2 resolved |
+| Test team discussion | `TT-nnnn` | 15 | 13 open, 2 resolved |
 | Open topics with the AI developers | `AID-nnnn` | 4 | 4 open |
-| Feedback to the AI team | `AIF-nnnn` | 13 | 13 open |
+| Feedback to the AI team | `AIF-nnnn` | 15 | 15 open |
 
 How to use it:
 
@@ -475,6 +475,8 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L18. A checker's label is not evidence; open the payload.** The structure checker reported the 1,680 AI Totals test cases as "payload is a Financial Request". That label was produced for every non-financial test case, whatever the payload held. Opening the files showed an empty `Financial Request` shell with `NumSegments` 0 and no segment. Before reporting a defect, open at least one failing artifact of each kind and describe what it contains.
 
+**L19. Verify the whole producer chain independently.** A producer can mark a BR -> TS -> TC -> TD chain `PASS` while the payload has the wrong root, wrong specification version, no required segment, or a mapping that points to an unrelated message family. Validate the physical test data and compare the complete chain against the Test Solution catalog before treating traceability as coverage.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -499,3 +501,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-29 | Added the [Communication Register](#communication-register) and L17. The 43 segment SME/TBA registers became generated views, with new registers for Segments 100, 101, 103, 104, 111, and 120. Catalog `provisionalItems` now hold only a `registerId`. The AI feedback corrections became `AIF-` items, and `SME-REVIEW-BACKLOG.md` was archived as SEG100-SME-001. |
 | 2026-09-29 | Totals message layouts (Section 11.4): split the merged Totals Request template, added the Approved and Declined Totals Response templates, added message-level rules to Segments 105 and 119 with `TotalsRequestPayloadValidator`, and added L18. |
 | 2026-09-29 | Added the [Request Data Section Convention](#request-data-section-convention) (TT-0014) with SME queries SEG109-SME-012, SEG116-SME-007 and SEG132-SME-006, and the rule-writing principle; reworded SEG109-R-001, SEG109-R-003 and SEG116-R-005 by field number and made SEG132-R-001 PROVISIONAL. |
+| 2026-09-30 | Started Section 11.5 Electronic Mail: corrected the Segment 109 envelope validator, split the request/response templates, added six fixtures, and independently rejected the AI BR -> TS -> TC -> TD -> mapping chain as not intake-ready (L19, AIF-0014/AIF-0015). |
