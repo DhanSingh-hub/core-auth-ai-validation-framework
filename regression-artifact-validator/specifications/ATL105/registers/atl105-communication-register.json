@@ -4263,6 +4263,7 @@
         "DL2"
       ],
       "subject": "Is the Asynchronous Communications Protocol Specifications document (primary→secondary phone fallback logic) in scope for this training pass?",
+      "context": "ATL105 itself already states the order (Element 75: dialing always begins with the primary number; the secondary number is used once primary attempts are exhausted) and bounds Redial Count to 1-3 (Element 82). Only the detailed error-recovery timing is in the external document.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
@@ -4297,6 +4298,55 @@
         ],
         "impacts": [
           "AI-artifacts, test-data"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL2-SME-003",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL2"
+      ],
+      "subject": "The Phone Load Response (11.7.2.2) shows field 1 as Start-of-Data Block Indicator (Element 97) with fixed value '!', but Element 97 is defined as ')' and '!' is DL2's own Data Type Indicator. Does the Phone Load Response start with ')' followed by DL2 ('!...'), or does it start directly with DL2's '!'?",
+      "context": "Section 11.7.2.2 field 1 versus Section 13.2 Element 97 and Element 24.",
+      "impact": "Decides the expected first bytes of every Phone Load Response fixture.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-03",
+        "rules": [
+          "SEGDL2-R-008"
+        ],
+        "blocks": [
+          "Item 5"
+        ]
+      }
+    },
+    {
+      "id": "SEGDL2-SME-004",
+      "channel": "SME_QUERY",
+      "segments": [
+        "DL2"
+      ],
+      "subject": "DL2 has no Field Separators, Access Code (Element 1) is variable up to 12 and may contain 'B' pause characters, Pause Indicator is 'B', and Phone Number (Element 75) is variable up to 18 digits. Is the parse rule 'Phone Number = the digits after the last B, up to the terminator'? Element 75 also says the number ends at 'C' (Log-on Indicator) or 'A', but the secondary block ends with 'F': is 'C' ever sent in DL2?",
+      "context": "Section 12.43 note ('when a field is not populated, the next field immediately follows') and Section 13.2 Elements 1, 66, 75.",
+      "impact": "Blocks the DL2 parser/validator and the Access Code/Pause Indicator mutation set.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-09-30",
+      "raisedBy": "AshChou",
+      "links": {
+        "catalogItem": "P-04",
+        "rules": [
+          "SEGDL2-R-004",
+          "SEGDL2-R-005",
+          "SEGDL2-R-007"
+        ],
+        "blocks": [
+          "Item 5",
+          "Item 7"
         ]
       }
     },

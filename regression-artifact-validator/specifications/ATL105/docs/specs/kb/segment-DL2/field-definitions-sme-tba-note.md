@@ -1,87 +1,41 @@
 # Segment DL2 Field Definitions and Element Semantics: SME/TBA Learning Note
 
-**Segment:** DL2 — Dial String Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.43  
-**Oracle:** [segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `account-number-*` (the core data carrier).
+**Segment:** DL2 — Dial String Data Segment · **Sources:** 12.43, 13.2 · **Oracle:** [rule catalog](coverage/segment-DL2-rule-catalog.json) · **Benchmark:** Segment 100 [account-number note](../segment-100/account-number-sme-tba-note.md)
 
 ## Core Idea
 
-Each Segment DL2 field is a specific ATL105 data element with its own type, length and valid-value rules. A field is only testable when its element definition is known; a field name in a JSON payload is not evidence of conformance.
+DL2 mixes fixed one-character markers (`!`, `1`, `B`, `A`, `F`, `~`) with two variable-length values (Access Code, Phone Number). Its correctness depends as much on the markers as on the numbers.
 
-## Specification-Derived Rules (1)
+## Element Definitions (Chapter 13)
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL2-R-002` | Dial String Type is fixed value 1; Primary Phone Number block (fields 3-7: Redial Count, Access Code [conditional], Pause Indicator [conditional, fixed 'B'], Phone Number, Dial String Terminator fixed 'A') is required | 12.43 | 28,82,1,66,75,27 | SPEC_DERIVED |
+| Field | Element | Name | Type | Length | Valid values | Rule |
+|---|---|---|---|---|---|---|
+| 1 | 24 | Data Type Indicator | AN | 1 | `!` identifies DL2 | R-001 |
+| 2 | 28 | Dial String Type | N | 1 | `1` = transaction dial strings (fixed) | R-002, R-007 |
+| 3, 8 | 82 | Redial Count | N | 1 | 1-3 | R-006 |
+| 4, 9 | 1 | Access Code | AN | var ≤ 12 | Any number; `B` (each `B` = 1-second pause) | R-005 |
+| 5, 10 | 66 | Pause Indicator | AN | 1 | `B` | R-005 |
+| 6, 11 | 75 | Phone Number | N | var ≤ 18 | Digits; "all data up to the following C (Log-on Indicator) or A (Delimiter)" | R-007 |
+| 7 | 27 | Dial String Terminator | AN | 1 | `A` = end of first dial string | R-002, R-007 |
+| 12 | 27 | Dial String Terminator | AN | 1 | `F` = end of second dial string | R-003, R-007 |
+| 13 | 34 | End-of-Data Indicator | A | 1 | `~` | R-001 |
 
-## Element Definitions (ATL105 Chapter 13)
+## Findings From the Cross-Check
 
-| Element | Name | Type | Max length | Representation | Valid values |
-|---|---|---|---|---|---|
-| 28 | Dial String Type | N | 1 byte | Fixed length of one digit | Value Description 1 Transaction dial strings |
-| 82 | Redial Count | N | 1 byte | Fixed length of one digit | 1–3 |
-| 1 | Access Code | AN | 12 bytes | Variable length of up to 12 alphanumeric characters | Any number B |
-| 66 | Pause Indicator | AN | 1 byte | Fixed length of one alphanumeric character | B |
-| 75 | Phone Number | N | 18 bytes | Variable length of up to 18 digits | — |
-| 27 | Dial String Terminator | AN | 1 byte | Fixed length of one alphanumeric character | Value Description A Indicates the end of the first dial string in the Dial String Data Segment (Data Segment No. DL2). F Indicates the end of the sec… |
+- Element 75 mentions a `C` (Log-on Indicator) terminator that never appears in the DL2 layout, and does not mention `F` → `SEGDL2-SME-004`.
+- Element 1 allows `B` inside the Access Code, which makes the Access Code / Pause Indicator boundary depend on the last `B` → `SEGDL2-SME-004`.
+- Element 82 restricts Redial Count to 1-3 even though the field is one digit wide → test `0` and `4` as negatives.
 
-## Catalog Notes
+## Positive, Negative and Boundary Values (synthetic)
 
-_No catalog notes are recorded against these rules._
-
-## SME Reasoning
-
-Ask:
-
-1. Which element number does each field carry, and does the payload preserve it?
-2. Is the value fixed-length or variable-length, and is the length measured in bytes or characters?
-3. Is the field Required, Optional, or Conditional, and what triggers the condition?
-4. Does the valid-value set come from Chapter 13 or from an appendix table?
-5. Is any value cardholder- or key-sensitive and therefore synthetic-only in test data?
-
-## TBA Dependency Chain
-
-```text
-element definition (Chapter 13)
-  -> field position in Segment DL2
-  -> type / length / valid values
-  -> R / O / C entry rule
-  -> serialization and separator handling
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
-
-```text
-Dial String Type is fixed value 1 Primary Phone Number block fields 3-7: Redial Count, Access Code conditional , Pause Indicator conditional, fixed 'B' , Phone Number, Dial String Terminator fixed 'A' is required
-  -> source: ATL105 2026-3 §12.43 (SEGDL2-R-002)
-  -> a violating payload shall fail validation citing SEGDL2-R-002
-```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
+| Field | Valid | Invalid | Boundary |
+|---|---|---|---|
+| Redial Count | `1`, `3` | `0`, `4`, `A` | `1`, `3` |
+| Access Code | `9`, `9BB` | `9#`, 13 characters | 12 characters |
+| Pause Indicator | `B` | `b`, `,` | — |
+| Phone Number | `5555550100` | `555-555-0100`, 19 digits | 1 digit, 18 digits |
+| Terminators | `A` then `F` | `F` then `A`; `A` twice | — |
 
 ## Security and Test-Data Guidance
 
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL2PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Is every rule traced to its source anchor (`SEGDL2-R-002`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+Use `555` numbers and synthetic access codes only; never copy a production dial profile.
