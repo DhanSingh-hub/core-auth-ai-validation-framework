@@ -19,7 +19,7 @@ Segment 157 uses a **3-digit** Segment Length (Element 84). Element 84's definit
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG157-R-008` | A dual-delimiter scheme is used: Field Separator ('▲') follows Segment Type/Length and follows Adjusted Product Amount only when it is the LAST element in the segment; a Product Data Field Delimiter ('\') always follows… | 12.41 | — | SPEC_DERIVED |
+| `SEG157-R-008` | A dual-delimiter scheme is used: Field Separator ('▲') follows Segment Type/Length and follows Adjusted Product Amount only when it is the LAST element in the segment; a Product Data Field Delimiter ('\') always follows Quantity and Unit Price, and follows Adjusted Product Amount when it is NOT the last element | 12.41 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields
 
