@@ -18,9 +18,9 @@ Segment 115 is valid only inside the message families and Data Sections the spec
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG115-R-001` | Segment 115 is response-only: it appears only in the Financial Transaction Response and EMV Financial Transaction Response, never in any Request message | 12.14,11.1.2 | — | SPEC_DERIVED |
-| `SEG115-R-002` | Segment 115 is conditionally included at Field No. 17/18/19 of the Financial Transaction Response's Data Section 2, only when Element 115 (Additional Information Data Segment Flag) indicates it follows AND the request's… | 11.1.2 | 115,150 | REVIEW_REQUIRED |
-| `SEG115-R-010` | Whether 'no other data segments are contained in the Financial Transaction Response' (Section 12.14) means Segment 115 excludes Segment 112, or only means nothing besides 112 and 115 can appear, is unresolved — the Sect… | 12.14,11.1.2 | — | REVIEW_REQUIRED |
-| `SEG115-R-011` | In the EMV Financial Transaction Response specifically, Segment 115 may co-occur with Segment 120 (Print Data 2 Segment) at Field 17/18/19, immediately followed by Segment 131 (EMV Response Data Segment) at Field 17/18/… | 11.1.2-EMV | — | SPEC_DERIVED |
+| `SEG115-R-002` | Segment 115 is conditionally included at Field No. 17/18/19 of the Financial Transaction Response's Data Section 2, only when Element 115 (Additional Information Data Segment Flag) indicates it follows AND the request's Loyalty Information Version (Element 150) equals 2 | 11.1.2 | 115,150 | REVIEW_REQUIRED |
+| `SEG115-R-010` | Whether 'no other data segments are contained in the Financial Transaction Response' (Section 12.14) means Segment 115 excludes Segment 112, or only means nothing besides 112 and 115 can appear, is unresolved — the Section 11.1.2 layout table shows Segment 112 (Field 16/17/18) and Segment 115 (Field 17/18/19) as two independently-conditional segments in the SAME response, which appears to contradict a strict reading of 'no other data segments' | 12.14,11.1.2 | — | REVIEW_REQUIRED |
+| `SEG115-R-011` | In the EMV Financial Transaction Response specifically, Segment 115 may co-occur with Segment 120 (Print Data 2 Segment) at Field 17/18/19, immediately followed by Segment 131 (EMV Response Data Segment) at Field 17/18/19/20 | 11.1.2-EMV | — | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 
