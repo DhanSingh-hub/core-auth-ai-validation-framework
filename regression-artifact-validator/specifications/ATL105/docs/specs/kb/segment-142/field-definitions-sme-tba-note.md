@@ -18,7 +18,7 @@ Each Segment 142 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG142-R-002` | Segment Type and Segment Length are Host-sourced (contrast Segment 140's Device-sourced Segment Type/Length, and Segment 141's fully-Device-sourced request) | 12.29 | 85,84 | SPEC_DERIVED |
-| `SEG142-R-003` | Terminal Identifier, Moneris Terminal Identifier, Moneris Merchant ID are Device-sourced echoes; SPDH Header, Batch Number, Response Display are Moneris-sourced; MAC (Element 210, 16 characters) is Moneris-sourced and v… | 12.29 | 102,206,207,208,214… | SPEC_DERIVED |
+| `SEG142-R-003` | Terminal Identifier, Moneris Terminal Identifier, Moneris Merchant ID are Device-sourced echoes; SPDH Header, Batch Number, Response Display are Moneris-sourced; MAC (Element 210, 16 characters) is Moneris-sourced and validates the response at the terminal | 12.29 | 102,206,207,208,214,216,210 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 
