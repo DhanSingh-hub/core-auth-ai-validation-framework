@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 146 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 146 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG146-R-003 Table 002 Non-Fuel Product Limits is explicitl…}
+    B -->|Yes| R1{SEG146-R-003 Table 002 (Non-Fuel Product Limits) is explicitly documented as NOT present in Comdata response messages}
     R1 -->|Fail| X1[Reject citing SEG146-R-003]
     R1 -->|Pass| Z[Rules satisfied]
 ```
