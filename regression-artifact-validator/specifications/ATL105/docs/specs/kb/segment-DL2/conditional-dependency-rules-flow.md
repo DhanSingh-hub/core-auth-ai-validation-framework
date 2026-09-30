@@ -2,10 +2,19 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL2 payload] --> B{Conditional Fields and Cross-Field Depe… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
+    A[Dial string block after Redial Count] --> B{Access Code needed?}
+    B -->|No| C[Next field is Phone Number immediately - no Access Code, no Pause Indicator]
+    B -->|Yes| D["Access Code (digits, optional 'B' pauses)"]
+    D --> E["Pause Indicator 'B' immediately follows"]
+    E --> F[Phone Number]
+    C --> F
+    F --> G{"Terminator: 'A' for primary, 'F' for secondary"}
+    G --> H{Validate pairing}
+    H -->|Access Code without Pause Indicator| X1[Fail SEGDL2-R-005]
+    H -->|Pause Indicator without Access Code| X2[Fail or REVIEW SEGDL2-R-005 - a lone 'B' is indistinguishable from a 1-character Access Code]
+    H -->|Both or neither| OK[Pass]
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+The same decision is made independently for the primary (fields 4-5) and the secondary (fields 9-10) block.
 
 Source: [segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json) · Note: [conditional-dependency-rules-sme-tba-note.md](conditional-dependency-rules-sme-tba-note.md)

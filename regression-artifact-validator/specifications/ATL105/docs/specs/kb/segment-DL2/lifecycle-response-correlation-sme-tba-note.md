@@ -1,76 +1,31 @@
 # Segment DL2 Lifecycle, Response and Message Correlation: SME/TBA Learning Note
 
-**Segment:** DL2 — Dial String Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.43  
-**Oracle:** [segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `sequence-lifecycle-*` (cross-message correlation).
+**Segment:** DL2 — Dial String Data Segment · **Sources:** 11.7, 11.7.2, 12.43, 13.2 (Elements 75, 82) · **Oracle:** [rule catalog](coverage/segment-DL2-rule-catalog.json) · **Benchmark:** Segment 100 [sequence-lifecycle note](../segment-100/sequence-lifecycle-sme-tba-note.md)
 
 ## Core Idea
 
-Some Segment DL2 rules can only be proven across two or more related messages. A single message, or a test-control flag claiming correlation, is description rather than evidence.
+DL2 has two lifecycles: the **load** lifecycle (request → response carrying DL2) and the **dialing** lifecycle it configures (primary → redial → secondary). Only the first is observable in ATL105 messages; the second is device behaviour governed partly by an external document.
 
-## Specification-Derived Rules (1)
+## Load Lifecycle
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL2-R-003` | Secondary Phone Number block (fields 8-11) mirrors the Primary block's structure, terminated by a Dial String Terminator fixed 'F' (field 12); the secondary number is used only after all primary-number retry attempts ar… | 12.43 | — | REVIEW_REQUIRED |
+| Step | Message | Assert | Rule |
+|---|---|---|---|
+| 1 | Phone Load Request | `?` + Terminal Identifier + Load Type `P`; no DL segment | `SEGDL2-R-009` |
+| 2 | Phone Load Response | Flag `PHON` → DL2 present; otherwise error + terminating block | `SEGDL2-R-008`, `R-009` |
+| 1' | Table Load Request | As DL1 lifecycle | `SEGDL1-R-008` |
+| 2' | Table Load Response | DL2 as Data Block 2 when configured | `SEGDL2-R-008` |
 
-## Catalog Notes
+## Dialing Lifecycle (in-spec evidence)
 
-- `SEGDL2-R-003` — PROVISIONAL: the detailed error-recovery logic is defined in a separate 'Asynchronous Communications Protocol Specifications' document not available in this KB pass. Pending SME confirmation (SEGDL2-SME-001) on scope.
+- "Transaction dialing always begins with the primary Phone Number." (Element 75)
+- "The secondary Phone Number is used once attempts using the primary Phone Number are exhausted." (Element 75; 12.43)
+- Redial Count 1-3 bounds the attempts per number (Element 82).
+- Error-recovery timing is in the Asynchronous Communications Protocol Specifications (`SEGDL2-SME-001`).
 
-## SME Reasoning
+## SME Questions
 
-Ask:
+1. Is Redial Count the number of *re*dials (attempts = N + 1) or the total number of attempts?
+2. After the secondary number is exhausted, does the device return to the primary?
+3. Does a successful Phone Load reset the `PHON` flag?
 
-1. Which Segment DL2 values must be echoed, preserved, or referenced in a related message?
-2. Which message is the original and which is the follow-up or response?
-3. Does the test data contain both messages, or only a claim that they correlate?
-4. What happens when the follow-up or response is missing, late, or mismatched?
-5. Is any correlation value environment-specific (test vs production)?
-
-## TBA Dependency Chain
-
-```text
-original message (Segment DL2)
-  -> host processing
-  -> response / follow-up message
-  -> echoed or preserved values
-  -> correlation assertion
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
-
-```text
-Secondary Phone Number block fields 8-11 mirrors the Primary block's structure, terminated by a Dial String Terminator fixed 'F' field 12 the secondary number is used only after all primary-number retry attempts are exhausted per the Asynchronous Communications Protocol Specifications error-recovery logic
-  -> source: ATL105 2026-3 §12.43 (SEGDL2-R-003)
-  -> a violating payload shall fail validation citing SEGDL2-R-003
-```
-
-## Open Provisional Items
-
-- **P-01** (SEGDL2-R-003): Is the Asynchronous Communications Protocol Specifications document (defining primary-to-secondary phone fallback logic) in scope for this training pass?
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL2PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Is every rule traced to its source anchor (`SEGDL2-R-003`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+Keep dialing-lifecycle fixtures `REVIEW_REQUIRED` until these are answered.

@@ -1,19 +1,58 @@
 # Segment DL2 Dial String Data Segment: SME and TBA Learning Note
 
-Verified against Section 12.43, Elements 1, 24, 27, 28, 66, 75, 82, 34.
+Verified against Sections 12.43, 11.7.1.2, 11.7.2, 13.2 (Elements 1, 24, 27, 28, 34, 66, 75, 82, 97).
 
 ## What Segment DL2 Means
 
-Carries transaction dial-string configuration: a primary and secondary phone number, each with an optional access code and pause indicator, terminated by distinct fixed terminator characters (`A` for primary, `F` for secondary). Self-delimited by Data Type Indicator `!` and End-of-Data Indicator `~`.
+DL2 tells a dial-up device which numbers to call for transactions: a primary and a secondary dial string, each with a redial count, an optional access code (PBX prefix or pause sequence) and a phone number. It is host-originated and arrives in either a Phone Load Response (DL2 only) or a Table Load Response (as Data Block 2).
 
-## Field Layout
+```text
+Merchant profile (PHON or TABL)
+  -> Phone Load / Table Load Request
+  -> Response carrying DL2
+  -> device dials primary (Redial Count times) then secondary
+```
 
-Data Type Indicator(24, fixed `!`), Dial String Type(28, fixed `1`), Primary block — Redial Count(82,1), Access Code(1,12,conditional), Pause Indicator(66,1,conditional,fixed `B`), Phone Number(75,18), Dial String Terminator(27, fixed `A`) — Secondary block mirrors Primary, terminated by Dial String Terminator(27, fixed `F`), End-of-Data Indicator(34, fixed `~`).
+Compare with Segment 100:
 
-## Fallback Logic (Provisional)
+| Question | Segment 100 | Segment DL2 |
+|---|---|---|
+| Who sends it? | Device | BUYPASS host |
+| Field delimiting | Field Separators | None; `B`, `A`, `F` act as in-band markers |
+| Conditional fields | Many, governed by Prompt Code | Access Code + Pause Indicator, together or not at all |
+| Lifecycle | Original → follow-up transaction | Load request → response → dialing behaviour |
 
-The secondary phone number is used only after all primary-number retry attempts are exhausted, per the Asynchronous Communications Protocol Specifications (external document, not yet in scope — `SEGDL2-SME-001`).
+## Dial String Anatomy
+
+```text
+'!' '1' | Redial(1-3) [AccessCode ... 'B'] PhoneNumber 'A' | Redial(1-3) [AccessCode ... 'B'] PhoneNumber 'F' | '~'
+          \______________ primary (fields 3-7) ____________/   \_____________ secondary (fields 8-12) ____________/
+```
+
+- Each `B` inside the Access Code is a one-second pause (for slow dial tone).
+- The Pause Indicator `B` after the Access Code is required whenever an Access Code is present.
+- A Hayes-command modem replaces `B` with a comma when dialing — that is device behaviour, not wire content.
+- A tertiary number is "assigned but not used" (Element 75) and never appears in DL2.
+
+## SME Reasoning
+
+1. Does this merchant dial through a PBX or need a long pause? If yes, the fixture needs an Access Code and a Pause Indicator.
+2. What redial count is configured (1-3)?
+3. Which load is being tested (Phone Load vs Table Load) and which load flag is set?
+4. Are phone numbers synthetic (`555` range)?
+5. How should the device parse Access Code vs Phone Number (`SEGDL2-SME-004`)?
+
+## TBA Decomposition Example
+
+```text
+BR:  If an Access Code is present, the Pause Indicator 'B' shall immediately follow it (SEGDL2-R-005).
+TS:  Phone Load Response for a PBX merchant (access code 9).
+TC+: '!1' '3' '9' 'B' '5555550100' 'A' '2' '5555550199' 'F' '~'. Expected PASS.
+TC-: Access Code '9' without Pause Indicator: '!1' '3' '9' '5555550100' 'A' ... Expected FAIL citing SEGDL2-R-005
+     (the parser cannot tell the '9' from the phone number).
+TD:  Structured DL2 JSON: primary {redialCount 3, accessCode "9", pauseIndicator "B", phoneNumber "5555550100"}.
+```
 
 ## Source References
 
-Section 12.43: lines 17208-17302. [Rule Catalog](coverage/segment-DL2-rule-catalog.json).
+Section 12.43: lines 17207-17300 · Section 11.7.2: lines 9240-9345 · [Rule Catalog](coverage/segment-DL2-rule-catalog.json).

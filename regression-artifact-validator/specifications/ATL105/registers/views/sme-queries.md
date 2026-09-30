@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 169 open, 3 reopened, 29 resolved, 2 deferred (203 total).
+**Status:** 171 open, 3 reopened, 29 resolved, 2 deferred (205 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -369,8 +369,10 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
-| [SEGDL2-SME-001](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md#segdl2-sme-001) | Is the Asynchronous Communications Protocol Specifications document (primary→secondary phone fallback logic) in scope for this training pass? |  | OPEN | `P-01`, SEGDL2-R-003 | 2026-09-26 |
+| [SEGDL2-SME-001](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md#segdl2-sme-001) | Is the Asynchronous Communications Protocol Specifications document (primary→secondary phone fallback logic) in scope for this training pass? | ATL105 itself already states the order (Element 75: dialing always begins with the primary number; the secondary number is used once primary attempts are exhausted) and bounds Redial Count to 1-3 (Element 82). Only the detailed error-recovery timing is in the external document. | OPEN | `P-01`, SEGDL2-R-003 | 2026-09-26 |
 | [SEGDL2-SME-002](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md#segdl2-sme-002) | Provide a dedicated Segment DL2 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL2 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-02` | 2026-09-26 |
+| [SEGDL2-SME-003](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md#segdl2-sme-003) | The Phone Load Response (11.7.2.2) shows field 1 as Start-of-Data Block Indicator (Element 97) with fixed value '!', but Element 97 is defined as ')' and '!' is DL2's own Data Type Indicator. Does the Phone Load Response start with ')' followed by DL2 ('!...'), or does it start directly with DL2's '!'? | Section 11.7.2.2 field 1 versus Section 13.2 Element 97 and Element 24. | OPEN | `P-03`, SEGDL2-R-008 | 2026-09-30 |
+| [SEGDL2-SME-004](../../docs/specs/kb/segment-DL2/segment-DL2-sme-tba-input-register.md#segdl2-sme-004) | DL2 has no Field Separators, Access Code (Element 1) is variable up to 12 and may contain 'B' pause characters, Pause Indicator is 'B', and Phone Number (Element 75) is variable up to 18 digits. Is the parse rule 'Phone Number = the digits after the last B, up to the terminator'? Element 75 also says the number ends at 'C' (Log-on Indicator) or 'A', but the secondary block ends with 'F': is 'C' ever sent in DL2? | Section 12.43 note ('when a field is not populated, the next field immediately follows') and Section 13.2 Elements 1, 66, 75. | OPEN | `P-04`, SEGDL2-R-004, SEGDL2-R-005, SEGDL2-R-007 | 2026-09-30 |
 
 ## Segment DL3 ([register](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md))
 

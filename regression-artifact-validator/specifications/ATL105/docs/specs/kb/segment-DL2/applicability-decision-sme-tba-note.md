@@ -1,76 +1,41 @@
 # Segment DL2 Applicability and Message-Family Decision: SME/TBA Learning Note
 
-**Segment:** DL2 — Dial String Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.43  
-**Oracle:** [segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `prompt-code-*` (the inclusion decision).
+**Segment:** DL2 — Dial String Data Segment · **Sources:** 11.7, 11.7.1.2, 11.7.2, 11.7.2.2 · **Oracle:** [rule catalog](coverage/segment-DL2-rule-catalog.json) · **Benchmark:** Segment 100 [prompt-code note](../segment-100/prompt-code-sme-tba-note.md)
 
 ## Core Idea
 
-Segment DL2 is valid only inside the message families and Data Sections the specification assigns to it. A structurally perfect segment placed in the wrong message is an invalid message, not a weak test.
+DL2 is the only DL segment with two homes: it is Conditional inside a Table Load Response and Required as the sole content of a Phone Load Response. The same DL2 string is therefore valid or invalid depending on the message and on the merchant's load flag.
 
-## Specification-Derived Rules (1)
+## Rules
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL2-R-001` | Segment DL2 maximum length is 69 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '!' (field 1), End-of-Data Indicator fixed '~' (last field) | 12.43 | — | SPEC_DERIVED |
+| Rule | Statement | Status |
+|---|---|---|
+| `SEGDL2-R-008` | Table Load Response Block 2 (C); Phone Load Response (R); nowhere else | REVIEW_REQUIRED (P-03) |
+| `SEGDL2-R-009` | Phone Load only with load flag `PHON`; otherwise error + terminating block | SPEC_DERIVED |
 
-## Catalog Notes
+## Context
 
-_No catalog notes are recorded against these rules._
+- 11.7 says a download response may be "a Table Load or a subset of the complete table load containing only dial string information" — that subset is the Phone Load Response.
+- The `PHON` flag can be set by a BUYPASS representative or "automatically following a full load".
+- The Phone Load Request is `?` + Terminal Identifier (13) + Load Type `P` (the same Load Type as a Table Load request).
 
-## SME Reasoning
+## SME Questions
 
-Ask:
+1. Does a Phone Load Response begin with `)` (Element 97) or directly with `!`? (`SEGDL2-SME-003`)
+2. When is DL2 omitted from a Table Load Response? (The layout marks it `C` but gives no condition.) Keep "DL2 omitted" fixtures `REVIEW_REQUIRED` until answered.
+3. How does the host tell a Table Load request from a Phone Load request when both use Load Type `P`? (By the merchant load flag — confirm.)
 
-1. Which message families may carry Segment DL2, and in which Data Section?
-2. Is Segment DL2 Required, Conditional, or Optional in each of those families?
-3. What business condition causes Segment DL2 to be included?
-4. Which companion segments may, must, or must not accompany it?
-5. Is absence of Segment DL2 ever legitimate, and how should that be diagnosed?
-
-## TBA Dependency Chain
-
-```text
-transaction / message family
-  -> Data Section placement
-  -> inclusion condition
-  -> companion-segment set
-  -> Element 63 (Number of Segments) count where applicable
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
+## TBA Decomposition
 
 ```text
-Segment DL2 maximum length is 69 alphanumeric characters originates at BUYPASS Host Data Type Indicator fixed '!' field 1 , End-of-Data Indicator fixed '~' last field
-  -> source: ATL105 2026-3 §12.43 (SEGDL2-R-001)
-  -> a violating payload shall fail validation citing SEGDL2-R-001
+BR:  A Phone Load Response shall contain DL2 (SEGDL2-R-008).
+TS:  Merchant with load flag PHON requests a Phone Load.
+TC+: Response contains '!1...F~'. Expected PASS.
+TC-: Response without DL2. Expected FAIL citing SEGDL2-R-008.
+TC-: Software Load Response containing DL2. Expected FAIL citing SEGDL2-R-008.
 ```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL2PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
 
 ## Review Checklist
 
-- Is every rule traced to its source anchor (`SEGDL2-R-001`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+- Does each fixture record message type and load flag?
+- Are Table Load fixtures with and without DL2 both present?

@@ -1,67 +1,35 @@
 # Segment DL2 Conditional Fields and Cross-Field Dependencies: SME/TBA Learning Note
 
-**Segment:** DL2 — Dial String Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.43  
-**Oracle:** [segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `partial-approval-*` (a conditional feature with cross-field consequences).
+**Segment:** DL2 — Dial String Data Segment · **Sources:** 12.43, 13.2 (Elements 1, 66, 75, 82) · **Oracle:** [rule catalog](coverage/segment-DL2-rule-catalog.json) · **Benchmark:** Segment 100 [partial-approval note](../segment-100/partial-approval-sme-tba-note.md)
 
 ## Core Idea
 
-Conditional rules are where Segment DL2 validation most often fails silently: a field that is correct in isolation can be wrong because of the value of another field or another segment.
+DL2 has four Conditional fields (Access Code and Pause Indicator in each block). Element 1 states the condition: "If Access Code information is not necessary, the dial string contains neither this element nor the Pause Indicator that immediately follows it." The two fields are a pair.
 
-## Specification-Derived Rules (0)
+## Dependencies
 
-_The Segment DL2 rule catalog contains **no** `dependency/interdependency/conditional` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+| Dependency | Trigger | Consequence | Rule |
+|---|---|---|---|
+| Access Code ↔ Pause Indicator | Access Code needed | Access Code then `B`; otherwise neither | `SEGDL2-R-005` |
+| Access Code pauses | Slow dial tone | One or more `B` inside the Access Code, 1 second each | `SEGDL2-R-005` |
+| Redial Count → dialing | Redial Count N (1-3) | Primary redialed up to N times before secondary | `SEGDL2-R-003`, `R-006` |
+| Primary → secondary | Primary attempts exhausted | Secondary number dialed | `SEGDL2-R-003` |
+| Terminator order | Block position | `A` closes primary, `F` closes secondary | `SEGDL2-R-007` |
 
-## Catalog Notes
+The previous version of this note recorded "no conditional rules". That was a gap: the Access Code / Pause Indicator pairing is stated in Element 1 and is now `SEGDL2-R-005`.
 
-_No catalog notes are recorded against these rules._
+## SME Questions
 
-## SME Reasoning
+1. Can the primary block have an Access Code while the secondary does not? (Nothing forbids it; treat as valid.)
+2. Can an Access Code consist only of `B` characters (pure pause)? Element 1 suggests yes.
+3. What is the parse rule when the Access Code contains `B`? (`SEGDL2-SME-004`)
 
-Ask:
-
-1. Which fields are Conditional, and what exact condition makes each one required?
-2. Which values must agree with another field in Segment DL2?
-3. Which values must agree with Segment 100 or another companion segment?
-4. Is the dependency stated in the specification, or inferred and therefore provisional?
-5. What is the expected outcome when the dependency is violated — reject, decline, or ignore?
-
-## TBA Dependency Chain
+## TBA Decomposition
 
 ```text
-triggering field / segment value
-  -> conditional field requirement
-  -> cross-field agreement
-  -> cross-segment agreement
-  -> validator outcome
+BR:  Access Code and Pause Indicator shall be present together or not at all (SEGDL2-R-005).
+TS:  PBX merchant dialing '9' before the phone number.
+TC+: Primary '3' '9' 'B' '5555550100' 'A'. Expected PASS.
+TC+: Primary '3' '5555550100' 'A' (no access code). Expected PASS.
+TC-: Primary '3' '9' '5555550100' 'A'. Expected FAIL citing SEGDL2-R-005.
 ```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (SEGDL2-R-003): Is the Asynchronous Communications Protocol Specifications document (defining primary-to-secondary phone fallback logic) in scope for this training pass?
-- **P-02** (AI-artifacts, test-data): No dedicated Segment DL2 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL2PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
