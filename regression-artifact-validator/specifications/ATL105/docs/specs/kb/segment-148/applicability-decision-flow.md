@@ -2,9 +2,9 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 148 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 148 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG148-R-001 Segment 148 sends available product and fleet…}
+    B -->|Yes| R1{SEG148-R-001 Segment 148 sends available product and fleet information from WEX to the terminal; appears in the Financial Transaction response for WEX transactions only}
     R1 -->|Fail| X1[Reject citing SEG148-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```

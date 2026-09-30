@@ -18,7 +18,7 @@ Each Segment 139 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG139-R-002` | Segment Type is fixed value 139, Segment Length is 3 digits, both sourced at the Device | 12.26 | 85,84 | SPEC_DERIVED |
-| `SEG139-R-003` | Terminal Identifier (Element 102), SPDH Header (Element 206), Moneris Terminal Identifier (Element 207), Moneris Merchant ID (Element 208), Batch Number (Element 214), and Language Indicator (Element 215) are all requir… | 12.26 | 102,206,207,208,214… | SPEC_DERIVED |
+| `SEG139-R-003` | Terminal Identifier (Element 102), SPDH Header (Element 206), Moneris Terminal Identifier (Element 207), Moneris Merchant ID (Element 208), Batch Number (Element 214), and Language Indicator (Element 215) are all required, Device-sourced | 12.26 | 102,206,207,208,214,215 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

@@ -20,7 +20,7 @@ Segment 110 uses a **3-digit** Segment Length (Element 84). Element 84's definit
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG110-R-002` | Segment 110 has a maximum length of 168 alphanumeric characters (001-168) | 12.9 | — | SPEC_DERIVED |
-| `SEG110-R-006` | The twelve Segment 110 fields are ordered as defined in Section 12.9: Segment Type, Segment Length, MICR Data, Driver's License, State Code, Date of Birth, Check Type, Check Number, Customer Phone Number, Customer Last… | 12.9 | — | SPEC_DERIVED |
+| `SEG110-R-006` | The twelve Segment 110 fields are ordered as defined in Section 12.9: Segment Type, Segment Length, MICR Data, Driver's License, State Code, Date of Birth, Check Type, Check Number, Customer Phone Number, Customer Last Name, Check Issue Date, Alternate MICR IND | 12.9 | — | SPEC_DERIVED |
 | `SEG110-R-007` | Every Segment 110 field is separated by a Field Separator, including empty fields, which still send the Field Separator | 12.9 | — | SPEC_DERIVED |
 
 ## Empty Fields and Trailing Fields

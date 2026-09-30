@@ -18,9 +18,9 @@ Each Segment 145 field is a specific ATL105 data element with its own type, leng
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG145-R-005` | Segment Type is fixed value 145, Segment Length includes Segment Type's length; both Device-sourced | 12.31 | 85,84 | SPEC_DERIVED |
-| `SEG145-R-006` | Enhanced Fleet Data (Element 239) is required, max 999 characters, containing one or more sub-segments in <tag><len><data> format, cataloged as: Table 001 (Request Flags, incl. Commercial/Retail Flag), Table 002 (Non-Fu… | 12.31 | 239 | REVIEW_REQUIRED |
-| `SEG145-R-007` | Table 002 (Non-Fuel Product Data) product categories are authorizer-specific; a documented list applies to WEX OTR transactions (e.g., ADD, ANFR, BRAK, ... WWFL); other authorizers' category lists are not enumerated in… | 12.31 | 239 | SPEC_DERIVED |
-| `SEG145-R-008` | Table 004 (Prompt Data) prompt tokens are authorizer-specific and independently cataloged for Voyager EMV (DF-tag-based), Visa Fleet 2.0, Comdata, WEX OTR, and Conexxus (numeric prompt codes, used by MasterCard Enhanced… | 12.31 | 239 | REVIEW_REQUIRED |
+| `SEG145-R-006` | Enhanced Fleet Data (Element 239) is required, max 999 characters, containing one or more sub-segments in <tag><len><data> format, cataloged as: Table 001 (Request Flags, incl. Commercial/Retail Flag), Table 002 (Non-Fuel Product Data, product-category-coded, '|'-delimited repeating), Table 004 (Prompt Data, authorizer-specific prompt tokens, '|'-delimited repeating), Table 006 (Money Code Payee Name), Table 007 (Money Code Check Number, required for all Money Code transactions), Table 008 (Cash Advance Limit) | 12.31 | 239 | REVIEW_REQUIRED |
+| `SEG145-R-007` | Table 002 (Non-Fuel Product Data) product categories are authorizer-specific; a documented list applies to WEX OTR transactions (e.g., ADD, ANFR, BRAK, ... WWFL); other authorizers' category lists are not enumerated in this section | 12.31 | 239 | SPEC_DERIVED |
+| `SEG145-R-008` | Table 004 (Prompt Data) prompt tokens are authorizer-specific and independently cataloged for Voyager EMV (DF-tag-based), Visa Fleet 2.0, Comdata, WEX OTR, and Conexxus (numeric prompt codes, used by MasterCard Enhanced Fleet EMV); full enumeration of all prompt-token tables is out of scope for this rule catalog pass | 12.31 | 239 | REVIEW_REQUIRED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

@@ -4,7 +4,7 @@
 flowchart TD
     A[Segment 150 payload] --> B{Field Definitions and Element Semantics in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG150-R-003 Segment Type fixed 150, Segment Length 3 digit…}
+    B -->|Yes| R1{SEG150-R-003 Segment Type fixed 150, Segment Length 3 digits, Terminal Identifier (echo), Decline Code (Element 26, 2 characters, indicates success or failure); all Device-sourced}
     R1 -->|Fail| X1[Reject citing SEG150-R-003]
     R1 -->|Pass| Z[Rules satisfied]
 ```

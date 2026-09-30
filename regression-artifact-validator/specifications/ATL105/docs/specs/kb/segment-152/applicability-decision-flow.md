@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    A[Segment 152 payload] --> B{Applicability and Message-Family Decisi… in scope?}
+    A[Segment 152 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
 ```
 

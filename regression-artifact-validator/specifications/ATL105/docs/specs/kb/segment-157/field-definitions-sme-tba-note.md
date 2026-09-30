@@ -21,7 +21,7 @@ Each Segment 157 field is a specific ATL105 data element with its own type, leng
 | `SEG157-R-005` | The total of Adjusted Product Amounts in the segment must equal the total of Element 41 (Fuel Purchase Amount) + Element 58 (Nonfuel Amount) + Element 99 (Tax Amount) + Element 17 (Cash Amount) in Segment 100 | 12.41 | 41,58,99,17 | SPEC_DERIVED |
 | `SEG157-R-006` | Tax, discount, and coupon amounts are already accounted for in the individual Adjusted Product Amounts; separate tax/discount/coupon product codes must NOT be included in the segment | 12.41 | — | SPEC_DERIVED |
 | `SEG157-R-007` | Multi-fuel support: BUYPASS can accept transactions with multiple Fuel Type Codes in one transaction (e.g., Diesel + DEF + Reefer); the primary fuel must be the very first product code in the segment | 12.41 | — | SPEC_DERIVED |
-| `SEG157-R-009` | Segment Type fixed 157, Segment Length 3 digits, Service Level (Element 87), Number of Products (Element 62, 2 digits), then per-product: Product Code (77, max 3 including 899-cap/955-exception), Unit of Measure (106),… | 12.41 | 87,62,77,106,81,107… | SPEC_DERIVED |
+| `SEG157-R-009` | Segment Type fixed 157, Segment Length 3 digits, Service Level (Element 87), Number of Products (Element 62, 2 digits), then per-product: Product Code (77, max 3 including 899-cap/955-exception), Unit of Measure (106), Quantity (81, 9 digits, must encode assumed decimal places as whole digits, e.g. 0.05 with 2 decimals = '205'), Unit Price (107, 9 digits, same decimal-encoding rule), Product Amount (76, 12 digits) | 12.41 | 87,62,77,106,81,107,76 | SPEC_DERIVED |
 
 ## Element Definitions (ATL105 Chapter 13)
 

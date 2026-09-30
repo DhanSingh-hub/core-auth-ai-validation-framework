@@ -6,13 +6,13 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG112-R-001 Segment Type is 112}
     R1 -->|Fail| X1[Reject citing SEG112-R-001]
-    R1 -->|Pass| R2{SEG112-R-002 Segment Length identifies the segment's total…}
+    R1 -->|Pass| R2{SEG112-R-002 Segment Length identifies the segment's total length including Segment Type and Field Separators}
     R2 -->|Fail| X2[Reject citing SEG112-R-002]
-    R2 -->|Pass| R3{SEG112-R-007 Additional Information Indicator Element 116 i…}
+    R2 -->|Pass| R3{SEG112-R-007 Additional Information Indicator (Element 116) identifies the type of additional information being transmitted}
     R3 -->|Fail| X3[Reject citing SEG112-R-007]
-    R3 -->|Pass| R4{SEG112-R-008 Additional Information Length Element 117 iden…}
+    R3 -->|Pass| R4{SEG112-R-008 Additional Information Length (Element 117) identifies the length of the following Additional Information (Element 118)}
     R4 -->|Fail| X4[Reject citing SEG112-R-008]
-    R4 -->|Pass| R5{SEG112-R-009 Additional Information Element 118 is variable…}
+    R4 -->|Pass| R5{SEG112-R-009 Additional Information (Element 118) is variable length and carries the value identified by its paired Indicator/Length}
     R5 -->|Fail| X5[Reject citing SEG112-R-009]
     R5 -->|Pass| Z[Rules satisfied]
 ```

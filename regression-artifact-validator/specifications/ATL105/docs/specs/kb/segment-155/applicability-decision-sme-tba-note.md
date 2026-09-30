@@ -18,7 +18,7 @@ Segment 155 is valid only inside the message families and Data Sections the spec
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
 | `SEG155-R-001` | Segment 155 can only be sent when the transaction qualifies for, and uses, the First Data Auth Optimizer service | 12.39 | — | SPEC_DERIVED |
-| `SEG155-R-003` | Most sub-tables (Card Number 001, TransArmor Token 002, Expiration Date 003, Card Status 004, Original Response Code 005) are included ONLY when the merchant sent the Account Updater Request Indicator (Segment 111 Table… | 12.39 | — | SPEC_DERIVED |
+| `SEG155-R-003` | Most sub-tables (Card Number 001, TransArmor Token 002, Expiration Date 003, Card Status 004, Original Response Code 005) are included ONLY when the merchant sent the Account Updater Request Indicator (Segment 111 Table 060 Sub-table 01) with value 'Y' (or 'Y'/'I' for some fields) in the request, and are applicable ONLY to Visa and MasterCard | 12.39 | — | SPEC_DERIVED |
 
 ## Catalog Notes
 
