@@ -1,77 +1,28 @@
 # Segment DL5 Applicability and Message-Family Decision: SME/TBA Learning Note
 
-**Segment:** DL5 — Software IP Load Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.45, 12.46  
-**Oracle:** [segment-DL5-rule-catalog.json](coverage/segment-DL5-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `prompt-code-*` (the inclusion decision).
+**Segment:** DL5 — Software IP Load Data Segment · **Sources:** 12.46, 11.7, 11.7.4.2, 10.10 · **Oracle:** [rule catalog](coverage/segment-DL5-rule-catalog.json) · **Benchmark:** Segment 100 [prompt-code note](../segment-100/prompt-code-sme-tba-note.md)
 
 ## Core Idea
 
-Segment DL5 is valid only inside the message families and Data Sections the specification assigns to it. A structurally perfect segment placed in the wrong message is an invalid message, not a weak test.
+DL5 applicability is identical to DL4's: BUYPASS-managed devices only, Software Load Response only, merchant flag `SOFT`. The only DL5-specific point is its position: field 3, after DL4.
 
-## Specification-Derived Rules (2)
+## Rules
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL5-R-001` | Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP; vendors who support their own applications do NOT use this segment | 12.46 | — | SPEC_DERIVED |
-| `SEGDL5-R-002` | Segment DL5 maximum length is 64 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '$' (field 1), End-of-Data Indicator fixed '~' (last field) | 12.46 | — | SPEC_DERIVED |
+| Rule | Statement | Status |
+|---|---|---|
+| `SEGDL5-R-001` | BUYPASS-managed devices only | SPEC_DERIVED |
+| `SEGDL5-R-006` | Software Load Response field 3 after DL4; flag `SOFT` | REVIEW_REQUIRED (`SEGDL4-SME-002`) |
 
-## Catalog Notes
+## SME Questions
 
-_No catalog notes are recorded against these rules._
+1. `SEGDL4-SME-002` (shared): Software Load vs Table Load exchange; how the device chooses IP vs dial.
+2. Is DL5 still sent to a dial-only device?
 
-## SME Reasoning
-
-Ask:
-
-1. Which message families may carry Segment DL5, and in which Data Section?
-2. Is Segment DL5 Required, Conditional, or Optional in each of those families?
-3. What business condition causes Segment DL5 to be included?
-4. Which companion segments may, must, or must not accompany it?
-5. Is absence of Segment DL5 ever legitimate, and how should that be diagnosed?
-
-## TBA Dependency Chain
+## TBA Decomposition
 
 ```text
-transaction / message family
-  -> Data Section placement
-  -> inclusion condition
-  -> companion-segment set
-  -> Element 63 (Number of Segments) count where applicable
+BR:  DL5 shall follow DL4 in the Software Load Response (SEGDL5-R-006).
+TS:  Scheduled load for a BUYPASS-managed device.
+TC+: ')' DL4 DL5. Expected PASS.
+TC-: ')' DL5 DL4. Expected FAIL citing SEGDL5-R-006.
 ```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
-
-```text
-Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP vendors who support their own applications do NOT use this segment
-  -> source: ATL105 2026-3 §12.46 (SEGDL5-R-001)
-  -> a violating payload shall fail validation citing SEGDL5-R-001
-```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL5PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Is every rule traced to its source anchor (`SEGDL5-R-001`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?

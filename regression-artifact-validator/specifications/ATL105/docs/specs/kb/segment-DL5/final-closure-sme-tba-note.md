@@ -1,50 +1,28 @@
 # Segment DL5 Final Closure: Serialization and Lifecycle Learning Note
 
-**Segment:** DL5 — Software IP Load Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.45, 12.46  
-**Oracle:** [segment-DL5-rule-catalog.json](coverage/segment-DL5-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Segment:** DL5 — Software IP Load Data Segment · **Sources:** 12.46, 11.7.4.2 · **Oracle:** [rule catalog](coverage/segment-DL5-rule-catalog.json) · **Benchmark:** Segment 100 [final-closure note](../segment-100/final-closure-sme-tba-note.md)
 
-## Why Closure Is Separate
+## Corrections to the Previous Closure Note
 
-Field rules prove each value is individually valid. Closure proves the **whole segment** can be parsed without positional drift, and that it belongs to a coherent message exchange.
+| Earlier statement | Correct DL5 behaviour | Evidence |
+|---|---|---|
+| "Segment DL5 uses a 3-digit Segment Length (Element 84)" | No Segment Length; framed by `$` and `~` | 12.46 layout |
+| "An empty middle field keeps its separator" | No separators; all fields fixed width | 12.46 note |
+| DL4 and DL5 "mutually exclusive" | Both Required in the Software Load Response | 11.7.4.2 |
 
-## Segment Length Encoding
+## Position Map
 
-Segment DL5 uses a **3-digit** Segment Length (Element 84). Element 84's definition permits four digits only for Segments 103, 114, 115, 118, 120, 130 and 131; every other segment uses three.
-
-## Serialization Rules From The Catalog
-
-_The Segment DL5 catalog contains no `serialization` rules. Separator behaviour must therefore be confirmed against the Section 12 layout note for this segment before a closure validator is written._
-
-## Empty Fields and Trailing Fields
-
-An empty field in the middle of a separator-delimited segment still occupies a position: its separator must remain, or every later field shifts.
-
-The Segment DL5 catalog states **no** trailing-optional-field omission allowance. Do not port Segment 100's trailing-suffix rule to this segment without SME confirmation.
-
-## Lifecycle and Response Correlation
-
-_No `lifecycle` or `response` rules are catalogued for Segment DL5. Closure is therefore structural only._
-
-## Certification Meaning
-
-- **Serialization rules** prove the segment parses without desynchronization.
-- **Lifecycle rules** prove the segment belongs to a coherent exchange.
-- Anything requiring production keys, certified kernels, or live host behaviour is explicitly out of scope rather than silently assumed.
+| Positions | Field |
+|---|---|
+| 1 | `$` |
+| 2-9 | New Software Version |
+| 10-22 | Software Terminal Record ID |
+| 23-52 | Software Load IP/URL Address |
+| 53-58 | Request Date MMDDYY |
+| 59-62 | Request Time HHMM |
+| 63 | Software Load Type |
+| 64 | `~` |
 
 ## Closure Gate
 
-Segment DL5 is not closeable while these remain open:
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL5 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## SME/TBA Review Questions
-
-- Does every empty non-trailing field keep its separator?
-- Is the Segment Length encoded with exactly 3 digits and does it include the Segment Type and separators?
-- Are repeating or separator-free regions handled by their own rule?
-- Do lifecycle rules have genuine paired messages in the test data?
-- Are all provisional items above either resolved or kept at `REVIEW_REQUIRED`?
+DL5 is not closeable while `SEGDL5-SME-001` to `SEGDL5-SME-003` and `SEGDL4-SME-002` are open.

@@ -2,24 +2,18 @@
 
 ```mermaid
 flowchart TD
-    A[Build ordered Segment DL5 fields] --> B{Field empty?}
-    B -->|Middle field| C[Keep field separator]
-    B -->|Trailing field| D[No omission allowance catalogued - keep position]
-    C --> F
-    D --> F
-    B -->|No| F[Serialize value]
-    F --> G{Segment Length is 3 digits and correct?}
-    G -->|No| X1[Reject serialization]
-    G -->|Yes| I
-    I{Lifecycle or response rules catalogued?}
-    I -->|No| Z[Structural closure complete]
-    I -->|Yes| J[Load paired messages]
-    J --> K{Correlated values consistent?}
-    K -->|No| X2[Reject lifecycle mismatch]
-    K -->|Yes| Z
-    Z --> P{Open provisional items: 1}
+    A[Structured DL5 values] --> B["Emit '$'"]
+    B --> C[Version 8 + Record ID 13 + IP/URL 30 - no Field Separators]
+    C --> D[Date 6 + Time 4 + Load Type 1]
+    D --> E["Emit '~'"]
+    E --> F{Length 64 and no FS / Segment Length?}
+    F -->|65-66| R1[REVIEW_REQUIRED - SEGDL5-SME-002]
+    F -->|Other| X1[Reject - SEGDL5-R-002 / R-004]
+    F -->|64| G["Software Load Response: ')' DL4 DL5"]
+    G --> H{DL4 present before DL5?}
+    H -->|No| X2[Reject or REVIEW - SEGDL5-R-006]
+    H -->|Yes| Z[Closure complete]
+    Z --> P{Open provisional items: P-01..P-03}
     P -->|Any open| R[Keep affected rules REVIEW_REQUIRED]
     P -->|None| S[Eligible for sign-off]
 ```
-
-Serialization rules: 0 · Lifecycle/response rules: 0 · Open provisional items: 1
