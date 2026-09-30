@@ -1,0 +1,71 @@
+{
+  "segment_number": "118",
+  "segment_name": "Proprietary Data Load Segment",
+  "requirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:0826",
+    "statement": "In Proprietary Data Load Segment (Data Segment No. 118), field 3 (Sequence Number) is required and must be present.",
+    "source_rule_id": "ENT-FIELD-118-3",
+    "source_page": 251,
+    "derivation_method": "field_constraint",
+    "confidence_score": 0.95,
+    "related_entity_ids": [
+      "ENT-ELEM-86",
+      "ENT-SEG-118"
+    ],
+    "category": "Field",
+    "requirement_type": "Field Validation",
+    "flags": [],
+    "roc": "R",
+    "segment_number": "118",
+    "condition_trigger": "Proprietary Data Load Segment (Data Segment No. 118) is present in the request",
+    "expected_behavior": "is required and must be present",
+    "evidence_ref": {
+      "source_id": "SRC-ATL105-PDF-001",
+      "entity_id": "ENT-FIELD-118-3",
+      "page": 251
+    },
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "segment_ids": [
+      "ENT-SEG-118"
+    ],
+    "segment_assignment_method": "declared",
+    "segment_attribution": "unique",
+    "confidence_pct": 95,
+    "confidence_band": "HIGH",
+    "confidence_factors": [
+      "prior_confidence_score=0.95"
+    ]
+  },
+  "gap": {
+    "segment_number": "118",
+    "segment_name": "Proprietary Data Load Segment",
+    "field_count": 13,
+    "field_no": "3",
+    "field_name": "Sequence Number",
+    "roc": "R",
+    "requirement_id": "REQ-SRC-ATL105-PDF-001:0826",
+    "scenario_id": "SC-0023",
+    "resolver_flags": [
+      "RELATED_ENTITY_FALLBACK: no scenario parameters (business-rule scenario); resolved via related_entity_ids union, not a discriminating match",
+      "TRUNCATED_FALLBACK_TRANSACTIONS: 13 matched, kept first 6 (max_fallback_transactions_per_scenario)"
+    ],
+    "resolved_transaction_types": [
+      "CA Public Key File Load Request",
+      "ECA/TeleCheck Service Transaction Request",
+      "EMV Financial Transaction Request",
+      "Electronic Mail Request",
+      "FSA/HRA Transaction Request",
+      "Financial Transaction"
+    ],
+    "status": "GAP_RESOLVER_FALLBACK_UNRELIABLE",
+    "gap_reason": "Every transaction TransactionResolver proposed was reached only via the ubiquitous-element union fallback, and NONE of them actually list segment 118 in their own message_templates segment list — composing against any of them would mislabel a different segment's fields as this segment's example, so no test case is produced.",
+    "candidate_transactions_rejected_as_spurious": [
+      "CA Public Key File Load Request",
+      "ECA/TeleCheck Service Transaction Request",
+      "EMV Financial Transaction Request",
+      "Electronic Mail Request",
+      "FSA/HRA Transaction Request",
+      "Financial Transaction"
+    ]
+  }
+}

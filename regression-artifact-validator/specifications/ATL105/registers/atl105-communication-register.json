@@ -5457,19 +5457,25 @@
         "DL5",
         "DL6"
       ],
-      "subject": "Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs",
-      "detail": "The DL2-DL6 rule catalogs carry no sourceAnchor for element 24, even though our own knowledge base documents the Data Type Indicator as field 1 of each of these segments and records the distinct framing character per segment (DL4 '@', DL5 '$', DL6 '\\'). Only SEGDL1-R-002 anchors element 24 (as the string '24,34'). Because the element is described in prose but never anchored, an AI requirement correctly identifying field 1 as required cannot be matched to any Test Solution rule for DL2-DL6.\n\nAdd an element-24 anchored rule to each of the five catalogs, mirroring SEGDL1-R-002.",
-      "evidence": "phase_1_single_leg cross-check: AI requirements REQ-SRC-ATL105-PDF-001:0805/0806/0807/0808/0809 (DL2-DL6, field 1 'Data Type Indicator', element 24, pages 326-331) returned ELEMENT_ABSENT_FROM_TS_CATALOG. KB confirms the field is documented, e.g. kb/segment-dl4|dl5|dl6/*.md 'Framing | Data Type Indicator ... (no Field Separators)'. See test-output/ai-solution-independent-review/phase1-ai-team-feedback.json.",
-      "impact": "Five AI requirements were initially reported as unmatched against our catalogs. The gap is ours, not the producer's; feedback overstated AI defects until corrected.",
+      "subject": "Add the element-24 anchor to the existing DL2-DL6 framing rules",
+      "detail": "CORRECTED 2026-09-30 after a second check. This is an ANCHORING gap, not a coverage gap.\n\nThe Data Type Indicator IS already covered for every DL segment, and more precisely than the producer's requirement. SEGDL2-R-001, SEGDL3-R-001, SEGDL4-R-002, SEGDL5-R-002 and SEGDL6-R-002 each state the marker convention and pin the exact fixed value: DL2 '!', DL3 ':', DL4 '@', DL5 '$', DL6 '\\'. SEGDL1-R-002 carries the governing note that segments DL1-DL6 all use the Data-Type/End-of-Data marker convention.\n\nThe only defect is metadata: those five rules have an empty sourceAnchor.element, so element 24 is not machine-discoverable and anchored comparison cannot find them.\n\nACTION: add element 24 to the sourceAnchor of each EXISTING rule listed above. Do NOT add new rules - that would create weaker duplicates of coverage we already have.",
+      "evidence": "Second check 2026-09-30 read full rule text rather than anchors alone. Rule titles contain 'Data Type Indicator fixed <char> (field 1), End-of-Data Indicator fixed '~' (last field)'; rule slugs are max-length-NN-markers. KB field tables confirm element 24 for all six segments: '| 1 | 24 | Data Type Indicator | 1 | R | Host (fixed <char>) |'. The producer requirement only asserts presence ('is required and must be present') and omits the fixed value, so our existing rules are strictly stronger.",
+      "impact": "No test coverage is missing. Until the anchor is added, correct producer requirements cannot be matched to these rules, which inflates apparent AI-only findings during comparison.",
       "status": "OPEN",
       "owner": "Test Team",
       "raisedOn": "2026-09-29",
       "raisedBy": "saurabhtw28",
       "links": {
         "rules": [
-          "SEGDL1-R-002"
+          "SEGDL1-R-002",
+          "SEGDL2-R-001",
+          "SEGDL3-R-001",
+          "SEGDL4-R-002",
+          "SEGDL5-R-002",
+          "SEGDL6-R-002"
         ]
-      }
+      },
+      "statusNote": "Reclassified from coverage gap to anchoring gap on 2026-09-30; the original framing overstated both the severity and the remediation."
     },
     {
       "id": "TT-0012",
@@ -5477,14 +5483,15 @@
       "segments": [
         "156"
       ],
-      "subject": "Populate element numbers in the Segment 156 rule catalog",
-      "detail": "Every rule in ATL105-SEG156-RULE-CATALOG-001 (7 rules) has an empty 'element' on its sourceAnchor. Segment 156 is the only trained segment whose catalog records no element identity at all, so no element-level comparison against a producer artifact is possible for this segment.\n\nPopulate sourceAnchor.element for each Segment 156 rule, including element 242 (EV Charging Data).",
-      "evidence": "phase_1_single_leg cross-check: AI requirement REQ-SRC-ATL105-PDF-001:0849 (segment 156, field 3 'EV Charging Data', element 242, page 314) returned TS_CATALOG_HAS_NO_ELEMENT_NUMBERS. Catalog scan: all 7 rules have element '-'.",
-      "impact": "Segment 156 cannot participate in element-anchored coverage comparison.",
+      "subject": "Populate element numbers on the Segment 156 rule anchors",
+      "detail": "CORRECTED 2026-09-30 after a second check. This is an ANCHORING gap, not a coverage gap.\n\nAll 7 rules in ATL105-SEG156-RULE-CATALOG-001 have an empty sourceAnchor.element, making 156 the only trained segment with no element identity anywhere in its catalog.\n\nThe producer requirement ('field 3 EV Charging Data is required') is already covered implicitly and more thoroughly: SEG156-R-003 makes the EV Transaction Indicator (Table 01) mandatory, which cannot hold unless EV Charging Data is present, and R-004 to R-007 cover sub-tables 02-12, formats and Visa enumerations.\n\nACTION: populate sourceAnchor.element on the existing rules, including element 242 for the EV Charging Data container. Do NOT add a new presence rule.",
+      "evidence": "Second check 2026-09-30: all 7 rules carry element '-'. Coverage of the container's contents is present via SEG156-R-003 (Table 01 mandatory, must be 'Y'), R-005 (Charging Reason Code enumeration), R-006 (Connector Type enumeration), R-007 (numeric measurement sub-tables).",
+      "impact": "Segment 156 cannot participate in element-anchored comparison. No test coverage is missing.",
       "status": "OPEN",
       "owner": "Test Team",
       "raisedOn": "2026-09-29",
-      "raisedBy": "saurabhtw28"
+      "raisedBy": "saurabhtw28",
+      "statusNote": "Reclassified from coverage gap to anchoring gap on 2026-09-30."
     },
     {
       "id": "TT-0013",

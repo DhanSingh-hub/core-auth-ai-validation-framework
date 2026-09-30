@@ -1,0 +1,351 @@
+{
+  "segment_number": "109",
+  "segment_name": "Electronic Mail Data Segment",
+  "requirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:0819",
+    "statement": "In Electronic Mail Data Segment (Data Segment No. 109), field 4 (Terminal Identifier) is required and must be present.",
+    "source_rule_id": "ENT-FIELD-109-4",
+    "source_page": 237,
+    "derivation_method": "field_constraint",
+    "confidence_score": 0.95,
+    "related_entity_ids": [
+      "ENT-ELEM-102",
+      "ENT-SEG-109"
+    ],
+    "category": "Field",
+    "requirement_type": "Field Validation",
+    "flags": [],
+    "roc": "R",
+    "segment_number": "109",
+    "condition_trigger": "Electronic Mail Data Segment (Data Segment No. 109) is present in the request",
+    "expected_behavior": "is required and must be present",
+    "evidence_ref": {
+      "source_id": "SRC-ATL105-PDF-001",
+      "entity_id": "ENT-FIELD-109-4",
+      "page": 237
+    },
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "segment_ids": [
+      "ENT-SEG-109"
+    ],
+    "segment_assignment_method": "declared",
+    "segment_attribution": "unique",
+    "confidence_pct": 95,
+    "confidence_band": "HIGH",
+    "confidence_factors": [
+      "prior_confidence_score=0.95"
+    ]
+  },
+  "scenario": {
+    "name": "Field Constraint — ENT-FIELD-109-4: In Electronic Mail Data Segment (Data Segment No. 109), field 4 (Terminal Identifier) is required and must be present.",
+    "requirement_id": "REQ-SRC-ATL105-PDF-001:0819",
+    "type": "field_constraint",
+    "parameters": {},
+    "business_rule_assertion": "In Electronic Mail Data Segment (Data Segment No. 109), field 4 (Terminal Identifier) is required and must be present.",
+    "related_entity_ids": [
+      "ENT-ELEM-102",
+      "ENT-SEG-109"
+    ],
+    "target_transaction": null,
+    "source_rule_id": "ENT-FIELD-109-4",
+    "source_page": 237,
+    "confidence_score": 0.95,
+    "requires_review": false,
+    "flags": [],
+    "expected_response_code": null,
+    "expected_decline_code": null,
+    "oracle_authority": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)",
+    "source": "auto_generated",
+    "fingerprint": "016a762a8a58cfdc928a61033fadbfaf67af42a99886dcbc552e53c81c3fbcd1",
+    "dedup_key": "85ae0d916756fcd08f260f16c35f11976d157e75e7bce46f4fa6999d9e854e59",
+    "id": "SC-0016",
+    "spec_id": "SRC-ATL105-PDF-001",
+    "spec_version": "2026-3",
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "scope_segments": null,
+    "scope_mode": null,
+    "confidence_pct": 95,
+    "confidence_band": "HIGH",
+    "confidence_factors": [
+      "prior_confidence_score=0.95"
+    ]
+  },
+  "test_case": {
+    "id": "TC-000014",
+    "scenario_id": "SC-0016",
+    "scenario_type": "field_constraint",
+    "transaction_type": "Electronic Mail Request",
+    "priority": null,
+    "priority_score": null,
+    "requirement_id": "REQ-SRC-ATL105-PDF-001:0819",
+    "requirement_ids": [
+      "REQ-SRC-ATL105-PDF-001:0819"
+    ],
+    "violated_element_name": null,
+    "negative_class": null,
+    "fingerprint": "16ea550640771664485d1806280141b9abc1de41575e8a24994c043c5e6a01a5",
+    "request": {
+      "Electronic Mail Data Segment": {
+        "Segment Type": {
+          "value": "109",
+          "method": "fixed_value",
+          "source_page": 237,
+          "flags": [],
+          "element_no": "85",
+          "data_ref": {
+            "segment": "109",
+            "element": "Segment Type",
+            "variant": "valid"
+          }
+        },
+        "Segment Length": {
+          "value": null,
+          "method": "derived_at_wire_encoding",
+          "source_page": 237,
+          "flags": [
+            "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+          ],
+          "element_no": "84",
+          "data_ref": {
+            "segment": "109",
+            "element": "Segment Length",
+            "variant": "valid"
+          }
+        },
+        "Information Byte": {
+          "value": "0",
+          "method": "qe_example_value",
+          "source_page": 237,
+          "flags": [
+            "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value"
+          ],
+          "element_no": "44",
+          "data_ref": {
+            "segment": "109",
+            "element": "Information Byte",
+            "variant": "valid"
+          }
+        },
+        "Terminal Identifier": {
+          "value": "YMGQ130437640537614291",
+          "method": "realistic_terminal_id",
+          "source_page": 237,
+          "flags": [
+            "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+            "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+          ],
+          "element_no": "102",
+          "data_ref": {
+            "segment": "109",
+            "element": "Terminal Identifier",
+            "variant": "valid"
+          }
+        },
+        "Prompt Code": {
+          "value": "0",
+          "method": "qe_example_value",
+          "source_page": 237,
+          "flags": [
+            "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+            "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable"
+          ],
+          "element_no": "78",
+          "data_ref": {
+            "segment": "109",
+            "element": "Prompt Code",
+            "variant": "valid"
+          }
+        },
+        "Block Number": {
+          "value": "000",
+          "method": "qe_example_value",
+          "source_page": 237,
+          "flags": [],
+          "element_no": "11",
+          "data_ref": {
+            "segment": "109",
+            "element": "Block Number",
+            "variant": "valid"
+          }
+        },
+        "Employee Number": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "32",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Employee Number",
+            "variant": "omitted"
+          }
+        },
+        "Password": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "65",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Password",
+            "variant": "omitted"
+          }
+        },
+        "Sequence Number": {
+          "value": "000001",
+          "method": "qe_example_value",
+          "source_page": 238,
+          "flags": [],
+          "element_no": "86",
+          "data_ref": {
+            "segment": "109",
+            "element": "Sequence Number",
+            "variant": "valid"
+          }
+        },
+        "Local Time": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "50",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Local Time",
+            "variant": "omitted"
+          }
+        },
+        "Extract Date": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "36",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Extract Date",
+            "variant": "omitted"
+          }
+        },
+        "Extract Time": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "37",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Extract Time",
+            "variant": "omitted"
+          }
+        },
+        "Text Data Length": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "104",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Text Data Length",
+            "variant": "omitted"
+          }
+        },
+        "Text Data": {
+          "value": null,
+          "method": "omitted",
+          "source_page": null,
+          "element_no": "103",
+          "flags": [
+            "CONDITIONAL_FIELD_OMITTED"
+          ],
+          "data_ref": {
+            "segment": "109",
+            "element": "Text Data",
+            "variant": "omitted"
+          }
+        }
+      }
+    },
+    "segment_presence": {
+      "109": "?"
+    },
+    "data_section_1": null,
+    "flags": [
+      "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+      "CONDITIONAL_FIELD_OMITTED",
+      "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+      "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+      "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value",
+      "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+      "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+    ],
+    "completeness_status": "COMPLETE",
+    "completeness_findings": [],
+    "scenario_oracle_hint": {
+      "response_code": null,
+      "decline_code": null
+    },
+    "grounding": {
+      "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+      "value_source": "test_generation/value_fill.py priority order",
+      "scenario_oracle_authority": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)"
+    },
+    "source_rule_id": "ENT-FIELD-109-4",
+    "source_page": 237,
+    "inclusion_profile": "typical",
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "scope_segments": null,
+    "scope_mode": null,
+    "expected_response": {
+      "structural": {
+        "tier": "INFER",
+        "assertions": [
+          "response message is well-formed per spec segment structure",
+          "every field satisfies its documented character-type and length"
+        ],
+        "grounding": "steps 1-2 extracted constraints"
+      },
+      "response_code": {
+        "tier": "FLAG",
+        "field": "ResponseCode",
+        "value": null,
+        "flags": [
+          "NEEDS_AUTHORIZER_DOC"
+        ]
+      },
+      "decline_code": {
+        "tier": "INFER",
+        "field": "DeclineCode",
+        "value": null,
+        "note": "positive scenario — no decline expected"
+      },
+      "response_message": {
+        "available": false,
+        "response_transaction_type": null,
+        "flags": [
+          "NO_RESPONSE_TEMPLATE: no paired response template for 'Electronic Mail Request' in the assembled catalog; expected response message cannot be constructed"
+        ],
+        "segments": {}
+      }
+    },
+    "verification": {
+      "status": "PASS",
+      "reasons": [],
+      "attempts": 1
+    }
+  }
+}
