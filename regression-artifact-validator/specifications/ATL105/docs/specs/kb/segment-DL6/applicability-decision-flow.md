@@ -2,15 +2,18 @@
 
 ```mermaid
 flowchart TD
-    A[Segment DL6 payload] --> B{Applicability and Message-Family Decisi… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEGDL6-R-001 Segment DL6 is only sent in a Table Load Respo…}
-    R1 -->|Fail| X1[Reject citing SEGDL6-R-001]
-    R1 -->|Pass| R2{SEGDL6-R-002 Segment DL6 maximum length is 9 alphanumeric c…}
-    R2 -->|Fail| X2[Reject citing SEGDL6-R-002]
-    R2 -->|Pass| Z[Rules satisfied]
+    A[Host is building a download response] --> B{Table Load Response?}
+    B -->|No| N1[DL6 must NOT be present - SEGDL6-R-001]
+    B -->|Yes| C{DL1 Card Type list contains 173?}
+    C -->|No| N2[DL6 must NOT be present - SEGDL6-R-001]
+    C -->|Yes| D[DL6 Required as Data Block 4]
+    D --> E["Position: after '*' closing block 3, followed by '*' - SEGDL6-R-006"]
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+| Message | DL6 | Evidence |
+|---|---|---|
+| Table Load Response with DL1 `173` | **Required** (layout says C, condition = `173`) | 11.7.1.2 field 8; 12.47 note |
+| Table Load Response without `173` | Not allowed | 12.47 note ("only sent … when") |
+| Any other message | Not allowed | Chapter 12 matrix |
 
 Source: [segment-DL6-rule-catalog.json](coverage/segment-DL6-rule-catalog.json) · Note: [applicability-decision-sme-tba-note.md](applicability-decision-sme-tba-note.md)

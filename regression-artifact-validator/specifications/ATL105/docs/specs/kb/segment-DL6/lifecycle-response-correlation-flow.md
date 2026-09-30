@@ -1,11 +1,21 @@
 # Segment DL6 Lifecycle, Response and Message Correlation Flow
 
 ```mermaid
-flowchart TD
-    A[Segment DL6 payload] --> B{Lifecycle, Response and Message Correla… in scope?}
-    B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
+sequenceDiagram
+    participant D as Device
+    participant H as BUYPASS Host
+    D->>H: Table Load Request (Load Type 'P')
+    H-->>D: ')' DL1 (Card Types incl. 173) [DL2] [DL3] '*' DL6 '*'
+    Note over D: Store daily blocking window Start-End
+    loop Every day
+        alt Device time within Start-End
+            Note over D: Store-and-forward blocked
+        else Outside window
+            Note over D: Store-and-forward allowed
+        end
+    end
 ```
 
-Rules are evaluated in catalog order. Provisional rules are shown with a dotted branch: they are documented but must not be certified as covered until the linked SME item is resolved.
+Rules: `SEGDL6-R-001`, `SEGDL6-R-006`, `SEGDL6-R-007`. Open: `SEGDL6-SME-005`, `SEGDL1-SME-003`.
 
 Source: [segment-DL6-rule-catalog.json](coverage/segment-DL6-rule-catalog.json) · Note: [lifecycle-response-correlation-sme-tba-note.md](lifecycle-response-correlation-sme-tba-note.md)
