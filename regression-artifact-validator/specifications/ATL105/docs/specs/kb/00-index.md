@@ -78,6 +78,9 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [segment-108/README.md](segment-108/README.md) - focused Segment 108 (Loyalty Card Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (Loyalty Card Transaction Request, not a Financial Transaction Request companion)
 - [segment-108/segment-108-sme-tba-input-register.md](segment-108/segment-108-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 108
 - [segment-113/README.md](segment-113/README.md) - focused Segment 113 (ECA/TeleCheck® Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (ECA/TeleCheck® Service Transaction Request, not a Financial Transaction Request companion)
+- [moneris-key-load/README.md](moneris-key-load/README.md) - Section 11.7.8 Moneris Key Load request/response layouts and Appendix V SPDH header subfields
+- [section-11-message-layout-index.json](section-11-message-layout-index.json) - Section 11 layout coverage index and explicit provisional/blocked statuses
+- [segment-132/README.md](segment-132/README.md) - Segment 132 and the provisional Section 11.9 CA Public Key File Load request/response template status
 - [segment-112/README.md](segment-112/README.md) - focused Segment 112 (Additional Information Data Segment) SME, technical business analysis, and flow-learning module; response-only companion of the Financial Transaction Response, triggered by Element 115
 - [segment-112/segment-112-sme-tba-input-register.md](segment-112/segment-112-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 112
 - [segment-112-canonical-anchors.md](segment-112-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 112 scope

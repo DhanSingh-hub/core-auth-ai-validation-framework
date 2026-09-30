@@ -19,6 +19,8 @@ Unlike every other segment trained so far (100, 109, 110, ...), Segment 116's tw
 
 Neither section contains a field table, a request/response message layout, or field lengths/R-O-C designations. Every rule in this catalog is instead assembled from **cross-references** found elsewhere in the document (the Element 63 and Element 85 processing rules, the segment-length valid-codes table, and the Chapter 13 element catalog for the response-side Key/Key Data elements). This produces a much thinner, more provisional rule set than Segment 100, 109, or 110 achieved, and it will remain that way until the external TransArmor document is supplied.
 
+The master message-template catalog retains only a [blocked Segment 116 placeholder](../../../atl105_complete_templates.json) with no field layout. Do not treat it as a usable request template or infer a response template from the available cross-references.
+
 ## Learning Module Index
 
 - [Segment 116 Rule Catalog (authoritative)](coverage/segment-116-rule-catalog.json)

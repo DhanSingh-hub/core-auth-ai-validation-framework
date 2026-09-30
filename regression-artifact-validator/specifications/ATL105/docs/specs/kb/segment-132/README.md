@@ -25,7 +25,9 @@
 | Placement | Data Section 3 of the CA Public Key File Load Request |
 | Origin | Device |
 | Segment length range | 01–77 alphanumeric characters (field-sum reconciliation provisional) |
-| Message family | CA Public Key File Load Request only; companions 101/102/104/111 per the 11.9.1 text, none per its table (PROVISIONAL, SEG132-SME-006) |
+| Message family | CA Public Key File Load request/response templates are catalogued; request placement remains PROVISIONAL because the 11.9.1 prose and table conflict (`SEG132-SME-006`) |
+
+The source-derived request/response layouts are recorded in [atl105_complete_templates.json](../../../atl105_complete_templates.json). The request follows the table-level placement of Segment 132 at field 3 with Number of Segments `01`, and is explicitly marked provisional; do not treat its Segment 100 or companion-segment policy as settled. The response is positional, has no Field Separators, and includes the response code, checksum, block length, key/error block, and block number. Do not put real CA key material or production checksums in fixtures.
 
 ## 2. Field Layout (10 fields — see [rule catalog](coverage/segment-132-rule-catalog.json) for all 12 rules)
 

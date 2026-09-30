@@ -18,8 +18,8 @@ Items the Test Team can decide internally: process, tooling, fixtures and valida
 | [TT-0008](#tt-0008) | Re-run Run2 validation after the 2026-09-29 validator fixes | OPEN | Test Team | 2026-09-29 |
 | [TT-0009](#tt-0009) | Fix six broken links found during the handbook consolidation | OPEN | Test Team | 2026-09-29 |
 | [TT-0010](#tt-0010) | Build the Segment 112 Java validator in this pass? | RESOLVED | Test Team | 2026-09-26 |
-| [TT-0011](#tt-0011) | Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs | OPEN | Test Team | 2026-09-29 |
-| [TT-0012](#tt-0012) | Populate element numbers in the Segment 156 rule catalog | OPEN | Test Team | 2026-09-29 |
+| [TT-0011](#tt-0011) | Add the element-24 anchor to the existing DL2-DL6 framing rules | OPEN | Test Team | 2026-09-29 |
+| [TT-0012](#tt-0012) | Populate element numbers on the Segment 156 rule anchors | OPEN | Test Team | 2026-09-29 |
 | [TT-0013](#tt-0013) | Decide the encoding for multi-element sourceAnchors in rule catalogs | OPEN | Test Team | 2026-09-29 |
 | [TT-0014](#tt-0014) | Adopt a request data-section convention: Data Section 2 holds only Segment 100 | RESOLVED | Test Team | 2026-09-29 |
 | [TT-0015](#tt-0015) | Correct the shared AI JSON envelope field names in Segment 100, 109, 116 and 118 validators | OPEN | Test Team | 2026-09-30 |
@@ -142,28 +142,36 @@ Decided during the 2026-09-26 SME/TBA intake: no, the Segment 112 pass is docume
 **Resolution (2026-09-26, Test Team):** No; documentation-only pass. Revisit after SEG112-SME-003 and SEG112-SME-006.
 
 <a id="tt-0011"></a>
-## TT-0011: Anchor element 24 (Data Type Indicator) in the DL2-DL6 rule catalogs
+## TT-0011: Add the element-24 anchor to the existing DL2-DL6 framing rules
 
 - **Status:** OPEN
 - **Owner:** Test Team
 - **Raised:** 2026-09-29 by saurabhtw28
 - **Segments:** DL2, DL3, DL4, DL5, DL6
 
-The DL2-DL6 rule catalogs carry no sourceAnchor for element 24, even though our own knowledge base documents the Data Type Indicator as field 1 of each of these segments and records the distinct framing character per segment (DL4 '@', DL5 '$', DL6 '\'). Only SEGDL1-R-002 anchors element 24 (as the string '24,34'). Because the element is described in prose but never anchored, an AI requirement correctly identifying field 1 as required cannot be matched to any Test Solution rule for DL2-DL6.
+CORRECTED 2026-09-30 after a second check. This is an ANCHORING gap, not a coverage gap.
 
-Add an element-24 anchored rule to each of the five catalogs, mirroring SEGDL1-R-002.
+The Data Type Indicator IS already covered for every DL segment, and more precisely than the producer's requirement. SEGDL2-R-001, SEGDL3-R-001, SEGDL4-R-002, SEGDL5-R-002 and SEGDL6-R-002 each state the marker convention and pin the exact fixed value: DL2 '!', DL3 ':', DL4 '@', DL5 '$', DL6 '\'. SEGDL1-R-002 carries the governing note that segments DL1-DL6 all use the Data-Type/End-of-Data marker convention.
+
+The only defect is metadata: those five rules have an empty sourceAnchor.element, so element 24 is not machine-discoverable and anchored comparison cannot find them.
+
+ACTION: add element 24 to the sourceAnchor of each EXISTING rule listed above. Do NOT add new rules - that would create weaker duplicates of coverage we already have.
 
 <a id="tt-0012"></a>
-## TT-0012: Populate element numbers in the Segment 156 rule catalog
+## TT-0012: Populate element numbers on the Segment 156 rule anchors
 
 - **Status:** OPEN
 - **Owner:** Test Team
 - **Raised:** 2026-09-29 by saurabhtw28
 - **Segments:** 156
 
-Every rule in ATL105-SEG156-RULE-CATALOG-001 (7 rules) has an empty 'element' on its sourceAnchor. Segment 156 is the only trained segment whose catalog records no element identity at all, so no element-level comparison against a producer artifact is possible for this segment.
+CORRECTED 2026-09-30 after a second check. This is an ANCHORING gap, not a coverage gap.
 
-Populate sourceAnchor.element for each Segment 156 rule, including element 242 (EV Charging Data).
+All 7 rules in ATL105-SEG156-RULE-CATALOG-001 have an empty sourceAnchor.element, making 156 the only trained segment with no element identity anywhere in its catalog.
+
+The producer requirement ('field 3 EV Charging Data is required') is already covered implicitly and more thoroughly: SEG156-R-003 makes the EV Transaction Indicator (Table 01) mandatory, which cannot hold unless EV Charging Data is present, and R-004 to R-007 cover sub-tables 02-12, formats and Visa enumerations.
+
+ACTION: populate sourceAnchor.element on the existing rules, including element 242 for the EV Charging Data container. Do NOT add a new presence rule.
 
 <a id="tt-0013"></a>
 ## TT-0013: Decide the encoding for multi-element sourceAnchors in rule catalogs

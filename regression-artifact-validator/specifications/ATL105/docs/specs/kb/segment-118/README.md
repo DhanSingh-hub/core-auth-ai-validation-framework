@@ -3,7 +3,7 @@
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Sections:** 11.7.6 Proprietary Data Load Request (pages 11-36 to 11-37), 11.7.7 Proprietary Data Load Response (pages 11-38 to 11-39), 12.16 Proprietary Data Load Segment (pages 12-37 to 12-45) with subsections 12.16.1-12.16.5, Chapter 13 Data Element Descriptions (Elements 11, 44, 55, 63, 77, 78, 83, 84, 85, 86, 102, 165-186, 201), and Appendix E (Valid Card Type Codes Used in Special Transaction Prompt Codes)
 **Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)
-**Item Progress:** Item 1 - Coverage Closure substantially complete (30 rules covering the full request/response envelope, all 13 core fields, and all five conditional Prompt-Code payload variants). Item 2 - AI Artifact Comparison in progress against the supplied requirement catalog (107 requirements). Items 3-8 blocked pending the manual inputs in [Segment 118 SME/TBA Input Register](segment-118-sme-tba-input-register.md).
+**Item Progress:** Item 1 - Coverage Closure substantially complete (30 rules covering the full request/response envelope, all 13 core fields, and all five conditional Prompt-Code payload variants). Item 2 - Independent AI chain review completed with verdict `REJECTED_NOT_INTAKE_READY`: none of the 578 linked Run2 payloads contains Segment 118, and the phase-1 probe does not reach test case or test data. Items 3-8 remain blocked pending manual inputs and AI rework in the [Segment 118 SME/TBA Input Register](segment-118-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
@@ -34,6 +34,7 @@ Unlike Segment 116 (whose sections were stubs), Segment 118's specification sect
 - [Coverage Closure SME/TBA Note](coverage/segment-118-coverage-sme-tba-note.md)
 - [Coverage Closure Flow](coverage/segment-118-coverage-flow.md)
 - [Supplied AI Requirement Catalog Coverage Report](coverage/segment-118-supplied-pipeline-ai-coverage-report.md)
+- [Independent AI BR-to-test-data Chain Verification](../../../../test-output/ai-solution-independent-review/segment-118-ai-chain-verification.json)
 - [Segment 118 Canonical Source Anchors](../segment-118-canonical-anchors.md)
 - [Segment 118 AI Business Requirements](../../../../test-output/ai-artifacts/business-requirements/POC-AI-ATL105-Segment-118-Business-Requirements.md)
 - [Segment 118 BR Coverage Report](../../../../test-output/ai-artifacts/coverage-reports/segment-118/POC-AI-Segment-118-BR-Coverage-Report.md)
@@ -97,8 +98,8 @@ The complete machine-readable set is in [coverage/segment-118-rule-catalog.json]
 
 | Methodology Item | Status | Evidence / gate |
 |---|---|---|
-| 1. Coverage closure | SUBSTANTIALLY_COMPLETE | 30 source-derived rules cataloged; Item 1 validator and baseline tests cover all 13 core fields and all 5 Prompt Code payload variants. |
-| 2. AI artifact comparison | IN_PROGRESS | 107 AI-generated Segment 118 requirements extracted from the supplied requirement catalog and cross-walked against the 30-rule oracle (see [coverage report](coverage/segment-118-supplied-pipeline-ai-coverage-report.md)). |
+| 1. Coverage closure | SUBSTANTIALLY_COMPLETE | 30 source-derived rules cataloged; payload tests cover core fields, request/response direction, and all five Prompt Code variants using synthetic Test Solution fixtures. `Segment118WireFormatValidator` checks request separators (including empty fields and the separator after field 13) and positional response encoding for core fields 1-13. |
+| 2. AI artifact comparison | REJECTED_NOT_INTAKE_READY | 107 Run1 BRs and 608 Run2 trace rows reviewed; zero of 578 linked physical payloads contains Segment 118, all rows declare 2025-3 instead of 2026-3, and phase-1 stops before TC/TD. See the [BR mapping report](coverage/segment-118-supplied-pipeline-ai-coverage-report.md) and [independent chain verification](../../../../test-output/ai-solution-independent-review/segment-118-ai-chain-verification.json). |
 | 3. Test-data independence | BLOCKED | Requires the Information Byte value catalog and approved fixtures (`SEG118-SME-001`, `SEG118-SME-004`). |
 | 4. Traceability matrix | BLOCKED | Requires AI artifact sign-off. |
 | 5. Mutation definition | BLOCKED | Requires the Information Byte value catalog. |
@@ -119,8 +120,8 @@ The complete machine-readable set is in [coverage/segment-118-rule-catalog.json]
 ## 7. Next Training Actions
 
 1. Provide answers for the items in the SME/TBA input register (Information Byte value catalog, Receipt Text Data encoding nuance, AI artifact authoritative source, and sanitized fixtures for each Prompt Code variant).
-2. Add sanitized, converter-ready request/response examples for each of the five Prompt Code flows.
-3. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+2. Obtain SME-approved sanitized, converter-ready request/response examples for each Prompt Code flow; the current synthetic fixtures are oracle regression data only.
+3. Require AI rework to produce valid Segment 118 BR -> TS -> TC -> TD -> mapping evidence, then repeat independent intake. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
 
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index
