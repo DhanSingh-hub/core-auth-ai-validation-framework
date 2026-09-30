@@ -15,11 +15,11 @@ flowchart TD
     R4 -.->|Provisional| P4[REVIEW_REQUIRED]
     R4 -->|Pass| R5{SEG102-R-011 Unit of Measure uses an allowed value}
     R5 -->|Fail| X5[Reject citing SEG102-R-011]
-    R5 -->|Pass| R6{SEG102-R-012 Quantity preserves the assumed-decimal-place l…}
+    R5 -->|Pass| R6{SEG102-R-012 Quantity preserves the assumed-decimal-place leading digit}
     R6 -->|Fail| X6[Reject citing SEG102-R-012]
-    R6 -->|Pass| R7{SEG102-R-013 Unit Price preserves the assumed-decimal-place…}
+    R6 -->|Pass| R7{SEG102-R-013 Unit Price preserves the assumed-decimal-place leading digit}
     R7 -->|Fail| X7[Reject citing SEG102-R-013]
-    R7 -->|Pass| R8{SEG102-R-014 Product Amount is present for every product en…}
+    R7 -->|Pass| R8{SEG102-R-014 Product Amount is present for every product entry}
     R8 -->|Fail| X8[Reject citing SEG102-R-014]
     R8 -->|Pass| Z[Rules satisfied]
 ```
