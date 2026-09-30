@@ -31,7 +31,7 @@ The Segment 116 catalog states **no** trailing-optional-field omission allowance
 
 | Rule | Title | Section | Element | Status |
 |---|---|---|---|---|
-| `SEG116-R-007` | The TransArmor Load Response contains Key ID (Element 155, required, fixed 11 alphanumeric bytes, must be reused for all subsequent TransArmor transactions from the device once approved), Key Data Length (Element 156, r… | Chapter13-Elements155-157 | 155,156,157 | REVIEW_REQUIRED |
+| `SEG116-R-007` | The TransArmor Load Response contains Key ID (Element 155, required, fixed 11 alphanumeric bytes, must be reused for all subsequent TransArmor transactions from the device once approved), Key Data Length (Element 156, required, numeric, valid values 000-999), and Key Data (Element 157, required, alphanumeric up to 999 bytes; carries the new encryption key on an approved transaction or an error message on a declined transaction); whether these fields are serialized inside a Segment 116 response container or a separate positional response structure is not stated | Chapter13-Elements155-157 | 155,156,157 | REVIEW_REQUIRED |
 
 These rules require **paired messages** in the test data. A test-control flag asserting "correlated" or "echoed" is not evidence.
 
