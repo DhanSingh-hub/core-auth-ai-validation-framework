@@ -1,76 +1,37 @@
 # Segment DL3 Applicability and Message-Family Decision: SME/TBA Learning Note
 
-**Segment:** DL3 — Date and Time Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.44  
-**Oracle:** [segment-DL3-rule-catalog.json](coverage/segment-DL3-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `prompt-code-*` (the inclusion decision).
+**Segment:** DL3 — Date and Time Data Segment · **Sources:** 11.7.1.2, 11.7.3, 11.7.3.2 · **Oracle:** [rule catalog](coverage/segment-DL3-rule-catalog.json) · **Benchmark:** Segment 100 [prompt-code note](../segment-100/prompt-code-sme-tba-note.md)
 
 ## Core Idea
 
-Segment DL3 is valid only inside the message families and Data Sections the specification assigns to it. A structurally perfect segment placed in the wrong message is an invalid message, not a weak test.
+DL3 is the only download segment the device can obtain **without** a merchant load flag: the Date and Time Load (Load Type `D`) is always allowed. In a Table Load Response DL3 is Conditional (Data Block 3).
 
-## Specification-Derived Rules (1)
+## Rules
 
-| Rule | Title | Section | Element | Status |
-|---|---|---|---|---|
-| `SEGDL3-R-001` | Segment DL3 maximum length is 23 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed ':' (field 1), End-of-Data Indicator fixed '~' (last field) | 12.44 | — | SPEC_DERIVED |
+| Rule | Statement | Status |
+|---|---|---|
+| `SEGDL3-R-007` | Table Load Response Block 3 (C) and Date and Time Load Response only | REVIEW_REQUIRED (P-03) |
+| `SEGDL3-R-008` | Date and Time Load: device-initiated, Load Type `D`, no flag, time-zone/DST adjusted | SPEC_DERIVED |
 
-## Catalog Notes
+## Load Types (Element 48)
 
-_No catalog notes are recorded against these rules._
+| Load Type | Meaning | DL3 expected? |
+|---|---|---|
+| `P` | Partial load (Phone, Table) | Only inside a Table Load Response, Conditional |
+| `D` | Date and Time Load | Yes |
+| `K` | TransArmor / CA Public Key load | No |
 
-## SME Reasoning
+## SME Questions
 
-Ask:
+1. `SEGDL3-SME-003`: does the Date and Time Load Response end with `~`?
+2. When is DL3 omitted from a Table Load Response?
+3. For a device in a different time zone from BUYPASS, which reference time should the test oracle use?
 
-1. Which message families may carry Segment DL3, and in which Data Section?
-2. Is Segment DL3 Required, Conditional, or Optional in each of those families?
-3. What business condition causes Segment DL3 to be included?
-4. Which companion segments may, must, or must not accompany it?
-5. Is absence of Segment DL3 ever legitimate, and how should that be diagnosed?
-
-## TBA Dependency Chain
-
-```text
-transaction / message family
-  -> Data Section placement
-  -> inclusion condition
-  -> companion-segment set
-  -> Element 63 (Number of Segments) count where applicable
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-Example derived from the catalog:
+## TBA Decomposition
 
 ```text
-Segment DL3 maximum length is 23 alphanumeric characters originates at BUYPASS Host Data Type Indicator fixed ':' field 1 , End-of-Data Indicator fixed '~' last field
-  -> source: ATL105 2026-3 §12.44 (SEGDL3-R-001)
-  -> a violating payload shall fail validation citing SEGDL3-R-001
+BR:  A Date and Time Load Request (Load Type 'D') shall be answered with DL3 data regardless of the merchant load flag (SEGDL3-R-008).
+TS:  Merchant with no load flag set requests a Date and Time Load.
+TC+: Request '?' + TID + 'D'; response ':' + 21 characters (+ '~' per SME-003). Expected PASS.
+TC-: Response is an error block because no flag is set. Expected FAIL citing SEGDL3-R-008.
 ```
-
-## Open Provisional Items
-
-_No open provisional items are linked to these rules._
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL3PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Is every rule traced to its source anchor (`SEGDL3-R-001`…)?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?

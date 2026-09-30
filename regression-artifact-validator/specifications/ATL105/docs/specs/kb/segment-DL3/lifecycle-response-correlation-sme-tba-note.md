@@ -1,66 +1,28 @@
 # Segment DL3 Lifecycle, Response and Message Correlation: SME/TBA Learning Note
 
-**Segment:** DL3 — Date and Time Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.44  
-**Oracle:** [segment-DL3-rule-catalog.json](coverage/segment-DL3-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
-
-Segment 100 analogue: `sequence-lifecycle-*` (cross-message correlation).
+**Segment:** DL3 — Date and Time Data Segment · **Sources:** 11.7.3, 11.7.3.2, 11.7.1.2, 13.2 (Elements 23, 48, 65) · **Oracle:** [rule catalog](coverage/segment-DL3-rule-catalog.json) · **Benchmark:** Segment 100 [sequence-lifecycle note](../segment-100/sequence-lifecycle-sme-tba-note.md)
 
 ## Core Idea
 
-Some Segment DL3 rules can only be proven across two or more related messages. A single message, or a test-control flag claiming correlation, is description rather than evidence.
+DL3 values are used later: Current Time sets the device clock, Cut Time schedules settlement, and Password is sent back to BUYPASS in Totals and Electronic Mail Requests. DL3 lifecycle evidence therefore spans the load exchange **and** a later request that uses the loaded values.
 
-## Specification-Derived Rules (0)
+## Lifecycle Steps
 
-_The Segment DL3 rule catalog contains **no** `lifecycle/response/operational` rules. This is recorded as a gap, not an assumption that none exist — confirm with the SME before writing requirements in this area, and do not invent rules to fill it._
+| Step | Message | Assert | Rule |
+|---|---|---|---|
+| 1 | Date and Time Load Request | `?` + Terminal Identifier + Load Type `D` | `SEGDL3-R-008` |
+| 2 | Date and Time Load Response | DL3 fields; time adjusted for device time zone/DST | `SEGDL3-R-007`, `R-005` |
+| 1' | Table Load Request/Response | DL3 as Data Block 3 (Conditional) | `SEGDL3-R-007` |
+| 3 | Totals Request (automatic cut time) | Sent 30 minutes before Cut Time if not settled | `SEGDL3-R-009` |
+| 4 | Totals / Electronic Mail Request | Password matches the merchant profile | Element 65, `SEGDL3-SME-002` |
 
-## Catalog Notes
+## Correlation Points
 
-_No catalog notes are recorded against these rules._
+- Current Time in DL3 must reflect the requesting device's time zone, not BUYPASS host time. Test data must record the device time zone.
+- The Password loaded in DL3 is the value later compared by the host in Totals Requests. If the Password is really Device-sourced (12.44), the host cannot load it — this is why `SEGDL3-SME-002` matters.
 
-## SME Reasoning
+## SME Questions
 
-Ask:
-
-1. Which Segment DL3 values must be echoed, preserved, or referenced in a related message?
-2. Which message is the original and which is the follow-up or response?
-3. Does the test data contain both messages, or only a claim that they correlate?
-4. What happens when the follow-up or response is missing, late, or mismatched?
-5. Is any correlation value environment-specific (test vs production)?
-
-## TBA Dependency Chain
-
-```text
-original message (Segment DL3)
-  -> host processing
-  -> response / follow-up message
-  -> echoed or preserved values
-  -> correlation assertion
-```
-
-A requirement such as "the field is valid" is untestable. A useful requirement names the element, the condition, and the observable outcome, and cites the rule ID it is derived from.
-
-## Open Provisional Items
-
-- **P-01** (AI-artifacts, test-data): No dedicated Segment DL3 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## Security and Test-Data Guidance
-
-- Use synthetic values only; never copy production PANs, PINs, keys, tokens, or cryptographic material into artifacts.
-- Do not treat a JSON field name as proof that the underlying element rule is satisfied.
-- Keep `REVIEW_REQUIRED` rules out of `COVERED` status until the SME resolves the linked provisional item.
-
-## Current Validator Boundary
-
-No `SegmentDL3PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
-
-## Review Checklist
-
-- Has the SME confirmed that this area genuinely has no rules?
-- Does each requirement name an element, a condition, and an observable outcome?
-- Are provisional rules kept at `REVIEW_REQUIRED`?
-- Is the test data synthetic and complete enough to exercise the rule?
-- Is the negative case tested, not just the happy path?
+1. `SEGDL3-SME-002`: Password source and purpose.
+2. `SEGDL3-SME-003`: `~` in the Date and Time Load Response.
+3. Does a Date and Time Load ever return an error block (for example for an unknown Terminal Identifier)?
