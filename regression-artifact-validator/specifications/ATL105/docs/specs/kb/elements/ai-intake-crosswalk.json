@@ -1,0 +1,20 @@
+{
+  "artifact": "ATL105-AI-INTAKE-CROSSWALK",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "decisionAuthority": "TEST_SOLUTION_REVIEW",
+  "status": "REVIEWED_CANDIDATE_NOT_APPROVED",
+  "policy": "Maps AI payload envelope names and root labels only. Segment fields map through contract alias crosswalks or a unique Chapter 13 name that is also anchored by the same segment's rule catalog; anything else is REVIEW_REQUIRED.",
+  "rootFamilies": {
+    "Financial Request": {
+      "family": "Financial Transaction Request",
+      "emvFamily": "EMV Financial Transaction Request",
+      "emvSegment": "130",
+      "evidence": "Section 11.8.1 lists Segment 130 as required for the EMV Financial Transaction Request; Section 11.1.1 does not list Segment 130."
+    }
+  },
+  "envelopeFields": {
+    "MessageType": {"element": "55", "evidence": "Data Section 1 field 1 is Element 55 Message Format Version Identifier; AI value domain is ATL105."},
+    "NumSegments": {"element": "63", "evidence": "Data Section 1 field 2 is Element 63 Number of Segments."}
+  }
+}

@@ -205,6 +205,20 @@ Classify every BR into one of these families. Segment 100 uses all of them; othe
 
 Do not flatten conditional or separate-domain rules into universal segment rules.
 
+## All-Element Validation Workstream
+
+Use the [all-element module](elements/README.md) and its [source/BR inventory](../../../test-output/test-solution-independent-review/all-element-inventory.json) before introducing element BRs. The source has 231 distinct element IDs and 232 definition occurrences; repeated IDs and different segment meanings must remain separate evidence. Automated element-ID matches only locate existing BR candidates. Compare the source, version, message family, segment, transaction/card context, subtable and lifecycle before declaring equivalence or creating a new BR.
+
+Add contextual value/combination profiles only after source and existing-BR review. Unknown context and unimplemented profiles must yield `REVIEW_REQUIRED`, never implicit PASS. Retain existing IDs and review states. Test valid, invalid, boundary, missing-field and missing-context cases and link BR -> TS -> TC -> TD -> mapping before reporting coverage.
+
+Current state:
+
+- Chapter 13 type/length baselines cover 220 of 231 elements. Only over-length and non-digit numeric values are `INVALID`; everything else is review.
+- 67 profiles cover Elements 30, 55, 63, 84, 85 and 86, including generated segment length/type profiles and count/membership combinations.
+- A read-only AI intake validates all Run2 payloads.
+
+This does not establish all-element validation or LLM accuracy. When an alias crosswalk contradicts a unique Chapter 13 name, reject it at intake and record the gap. See the module's batch plan, generation review list and limitations.
+
 ## Common Nine-Phase Strategy
 
 Each phase is a gate in `training-status.json` `requiredGates`, in this order: `SOURCE_INVENTORY`, `SEGMENT_KNOWLEDGE_MODEL`, `CONTEXT_MATRIX`, `INDEPENDENT_BR_DERIVATION`, `TS_TC_TEST_DATA_CHAIN`, `LIFECYCLE_AND_SPECIALIZED_FLOWS`, `SERIALIZATION_AND_MUTATION`, `INDEPENDENT_AI_ARTIFACT_INTAKE`, `CONVERTER_AND_EXECUTION_READINESS`. A gate passes only with recorded evidence and a reviewer.
@@ -567,6 +581,10 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L20. Do not generate download-segment notes from a numbered-segment template.** The 2026-09-28 parity notes for DL1-DL8 were generated from a template built for numbered segments. They told testers to "keep the Field Separator for an empty middle field" and to check a "3-digit Segment Length" for DL1-DL6, which have neither. They also reported "no conditional rules" for DL1 although Card Type `173` requires DL6. DL1-DL6 are framed by a Data Type Indicator and `~`, have no Field Separators, and "when a field is not populated, the next field immediately follows". DL7 and DL8 use a Data Type Indicator plus a Segment Length that excludes the indicator. Take the framing from the segment's own Section 12 note and the §11.7 download layouts, then write the notes.
 
+**L21. An unmatched anchor is not a coverage gap; read the rule text before attributing one.** The 2026-09-29 `phase_1_single_leg` review first reported six Test Solution coverage gaps because the producer's element anchors did not match any catalog rule. A second check found zero coverage gaps. For DL2-DL6 the Data Type Indicator was already covered, and more strongly than the producer's requirement: `SEGDL2-R-001`, `SEGDL3-R-001`, `SEGDL4-R-002`, `SEGDL5-R-002` and `SEGDL6-R-002` each pin the exact fixed marker (`!`, `:`, `@`, `$`, `\`), while the producer asserted presence only. The rules simply carried no `sourceAnchor.element`. Element-anchor matching cannot distinguish "not covered" from "covered but not anchored"; it is a discovery aid, not a coverage test. Before reporting a gap against either producer, open the candidate rules and compare meaning. Report an anchoring gap as `ANCHORING_GAP` and fix it by adding element metadata to the existing rule, never by adding a duplicate rule.
+
+**L22. Encode multi-element anchors as a list, not a delimited string.** Rule catalogs store multi-element anchors as a comma-separated string, for example `SEGDL1-R-002` `element: "24,34"` and `SEGDL1-R-003` `element: "53,98,3,4,54"`, while `canonical-anchor.schema.json` types `element` as a single string. Any consumer doing an equality lookup silently fails: a search for `24` does not match `24,34`. This produced a false unmatched verdict for DL1 and Segment 157, and a false matched verdict for Segments 151 and 152 whose rules carry no element at all. Until the encoding is fixed (`TT-0013`), split on `,` before comparing, and never treat an empty `element` as a wildcard.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -597,3 +615,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-30 | Reconciled all 31 Section 11 layout slots against the 2026-3 extract: corrected the Financial and EMV segment tables, added the shared response layouts/aliases and Data Section 1 fields, recorded DL6 and all five PDL prompt directions, and indexed every subsection. Moneris Key Load layouts include the Appendix V SPDH subfields; CA Public Key File Load remains provisional under `SEG132-SME-006`; TransArmor remains blocked on its missing external source. The master catalog remains `EXTRACTED` and `human_review_required`. |
 | 2026-09-30 | Started code-by-code Element 83 response training with code `0` (Approved Purchase/Capture). Added a dedicated family/segment coverage module and clarified that transaction-type compatibility is a Test Solution rule rather than an explicit ATL105 cross-product; Segment 100 Approval Number remains conditional on lifecycle context. |
 | 2026-09-30 | Expanded Element 83 training to all 31 source-defined code values and seven message families; added 35 source-defined code/family BR meanings and exhaustive validation of all 217 code/family pairs (35 valid, 182 invalid for the selected family). This does not claim the source defines every transaction/card cross-product or that BRs are business-approved. |
+| 2026-09-30 | Reviewed the AI `phase_1_single_leg` delivery (2026-09-29): first five-leg delivery, 37 full chains, perfect referential integrity, but 51.5% of composed segments lost in serialization, three empty test-data files reported `PASS`, no expected outcomes and no negative cases. Verdict `CHAIN_STRUCTURE_SOUND_EXECUTION_EVIDENCE_INSUFFICIENT`. A second check retracted six claimed Test Solution coverage gaps as anchoring gaps (zero coverage gaps found) and corrected `TT-0011`/`TT-0012`. Added L21 and L22; raised `TT-0013` and `AIF-0013`. Report: [reports/ai-feedback/](../../../reports/ai-feedback/). |

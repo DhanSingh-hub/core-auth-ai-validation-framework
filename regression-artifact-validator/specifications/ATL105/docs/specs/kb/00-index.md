@@ -66,6 +66,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 
 ## Related files in this knowledge base
 
+- [elements/README.md](elements/README.md) - all 231 element source/BR inventory, contextual validation profiles, implementation plan and explicit coverage gaps
 - [11-financial-transaction-request-sections.md](11-financial-transaction-request-sections.md) - TCP/IP header distinction, standard financial-request sections, Segment 100-only eligibility, and Section 3 conditions
 - [segment-100-canonical-anchors.md](segment-100-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 100 scope
 - [segment-100/README.md](segment-100/README.md) - focused Segment 100 SME, technical business analysis, and flow-learning module
