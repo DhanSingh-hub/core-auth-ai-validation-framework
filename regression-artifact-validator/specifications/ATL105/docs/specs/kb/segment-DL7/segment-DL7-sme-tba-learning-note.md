@@ -1,19 +1,53 @@
 # Segment DL7 Supplemental Terminal Data Segment: SME and TBA Learning Note
 
-Verified against Section 12.48, Elements 24, 84, 232.
+Verified against Section 12.48, Appendix W, and Section 13.2 (Elements 24, 84, 232).
 
 ## What Segment DL7 Means
 
-Carries supplemental terminal download data in `<tag><len><data>` TLV format. Unlike Segments DL1-DL6, this segment does NOT use an End-of-Data Indicator — instead it uses a Segment Length Indicator (matching the numbered-segment convention), making it a hybrid of the two families' framing conventions.
+DL7 is a small, extensible container: the host sends supplemental terminal settings as tagged entries. Appendix W currently defines two tags — the terminal's site language (ISO 639-2) and its international postal code.
 
-## Field Layout
+```text
+'^' + Segment Length (3) + [ TableID(3) TableLength(3) TableData ]...
+```
 
-Data Type Indicator(24, fixed `^`), Segment Length Indicator(84,3, **exclusive** of Data Type Indicator's length — Device-sourced), Download Data(232, max 100, TLV format per Appendix W).
+Compare with Segment 100 and DL1-DL6:
 
-## Notable Finding
+| Question | Segment 100 | DL1-DL6 | DL7 |
+|---|---|---|---|
+| Identity | Segment Type `100` | Data Type Indicator | Data Type Indicator `^` |
+| Length | Segment Length | None | Segment Length (excludes `^`) |
+| Terminator | None | `~` | None |
+| Field delimiting | Field Separators | None | TLV entries |
 
-Segment Length Indicator here excludes the Data Type Indicator's own length from its count — a distinct counting convention from most numbered segments, which include the Segment Type field's length. Not yet cross-verified against every numbered segment; treat as segment-specific until confirmed generalizable.
+## Appendix W (transcribed)
+
+| Field | Attributes | Site Language | Postal Code |
+|---|---|---|---|
+| Table ID | n3 | `001` | `002` |
+| Table Length | n3 | `003` | `013` |
+| Table Data | an1 (sic) | ISO 639-2 language code | 13-character international postal code |
+
+The earlier note said Appendix W was "not yet transcribed". It is present in the extracted 2026-3 text and is now catalogued as `SEGDL7-R-004`.
+
+## Open Questions
+
+| Topic | Item |
+|---|---|
+| Is Appendix W in scope? | `SEGDL7-SME-001` |
+| `an1` vs Table Length 003/013 | `SEGDL7-SME-003` |
+| Which message carries DL7; can data span several DL7s? | `SEGDL7-SME-004` |
+| Does Segment Length include its own digits; why "Source: Device"? | `SEGDL7-SME-005` |
+
+## TBA Decomposition Example
+
+```text
+BR:  Each DL7 Download Data entry shall be Table ID + Table Length + Table Data of exactly Table Length characters (SEGDL7-R-004).
+TS:  Terminal with site language 'eng' and postal code 'A1B 2C3'.
+TC+: Download Data '001003eng002013A1B 2C3      '. Expected PASS.
+TC-: '001004eng' (Table Length 4, 3 data characters). Expected FAIL citing SEGDL7-R-004.
+TD:  Structured DL7 JSON with entries [{tableId "001", data "eng"}, {tableId "002", data "A1B 2C3"}].
+```
 
 ## Source References
 
-Section 12.48: lines 17588-17637. [Rule Catalog](coverage/segment-DL7-rule-catalog.json). Appendix W not yet transcribed (`SEGDL7-SME-001`).
+Section 12.48: lines 17587-17634 · Appendix W: lines 35814-35830 · [Rule Catalog](coverage/segment-DL7-rule-catalog.json).

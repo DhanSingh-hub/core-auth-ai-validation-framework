@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 181 open, 3 reopened, 29 resolved, 2 deferred (215 total).
+**Status:** 184 open, 3 reopened, 29 resolved, 2 deferred (218 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -413,8 +413,11 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
-| [SEGDL7-SME-001](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-001) | Is Appendix W (Download Data Layout) in scope for this training pass? |  | OPEN | `P-01`, SEGDL7-R-003 | 2026-09-26 |
+| [SEGDL7-SME-001](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-001) | Is Appendix W (Download Data Layout) in scope for this training pass? | Appendix W is present in the extracted ATL105 2026-3 text (Table ID 001 Site Language, Table ID 002 Postal Code) and has been transcribed into SEGDL7-R-004 pending this scope decision. | OPEN | `P-01`, SEGDL7-R-003 | 2026-09-26 |
 | [SEGDL7-SME-002](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-002) | Provide a dedicated Segment DL7 AI/Test package, or approve synthesized fixtures. | No dedicated Segment DL7 AI or Test package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-02` | 2026-09-26 |
+| [SEGDL7-SME-003](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-003) | Appendix W gives Table Data the attribute 'an1' for both Site Language (Table Length 003, ISO 639-2 code) and Postal Code (Table Length 013). Is Table Data really Table Length characters long (3 and 13), and does Table Length count only the Table Data? | Appendix W Download Data Layouts table. | OPEN | `P-03`, SEGDL7-R-004 | 2026-09-30 |
+| [SEGDL7-SME-004](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-004) | Which message carries DL7, and where? DL7 is not in the Table Load Response layout (11.7.1.2) or the Chapter 12 segment/transaction matrix. Element 232 says DL7 holds 'all or some of the Download Data': can Download Data span several DL7 segments, and if so how are they ordered? | Section 12.48, Section 11.7.1.2, Chapter 12 matrix (DL1-DL6 only), Section 13.2 Element 232. | OPEN | `P-04`, SEGDL7-R-001, SEGDL7-R-005 | 2026-09-30 |
+| [SEGDL7-SME-005](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md#segdl7-sme-005) | The DL7 Segment Length Indicator is 'exclusive of the Data Type Indicator'. Does it include its own three digits (Element 84 counts all data elements in the segment) or only the Download Data? And why is its Source 'Device' when DL7 is host download data? | Section 12.48 field 2 and Section 13.2 Element 84. | OPEN | `P-05`, SEGDL7-R-002, SEGDL7-R-006 | 2026-09-30 |
 
 ## Segment DL8 ([register](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md))
 

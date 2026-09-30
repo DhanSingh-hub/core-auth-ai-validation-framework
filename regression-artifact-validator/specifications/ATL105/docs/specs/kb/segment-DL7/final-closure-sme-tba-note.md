@@ -1,51 +1,26 @@
 # Segment DL7 Final Closure: Serialization and Lifecycle Learning Note
 
-**Segment:** DL7 — Supplemental Terminal Data Segment  
-**Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.48, AppendixW  
-**Oracle:** [segment-DL7-rule-catalog.json](coverage/segment-DL7-rule-catalog.json) (3 rules)  
-**Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
-**Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
+**Segment:** DL7 — Supplemental Terminal Data Segment · **Sources:** 12.48, 13.2, Appendix W · **Oracle:** [rule catalog](coverage/segment-DL7-rule-catalog.json) · **Benchmark:** Segment 100 [final-closure note](../segment-100/final-closure-sme-tba-note.md)
 
-## Why Closure Is Separate
+## Corrections to the Previous Closure Note
 
-Field rules prove each value is individually valid. Closure proves the **whole segment** can be parsed without positional drift, and that it belongs to a coherent message exchange.
+| Earlier statement | Correct DL7 behaviour | Evidence |
+|---|---|---|
+| "An empty middle field keeps its separator" | No separators; TLV entries | 12.48, Appendix W |
+| Segment Length "includes the Segment Type and separators" (review question) | DL7 Segment Length **excludes** `^`; own-digit counting open | 12.48 field 2; `SEGDL7-SME-005` |
+| Appendix W "not transcribed" | Transcribed as `SEGDL7-R-004` | Appendix W |
 
-## Segment Length Encoding
+## Two Candidate Encodings (until `SEGDL7-SME-005`)
 
-Segment DL7 uses a **3-digit** Segment Length (Element 84). Element 84's definition permits four digits only for Segments 103, 114, 115, 118, 120, 130 and 131; every other segment uses three.
+Download Data `001003eng002013A1B 2C3      ` is 28 bytes.
 
-## Serialization Rules From The Catalog
+| Reading | Segment Length | Serialized |
+|---|---|---|
+| Length counts Download Data only | `028` | `^028` + data (32 characters) |
+| Length counts its own 3 digits + data | `031` | `^031` + data (32 characters) |
 
-_The Segment DL7 catalog contains no `serialization` rules. Separator behaviour must therefore be confirmed against the Section 12 layout note for this segment before a closure validator is written._
-
-## Empty Fields and Trailing Fields
-
-An empty field in the middle of a separator-delimited segment still occupies a position: its separator must remain, or every later field shifts.
-
-The Segment DL7 catalog states **no** trailing-optional-field omission allowance. Do not port Segment 100's trailing-suffix rule to this segment without SME confirmation.
-
-## Lifecycle and Response Correlation
-
-_No `lifecycle` or `response` rules are catalogued for Segment DL7. Closure is therefore structural only._
-
-## Certification Meaning
-
-- **Serialization rules** prove the segment parses without desynchronization.
-- **Lifecycle rules** prove the segment belongs to a coherent exchange.
-- Anything requiring production keys, certified kernels, or live host behaviour is explicitly out of scope rather than silently assumed.
+A validator must accept only one of these once the SME answers; until then both are `REVIEW_REQUIRED`.
 
 ## Closure Gate
 
-Segment DL7 is not closeable while these remain open:
-
-- **P-01** (SEGDL7-R-003): Is Appendix W (Download Data Layout) in scope for this training pass?
-- **P-02** (AI-artifacts, test-data): No dedicated Segment DL7 AI or Test package was located. Provide one, or approve synthesized fixtures.
-
-## SME/TBA Review Questions
-
-- Does every empty non-trailing field keep its separator?
-- Is the Segment Length encoded with exactly 3 digits and does it include the Segment Type and separators?
-- Are repeating or separator-free regions handled by their own rule?
-- Do lifecycle rules have genuine paired messages in the test data?
-- Are all provisional items above either resolved or kept at `REVIEW_REQUIRED`?
+DL7 is not closeable while `SEGDL7-SME-001` to `SEGDL7-SME-005` are open.
