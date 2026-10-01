@@ -19,12 +19,12 @@ class AtomicCompositeRuleClassificationTest {
 
         assertThat(report.path("authority").asText()).isEqualTo("INDEPENDENT_TEST_SOLUTION");
         assertThat(report.path("aiArtifactsIncluded").asBoolean()).isFalse();
-        assertThat(report.path("rules")).hasSize(289);
-        assertThat(report.path("counts").path("ATOMIC").asInt()).isEqualTo(194);
-        assertThat(report.path("counts").path("COMPOSITE_CANDIDATE").asInt()).isEqualTo(31);
-        assertThat(report.path("counts").path("REVIEW_REQUIRED").asInt()).isEqualTo(64);
+        assertThat(report.path("rules")).hasSize(601);
+        assertThat(report.path("counts").path("ATOMIC").asInt()).isEqualTo(324);
+        assertThat(report.path("counts").path("COMPOSITE_CANDIDATE").asInt()).isEqualTo(108);
+        assertThat(report.path("counts").path("REVIEW_REQUIRED").asInt()).isEqualTo(169);
         assertThat(report.path("validation").path("preservesSourceRuleCount").asBoolean()).isTrue();
-        assertThat(report.path("reviewQueue")).hasSize(64);
+        assertThat(report.path("reviewQueue")).hasSize(169);
         assertThat(report.path("rules").get(0).path("verificationDimensions")).isNotEmpty();
     }
 }

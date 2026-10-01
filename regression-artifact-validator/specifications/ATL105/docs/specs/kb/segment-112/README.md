@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.11 Additional Information Data Segment (pages 12-30 to 12-31), Elements 115-118 (chapter 13.2, pages 424-429), Appendix K Additional Information Data Layouts (Table IDs 001-047)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure in progress. Core structure and repeating-section rules are derived directly from the specification text; full Element 116 value enumeration and Appendix K sub-table layouts remain `REVIEW_REQUIRED` (see [SME/TBA Input Register](segment-112-sme-tba-input-register.md)).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -105,3 +105,21 @@ See the [SME/TBA Input Register](segment-112-sme-tba-input-register.md) for the 
 | `docs/specs/kb/segment-100/segment-100-flow.md` | `docs/specs/kb/segment-112/segment-112-flow.md` | ✅ produced |
 | `docs/specs/kb/segment-108/segment-108-sme-tba-input-register.md` | `docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md` | ✅ produced |
 | `src/main/java/…/Segment111PayloadValidator.java` and siblings | `Segment112PayloadValidator.java` and 6 sibling classes | ⏭ next (not part of this documentation pass) |
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-112-rule-catalog.json) (10 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 112 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-112-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-112-flow.md) |
+| Topic deep-dives | [additional-information-indicator](additional-information-indicator-sme-tba-note.md) · [applicability-decision](applicability-decision-sme-tba-note.md) · [conditional-dependency-rules](conditional-dependency-rules-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) |
+| Topic flows | [additional-information-indicator](additional-information-indicator-flow.md) · [applicability-decision](applicability-decision-flow.md) · [conditional-dependency-rules](conditional-dependency-rules-flow.md) · [field-definitions](field-definitions-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [additional-information-value-catalog-business-requirements.md](additional-information-value-catalog-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) · [segment-111-112-companion-compatibility-sme-tba-note.md](companion-compatibility/segment-111-112-companion-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-112-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-112-sme-tba-input-register.md) |

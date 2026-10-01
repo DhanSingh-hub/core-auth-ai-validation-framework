@@ -1,0 +1,148 @@
+{
+  "artifact": "phase1-single-leg-validation",
+  "generatedAt": "2026-09-29T16:24:37.522185+00:00",
+  "producer": "TEST_SOLUTION",
+  "subjectProducer": "AI_SOLUTION",
+  "PRODUCER_INPUT_UNMODIFIED": true,
+  "subject": {
+    "runId": "ATL105-AI-2026-09-29-PHASE_1_SINGLE_LEG",
+    "requirements": 47,
+    "scenarios": 47,
+    "testCases": 37,
+    "testDataFiles": 37
+  },
+  "method": {
+    "engine": "python-contract-screen",
+    "authoritative": false,
+    "note": "Pre-intake contract and chain screen; Maven build still blocked."
+  },
+  "chainIntegrity": {
+    "legsPresent": [
+      "BR",
+      "TS",
+      "TC",
+      "TD",
+      "MAPPING"
+    ],
+    "scenarioToRequirementUnresolved": 0,
+    "testCaseToScenarioUnresolved": 0,
+    "testCasesWithoutTestData": 0,
+    "orphanTestData": 0,
+    "allLinksResolve": true
+  },
+  "coverageEligibility": {
+    "eligible": false,
+    "reason": "Delivery is one representative requirement per segment. It demonstrates chain construction, not rule coverage, so no coverage ratio is derivable."
+  },
+  "findings": [
+    {
+      "gate": "CANONICAL_ANCHORS",
+      "severity": "BLOCKER",
+      "statement": "No artifact in any leg carries a canonical sourceAnchor",
+      "evidence": {
+        "requirements": 0,
+        "scenarios": 0,
+        "testCases": 0,
+        "surrogates": [
+          "source_rule_id",
+          "source_page",
+          "segment_number",
+          "evidence_ref"
+        ]
+      },
+      "impact": "Anchor-based matching cannot execute; coverage ratio cannot be computed."
+    },
+    {
+      "gate": "SPEC_VERSION_CONTINUITY",
+      "severity": "BLOCKER",
+      "statement": "spec_version is present on scenarios only; requirements and test cases omit it",
+      "evidence": {
+        "requirements": 0,
+        "scenarioVersions": {
+          "2026-3": 47
+        },
+        "testCases": 0,
+        "baseline": "2026-3"
+      },
+      "impact": "Version continuity across BR->TS->TC->TD cannot be proven end to end."
+    },
+    {
+      "gate": "PRODUCER_ID_CONTRACT",
+      "severity": "MAJOR",
+      "statement": "Producer-local ids do not match the AI_SOLUTION patterns",
+      "evidence": {
+        "nonConforming": {
+          "BR": 47,
+          "TS": 47,
+          "TC": 37
+        },
+        "examples": {
+          "BR": "REQ-SRC-ATL105-PDF-001:0804",
+          "TS": "SC-0001",
+          "TC": "TC-000001"
+        },
+        "requiredPatterns": {
+          "BR": "^BR-AI-[A-Z0-9]+-[0-9]+$",
+          "TS": "^TS-AI-[A-Z0-9]+-[0-9]+$",
+          "TC": "^TC-AI-[A-Z0-9]+-[0-9]+$",
+          "TD": "^TD-AI-[A-Z0-9]+-[0-9]+$"
+        }
+      },
+      "impact": "Intake adapter must remap ids; mechanical, not semantic."
+    },
+    {
+      "gate": "CHAIN_COMPLETENESS",
+      "severity": "MAJOR",
+      "statement": "37/49 segments reached a full chain; 12 are documented gaps",
+      "evidence": {
+        "statusTally": {
+          "OK": 37,
+          "GAP_RESOLVER_FALLBACK_UNRELIABLE": 10,
+          "GAP_NO_FIELDS": 1,
+          "GAP_NO_REQUIREMENT_DERIVED": 1
+        },
+        "trainedWithoutFullChain": [
+          "116",
+          "118",
+          "119",
+          "139",
+          "140",
+          "141",
+          "142",
+          "149",
+          "150",
+          "155",
+          "DL7",
+          "DL8"
+        ]
+      },
+      "impact": "Coverage denominators must exclude or explicitly flag gap segments."
+    },
+    {
+      "gate": "SCOPE_DENSITY",
+      "severity": "BLOCKER",
+      "statement": "One representative requirement per segment; this is a traceability probe, not coverage",
+      "evidence": {
+        "requirementsPerSegment": 1,
+        "segmentsRepresented": 47,
+        "testSolutionRuleTotal": 556
+      },
+      "impact": "Cannot produce a coverage ratio: the delivery does not attempt full rule coverage."
+    },
+    {
+      "gate": "ORACLE_AUTHORITY",
+      "severity": "MAJOR",
+      "statement": "Scenario oracle is a confidence-gated proxy for SME approval, not SME approval",
+      "evidence": {
+        "oracleAuthority": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)",
+        "requiresReview": 0
+      },
+      "impact": "Expected outcomes are producer-asserted and remain REVIEW_REQUIRED."
+    }
+  ],
+  "summary": {
+    "blocker": 3,
+    "major": 3
+  },
+  "verdict": "CHAIN_DEMONSTRATED_COVERAGE_NOT_ELIGIBLE"
+}

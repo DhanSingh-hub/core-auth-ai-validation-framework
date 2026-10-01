@@ -12,7 +12,7 @@
 
 ## Intended Review Order
 
-The [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) is the mandatory standard for all Test Team training and AI-output validation. Every contributor follows it; segment addenda may add controls but may not bypass its phases or gates.
+The [ATL105 Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) is the single, mandatory standard for all Test Team training and AI-output validation. Every contributor follows it; segment addenda may add controls but may not bypass its phases or gates.
 
 1. AI Solution Team confirms the metadata and input-format information requested by the strategy.
 2. Test/SME Team approves the Segment 100 boundary and descriptive requirements.

@@ -141,7 +141,7 @@ public final class Segment120ConsolidatedReport {
         sb.append("===========================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.18\n");
         sb.append("Generated:        ").append(timestamp).append('\n');
-        sb.append("Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)\n");
+        sb.append("Methodology:      COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md (8-Item Framework)\n");
         sb.append("Note:             Segment 120 is a RESPONSE-side companion segment (Financial Transaction\n");
         sb.append("                  Response / EMV Financial Transaction Response, Data Section 3), unlike\n");
         sb.append("                  the request-side Segment 100/101/111 reports.\n\n");

@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEG150-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "150", "segmentName": "Fuel Price Update Response Segment",
+  "scope": "Segment 150 field-level rules for the success/failure response to a Segment 149 request",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16122-16177 (Section 12.35)",
+  "rules": [
+    {"ruleId":"SEG150-R-001","title":"Segment 150 contains an indication of success or failure of the Segment 149 Fuel Price Update Request","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.35","segment":"149,150","rule":"success-failure-response-to-149"}},
+    {"ruleId":"SEG150-R-002","title":"A Field Separator follows the segment (single trailing separator, per-field placement for fields 1-4 not explicitly documented)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.35","segment":"150","rule":"trailing-separator-only"},"note":"PROVISIONAL: mirrors the Segment 136 pattern (less-detailed separator note than its request-side counterpart). Pending SME confirmation (SEG150-SME-001)."},
+    {"ruleId":"SEG150-R-003","title":"Segment Type fixed 150, Segment Length 3 digits, Terminal Identifier (echo), Decline Code (Element 26, 2 characters, indicates success or failure); all Device-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.35","segment":"150","element":"85,84,102,26","rule":"fuel-price-update-response-fields"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG150-R-002"],"blocks":["Item 5"],"registerId":"SEG150-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG150-SME-002"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P02","item3_independence":"BLOCKED_BY_P02","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"BLOCKED_BY_P01","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

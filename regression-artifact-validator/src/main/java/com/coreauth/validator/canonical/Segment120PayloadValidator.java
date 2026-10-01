@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * which are request-side. Rule anchors correspond to {@code SEG120-R-###} in
  * {@code docs/specs/kb/segment-120/coverage/segment-120-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
  *
  * <p>PROVISIONAL item disposition (see {@code docs/specs/kb/segment-120/coverage/README.md}):
  * <ul>

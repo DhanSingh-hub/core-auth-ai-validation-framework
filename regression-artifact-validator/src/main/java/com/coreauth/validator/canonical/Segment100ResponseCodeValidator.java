@@ -7,7 +7,7 @@ import java.util.Set;
 
 /** Validates standard Segment 100 financial response outcomes carried by Element 83. */
 public final class Segment100ResponseCodeValidator {
-    private static final Set<String> RESPONSE_CODES = Set.of("0", "1", "2", "3", "4", "F", "S");
+    private static final Set<String> RESPONSE_CODES = Atl105ResponseCodeFamilyOracle.expectedCodes("financial");
     private static final Set<String> PURCHASE_TYPES = Set.of("0", "4", "6");
     private static final Set<String> AUTHORIZATION_TYPES = Set.of("3", "5", "B");
 
@@ -38,9 +38,9 @@ public final class Segment100ResponseCodeValidator {
         if (expectedTransactionType != null) {
             validateCompatibility(responseCode, expectedTransactionType, result);
         }
-        if (Set.of("0", "2", "3", "4", "F").contains(responseCode)
-                && response.path("ApprovalNumber").asText("").isBlank()) {
-            result.addError("Segment100Response", "Approved response requires ApprovalNumber");
+        boolean approvalNumberRequired = responseArtifact.path("metadata").path("requiresApprovalNumber").asBoolean(false);
+        if (approvalNumberRequired && response.path("ApprovalNumber").asText("").isBlank()) {
+            result.addError("Segment100Response", "Lifecycle context requires ApprovalNumber");
         }
         if ("F".equals(responseCode)) {
             String approvedAmount = response.path("ApprovedAmount").asText(null);

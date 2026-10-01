@@ -66,14 +66,36 @@ public final class Segment109PayloadValidator {
             return;
         }
 
-        checkRequiredPattern(request, "MessageFormatVersionIdentifier", Pattern.compile("^.{6}$"),
+        checkRequiredPattern(request, "MessageType", Pattern.compile("^.{6}$"),
             "exactly 6 characters", "SEG109-R-002", result);
-        checkRequiredPattern(request, "NumberOfSegments", Pattern.compile("^[0-9]{2}$"),
-            "exactly 2 numeric characters", "SEG109-R-002", result);
+        String declaredSegments = text(request, "NumSegments");
+        if (!matches(declaredSegments, Pattern.compile("^[0-9]{1,2}$"))) {
+            result.addError(SOURCE, "Electronic Mail Request.NumSegments (Element 63) must be one or two numeric characters (SEG109-R-002)");
+        } else if (Integer.parseInt(declaredSegments) != 1) {
+            result.addError(SOURCE, "Electronic Mail Request.NumSegments (Element 63) must be 1 (SEG109-R-002)");
+        }
 
         JsonNode segment = request.path("Electronic Mail Data Segment");
         if (!segment.isObject()) {
             result.addError(SOURCE, "Electronic Mail Data Segment object is required (SEG109-R-003)");
+        }
+        int segmentCount = 0;
+        java.util.Iterator<java.util.Map.Entry<String, JsonNode>> fields = request.fields();
+        while (fields.hasNext()) {
+            java.util.Map.Entry<String, JsonNode> entry = fields.next();
+            if (!entry.getValue().isObject() || !entry.getValue().has("SegmentType")) {
+                continue;
+            }
+            segmentCount++;
+            if (!"109".equals(text(entry.getValue(), "SegmentType"))) {
+                result.addError(SOURCE, "Segment " + text(entry.getValue(), "SegmentType") + " ('" + entry.getKey()
+                    + "') is not allowed in an Electronic Mail Request (SEG109-R-001)");
+            }
+        }
+        if (segmentCount != 1) {
+            result.addError(SOURCE, "Electronic Mail Request must contain exactly one segment (SEG109-R-001)");
+        }
+        if (!segment.isObject()) {
             return;
         }
         validateSegment(segment, result);

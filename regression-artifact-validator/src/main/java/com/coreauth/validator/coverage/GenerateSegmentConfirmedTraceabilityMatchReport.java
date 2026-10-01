@@ -21,7 +21,7 @@ public final class GenerateSegmentConfirmedTraceabilityMatchReport {
 
         ObjectMapper mapper = new ObjectMapper();
         Path outputRoot = Atl105Paths.testOutput().resolve(
-                Path.of("ai-solution-independent-review", "four-level-traceability-matches"));
+                Path.of("ai-solution-independent-review", "four-level-matches"));
         Path sourceFile = args.length > 1
                 ? Path.of(args[1]) : outputRoot.resolve("confirmed-traceability-matches.json");
         JsonNode full = mapper.readTree(sourceFile.toFile());

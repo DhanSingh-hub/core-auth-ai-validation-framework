@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Sections:** 11.1.1 Financial Transactions Request (pages 11-3 to 11-4), 11.3.1 ECA/TeleCheck® Service Transaction Request (pages 11-13 to 11-14), 12.9 Check Data Segment (pages 12-25 to 12-29), Chapter 13 Data Element Descriptions (Elements 84, 85, 122-130, 136, 137, 239), and Appendix D (Valid State Codes)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)
 **Item Progress:** Item 1 - Coverage Closure started; Item 2 - AI Artifact Comparison in progress against the supplied requirement catalog; Items 3-8 blocked pending the manual inputs in [Segment 110 SME/TBA Input Register](segment-110-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -105,3 +105,21 @@ The complete machine-readable set is in [coverage/segment-110-rule-catalog.json]
 2. Resolve the Element 239 (Alternate MICR IND vs. Enhanced Fleet Data) source conflict before any mutation or enhancement work depends on it.
 3. Add sanitized, converter-ready MICR-read and manually keyed check-transaction examples (personal and company Check Type) for each enabled flow.
 4. Continue Items 3-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-110-rule-catalog.json) (21 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 110 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-110-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-110-flow.md) |
+| Topic deep-dives | [alternate-micr-indicator](alternate-micr-indicator-sme-tba-note.md) · [check-identification-fields](check-identification-fields-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [micr-data](micr-data-sme-tba-note.md) |
+| Topic flows | [alternate-micr-indicator](alternate-micr-indicator-flow.md) · [check-identification-fields](check-identification-fields-flow.md) · [field-definitions](field-definitions-flow.md) · [micr-data](micr-data-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-110-business-requirements.md](segment-110-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-110-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-110-sme-tba-input-register.md) |

@@ -54,8 +54,8 @@ class Segment113MutationTestRunnerTest {
         void testsCheckPurchaseOriginal() throws IOException {
             Segment113MutationTestRunner runner = new Segment113MutationTestRunner(SEG113_TEST_INPUT);
             PackageMutationResult result = runner.testPackage(
-                SEG113_TEST_INPUT.resolve(Path.of("lifecycle", "ecatelecheck-check-purchase-original.synthetic.json")));
-            assertThat(result.packageName()).isEqualTo("ecatelecheck-check-purchase-original.synthetic.json");
+                SEG113_TEST_INPUT.resolve(Path.of("lifecycle", "eca-check-purchase-original.synthetic.json")));
+            assertThat(result.packageName()).isEqualTo("eca-check-purchase-original.synthetic.json");
             assertThat(result.mutationCount()).isEqualTo(10);
             assertThat(result.metrics().totalMutations()).isEqualTo(10);
             assertThat(result.metrics().detectionRate()).isGreaterThanOrEqualTo(85.0);
@@ -83,7 +83,7 @@ class Segment113MutationTestRunnerTest {
         void perPackageMetricsRecordUndetectedMutationsExplicitly() throws IOException {
             Segment113MutationTestRunner runner = new Segment113MutationTestRunner(SEG113_TEST_INPUT);
             PackageMutationResult result = runner.testPackage(
-                SEG113_TEST_INPUT.resolve(Path.of("lifecycle", "ecatelecheck-check-purchase-original.synthetic.json")));
+                SEG113_TEST_INPUT.resolve(Path.of("lifecycle", "eca-check-purchase-original.synthetic.json")));
             assertThat(result.undetectedMutations()).allMatch(id -> id.startsWith("MUT-113-"));
         }
     }

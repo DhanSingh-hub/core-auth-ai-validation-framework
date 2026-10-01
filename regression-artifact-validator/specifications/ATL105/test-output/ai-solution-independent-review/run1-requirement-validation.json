@@ -1,0 +1,250 @@
+{
+  "artifact": "run1-requirement-validation",
+  "schemaNote": "Independent Test Solution review of the Run1 AI requirement catalog.",
+  "PARTIAL_VALIDATION_WARNING": "THIS IS A BR-ONLY SLICE, NOT A TEST SOLUTION VALIDATION. The Test Solution validates the complete AI artifact chain BR -> TS -> TC -> TD -> Mapping/traceability and then independently recalculates the coverage ratio. Four of those five legs are absent here. No coverage ratio may be derived from this artifact.",
+  "generatedAt": "2026-09-29T15:24:52.747625+00:00",
+  "producer": "TEST_SOLUTION",
+  "subjectProducer": "AI_SOLUTION",
+  "endGoal": {
+    "statement": "The Test Solution validates the full AI-generated artifact chain and independently recalculates coverage against Test-Solution-owned ATL105 rule catalogs.",
+    "requiredChain": [
+      "BR",
+      "TS",
+      "TC",
+      "TD",
+      "MAPPING_TRACEABILITY"
+    ],
+    "coverageRule": "A BR is not covered unless its linked TS, TC and TD all resolve and share the same canonical ATL105 source anchor, including specification version.",
+    "coverageAuthority": "Coverage is recalculated by the Test Solution. AI-reported coverage percentages and approval labels are evidence under test, not inputs.",
+    "thisArtifactCompletes": "1 of 5 legs (BR only)",
+    "demoStatus": "Demonstration of the intake/contract gate only. Not a framework run and not a basis for any approval decision."
+  },
+  "method": {
+    "engine": "python-contract-screen",
+    "authoritative": false,
+    "note": "Pre-intake contract screen applied while the Maven build is blocked. Not a substitute for CanonicalTraceabilityValidator or the segment validators.",
+    "rulesApplied": [
+      "contract/vocabulary.json",
+      "contract/canonical-anchor.schema.json",
+      "docs/canonical-artifact-contract.md",
+      "specifications/ATL105/training-status.json"
+    ]
+  },
+  "subject": {
+    "deliveryId": "ATL105-AI-2026-09-23-RUN1",
+    "runFolder": "test-input/ai-solution/runs/2026-09-23/Run1/step5_requirements",
+    "pipelineStep": "step5_requirements",
+    "sourceId": "SRC-ATL105-PDF-001",
+    "derivedAt": "2026-09-23T08:44:20.314808+00:00",
+    "state": "APPROVED",
+    "approvalNote": "Scripted approval (no SME review)",
+    "totalRequirements": 6473,
+    "approvedSha256": "3e34a280bf90a1fa591016308cef6ac9d599b40801e7980311a8cb18e02d732d",
+    "candidatesSha256": "962b28082a4b4ade6f098e34c55783d1cb952f57d3bb6ae9a3aa0bfef996f235"
+  },
+  "scopeLimitation": {
+    "validated": [
+      "businessRequirements"
+    ],
+    "notValidated": [
+      "testScenarios",
+      "testCases",
+      "testData",
+      "mappingTraceabilityDocument",
+      "coverageRatio"
+    ],
+    "chainCompleteness": "1/5",
+    "reason": "Run2 carried scenarios, test cases, test data and traceability. runs/2026-09-23/Run2 is absent from this repository on all branches.",
+    "consequence": "Full-chain traceability, executability and coverage cannot be assessed. Any coverage figure quoted from this artifact alone would be invalid.",
+    "blockedValidations": [
+      "BR->TS link resolution and orphan detection",
+      "TS->TC link resolution and expected-outcome consistency",
+      "TC->TD link resolution, payload/envelope and executability checks",
+      "anchor continuity and specification-version continuity across the chain",
+      "independent recalculation of the coverage ratio",
+      "mutation-based validator detection-rate evidence"
+    ]
+  },
+  "structuralIntegrity": {
+    "duplicateIds": 0,
+    "blankStatements": 0,
+    "distinctStatements": 6364,
+    "parsesCleanly": true,
+    "trainedSegmentsCovered": 49,
+    "trainedSegmentsTotal": 49,
+    "segmentsAbsent": [],
+    "aiOnlySegments": [
+      "106",
+      "107",
+      "RPD"
+    ],
+    "unassigned": 2359
+  },
+  "findings": [
+    {
+      "id": "F-001",
+      "gate": "CANONICAL_ANCHORS",
+      "severity": "BLOCKER",
+      "statement": "6473/6473 requirements carry no canonical sourceAnchor",
+      "evidence": {
+        "withAnchors": 0,
+        "total": 6473,
+        "surrogatesPresent": [
+          "source_rule_id",
+          "source_page",
+          "segment_number"
+        ]
+      },
+      "contractReference": "contract/canonical-anchor.schema.json",
+      "impact": "Anchor-based AI-to-Test matching cannot execute; only forbidden text heuristics remain."
+    },
+    {
+      "id": "F-002",
+      "gate": "SPECIFICATION_VERSION",
+      "severity": "BLOCKER",
+      "statement": "Package declares no ATL105 specification version",
+      "evidence": {
+        "sourceId": "SRC-ATL105-PDF-001",
+        "baselineVersion": "2026-3"
+      },
+      "contractReference": "docs/canonical-artifact-contract.md",
+      "impact": "Version continuity across BR->TS->TC->TD cannot be established."
+    },
+    {
+      "id": "F-003",
+      "gate": "APPROVAL_EVIDENCE",
+      "severity": "BLOCKER",
+      "statement": "state=APPROVED asserted by script while 59% of requirements are flagged",
+      "evidence": {
+        "state": "APPROVED",
+        "approvalNote": "Scripted approval (no SME review)",
+        "flaggedForReview": 3820,
+        "flaggedPct": 59.0,
+        "requiresReview": 1483,
+        "pendingLlmPhrasing": 27
+      },
+      "contractReference": "FISERV-TEST-SOLUTION-ARCHITECTURE.md principle 3",
+      "impact": "Producer approval label carries no independent evidence."
+    },
+    {
+      "id": "F-004",
+      "gate": "APPROVAL_GATE",
+      "severity": "BLOCKER",
+      "statement": "Approved set is byte-identical in membership to candidates; gate rejected nothing",
+      "evidence": {
+        "candidates": 6473,
+        "approved": 6473,
+        "dropped": 0,
+        "added": 0
+      },
+      "contractReference": "contract/vocabulary.json policy.confirmedRequiresEvidence",
+      "impact": "The candidates->approved transition performed no filtering."
+    },
+    {
+      "id": "F-005",
+      "gate": "PRODUCER_ID_CONTRACT",
+      "severity": "BLOCKER",
+      "statement": "6473/6473 ids violate the AI_SOLUTION BR id pattern",
+      "evidence": {
+        "requiredPattern": "^BR-AI-[A-Z0-9]+-[0-9]+$",
+        "conforming": 0,
+        "examples": [
+          "REQ-SRC-ATL105-PDF-001:001",
+          "REQ-SRC-ATL105-PDF-001:002",
+          "REQ-SRC-ATL105-PDF-001:003"
+        ],
+        "duplicateIds": 0
+      },
+      "contractReference": "contract/vocabulary.json",
+      "impact": "Intake adapter must remap every id before comparison."
+    },
+    {
+      "id": "F-006",
+      "gate": "DERIVATION_PROVENANCE",
+      "severity": "MAJOR",
+      "statement": "6324/6473 (97.7%) are mechanical expansions, not reasoned requirements",
+      "evidence": {
+        "byDerivationMethod": {
+          "python_template": 255,
+          "business_rule_derived": 2771,
+          "field_constraint": 367,
+          "field_fixed_value": 45,
+          "message_field_constraint": 79,
+          "table_field_constraint": 312,
+          "relationship_derived": 1542,
+          "supplemental_entity_derived": 953,
+          "llm_phrased": 149
+        },
+        "llmPhrased": 149,
+        "llmPhrasedPct": 2.3
+      },
+      "contractReference": null,
+      "impact": "Most of the delivery exercises a deterministic extractor rather than AI reasoning."
+    },
+    {
+      "id": "F-007",
+      "gate": "CONFIDENCE_INTEGRITY",
+      "severity": "MAJOR",
+      "statement": "255 requirements carry placeholder confidence (unscored_default=50)",
+      "evidence": {
+        "meanConfidencePct": 68.1,
+        "bandCounts": {
+          "HIGH": 2788,
+          "MEDIUM": 2614,
+          "LOW": 1071
+        },
+        "unscoredDefault": 255
+      },
+      "contractReference": null,
+      "impact": "Reported mean confidence is diluted by non-measurements."
+    },
+    {
+      "id": "F-008",
+      "gate": "ATOMICITY",
+      "severity": "MAJOR",
+      "statement": "109 requirements duplicate another statement verbatim",
+      "evidence": {
+        "distinctStatements": 6364,
+        "total": 6473,
+        "redundantCopies": 109,
+        "worstExample": {
+          "statement": "A unique Product Code must be sent for each type of fuel purchase.",
+          "occurrences": 16
+        }
+      },
+      "contractReference": null,
+      "impact": "Inflates requirement counts and any count-based coverage metric."
+    }
+  ],
+  "segment111Investigation": {
+    "observation": "Run1 carries 768 requirements for Segment 111 against an 8-rule Test Solution catalog (96.0x).",
+    "rootCause": "SCOPE_BOUNDARY_NOT_OVERGENERATION",
+    "explanation": "The Test Solution catalog is envelope-only by deliberate design. Its own coverage README states the approximately 400 Appendix I Table-ID business rules for elements 111 and 113 are explicitly out of scope. Run1 enumerated exactly that excluded space.",
+    "evidence": {
+      "testSolutionRules": 8,
+      "testSolutionScope": "envelope-only (SEG111-R-001..R-007 plus R-008 ECA/TeleCheck)",
+      "testSolutionExcludedEstimate": 400,
+      "run1Requirements": 768,
+      "run1FromElement111": 105,
+      "run1FromElement113": 22,
+      "run1TableFieldConstraint": 258,
+      "run1ExcludedScopeTotal": 385,
+      "segmentAssignmentDeclaredPct": 100.0
+    },
+    "rejectedHypothesis": {
+      "hypothesis": "Element-vs-segment numeric namespace collision (ENT-ELEM-111 misfiled as segment 111)",
+      "verdict": "REFUTED",
+      "reason": "KB field table confirms element 111 = Variable Information Indicator and element 113 = Variable Information Value, both genuine fields of Segment 111. Assignment is correct."
+    },
+    "conclusion": "The 96x ratio does not evidence AI defect. It evidences two producers working at different granularity. Using the envelope-only catalog as a coverage denominator against value-level AI requirements is an invalid comparison.",
+    "recommendedAction": "Do not treat as a defect. Either exclude the Appendix I space from both sides, or extend the Test Solution catalog to cover it, before computing any Segment 111 coverage ratio."
+  },
+  "summary": {
+    "blocker": 5,
+    "major": 3,
+    "minor": 0
+  },
+  "verdict": "REJECTED_NOT_INTAKE_READY",
+  "verdictScope": "Applies to BR intake eligibility only. It is not a coverage verdict and not a certification of the Run1/Run2 delivery.",
+  "verdictBasis": "Blocking findings are contract-level and independent of the Java engine. The package cannot enter anchor-based comparison in its current form."
+}

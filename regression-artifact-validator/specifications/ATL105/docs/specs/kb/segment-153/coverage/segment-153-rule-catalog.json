@@ -1,0 +1,14 @@
+{
+  "catalogId": "ATL105-SEG153-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "153", "segmentName": "Network Token Data Request Segment",
+  "scope": "Segment 153 3-field TLV wrapper and 6-table Network Token Data sub-segment catalog",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16307-16426 (Section 12.38)",
+  "rules": [
+    {"ruleId":"SEG153-R-001","title":"Segment 153 contains Network Token Data for the transaction; may hold multiple TLV-encoded sub-segments (standard sub-segment type, length, value)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.38","segment":"153","rule":"multi-sub-segment-tlv-container"}},
+    {"ruleId":"SEG153-R-002","title":"Segment Type fixed 153, Segment Length 3 digits (includes Segment Type's length), both Device-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.38","segment":"153","element":"85,84","rule":"segment-type-length"}},
+    {"ruleId":"SEG153-R-003","title":"Network Token Data (Element 239) is required, max 999 characters, cataloged as 6 fixed sub-tables: 001 (Network Token, 013-018 bytes), 002 (Expiration Date, fixed 004), 003 (Provisional Fee Indicator, fixed 001), 004 (Input Indicator, fixed 001), 005 (Eligible Indicator, fixed 001), 006 (PAN Indicator, fixed 001)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.38","segment":"153","element":"239","rule":"network-token-6-table-catalog"},"note":"Note element number 239 is shared with Segments 145/146's Enhanced Fleet Data — same cross-segment element reuse pattern already documented for Element 118."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG153-SME-001"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

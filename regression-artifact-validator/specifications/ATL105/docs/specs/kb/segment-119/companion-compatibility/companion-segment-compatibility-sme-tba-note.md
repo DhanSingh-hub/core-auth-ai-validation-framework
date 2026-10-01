@@ -1,0 +1,1 @@
+Segment 119 occupies Data Section 3, Field No. 3 of a Totals with Proprietary Data Load Request; Data Section 2 is absent from this request type — differing from ordinary Totals Requests where Data Section 2 may be present. Selection of Segment 119 over an ordinary Totals Request is governed by an unresolved manual policy gate (`SEG119-SME-001`).

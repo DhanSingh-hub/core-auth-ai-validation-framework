@@ -1,0 +1,25 @@
+{
+  "modelId": "ATL105-SEG116-CONTEXT-MODEL-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "116",
+  "purpose": "Explicit context envelope for TransArmor Load Data Segment artifacts.",
+  "requiredContext": {
+    "messageFamily": {"values":["TRANSARMOR_PKI_ENCRYPTION_AND_TOKENIZATION_LOAD_REQUEST"],"requiredFor":"all confirmed artifacts"},
+    "operation": {"values":["KEY_AND_KEY_ID_LOAD"],"requiredFor":"all request artifacts"}
+  },
+  "conditionalContext": {
+    "fieldLayout": "Segment 116's own field layout beyond Segment Type/Segment Length is REVIEW_REQUIRED: SEG116-SME-001 (external TransArmor document required).",
+    "envelopeShape": "Exclusion of Segment 100 and Data Section 3 is a structural analogy, not confirmed: SEG116-SME-002.",
+    "responseContainer": "Whether Key ID/Key Data Length/Key Data sit inside a Segment 116 response container is REVIEW_REQUIRED: SEG116-SME-003.",
+    "companionTable": "Relationship to the Segment 111 Additional TransArmor Data sub-table (052) is REVIEW_REQUIRED: SEG116-SME-004."
+  },
+  "validationRules": [
+    "Do not use a generic Financial Transaction Request or Segment 100 context as Segment 116 proof.",
+    "Do not invent fields occupying the remaining ~44 bytes of the 50-byte segment.",
+    "Do not conflate Segment 116 with Segment 119 (Totals with Proprietary Data Load Data Segment); Section 11.4.1.2's '(Data Segment No. 116)' label is a resolved source conflict.",
+    "Missing required context is REVIEW_REQUIRED unless source proves it unnecessary.",
+    "AI fixtures are not independent source evidence."
+  ],
+  "status": "PARTIAL_READY_FOR_AI_INTAKE_LIMITED_BY_SOURCE"
+}

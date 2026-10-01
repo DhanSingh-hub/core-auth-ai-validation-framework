@@ -2,9 +2,16 @@ package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.Segment109PayloadValidator;
 import com.coreauth.validator.validation.ValidationResult;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -81,6 +88,56 @@ class Segment109PayloadValidatorTest {
         assertRule(payload, "SEG109-R-003");
     }
 
+    @Test
+    void acceptsOneDigitElement63() {
+        ObjectNode payload = validRequest("981");
+        ((ObjectNode) payload.path("Electronic Mail Request")).put("NumSegments", "1");
+
+        assertThat(new Segment109PayloadValidator().validatePayload(payload).errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsSegment100InElectronicMailRequest() {
+        ObjectNode payload = validRequest("981");
+        ((ObjectNode) payload.path("Electronic Mail Request")).putObject("Standard Segment")
+            .put("SegmentType", "100");
+
+        assertRule(payload, "SEG109-R-001");
+    }
+
+    @Test
+    void validatesMessageFixtures() throws IOException {
+        Path fixtureDirectory = Paths.get("specifications", "ATL105", "test-input", "ai-solution",
+            "test-data", "segment-109", "message");
+        try (Stream<Path> fixtures = Files.list(fixtureDirectory)) {
+            fixtures.filter(path -> path.toString().endsWith(".json")).sorted().forEach(path -> {
+                try {
+                    JsonNodeFixture.assertExpected(path);
+                } catch (IOException exception) {
+                    throw new RuntimeException(exception);
+                }
+            });
+        }
+    }
+
+    private static final class JsonNodeFixture {
+        private static void assertExpected(Path path) throws IOException {
+            ObjectNode document = (ObjectNode) MAPPER.readTree(path.toFile());
+            String expected = document.path("_meta").path("expected").asText();
+            ValidationResult result = new Segment109PayloadValidator().validateFile(path);
+            if ("ACCEPT".equals(expected)) {
+                assertThat(result.errors()).as("%s should be accepted", path).isEmpty();
+            } else {
+                assertThat(result.errors()).as("%s should be rejected", path).isNotEmpty();
+                for (JsonNode rule : document.path("_meta").path("expectedRules")) {
+                    assertThat(result.errors()).extracting(error -> error.reason())
+                        .as("%s should cite %s", path, rule.asText())
+                        .anyMatch(reason -> reason.contains(rule.asText()));
+                }
+            }
+        }
+    }
+
     private static void assertRule(ObjectNode payload, String ruleId) {
         ValidationResult result = new Segment109PayloadValidator().validatePayload(payload);
 
@@ -90,8 +147,8 @@ class Segment109PayloadValidatorTest {
     private static ObjectNode validRequest(String promptCode) {
         ObjectNode payload = MAPPER.createObjectNode();
         ObjectNode request = payload.putObject("Electronic Mail Request");
-        request.put("MessageFormatVersionIdentifier", "ATL105");
-        request.put("NumberOfSegments", "01");
+        request.put("MessageType", "ATL105");
+        request.put("NumSegments", "01");
         ObjectNode segment = request.putObject("Electronic Mail Data Segment");
         segment.put("SegmentType", "109");
         segment.put("SegmentLength", "060");

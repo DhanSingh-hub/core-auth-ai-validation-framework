@@ -19,14 +19,14 @@ class SourceDerivedRequirementInventoryTest {
 
         assertThat(inventory.path("authority").asText()).isEqualTo("INDEPENDENT_TEST_SOLUTION");
         assertThat(inventory.path("aiArtifactsIncluded").asBoolean()).isFalse();
-        assertThat(inventory.path("catalogCount").asInt()).isEqualTo(13);
-        assertThat(inventory.path("ruleCount").asInt()).isEqualTo(289);
+        assertThat(inventory.path("catalogCount").asInt()).isEqualTo(49);
+        assertThat(inventory.path("ruleCount").asInt()).isEqualTo(601);
         assertThat(inventory.path("duplicateRuleIdCount").asInt()).isZero();
         assertThat(inventory.path("duplicateAnchorCount").asInt()).isZero();
         assertThat(inventory.path("incompleteAnchorCount").asInt()).isZero();
         assertThat(inventory.path("validation").path("valid").asBoolean()).isTrue();
-        assertThat(inventory.path("businessRequirements")).hasSize(289);
+        assertThat(inventory.path("businessRequirements")).hasSize(601);
         assertThat(inventory.path("countsBySegment").path("100").asInt()).isEqualTo(36);
-        assertThat(inventory.path("countsBySegment").path("111").asInt()).isEqualTo(8);
+        assertThat(inventory.path("countsBySegment").path("111").asInt()).isEqualTo(11);
     }
 }

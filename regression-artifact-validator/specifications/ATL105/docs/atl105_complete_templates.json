@@ -3,11 +3,13 @@
   "architecture_alignment": "Output of Steps 1+2+3 — feeds into Step 5 (Canonical Knowledge Assembly) and Step 6 (Scenario Derivation)",
   "source_id": "SRC-ATL105-PDF-001",
   "assembled_at": "2026-09-10T12:43:14.806510",
-  "total_transaction_types": 11,
+  "total_transaction_types": 31,
   "total_segments_defined": 41,
   "total_elements_defined": 230,
   "state": "EXTRACTED",
   "human_review_required": true,
+  "section_11_status": "SOURCE_RECONCILED_NOT_APPROVED",
+  "section_11_layout_index": "specs/kb/section-11-message-layout-index.json",
   "review_instructions": [
     "Verify each transaction type has the correct segments.",
     "Spot-check field lengths and valid values against the PDF.",
@@ -2319,8 +2321,35 @@
   "message_templates": {
     "Financial Transaction Request": {
       "transaction_type": "Financial Transaction Request",
-      "segment_count": 17,
+      "source_section": "11.1.1",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "segment_count": 14,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":null,"length":2}
+      ],
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between each segment field in request serialization"],
+      "message_length_maximum": 4000,
+      "approved_extensions": [
+        {"segment_number":"110","segment_name":"Check Data Segment","data_section":3,"presence_in_message":"SME_APPROVED_EXTENSION","source_section":"12.9","decision":"SEG110-R-001 / SEG110-SME-001 confirms Segment 110 is valid in any Financial Transaction Request Data Section 3, beyond the enumerated Section 11.1.1 table."}
+      ],
       "segments": [
+        {"segment_number":"100","segment_name":"Standard Message Data Segment","data_section":2,"presence_in_message":"R","max_length":218},
+        {"segment_number":"101","segment_name":"Fleet Data Segment","data_section":3,"presence_in_message":"C","max_length":308},
+        {"segment_number":"102","segment_name":"Product Code Data Segment","data_section":3,"presence_in_message":"C","max_length":381},
+        {"segment_number":"103","segment_name":"EBT Data Segment","data_section":3,"presence_in_message":"C","max_length":3334},
+        {"segment_number":"104","segment_name":"Purchase Card Data Segment","data_section":3,"presence_in_message":"C","max_length":86},
+        {"segment_number":"111","segment_name":"Variable Information Data Segment","data_section":3,"presence_in_message":"C","max_length":999},
+        {"segment_number":"123","segment_name":"NFC Payment Tokenization Data Segment","data_section":3,"presence_in_message":"C","max_length":186},
+        {"segment_number":"135","segment_name":"Moneris Data Request Segment","data_section":3,"presence_in_message":"C","max_length":110},
+        {"segment_number":"143","segment_name":"Tax by Product Data Segment","data_section":3,"presence_in_message":"C","max_length":399},
+        {"segment_number":"145","segment_name":"Enhanced Fleet Request Segment","data_section":3,"presence_in_message":"C","max_length":999},
+        {"segment_number":"146","segment_name":"Enhanced Fleet Response Segment","data_section":3,"presence_in_message":"C","max_length":999,"source_note":"Listed in the Section 11.1.1 request table despite response-oriented name."},
+        {"segment_number":"151","segment_name":"Incomm Market Basket Data Request Segment","data_section":3,"presence_in_message":"C","max_length":2309},
+        {"segment_number":"152","segment_name":"Incomm Market Basket Data Response Segment","data_section":3,"presence_in_message":"C","max_length":2309,"source_note":"Listed in the Section 11.1.1 request table despite response-oriented name."},
+        {"segment_number":"153","segment_name":"Network Token Data Request Segment","data_section":3,"presence_in_message":"C","max_length":999}
+      ],
+      "extracted_candidate_segments": [
         {
           "segment_number": "100",
           "segment_name": "Standard Message Data Segment",
@@ -3630,7 +3659,7 @@
           "segment_number": "113",
           "segment_name": "ECA/ TeleCheck Data Segment Format ®",
           "segment_type_value": "113",
-          "presence_in_message": "PRESENT",
+          "presence_in_message": "PROVISIONAL",
           "fields": [
             {
               "field_no": "1",
@@ -4388,7 +4417,16 @@
     },
     "Loyalty Card Transaction": {
       "transaction_type": "Loyalty Card Transaction",
+      "source_section": "11.2.1",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
       "segment_count": 3,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":null,"length":2}
+      ],
+      "section_11_presence": {"100":"R","108":"R","114":"O"},
+      "section_11_data_section_map": {"1":["55","63"],"2":["100"],"3":["108","114"]},
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between segment fields"],
       "segments": [
         {
           "segment_number": "100",
@@ -4834,7 +4872,7 @@
           "segment_number": "114",
           "segment_name": "SKU Data Segment",
           "segment_type_value": "114",
-          "presence_in_message": "PRESENT",
+          "presence_in_message": "OPTIONAL",
           "fields": [
             {
               "field_no": "1",
@@ -4842,7 +4880,7 @@
               "element_ref": "ENT-ELEM-85",
               "name": "Segment Type",
               "entry": "R",
-              "fixed_value": null,
+              "fixed_value": "114",
               "description": "Identifies the type of data segment being formatted. Source: Device",
               "source": {
                 "source_id": "SRC-ATL105-PDF-001",
@@ -4885,7 +4923,16 @@
     },
     "ECA/TeleCheck Service Transaction": {
       "transaction_type": "ECA/TeleCheck Service Transaction",
+      "source_section": "11.3.1",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
       "segment_count": 4,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":null,"length":2}
+      ],
+      "section_11_presence": {"100":"R","110":"R","111":"R","113":"R"},
+      "section_11_data_section_map": {"1":["55","63"],"2":["100"],"3":["110","111","113"]},
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between segment fields"],
       "segments": [
         {
           "segment_number": "100",
@@ -5369,7 +5416,7 @@
           "segment_number": "113",
           "segment_name": "ECA/ TeleCheck Data Segment Format ®",
           "segment_type_value": "113",
-          "presence_in_message": "PRESENT",
+          "presence_in_message": "CONDITIONAL",
           "fields": [
             {
               "field_no": "1",
@@ -5498,8 +5545,37 @@
     },
     "EMV Financial Transaction Request": {
       "transaction_type": "EMV Financial Transaction Request",
+      "source_section": "11.8.1",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
       "segment_count": 15,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":null,"length":2}
+      ],
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2", "Between each segment field in request serialization"],
+      "message_length_maximum": 4000,
+      "source_conflicts": [
+        "Section 11.8.1 prose omits Segment 103 while the Data Section 3 table includes it; use the table inventory and retain this conflict for review.",
+        "Section 11.8.1 Data Section 3 table gives Segment 130 maximum 9,999; Sections 12.20 and 13.2 Element 84 give 3,043. The Segment 130 rule catalog adopts 3,043 based on two source locations and exact field arithmetic; retain the message-table discrepancy."
+      ],
       "segments": [
+        {"segment_number":"100","segment_name":"Standard Message Data Segment","data_section":2,"presence_in_message":"R","max_length":619},
+        {"segment_number":"101","segment_name":"Fleet Data Segment","data_section":3,"presence_in_message":"C","max_length":308},
+        {"segment_number":"102","segment_name":"Product Code Data Segment","data_section":3,"presence_in_message":"C","max_length":381},
+        {"segment_number":"103","segment_name":"EBT Data Segment","data_section":3,"presence_in_message":"C","max_length":3334,"source_note":"Listed in the Section 11.8.1 request table but omitted from its preceding prose list."},
+        {"segment_number":"104","segment_name":"Purchase Card Data Segment","data_section":3,"presence_in_message":"C","max_length":86},
+        {"segment_number":"111","segment_name":"Variable Information Data Segment","data_section":3,"presence_in_message":"C","max_length":999},
+        {"segment_number":"123","segment_name":"NFC Payment Tokenization Data Segment","data_section":3,"presence_in_message":"C","max_length":186},
+        {"segment_number":"130","segment_name":"EMV Request Data Segment","data_section":3,"presence_in_message":"R","max_length":9999},
+        {"segment_number":"135","segment_name":"Moneris Data Request Segment","data_section":3,"presence_in_message":"C","max_length":110},
+        {"segment_number":"143","segment_name":"Tax by Product Data Segment","data_section":3,"presence_in_message":"C","max_length":399},
+        {"segment_number":"145","segment_name":"Enhanced Fleet Request Segment","data_section":3,"presence_in_message":"C","max_length":999},
+        {"segment_number":"146","segment_name":"Enhanced Fleet Response Segment","data_section":3,"presence_in_message":"C","max_length":999,"source_note":"Listed in the Section 11.8.1 request table despite response-oriented name."},
+        {"segment_number":"151","segment_name":"Incomm Market Basket Data Request Segment","data_section":3,"presence_in_message":"C","max_length":2309},
+        {"segment_number":"152","segment_name":"Incomm Market Basket Data Response Segment","data_section":3,"presence_in_message":"C","max_length":2309,"source_note":"Listed in the Section 11.8.1 request table despite response-oriented name."},
+        {"segment_number":"153","segment_name":"Network Token Data Request Segment","data_section":3,"presence_in_message":"C","max_length":999}
+      ],
+      "extracted_candidate_segments": [
         {
           "segment_number": "100",
           "segment_name": "Standard Message Data Segment",
@@ -7216,15 +7292,487 @@
         }
       ]
     },
+    "Communications Test Request": {
+      "transaction_type": "Communications Test Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_STX_ETX_NO_FIELD_SEPARATORS",
+      "transaction_type_code": "900",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "55",
+          "element_ref": "ENT-ELEM-55",
+          "name": "Message Format Version Identifier",
+          "entry": "R",
+          "fixed_value": "ATL105",
+          "position": 1,
+          "length": 6,
+          "description": "Identifies the type and release version of the message format. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 184
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "63",
+          "element_ref": "ENT-ELEM-63",
+          "name": "Number of Segments",
+          "entry": "R",
+          "fixed_value": "0",
+          "position": 7,
+          "length": 2,
+          "description": "No BUYPASS-defined data segment is present; Element 120 follows the field separator. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 184
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "120",
+          "element_ref": "ENT-ELEM-120",
+          "name": "Network Management Message",
+          "entry": "R",
+          "fixed_value": "COMMTEST",
+          "position": 9,
+          "length": 8,
+          "description": "Identifies the communications test message from the device. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 184
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 184
+      },
+      "notes": [
+        "STX precedes the fields; ETX follows COMMTEST; no Segment 120 object is used."
+      ]
+    },
+    "Communications Test Response": {
+      "transaction_type": "Communications Test Response",
+      "segment_count": 0,
+      "layout": "POSITIONAL_STX_ETX_FIXED_LENGTH_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": "1",
+          "position": 1,
+          "length": 1,
+          "description": "Indicates a single-message response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 185
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "30",
+          "element_ref": "ENT-ELEM-30",
+          "name": "Download Indicator",
+          "entry": "R",
+          "fixed_value": "0",
+          "position": 2,
+          "length": 1,
+          "description": "Indicates whether a download is required. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 185
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "100",
+          "element_ref": "ENT-ELEM-100",
+          "name": "Terminal Display Communications Message",
+          "entry": "C",
+          "fixed_value": "COMM_TEST_PASSED",
+          "position": 3,
+          "length": 16,
+          "description": "Identifies the message for display at the transmitting device. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 185
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 185
+      },
+      "notes": [
+        "STX precedes the fields; ETX follows the response; no Field Separators."
+      ]
+    },
+    "Electronic Mail Request": {
+      "transaction_type": "Electronic Mail Request",
+      "source_section": "11.5.1",
+      "review_status": "PROVISIONAL_SEG109_SME_012",
+      "segment_count": 1,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":null,"length":2}
+      ],
+      "source_data_section_for_segment_109": 2,
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2"],
+      "placement_note": "Section 11.5.1 labels Segment 109 as Data Section 2; the request Data Section convention records the conflict under SEG109-SME-012. Do not silently relabel the source layout.",
+      "segments": [
+        {
+          "segment_number": "109",
+          "segment_name": "Electronic Mail Data Segment",
+          "segment_type_value": "109",
+          "presence_in_message": "PROVISIONAL",
+          "fields": [
+            {
+              "field_no": "1",
+              "element_no": "85",
+              "element_ref": "ENT-ELEM-85",
+              "name": "Segment Type",
+              "entry": "R",
+              "fixed_value": "109",
+              "description": "Identifies the type of data segment being formatted. Fixed value: 109 Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "2",
+              "element_no": "84",
+              "element_ref": "ENT-ELEM-84",
+              "name": "Segment Length",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the data segment’s length, including Segment Type’s length and Field Separators. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "3",
+              "element_no": "44",
+              "element_ref": "ENT-ELEM-44",
+              "name": "Information Byte",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Indicates whether the request is a single- message request or a multimessage request. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "4",
+              "element_no": "102",
+              "element_ref": "ENT-ELEM-102",
+              "name": "Terminal Identifier",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the device by Device Type, State Code, BUYPASS Merchant Number, and Device Number. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "5",
+              "element_no": "78",
+              "element_ref": "ENT-ELEM-78",
+              "name": "Prompt Code",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the request’s format type. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "6",
+              "element_no": "11",
+              "element_ref": "ENT-ELEM-11",
+              "name": "Block Number",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "7",
+              "element_no": "32",
+              "element_ref": "ENT-ELEM-32",
+              "name": "Employee Number",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies a BUYPASS customer’s employee. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "8",
+              "element_no": "65",
+              "element_ref": "ENT-ELEM-65",
+              "name": "Password",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the end-of-day function’s password. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 232
+              }
+            },
+            {
+              "field_no": "9",
+              "element_no": "86",
+              "element_ref": "ENT-ELEM-86",
+              "name": "Sequence Number",
+              "entry": "R",
+              "fixed_value": null,
+              "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "10",
+              "element_no": "50",
+              "element_ref": "ENT-ELEM-50",
+              "name": "Local Time",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the time of the request. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "11",
+              "element_no": "36",
+              "element_ref": "ENT-ELEM-36",
+              "name": "Extract Date",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the date the information was extracted. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "12",
+              "element_no": "37",
+              "element_ref": "ENT-ELEM-37",
+              "name": "Extract Time",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the time the information was extracted. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "13",
+              "element_no": "104",
+              "element_ref": "ENT-ELEM-104",
+              "name": "Text Data Length",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies Text Data’s length. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            },
+            {
+              "field_no": "14",
+              "element_no": "103",
+              "element_ref": "ENT-ELEM-103",
+              "name": "Text Data",
+              "entry": "C",
+              "fixed_value": null,
+              "description": "Identifies the request’s data. Source: Device",
+              "source": {
+                "source_id": "SRC-ATL105-PDF-001",
+                "page": 233
+              }
+            }
+          ],
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 232
+          }
+        }
+      ],
+      "number_of_segments_fixed_value": "01"
+    },
+    "Electronic Mail Response": {
+      "transaction_type": "Electronic Mail Response",
+      "segment_count": 0,
+      "layout": "VARIABLE_LENGTH_FIXED_POSITION_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "30",
+          "element_ref": "ENT-ELEM-30",
+          "name": "Download Indicator",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 1,
+          "description": "Indicates whether a download is required; and, if so, whether it is a partial or full download. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "45",
+          "element_ref": "ENT-ELEM-45",
+          "name": "Initiation Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 3,
+          "length": 6,
+          "description": "Identifies the date the transaction was initiated. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "46",
+          "element_ref": "ENT-ELEM-46",
+          "name": "Initiation Time",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 9,
+          "length": 4,
+          "description": "Identifies the time the transaction was initiated. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "5",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 13,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "6",
+          "element_no": "11",
+          "element_ref": "ENT-ELEM-11",
+          "name": "Block Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 19,
+          "length": 3,
+          "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "7",
+          "element_no": "52",
+          "element_ref": "ENT-ELEM-52",
+          "name": "Mail Text Data Length",
+          "entry": "C",
+          "fixed_value": null,
+          "position": 22,
+          "length": 3,
+          "description": "Identifies the Mail Text Data length. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        },
+        {
+          "field_no": "8",
+          "element_no": "51",
+          "element_ref": "ENT-ELEM-51",
+          "name": "Mail Text Data",
+          "entry": "C",
+          "fixed_value": null,
+          "position": 25,
+          "length": "Var.",
+          "description": "Identifies the data in the response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 178
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 178
+      },
+      "notes": [
+        "No Field Separators. Mail Text Data is variable length."
+      ]
+    },
     "Totals Request": {
       "transaction_type": "Totals Request",
-      "segment_count": 2,
+      "source_section": "11.4.1.1",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "segment_count": 1,
+      "number_of_segments_fixed_value": "01",
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":"01","length":2}
+      ],
+      "section_11_data_section_map": {"1":["55","63"],"2":[],"3":["105"]},
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2"],
       "segments": [
         {
           "segment_number": "105",
           "segment_name": "Totals Data Segment",
           "segment_type_value": "105",
-          "presence_in_message": "PRESENT",
+          "presence_in_message": "PROVISIONAL",
           "fields": [
             {
               "field_no": "1",
@@ -7452,7 +8000,27 @@
             "source_id": "SRC-ATL105-PDF-001",
             "page": 227
           }
-        },
+        }
+      ]
+    },
+    "Totals with Proprietary Data Load Request": {
+      "transaction_type": "Totals with Proprietary Data Load Request",
+      "source_section": "11.4.1.2",
+      "review_status": "SOURCE_CONFLICT_REVIEW_REQUIRED",
+      "segment_count": 1,
+      "number_of_segments_fixed_value": "01",
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","name":"Message Format Version Identifier","fixed_value":"ATL105","length":6},
+        {"field_no":"2","element_no":"63","name":"Number of Segments","fixed_value":"01","length":2}
+      ],
+      "section_11_data_section_map": {"1":["55","63"],"2":[],"3":["119"]},
+      "source_conflict": "Section 11.4.1.2 prose names Segment 116; its message layout table names Segment 119. This entry follows the table and retains the conflict for review.",
+      "source_conflicts": [
+        "Section 11.4.1.2 prose names Segment 116; its message layout table names Segment 119. This entry follows the table.",
+        "Section 11.4.1.2 message table gives Segment 119 maximum length 389; Section 12.17 and Element 84 give 493. Preserve both values pending resolution; the segment rule catalog records the open max-length conflict."
+      ],
+      "field_separator_rules": ["Between Data Section 1 fields 1 and 2", "After Data Section 1 field 2"],
+      "segments": [
         {
           "segment_number": "119",
           "segment_name": "Totals with Proprietary Data Load Data Segment",
@@ -7714,210 +8282,282 @@
         }
       ]
     },
-    "Electronic Mail": {
-      "transaction_type": "Electronic Mail",
-      "segment_count": 1,
-      "segments": [
+    "Approved Totals Response": {
+      "transaction_type": "Approved Totals Response",
+      "segment_count": 0,
+      "segments": [],
+      "layout": "SINGLE_BLOCK_FIXED_LENGTH",
+      "fields": [
         {
-          "segment_number": "109",
-          "segment_name": "Electronic Mail Data Segment",
-          "segment_type_value": "109",
-          "presence_in_message": "PRESENT",
-          "fields": [
-            {
-              "field_no": "1",
-              "element_no": "85",
-              "element_ref": "ENT-ELEM-85",
-              "name": "Segment Type",
-              "entry": "R",
-              "fixed_value": "109",
-              "description": "Identifies the type of data segment being formatted. Fixed value: 109 Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "2",
-              "element_no": "84",
-              "element_ref": "ENT-ELEM-84",
-              "name": "Segment Length",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the data segment’s length, including Segment Type’s length and Field Separators. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "3",
-              "element_no": "44",
-              "element_ref": "ENT-ELEM-44",
-              "name": "Information Byte",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Indicates whether the request is a single- message request or a multimessage request. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "4",
-              "element_no": "102",
-              "element_ref": "ENT-ELEM-102",
-              "name": "Terminal Identifier",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the device by Device Type, State Code, BUYPASS Merchant Number, and Device Number. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "5",
-              "element_no": "78",
-              "element_ref": "ENT-ELEM-78",
-              "name": "Prompt Code",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the request’s format type. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "6",
-              "element_no": "11",
-              "element_ref": "ENT-ELEM-11",
-              "name": "Block Number",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the specific electronic mail data block requested by a device or sent by the host. Source: Host",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "7",
-              "element_no": "32",
-              "element_ref": "ENT-ELEM-32",
-              "name": "Employee Number",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies a BUYPASS customer’s employee. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "8",
-              "element_no": "65",
-              "element_ref": "ENT-ELEM-65",
-              "name": "Password",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the end-of-day function’s password. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 232
-              }
-            },
-            {
-              "field_no": "9",
-              "element_no": "86",
-              "element_ref": "ENT-ELEM-86",
-              "name": "Sequence Number",
-              "entry": "R",
-              "fixed_value": null,
-              "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "10",
-              "element_no": "50",
-              "element_ref": "ENT-ELEM-50",
-              "name": "Local Time",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the time of the request. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "11",
-              "element_no": "36",
-              "element_ref": "ENT-ELEM-36",
-              "name": "Extract Date",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the date the information was extracted. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "12",
-              "element_no": "37",
-              "element_ref": "ENT-ELEM-37",
-              "name": "Extract Time",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the time the information was extracted. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "13",
-              "element_no": "104",
-              "element_ref": "ENT-ELEM-104",
-              "name": "Text Data Length",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies Text Data’s length. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            },
-            {
-              "field_no": "14",
-              "element_no": "103",
-              "element_ref": "ENT-ELEM-103",
-              "name": "Text Data",
-              "entry": "C",
-              "fixed_value": null,
-              "description": "Identifies the request’s data. Source: Device",
-              "source": {
-                "source_id": "SRC-ATL105-PDF-001",
-                "page": 233
-              }
-            }
-          ],
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
           "source": {
             "source_id": "SRC-ATL105-PDF-001",
-            "page": 232
+            "page": 173
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "105",
+          "element_ref": "ENT-ELEM-105",
+          "name": "Totals Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 6,
+          "description": "Identifies the requested type of totals. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 173
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 8,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 173
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "42",
+          "element_ref": "ENT-ELEM-42",
+          "name": "Grand Total",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 14,
+          "length": 8,
+          "description": "Identifies the final total amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "5",
+          "element_no": "38",
+          "element_ref": "ENT-ELEM-38",
+          "name": "Fee Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 22,
+          "length": 8,
+          "description": "Identifies the fee amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "6",
+          "element_no": "56",
+          "element_ref": "ENT-ELEM-56",
+          "name": "Net Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 30,
+          "length": 8,
+          "description": "Identifies the difference between Grand Total and Fee Amount. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "7",
+          "element_no": "13",
+          "element_ref": "ENT-ELEM-13",
+          "name": "Card Label",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 38,
+          "length": 4,
+          "description": "Identifies the card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "8",
+          "element_no": "16",
+          "element_ref": "ENT-ELEM-16",
+          "name": "Card Type Total Count",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 42,
+          "length": 5,
+          "description": "Identifies the transaction count for a particular card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
+          }
+        },
+        {
+          "field_no": "9",
+          "element_no": "15",
+          "element_ref": "ENT-ELEM-15",
+          "name": "Card Type Total Amount",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 47,
+          "length": 8,
+          "description": "Identifies the total amount for a particular card type. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 174
           }
         }
-      ]
+      ],
+      "repeating_group": {
+        "fields": [
+          "7",
+          "8",
+          "9"
+        ],
+        "card_labels_in_order": [
+          "CC",
+          "TE",
+          "DS",
+          "AO",
+          "DB",
+          "FL",
+          "CS",
+          "PR",
+          "CK",
+          "EF",
+          "EC",
+          "SV1",
+          "SV2",
+          "SV3",
+          "SV4",
+          "ECA",
+          "EWIC",
+          "EK"
+        ],
+        "occurrence": "Sent once per card label in the order shown, whether or not totals accumulated, except ECA, EWIC and EK, which are sent only if they have totals."
+      },
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 173
+      }
+    },
+    "Declined Totals Response": {
+      "transaction_type": "Declined Totals Response",
+      "segment_count": 0,
+      "segments": [],
+      "layout": "SINGLE_BLOCK_FIXED_LENGTH",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "83",
+          "element_ref": "ENT-ELEM-83",
+          "name": "Response Code",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 1,
+          "length": 1,
+          "description": "Identifies the type of response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "105",
+          "element_ref": "ENT-ELEM-105",
+          "name": "Totals Date",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 2,
+          "length": 6,
+          "description": "Identifies the requested type of totals. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "86",
+          "element_ref": "ENT-ELEM-86",
+          "name": "Sequence Number",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 8,
+          "length": 6,
+          "description": "Identifies the unique transaction sequence number assigned to and associated with a transaction throughout its life. Source: Device",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "101",
+          "element_ref": "ENT-ELEM-101",
+          "name": "Terminal Display/Printer Message",
+          "entry": "R",
+          "fixed_value": null,
+          "position": 14,
+          "length": 31,
+          "description": "Identifies the decline message for a Declined Totals Response. Source: Host",
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 175
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 175
+      }
     },
     "Financial Transaction Response": {
       "transaction_type": "Financial Transaction Response",
-      "segment_count": 9,
+      "source_section": "11.1.2",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "segment_count": 2,
+      "layout": "VARIABLE_LENGTH_NO_FIELD_SEPARATORS",
+      "fields": [
+        {"field_no":"1","element_no":"83","name":"Response Code","entry":"R","position":1,"length":1},
+        {"field_no":"2","element_no":"30","name":"Download Indicator","entry":"R","position":2,"length":1},
+        {"field_no":"3","element_no":"45","name":"Initiation Date","entry":"R","position":3,"length":6},
+        {"field_no":"4","element_no":"46","name":"Initiation Time","entry":"R","position":9,"length":4},
+        {"field_no":"5","element_no":"86","name":"Sequence Number","entry":"R","position":13,"length":6},
+        {"field_no":"6","element_no":"6","name":"Approved Amount","entry":"C","position":19,"length":9},
+        {"field_no":"7","element_no":"5","name":"Approval Number","entry":"C","position":28,"length":6},
+        {"field_no":"8","element_no":"2","name":"Account Number","entry":"R","position":34,"length":25},
+        {"field_no":"9","element_no":"26","name":"Decline Code","entry":"C","position":59,"length":2},
+        {"field_no":"10","element_no":"7","name":"Authorizer Code","entry":"R","position":61,"length":2},
+        {"field_no":"11","element_no":"8","name":"Authorizer Response Code","entry":"R","position":63,"length":2},
+        {"field_no":"12","element_no":"119","name":"Settlement Date","entry":"R","position":65,"length":4},
+        {"field_no":"13","element_no":"115","name":"Additional Information Data Segment Flag","entry":"R","position":69,"length":1},
+        {"field_no":"14","element_no":"61","name":"Number of Print Lines","entry":"R","position":70,"length":1},
+        {"field_no":"15","element_no":"101","name":"Terminal Display/Printer Message","entry":"R","position":71,"length":31}
+      ],
+      "repeating_group":{"field_no":"15","element_no":"101","maximum_count":3},
       "segments": [
+        {"segment_number":"112","segment_name":"Additional Information Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Element 115 indicates Segment 112 follows","max_length":349},
+        {"segment_number":"115","segment_name":"Print Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Print Data is requested and request Loyalty Version Number is 2","max_length":910}
+      ],
+      "extracted_candidate_segments": [
         {
           "segment_number": "112",
           "segment_name": "Additional Information Data Segment",
@@ -8509,10 +9149,55 @@
         }
       ]
     },
+    "Loyalty Card Transaction Response": {
+      "transaction_type": "Loyalty Card Transaction Response",
+      "source_section": "11.2.2",
+      "review_status": "SOURCE_CONFIRMED_ALIAS_REVIEW_REQUIRED",
+      "alias_of": "Financial Transaction Response",
+      "alias_reason": "Section 11.2.2 explicitly states that the response has the same information in the same layout as Section 11.1.2."
+    },
+    "ECA/TeleCheck Service Transaction Response": {
+      "transaction_type": "ECA/TeleCheck Service Transaction Response",
+      "source_section": "11.3.2",
+      "review_status": "SOURCE_CONFIRMED_ALIAS_REVIEW_REQUIRED",
+      "alias_of": "Financial Transaction Response",
+      "alias_reason": "Section 11.3.2 explicitly states that the response has the same information in the same layout as Section 11.1.2."
+    },
     "EMV Financial Transaction Response": {
       "transaction_type": "EMV Financial Transaction Response",
-      "segment_count": 10,
+      "source_section": "11.8.2",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "segment_count": 5,
+      "layout": "VARIABLE_LENGTH_NO_FIELD_SEPARATORS",
+      "fields": [
+        {"field_no":"1","element_no":"83","name":"Response Code","entry":"R","position":1,"length":1},
+        {"field_no":"2","element_no":"30","name":"Download Indicator","entry":"R","position":2,"length":1},
+        {"field_no":"3","element_no":"45","name":"Initiation Date","entry":"R","position":3,"length":6},
+        {"field_no":"4","element_no":"46","name":"Initiation Time","entry":"R","position":9,"length":4},
+        {"field_no":"5","element_no":"86","name":"Sequence Number","entry":"R","position":13,"length":6},
+        {"field_no":"6","element_no":"6","name":"Approved Amount","entry":"C","position":19,"length":9},
+        {"field_no":"7","element_no":"5","name":"Approval Number","entry":"C","position":28,"length":6},
+        {"field_no":"8","element_no":"2","name":"Account Number","entry":"R","position":34,"length":25},
+        {"field_no":"9","element_no":"26","name":"Decline Code","entry":"C","position":59,"length":2},
+        {"field_no":"10","element_no":"7","name":"Authorizer Code","entry":"R","position":61,"length":2},
+        {"field_no":"11","element_no":"8","name":"Authorizer Response Code","entry":"R","position":63,"length":2},
+        {"field_no":"12","element_no":"119","name":"Settlement Date","entry":"R","position":65,"length":4},
+        {"field_no":"13","element_no":"115","name":"Additional Information Data Segment Flag","entry":"R","position":69,"length":1},
+        {"field_no":"14","element_no":"61","name":"Number of Print Lines","entry":"R","position":70,"length":1},
+        {"field_no":"15","element_no":"101","name":"Terminal Display/Printer Message","entry":"R","position":71,"length":31}
+      ],
+      "repeating_group":{"field_no":"15","element_no":"101","maximum_count":3},
       "segments": [
+        {"segment_number":"112","segment_name":"Additional Information Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Element 115 indicates Segment 112 follows","max_length":349},
+        {"segment_number":"115","segment_name":"Print Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Print Data follows when request Loyalty Version Number is 2","max_length":999},
+        {"segment_number":"120","segment_name":"Print Data 2 Segment","data_section":2,"presence_in_message":"C","presence_condition":"Print Data follows when request Loyalty Version Number is 2","max_length":999},
+        {"segment_number":"131","segment_name":"EMV Response Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"EMV response data applies","max_length":3850,"source_conflict":"Section 11.8.2 table gives 3,850; Section 12.21 and Element 84 give 3,834. Preserve the Section 11 value here and retain both source values for review."},
+        {"segment_number":"134","segment_name":"Transaction Attributes Data Segment","data_section":2,"presence_in_message":"C","presence_condition":"Transaction attribute data applies","max_length":12}
+      ],
+      "source_conflicts": [
+        "Section 11.8.2 lists Segment 131 with maximum 3,850; Section 12.21 and Element 84 list 3,834. This template preserves the Section 11.8.2 table value; do not treat the mismatch as resolved."
+      ],
+      "extracted_candidate_segments": [
         {
           "segment_number": "112",
           "segment_name": "Additional Information Data Segment",
@@ -9181,8 +9866,11 @@
         }
       ]
     },
-    "Key Request": {
-      "transaction_type": "Key Request",
+    "TransArmor Key and Key ID Load Request": {
+      "transaction_type": "TransArmor Key and Key ID Load Request",
+      "review_status": "BLOCKED_EXTERNAL_SOURCE",
+      "source_section": "11.7.5",
+      "layout": "NOT_AVAILABLE_EXTERNAL_TRANSARMOR_SPECIFICATION",
       "segment_count": 1,
       "segments": [
         {
@@ -9196,7 +9884,115 @@
             "page": 245
           }
         }
+      ],
+      "notes": [
+        "Section 11.7.5 and Section 12.15 redirect to the external TransArmor specification-updates document; the field-level request and response layouts are not present in this ATL105 source. This is a blocked placeholder, not a usable message template."
       ]
+    },
+    "Moneris Key Load Request": {
+      "transaction_type": "Moneris Key Load Request",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "segment_count": 0,
+      "fields": [
+        {"field_no":"1","element_no":"44","element_ref":"ENT-ELEM-44","name":"Information Byte","entry":"R","fixed_value":"?","position":1,"length":1,"description":"Indicates a Download Request. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"2","element_no":"102","element_ref":"ENT-ELEM-102","name":"Terminal Identifier","entry":"R","fixed_value":null,"position":2,"length":13,"description":"Identifies the device by Device Type, State Code, BUYPASS Merchant Number, and Device Number. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"3","element_no":"48","element_ref":"ENT-ELEM-48","name":"Load Type","entry":"R","fixed_value":"K","position":15,"length":1,"description":"Identifies the load type; K means Key Load. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"4","element_no":"205","element_ref":"ENT-ELEM-205","name":"Load Subtype","entry":"R","fixed_value":"M","position":16,"length":1,"description":"Identifies the Moneris Key Load. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"5","element_no":"206","element_ref":"ENT-ELEM-206","name":"SPDH Header","entry":"R","fixed_value":null,"position":17,"length":48,"description":"Contains merchant, terminal, and transaction data required for MAC encryption. Source: Device. See Appendix V for layout.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"6","element_no":"207","element_ref":"ENT-ELEM-207","name":"Moneris Terminal Identifier","entry":"R","fixed_value":null,"position":65,"length":8,"description":"Moneris Terminal ID provided during terminal initialization. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}},
+        {"field_no":"7","element_no":"208","element_ref":"ENT-ELEM-208","name":"Moneris Merchant ID","entry":"R","fixed_value":null,"position":73,"length":13,"description":"Moneris Merchant ID provided during terminal initialization. Source: Device.","source":{"source_id":"SRC-ATL105-PDF-001","page":199}}
+      ],
+      "spdh_header_fields": [
+        {"name":"Device Type","position":1,"length":2,"format":"A"},
+        {"name":"Transmission Number","position":3,"length":2,"format":"N"},
+        {"name":"Moneris Terminal ID","position":5,"length":8,"format":"A"},
+        {"name":"Filler","position":13,"length":8,"format":"A"},
+        {"name":"Clerk ID","position":21,"length":6,"format":"A"},
+        {"name":"Local Date/Time","position":27,"length":12,"format":"A"},
+        {"name":"Message Type","position":39,"length":1,"format":"A"},
+        {"name":"Message Subtype","position":40,"length":1,"format":"A"},
+        {"name":"Transaction Code","position":41,"length":2,"format":"N"},
+        {"name":"Processing Flags","position":43,"length":3,"format":"N"},
+        {"name":"Base24 Response Code","position":46,"length":3,"format":"N"}
+      ],
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":199},
+      "notes":["No Field Separators between fields.","Use synthetic placeholders only for SPDH and Moneris identifiers; do not include merchant credentials or key material."]
+    },
+    "Moneris Key Load Response": {
+      "transaction_type": "Moneris Key Load Response",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "segment_count": 0,
+      "fields": [
+        {"field_no":"1","element_no":"24","element_ref":"ENT-ELEM-24","name":"Data Type Indicator","entry":"R","fixed_value":"K","position":1,"length":1,"description":"Indicates that the following data contains Moneris Key Information. Source: Host.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"2","element_no":"206","element_ref":"ENT-ELEM-206","name":"SPDH Header","entry":"R","fixed_value":null,"position":2,"length":48,"description":"Contains merchant, terminal, and transaction data required for MAC encryption. Source: Moneris. See Appendix V for layout.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"3","element_no":"207","element_ref":"ENT-ELEM-207","name":"Moneris Terminal Identifier","entry":"R","fixed_value":null,"position":50,"length":8,"description":"Moneris Terminal ID provided during terminal initialization. Source: Host.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"4","element_no":"208","element_ref":"ENT-ELEM-208","name":"Moneris Merchant ID","entry":"R","fixed_value":null,"position":58,"length":13,"description":"Moneris Merchant ID provided during terminal initialization. Source: Host.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"5","element_no":"209","element_ref":"ENT-ELEM-209","name":"Moneris Response Code","entry":"R","fixed_value":null,"position":71,"length":2,"description":"Moneris response code for MAC encryption. Source: Moneris.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"6","element_no":"210","element_ref":"ENT-ELEM-210","name":"MAC","entry":"R","fixed_value":null,"position":73,"length":16,"description":"MAC value validated at the terminal. Source: Host. Sensitive value; no real MAC fixture data.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"7","element_no":"211","element_ref":"ENT-ELEM-211","name":"Key Indicators","entry":"R","fixed_value":null,"position":89,"length":3,"description":"Indicates which of up to three 16-byte keys are included. Source: Host.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}},
+        {"field_no":"8","element_no":"212","element_ref":"ENT-ELEM-212","name":"Moneris Key Data","entry":"C","fixed_value":null,"position":92,"length":16,"description":"One 16-byte key returned from Moneris; repeated up to three times as specified by Key Indicators. Sensitive key material; never include production values.","source":{"source_id":"SRC-ATL105-PDF-001","page":200}}
+      ],
+      "spdh_header_fields": [
+        {"name":"Device Type","position":1,"length":2,"format":"A"},
+        {"name":"Transmission Number","position":3,"length":2,"format":"N"},
+        {"name":"Moneris Terminal ID","position":5,"length":8,"format":"A"},
+        {"name":"Filler","position":13,"length":8,"format":"A"},
+        {"name":"Clerk ID","position":21,"length":6,"format":"A"},
+        {"name":"Local Date/Time","position":27,"length":12,"format":"A"},
+        {"name":"Message Type","position":39,"length":1,"format":"A"},
+        {"name":"Message Subtype","position":40,"length":1,"format":"A"},
+        {"name":"Transaction Code","position":41,"length":2,"format":"N"},
+        {"name":"Processing Flags","position":43,"length":3,"format":"N"},
+        {"name":"Base24 Response Code","position":46,"length":3,"format":"N"}
+      ],
+      "repeating_group":{"field_no":"8","element_no":"212","minimum_count":0,"maximum_count":3,"record_length":16,"maximum_total_length":48,"presence_condition":"Key Indicators"},
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":200},
+      "notes":["No Field Separators between fields.","Key payload values are sensitive; use approved synthetic values only."]
+    },
+    "CA Public Key File Load Request": {
+      "transaction_type": "CA Public Key File Load Request",
+      "review_status": "PROVISIONAL_SEG132_SME_006",
+      "layout": "DATA_SECTION_REQUEST_FIELD_SEPARATED_PROVISIONAL",
+      "segment_count": 1,
+      "data_section_1_fields": [
+        {"field_no":"1","element_no":"55","element_ref":"ENT-ELEM-55","name":"Message Format Version Identifier","entry":"R","fixed_value":"ATL105","position":1,"length":6,"separator_after":true,"source":{"source_id":"SRC-ATL105-PDF-001","page":209}},
+        {"field_no":"2","element_no":"63","element_ref":"ENT-ELEM-63","name":"Number of Segments","entry":"R","fixed_value":"01","position":7,"length":2,"separator_after":true,"source":{"source_id":"SRC-ATL105-PDF-001","page":209}}
+      ],
+      "segments": [
+        {"segment_number":"132","segment_name":"CA Public Key File Load Segment","segment_type_value":"132","presence_in_message":"PRESENT_PER_11_9_1_TABLE","position":10,"source":{"source_id":"SRC-ATL105-PDF-001","page":211},"fields":[
+          {"field_no":"3","element_no":"85","element_ref":"ENT-ELEM-85","name":"Segment Type","entry":"R","fixed_value":"132","position":10,"length":3,"separator_after":true},
+          {"field_no":"4","element_no":"84","element_ref":"ENT-ELEM-84","name":"Segment Length","entry":"R","fixed_value":null,"position":14,"length":3,"separator_after":true},
+          {"field_no":"5","element_no":"86","element_ref":"ENT-ELEM-86","name":"Sequence Number","entry":"R","fixed_value":null,"position":18,"length":6,"separator_after":true},
+          {"field_no":"6","element_no":"102","element_ref":"ENT-ELEM-102","name":"Terminal Identifier","entry":"R","fixed_value":null,"position":25,"length":13,"separator_after":false,"description":"For EMV, starts with +* regardless of actual device type."},
+          {"field_no":"7","element_no":"48","element_ref":"ENT-ELEM-48","name":"Load Type","entry":"R","fixed_value":"K","position":38,"length":1,"separator_after":false},
+          {"field_no":"8","element_no":"43","element_ref":"ENT-ELEM-43","name":"Hardware Version","entry":"R","fixed_value":null,"position":39,"length":4,"separator_after":false},
+          {"field_no":"9","element_no":"96","element_ref":"ENT-ELEM-96","name":"Software Version","entry":"R","fixed_value":null,"position":43,"length":8,"separator_after":false},
+          {"field_no":"10","element_no":"39","element_ref":"ENT-ELEM-39","name":"Firmware Version","entry":"R","fixed_value":null,"position":51,"length":8,"separator_after":false},
+          {"field_no":"11","element_no":"187","element_ref":"ENT-ELEM-187","name":"CA Public Key File Checksum","entry":"R","fixed_value":null,"position":59,"length":25,"separator_after":false},
+          {"field_no":"12","element_no":"11","element_ref":"ENT-ELEM-11","name":"Block Number","entry":"R","fixed_value":null,"position":84,"length":3,"separator_after":true}
+        ]}
+      ],
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":209},
+      "notes":["The 11.9.1 prose describes Data Section 2 as Segment 100 and includes companions in Data Section 3; its table places Segment 132 at field 3, fixes Number of Segments to 01, and explicitly says Segment 100 is absent. Preserve the table shape as provisional pending SEG132-SME-006.","Do not add real public keys or checksums to fixtures."]
+    },
+    "CA Public Key File Load Response": {
+      "transaction_type": "CA Public Key File Load Response",
+      "review_status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "segment_count": 0,
+      "fields": [
+        {"field_no":"1","element_no":"24","element_ref":"ENT-ELEM-24","name":"Data Type Indicator","entry":"R","fixed_value":"&","position":1,"length":1},
+        {"field_no":"2","element_no":"86","element_ref":"ENT-ELEM-86","name":"Sequence Number","entry":"R","fixed_value":null,"position":2,"length":6,"description":"Echoed from the CA Public Key File Load Request."},
+        {"field_no":"3","element_no":"83","element_ref":"ENT-ELEM-83","name":"Response Code","entry":"R","fixed_value":null,"position":8,"length":1,"valid_values":["M","L","X"]},
+        {"field_no":"4","element_no":"187","element_ref":"ENT-ELEM-187","name":"CA Public Key File Checksum","entry":"R","fixed_value":null,"position":9,"length":25},
+        {"field_no":"5","element_no":"193","element_ref":"ENT-ELEM-193","name":"CA Public Key File Block Length","entry":"R","fixed_value":null,"position":49,"length":4,"valid_values":"0000-9999"},
+        {"field_no":"6","element_no":"194","element_ref":"ENT-ELEM-194","name":"CA Public Key File Block","entry":"R","fixed_value":null,"position":53,"length":9999,"description":"Up to 9,999 bytes; may carry a decline/error message."},
+        {"field_no":"7","element_no":"11","element_ref":"ENT-ELEM-11","name":"Block Number","entry":"R","fixed_value":null,"position":"Varies","length":3}
+      ],
+      "source":{"source_id":"SRC-ATL105-PDF-001","page":212},
+      "notes":["No Field Separators in this message.","Never include real CA public key bytes or production checksums in fixtures."]
     },
     "Proprietary Data Load Request": {
       "transaction_type": "Proprietary Data Load Request",
@@ -9383,7 +10179,12 @@
             "page": 246
           }
         }
-      ]
+      ],
+      "envelope": "Data Section 1 (MessageType, NumSegments=1) + Data Section 3 Field 3 (Segment 118); no Segment 100",
+      "promptCodes": {
+        "903": "Site Configuration Data, request only",
+        "905": "Fuel Volume Data, request only"
+      }
     },
     "Proprietary Data Load Response": {
       "transaction_type": "Proprietary Data Load Response",
@@ -9570,6 +10371,400 @@
             "page": 246
           }
         }
+      ],
+      "envelope": "Data Section 1 (ResponseCode, DownloadIndicator, InitiationDate, InitiationTime, SequenceNumber) + Data Section 3 Field 6 (Segment 118)",
+      "promptCodes": {
+        "901": "Custom Receipt Text, response only",
+        "902": "Dynamic Card Table, response only",
+        "904": "Host Discount Data, response only"
+      }
+    },
+    "Table Load Request": {
+      "transaction_type": "Table Load Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "44",
+          "name": "Information Byte",
+          "entry": "R",
+          "fixed_value": "?",
+          "position": 1,
+          "length": 1,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        },
+        {
+          "field_no": "2",
+          "element_no": "102",
+          "name": "Terminal Identifier",
+          "entry": "R",
+          "position": 2,
+          "length": 13,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        },
+        {
+          "field_no": "3",
+          "element_no": "48",
+          "name": "Load Type",
+          "entry": "R",
+          "fixed_value": "P",
+          "position": 15,
+          "length": 1,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        },
+        {
+          "field_no": "4",
+          "element_no": "43",
+          "name": "Hardware Version",
+          "entry": "R",
+          "position": 16,
+          "length": 4,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        },
+        {
+          "field_no": "5",
+          "element_no": "96",
+          "name": "Software Version",
+          "entry": "R",
+          "position": 20,
+          "length": 8,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        },
+        {
+          "field_no": "6",
+          "element_no": "39",
+          "name": "Firmware Version",
+          "entry": "R",
+          "position": 28,
+          "length": 8,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 187
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 187
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Table Load Response": {
+      "transaction_type": "Table Load Response",
+      "segment_count": 4,
+      "layout": "POSITIONAL_DATA_BLOCKS_NO_FIELD_SEPARATORS",
+      "blocks": [
+        {
+          "block_no": 1,
+          "segment": "DL1",
+          "name": "Merchant Data Segment",
+          "entry": "R",
+          "max_length": 399
+        },
+        {
+          "block_no": 2,
+          "segment": "DL2",
+          "name": "Dial String Data Segment",
+          "entry": "C",
+          "max_length": 69
+        },
+        {
+          "block_no": 3,
+          "segment": "DL3",
+          "name": "Date and Time Data Segment",
+          "entry": "C",
+          "max_length": 23
+        },
+        {
+          "block_no": 4,
+          "segment": "DL6",
+          "name": "Store and Forward Data Segment",
+          "entry": "C",
+          "max_length": 9,
+          "condition": "DL1 contains Card Type 173"
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 188
+      },
+      "notes": [
+        "Start-of-Data indicator before each block; TCP/IP omits it before blocks 2 and 3. End-of-Load indicator terminates the response."
+      ]
+    },
+    "Phone Load Request": {
+      "transaction_type": "Phone Load Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "44",
+          "name": "Information Byte",
+          "entry": "R",
+          "fixed_value": "?",
+          "position": 1,
+          "length": 1
+        },
+        {
+          "field_no": "2",
+          "element_no": "102",
+          "name": "Terminal Identifier",
+          "entry": "R",
+          "position": 2,
+          "length": 13
+        },
+        {
+          "field_no": "3",
+          "element_no": "48",
+          "name": "Load Type",
+          "entry": "R",
+          "fixed_value": "P",
+          "position": 15,
+          "length": 1
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 190
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Phone Load Response": {
+      "transaction_type": "Phone Load Response",
+      "segment_count": 1,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "97",
+          "name": "Start-of-Data Block Indicator",
+          "entry": "R",
+          "fixed_value": "!",
+          "position": 1,
+          "length": 1
+        }
+      ],
+      "segments": [
+        {
+          "segment_number": "DL2",
+          "segment_name": "Dial String Data Segment",
+          "entry": "R",
+          "max_length": 69,
+          "source": {
+            "source_id": "SRC-ATL105-PDF-001",
+            "page": 191
+          }
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 191
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Date and Time Load Request": {
+      "transaction_type": "Date and Time Load Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "44",
+          "name": "Information Byte",
+          "entry": "R",
+          "fixed_value": "?"
+        },
+        {
+          "field_no": "2",
+          "element_no": "102",
+          "name": "Terminal Identifier",
+          "entry": "R",
+          "length": 13
+        },
+        {
+          "field_no": "3",
+          "element_no": "48",
+          "name": "Load Type",
+          "entry": "R",
+          "fixed_value": "D"
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 192
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Date and Time Load Response": {
+      "transaction_type": "Date and Time Load Response",
+      "segment_count": 0,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "24",
+          "name": "Data Type Indicator",
+          "entry": "R",
+          "fixed_value": ":"
+        },
+        {
+          "field_no": "2",
+          "element_no": "25",
+          "name": "Day of the Week",
+          "entry": "R",
+          "length": 1
+        },
+        {
+          "field_no": "3",
+          "element_no": "21",
+          "name": "Current Date",
+          "entry": "R",
+          "length": 6
+        },
+        {
+          "field_no": "4",
+          "element_no": "22",
+          "name": "Current Time",
+          "entry": "R",
+          "length": 4
+        },
+        {
+          "field_no": "5",
+          "element_no": "23",
+          "name": "Cut Time",
+          "entry": "R",
+          "length": 4
+        },
+        {
+          "field_no": "6",
+          "element_no": "65",
+          "name": "Password",
+          "entry": "R",
+          "length": 6
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 193
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Software Load Request": {
+      "transaction_type": "Software Load Request",
+      "segment_count": 0,
+      "layout": "POSITIONAL_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "44",
+          "name": "Information Byte",
+          "entry": "R",
+          "fixed_value": "?"
+        },
+        {
+          "field_no": "2",
+          "element_no": "102",
+          "name": "Terminal Identifier",
+          "entry": "R",
+          "length": 13
+        },
+        {
+          "field_no": "3",
+          "element_no": "48",
+          "name": "Load Type",
+          "entry": "R",
+          "fixed_value": "P"
+        },
+        {
+          "field_no": "4",
+          "element_no": "43",
+          "name": "Hardware Version",
+          "entry": "R",
+          "length": 4
+        },
+        {
+          "field_no": "5",
+          "element_no": "96",
+          "name": "Software Version",
+          "entry": "R",
+          "length": 8
+        },
+        {
+          "field_no": "6",
+          "element_no": "39",
+          "name": "Firmware Version",
+          "entry": "R",
+          "length": 8
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 194
+      },
+      "notes": [
+        "No Field Separators."
+      ]
+    },
+    "Software Load Response": {
+      "transaction_type": "Software Load Response",
+      "segment_count": 1,
+      "layout": "POSITIONAL_DATA_BLOCK_NO_FIELD_SEPARATORS",
+      "fields": [
+        {
+          "field_no": "1",
+          "element_no": "97",
+          "name": "Start-of-Data Block Indicator",
+          "entry": "R",
+          "fixed_value": ")"
+        }
+      ],
+      "segments": [
+        {
+          "segment_number": "DL4",
+          "segment_name": "Software Dial Load Data Segment",
+          "entry": "R",
+          "max_length": 52
+        },
+        {
+          "segment_number": "DL5",
+          "segment_name": "Software IP Load Data Segment",
+          "entry": "R",
+          "max_length": 66
+        }
+      ],
+      "source": {
+        "source_id": "SRC-ATL105-PDF-001",
+        "page": 195
+      },
+      "notes": [
+        "No Field Separators."
       ]
     }
   }

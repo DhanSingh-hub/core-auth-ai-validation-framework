@@ -3,7 +3,7 @@
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.2 Fleet Data Segment (pages 12-9 to 12-11) and 11.1.1 Request companion-segment placement
 **External Program Reference (deferred by ATL105):** BUYPASS® Platform Petroleum Industry Processing Specifications (see Section 10.6)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure (rule catalog derived from specification; provisional items flagged for SME review)
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -197,3 +197,20 @@ The following are explicit **do-not-infer** boundaries per the Segment 100 train
 4. Do not treat generic Segment 100 fixtures as Segment 101 coverage evidence.
 5. Do not certify Petroleum Industry Processing Specifications behavior from ATL105 fixtures alone; it is a separate-domain reference.
 6. Do not infer companion Segment 102 (Product Code Data) presence from Segment 101 alone — check Segment 100 fuel/product amounts.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-101-rule-catalog.json) (26 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 101 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-101-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-101-flow.md) |
+| Topic deep-dives | [driver-identification-number](driver-identification-number-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [fleet-tag](fleet-tag-sme-tba-note.md) · [odometer](odometer-sme-tba-note.md) |
+| Topic flows | [driver-identification-number](driver-identification-number-flow.md) · [field-definitions](field-definitions-flow.md) · [fleet-tag](fleet-tag-flow.md) · [odometer](odometer-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-101-business-requirements.md](segment-101-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-101-rule-catalog.json) |

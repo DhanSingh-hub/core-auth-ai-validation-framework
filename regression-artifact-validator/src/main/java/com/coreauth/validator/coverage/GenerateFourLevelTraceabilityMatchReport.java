@@ -30,7 +30,7 @@ public final class GenerateFourLevelTraceabilityMatchReport {
         Path deliveryRoot = Atl105Paths.testInput().resolve(Path.of("ai-solution", "runs", "2026-09-23"));
         Path reviewRoot = Atl105Paths.testOutput().resolve("ai-solution-independent-review");
         Path outputRoot = args.length == 0
-                ? reviewRoot.resolve("four-level-traceability-matches") : Path.of(args[0]);
+                ? reviewRoot.resolve("four-level-matches") : Path.of(args[0]);
         Files.createDirectories(outputRoot);
 
         Run2Crosswalk crosswalk = loadCrosswalks(mapper, reviewRoot);

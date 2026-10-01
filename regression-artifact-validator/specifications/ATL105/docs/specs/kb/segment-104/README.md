@@ -6,7 +6,7 @@ This folder is the focused learning and analysis module for the ATL105 Purchase 
 
 ## Training and Validation Entry Points
 
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [SME and Technical Business Analysis Note](segment-104-sme-tba-learning-note.md)
 - [Segment 104 End-to-End Flow](segment-104-flow.md)
 - [Coverage Closure](coverage/README.md)
@@ -57,3 +57,20 @@ It does not claim that Segment 104 is valid for every transaction. It is include
 - [Data element catalog](../13-data-elements.md)
 - [Canonical artifact contract](../../../canonical-artifact-contract.md)
 - ATL105 2026-3, Section 11.1.1 and Section 12.5.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-104-rule-catalog.json) (14 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 104 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-104-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-104-flow.md) |
+| Topic deep-dives | [direct-marketing-invoice](direct-marketing-invoice-sme-tba-note.md) · [lifecycle](lifecycle-sme-tba-note.md) · [purchase-amounts](purchase-amounts-sme-tba-note.md) · [purchase-card-applicability](purchase-card-applicability-sme-tba-note.md) · [purchase-code](purchase-code-sme-tba-note.md) · [shipping-data](shipping-data-sme-tba-note.md) |
+| Topic flows | [direct-marketing-invoice](direct-marketing-invoice-flow.md) · [lifecycle](lifecycle-flow.md) · [purchase-amounts](purchase-amounts-flow.md) · [purchase-card-applicability](purchase-card-applicability-flow.md) · [purchase-code](purchase-code-flow.md) · [shipping-data](shipping-data-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-104-business-requirements.md](segment-104-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-104-rule-catalog.json) |

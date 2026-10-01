@@ -1,0 +1,18 @@
+{
+  "catalogId": "ATL105-SEG156-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "156", "segmentName": "EV Charging Data Segment",
+  "scope": "Segment 156 fixed-length, no-separator TLV sub-table catalog for electric vehicle charging data (Visa only)",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16635-16904 (Section 12.40)",
+  "rules": [
+    {"ruleId":"SEG156-R-001","title":"Segment 156 is sent only for an EV charging transaction (EV fuel code in Segment 102 Product Code Segment), and is applicable to the Visa card type only","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"102,156","rule":"ev-transaction-visa-only"}},
+    {"ruleId":"SEG156-R-002","title":"Segment 156 uses NO Field Separators — fixed-length/positional","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"no-field-separators"}},
+    {"ruleId":"SEG156-R-003","title":"EV Transaction Indicator (Table 01) is mandatory for an EV transaction and must be 'Y'; if the EV segment is sent without this indicator set to 'Y', BUYPASS will decline the transaction","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"ev-transaction-indicator-mandatory-y"}},
+    {"ruleId":"SEG156-R-004","title":"Time-based sub-tables (02 Total Time Plugged In, 03 Total Charging Time, 04 Start Time of Charge, 05 Finish Time of Charge) all use fixed 6-character hhmmss format, hh 00-99, mm/ss 00-59","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"hhmmss-time-format-4-tables"},"note":"hh range 00-99 (not 00-23) — accommodates elapsed-time durations exceeding 24 hours, not just clock times."},
+    {"ruleId":"SEG156-R-005","title":"Charging Reason Code (Table 07) uses a documented Visa-specific enumeration (010-023, 100, 200); other card networks' valid values are not documented here","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"charging-reason-code-visa-enumeration"}},
+    {"ruleId":"SEG156-R-006","title":"Connector Type (Table 12) uses a documented Visa-defined enumeration (001-003, 100-103, 200)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"connector-type-visa-enumeration"}},
+    {"ruleId":"SEG156-R-007","title":"Additional numeric measurement sub-tables exist: 06 Charging Power Output Capacity (kW), 08 Estimated KM/Miles Added, 09 Carbon Footprint (CO2e grams), 10 Estimated Vehicle KM/Miles Available, 11 Maximum Power Dispensed — all variable-length numeric fields with documented max lengths","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.40","segment":"156","rule":"numeric-measurement-sub-tables"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG156-SME-001"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

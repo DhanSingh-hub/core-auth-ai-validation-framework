@@ -1,0 +1,15 @@
+{
+  "catalogId": "ATL105-SEG152-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "152", "segmentName": "Incomm OTC Market Basket Data (Response) Segment",
+  "scope": "Segment 152 field-level rules for the Incomm OTC market basket response",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16243-16307 (Section 12.37)",
+  "rules": [
+    {"ruleId":"SEG152-R-001","title":"A Field Separator follows the segment (trailing separator, mirrors Segment 150's response pattern)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.37","segment":"152","rule":"trailing-separator"}},
+    {"ruleId":"SEG152-R-002","title":"Segment Type fixed 152, Segment Length 4 digits, both Host-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.37","segment":"152","element":"85,84","rule":"segment-type-length-host"}},
+    {"ruleId":"SEG152-R-003","title":"Market Basket Data consists of one DV dataset, up to 10 PI datasets, AND up to 10 PU datasets — one more dataset type than the request (Segment 151, which has no PU datasets)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.37","segment":"151,152","rule":"response-adds-pu-dataset-vs-request"},"note":"PROVISIONAL: full DV/PI/PU dataset format defined in the external 'Buypass Incomm Market Basket Data format' document. Pending SME confirmation (SEG152-SME-001), same as Segment 151's SEG151-SME-003."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG152-R-003"],"blocks":["Item 1"],"registerId":"SEG152-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG152-SME-002"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P02","item3_independence":"BLOCKED_BY_P02","item4_traceabilityMatrix":"BLOCKED_BY_P01","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

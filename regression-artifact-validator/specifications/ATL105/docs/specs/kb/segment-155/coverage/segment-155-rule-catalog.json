@@ -1,0 +1,18 @@
+{
+  "catalogId": "ATL105-SEG155-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "155", "segmentName": "Real Time Account Updater Response Data Segment",
+  "scope": "Segment 155 fixed-length, no-separator TLV sub-table catalog for First Data Auth Optimizer / Visa-MasterCard account updater responses",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16426-16635 (Section 12.39)",
+  "rules": [
+    {"ruleId":"SEG155-R-001","title":"Segment 155 can only be sent when the transaction qualifies for, and uses, the First Data Auth Optimizer service","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"155","rule":"auth-optimizer-service-gated"}},
+    {"ruleId":"SEG155-R-002","title":"Segment 155 uses NO Field Separators — fixed-length/positional, same pattern as Segments 131/134","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"155","rule":"no-field-separators"}},
+    {"ruleId":"SEG155-R-003","title":"Most sub-tables (Card Number 001, TransArmor Token 002, Expiration Date 003, Card Status 004, Original Response Code 005) are included ONLY when the merchant sent the Account Updater Request Indicator (Segment 111 Table 060 Sub-table 01) with value 'Y' (or 'Y'/'I' for some fields) in the request, and are applicable ONLY to Visa and MasterCard","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"111,155","rule":"account-updater-request-indicator-gates-response-fields"}},
+    {"ruleId":"SEG155-R-004","title":"Card Status (Table 004) valid values: A (New Acct# & Exp Date), E (New Exp Date), Q (Contact Cardholder), C (Closed), U (Unknown Card)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"155","rule":"card-status-enumeration"}},
+    {"ruleId":"SEG155-R-005","title":"Account Updater Result Code (Table 006) is a fixed 6-character code from a documented enumeration (VAU001 through VAU016, non-contiguous — VAU015 absent), applicable only to Visa","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"155","rule":"result-code-vau-enumeration-visa-only"},"note":"The specification's own list skips VAU015 — confirm this is intentional (not a transcription gap) (SEG155-SME-001)."},
+    {"ruleId":"SEG155-R-006","title":"Segment Type fixed 155; the field table for fields 1-2 does not list a Source (unlike every other segment trained), an editorial omission","class":"metadata","severity":"info","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39","segment":"155","element":"85,84","rule":"missing-source-annotation"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG155-R-005"],"blocks":[],"registerId":"SEG155-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG155-SME-002"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P02","item3_independence":"BLOCKED_BY_P02","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"NOT_STARTED","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

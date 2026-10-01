@@ -2,8 +2,8 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)  
 **Source Sections:** 10.11 Electronic Mail Processing (pages 10-60 to 10-61), 11.5 Electronic Mail (pages 11-21 to 11-23), and 12.8 Electronic Mail Data Segment (pages 12-23 to 12-24)  
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-item framework)  
-**Item Progress:** Item 1 - Coverage Closure started; Items 2-8 blocked pending the manual inputs in [Segment 109 SME/TBA Input Register](segment-109-sme-tba-input-register.md).
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-item framework)  
+**Item Progress:** Item 1 - Coverage Closure has a message-level validator and synthetic fixtures; Item 2 - AI Artifact Comparison is independently rejected as not intake-ready; Items 3-8 remain blocked pending the manual inputs in [Segment 109 SME/TBA Input Register](segment-109-sme-tba-input-register.md).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
@@ -30,6 +30,7 @@
 - [Coverage Closure Index](coverage/README.md)
 - [Coverage Closure SME/TBA Note](coverage/segment-109-coverage-sme-tba-note.md)
 - [Coverage Closure Flow](coverage/segment-109-coverage-flow.md)
+- [Independent AI BR-to-TD Chain Verification](../../../../test-output/ai-solution-independent-review/segment-109-ai-chain-verification.json)
 - [Segment 109 Canonical Source Anchors](../segment-109-canonical-anchors.md)
 - [Segment 109 Knowledge Catalog](../../../../test-output/test-json/knowledge/SEGMENT-109-KNOWLEDGE-CATALOG.json)
 - [Segment 109 Field Knowledge Inventory](../../../../test-output/test-json/knowledge/segment-109-field-knowledge-inventory.json)
@@ -44,10 +45,10 @@
 | Segment number | 109 | Section 12.8 |
 | Segment name | Electronic Mail Data Segment | Section 12.8 heading |
 | Purpose | Carries electronic-mail-specific request data for retrieval or submission | Sections 10.11 and 11.5 |
-| Placement | Field 3 in Data Section No. 2 of an Electronic Mail Request | Section 11.5.1 |
+| Placement | Field No. 3 of an Electronic Mail Request, the only segment. The specification labels it Data Section No. 2; under the request data-section convention (TT-0014) it is Data Section 3 (SEG109-SME-012) | Sections 11.5.1, 12.8 |
 | Origin | Device | Section 12.8 |
 | Segment length range | 001-232 alphanumeric characters | Section 12.8 |
-| Request envelope | Data Section 1 has Elements 55 and 63; Data Section 2 carries Segment 109 | Section 11.5.1 |
+| Request envelope | Data Section 1 has Elements 55 and 63; Segment 109 follows in Field No. 3; no Segment 100 | Section 11.5.1 |
 | Response envelope | Variable-length, positional Electronic Mail Response; no field separators | Section 11.5.2 |
 
 ## 2. Field Layout
@@ -79,8 +80,8 @@ The complete machine-readable set is in [coverage/segment-109-rule-catalog.json]
 
 | Methodology Item | Status | Evidence / gate |
 |---|---|---|
-| 1. Coverage closure | PARTIALLY_COVERED | 22 source-derived rules cataloged; Item 1 validator and 9 baseline tests pass. Conditional semantics await SME input. |
-| 2. AI artifact comparison | BLOCKED | Requires AI-produced Segment 109 BR/TS/TC/TD artifacts. |
+| 1. Coverage closure | PARTIALLY_COVERED | 22 source-derived rules cataloged; `Segment109PayloadValidator` and six request fixtures pass. Conditional semantics await SME input. |
+| 2. AI artifact comparison | REJECTED_NOT_INTAKE_READY | Independent report finds 61 BRs, 182 scenarios, 340 linked test cases and zero linked payloads containing Segment 109; see AIF-0014 and the chain verification report. |
 | 3. Test-data independence | BLOCKED | Requires approved request/response examples and conditional-field policy. |
 | 4. Traceability matrix | BLOCKED | Requires approved business rules and AI artifacts. |
 | 5. Mutation definition | BLOCKED | Requires Information Byte, Block Number, and conditional-field value catalogs. |
@@ -102,4 +103,22 @@ The complete machine-readable set is in [coverage/segment-109-rule-catalog.json]
 1. Provide answers and approved references for the items in the input register.
 2. Add sanitized, converter-ready request/response examples for each enabled electronic-mail flow.
 3. Replace the in-memory Item 1 baseline data with approved fixture shapes once they are supplied.
-4. Continue Items 2-8 using the Segment 100 methodology without treating synthetic fixtures as AI-artifact evidence.
+4. Rebuild the AI Electronic Mail BR -> TS -> TC -> TD -> mapping chain; do not treat the six Test Solution synthetic fixtures as AI-artifact evidence.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-109-rule-catalog.json) (22 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 109 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-109-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-109-flow.md) |
+| Topic deep-dives | [conditional-authorization](conditional-authorization-sme-tba-note.md) · [prompt-code](prompt-code-sme-tba-note.md) · [sequence-lifecycle](sequence-lifecycle-sme-tba-note.md) · [terminal-identifier](terminal-identifier-sme-tba-note.md) |
+| Topic flows | [conditional-authorization](conditional-authorization-flow.md) · [prompt-code](prompt-code-flow.md) · [sequence-lifecycle](sequence-lifecycle-flow.md) · [terminal-identifier](terminal-identifier-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-109-business-requirements.md](segment-109-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-109-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-109-sme-tba-input-register.md) |

@@ -43,7 +43,7 @@ class Segment108ConsolidatedReportTest {
     @Test
     void reportsAll24RulesInCatalog(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment108ConsolidatedReport().generate(inputsFor(tmp));
-        assertThat(summary.catalogRules()).isEqualTo(24);
+        assertThat(summary.catalogRules()).isEqualTo(25);
     }
 
     @Test
@@ -86,7 +86,7 @@ class Segment108ConsolidatedReportTest {
     @Test
     void reportListsProvisionalItems(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment108ConsolidatedReport().generate(inputsFor(tmp));
-        for (String pid : new String[]{"P-02", "P-03", "P-04", "P-07", "P-08"}) {
+        for (String pid : new String[]{"P-02", "P-03", "P-04", "P-05", "P-07", "P-08", "P-10", "P-11"}) {
             assertThat(summary.reportText())
                 .as("provisional %s listed", pid)
                 .contains(pid);

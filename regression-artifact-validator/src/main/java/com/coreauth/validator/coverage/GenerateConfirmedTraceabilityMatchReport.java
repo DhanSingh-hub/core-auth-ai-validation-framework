@@ -17,7 +17,7 @@ public final class GenerateConfirmedTraceabilityMatchReport {
     public static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Path outputRoot = Atl105Paths.testOutput().resolve(
-                Path.of("ai-solution-independent-review", "four-level-traceability-matches"));
+                Path.of("ai-solution-independent-review", "four-level-matches"));
         Path sourceFile = args.length == 0
                 ? outputRoot.resolve("four-level-traceability-matches.json") : Path.of(args[0]);
         JsonNode full = mapper.readTree(sourceFile.toFile());

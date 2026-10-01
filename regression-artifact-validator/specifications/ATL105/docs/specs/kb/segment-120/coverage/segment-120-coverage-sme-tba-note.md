@@ -123,7 +123,7 @@ package-level decision for Segment 120 is **`REVIEW_REQUIRED`**, pending:
    2026-09-23 by deeper spec reading and no longer require SME input, though the resolution should
    be spot-checked against a real message if one becomes available.
 2. Negative test case generation for all 8 rules from the AI Solution pipeline (or from the Test
-   Solution's own mutation framework, see [Item 5/6](../../../SEGMENT-100-TRAINING-METHODOLOGY.md)).
+   Solution's own mutation framework, see [Item 5/6](../../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)).
 3. Correction of the `REQ-SRC-ATL105-PDF-001:1261` bucketing gap upstream, or a durable note in
    this catalog if it will not be corrected.
 

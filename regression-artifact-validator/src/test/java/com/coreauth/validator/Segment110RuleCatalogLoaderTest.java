@@ -15,7 +15,7 @@ class Segment110RuleCatalogLoaderTest {
             "specifications", "ATL105", "docs", "specs", "kb", "segment-110", "coverage", "segment-110-rule-catalog.json"));
 
         assertThat(catalog.catalogId()).isEqualTo("ATL105-SEG110-RULE-CATALOG-001");
-        assertThat(catalog.rules()).hasSize(20);
+        assertThat(catalog.rules()).hasSize(21);
         assertThat(catalog.anchors()).allSatisfy(anchor -> {
             assertThat(anchor.getSpecification()).isEqualTo("ATL105");
             assertThat(anchor.getSection()).isNotBlank();

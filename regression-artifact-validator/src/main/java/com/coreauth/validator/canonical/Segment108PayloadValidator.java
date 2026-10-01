@@ -17,12 +17,12 @@ import java.util.regex.Pattern;
  * <p>Rule anchors correspond to {@code SEG108-R-###} in
  * {@code specifications/ATL105/docs/specs/kb/segment-108/coverage/segment-108-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
- * Unlike Segment 103 (an optional Financial Transaction Request companion), Segment 108
- * belongs exclusively to the dedicated Loyalty Card Transaction Request, so the payload root
- * key is {@code "Loyalty Card Transaction Request"}, not {@code "Financial Request"}.
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
+ * Segment 108 is validated inside the dedicated Loyalty Card Transaction Request (Section 11.2.1),
+ * so the payload root key is {@code "Loyalty Card Transaction Request"}, not {@code "Financial Request"}.
+ * Whether Segment 108 may also accompany a Financial Transaction Request is open (SEG108 P-05).
  * Wire-serialization-only rules (SEG108-R-002, 006, 007), metadata rules (SEG108-R-022), and
- * cross-message/compatibility/lifecycle rules (SEG108-R-023, 024) are cataloged but not
+ * cross-message/lifecycle rules (SEG108-R-001, 024) are cataloged but not
  * enforced here; see the KB README for the full list.
  */
 public final class Segment108PayloadValidator {
@@ -40,6 +40,9 @@ public final class Segment108PayloadValidator {
     private static final Pattern EXPIRATION_DATE_MMYY = Pattern.compile("^(0[1-9]|1[0-2])[0-9]{2}$");
 
     private static final int MAX_SEGMENT_LENGTH = 142;
+    private static final int MIN_LOYALTY_SEGMENTS = 2;
+    private static final int MAX_LOYALTY_SEGMENTS = 3;
+    private static final Set<String> LOYALTY_REQUEST_SEGMENT_TYPES = Set.of("100", "108", "114");
 
     private static final Set<String> VALID_UPDATE_CODES = Set.of("A", "C", "E", "I", "P", "S", "T", "U");
     private static final Set<String> VALID_PAYMENT_TENDER_TYPES = Set.of(
@@ -104,20 +107,52 @@ public final class Segment108PayloadValidator {
         }
 
         // SEG108-R-021: at most one Segment 108 per message
+        // SEG108-R-023: Section 11.2.1 Data Section 3 carries only Segments 108 and 114
         int seg108Count = 0;
+        int segmentCount = 0;
         Iterator<Map.Entry<String, JsonNode>> topFields = request.fields();
         while (topFields.hasNext()) {
             Map.Entry<String, JsonNode> entry = topFields.next();
             JsonNode value = entry.getValue();
-            if (value.isObject() && "108".equals(value.path("SegmentType").asText(null))) {
+            String type = value.isObject() ? value.path("SegmentType").asText(null) : null;
+            if (type == null) {
+                continue;
+            }
+            segmentCount++;
+            if ("108".equals(type)) {
                 seg108Count++;
+            }
+            if (!LOYALTY_REQUEST_SEGMENT_TYPES.contains(type)) {
+                result.addError(SOURCE, "Segment " + type + " ('" + entry.getKey()
+                    + "') is not allowed in a Loyalty Card Transaction Request; Data Section 3 carries only Segments 108 and 114 (SEG108-R-023)");
             }
         }
         if (seg108Count > 1) {
             result.addError(SOURCE, "Only one Loyalty Card Data Segment (108) is allowed per message (SEG108-R-021); found " + seg108Count);
         }
 
+        checkNumberOfSegments(request.path("NumSegments").asText(null), segmentCount, result);
         validateLoyaltySegment(loyaltySegment, result);
+    }
+
+    // SEG108-R-025: Element 63 counts Segment 100, Segment 108 and the optional Segment 114
+    private static void checkNumberOfSegments(String declared, int actual, ValidationResult result) {
+        if (declared == null || declared.isBlank()) {
+            result.addError(SOURCE, "NumSegments (Element 63) is required (SEG108-R-025)");
+            return;
+        }
+        if (!declared.matches(DataSection1StructureValidator.ELEMENT_63_PATTERN)) {
+            result.addError(SOURCE, "NumSegments (Element 63) must be one or two digits (SEG108-R-025); found " + declared);
+            return;
+        }
+        int count = Integer.parseInt(declared);
+        if (count < MIN_LOYALTY_SEGMENTS || count > MAX_LOYALTY_SEGMENTS) {
+            result.addError(SOURCE, "NumSegments (Element 63) declares " + count + " but a Loyalty Card Transaction Request carries "
+                + MIN_LOYALTY_SEGMENTS + "-" + MAX_LOYALTY_SEGMENTS + " segments (SEG108-R-025)");
+        } else if (count != actual) {
+            result.addError(SOURCE, "NumSegments (Element 63) declares " + count + " but the message contains "
+                + actual + " segments (SEG108-R-025)");
+        }
     }
 
     private void validateLoyaltySegment(JsonNode segment, ValidationResult result) {

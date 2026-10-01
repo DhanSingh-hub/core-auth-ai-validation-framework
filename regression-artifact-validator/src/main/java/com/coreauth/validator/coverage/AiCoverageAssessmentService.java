@@ -6,6 +6,7 @@ import com.coreauth.validator.canonical.CanonicalScenario;
 import com.coreauth.validator.canonical.CanonicalTestCase;
 import com.coreauth.validator.canonical.CanonicalTestData;
 import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
+import com.coreauth.validator.canonical.Element83AiCoverageValidator;
 import com.coreauth.validator.canonical.RequirementCrosswalkEntry;
 import com.coreauth.validator.canonical.RequirementMatchStatus;
 import com.coreauth.validator.canonical.SourceAnchor;
@@ -26,6 +27,12 @@ import java.util.stream.Collectors;
 public final class AiCoverageAssessmentService {
     private final CanonicalTraceabilityValidator traceabilityValidator = new CanonicalTraceabilityValidator();
     private final CanonicalTestCaseQualityValidator testCaseValidator = new CanonicalTestCaseQualityValidator();
+
+    /** Returns the explicit full-ATL105 Element 83 BR -> TS -> TC -> TD completeness gate. */
+    public static NamedPayloadValidator element83ResponseCodeCoverageGate() {
+        Element83AiCoverageValidator validator = new Element83AiCoverageValidator();
+        return new NamedPayloadValidator("Element83ResponseCodeCoverage", validator::validate);
+    }
 
     public AiCoverageAssessmentReport assess(CanonicalArtifactPackage aiPackage,
                                              IndependentRequirementBaseline baseline,

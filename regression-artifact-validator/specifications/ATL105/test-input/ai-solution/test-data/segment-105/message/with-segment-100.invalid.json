@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "artifactId": "SEG105-MESSAGE-WITH-SEGMENT-100-INVALID-001",
+    "purpose": "Negative: a Totals Request that carries Segment 100 (Data Section 2) and declares two segments. Section 11.4.1.1: Totals Requests do not contain Data Section 2, and Element 63 is fixed at 01.",
+    "context": {"messageFamily": "TOTALS_REQUEST"},
+    "expected": "REJECT",
+    "expectedRules": ["SEG105-R-018", "SEG105-R-020"]
+  },
+  "Totals Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "02",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "TL500001",
+      "SequenceNumber": "000124"
+    },
+    "Totals Data Segment": {
+      "SegmentType": "105",
+      "SegmentLength": "106",
+      "InformationByte": "0",
+      "TerminalID": "TL500001",
+      "PromptCode": "990",
+      "TotalsDate": "333333",
+      "HardwareVersion": "HW01",
+      "SoftwareVersion": "SW010203",
+      "FirmwareVersion": "FW010203",
+      "SequenceNumber": "000124",
+      "GrandTotal": "00012550",
+      "CategoryTotals": [
+        {"CardLabel": "CC", "CardTypeTotalCount": "00003", "CardTypeTotalAmount": "00010050"},
+        {"CardLabel": "DB", "CardTypeTotalCount": "00001", "CardTypeTotalAmount": "00002500"}
+      ]
+    }
+  }
+}

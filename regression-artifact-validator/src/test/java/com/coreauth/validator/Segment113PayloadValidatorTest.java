@@ -25,7 +25,7 @@ class Segment113PayloadValidatorTest {
     @Test
     void acceptsCheckPurchaseOriginalHappyPath() {
         ValidationResult result = new Segment113PayloadValidator()
-            .validateFile(SEG113_ROOT.resolve(Path.of("lifecycle", "ecatelecheck-check-purchase-original.synthetic.json")));
+            .validateFile(SEG113_ROOT.resolve(Path.of("lifecycle", "eca-check-purchase-original.synthetic.json")));
 
         assertThat(result.errors()).isEmpty();
     }

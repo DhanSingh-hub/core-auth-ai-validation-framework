@@ -66,6 +66,39 @@ These are requirements for the Element 116/117/118 triad dimension of Segment 11
 | AI-112-001-046 | `046` | Voyager Restriction Code | A Segment 112 triad may carry a Voyager restriction code with code `046` when applicable. |
 | AI-112-001-047 | `047` | Visa Category Code | A Segment 112 triad may carry a Visa category code with code `047` when applicable. |
 
+## Segment-Level Rule Requirements
+
+These requirements cover Segment 112 structure and framing; the AI-112 requirements above remain the detailed indicator/value catalog.
+
+| ID | Class | Requirement | Acceptance criteria | Source | Status |
+|---|---|---|---|---|---|
+| BR-SEG112-001 | field | Segment Type (Element 85) is fixed value 112 | Element 85 equals `112`. | `SEG112-R-001` §12.11 | SPEC_DERIVED |
+| BR-SEG112-002 | field | Segment Length (Element 84) equals serialized length including Segment Type and Field Separators | The declared length equals the encoded Segment 112 length. | `SEG112-R-002` §12.11 | SPEC_DERIVED |
+| BR-SEG112-003 | serialization | Segment 112 has a maximum length of 999 alphanumeric characters | The serialized segment does not exceed 999 characters. | `SEG112-R-003` §12.11 | SPEC_DERIVED |
+| BR-SEG112-004 | structure | Segment 112 appears only at the end of a Financial Transaction Response | Segment 112 is present only in the response position specified by the rule. | `SEG112-R-004` §12.11 | SPEC_DERIVED |
+| BR-SEG112-005 | metadata | Segment 112 content originates at BUYPASS (Host), not the device | Documented for traceability; not independently asserted by a validator. | `SEG112-R-005` §12.11 | SPEC_DERIVED |
+| BR-SEG112-006 | serialization | The Additional Information section (Elements 116/117/118) repeats once per Additional Information Indicator, up to 990 bytes total | Repetition count and combined section length conform to the source rule. | `SEG112-R-006` §12.11 | SPEC_DERIVED |
+| BR-SEG112-007 | field | Additional Information Indicator (Element 116) identifies the type of associated Additional Information | The indicator selects its documented data meaning; per-code shapes remain specified in the AI-112 catalog above. | `SEG112-R-007` §12.11 | SPEC_DERIVED |
+| BR-SEG112-008 | dependency | Additional Information Length (Element 117) identifies the length of the following Additional Information (Element 118) | Element 117 equals the encoded length of its paired Element 118 value. | `SEG112-R-008` §12.11 | SPEC_DERIVED |
+| BR-SEG112-009 | field | Additional Information (Element 118) is variable length and carries the value identified by its paired Indicator and Length | The value conforms to the Element 116 meaning and paired Element 117 length; per-code shapes remain specified above. | `SEG112-R-009` §12.11 | SPEC_DERIVED |
+| BR-SEG112-010 | compatibility | Segment 112 is required in a Financial Transaction Response only when Element 115 equals 1 | Presence agrees with Element 115; ownership remains under SME review. | `SEG112-R-010` §13 | REVIEW_REQUIRED |
+
+| ID | Violates | Mutation class | Expected result |
+|---|---|---|---|
+| BR-SEG112-NEG-001 | `SEG112-R-001` | MUT-001 wrong fixed value | Validation error citing SEG112-R-001 |
+| BR-SEG112-NEG-002 | `SEG112-R-002` | MUT-003 length mismatch | Validation error citing SEG112-R-002 |
+| BR-SEG112-NEG-003 | `SEG112-R-003` | MUT-003 length exceeded | Validation error citing SEG112-R-003 |
+| BR-SEG112-NEG-004 | `SEG112-R-004` | MUT-010 wrong response position | Validation error citing SEG112-R-004 |
+| BR-SEG112-NEG-006 | `SEG112-R-006` | MUT-003 repetition/length exceeded | Validation error citing SEG112-R-006 |
+| BR-SEG112-NEG-007 | `SEG112-R-007` | MUT-004/MUT-008 invalid indicator | Validation error citing SEG112-R-007 |
+| BR-SEG112-NEG-008 | `SEG112-R-008` | MUT-009 length/value mismatch | Validation error citing SEG112-R-008 |
+| BR-SEG112-NEG-009 | `SEG112-R-009` | MUT-009 indicator/value mismatch | Validation error citing SEG112-R-009 |
+| BR-SEG112-NEG-010 | `SEG112-R-010` | MUT-009 flag/presence mismatch | Held at REVIEW_REQUIRED until ownership is confirmed |
+
+## Open Rule Ownership
+
+- **SEG112-SME-003** (`SEG112-R-010`): Confirm whether the Element 115 applicability rule belongs in the Segment 100 catalog, the Segment 112 catalog, or both. The Segment 100 catalog currently has no Element 115 reference; this BR remains `REVIEW_REQUIRED` pending the decision.
+
 ## Reserved and previously-undocumented codes
 
 | ID | Code | Status |

@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.4 EBT Data Segment (pages 12-15) and Elements 18, 109, 153, 154, 164 (chapter 13.2)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** All spec-groundable provisional items (P-01 through P-06) are resolved directly from the ATL105 text — applicability matrix, full WIC Product Data and EBT Program Data layouts, eWIC Return prohibition, eWIC prompt-code enumeration, and Appendix L currency codes. Items 1, 3, 5, 6, and 7 are executable. Item 2 and the external-data replacement in Item 4 remain open only on P-07/P-08 (real AI artifacts / real test data), which are not resolvable from the specification and require external delivery.
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -11,7 +11,7 @@
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md))
 
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [SME and Technical Business Analysis Note](segment-103-sme-tba-learning-note.md)
 - [Segment 103 End-to-End Flow](segment-103-flow.md)
@@ -204,3 +204,20 @@ P-01 through P-06 are **resolved** directly from the ATL105 specification text; 
 | eWIC Purchase Reversal/Void | OPTIONAL | Section 10.5.5.1 |
 | eWIC Voucher Clear | **REQUIRED** (WIC Discount Amount / WIC Product Data) | Section 10.5.5.1, 10.5.5.6 |
 | eWIC Return | **PROHIBITED** | Section 10.5.5.1: "These specifications do not support Return transactions." |
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-103-rule-catalog.json) (24 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 103 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-103-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-103-flow.md) |
+| Topic deep-dives | [applicability](applicability-sme-tba-note.md) · [ebt-program-data](ebt-program-data-sme-tba-note.md) · [ewic-prompt-lifecycle](ewic-prompt-lifecycle-sme-tba-note.md) · [sequence-lifecycle](sequence-lifecycle-sme-tba-note.md) · [voucher-lifecycle](voucher-lifecycle-sme-tba-note.md) · [wic-product-data](wic-product-data-sme-tba-note.md) |
+| Topic flows | [applicability](applicability-flow.md) · [ebt-program-data](ebt-program-data-flow.md) · [ewic-prompt-lifecycle](ewic-prompt-lifecycle-flow.md) · [sequence-lifecycle](sequence-lifecycle-flow.md) · [voucher-lifecycle](voucher-lifecycle-flow.md) · [wic-product-data](wic-product-data-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-103-business-requirements.md](segment-103-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-103-rule-catalog.json) |
