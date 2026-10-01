@@ -25,8 +25,8 @@ class Element84WidthGateTest {
         JsonNode result = report();
         assertThat(result.path("shapeVerified").asBoolean()).isTrue();
         assertThat(result.path("exceptionListVerified").asBoolean()).isTrue();
-        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(4);
-        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(8);
+        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(11);
+        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(22);
         assertThat(result.path("summary").path("smeApprovedRuleCount").asInt()).isZero();
         assertThat(result.path("assertions").get(0).path("sourceLine").asInt()).isGreaterThan(14000);
         assertThat(result.path("draftCases").get(0).path("executionReady").asBoolean()).isFalse();
@@ -40,8 +40,8 @@ class Element84WidthGateTest {
         Files.writeString(spec, Files.readString(spec).replace("2 84 Segment Length 3 R", "2 84 Segment Length unknown R"));
         GenerateAtl105Element84WidthGate.main(new String[]{pack.toString()});
         JsonNode result = report();
-        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
-        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(6);
+        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(10);
+        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(20);
     }
 
     @Test
@@ -61,8 +61,8 @@ class Element84WidthGateTest {
         assertThat(section).contains("2 84 Segment Length 4 R");
         Files.writeString(spec, source.substring(0, start) + section.replace("2 84 Segment Length 4 R", "2 84 Segment Length unknown R") + source.substring(end));
         GenerateAtl105Element84WidthGate.main(new String[]{pack.toString()});
-        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
-        assertThat(report().path("summary").path("draftCaseCount").asInt()).isEqualTo(6);
+        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(10);
+        assertThat(report().path("summary").path("draftCaseCount").asInt()).isEqualTo(20);
     }
 
     @Test
