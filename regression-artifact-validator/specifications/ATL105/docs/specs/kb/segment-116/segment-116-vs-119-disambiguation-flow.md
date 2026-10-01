@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    A[Source text says '...Request (Data Segment No. 116)'] --> B{Which request is being described?}
+    A["Source text says '...Request (Data Segment No. 116)'"] --> B{Which request is being described?}
     B -->|TransArmor PKI Encryption and Tokenization Load Request| C[Correct: Segment 116 is TransArmor Load Data Segment]
     B -->|Totals with Proprietary Data Load Request| D[Section 11.4.1.2 text says 116 - INCORRECT]
     D --> E[Cross-check Element 85 Segment Type valid-codes table]
