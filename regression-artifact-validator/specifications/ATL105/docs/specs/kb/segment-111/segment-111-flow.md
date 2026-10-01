@@ -25,7 +25,7 @@ flowchart TD
     G -->|No| X1[REJECT: repeated-section max exceeded]
     G -->|Yes| H{Total Segment 111 length <= 999 chars?}
     H -->|No| X2[REJECT: total length exceeded]
-    H -->|Yes| I[Compute SegmentLength =<br/>3+3+sum(3+3+len(value))+3]
+    H -->|Yes| I["Compute SegmentLength =<br/>3+3+sum(3+3+len(value))+3"]
     I --> J{Declared SegmentLength equals computed value?}
     J -->|No| X3[REJECT: SegmentLength mismatch]
     J -->|Yes| K[Serialize one trailing field separator;<br/>no separators inside or between repetitions]
