@@ -4,9 +4,9 @@
 flowchart TD
     A[Segment 143 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG143-R-001 When a Financial Transaction request includes Segment 143, a Product Code Data Segment (Segment 102) MUST also be present, and each entry in Segment 102 should have a corresponding entry in Segment 143, in the same order}
+    B -->|Yes| R1{"SEG143-R-001 When a Financial Transaction request includes Segment 143, a Product Code Data Segment (Segment 102) MUST also be present, and each entry in Segment 102 should have a corresponding entry in Segment 143, in the same order"}
     R1 -->|Fail| X1[Reject citing SEG143-R-001]
-    R1 -->|Pass| R2{SEG143-R-005 Tax by Product Data repeats per product for a maximum of 10 products, total variable length up to 360 bytes; each product entry contains Product Code (77) plus up to 3 tax sub-entries (Inclusive/Exclusive flag, Tax Type, Tax Amount)}
+    R1 -->|Pass| R2{"SEG143-R-005 Tax by Product Data repeats per product for a maximum of 10 products, total variable length up to 360 bytes; each product entry contains Product Code (77) plus up to 3 tax sub-entries (Inclusive/Exclusive flag, Tax Type, Tax Amount)"}
     R2 -->|Fail| X2[Reject citing SEG143-R-005]
     R2 -->|Pass| Z[Rules satisfied]
 ```
