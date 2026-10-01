@@ -6,7 +6,7 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG120-R-001 Segment Type is 120}
     R1 -->|Fail| X1[Reject citing SEG120-R-001]
-    R1 -->|Pass| R2{SEG120-R-002 Segment Length is present, exactly 4 digits (zero-padded), and equals the segment's actual encoded length including the Segment Type field and Field Separators}
+    R1 -->|Pass| R2{"SEG120-R-002 Segment Length is present, exactly 4 digits (zero-padded), and equals the segment's actual encoded length including the Segment Type field and Field Separators"}
     R2 -->|Fail| X2[Reject citing SEG120-R-002]
     R2 -->|Pass| R3{SEG120-R-003 Print Data is required and must be present whenever Segment 120 is included}
     R3 -->|Fail| X3[Reject citing SEG120-R-003]
