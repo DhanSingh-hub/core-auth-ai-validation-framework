@@ -22,8 +22,8 @@ class SourceEvidenceProgressTest {
         JsonNode result = generate();
         JsonNode summary = result.path("summary");
         assertThat(summary.path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
-        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(545);
+        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(57);
+        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(544);
         assertThat(summary.path("rulesWithSourceMismatch").asInt()).isEqualTo(2);
         assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(114);
         assertThat(summary.path("smeApprovedRuleCount").asInt()).isZero();
@@ -39,7 +39,7 @@ class SourceEvidenceProgressTest {
             segmentMismatches += segment.path("sourceMismatches").asInt();
         }
         assertThat(segmentRules).isEqualTo(601);
-        assertThat(segmentRemaining).isEqualTo(545);
+        assertThat(segmentRemaining).isEqualTo(544);
         assertThat(segmentMismatches).isEqualTo(2);
         assertThat(rule(result, "SEG114-R-003").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("PARTIAL_SOURCE_EVIDENCE_REVIEW_REQUIRED");
@@ -49,6 +49,7 @@ class SourceEvidenceProgressTest {
         assertThat(rule(result, "SEGDL2-R-006").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
         assertThat(rule(result, "SEGDL2-R-007").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
         assertThat(rule(result, "SEGDL2-R-005").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
+        assertThat(rule(result, "SEGDL3-R-009").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
     }
 
     @Test
@@ -57,7 +58,7 @@ class SourceEvidenceProgressTest {
         Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
         Files.writeString(sourceFile, Files.readString(sourceFile).replace("Fixed value:  101", "Fixed value:  199"));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -73,7 +74,7 @@ class SourceEvidenceProgressTest {
         Files.writeString(sourceFile, source.substring(0, start)
             + definition.replace(" 16 Space", " 16 Letter") + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL1-R-010").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -90,7 +91,7 @@ class SourceEvidenceProgressTest {
         Files.writeString(sourceFile, source.substring(0, start)
             + definition.replace("neither displayed", "sometimes displayed") + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL1-R-011").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -107,7 +108,7 @@ class SourceEvidenceProgressTest {
         Files.writeString(sourceFile, source.substring(0, start)
             + definition.replace("Valid Codes/Values: 1–3", "Valid Codes/Values: 1–4") + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL2-R-006").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -125,7 +126,7 @@ class SourceEvidenceProgressTest {
             + definition.replace("F Indicates the end of the second dial string", "X Indicates the end of the second dial string")
             + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL2-R-007").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -143,9 +144,27 @@ class SourceEvidenceProgressTest {
             + definition.replace("contains neither this element nor the Pause Indicator", "may contain the Pause Indicator")
             + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(55);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL2-R-005").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
+    }
+
+    @Test
+    void changedCutTimeTextWithdrawsOnlyDl3Claim() throws Exception {
+        copyInputs();
+        Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
+        String source = Files.readString(sourceFile);
+        int start = source.indexOf("Number: 23 Name: Cut Time");
+        int end = source.indexOf("Number: 24 Name: Data Type Indicator", start);
+        String definition = source.substring(start, end);
+        assertThat(definition).contains("30 minutes prior to the merchant’s cut");
+        Files.writeString(sourceFile, source.substring(0, start)
+            + definition.replace("30 minutes prior to the merchant’s cut", "15 minutes prior to the merchant’s cut")
+            + source.substring(end));
+        JsonNode result = generate();
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(56);
+        assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
+        assertThat(rule(result, "SEGDL3-R-009").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
 
     private JsonNode generate() throws Exception {
