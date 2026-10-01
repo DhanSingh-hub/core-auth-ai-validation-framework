@@ -28,7 +28,42 @@ Segment 131 is valid only inside the message families and Data Sections the spec
 |---|---|---|---|---|---|
 | 191 | EMV Additional Information Indicator | N | 3 bytes | Fixed length of 3 digits | Code Description 001 EMV table data |
 | 192 | EMV Additional Information Length | N | 3 bytes | Fixed length of 3 digits | 001–985 |
-| 118 | Additional Information | AN | 984 bytes | Variable length of up to 984 alphanumeric characters Note: Please refer to section 12.11, “Additional Information Data Segment,” for conditions affec… | 001–984 a–z A–Z Please refer to Appendix K. Additional Information Data Layouts. |
+| 118 | Additional Information | AN | 984 bytes | Variable length of up to 984 alphanumeric characters — see [Element 118 reference](#element-118-additional-information) | 001–984 a–z A–Z Please refer to Appendix K. Additional Information Data Layouts. |
+
+## Chapter 13 Reference: Full Element Definitions
+
+Full, untruncated Chapter 13.2 text for the elements listed above, transcribed from the ATL105 specification extract (`docs/specs/extracted_text.txt`). The table above links here instead of truncating long value lists.
+
+### Element 191: EMV Additional Information Indicator
+
+- **Character type:** N · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of 3 digits
+- **Purpose:** Identifies the type of EMV additional information transmitted in the Financial Transaction request or response.
+
+**Valid Codes/Values**
+
+Code Description 001 EMV table data
+
+### Element 192: EMV Additional Information Length
+
+- **Character type:** N · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of 3 digits
+- **Purpose:** Identifies the length of EMV Additional Information.
+
+**Valid Codes/Values**
+
+001–985
+
+### Element 118: Additional Information
+
+- **Character type:** AN · **Maximum length:** 984 bytes
+- **Representation:** Variable length of up to 984 alphanumeric characters Note: Please refer to section 12.11, “Additional Information Data Segment,” for conditions affecting this element’s length.
+- **Purpose:** Identifies the additional data being transmitted in the Financial Transaction response.
+- **Processing rules:** Used in the Additional Information Data Segment (No. 112). When Element No. 116 (Additional Information Indicator) has a value of 001, gift card, EBT card, credit card, or phone card balance information is included here. When Element No. 116 (Additional Information Indicator) has a value of 003, AVS information is included here. When Element No. 116 (Additional Information Indicator) has a value of 004, card verification value information (CVV, CVV2, CVC2, and CID) is included here. When Element No. 116 (Additional Information Indicator) has a value of 005, ECA/ TeleCheck® Trace ID information is included here. When Element No. 116 (Additional Information Indicator) has a value of 006, ECA/ TeleCheck® Denial Record Number information is included here. When Element No. 116 (Additional Information Indicator) has a value of 007, ECA/ TeleCheck® Return Check Data is included here. When Element No. 116 (Additional Information Indicator) has a value of 008, loyalty information is included here. When Element No. 116 (Additional Information Indicator) has a value of 009, Visa® product result information is included here. When Element No. 116 (Additional Information Indicator) has a value of 010, loyalty information is included here. When Element No. 116 (Additional Information Indicator) has a value of 011, user data information is included here. When Element No. 116 (Additional Information Indicator) has a value of 012, the Discover® Network Retrieval Reference Number is included here. It has a fixed alphanumeric length of 15 bytes. It is included in all Discover® Network follow-on transactions. When Element No. 116 (Additional Information Indicator) has a value of 013, the Expiration Date (MMYY) is included here. It has a fixed length of 4 bytes. When Element No. 116 (Additional Information Indicator) has a value of 016, the PIN-on-Receipt Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 017, the BUYPASS Host Card Type is included here. It has a fixed length of three bytes. When Element No. 116 (Additional Information Indicator) has a value of 018, the PINless transaction processing information is included here. It has a fixed numeric length of 3. When Element No. 116 (Additional Information Indicator) has a value of 019, the Visa Spend Qualified Indicator Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 020, the Host Prompts Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 021, the Re-Price Data Response Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 022, the CAVV Result Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 023, the MCX Reference Number Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 024, the Carwash Indicator Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 025, the Language Indicator Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 026, the DST Response Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 027, the Universal Unique Identifier is included here. When Element No. 116 (Additional Information Indicator) has a value of 028, the Transaction Identifier Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 029, the PAR (Payment Account Reference) Data Information is included here. When Element No. 116 (Additional Information Indicator) has a value of 030, the Merchant Advice code is included here. When Element No. 116 (Additional Information Indicator) has a value of 031, the DAF Indicator is included here. When Element No. 116 (Additional Information Indicator) has a value of 032, the Agreement ID is included here. When Element No. 116 (Additional Information Indicator) has a value of 034, the Host-based Purchase Restriction is included here. When Element No. 116 (Additional Information Indicator) has a value of 035, the Cardholder Additional Information Result Code is included here. When Element No. 116 (Additional Information Indicator) has a value of 036, the Account Type is included here. When Element No. 116 (Additional Information Indicator) has a value of 037, the Account Funding Source is included here. When Element No. 116 (Additional Information Indicator) has a value of 038, the Transaction Link Identifier is included here. When Element No. 116 (Additional Information Indicator) has a value of 039, theTransaction Link Action Indicator is included here. When Element No. 116 (Additional Information Indicator) has a value of 040, the Fraud Score is included here. When Element No. 116 (Additional Information Indicator) has a value of 041, the Fraud Score Reason Code is included here. When Element No. 116 (Additional Information Indicator) has a value of 042, the Authentication Data Quality Indicator is included here. When Element No. 116 (Additional Information Indicator) has a value of 043, the Token Update First Use Indicator is included here. When Element No. 116 (Additional Information Indicator) has a value of 044, the Merchant Tran ID is included here. When Element No. 116 (Additional Information Indicator) has a value of 045, the Applied Special Service is included here. When Element No. 116 (Additional Information Indicator) has a value of 046, the Voyager Restriction Code is included here. When Element No. 116 (Additional Information Indicator) has a value of 047, the Visa Category Code is included here.
+
+**Valid Codes/Values**
+
+001–984 a–z A–Z Please refer to Appendix K. Additional Information Data Layouts.
 
 ## Catalog Notes
 
