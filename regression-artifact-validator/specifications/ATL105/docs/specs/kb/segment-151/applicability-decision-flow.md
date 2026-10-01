@@ -4,7 +4,7 @@
 flowchart TD
     A[Segment 151 payload] --> B{Applicability and Message-Family Decision in scope?}
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
-    B -->|Yes| R1{SEG151-R-001 Segment 151 can appear in ANY field slot of Data Section No. 3 (not a fixed position), originates at the device}
+    B -->|Yes| R1{"SEG151-R-001 Segment 151 can appear in ANY field slot of Data Section No. 3 (not a fixed position), originates at the device"}
     R1 -->|Fail| X1[Reject citing SEG151-R-001]
     R1 -->|Pass| Z[Rules satisfied]
 ```
