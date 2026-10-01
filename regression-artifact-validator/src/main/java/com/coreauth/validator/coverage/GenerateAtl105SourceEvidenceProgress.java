@@ -27,6 +27,7 @@ public final class GenerateAtl105SourceEvidenceProgress {
         GenerateAtl105Segment110FieldEvidence.main(argument);
         GenerateAtl105TotalsPromptCodeEvidence.main(argument);
         GenerateAtl105Element4LayoutGate.main(argument);
+        GenerateAtl105Chapter13RuleEvidence.main(argument);
 
         Path directory = pack.resolve("test-output/test-solution-independent-review");
         ObjectMapper mapper = new ObjectMapper();
@@ -38,6 +39,7 @@ public final class GenerateAtl105SourceEvidenceProgress {
         JsonNode segment110 = mapper.readTree(directory.resolve("atl105-segment-110-field-evidence.json").toFile());
         JsonNode totals = mapper.readTree(directory.resolve("atl105-totals-prompt-code-evidence.json").toFile());
         JsonNode element4 = mapper.readTree(directory.resolve("atl105-element-4-layout-gate.json").toFile());
+        JsonNode chapter13 = mapper.readTree(directory.resolve("atl105-chapter-13-rule-evidence.json").toFile());
         Map<String, JsonNode> rules = new LinkedHashMap<>();
         for (JsonNode rule : coverage.path("businessRequirements")) {
             String id = rule.path("id").asText();
@@ -48,7 +50,7 @@ public final class GenerateAtl105SourceEvidenceProgress {
             throw new IllegalStateException("Catalog and approval denominators disagree");
         }
         String version = coverage.path("specificationVersion").asText();
-        for (JsonNode gate : new JsonNode[]{element83, element84, segmentType, segment110, totals, element4}) {
+        for (JsonNode gate : new JsonNode[]{element83, element84, segmentType, segment110, totals, element4, chapter13}) {
             if (!version.equals(gate.path("specificationVersion").asText())
                 || denominator != gate.path("summary").path("catalogRuleCount").asInt(-1)) {
                 throw new IllegalStateException("Source-gate version or denominator mismatch");
@@ -79,7 +81,7 @@ public final class GenerateAtl105SourceEvidenceProgress {
         }
         Map<String, Integer> casesByRule = new HashMap<>();
         Set<String> sourceMismatches = new HashSet<>();
-        for (JsonNode gate : new JsonNode[]{element83, element84, segmentType, segment110, totals, element4}) {
+        for (JsonNode gate : new JsonNode[]{element83, element84, segmentType, segment110, totals, element4, chapter13}) {
             for (JsonNode assertion : gate.path("assertions")) {
                 String id = assertion.path("ruleId").asText();
                 ObjectNode row = rows.get(id);
