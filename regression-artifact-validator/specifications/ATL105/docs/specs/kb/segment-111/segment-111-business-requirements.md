@@ -2,8 +2,8 @@
 
 **Segment:** 111 — Segment 111  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 12.10  
-**Oracle:** [segment-111-rule-catalog.json](coverage/segment-111-rule-catalog.json) (7 rules)  
+**Source sections:** 12.10, 11.3.1  
+**Oracle:** [segment-111-rule-catalog.json](coverage/segment-111-rule-catalog.json) (8 rules)  
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
 **Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
 
@@ -17,8 +17,8 @@ Requirements are derived **only** from the Segment 111 rule catalog and the ATL1
 
 | Class | Rules |
 |---|---:|
-| unclassified | 7 |
-| **Total** | **7** |
+| unclassified | 8 |
+| **Total** | **8** |
 
 ## Requirements
 
@@ -31,6 +31,7 @@ Requirements are derived **only** from the Segment 111 rule catalog and the ATL1
 | BR-SEG111-005 | unclassified | Repeated section maximum | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG111-R-005` §12.10 | SPEC_DERIVED |
 | BR-SEG111-006 | unclassified | Total maximum | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG111-R-006` §12.10 | SPEC_DERIVED |
 | BR-SEG111-007 | unclassified | Separator serialization | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG111-R-007` §12.10 | SPEC_DERIVED |
+| BR-SEG111-008 | unclassified | In an ECA/TeleCheck Service Transaction Request, Segment 111 occupies Data Section 3 Field No. 5 with a maximum length of 20 | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG111-R-008` §11.3.1 | REVIEW_REQUIRED |
 
 ## Required negative coverage
 
@@ -43,14 +44,15 @@ Requirements are derived **only** from the Segment 111 rule catalog and the ATL1
 | BR-SEG111-NEG-005 | `SEG111-R-005` | MUT-003 length violation | Validation error citing SEG111-R-005 |
 | BR-SEG111-NEG-006 | `SEG111-R-006` | MUT-003 length violation | Validation error citing SEG111-R-006 |
 | BR-SEG111-NEG-007 | `SEG111-R-007` | MUT-010 structural / separator violation | Validation error citing SEG111-R-007 |
+| BR-SEG111-NEG-008 | `SEG111-R-008` | MUT-003 length violation | Held at REVIEW_REQUIRED — do not assert until resolved |
 
 ## Requirements that must not be certified yet
 
-_None — every rule is directly specification-derived._
+- `BR-SEG111-008` (`SEG111-R-008`) — REVIEW_REQUIRED
 
 ## Open SME items
 
-_No open provisional items are linked to these rules._
+- **P-01** (SEG111-R-008): The Section 11.3.1 layout gives Segment 111 a Max. Len. of 20 in the ECA/TeleCheck request, while Section 12.10 and the Section 11.1.1 Financial Transaction Request layout give 999. Confirm whether 20 is a deliberate ECA/TeleCheck-only cap or a documentation error.
 
 ## Implementation traceability
 

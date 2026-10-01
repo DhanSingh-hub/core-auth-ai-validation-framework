@@ -31,6 +31,37 @@ These are requirements for the TransArmor Key/Key ID Load dimension of the platf
 | TA-116-P04 | Additional TransArmor Data (Segment 111, Table 052) shall/shall not always accompany a Segment 116 request. | The relationship between the two is not stated (`SEG116-SME-004`). |
 | TA-116-P05 | Sequence Number (Element 86) shall/shall not be a Segment 116 field. | Only a generalized, low-certainty AI lead exists; no segment-specific confirmation (see the [BR Coverage Report](../../../../test-output/ai-artifacts/coverage-reports/segment-116/POC-AI-Segment-116-BR-Coverage-Report.md)). |
 
+## Catalog-derived requirements
+
+Rules that no `TA-116-*` requirement restates, derived from the rule catalog in the standard segment format.
+
+| ID | Class | Requirement | Acceptance criteria | Source | Status |
+|---|---|---|---|---|---|
+| BR-SEG116-001 | structure | Segment 116 (TransArmor Load Data Segment) is used for Key and Key ID Load in TransArmor PKI Encryption and Tokenization processing, as stated in the Element 63 and Element 85 processing rules and valid-codes tables | The segment's structural position and composition match the rule. | `SEG116-R-001` §Chapter13-Element63,Chapter13-Element85 | SPEC_DERIVED |
+| BR-SEG116-004 | field | Segment Length (Element 84) is Segment 116 field 2, following the Chapter 12 data-segment convention; not confirmed by a Segment 116 table because Section 12.15 is a stub | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG116-R-004` §12.15(stub)+Chapter12-convention | REVIEW_REQUIRED |
+
+| ID | Violates | Mutation class | Expected result |
+|---|---|---|---|
+| BR-SEG116-NEG-001 | `SEG116-R-001` | MUT-010 structural requirement | Validation error citing SEG116-R-001 |
+| BR-SEG116-NEG-004 | `SEG116-R-004` | MUT-005 required field omitted | Held at REVIEW_REQUIRED — do not assert until resolved |
+
+## Rule-catalog crosswalk
+
+The rule each existing requirement restates. `PENDING` rows stay unconfirmed until the linked SME item is resolved.
+
+| Requirement | Rule | Match |
+|---|---|---|
+| TA-116-001 | `SEG116-R-005` | EQUIVALENT (Segment 116 in Field No. 3) |
+| TA-116-002 | `SEG116-R-003` | EQUIVALENT |
+| TA-116-003 | `SEG116-R-002` | EQUIVALENT |
+| TA-116-004 | `SEG116-R-009` | EQUIVALENT |
+| TA-116-005 | `SEG116-R-007` | EQUIVALENT (Key ID) |
+| TA-116-006 | `SEG116-R-007` | EQUIVALENT (Key Data Length and Key Data) |
+| TA-116-007 | `SEG116-R-008` | EQUIVALENT (KSN sub-table) |
+| TA-116-008 | `SEG116-R-008` | EQUIVALENT (Device Type sub-table) |
+| TA-116-P01 | `SEG116-R-006` | PENDING (`SEG116-SME-001`) |
+| TA-116-P02 | `SEG116-R-005` | PENDING (Segment 100 exclusion, `SEG116-SME-002`) |
+
 ## Traceability
 
-Every confirmed requirement (`TA-116-001` through `TA-116-008`) traces to a rule in [coverage/segment-116-rule-catalog.json](coverage/segment-116-rule-catalog.json) (`SEG116-R-001` through `SEG116-R-009`). Every pending requirement (`TA-116-P01` through `TA-116-P05`) traces to an entry in the [Segment 116 SME/TBA Input Register](segment-116-sme-tba-input-register.md). Do not promote a pending requirement to confirmed status without recording the source or SME decision that resolved it.
+Every confirmed requirement (`TA-116-001` through `TA-116-008`) traces to a rule in [coverage/segment-116-rule-catalog.json](coverage/segment-116-rule-catalog.json) (`SEG116-R-001` through `SEG116-R-009`); the crosswalk above records the exact rule. Every pending requirement (`TA-116-P01` through `TA-116-P05`) traces to an entry in the [Segment 116 SME/TBA Input Register](segment-116-sme-tba-input-register.md). Do not promote a pending requirement to confirmed status without recording the source or SME decision that resolved it.

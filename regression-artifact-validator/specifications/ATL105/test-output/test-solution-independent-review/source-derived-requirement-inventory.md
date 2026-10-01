@@ -4,8 +4,8 @@ This inventory is derived only from the independent Test Solution KB rule catalo
 
 | Metric | Count |
 |---|---:|
-| Rule catalogs | 13 |
-| Source-derived requirements | 289 |
+| Rule catalogs | 49 |
+| Source-derived requirements | 601 |
 | Duplicate rule IDs | 0 |
 | Duplicate source anchors | 0 |
 | Incomplete source anchors | 0 |

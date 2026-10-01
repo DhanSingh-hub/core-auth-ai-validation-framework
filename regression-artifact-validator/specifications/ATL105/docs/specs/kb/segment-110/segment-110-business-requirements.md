@@ -3,7 +3,7 @@
 **Segment:** 110 — Check Data Segment  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
 **Source sections:** 11.3.1, 12.9, Appendix D, Appendix I-17, Chapter 13  
-**Oracle:** [segment-110-rule-catalog.json](coverage/segment-110-rule-catalog.json) (20 rules)  
+**Oracle:** [segment-110-rule-catalog.json](coverage/segment-110-rule-catalog.json) (21 rules)  
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
 **Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
 
@@ -20,10 +20,10 @@ Requirements are derived **only** from the Segment 110 rule catalog and the ATL1
 | field | 12 |
 | serialization | 3 |
 | compatibility | 2 |
+| structure | 2 |
 | applicability | 1 |
-| structure | 1 |
 | interdependency | 1 |
-| **Total** | **20** |
+| **Total** | **21** |
 
 ## Requirements
 
@@ -49,6 +49,7 @@ Requirements are derived **only** from the Segment 110 rule catalog and the ATL1
 | BR-SEG110-018 | field | Two MICR encodings are documented in narrative text: Full MICR Line TAC format (example T999999999A999999999999999999C999999) and Full MICR Line RAW TOAD format (symbol substitution using T, O, A, D); Alternate MICR IND = 'Y' signals RAW TOAD/ALB1 format, but no machine-checkable grammar beyond the example and the 50-byte length limit is given | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG110-R-018` §12.9 | REVIEW_REQUIRED |
 | BR-SEG110-019 | compatibility | MICR Data (Element 122) is cross-referenced from Account Number (Element 2) of the Standard Message Data Segment (100); the extract states MICR data 'is also included' there but does not state a byte-identity or co-validation rule between the two representations | Only the permitted companion segments / message families carry this segment. | `SEG110-R-019` §Chapter 13 | REVIEW_REQUIRED |
 | BR-SEG110-020 | compatibility | The MICR encoding convention for a manually keyed check is carried in Segment 111 (Variable Information Data Segment), not Segment 110: Variable Information Indicator = '024' (Manual Check MICR Type), Table Length fixed 2, with documented Table Data format codes 'T$' (T<aba>A<acct>C<checknum>), '18' (<aba><acct> concatenated), '09' (raw MICR, not touched), and '19' (numerals from bottom of check); Segment 110's MICR Data (122) and this Segment 111 sub-table are companions, confirmed independently of the AI-generated requirement set, which had attributed these codes to Segment 110 with LOW-MEDIUM confidence (44-47%) | Only the permitted companion segments / message families carry this segment. | `SEG110-R-020` §Appendix I-17 | SPEC_DERIVED |
+| BR-SEG110-021 | structure | An ECA/TeleCheck Service Transaction Request carries Segment 100, Segment 110 (Field No. 4) and Segment 111 (Field No. 5), plus the conditional Segment 113 (Field No. 6) and no other segment; Element 63 is therefore 3 or 4 and equals the number of segments present | The segment's structural position and composition match the rule. | `SEG110-R-021` §11.3.1,13 | REVIEW_REQUIRED |
 
 ## Required negative coverage
 
@@ -74,6 +75,7 @@ Requirements are derived **only** from the Segment 110 rule catalog and the ATL1
 | BR-SEG110-NEG-018 | `SEG110-R-018` | MUT-003 length violation | Held at REVIEW_REQUIRED — do not assert until resolved |
 | BR-SEG110-NEG-019 | `SEG110-R-019` | MUT-010 structural requirement | Held at REVIEW_REQUIRED — do not assert until resolved |
 | BR-SEG110-NEG-020 | `SEG110-R-020` | MUT-003 length violation | Validation error citing SEG110-R-020 |
+| BR-SEG110-NEG-021 | `SEG110-R-021` | MUT-009 interdependency violation | Held at REVIEW_REQUIRED — do not assert until resolved |
 
 ## Requirements that must not be certified yet
 
@@ -84,9 +86,11 @@ Requirements are derived **only** from the Segment 110 rule catalog and the ATL1
 - `BR-SEG110-017` (`SEG110-R-017`) — REVIEW_REQUIRED
 - `BR-SEG110-018` (`SEG110-R-018`) — REVIEW_REQUIRED
 - `BR-SEG110-019` (`SEG110-R-019`) — REVIEW_REQUIRED
+- `BR-SEG110-021` (`SEG110-R-021`) — REVIEW_REQUIRED
 
 ## Open SME items
 
+- **SEG113-SME-008** (SEG110-R-021): Segment 111 is treated as required per the Section 11.3.1 table, which is still under SME review (Segment 113 catalog P-08). If Segment 111 is ruled optional, the Element 63 minimum becomes 2.
 - **P-02** (SEG110-R-008): Confirm the data segment that carries Extended MICR Data (Element 137) when raw MICR data exceeds 50 bytes, and whether Segment 110 test packages must always be paired with that segment's fixture when the overflow condition applies.
 - **P-03** (SEG110-R-009, SEG110-R-013): Define the machine-testable condition (a POS entry-mode flag, prompt code, or other field) that marks a check transaction as 'manually entered' or 'manually keyed', which triggers the Driver's License, State Code, and Check Number requirements.
 - **P-04** (SEG110-R-011): Confirm whether Date of Birth is required whenever Driver's License/State Code are present (as BR-130-3/BR-365-4 suggest for Certegy transactions) or is governed by a separate, narrower trigger.

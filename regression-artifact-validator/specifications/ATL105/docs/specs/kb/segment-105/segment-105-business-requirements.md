@@ -2,8 +2,8 @@
 
 **Segment:** 105 — Segment 105  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** Totals Request  
-**Oracle:** [segment-105-rule-catalog.json](coverage/segment-105-rule-catalog.json) (17 rules)  
+**Source sections:** Totals Request, 11.4.1.1, 12.6, Chapter 13  
+**Oracle:** [segment-105-rule-catalog.json](coverage/segment-105-rule-catalog.json) (22 rules)  
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
 **Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
 
@@ -18,13 +18,13 @@ Requirements are derived **only** from the Segment 105 rule catalog and the ATL1
 | Class | Rules |
 |---|---:|
 | field | 9 |
+| structure | 5 |
 | conditional | 3 |
-| serialization | 1 |
+| serialization | 2 |
 | dependency | 1 |
-| structure | 1 |
 | lifecycle | 1 |
 | compatibility | 1 |
-| **Total** | **17** |
+| **Total** | **22** |
 
 ## Requirements
 
@@ -47,6 +47,11 @@ Requirements are derived **only** from the Segment 105 rule catalog and the ATL1
 | BR-SEG105-015 | structure | Grand Total, Card Label, Card Type Total Count, and Card Type Total Amount are required | The segment's structural position and composition match the rule. | `SEG105-R-015` §Totals Request | SPEC_DERIVED |
 | BR-SEG105-016 | lifecycle | Request and response correlation follows approved totals lifecycle policy | Paired messages are present and the correlated values agree. | `SEG105-R-016` §Totals Request | REVIEW_REQUIRED |
 | BR-SEG105-017 | compatibility | Segment 119 use requires an approved proprietary-load selection rule | Only the permitted companion segments / message families carry this segment. | `SEG105-R-017` §Totals Request | REVIEW_REQUIRED |
+| BR-SEG105-018 | structure | A Totals Request contains Data Sections 1 and 3 only; it has no Data Section 2 and no Segment 100 | The segment's structural position and composition match the rule. | `SEG105-R-018` §11.4.1.1 | SPEC_DERIVED |
+| BR-SEG105-019 | structure | In a Totals Request, Segment 105 is the only data segment and occupies Data Section 3 Field No. 3 | The segment's structural position and composition match the rule. | `SEG105-R-019` §11.4.1.1,12.6 | SPEC_DERIVED |
+| BR-SEG105-020 | structure | In a Totals Request, Element 63 (Number of Segments) is 01; the Chapter 13 variable length allows 1 or 01 | The segment's structural position and composition match the rule. | `SEG105-R-020` §11.4.1.1,13 | SPEC_DERIVED |
+| BR-SEG105-021 | serialization | Segment 105 maximum length is 409 characters | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEG105-R-021` §11.4.1.1,12.6 | SPEC_DERIVED |
+| BR-SEG105-022 | structure | Segment 105 is present in every Totals Request | The segment's structural position and composition match the rule. | `SEG105-R-022` §11.4.1.1 | REVIEW_REQUIRED |
 
 ## Required negative coverage
 
@@ -69,6 +74,11 @@ Requirements are derived **only** from the Segment 105 rule catalog and the ATL1
 | BR-SEG105-NEG-015 | `SEG105-R-015` | MUT-005 required field omitted | Validation error citing SEG105-R-015 |
 | BR-SEG105-NEG-016 | `SEG105-R-016` | MUT-010 structural requirement | Held at REVIEW_REQUIRED — do not assert until resolved |
 | BR-SEG105-NEG-017 | `SEG105-R-017` | MUT-010 structural requirement | Held at REVIEW_REQUIRED — do not assert until resolved |
+| BR-SEG105-NEG-018 | `SEG105-R-018` | MUT-010 structural requirement | Validation error citing SEG105-R-018 |
+| BR-SEG105-NEG-019 | `SEG105-R-019` | MUT-010 structural requirement | Validation error citing SEG105-R-019 |
+| BR-SEG105-NEG-020 | `SEG105-R-020` | MUT-001 wrong fixed value | Validation error citing SEG105-R-020 |
+| BR-SEG105-NEG-021 | `SEG105-R-021` | MUT-003 length violation | Validation error citing SEG105-R-021 |
+| BR-SEG105-NEG-022 | `SEG105-R-022` | MUT-005 required field omitted | Held at REVIEW_REQUIRED — do not assert until resolved |
 
 ## Requirements that must not be certified yet
 
@@ -76,10 +86,11 @@ Requirements are derived **only** from the Segment 105 rule catalog and the ATL1
 - `BR-SEG105-007` (`SEG105-R-007`) — REVIEW_REQUIRED
 - `BR-SEG105-016` (`SEG105-R-016`) — REVIEW_REQUIRED
 - `BR-SEG105-017` (`SEG105-R-017`) — REVIEW_REQUIRED
+- `BR-SEG105-022` (`SEG105-R-022`) — REVIEW_REQUIRED
 
 ## Open SME items
 
-_No open provisional items are linked to these rules._
+- **SEG105-SME-010** (SEG105-R-022): Section 11.4.1.1 marks Segment 105 Conditional ("Sent only on transactions requiring totals data"), but Element 63 is fixed at 01 and the message has no other segment. Confirm whether Segment 105 is required in every Totals Request.
 
 ## Implementation traceability
 

@@ -293,7 +293,7 @@ class CanonicalTraceabilityValidatorTest {
         assertThat(compatibility.errors()).isNotEmpty();
         assertThat(compatibility.errors()).anyMatch(error -> error.reason().contains("missing required segment"));
         assertThat(compatibility.errors()).anyMatch(error -> error.reason().contains("declares 2 segments"));
-        assertThat(artifactPackage.getTestCases()).hasSize(7);
+        assertThat(artifactPackage.getTestCases()).hasSize(9);
         assertThat(filter.filter(artifactPackage.getTestCases(),
                 new CanonicalTestCaseFilter.Criteria("compatibility", "missing-companion", "high", "active", "FAIL")))
                 .extracting("id")

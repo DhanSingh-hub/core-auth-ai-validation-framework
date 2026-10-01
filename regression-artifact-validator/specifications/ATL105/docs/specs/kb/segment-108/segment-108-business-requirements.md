@@ -3,7 +3,7 @@
 **Segment:** 108 — Loyalty Card Data Segment  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
 **Source sections:** 10.9.1.2, 11.2.1, 11.2.2, 12, 12.7, 13.2  
-**Oracle:** [segment-108-rule-catalog.json](coverage/segment-108-rule-catalog.json) (24 rules)  
+**Oracle:** [segment-108-rule-catalog.json](coverage/segment-108-rule-catalog.json) (25 rules)  
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
 **Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
 
@@ -19,12 +19,12 @@ Requirements are derived **only** from the Segment 108 rule catalog and the ATL1
 |---|---:|
 | field | 15 |
 | serialization | 3 |
-| structure | 2 |
+| structure | 3 |
 | applicability | 1 |
 | metadata | 1 |
 | compatibility | 1 |
 | lifecycle | 1 |
-| **Total** | **24** |
+| **Total** | **25** |
 
 ## Requirements
 
@@ -54,6 +54,7 @@ Requirements are derived **only** from the Segment 108 rule catalog and the ATL1
 | BR-SEG108-022 | metadata | Segment 108 originates at the device | Documented for traceability; not independently asserted by a validator. | `SEG108-R-022` §12.7 | SPEC_DERIVED |
 | BR-SEG108-023 | compatibility | Segment 108's sole optional Data Section 3 companion is Segment 114 (SKU Data Segment) | Only the permitted companion segments / message families carry this segment. | `SEG108-R-023` §11.2.1 | SPEC_DERIVED |
 | BR-SEG108-024 | lifecycle | Segment 108 does not appear in the Loyalty Card Transaction Response, which mirrors the generic Financial Transaction Response layout | Paired messages are present and the correlated values agree. | `SEG108-R-024` §11.2.2 | REVIEW_REQUIRED |
+| BR-SEG108-025 | structure | In a Loyalty Card Transaction Request, Element 63 (Number of Segments) counts Segment 100, Segment 108 and the optional Segment 114, so it is 2 or 3 and equals the number of segments present | The segment's structural position and composition match the rule. | `SEG108-R-025` §11.2.1,13 | SPEC_DERIVED |
 
 ## Required negative coverage
 
@@ -82,6 +83,7 @@ Requirements are derived **only** from the Segment 108 rule catalog and the ATL1
 | BR-SEG108-NEG-021 | `SEG108-R-021` | MUT-010 structural requirement | Validation error citing SEG108-R-021 |
 | BR-SEG108-NEG-022 | `SEG108-R-023` | MUT-010 structural requirement | Validation error citing SEG108-R-023 |
 | BR-SEG108-NEG-023 | `SEG108-R-024` | MUT-010 structural requirement | Held at REVIEW_REQUIRED — do not assert until resolved |
+| BR-SEG108-NEG-025 | `SEG108-R-025` | MUT-009 interdependency violation | Validation error citing SEG108-R-025 |
 
 ## Requirements that must not be certified yet
 

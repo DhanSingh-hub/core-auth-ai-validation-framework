@@ -2,8 +2,8 @@
 
 **Segment:** 119 — Totals with Proprietary Data Load Data Segment  
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3  
-**Source sections:** 11.4, 11.4.1.2, 12.17, 9  
-**Oracle:** [segment-119-rule-catalog.json](coverage/segment-119-rule-catalog.json) (36 rules)  
+**Source sections:** 11.4, 11.4.1.2, 12.17, 9, Chapter 13  
+**Oracle:** [segment-119-rule-catalog.json](coverage/segment-119-rule-catalog.json) (39 rules)  
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md)  
 **Generated:** 2026-09-28 from the rule catalog and ATL105 Chapter 13 element definitions
 
@@ -18,8 +18,8 @@ Requirements are derived **only** from the Segment 119 rule catalog and the ATL1
 | Class | Rules |
 |---|---:|
 | field | 19 |
-| serialization | 4 |
-| structure | 3 |
+| serialization | 6 |
+| structure | 4 |
 | response | 2 |
 | dependency | 2 |
 | lifecycle | 2 |
@@ -27,7 +27,7 @@ Requirements are derived **only** from the Segment 119 rule catalog and the ATL1
 | compatibility | 1 |
 | operational | 1 |
 | test-data | 1 |
-| **Total** | **36** |
+| **Total** | **39** |
 
 ## Requirements
 
@@ -69,6 +69,9 @@ Requirements are derived **only** from the Segment 119 rule catalog and the ATL1
 | BR-SEG119-034 | lifecycle | Retry and duplicate Totals Request behavior is approved before certification | Paired messages are present and the correlated values agree. | `SEG119-R-034` §11.4 | SPEC_DERIVED |
 | BR-SEG119-035 | operational | Merchant settlement cutoff and timezone behavior is approved before certification | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG119-R-035` §9,11.4 | SPEC_DERIVED |
 | BR-SEG119-036 | test-data | Segment 119 synthetic fixtures are replaced or explicitly accepted for training | The element value conforms to the stated rule; a non-conforming value fails validation citing the rule ID. | `SEG119-R-036` §11.4.1.2,12.17 | SPEC_DERIVED |
+| BR-SEG119-037 | structure | In a Totals with Proprietary Data Load Request, Element 63 (Number of Segments) is 01, so Segment 119 is the only data segment; the Chapter 13 variable length allows 1 or 01 | The segment's structural position and composition match the rule. | `SEG119-R-037` §11.4.1.2,13 | SPEC_DERIVED |
+| BR-SEG119-038 | serialization | Segment 119 maximum length is 493 in Section 12.17 but 389 in the Section 11.4.1.2 layout table; lengths above 493 are rejected and lengths above 389 are flagged until resolved | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEG119-R-038` §11.4.1.2,12.17 | REVIEW_REQUIRED |
+| BR-SEG119-039 | serialization | The repeating card-bucket fields are numbered 17-19 in the Section 12.17 table but 18-20 in its separator note | The wire-format output reproduces the stated separator / length / ordering behaviour exactly. | `SEG119-R-039` §12.17 | REVIEW_REQUIRED |
 
 ## Required negative coverage
 
@@ -110,14 +113,19 @@ Requirements are derived **only** from the Segment 119 rule catalog and the ATL1
 | BR-SEG119-NEG-034 | `SEG119-R-034` | MUT-010 structural requirement | Validation error citing SEG119-R-034 |
 | BR-SEG119-NEG-035 | `SEG119-R-035` | MUT-010 structural requirement | Validation error citing SEG119-R-035 |
 | BR-SEG119-NEG-036 | `SEG119-R-036` | MUT-010 structural requirement | Validation error citing SEG119-R-036 |
+| BR-SEG119-NEG-037 | `SEG119-R-037` | MUT-001 wrong fixed value | Validation error citing SEG119-R-037 |
+| BR-SEG119-NEG-038 | `SEG119-R-038` | MUT-003 length violation | Held at REVIEW_REQUIRED — do not assert until resolved |
+| BR-SEG119-NEG-039 | `SEG119-R-039` | MUT-010 structural / separator violation | Held at REVIEW_REQUIRED — do not assert until resolved |
 
 ## Requirements that must not be certified yet
 
-_None — every rule is directly specification-derived._
+- `BR-SEG119-038` (`SEG119-R-038`) — REVIEW_REQUIRED
+- `BR-SEG119-039` (`SEG119-R-039`) — REVIEW_REQUIRED
 
 ## Open SME items
 
-_No open provisional items are linked to these rules._
+- **SEG119-SME-008** (SEG119-R-038): Confirm the Segment 119 maximum length: 493 (Section 12.17) or 389 (Section 11.4.1.2 layout).
+- **SEG119-SME-009** (SEG119-R-039): Confirm whether the repeating card-bucket fields are Fields 17-19 (Section 12.17 table) or 18-20 (separator note); SEG119-R-005 and SEG119-R-007 follow the note, SEG119-R-027 follows the table.
 
 ## Implementation traceability
 
