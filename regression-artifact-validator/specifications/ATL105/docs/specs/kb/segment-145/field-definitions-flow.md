@@ -6,12 +6,12 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG145-R-005 Segment Type is fixed value 145, Segment Length includes Segment Type's length; both Device-sourced}
     R1 -->|Fail| X1[Reject citing SEG145-R-005]
-    R1 -->|Pass| R2{SEG145-R-006 Enhanced Fleet Data (Element 239) is required, max 999 characters, containing one or more sub-segments in <tag><len><data> format, cataloged as: Table 001 (Request Flags, incl. Commercial/Retail Flag), Table 002 (Non-Fuel Product Data, product-category-coded, '|'-delimited repeating), Table 004 (Prompt Data, authorizer-specific prompt tokens, '|'-delimited repeating), Table 006 (Money Code Payee Name), Table 007 (Money Code Check Number, required for all Money Code transactions), Table 008 (Cash Advance Limit)}
+    R1 -->|Pass| R2{"SEG145-R-006 Enhanced Fleet Data (Element 239) is required, max 999 characters, containing one or more sub-segments in &lt;tag&gt;&lt;len&gt;&lt;data&gt; format, cataloged as: Table 001 (Request Flags, incl. Commercial/Retail Flag), Table 002 (Non-Fuel Product Data, product-category-coded, '|'-delimited repeating), Table 004 (Prompt Data, authorizer-specific prompt tokens, '|'-delimited repeating), Table 006 (Money Code Payee Name), Table 007 (Money Code Check Number, required for all Money Code transactions), Table 008 (Cash Advance Limit)"}
     R2 -->|Fail| X2[Reject citing SEG145-R-006]
     R2 -.->|Provisional| P2[REVIEW_REQUIRED]
-    R2 -->|Pass| R3{SEG145-R-007 Table 002 (Non-Fuel Product Data) product categories are authorizer-specific; a documented list applies to WEX OTR transactions (e.g., ADD, ANFR, BRAK, ... WWFL); other authorizers' category lists are not enumerated in this section}
+    R2 -->|Pass| R3{"SEG145-R-007 Table 002 (Non-Fuel Product Data) product categories are authorizer-specific; a documented list applies to WEX OTR transactions (e.g., ADD, ANFR, BRAK, ... WWFL); other authorizers' category lists are not enumerated in this section"}
     R3 -->|Fail| X3[Reject citing SEG145-R-007]
-    R3 -->|Pass| R4{SEG145-R-008 Table 004 (Prompt Data) prompt tokens are authorizer-specific and independently cataloged for Voyager EMV (DF-tag-based), Visa Fleet 2.0, Comdata, WEX OTR, and Conexxus (numeric prompt codes, used by MasterCard Enhanced Fleet EMV); full enumeration of all prompt-token tables is out of scope for this rule catalog pass}
+    R3 -->|Pass| R4{"SEG145-R-008 Table 004 (Prompt Data) prompt tokens are authorizer-specific and independently cataloged for Voyager EMV (DF-tag-based), Visa Fleet 2.0, Comdata, WEX OTR, and Conexxus (numeric prompt codes, used by MasterCard Enhanced Fleet EMV); full enumeration of all prompt-token tables is out of scope for this rule catalog pass"}
     R4 -->|Fail| X4[Reject citing SEG145-R-008]
     R4 -.->|Provisional| P4[REVIEW_REQUIRED]
     R4 -->|Pass| Z[Rules satisfied]
