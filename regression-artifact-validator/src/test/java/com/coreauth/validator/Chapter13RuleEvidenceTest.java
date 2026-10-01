@@ -23,7 +23,7 @@ class Chapter13RuleEvidenceTest {
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
         JsonNode report = report();
         assertThat(report.path("summary").path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(4);
         assertThat(report.path("assertions").get(0).path("quotes")).hasSize(8);
         assertThat(report.path("assertions").get(0).path("status").asText()).isEqualTo("PARTIAL_SOURCE_BACKED_ASSERTION_REVIEW_REQUIRED");
         assertThat(report.path("assertions").get(0).path("quotes").get(4).path("sourceLine").asInt()).isGreaterThan(21690);
@@ -31,6 +31,8 @@ class Chapter13RuleEvidenceTest {
         assertThat(report.path("assertions").get(1).path("quotes")).hasSize(4);
         assertThat(report.path("assertions").get(2).path("ruleId").asText()).isEqualTo("SEGDL2-R-007");
         assertThat(report.path("assertions").get(2).path("quotes")).hasSize(9);
+        assertThat(report.path("assertions").get(3).path("ruleId").asText()).isEqualTo("SEGDL2-R-005");
+        assertThat(report.path("assertions").get(3).path("quotes")).hasSize(7);
         assertThat(report.path("draftCases")).isEmpty();
         assertThat(report.path("summary").path("smeApprovedRuleCount").asInt()).isZero();
     }
@@ -51,7 +53,7 @@ class Chapter13RuleEvidenceTest {
         mutateDefinition("Number: 98 Name: Store Number", "Number: 99 Name: Tax Amount",
             "neither displayed", "sometimes displayed");
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
-        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(2);
+        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
         assertThat(report().path("draftCases")).isEmpty();
     }
 
@@ -62,7 +64,7 @@ class Chapter13RuleEvidenceTest {
             "Valid Codes/Values: 1–3", "Valid Codes/Values: 1–4");
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
         JsonNode report = report();
-        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(2);
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
         assertThat(report.path("summary").path("sourceMismatchCount").asInt()).isEqualTo(1);
         assertThat(report.path("assertions").get(0).path("status").asText()).isEqualTo("PARTIAL_SOURCE_BACKED_ASSERTION_REVIEW_REQUIRED");
         assertThat(report.path("assertions").get(1).path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
@@ -75,9 +77,21 @@ class Chapter13RuleEvidenceTest {
             "F Indicates the end of the second dial string", "X Indicates the end of the second dial string");
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
         JsonNode report = report();
-        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(2);
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
         assertThat(report.path("summary").path("sourceMismatchCount").asInt()).isEqualTo(1);
         assertThat(report.path("assertions").get(2).path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
+    }
+
+    @Test
+    void changedAccessCodeConditionWithdrawsOnlyRule005() throws Exception {
+        copyInputs();
+        mutateDefinition("Number: 1 Name: Access Code", "Number: 2 Name: Account Number",
+            "contains neither this element nor the Pause Indicator", "may contain the Pause Indicator");
+        GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
+        JsonNode report = report();
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(3);
+        assertThat(report.path("summary").path("sourceMismatchCount").asInt()).isEqualTo(1);
+        assertThat(report.path("assertions").get(3).path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
 
     @Test
