@@ -29,7 +29,7 @@ flowchart TD
     V1 -->|No| X2[Fail SEGDL1-R-002]
     V1 -->|Yes| V2{Fixed fields 2-6 present at their widths?}
     V2 -->|No| X3[Fail SEGDL1-R-003 / R-006]
-    V2 -->|Yes| V3{Address Line 2 positional and phone '(nnn)nnn-nnnn'?}
+    V2 -->|Yes| V3{"Address Line 2 positional and phone '(nnn)nnn-nnnn'?"}
     V3 -->|No| X10[Fail SEGDL1-R-010 / R-011]
     V3 -->|Yes| V4{Number of Card Types 01-99 and equals Card Type count?}
     V4 -->|No| X4[Fail SEGDL1-R-004]

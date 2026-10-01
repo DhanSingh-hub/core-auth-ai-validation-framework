@@ -11,7 +11,7 @@ flowchart TD
     E --> F["Emit '~'"]
     F --> G{Total length <= 399 and no FS/Segment Type/Segment Length?}
     G -->|No| X1[Reject serialization - SEGDL1-R-001 / R-002 / R-006]
-    G -->|Yes| H[Place in Table Load Response Data Block 1 after ')']
+    G -->|Yes| H["Place in Table Load Response Data Block 1 after ')'"]
     H --> I{Block order and End-of-Load correct?}
     I -->|No| X2[Reject message - SEGDL1-R-012]
     I -->|Yes| J{Card Type 173 present?}
