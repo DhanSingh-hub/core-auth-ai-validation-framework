@@ -22,10 +22,10 @@ class SourceEvidenceProgressTest {
         JsonNode result = generate();
         JsonNode summary = result.path("summary");
         assertThat(summary.path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(49);
-        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(552);
+        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(51);
+        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(550);
         assertThat(summary.path("rulesWithSourceMismatch").asInt()).isEqualTo(2);
-        assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(108);
+        assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(112);
         assertThat(summary.path("smeApprovedRuleCount").asInt()).isZero();
         assertThat(summary.path("executionCertifiedRuleCount").asInt()).isZero();
         assertThat(result.path("rules")).hasSize(601);
@@ -39,7 +39,7 @@ class SourceEvidenceProgressTest {
             segmentMismatches += segment.path("sourceMismatches").asInt();
         }
         assertThat(segmentRules).isEqualTo(601);
-        assertThat(segmentRemaining).isEqualTo(552);
+        assertThat(segmentRemaining).isEqualTo(550);
         assertThat(segmentMismatches).isEqualTo(2);
         assertThat(rule(result, "SEG114-R-003").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("PARTIAL_SOURCE_EVIDENCE_REVIEW_REQUIRED");
@@ -52,7 +52,7 @@ class SourceEvidenceProgressTest {
         Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
         Files.writeString(sourceFile, Files.readString(sourceFile).replace("Fixed value:  101", "Fixed value:  199"));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(48);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(50);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }

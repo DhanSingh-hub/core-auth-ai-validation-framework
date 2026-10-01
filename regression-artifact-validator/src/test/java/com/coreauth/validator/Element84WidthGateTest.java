@@ -25,8 +25,8 @@ class Element84WidthGateTest {
         JsonNode result = report();
         assertThat(result.path("shapeVerified").asBoolean()).isTrue();
         assertThat(result.path("exceptionListVerified").asBoolean()).isTrue();
-        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(11);
-        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(22);
+        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(13);
+        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(26);
         assertThat(result.path("summary").path("smeApprovedRuleCount").asInt()).isZero();
         assertThat(result.path("assertions").get(0).path("sourceLine").asInt()).isGreaterThan(14000);
         assertThat(result.path("draftCases").get(0).path("executionReady").asBoolean()).isFalse();
@@ -40,8 +40,8 @@ class Element84WidthGateTest {
         Files.writeString(spec, Files.readString(spec).replace("2 84 Segment Length 3 R", "2 84 Segment Length unknown R"));
         GenerateAtl105Element84WidthGate.main(new String[]{pack.toString()});
         JsonNode result = report();
-        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(10);
-        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(20);
+        assertThat(result.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(12);
+        assertThat(result.path("summary").path("draftCaseCount").asInt()).isEqualTo(24);
     }
 
     @Test
@@ -61,8 +61,28 @@ class Element84WidthGateTest {
         assertThat(section).contains("2 84 Segment Length 4 R");
         Files.writeString(spec, source.substring(0, start) + section.replace("2 84 Segment Length 4 R", "2 84 Segment Length unknown R") + source.substring(end));
         GenerateAtl105Element84WidthGate.main(new String[]{pack.toString()});
-        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(10);
-        assertThat(report().path("summary").path("draftCaseCount").asInt()).isEqualTo(20);
+        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(12);
+        assertThat(report().path("summary").path("draftCaseCount").asInt()).isEqualTo(24);
+    }
+
+    @Test
+    void segment135LayoutMutationDoesNotBorrowSegment136Row() throws Exception {
+        copyInputs();
+        Path spec = pack.resolve("docs/specs/extracted_text.txt");
+        String source = Files.readString(spec);
+        var requestHeading = Pattern.compile("(?m)^12\\.24 Moneris Data \\(Request\\) Segment[ \\t]*\\r?$").matcher(source);
+        assertThat(requestHeading.find()).isTrue();
+        var responseHeading = Pattern.compile("(?m)^12\\.25 Moneris Data \\(Response\\) Segment[ \\t]*\\r?$").matcher(source);
+        assertThat(responseHeading.find(requestHeading.end())).isTrue();
+        String section = source.substring(requestHeading.start(), responseHeading.start());
+        var row = Pattern.compile("2\\s+84\\s+Segment\\s+Length\\s+Indicator\\s+3\\s+R").matcher(section);
+        assertThat(row.find()).isTrue();
+        Files.writeString(spec, source.substring(0, requestHeading.start())
+            + row.replaceFirst("2 84 Segment Length Indicator 4 R")
+            + source.substring(responseHeading.start()));
+        GenerateAtl105Element84WidthGate.main(new String[]{pack.toString()});
+        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(12);
+        assertThat(report().path("summary").path("draftCaseCount").asInt()).isEqualTo(24);
     }
 
     @Test
