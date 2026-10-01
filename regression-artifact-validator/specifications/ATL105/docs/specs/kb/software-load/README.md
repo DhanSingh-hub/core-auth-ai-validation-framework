@@ -10,7 +10,7 @@ flowchart LR
     A[Device] -->|Software Load Request| B[BUYPASS]
     B -->|Software Load Response| A
     R[Request: ? + Terminal ID + P + HW/SW/FW versions] --> A
-    B --> S[Response: ) + DL4 + DL5]
+    B --> S["Response: ) + DL4 + DL5"]
 ```
 
 ## Request
