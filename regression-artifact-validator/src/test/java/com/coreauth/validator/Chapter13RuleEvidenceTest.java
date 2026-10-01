@@ -23,10 +23,12 @@ class Chapter13RuleEvidenceTest {
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
         JsonNode report = report();
         assertThat(report.path("summary").path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(1);
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(2);
         assertThat(report.path("assertions").get(0).path("quotes")).hasSize(8);
         assertThat(report.path("assertions").get(0).path("status").asText()).isEqualTo("PARTIAL_SOURCE_BACKED_ASSERTION_REVIEW_REQUIRED");
         assertThat(report.path("assertions").get(0).path("quotes").get(4).path("sourceLine").asInt()).isGreaterThan(21690);
+        assertThat(report.path("assertions").get(1).path("ruleId").asText()).isEqualTo("SEGDL2-R-006");
+        assertThat(report.path("assertions").get(1).path("quotes")).hasSize(4);
         assertThat(report.path("draftCases")).isEmpty();
         assertThat(report.path("summary").path("smeApprovedRuleCount").asInt()).isZero();
     }
@@ -47,8 +49,21 @@ class Chapter13RuleEvidenceTest {
         mutateDefinition("Number: 98 Name: Store Number", "Number: 99 Name: Tax Amount",
             "neither displayed", "sometimes displayed");
         GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
-        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isZero();
+        assertThat(report().path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(1);
         assertThat(report().path("draftCases")).isEmpty();
+    }
+
+    @Test
+    void changedRedialCodesWithdrawOnlyTheDl2Claim() throws Exception {
+        copyInputs();
+        mutateDefinition("Number: 82 Name: Redial Count", "Number: 83 Name: Response Code",
+            "Valid Codes/Values: 1–3", "Valid Codes/Values: 1–4");
+        GenerateAtl105Chapter13RuleEvidence.main(new String[]{pack.toString()});
+        JsonNode report = report();
+        assertThat(report.path("summary").path("partiallyBackedRuleCount").asInt()).isEqualTo(1);
+        assertThat(report.path("summary").path("sourceMismatchCount").asInt()).isEqualTo(1);
+        assertThat(report.path("assertions").get(0).path("status").asText()).isEqualTo("PARTIAL_SOURCE_BACKED_ASSERTION_REVIEW_REQUIRED");
+        assertThat(report.path("assertions").get(1).path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
 
     @Test

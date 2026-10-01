@@ -22,8 +22,8 @@ class SourceEvidenceProgressTest {
         JsonNode result = generate();
         JsonNode summary = result.path("summary");
         assertThat(summary.path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(53);
-        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(548);
+        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(54);
+        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(547);
         assertThat(summary.path("rulesWithSourceMismatch").asInt()).isEqualTo(2);
         assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(114);
         assertThat(summary.path("smeApprovedRuleCount").asInt()).isZero();
@@ -39,13 +39,14 @@ class SourceEvidenceProgressTest {
             segmentMismatches += segment.path("sourceMismatches").asInt();
         }
         assertThat(segmentRules).isEqualTo(601);
-        assertThat(segmentRemaining).isEqualTo(548);
+        assertThat(segmentRemaining).isEqualTo(547);
         assertThat(segmentMismatches).isEqualTo(2);
         assertThat(rule(result, "SEG114-R-003").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("PARTIAL_SOURCE_EVIDENCE_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG116-R-004").path("status").asText()).isEqualTo("NOT_CURATED_REVIEW_REQUIRED");
         assertThat(rule(result, "SEGDL1-R-010").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_POSITIONAL_LAYOUT");
         assertThat(rule(result, "SEGDL1-R-011").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
+        assertThat(rule(result, "SEGDL2-R-006").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_CHAPTER_13_FIELD_DEFINITIONS");
     }
 
     @Test
@@ -54,7 +55,7 @@ class SourceEvidenceProgressTest {
         Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
         Files.writeString(sourceFile, Files.readString(sourceFile).replace("Fixed value:  101", "Fixed value:  199"));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(52);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(53);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -70,7 +71,7 @@ class SourceEvidenceProgressTest {
         Files.writeString(sourceFile, source.substring(0, start)
             + definition.replace(" 16 Space", " 16 Letter") + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(52);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(53);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL1-R-010").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
@@ -87,9 +88,26 @@ class SourceEvidenceProgressTest {
         Files.writeString(sourceFile, source.substring(0, start)
             + definition.replace("neither displayed", "sometimes displayed") + source.substring(end));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(52);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(53);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEGDL1-R-011").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
+    }
+
+    @Test
+    void changedRedialRangeWithdrawsOnlyDl2PartialBacking() throws Exception {
+        copyInputs();
+        Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
+        String source = Files.readString(sourceFile);
+        int start = source.indexOf("Number: 82 Name: Redial Count");
+        int end = source.indexOf("Number: 83 Name: Response Code", start);
+        String definition = source.substring(start, end);
+        assertThat(definition).contains("Valid Codes/Values: 1–3");
+        Files.writeString(sourceFile, source.substring(0, start)
+            + definition.replace("Valid Codes/Values: 1–3", "Valid Codes/Values: 1–4") + source.substring(end));
+        JsonNode result = generate();
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(53);
+        assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
+        assertThat(rule(result, "SEGDL2-R-006").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
 
     private JsonNode generate() throws Exception {
