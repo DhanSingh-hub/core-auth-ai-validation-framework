@@ -25,7 +25,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         Path aggregateFile = outputRoot.resolve("all-test-solution-br-ts-tc-td-training-package.json");
         JsonNode existing = mapper.readTree(aggregateFile.toFile());
 
-        Map<String, JsonNode> requirementsByAnchor = new LinkedHashMap<>();
+        Map<String, JsonNode> requirementsById = ruleRequirements(loadRules(mapper), mapper);
         Map<String, JsonNode> scenariosById = index(existing.path("testScenarios"));
         Map<String, JsonNode> testCasesById = index(existing.path("testCases"));
         Map<String, JsonNode> testDataById = index(existing.path("testData"));
@@ -37,25 +37,10 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         int placeholderTestCases = 0;
         int placeholderTestData = 0;
 
-        List<JsonNode> rules = loadRules(mapper);
-        for (JsonNode rule : rules) {
-            JsonNode anchor = rule.path("sourceAnchor");
-            String anchorKey = anchorKey(anchor);
-            ObjectNode br = objectForAnchor(requirementsByAnchor.get(anchorKey), mapper);
-            if (br == null) {
-                br = mapper.createObjectNode();
-                br.put("id", "BR-RULE-" + rule.path("ruleId").asText());
-                br.put("title", rule.path("title").asText());
-                br.put("status", "DRAFT_REVIEW_REQUIRED");
-                br.set("sourceAnchors", arrayWith(anchor, mapper));
-                br.put("testSolutionEvidence", "INDEPENDENT_RULE_CATALOG");
-                requirementsByAnchor.put(anchorKey, br);
-            }
-        }
-
-        Map<String, JsonNode> existingRequirements = indexByAnchor(existing.path("businessRequirements"));
+        int independentRuleCount = requirementsById.size();
+        Map<String, JsonNode> existingRequirements = index(existing.path("businessRequirements"));
         for (Map.Entry<String, JsonNode> entry : existingRequirements.entrySet()) {
-            requirementsByAnchor.putIfAbsent(entry.getKey(), entry.getValue());
+            requirementsById.putIfAbsent(entry.getKey(), entry.getValue());
         }
 
         Path lifecyclePackageFile = Atl105Paths.testJson().resolve("segment-100-multistep-flow-catalog.json");
@@ -76,7 +61,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             }
         }
 
-        List<JsonNode> completeRequirements = new ArrayList<>(requirementsByAnchor.values());
+        List<JsonNode> completeRequirements = new ArrayList<>(requirementsById.values());
         completeRequirements.addAll(preservedRequirements);
         for (JsonNode br : completeRequirements) {
             String brId = br.path("id").asText();
@@ -168,7 +153,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         output.set("testData", array(testData, mapper));
         output.putArray("requirementCrosswalk");
         ObjectNode summary = output.putObject("summary");
-        summary.put("independentRuleDenominator", requirementsByAnchor.size());
+        summary.put("independentRuleDenominator", independentRuleCount);
         summary.put("businessRequirements", completeRequirements.size());
         summary.put("preservedLifecycleBusinessRequirements", preservedRequirements.size());
         summary.put("testScenarios", scenarios.size());
@@ -184,8 +169,30 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         mapper.writerWithDefaultPrettyPrinter().writeValue(outputFile.toFile(), output);
         Files.writeString(outputRoot.resolve("complete-all-test-solution-br-ts-tc-td-summary.md"), markdown(summary));
         System.out.printf("BR=%d TS=%d TC=%d TD=%d placeholders=%d/%d/%d output=%s%n",
-                requirementsByAnchor.size(), scenarios.size(), testCases.size(), testData.size(),
+                independentRuleCount, scenarios.size(), testCases.size(), testData.size(),
                 placeholderScenarios, placeholderTestCases, placeholderTestData, outputFile);
+    }
+
+    static Map<String, JsonNode> ruleRequirements(List<JsonNode> rules, ObjectMapper mapper) {
+        Map<String, JsonNode> requirements = new LinkedHashMap<>();
+        for (JsonNode rule : rules) {
+            JsonNode anchor = rule.path("sourceAnchor");
+            String ruleId = rule.path("ruleId").asText();
+            if (ruleId.isBlank() || !anchor.isObject()) {
+                throw new IllegalStateException("Catalog rule needs a ruleId and sourceAnchor: " + rule);
+            }
+            ObjectNode requirement = mapper.createObjectNode();
+            String requirementId = "BR-RULE-" + ruleId;
+            requirement.put("id", requirementId);
+            requirement.put("title", rule.path("title").asText());
+            requirement.put("status", "DRAFT_REVIEW_REQUIRED");
+            requirement.set("sourceAnchors", arrayWith(anchor, mapper));
+            requirement.put("testSolutionEvidence", "INDEPENDENT_RULE_CATALOG");
+            if (requirements.putIfAbsent(requirementId, requirement) != null) {
+                throw new IllegalStateException("Duplicate rule ID: " + ruleId);
+            }
+        }
+        return requirements;
     }
 
     private static List<JsonNode> loadRules(ObjectMapper mapper) throws Exception {
@@ -199,23 +206,9 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         return rules;
     }
 
-    private static ObjectNode objectForAnchor(JsonNode value, ObjectMapper mapper) {
-        return value != null && value.isObject() ? (ObjectNode) value : null;
-    }
-
     private static Map<String, JsonNode> index(JsonNode values) {
         Map<String, JsonNode> result = new LinkedHashMap<>();
         for (JsonNode value : list(values)) result.putIfAbsent(value.path("id").asText(), value);
-        return result;
-    }
-
-    private static Map<String, JsonNode> indexByAnchor(JsonNode values) {
-        Map<String, JsonNode> result = new LinkedHashMap<>();
-        for (JsonNode value : list(values)) {
-            JsonNode anchor = value.path("sourceAnchors").isArray()
-                    ? value.path("sourceAnchors").path(0) : value.path("sourceAnchors");
-            result.putIfAbsent(anchorKey(anchor), value);
-        }
         return result;
     }
 
@@ -257,13 +250,6 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         ArrayNode result = mapper.createArrayNode();
         result.add(value);
         return result;
-    }
-
-    private static String anchorKey(JsonNode anchor) {
-        if (!anchor.isObject()) return "";
-        return String.join("|", anchor.path("specification").asText(), anchor.path("version").asText(),
-                anchor.path("section").asText(), anchor.path("segment").asText(),
-                anchor.path("element").asText(), anchor.path("rule").asText());
     }
 
     private static String safe(String value) {

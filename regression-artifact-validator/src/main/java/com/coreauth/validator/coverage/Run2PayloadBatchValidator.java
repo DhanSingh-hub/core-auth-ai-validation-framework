@@ -127,6 +127,12 @@ public final class Run2PayloadBatchValidator {
             if (!validatorImplemented) {
                 result.addError("PayloadCompliance", "Segment " + segment + " validator is not implemented");
             }
+            if (applicablePayloadFiles == 0) {
+                result.addError("PayloadCompliance", "Segment " + segment + " has no applicable linked payload files to validate");
+            } else if (validatorImplemented && (validPayloadFiles == 0
+                    || validPayloadFiles + invalidPayloadFiles != applicablePayloadFiles)) {
+                result.addError("PayloadCompliance", "Segment " + segment + " has no valid payload or incomplete validation outcomes");
+            }
             if (unreadablePayloadFiles > 0) {
                 result.addError("PayloadCompliance", unreadablePayloadFiles + " linked payload files are unreadable");
             }

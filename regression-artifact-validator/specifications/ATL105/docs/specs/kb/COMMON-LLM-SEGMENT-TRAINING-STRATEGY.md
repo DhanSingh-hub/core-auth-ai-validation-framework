@@ -53,6 +53,14 @@ Knowledge-base verification must run against the ATL105 2026-3 extracted specifi
 
 Knowledge-base BR coverage must preserve composite evidence as multiple `sourceEvidenceSections`, resolve only unambiguous title aliases (for example `Totals Request` to ATL105 11.4.1.1), and retain appendix references as explicit evidence. The independent BR package may be generated before TS/TC/TD derivation, but it remains `REVIEW_REQUIRED` until semantic review and the complete BR -> TS -> TC -> request Test Data chain are present.
 
+For source-backed rule checks, use a versioned, curated assertion manifest that records a contextual value claim and its literal ATL105 phrase. `GenerateAtl105SourceBackedRuleGate` currently checks the Element 83 entry, its one-byte shape, the cited catalog rule, and the approval matrix; it records an exact source quote, source line and SHA-256 fingerprint. It separately reports citation resolution, source-matched assertions, draft cases and SME approval across all catalog rules. A source mismatch stops case derivation for that assertion. Draft positive and invalid-length examples remain `SOURCE_DERIVED_REVIEW_REQUIRED` and must not be inserted into executable TS/TC/TD packages or interpreted as an SME decision. Uncurated or ambiguous rules remain in the review queue. This is evidence within the existing phases, not an additional certification gate.
+
+Every catalog rule also receives a reference-only source-location row. The locator skips dotted table-of-contents entries and declines broad chapter, appendix and composite labels when a unique body heading cannot be established. Its heading, line, excerpt preview and source fingerprint help a reviewer find evidence; `BODY_LOCATED_REFERENCE_ONLY` never counts as an assertion match, a test case or semantic approval. Source headings that change must lose their prior location until rechecked.
+
+For rules spanning multiple sections, the curated manifest must cite both the code-value row and a literal context phrase in the rule's own section. The gate bounds that phrase to the cited section body: matching text elsewhere in the specification cannot qualify. Segment 118 Site Configuration response codes and the Prompt 904 host-discount trigger are `PARTIAL_RULE_CONTEXT` examples. Their draft cases address code/context and one-byte length only; they do not prove Block Number lifecycle, complete Host Discount Data behavior, or transaction-wide applicability. Both assertions and draft cases retain review-required status.
+
+Element 84 width claims use the separate `element-84-width-assertions.json` manifest and `GenerateAtl105Element84WidthGate`. It compares the seven four-digit exceptions in both Chapter 13 lists with the manifest, then checks each segment's own layout row within its section. Its Segment 118, 130, 131, and 132 examples test digit width only, not the calculated Segment Length value, delimiters, or serialization. A changed exception list or layout row blocks affected draft cases; no assertion or case becomes SME-approved or execution-ready through this gate.
+
 ## SME Decision Persistence
 
 All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
@@ -322,6 +330,8 @@ For every link, verify identity and cardinality: all BR IDs referenced by each T
 
 Open physical payloads. Validate their root/envelope, fields, segment composition, values, lengths, encoding, and conditional/lifecycle rules. Run the relevant Test Solution validator when one exists. A producer `PASS` does not substitute for executing the independent validator.
 
+Before SME approval, the Run2 segment evidence writer reports technical validation separately from certification. A complete technical assessment is `PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED`, with `executionCertified: false` and SME approval `NOT_ESTABLISHED_BY_THIS_REPORT`; a failed assessment remains `REVIEW_REQUIRED`. Payload compliance requires a segment-owned validator, at least one linked physical payload containing that segment, a recorded validation outcome for every applicable file, and no invalid or unreadable linked files. An empty batch or a linked file for another segment must not pass. These technical checks do not establish business equivalence or remove the SME sign-off gate.
+
 #### 4. Classify each finding
 
 Use a finding per defect and name its evidence and affected stage. At minimum distinguish:
@@ -482,6 +492,7 @@ Every segment should eventually produce:
 
 - Knowledge model and source-anchor catalog
 - Independent rule catalog
+- Source-backed assertion register and review-only draft cases where source evidence is unambiguous
 - BR catalog
 - Scenario catalog
 - Test Case catalog
@@ -604,6 +615,12 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
+| 2026-10-01 | Added the versioned Element 83 source-backed assertion manifest and fail-closed source gate. Separated citation resolution, literal assertion backing, draft case derivation and SME approval; no new certification gate or executable coverage claim. |
+| 2026-10-01 | Added conservative body-location triage for all catalog rules; TOC entries and ambiguous chapter/appendix references cannot promote review-only locations into assertions. |
+| 2026-10-01 | Added bounded cross-section evidence for Segment 118 Site Configuration and Host Discount response-code contexts. Recorded second-source lines/fingerprints and partial-rule draft cases without certifying the broader workflow. |
+| 2026-10-01 | Added a separate Element 84 source gate for Segment 130 four-digit and Segment 132 three-digit width claims. Both Chapter 13 exception lists and segment layout rows must agree; examples remain width-only and review-required. |
+| 2026-10-01 | Extended the Element 84 width gate to the existing Segment 118 and 131 four-digit rules; section-specific mutation tests prevent a matching layout row in another segment from masking a change. |
+| 2026-10-01 | Distinguished Run2 pre-SME technical results from execution certification and blocked payload compliance for zero applicable or unaccounted files. Source/semantic approval remains an independent decision. |
 | 2026-09-29 | Became the single handbook. Merged `docs/SEGMENT-100-TRAINING-METHODOLOGY.md` (8-item framework, mutation set, lessons 1-7, checklist) and `docs/test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md` (matching responsibility, BR taxonomy, Segment 100 evidence map, lessons 6.1-6.8), then deleted both and repointed all links here. |
 | 2026-09-29 | Archived the 2026-09-23 improvement-plan pack (gap analysis, roadmap, index, quick reference, executive summary, week-1 checklist) to [docs/archive/2026-09-23-test-solution-improvement-plan/](../../archive/2026-09-23-test-solution-improvement-plan/). Folded in: Test Case structure (Phase 5), mutation classification (Phase 7), and the coverage denominator. Not adopted: the "90% of AI-extracted BRs" target (see L12). Its status figures are a 2026-09-23 snapshot and are out of date. |
 | 2026-09-29 | Added the [Communication Register](#communication-register) and L17. The 43 segment SME/TBA registers became generated views, with new registers for Segments 100, 101, 103, 104, 111, and 120. Catalog `provisionalItems` now hold only a `registerId`. The AI feedback corrections became `AIF-` items, and `SME-REVIEW-BACKLOG.md` was archived as SEG100-SME-001. |

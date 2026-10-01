@@ -5645,6 +5645,37 @@
         "AIF-0014",
         "AIF-0015"
       ]
+    },
+    {
+      "id": "SEG100-SME-002",
+      "channel": "SME_QUERY",
+      "segments": [
+        "100"
+      ],
+      "subject": "Confirm Void target and Debit eligibility in an Authorization -> Completion -> Void lifecycle",
+      "context": "The Test Solution currently has separate credit-card Authorization -> Completion and Authorization -> Void examples, not a three-leg chain. The lifecycle catalog is explicitly scoped to credit-card flows and its fixture uses Card Type 020. The source defines transaction type 8 as Purchase Reversal/Void and type S as Authorization Only Cancellation. For debit, section 10.2.1.2 says a Debit Card Completion cannot be reversed or processed again. Section 10.2.2 lists debit-supported transaction types and separately notes that Time-out Reversal for debit Completion is unsupported. Section 12.1 says an EMV response code S requires subsequent completion, void or reversal to use a Debit Prompt Code. These statements appear to create a scope question for a Debit Completion followed by a Void; do not infer that the current credit example applies to debit.",
+      "impact": "This decision controls whether the three-message lifecycle is valid, which earlier operation a Void must reverse, the required Sequence Number and Approval Number correlation, and whether debit/EMV variants may be generated or must be rejected/review-gated. Until answered, keep the combined flow REVIEW_REQUIRED and do not count it as certified coverage.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-01",
+      "raisedBy": "GitHub Copilot",
+      "evidence": [
+        "ATL105 2026-3 sections 10.2.1.2, 10.2.2 and 12.1; Appendix G transaction types 0, 3, 8 and S",
+        "specifications/ATL105/test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "specifications/ATL105/test-input/ai-solution/test-data/segment-100/lifecycle/authorization-completion-authorization.source.json",
+        "specifications/ATL105/test-input/ai-solution/test-data/segment-100/lifecycle/authorization-completion-completion.valid.json",
+        "specifications/ATL105/test-input/ai-solution/test-data/segment-100/lifecycle/authorization-void-void.valid.json"
+      ],
+      "links": {
+        "rules": [
+          "SEG100-R-023",
+          "SEG100-R-037"
+        ],
+        "blocks": [
+          "Certification of Authorization -> Completion -> Void lifecycle variants"
+        ]
+      },
+      "responseFormat": "Please answer each item separately and cite the applicable ATL105 section, network rule, or named business authority. (1) In Authorization(type 3) -> Completion(type 0) -> Void(type 8), does the Void reverse the completed purchase/capture or the original authorization? (2) Which Sequence Number and Approval Number must the Void carry, and what is the authoritative source for that linkage? (3) Is a Debit Completion followed by a Void prohibited by section 10.2.1.2, or does section 12.1's EMV response-S debit follow-up rule define a valid exception? Distinguish a normal Void (type 8) from Authorization Only Cancellation (type S) and Time-out Reversal. (4) Which card types and message contexts are approved for this three-leg flow? If no source-supported answer exists, confirm it remains REVIEW_REQUIRED."
     }
   ]
 }

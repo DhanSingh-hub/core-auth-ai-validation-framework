@@ -701,6 +701,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "111",
       "rule" : "variable-information-required"
     } ]
@@ -710,6 +711,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "123",
       "rule" : "nfc-tokenization-required"
     } ]
@@ -719,6 +721,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "135",
       "rule" : "moneris-authorizer-required"
     } ]
@@ -1069,6 +1072,16 @@
       "rule" : "number-of-segments"
     } ]
   }, {
+    "id" : "BR-SEG100-DUP-001",
+    "title" : "Each non-repeatable companion segment occurs at most once in a request.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "101",
+      "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
     "id" : "BR-SEG100-DUP-NEG-001",
     "title" : "A companion segment must not be duplicated unless the specification explicitly allows repetition.",
     "sourceAnchors" : [ {
@@ -1077,6 +1090,16 @@
       "section" : "12",
       "segment" : "101",
       "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
+    "id" : "BR-SEG100-ORDER-001",
+    "title" : "Present companion segments follow the applicable ATL105 serialization order.",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "100",
+      "rule" : "segment-100-field-order"
     } ]
   }, {
     "id" : "BR-SEG100-ORDER-NEG-001",
@@ -2105,6 +2128,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "111",
       "rule" : "variable-information-required"
     } ]
@@ -2114,6 +2138,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "123",
       "rule" : "nfc-tokenization-required"
     } ]
@@ -2123,6 +2148,7 @@
     "sourceAnchors" : [ {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "135",
       "rule" : "moneris-authorizer-required"
     } ]
@@ -2473,6 +2499,16 @@
       "rule" : "number-of-segments"
     } ]
   }, {
+    "id" : "SCN-SEG100-DUP-001",
+    "requirementIds" : [ "BR-SEG100-DUP-001" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "101",
+      "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
     "id" : "SCN-SEG100-DUP-NEG-001",
     "requirementIds" : [ "BR-SEG100-DUP-NEG-001" ],
     "sourceAnchors" : [ {
@@ -2481,6 +2517,16 @@
       "section" : "12",
       "segment" : "101",
       "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
+    "id" : "SCN-SEG100-ORDER-001",
+    "requirementIds" : [ "BR-SEG100-ORDER-001" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "100",
+      "rule" : "segment-100-field-order"
     } ]
   }, {
     "id" : "SCN-SEG100-ORDER-NEG-001",
@@ -3518,16 +3564,19 @@
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "111",
       "rule" : "variable-information-required"
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "123",
       "rule" : "nfc-tokenization-required"
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "135",
       "rule" : "moneris-authorizer-required"
     } ]
@@ -4324,6 +4373,21 @@
       "rule" : "number-of-segments"
     } ]
   }, {
+    "id" : "TC-SEG100-DUP-001",
+    "scenarioIds" : [ "SCN-SEG100-DUP-001" ],
+    "expectedOutcome" : "PASS",
+    "category" : "compatibility",
+    "tags" : [ "segment-100", "unique-companion", "positive" ],
+    "priority" : "medium",
+    "status" : "draft-review-required",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "101",
+      "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
     "id" : "TC-SEG100-DUP-NEG-001",
     "scenarioIds" : [ "SCN-SEG100-DUP-NEG-001" ],
     "expectedOutcome" : "FAIL",
@@ -4337,6 +4401,21 @@
       "section" : "12",
       "segment" : "101",
       "rule" : "companion-segment-non-duplication"
+    } ]
+  }, {
+    "id" : "TC-SEG100-ORDER-001",
+    "scenarioIds" : [ "SCN-SEG100-ORDER-001" ],
+    "expectedOutcome" : "PASS",
+    "category" : "serialization",
+    "tags" : [ "segment-100", "ordering", "positive" ],
+    "priority" : "medium",
+    "status" : "draft-review-required",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "100",
+      "rule" : "segment-100-field-order"
     } ]
   }, {
     "id" : "TC-SEG100-ORDER-NEG-001",
@@ -7297,16 +7376,19 @@
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "111",
       "rule" : "variable-information-required"
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "123",
       "rule" : "nfc-tokenization-required"
     }, {
       "specification" : "ATL105",
       "version" : "2026-3",
+      "section" : "11.1.1",
       "segment" : "135",
       "rule" : "moneris-authorizer-required"
     } ],
@@ -8645,6 +8727,39 @@
       }
     }
   }, {
+    "id" : "TD-SEG100-DUP-001",
+    "testCaseIds" : [ "TC-SEG100-DUP-001" ],
+    "expectedValidation" : "PASS",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "101",
+      "rule" : "companion-segment-non-duplication"
+    } ],
+    "payload" : {
+      "request" : {
+        "dataSection1" : {
+          "numberOfSegments" : "03"
+        },
+        "dataSection2" : {
+          "standardSegment" : {
+            "segmentType" : "100",
+            "promptCode" : "F020"
+          }
+        },
+        "dataSection3" : [ {
+          "segmentType" : "101"
+        }, {
+          "segmentType" : "102"
+        } ]
+      },
+      "testControls" : {
+        "actualSegments" : [ "100", "101", "102" ],
+        "duplicateSegment" : null
+      }
+    }
+  }, {
     "id" : "TD-SEG100-DUP-NEG-001",
     "testCaseIds" : [ "TC-SEG100-DUP-NEG-001" ],
     "expectedValidation" : "FAIL",
@@ -8675,6 +8790,39 @@
       "testControls" : {
         "actualSegments" : [ "100", "101", "101" ],
         "duplicateSegment" : "101"
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-ORDER-001",
+    "testCaseIds" : [ "TC-SEG100-ORDER-001" ],
+    "expectedValidation" : "PASS",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12",
+      "segment" : "100",
+      "rule" : "segment-100-field-order"
+    } ],
+    "payload" : {
+      "request" : {
+        "dataSection1" : {
+          "numberOfSegments" : "03"
+        },
+        "dataSection2" : {
+          "standardSegment" : {
+            "segmentType" : "100",
+            "promptCode" : "0020"
+          }
+        },
+        "dataSection3" : [ {
+          "segmentType" : "101"
+        }, {
+          "segmentType" : "102"
+        } ]
+      },
+      "testControls" : {
+        "expectedOrder" : [ "100", "101", "102" ],
+        "actualOrder" : [ "100", "101", "102" ]
       }
     }
   }, {
@@ -9060,10 +9208,10 @@
     "sourceFilesBySegment" : [ {
       "segment" : "100",
       "files" : [ "appendices/appendix-o-segment-100-coverage.json", "appendices/appendix-r-segment-100-coverage.json", "appendices/appendix-s-segment-100-coverage.json", "appendices/appendix-t-segment-100-coverage.json", "appendices/appendix-y-segment-100-coverage.json", "section1-section2/TEST-CASE-ATL105-MIN-001.json", "section1-section2/TEST-CASE-ATL105-MIN-002.json", "section1-section2/TEST-CASE-ATL105-MIN-003.json", "section1-section2/TEST-CASE-ATL105-MIN-004.json", "section1-section2/TEST-CASE-ATL105-MIN-005.json", "section1-section2/TEST-CASE-ATL105-MIN-006.json", "section1-section2/TEST-CASE-ATL105-MIN-007.json", "section1-section2/TEST-CASE-ATL105-MIN-008.json", "section1-section2/TEST-CASE-ATL105-MIN-009.json", "section1-section2/TEST-CASE-ATL105-MIN-010.json", "section1-section2/TEST-CASE-ATL105-MIN-011.json", "section1-section2/TEST-CASE-ATL105-MIN-012.json", "section1-section2/TEST-CASE-ATL105-MIN-013.json", "section1-section2/TEST-CASE-ATL105-MIN-014.json", "section1-section2/TEST-CASE-ATL105-MIN-015.json", "section1-section2/TEST-CASE-ATL105-MIN-016.json", "section1-section2/TEST-CASE-ATL105-MIN-017.json", "section1-section2/TEST-CASE-ATL105-MIN-018.json", "section1-section2/TEST-CASE-ATL105-MIN-019.json", "section1-section2/TEST-CASE-ATL105-MIN-020.json", "section1-section2/TEST-CASE-ATL105-MIN-021.json", "section1-section2/TEST-CASE-ATL105-MIN-022.json", "section1-section2/TEST-CASE-ATL105-MIN-023.json", "section1-section2/TEST-CASE-ATL105-MIN-024.json", "section1-section2/TEST-CASE-ATL105-MIN-025.json", "section1-section2/TEST-CASE-ATL105-MIN-026.json", "section1-section2/TEST-CASE-ATL105-MIN-027.json", "section1-section2/TEST-CASE-ATL105-MIN-028.json", "section1-section2/TEST-CASE-ATL105-MIN-030.json", "section1-section2/TEST-CASE-ATL105-MIN-031.json", "section1-section2/TEST-CASE-ATL105-MIN-033.json", "section1-section2/TEST-CASE-ATL105-MIN-034.json", "section1-section2/TEST-CASE-ATL105-MIN-035.json", "section1-section2/TEST-CASE-ATL105-MIN-036.json", "section1-section2/TEST-CASE-ATL105-MIN-037.json", "section1-section2/TEST-CASE-ATL105-MIN-038.json", "section1-section2/TEST-CASE-ATL105-MIN-039.json", "section1-section2/TEST-CASE-ATL105-MIN-040.json", "segment-100-annexure-br-baseline-package.json", "segment-100-compatibility-package.json", "segment-100-ewic-gap-package.json", "segment-100-gap-closure-package.json", "segment-100-item-01-message-length-package.json", "segment-100-item-02-tpdu-header-package.json", "segment-100-item-03-element-55-package.json", "segment-100-item-04-data-section-1-package.json", "segment-100-item-05-identity-length-package.json", "segment-100-item-06-terminal-identifier-package.json", "segment-100-item-07-prompt-code-package.json", "segment-100-item-08-account-entry-package.json", "segment-100-item-09-sequence-lifecycle-package.json", "segment-100-item-10-partial-approval-package.json", "segment-100-item-11-final-closure-package.json", "segment-100-multistep-flow-catalog.json", "segment-100-remaining-package.json", "segment-100-response-code-package.json" ],
-      "businessRequirements" : 104,
-      "testScenarios" : 102,
-      "testCases" : 130,
-      "testData" : 138
+      "businessRequirements" : 106,
+      "testScenarios" : 104,
+      "testCases" : 132,
+      "testData" : 140
     }, {
       "segment" : "101",
       "files" : [ "section1-section2/TEST-CASE-ATL105-MIN-032.json", "segment-101-item-01-fleet-baseline-package.json" ],
@@ -9121,15 +9269,15 @@
       "testCases" : 1,
       "testData" : 1
     } ],
-    "excludedFiles" : [ "all-segments-all-23-transaction-type-training-baseline.json [partial or legacy shape]", "appendices/appendix-a-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-aa-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ab-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ac-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ad-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ae-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-b-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-c-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-d-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-e-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-f-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-g-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-h-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-i-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-j-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-k-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-l-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-m-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-n-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-p-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-q-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-u-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-v-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-w-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-x-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-z-segment-100-coverage.json [partial or legacy shape]", "atl105-response-code-family-matrix.json [partial or legacy shape]", "ATL105-Section1-Section2-Test-Data.json [partial or legacy shape]", "knowledge/segment-100-br-baseline-index.json [partial or legacy shape]", "knowledge/segment-100-canonical-appendix-inventory.json [partial or legacy shape]", "knowledge/segment-100-context-br-catalog.json [partial or legacy shape]", "knowledge/segment-100-context-model.json [partial or legacy shape]", "knowledge/segment-100-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-100-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-100-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-100-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-100-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-101-context-model.json [partial or legacy shape]", "knowledge/segment-101-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/segment-101-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-106-context-model.json [partial or legacy shape]", "knowledge/segment-106-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/segment-109-context-model.json [partial or legacy shape]", "knowledge/segment-109-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-109-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-109-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-109-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-109-request-response-lifecycle-knowledge.json [partial or legacy shape]", "section-5-payment-network-segment-100-matrix.json [partial or legacy shape]", "section1-section2/ATL105-Section1-Section2-Test-Data-Materialized.json [partial or legacy shape]", "segment-100-all-23-transaction-type-training-baseline.json [partial or legacy shape]", "segment-100-code-flow-br-ts-tc-testdata.json [partial or legacy shape]", "segment-100-transaction-type-coverage.json [partial or legacy shape]", "segment-101-core-structure-package.json [partial or legacy shape]", "segment-102-core-structure-package.json [partial or legacy shape]", "segment-103-core-structure-package.json [partial or legacy shape]", "segment-104-core-structure-package.json [partial or legacy shape]", "segment-105-requirements-baseline.json [partial or legacy shape]", "segment-108-core-structure-package.json [partial or legacy shape]", "segment-111-core-structure-package.json [partial or legacy shape]", "segment-113-core-structure-package.json [partial or legacy shape]", "segment-123-core-structure-package.json [partial or legacy shape]", "segment-130-core-structure-package.json [partial or legacy shape]", "segment-135-core-structure-package.json [partial or legacy shape]" ]
+    "excludedFiles" : [ "all-segments-all-23-transaction-type-training-baseline.json [partial or legacy shape]", "appendices/appendix-a-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-aa-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ab-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ac-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ad-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-ae-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-b-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-c-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-d-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-e-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-f-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-g-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-h-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-i-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-j-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-k-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-l-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-m-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-n-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-p-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-q-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-u-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-v-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-w-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-x-segment-100-coverage.json [partial or legacy shape]", "appendices/appendix-z-segment-100-coverage.json [partial or legacy shape]", "atl105-response-code-family-matrix.json [partial or legacy shape]", "ATL105-Section1-Section2-Test-Data.json [partial or legacy shape]", "knowledge/segment-100-br-baseline-index.json [partial or legacy shape]", "knowledge/segment-100-canonical-appendix-inventory.json [partial or legacy shape]", "knowledge/segment-100-context-br-catalog.json [partial or legacy shape]", "knowledge/segment-100-context-model.json [partial or legacy shape]", "knowledge/segment-100-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-100-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-100-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-100-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-100-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-101-context-model.json [partial or legacy shape]", "knowledge/segment-101-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/segment-101-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-106-context-model.json [partial or legacy shape]", "knowledge/segment-106-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/segment-109-context-model.json [partial or legacy shape]", "knowledge/segment-109-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-109-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-109-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-109-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-109-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-110-context-model.json [partial or legacy shape]", "knowledge/segment-110-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-110-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-110-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-110-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-110-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-116-context-model.json [partial or legacy shape]", "knowledge/segment-116-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-116-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-116-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-116-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-116-request-response-lifecycle-knowledge.json [partial or legacy shape]", "knowledge/segment-118-context-model.json [partial or legacy shape]", "knowledge/segment-118-evidence-quality-model.json [partial or legacy shape]", "knowledge/segment-118-field-knowledge-inventory.json [partial or legacy shape]", "knowledge/SEGMENT-118-KNOWLEDGE-CATALOG.json [partial or legacy shape]", "knowledge/segment-118-pending-context-boundaries.json [partial or legacy shape]", "knowledge/segment-118-request-response-lifecycle-knowledge.json [partial or legacy shape]", "section-5-payment-network-segment-100-matrix.json [partial or legacy shape]", "section1-section2/ATL105-Section1-Section2-Test-Data-Materialized.json [partial or legacy shape]", "segment-100-all-23-transaction-type-training-baseline.json [partial or legacy shape]", "segment-100-code-flow-br-ts-tc-testdata.json [partial or legacy shape]", "segment-100-transaction-type-coverage.json [partial or legacy shape]", "segment-101-core-structure-package.json [partial or legacy shape]", "segment-102-core-structure-package.json [partial or legacy shape]", "segment-103-core-structure-package.json [partial or legacy shape]", "segment-104-core-structure-package.json [partial or legacy shape]", "segment-105-requirements-baseline.json [partial or legacy shape]", "segment-108-core-structure-package.json [partial or legacy shape]", "segment-111-core-structure-package.json [partial or legacy shape]", "segment-113-core-structure-package.json [partial or legacy shape]", "segment-123-core-structure-package.json [partial or legacy shape]", "segment-130-core-structure-package.json [partial or legacy shape]", "segment-135-core-structure-package.json [partial or legacy shape]" ]
   },
   "summary" : {
-    "businessRequirements" : 152,
-    "testScenarios" : 129,
-    "testCases" : 164,
-    "testData" : 154,
+    "businessRequirements" : 154,
+    "testScenarios" : 131,
+    "testCases" : 166,
+    "testData" : 156,
     "segmentsWithCanonicalEvidence" : 9,
-    "excludedFiles" : 65,
+    "excludedFiles" : 83,
     "standaloneTestDataNormalized" : 40,
     "executionReady" : false,
     "reason" : "Aggregate contains independent Test Solution evidence only; excluded partial packages and missing links remain REVIEW_REQUIRED."

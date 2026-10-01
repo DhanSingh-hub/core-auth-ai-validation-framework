@@ -20,7 +20,7 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
 
     public static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Path reviewRoot = Atl105Paths.testOutput().resolve("test-solution-independent-review");
+        Path reviewRoot = args.length > 1 ? Path.of(args[1]) : Atl105Paths.testOutput().resolve("test-solution-independent-review");
         Path input = args.length == 0
                 ? reviewRoot.resolve("all-test-solution-br-ts-tc-td-training-package.json") : Path.of(args[0]);
         JsonNode root = mapper.readTree(input.toFile());
@@ -89,13 +89,15 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
             && testCasesWithoutData.isEmpty() && duplicateIds.isEmpty();
         result.put("structurallyComplete", structurallyComplete);
         result.put("hasReviewPlaceholders", hasReviewPlaceholders);
-        result.put("executionReady", structurallyComplete && !hasReviewPlaceholders);
+        result.put("executionReady", false);
+        result.put("executionReadinessReason", "Link integrity alone cannot certify canonical anchor continuity, validated payloads or SME approval.");
         result.set("unlinkedRequirementIds", mapper.valueToTree(requirementsWithoutScenario));
         result.set("unlinkedScenarioIds", mapper.valueToTree(scenariosWithoutTestCase));
         result.set("unlinkedTestCaseIds", mapper.valueToTree(testCasesWithoutData));
         result.set("duplicateArtifactIdsList", mapper.valueToTree(duplicateIds));
 
         Path output = reviewRoot.resolve("all-test-solution-chain-validation.json");
+        Files.createDirectories(reviewRoot);
         mapper.writerWithDefaultPrettyPrinter().writeValue(output.toFile(), result);
         Files.writeString(reviewRoot.resolve("all-test-solution-chain-validation.md"), markdown(result));
         System.out.printf("BR=%d TS=%d TC=%d TD=%d BR_TS_gaps=%d TS_TC_gaps=%d TC_TD_gaps=%d executionReady=%s%n",
@@ -146,6 +148,7 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
                 + "| Duplicate IDs | " + result.path("duplicateArtifactIds").asInt() + " |\n"
                 + "| Structural complete | " + result.path("structurallyComplete").asBoolean() + " |\n"
                 + "| Review placeholders | " + result.path("hasReviewPlaceholders").asBoolean() + " |\n\n"
-                + "Execution ready: **" + result.path("executionReady").asBoolean() + "**\n";
+                + "Execution ready: **" + result.path("executionReady").asBoolean() + "**. "
+                + result.path("executionReadinessReason").asText() + "\n";
     }
 }

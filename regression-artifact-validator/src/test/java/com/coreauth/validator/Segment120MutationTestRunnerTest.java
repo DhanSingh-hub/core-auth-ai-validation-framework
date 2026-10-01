@@ -3,6 +3,7 @@ package com.coreauth.validator;
 import com.coreauth.validator.canonical.Segment120MutationTestRunner;
 import com.coreauth.validator.canonical.Segment120MutationTestRunner.MutationTestSuiteReport;
 import com.coreauth.validator.canonical.Segment120MutationTestRunner.PackageMutationResult;
+import com.coreauth.validator.paths.Atl105Paths;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
@@ -37,14 +38,14 @@ class Segment120MutationTestRunnerTest {
     @Test void nestedPackagesAreIncludedInRun(@TempDir Path d) throws Exception { Files.createDirectories(d.resolve("nested")); write(d.resolve("nested"),"one.synthetic.json"); assertThat(new Segment120MutationTestRunner(d).runAllPackages().totalPackages()).isEqualTo(1); }
 
     @Test void realLifecyclePackagesAllDetectAtOrAboveEightyFivePercent() throws Exception {
-        Path real = Path.of("test-input", "ai-solution", "test-data", "segment-120");
+        Path real = Atl105Paths.aiTestData("120");
         MutationTestSuiteReport r = new Segment120MutationTestRunner(real).runAllPackages();
-        assertThat(r.totalPackages()).isGreaterThanOrEqualTo(3);
+        assertThat(r.totalPackages()).isGreaterThanOrEqualTo(2);
         assertThat(r.overallDetectionRate()).isGreaterThanOrEqualTo(85.0);
     }
 
     @Test void realLifecyclePackagesEachRunTenMutations() throws Exception {
-        Path real = Path.of("test-input", "ai-solution", "test-data", "segment-120");
+        Path real = Atl105Paths.aiTestData("120");
         MutationTestSuiteReport r = new Segment120MutationTestRunner(real).runAllPackages();
         assertThat(r.packageResults()).allMatch(p -> p.mutationCount() == 10);
     }

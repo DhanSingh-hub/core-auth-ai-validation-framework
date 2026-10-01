@@ -26,7 +26,10 @@ public final class Run2SegmentValidationEvidenceWriter {
 
         AiCoverageAssessmentReport report = evidence.assessment();
         ObjectNode assessment = root.putObject("assessment");
-        assessment.put("decision", report.executionReady() ? "EXECUTION_READY" : "REVIEW_REQUIRED");
+        assessment.put("decision", report.executionReady() ? "PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED" : "REVIEW_REQUIRED");
+        assessment.put("technicalChecksPassed", report.executionReady());
+        assessment.put("smeApprovalStatus", "NOT_ESTABLISHED_BY_THIS_REPORT");
+        assessment.put("executionCertified", false);
         assessment.put("coverageDenominator", report.coverageDenominator());
         assessment.put("confirmedRequirements", report.confirmedRequirements());
         assessment.put("fullChainRequirements", report.fullChainRequirements());

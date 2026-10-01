@@ -13,7 +13,8 @@ regression-artifact-validator/
 |-- src/test/resources/               Test features and fixtures
 |-- specifications/ATL105/
 |   |-- contract/                     ATL105 semantic aliases
-|   |-- docs/                         Knowledge base and validation strategy
+|   |-- docs/specs/kb/                Source-grounded segment rule catalogs and training report
+|   |-- docs/test-validation-strategy/ Review policy and evidence gates
 |   |-- reports/                      Published stakeholder reports
 |   |-- schemas/                      ATL105 validation schemas
 |   |-- scripts/                      ATL105-specific pipelines
@@ -23,12 +24,15 @@ regression-artifact-validator/
 ```
 
 See [ATL105 Artifact Storage Policy](specifications/ATL105/docs/test-validation-strategy/ARTIFACT-STORAGE-POLICY.md) for ownership and retention rules.
+See [Test Solution Framework Ownership](specifications/ATL105/docs/test-validation-strategy/TEST-SOLUTION-FRAMEWORK-OWNERSHIP.md) for generation order, module boundaries and review gates.
 
 ## Current validation state
 
-As of 2026-09-24, Run1 and Run2 are being reviewed as a single composite AI delivery. The Test Solution has generated independent crosswalks, segment validation reports, SME review queues, specification-version resolution evidence, and executive reporting under `specifications/ATL105/test-output/ai-solution-independent-review/`.
+The [segment training report](specifications/ATL105/docs/specs/kb/SEGMENT-TRAINING-EXECUTION-REPORT.md) reconciles rule catalogs with [training gate decisions](specifications/ATL105/training-status.json). At the current snapshot, 49 segments are in progress with 601 catalogued rules; none is certified for independent AI-artifact intake. The [element chain report](specifications/ATL105/test-output/test-solution-independent-review/atl105-element-chain-coverage.md) counts 539 placeholder-generated structural links and 0 executable links; structural completion is not SME approval or executable BR-to-test-data coverage. See the [remaining limitations](specifications/ATL105/test-output/test-solution-independent-review/atl105-remaining-limitations-status.md) for the separate approval and execution measures.
 
-The current state is **review required**, not execution-ready: the composite requirement identity is verified, but source-version correction, SME decisions, payload validation, and coverage reconciliation remain tracked evidence gates. See [RAID Log](specifications/ATL105/docs/test-validation-strategy/RAID-Log.md) and [composite Run1/Run2 feedback](specifications/ATL105/docs/test-validation-strategy/AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md) for the latest history.
+The [source-backed rule gate](specifications/ATL105/test-output/test-solution-independent-review/atl105-source-backed-rule-gate.md) tracks all 601 rules with source-body navigation, and separately reports resolvable citations, curated assertions, draft cases and SME approval. Body locations are reference-only. Its Element 83 examples remain review-required and are not inserted into the execution package.
+
+Run1 and Run2 remain evidence under independent review, not Test Solution training truth. See the [RAID Log](specifications/ATL105/docs/test-validation-strategy/RAID-Log.md) and [composite feedback](specifications/ATL105/docs/test-validation-strategy/AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md) for delivery history.
 
 ## Producer-neutral contract
 
@@ -51,6 +55,13 @@ Focused governance checks:
 
 ```powershell
 mvn '-Dtest=ProducerNeutralContractTest,RepositoryStructureTest,Atl105PathsTest' test
+```
+
+After changing a segment catalog or training decision, regenerate and check the training report:
+
+```powershell
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105TrainingReport'
+mvn '-Dtest=TrainingStatusConsistencyTest' test
 ```
 
 Read-only Run2 intake summary:

@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 189 open, 3 reopened, 29 resolved, 2 deferred (223 total).
+**Status:** 190 open, 3 reopened, 29 resolved, 2 deferred (224 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -442,3 +442,4 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEG100-SME-001](../../docs/specs/kb/segment-100/segment-100-sme-tba-input-register.md#seg100-sme-001) | Decide the 44 potential AI-to-Test BR mappings in the Segment 100 comparison (confirm or reject each). Until decided they stay REVIEW_REQUIRED and do not count as confirmed coverage. | Migrated from docs/test-validation-strategy/SME-REVIEW-BACKLOG.md (now archived). SME review is a release blocker for Segment 100 coverage claims. | OPEN |  | 2026-09-17 |
+| [SEG100-SME-002](../../docs/specs/kb/segment-100/segment-100-sme-tba-input-register.md#seg100-sme-002) | Confirm Void target and Debit eligibility in an Authorization -> Completion -> Void lifecycle | The Test Solution currently has separate credit-card Authorization -> Completion and Authorization -> Void examples, not a three-leg chain. The lifecycle catalog is explicitly scoped to credit-card flows and its fixture uses Card Type 020. The source defines transaction type 8 as Purchase Reversal/Void and type S as Authorization Only Cancellation. For debit, section 10.2.1.2 says a Debit Card Completion cannot be reversed or processed again. Section 10.2.2 lists debit-supported transaction types and separately notes that Time-out Reversal for debit Completion is unsupported. Section 12.1 says an EMV response code S requires subsequent completion, void or reversal to use a Debit Prompt Code. These statements appear to create a scope question for a Debit Completion followed by a Void; do not infer that the current credit example applies to debit. | OPEN | SEG100-R-023, SEG100-R-037 | 2026-10-01 |

@@ -8,7 +8,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 189 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 223 |
+| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 190 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 224 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
@@ -65,7 +65,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | DL7 | 5 | 0 | 0 | 0 | 5 | [segment-DL7](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md) |
 | DL8 | 3 | 0 | 0 | 0 | 3 | [segment-DL8](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md) |
 | 104 | 2 | 0 | 0 | 0 | 2 | [segment-104](../../docs/specs/kb/segment-104/segment-104-sme-tba-input-register.md) |
-| 100 | 1 | 0 | 0 | 0 | 1 | [segment-100](../../docs/specs/kb/segment-100/segment-100-sme-tba-input-register.md) |
+| 100 | 2 | 0 | 0 | 0 | 2 | [segment-100](../../docs/specs/kb/segment-100/segment-100-sme-tba-input-register.md) |
 
 ## Related Stores
 

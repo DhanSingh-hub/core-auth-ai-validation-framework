@@ -34,6 +34,10 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         Map<String, JsonNode> scenarios = new LinkedHashMap<>();
         Map<String, JsonNode> testCases = new LinkedHashMap<>();
         Map<String, JsonNode> testData = new LinkedHashMap<>();
+        Map<String, String> requirementSources = new LinkedHashMap<>();
+        Map<String, String> scenarioSources = new LinkedHashMap<>();
+        Map<String, String> caseSources = new LinkedHashMap<>();
+        Map<String, String> dataSources = new LinkedHashMap<>();
         Map<String, Set<String>> sourceFilesBySegment = new TreeMap<>();
         Set<String> excludedFiles = new LinkedHashSet<>();
         Map<String, int[]> countsBySegment = new TreeMap<>();
@@ -63,10 +67,10 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                 String relative = relative(inputRoot, file);
                 sourceFilesBySegment.computeIfAbsent(segment, ignored -> new LinkedHashSet<>()).add(relative);
                 int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[4]);
-                merge(root.path("businessRequirements"), requirements, counts, 0);
-                merge(root.path("testScenarios"), scenarios, counts, 1);
-                merge(root.path("testCases"), testCases, counts, 2);
-                merge(root.path("testData"), testData, counts, 3);
+                merge(root.path("businessRequirements"), requirements, requirementSources, relative, counts, 0);
+                merge(root.path("testScenarios"), scenarios, scenarioSources, relative, counts, 1);
+                merge(root.path("testCases"), testCases, caseSources, relative, counts, 2);
+                merge(root.path("testData"), testData, dataSources, relative, counts, 3);
             }
         }
 
@@ -190,12 +194,18 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         return testData.keySet().stream().filter(value -> value.startsWith("TEST-DATA-")).count();
     }
 
-    private static void merge(JsonNode values, Map<String, JsonNode> target, int[] counts, int index) {
+    static void merge(JsonNode values, Map<String, JsonNode> target, Map<String, String> sources,
+                      String source, int[] counts, int index) {
         for (JsonNode value : values) {
             String id = value.path("id").asText("");
             if (!id.isBlank()) {
-                target.putIfAbsent(id, value);
-                counts[index]++;
+                JsonNode existing = target.putIfAbsent(id, value);
+                if (existing == null) {
+                    sources.put(id, source);
+                    counts[index]++;
+                } else if (!existing.equals(value)) {
+                    throw new IllegalStateException("Conflicting artifact id " + id + " in " + sources.get(id) + " and " + source);
+                }
             }
         }
     }

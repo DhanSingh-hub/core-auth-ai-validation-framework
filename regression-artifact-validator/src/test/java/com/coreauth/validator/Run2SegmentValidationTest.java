@@ -69,6 +69,37 @@ class Run2SegmentValidationTest {
                 error.reason().contains("validator is not implemented"));
     }
 
+    @Test
+    void unrelatedLinkedPayloadDoesNotPassPreSmeSegmentCompliance(@TempDir Path runRoot) throws Exception {
+        Files.writeString(runRoot.resolve("other-segment.json"),
+            "{\"Financial Request\":{\"Fleet Data Segment\":{\"Segment Type\":\"101\"}}}");
+        CanonicalArtifactPackage artifactPackage = new CanonicalArtifactPackage();
+        artifactPackage.setTestData(List.of(testData("TD-100", "TC-100", "100", "other-segment.json")));
+
+        var batch = new Run2PayloadBatchValidator().validate("100", runRoot, artifactPackage);
+
+        assertThat(batch.validatorImplemented()).isTrue();
+        assertThat(batch.linkedPayloadFiles()).isEqualTo(1);
+        assertThat(batch.applicablePayloadFiles()).isZero();
+        assertThat(batch.asValidationResult().isValid()).isFalse();
+        assertThat(batch.asValidationResult().errors()).anyMatch(error ->
+            error.reason().contains("no applicable linked payload files"));
+    }
+
+    @Test
+    void aValidatedApplicableBatchCanPass() {
+        var batch = new Run2PayloadBatchValidator.BatchResult("100", true, 1, 1, 1, 0, 0, List.of());
+        assertThat(batch.asValidationResult().isValid()).isTrue();
+    }
+
+    @Test
+    void unaccountedApplicablePayloadDoesNotPass() {
+        var batch = new Run2PayloadBatchValidator.BatchResult("100", true, 1, 1, 0, 0, 0, List.of());
+        assertThat(batch.asValidationResult().isValid()).isFalse();
+        assertThat(batch.asValidationResult().errors()).anyMatch(error ->
+            error.reason().contains("incomplete validation outcomes"));
+    }
+
     private static CanonicalRequirement requirement(String id, String segment) {
         CanonicalRequirement value = new CanonicalRequirement();
         value.setId(id);

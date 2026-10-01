@@ -4,16 +4,16 @@ This is an aggregate of existing Test Solution JSON evidence only. AI input is e
 
 | Artifact | Count |
 |---|---:|
-| BR | 152 |
-| TS | 129 |
-| TC | 164 |
-| TD | 154 |
+| BR | 154 |
+| TS | 131 |
+| TC | 166 |
+| TD | 156 |
 
 ## Segment evidence
 
 | Segment | BR | TS | TC | TD | Source files |
 |---|---:|---:|---:|---:|---:|
-|100|104|102|130|138|61|
+|100|106|104|132|140|61|
 |101|13|7|11|4|2|
 |103|12|7|8|3|1|
 |104|3|2|2|0|1|
@@ -23,4 +23,4 @@ This is an aggregate of existing Test Solution JSON evidence only. AI input is e
 |120|0|0|0|0|1|
 |CONTEXT_REVIEW_REQUIRED|0|0|1|1|1|
 
-Excluded partial/legacy files: **65**. They need normalization before they can contribute to the canonical chain.
+Excluded partial/legacy files: **83**. They need normalization before they can contribute to the canonical chain.

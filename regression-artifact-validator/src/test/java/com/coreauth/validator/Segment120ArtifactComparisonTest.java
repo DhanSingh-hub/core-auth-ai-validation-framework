@@ -7,6 +7,7 @@ import com.coreauth.validator.canonical.Segment120ArtifactComparison.ComparisonR
 import com.coreauth.validator.canonical.Segment120RuleCatalogLoader;
 import com.coreauth.validator.canonical.Segment120RuleCatalogLoader.Catalog;
 import com.coreauth.validator.canonical.SourceAnchor;
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Nested;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,10 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment120ArtifactComparisonTest {
 
-    private static final Path SEG120_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-120", "coverage", "segment-120-rule-catalog.json");
+    private static final Path SEG120_RULE_CATALOG = Atl105Paths.ruleCatalog("120");
     private static final Path SEG120_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-120-item-01-baseline-package.json");
+        Atl105Paths.testJson("segment-120-item-01-baseline-package.json");
 
     private static SourceAnchor anchor(String section, String segment, String element, String rule) {
         SourceAnchor a = new SourceAnchor();

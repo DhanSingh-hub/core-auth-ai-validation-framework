@@ -4,12 +4,12 @@ Every independent rule-catalog BR has a structural BR -> TS -> TC -> TD chain. P
 
 | Metric | Count |
 |---|---:|
-| Independent BR denominator | 309 |
-| BR | 314 |
-| TS | 419 |
-| TC | 469 |
-| TD | 492 |
-| Placeholder TS | 290 |
-| Placeholder TC | 305 |
-| Placeholder TD | 338 |
+| Independent BR denominator | 601 |
+| BR | 760 |
+| TS | 764 |
+| TC | 814 |
+| TD | 837 |
+| Placeholder TS | 633 |
+| Placeholder TC | 648 |
+| Placeholder TD | 681 |
 | Execution ready | false |
