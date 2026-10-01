@@ -6,7 +6,7 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG112-R-004 Segment 112 appears only at the end of a Financial Transaction response}
     R1 -->|Fail| X1[Reject citing SEG112-R-004]
-    R1 -->|Pass| R2{SEG112-R-010 Segment 112 is required in a Financial Transaction Response only when Element 115 (Additional Information Data Segment Flag) equals 1}
+    R1 -->|Pass| R2{"SEG112-R-010 Segment 112 is required in a Financial Transaction Response only when Element 115 (Additional Information Data Segment Flag) equals 1"}
     R2 -->|Fail| X2[Reject citing SEG112-R-010]
     R2 -->|Pass| Z[Rules satisfied]
 ```
