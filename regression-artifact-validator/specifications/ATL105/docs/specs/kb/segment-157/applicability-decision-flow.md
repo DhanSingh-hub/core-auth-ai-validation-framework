@@ -6,7 +6,7 @@ flowchart TD
     B -->|No rules in catalog| G[Record gap - confirm with SME - do not invent]
     B -->|Yes| R1{SEG157-R-001 Segment 157 is used exclusively and allowed for Comdata cards only; any transaction containing this segment that is not for a Comdata card will be declined}
     R1 -->|Fail| X1[Reject citing SEG157-R-001]
-    R1 -->|Pass| R2{SEG157-R-002 Segment 157 is mutually exclusive with Segment 102 (Product Code Data); merchants should send one or the other but never both — if both are sent, the transaction will be declined}
+    R1 -->|Pass| R2{"SEG157-R-002 Segment 157 is mutually exclusive with Segment 102 (Product Code Data); merchants should send one or the other but never both — if both are sent, the transaction will be declined"}
     R2 -->|Fail| X2[Reject citing SEG157-R-002]
     R2 -->|Pass| R3{SEG157-R-004 Fuel products must always be the first products in the segment; a maximum of ten products is allowed}
     R3 -->|Fail| X3[Reject citing SEG157-R-004]
