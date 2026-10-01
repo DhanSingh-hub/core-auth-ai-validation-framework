@@ -22,10 +22,10 @@ class SourceEvidenceProgressTest {
         JsonNode result = generate();
         JsonNode summary = result.path("summary");
         assertThat(summary.path("catalogRuleCount").asInt()).isEqualTo(601);
-        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(51);
-        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(550);
+        assertThat(summary.path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(52);
+        assertThat(summary.path("rulesWithoutSourceBackedAssertions").asInt()).isEqualTo(549);
         assertThat(summary.path("rulesWithSourceMismatch").asInt()).isEqualTo(2);
-        assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(112);
+        assertThat(summary.path("draftCaseCount").asInt()).isEqualTo(114);
         assertThat(summary.path("smeApprovedRuleCount").asInt()).isZero();
         assertThat(summary.path("executionCertifiedRuleCount").asInt()).isZero();
         assertThat(result.path("rules")).hasSize(601);
@@ -39,11 +39,12 @@ class SourceEvidenceProgressTest {
             segmentMismatches += segment.path("sourceMismatches").asInt();
         }
         assertThat(segmentRules).isEqualTo(601);
-        assertThat(segmentRemaining).isEqualTo(550);
+        assertThat(segmentRemaining).isEqualTo(549);
         assertThat(segmentMismatches).isEqualTo(2);
         assertThat(rule(result, "SEG114-R-003").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("PARTIAL_SOURCE_EVIDENCE_REVIEW_REQUIRED");
         assertThat(rule(result, "SEG116-R-004").path("status").asText()).isEqualTo("NOT_CURATED_REVIEW_REQUIRED");
+        assertThat(rule(result, "SEGDL1-R-010").path("evidenceScopes").get(0).asText()).isEqualTo("PARTIAL_POSITIONAL_LAYOUT");
     }
 
     @Test
@@ -52,9 +53,25 @@ class SourceEvidenceProgressTest {
         Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
         Files.writeString(sourceFile, Files.readString(sourceFile).replace("Fixed value:  101", "Fixed value:  199"));
         JsonNode result = generate();
-        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(50);
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(51);
         assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
         assertThat(rule(result, "SEG101-R-004").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
+    }
+
+    @Test
+    void element4SourceMutationWithdrawsItsPartialClaim() throws Exception {
+        copyInputs();
+        Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");
+        String source = Files.readString(sourceFile);
+        int start = source.indexOf("Number: 4 Name: Address Line 2");
+        int end = source.indexOf("Number: 5 Name: Approval Number", start);
+        String definition = source.substring(start, end);
+        Files.writeString(sourceFile, source.substring(0, start)
+            + definition.replace(" 16 Space", " 16 Letter") + source.substring(end));
+        JsonNode result = generate();
+        assertThat(result.path("summary").path("rulesWithAnySourceBackedAssertion").asInt()).isEqualTo(51);
+        assertThat(result.path("summary").path("rulesWithSourceMismatch").asInt()).isEqualTo(3);
+        assertThat(rule(result, "SEGDL1-R-010").path("status").asText()).isEqualTo("SOURCE_MISMATCH_REVIEW_REQUIRED");
     }
 
     private JsonNode generate() throws Exception {
@@ -69,7 +86,8 @@ class SourceEvidenceProgressTest {
 
     private void copyInputs() throws Exception {
         for (String relative : new String[]{"docs/specs/extracted_text.txt", "contract/element-83-source-assertions.json",
-            "contract/element-84-width-assertions.json", "contract/segment-110-field-row-assertions.json",
+            "contract/element-84-width-assertions.json", "contract/element-4-layout-assertions.json",
+            "contract/segment-110-field-row-assertions.json",
             "contract/totals-prompt-code-assertions.json",
             "test-output/test-solution-independent-review/knowledge-base-br-coverage-package.json",
             "test-output/test-solution-independent-review/atl105-br-approval-matrix.json"}) {
