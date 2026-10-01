@@ -10,7 +10,8 @@
 | Segment-length width | `contract/element-84-width-assertions.json` and `GenerateAtl105Element84WidthGate` | Element 84 exception lists and segment layout rows | Partial width-only claims; no calculated-length or execution certification |
 | Fixed segment type | `GenerateAtl105FixedSegmentTypeGate` | Element 85 catalog titles and the exact Section 12 field-1 fixed value | Partial type-only claims; conflicting or absent values stay in review |
 | Check Data Segment field rows | `contract/segment-110-field-row-assertions.json` and `GenerateAtl105Segment110FieldEvidence` | Unique §12.9 body rows, existing rule IDs and approval matrix | Six bounded, partial row claims; no draft cases or conditional-trigger inference |
-| Source-evidence progress | `GenerateAtl105SourceEvidenceProgress` | Four current source gates, catalog, and BR approval matrix | Reconciled distinct-rule progress; no semantic certification |
+| Totals Prompt Code rows | `contract/totals-prompt-code-assertions.json` and `GenerateAtl105TotalsPromptCodeEvidence` | Section 12.6 and 12.17 Field 5 rows and existing BRs | Two fixed-value-only claims; no Totals workflow approval |
+| Source-evidence progress | `GenerateAtl105SourceEvidenceProgress` | Five current source gates, catalog, and BR approval matrix | Reconciled distinct-rule progress; no semantic certification |
 | Authored evidence | `test-output/test-json/` and `GenerateAllTestSolutionBrTsTcTdPackage` | Independent Test Solution packages | Aggregate evidence; conflicting canonical IDs fail closed |
 | Structural completion | `GenerateCompleteCanonicalTestSolutionPackage` | Aggregate evidence and rule catalogs | One BR per rule ID plus explicit missing-chain placeholders |
 | Chain integrity | `CanonicalTraceabilityValidator` | Canonical artifacts and source anchors | Anchor continuity and contract errors |
@@ -33,6 +34,7 @@ mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.Gener
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105Element84WidthGate'
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105FixedSegmentTypeGate'
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105Segment110FieldEvidence'
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105TotalsPromptCodeEvidence'
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105SourceEvidenceProgress'
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAllTestSolutionBrTsTcTdPackage'
 mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateCompleteCanonicalTestSolutionPackage'
@@ -53,7 +55,7 @@ The source-backed gate currently resolves 600 rule citations. It locates every c
 
 The generated `test-output/test-solution-independent-review/atl105-source-backed-rule-review-queue.csv` lists all 601 rules with their citation token, body-location status, source lines, assertion state and review counts. Use it to prioritize the 34 fully unlocated and 14 partially located references before curating further rule claims. A located heading is not a verified rule statement; the remaining 593 rules require independently checked literal assertions and appropriate context before draft cases can be derived.
 
-The Element 84 width report covers 11 existing rules (101, 104, 108, 109, 113, 114, 115, 118, 130, 131, 132) with 22 width-only draft examples. The fixed-type gate reviews 24 exact-title candidates: 22 have matching field-1 evidence and two (`SEG114-R-003`, `SEG151-R-004`) remain source mismatches. Six Segment 110 row/maximum assertions match §12.9 without generating cases. The reconciled ledger has 47 distinct rules with at least one partial source-backed claim and 554 without any such claim, plus 108 review-only examples. Its 49-segment backlog table reconciles to all 601 rules; two source mismatches remain review-required. None of those 47 is thereby a fully proven BR or SME-approved or executable.
+The Element 84 width report covers 11 existing rules (101, 104, 108, 109, 113, 114, 115, 118, 130, 131, 132) with 22 width-only draft examples. The fixed-type gate reviews 24 exact-title candidates: 22 have matching field-1 evidence and two (`SEG114-R-003`, `SEG151-R-004`) remain source mismatches. Six Segment 110 row/maximum assertions match §12.9; both existing Totals Prompt Code `990` rules match their own field rows. The reconciled ledger has 49 distinct rules with at least one partial source-backed claim and 552 without any such claim, plus 108 review-only examples. Its 49-segment backlog table reconciles to all 601 rules; the two fixed-type source mismatches remain review-required. None of those 49 is thereby a fully proven BR, SME-approved, or executable.
 
 For pre-SME AI output, Run2 segment evidence now distinguishes technical success from approval: even if all six assessment strategies pass, its decision is `PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED` and `executionCertified` stays false. Missing, unrelated, invalid or unaccounted physical payloads block payload compliance. These checks can reject defective AI output before SME review but cannot certify semantic equivalence or replace an approver's decision.
 

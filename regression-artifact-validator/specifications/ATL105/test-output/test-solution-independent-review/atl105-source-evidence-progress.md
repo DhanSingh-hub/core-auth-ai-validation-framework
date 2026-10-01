@@ -3,8 +3,8 @@
 | Measure | Rules |
 |---|---:|
 | Catalog denominator | 601 |
-| Any backed partial assertion | 47 |
-| No backed assertion | 554 |
+| Any backed partial assertion | 49 |
+| No backed assertion | 552 |
 | Source mismatch needing review | 2 |
 | Review-only draft cases | 108 |
 | SME-approved rules | 0 |
@@ -21,7 +21,7 @@ This measures partial evidence, not complete semantic training. Resolve mismatch
 |102|25|1|0|24|
 |103|24|1|0|23|
 |104|14|2|0|12|
-|105|22|1|0|21|
+|105|22|2|0|20|
 |108|25|2|0|23|
 |109|22|2|0|20|
 |110|21|7|0|14|
@@ -32,7 +32,7 @@ This measures partial evidence, not complete semantic training. Resolve mismatch
 |115|13|2|0|11|
 |116|9|0|0|9|
 |118|30|6|0|24|
-|119|39|1|0|38|
+|119|39|2|0|37|
 |120|8|1|0|7|
 |123|11|1|0|10|
 |130|23|2|0|21|
