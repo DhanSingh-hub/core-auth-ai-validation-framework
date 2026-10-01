@@ -7,7 +7,7 @@ flowchart TD
     B -->|Phone Load| C{Load flag PHON?}
     C -->|No| N2[Error block + terminating block; DL2 absent - SEGDL2-R-009]
     C -->|Yes| D[DL2 Required]
-    D --> D1{Leading ')' or '!'?}
+    D --> D1{"Leading ')' or '!'?"}
     D1 --> R1[REVIEW_REQUIRED - SEGDL2-SME-003]
     B -->|Table Load| E{Load flag TABL?}
     E -->|No| N3[No DL1/DL2]
