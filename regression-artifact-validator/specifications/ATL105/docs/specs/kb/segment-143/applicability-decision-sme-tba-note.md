@@ -26,9 +26,72 @@ Segment 143 is valid only inside the message families and Data Sections the spec
 |---|---|---|---|---|---|
 | 77 | Product Code | N | 3 bytes | Fixed length of three digits | Please refer to Appendix F. Valid Payment Systems Product Codes, for lists of valid codes. |
 | 223 | Inclusive/Exclusive for Tax 1 | AN | 1 byte | Fixed length of 1 byte. | Value Description I Tax is inclusive E Tax is exclusive N Tax amount not applicable to product |
-| 224 | Tax Type 1 | AN | 3 bytes | Fixed length of 3 bytes. | Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales… |
-| 227 | Tax Type 2 | AN | 3 bytes | Fixed length of 3 bytes. | Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales… |
-| 230 | Tax Type 3 | AN | 3 bytes | Fixed length of 3 bytes. | Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales… |
+| 224 | Tax Type 1 | AN | 3 bytes | Fixed length of 3 bytes. | See [Element 224 reference](#element-224-tax-type-1) |
+| 227 | Tax Type 2 | AN | 3 bytes | Fixed length of 3 bytes. | See [Element 227 reference](#element-227-tax-type-2) |
+| 230 | Tax Type 3 | AN | 3 bytes | Fixed length of 3 bytes. | See [Element 230 reference](#element-230-tax-type-3) |
+
+## Chapter 13 Reference: Full Element Definitions
+
+Full, untruncated Chapter 13.2 text for the elements listed above, transcribed from the ATL105 specification extract (`docs/specs/extracted_text.txt`). The table above links here instead of truncating long value lists.
+
+### Element 77: Product Code
+
+- **Character type:** N · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of three digits
+- **Purpose:** Identifies the type of product in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment. In the case of a Proprietary Load Response (Prompt Code 904), the first instance identifies the type of product which is eligible for discount, and the second instance identifies the corresponding discount product code to send in Data Segment No. 102, Product Code Data Segment.
+- **Processing rules:** This data element, along with the following data elements, is repeated for up to a maximum of 10 products in Data Segment No. 102 or Data Segment No. 157: • Unit of Measure (No. 106) • Quantity (No. 81) • Unit Price (No. 107) • Product Amount (No. 76) Note: A unique Product Code must be sent for each type of fuel purchase. When a device uses a Dynamic Card Table, only the product codes defined in the table are valid for transaction processing. In the case of a Proprietary Load Response (Host Discount Data, Prompt Code 904), the value in the second or third positions of the Product Code may contain a wild card character of *. If that occurs, any digit is allowed in that position. For example, if the value is 01*, product codes 010, 011, 012, 013, 014, 015, 016, 017, 018 and 019 are all available for discount.
+
+**Valid Codes/Values**
+
+Please refer to Appendix F. Valid Payment Systems Product Codes, for lists of valid codes.
+
+### Element 223: Inclusive/Exclusive for Tax 1
+
+- **Character type:** AN · **Maximum length:** 1 byte
+- **Representation:** Fixed length of 1 byte.
+- **Purpose:** Identifies whether this tax is inclusive or exclusive or not applicable to the product.
+- **Processing rules:** If this tax amount value is “N”, both tax type and amount should be skipped.
+
+**Valid Codes/Values**
+
+| Value | Description |
+|---|---|
+| `I` | Tax is inclusive |
+| `E` | Tax is exclusive |
+| `N` | Tax amount not applicable to product |
+
+### Element 224: Tax Type 1
+
+- **Character type:** AN · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of 3 bytes.
+- **Purpose:** Identifies the tax type for this tax item.
+- **Processing rules:** If the Inclusive/Exclusive flag is “N”, this field is omitted.
+
+**Valid Codes/Values**
+
+Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales Tax QST Quebec Province Sales Tax
+
+### Element 227: Tax Type 2
+
+- **Character type:** AN · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of 3 bytes.
+- **Purpose:** Identifies the tax type for this tax item.
+- **Processing rules:** If the Inclusive/Exclusive flag is “N”, this field is omitted.
+
+**Valid Codes/Values**
+
+Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales Tax QST Quebec Province Sales Tax
+
+### Element 230: Tax Type 3
+
+- **Character type:** AN · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of 3 bytes.
+- **Purpose:** Identifies the tax type for this tax item.
+- **Processing rules:** If the Inclusive/Exclusive flag is “N”, this field is omitted.
+
+**Valid Codes/Values**
+
+Valid values are country dependent. For Canada values are: Value Description GST Goods and Services Tax HST Harmonized Sales Tax PST Provincial Sales Tax QST Quebec Province Sales Tax
 
 ## Catalog Notes
 
