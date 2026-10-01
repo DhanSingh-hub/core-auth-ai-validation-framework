@@ -28,16 +28,165 @@ Each Segment 157 field is a specific ATL105 data element with its own type, leng
 | Element | Name | Type | Max length | Representation | Valid values |
 |---|---|---|---|---|---|
 | 77 | Product Code | N | 3 bytes | Fixed length of three digits | Please refer to Appendix F. Valid Payment Systems Product Codes, for lists of valid codes. |
-| 41 | Fuel Purchase Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A… | 1–99999999 |
-| 58 | Nonfuel Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A… | 1–99999999 |
-| 99 | Tax Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A… | 1–9999999 |
+| 41 | Fuel Purchase Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places — see [Element 41 reference](#element-41-fuel-purchase-amount) | 1–99999999 |
+| 58 | Nonfuel Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places — see [Element 58 reference](#element-58-nonfuel-amount) | 1–99999999 |
+| 99 | Tax Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places — see [Element 99 reference](#element-99-tax-amount) | 1–9999999 |
 | 17 | Cash Amount | N | 8 bytes | Variable length of up to eight digits with two assumed decimal places | 1–99999999 |
-| 87 | Service Level | A | 1 byte | Fixed length of one alpha character | Value Description F Full serve S Self-serve N Mini-serve X Maxi-serve H High-Speed Dispense O Other/Fuel not present. 0–9 Reserved for private use. O… |
+| 87 | Service Level | A | 1 byte | Fixed length of one alpha character | See [Element 87 reference](#element-87-service-level) |
 | 62 | Number of Products | N | 2 bytes | Fixed length of two digits | 01–10 |
-| 106 | Unit of Measure | A | 1 byte | Fixed length of one alpha character | Value Description C Case/Carton G Gallon H Hours I Imperial Gallons K Kilogram L Liter M Charging Minutes (EV) P Pound Q Quart U Unit W Kilowatt per… |
-| 81 | Quantity | N | 9 bytes | Variable length of up to nine digits with a maximum of three assumed decimal places | 00000000. 01–399999999 Examples: 010 = 10, where 0 is the number of assumed decimal places and 10 represents the quantity of 10. 34170 = 4.170, where… |
+| 106 | Unit of Measure | A | 1 byte | Fixed length of one alpha character | See [Element 106 reference](#element-106-unit-of-measure) |
+| 81 | Quantity | N | 9 bytes | Variable length of up to nine digits with a maximum of three assumed decimal places | See [Element 81 reference](#element-81-quantity) |
 | 107 | Unit Price | N | 9 bytes | Variable length of up to nine digits with a maximum of three assumed decimal places | 000000.000–999999.999 For an example of this data element, please see Appendix B. POS Purchase Example. |
 | 76 | Product Amount | N | 12 bytes | Variable length of up to 12 digits with two assumed decimal places | 1–999999999999 |
+
+## Chapter 13 Reference: Full Element Definitions
+
+Full, untruncated Chapter 13.2 text for the elements listed above, transcribed from the ATL105 specification extract (`docs/specs/extracted_text.txt`). The table above links here instead of truncating long value lists.
+
+### Element 77: Product Code
+
+- **Character type:** N · **Maximum length:** 3 bytes
+- **Representation:** Fixed length of three digits
+- **Purpose:** Identifies the type of product in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment. In the case of a Proprietary Load Response (Prompt Code 904), the first instance identifies the type of product which is eligible for discount, and the second instance identifies the corresponding discount product code to send in Data Segment No. 102, Product Code Data Segment.
+- **Processing rules:** This data element, along with the following data elements, is repeated for up to a maximum of 10 products in Data Segment No. 102 or Data Segment No. 157: • Unit of Measure (No. 106) • Quantity (No. 81) • Unit Price (No. 107) • Product Amount (No. 76) Note: A unique Product Code must be sent for each type of fuel purchase. When a device uses a Dynamic Card Table, only the product codes defined in the table are valid for transaction processing. In the case of a Proprietary Load Response (Host Discount Data, Prompt Code 904), the value in the second or third positions of the Product Code may contain a wild card character of *. If that occurs, any digit is allowed in that position. For example, if the value is 01*, product codes 010, 011, 012, 013, 014, 015, 016, 017, 018 and 019 are all available for discount.
+
+**Valid Codes/Values**
+
+Please refer to Appendix F. Valid Payment Systems Product Codes, for lists of valid codes.
+
+### Element 41: Fuel Purchase Amount
+
+- **Character type:** N · **Maximum length:** 8 bytes
+- **Representation:** Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.
+- **Purpose:** Identifies the total dollar amount of all fuel sold for this transaction.
+- **Processing rules:** Included on any transactions with fuel sales. For a transaction involving only a fuel purchase and discounts and/or coupons, this amount is the net amount derived by subtracting the discount and/or coupon amount from the sum of fuel products in Product Amount (No. 76). For a transaction involving fuel and nonfuel amounts together with discounts and/or coupons, the discounts and/or coupons are first applied to the nonfuel amount.
+
+**Valid Codes/Values**
+
+1–99999999
+
+### Element 58: Nonfuel Amount
+
+- **Character type:** N · **Maximum length:** 8 bytes
+- **Representation:** Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.
+- **Purpose:** Identifies the transaction’s dollar amount that is not a fuel, tax, or cash amount.
+- **Processing rules:** For a stored value card activation transaction, this data contains the activation amount. For a stored value card deactivation transaction, this data contains the deactivation amount. For a stored value card recharge transaction, this data contains the recharge amount. For a transaction involving only a nonfuel purchase and discounts and/or coupons, this amount is the net amount derived by subtracting the discount and/or coupon amount from the sum of nonfuel products in Product Amount (No. 76). For a transaction involving fuel and nonfuel amounts together with discounts and/or coupons, the discounts and/or coupons are first applied to the nonfuel amount.
+
+**Valid Codes/Values**
+
+1–99999999
+
+### Element 99: Tax Amount
+
+- **Character type:** N · **Maximum length:** 8 bytes
+- **Representation:** Variable length of up to eight digits with two assumed decimal places Note: A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.
+- **Purpose:** Identifies the transaction tax amount in Data Segment No. 100, Standard Message Data Segment.
+- **Processing rules:** Note the difference between this data element and Element No. 74, PC Tax Amount. Note: Sales tax is applied to EBT Cash Benefits only. Sales tax is not applicable to EBT Food Stamps.
+
+**Valid Codes/Values**
+
+1–9999999
+
+### Element 17: Cash Amount
+
+- **Character type:** N · **Maximum length:** 8 bytes
+- **Representation:** Variable length of up to eight digits with two assumed decimal places
+- **Purpose:** Identifies the cash back amount of a transaction.
+- **Processing rules:** If a merchant chooses to support Interlink’s Optional Cash Back Fee, this field includes the total of the cash back amount and the cash back fee.
+
+**Valid Codes/Values**
+
+1–99999999
+
+### Element 87: Service Level
+
+- **Character type:** A · **Maximum length:** 1 byte
+- **Representation:** Fixed length of one alpha character
+- **Purpose:** Identifies the sale type for a product in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment.
+
+**Valid Codes/Values**
+
+| Value | Description |
+|---|---|
+| `F` | Full serve |
+| `S` | Self-serve |
+| `N` | Mini-serve |
+| `X` | Maxi-serve |
+| `H` | High-Speed Dispense |
+| `O` | Other/Fuel not present. |
+| `0–9` | Reserved for private use. |
+| `Other` | Reserved for future use. |
+
+### Element 62: Number of Products
+
+- **Character type:** N · **Maximum length:** 2 bytes
+- **Representation:** Fixed length of two digits
+- **Purpose:** Identifies the count of products reported for a transaction.
+- **Processing rules:** Always precede single digits (1–9) with a zero (01–09).
+
+**Valid Codes/Values**
+
+01–10
+
+### Element 106: Unit of Measure
+
+- **Character type:** A · **Maximum length:** 1 byte
+- **Representation:** Fixed length of one alpha character
+- **Purpose:** Identifies the measurement type for a product in Data Segment No. 102, Product Code Data Segment.
+- **Processing rules:** This data element, along with the following data elements, is repeated for up to 10 products in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment: • Product Code (No. 77) • Quantity (No. 81) • Unit Price (No. 107) • Product Amount (No. 76)
+
+**Valid Codes/Values**
+
+| Value | Description |
+|---|---|
+| `C` | Case/Carton |
+| `G` | Gallon |
+| `H` | Hours |
+| `I` | Imperial Gallons |
+| `K` | Kilogram |
+| `L` | Liter |
+| `M` | Charging Minutes (EV) |
+| `P` | Pound |
+| `Q` | Quart |
+| `U` | Unit |
+| `W` | Kilowatt per hour (EV) |
+| `Z` | Ounce |
+| `O` | Other/Unknown unit |
+| `0–9` | Reserved for private use. |
+| `Other` | Reserved for future use. |
+
+### Element 81: Quantity
+
+- **Character type:** N · **Maximum length:** 9 bytes
+- **Representation:** Variable length of up to nine digits with a maximum of three assumed decimal places
+- **Purpose:** Identifies the number of product units sold in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment.
+- **Processing rules:** The leading number indicates the number of assumed decimal places. There is a maximum number of three assumed decimal places. This data element, along with the following data elements, is repeated for up to 10 products in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment: • Product Code (No. 77) • Unit of Measure (No. 106) • Unit Price (No. 107) • Product Amount (No. 76)
+
+**Valid Codes/Values**
+
+00000000. 01–399999999 Examples: 010 = 10, where 0 is the number of assumed decimal places and 10 represents the quantity of 10. 34170 = 4.170, where 3 is the number of assumed decimal places and 4170 represents the quantity of 4.170. For an example of this data element, please see Appendix B. POS Purchase Example.
+
+### Element 107: Unit Price
+
+- **Character type:** N · **Maximum length:** 9 bytes
+- **Representation:** Variable length of up to nine digits with a maximum of three assumed decimal places
+- **Purpose:** Identifies the price per Unit of Measure of a product in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment.
+- **Processing rules:** The leading number indicates the number of assumed decimal places. There is a maximum number of three assumed decimal places. This data element, along with the following data elements, is repeated for up to 10 products in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment: • Product Code (No. 77) • Unit of Measure (No. 106) • Quantity (No. 81) • Product Amount (No. 76)
+
+**Valid Codes/Values**
+
+000000.000–999999.999 For an example of this data element, please see Appendix B. POS Purchase Example.
+
+### Element 76: Product Amount
+
+- **Character type:** N · **Maximum length:** 12 bytes
+- **Representation:** Variable length of up to 12 digits with two assumed decimal places
+- **Purpose:** Identifies the monetary value of product purchased in Data Segment No. 102, Product Code Data Segment or Data Segment No. 157, Adjusted Product Code Data Segment.
+- **Processing rules:** The decimal point is implied by the optional Currency Code. The default value has two assumed decimal places. This data element, along with the following data elements, is repeated for up to a maximum of 10 products in Data Segment No. 102 or Data Segment No. 157: • Product Code (No. 77) • Unit of Measure (No. 106) • Quantity (No. 81) • Unit Price (No. 107)
+
+**Valid Codes/Values**
+
+1–999999999999
 
 ## Catalog Notes
 
