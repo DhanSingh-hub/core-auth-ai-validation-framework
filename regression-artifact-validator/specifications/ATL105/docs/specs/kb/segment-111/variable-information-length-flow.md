@@ -11,7 +11,7 @@ flowchart TD
     F -->|No| X2[REJECT SEG111-R-004: length/value mismatch]
     F -->|Yes| G{Value length <= 985 chars?}
     G -->|No| X3[REJECT: exceeds per-repetition structural bound]
-    G -->|Yes| H[Add 6 + len(value) to repeated-section running total]
+    G -->|Yes| H["Add 6 + len(value) to repeated-section running total"]
     H --> I{More repetitions?}
     I -->|Yes| A
     I -->|No| J[Repeated section total <= 991?]
