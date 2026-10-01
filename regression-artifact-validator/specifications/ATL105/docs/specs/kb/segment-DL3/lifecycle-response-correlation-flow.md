@@ -12,7 +12,7 @@ sequenceDiagram
         D->>H: Table Load Request (Load Type 'P')
         H-->>D: Table Load Response: ')' DL1 [DL2] [DL3] '*'
     end
-    Note over D: Set clock; store Cut Time and Password
+    Note over D: Set clock&#59; store Cut Time and Password
     opt Automatic cut time and not yet settled
         D->>H: Totals Request 30 minutes before Cut Time
     end
