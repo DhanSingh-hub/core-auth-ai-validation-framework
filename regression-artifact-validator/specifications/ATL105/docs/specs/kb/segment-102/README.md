@@ -11,12 +11,13 @@ This folder is the focused learning and analysis module for the ATL105 Product C
 - [SME/TBA Input Register](segment-102-sme-tba-input-register.md)
 - [AI-vs-Test Requirement Comparison](segment-102-ai-vs-test-requirement-comparison.md)
 - [Coverage Closure](coverage/README.md)
+- [Appendix F Product Code Training](../segment-100/appendix-f-product-code-training.md)
 - [Companion-Segment Compatibility Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md)
 - [Serialization Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
 
 ## [PROVISIONAL] Items
 
-- P-01: Product Code enum values pending Appendix F transcription (`SEG102-SME-001`).
+- P-01: Appendix F now has a 380-row source oracle and 1,013 independent classification/format TD chains. Codes `895`/`896` remain source-conflicted; transaction eligibility/configuration and full Segment 102 validation remain separate gates (`SEG102-SME-001`). See the linked training note.
 - P-02: Fuel/EV-products-first ordering rules pending confirmation (`SEG102-SME-002`).
 - P-03: Multi-fuel OTR primary-fuel-first rule pending confirmation (`SEG102-SME-003`).
 - P-04: Segment 143 product-order consistency rule pending confirmation (`SEG102-SME-004`).

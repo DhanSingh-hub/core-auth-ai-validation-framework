@@ -5,6 +5,16 @@
   "specificationVersion": "2026-3",
   "applicability": "Applies to Product Code Element 77 in Segment 102 when Segment 100 transaction context requires product/fuel data.",
   "source": "docs/specs/extracted_text.txt Appendix F-1 onward",
+  "classificationFormatEvidence": {
+    "chainPackage": "../appendix-f-product-code-chain-package.json",
+    "sourceOracle": "src/main/resources/atl105/appendix-f-product-code-oracle.json",
+    "validator": "AppendixFProductCodeOracle",
+    "sourceRows": 380,
+    "classificationTestData": 1000,
+    "formatTestData": 13,
+    "reviewRequiredCodes": ["895", "896"],
+    "scope": "Source classification and transaction field format only; no transaction eligibility, full Segment 102, converter or SME certification."
+  },
   "businessRequirements": [
     {"id":"BR-SEG100-APPF-PRODUCT-CODE","title":"Each Product Code Segment 102 product shall use a valid Appendix F Product Code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix F","segment":"102","element":"77","rule":"valid-product-code"},"status":"PARTIALLY_COVERED"},
     {"id":"BR-SEG100-APPF-UNUSED-CODE","title":"Product Code 000 shall not be used as a product because Appendix F identifies it as unused.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix F","segment":"102","element":"77","rule":"unused-product-code-000"},"status":"PARTIALLY_COVERED"},
@@ -22,6 +32,6 @@
     {"id":"TC-SEG100-APPF-FUEL-ORDER","scenarioId":"TS-SEG100-APPF-FUEL-ORDER","positive":"Unique fuel codes with fuel products first","negative":["Duplicate fuel code","nonfuel product before fuel product","EV fuel not first"],"status":"COVERED"},
     {"id":"TC-SEG100-APPF-TOTALS","scenarioId":"TS-SEG100-APPF-TOTALS","positive":"Product totals equal Segment 100 amounts","negative":["Product amount mismatch","tax total mismatch","fuel/nonfuel total mismatch"],"status":"COVERED"}
   ],
-  "testDataStatus": "Segment 100 compatibility and amount rules exist; complete Appendix F code-table enumeration remains pending.",
-  "remaining": ["Transcribe and validate all applicable Appendix F product-code tables.","Validate AI-generated Segment 102 product data when available."]
+  "testDataStatus": "Separate independent classification/format package has 381 BRs and 1013 TS/TC/TD chains. All 380 detailed source rows are transcribed; 895/896 chains remain REVIEW_REQUIRED. Legacy transaction BRs are not certified by classification-only harness evidence.",
+  "remaining": ["Resolve or retain the Appendix F overview/detailed-table conflict for 895 and 896.","Validate Dynamic Card Table/configuration eligibility separately.","Link and execute dedicated Segment 102 ordering, fuel-uniqueness and amount-reconciliation evidence.","Validate AI-generated Segment 102 product data when available."]
 }

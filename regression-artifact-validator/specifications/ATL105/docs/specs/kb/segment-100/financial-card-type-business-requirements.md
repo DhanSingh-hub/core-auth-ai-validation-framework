@@ -30,7 +30,7 @@ Each row is an independently testable allowlist requirement. The category is des
 | CARD-100-001-012 | `012` | Debit Saving | A financial Prompt Code may identify Debit Saving with card type `012` when the applicable debit and transaction-flow rules are satisfied. |
 | CARD-100-001-013 | `013` | Debit ACH | A financial Prompt Code may identify Debit ACH with card type `013` when the applicable debit and transaction-flow rules are satisfied. |
 | CARD-100-001-020 | `020` | Credit | A financial Prompt Code may identify Credit with card type `020` when the applicable credit, account-entry, and transaction-flow rules are satisfied. |
-| CARD-100-001-040 | `040` | Loyalty | A financial Prompt Code may identify Loyalty with card type `040` when the applicable loyalty transaction rules are satisfied. |
+| CARD-100-001-040 | `040` | Loyalty (Appendix E description: Proprietary) | A financial Prompt Code may identify the Loyalty card type with code `040`. Appendix E classifies its Card Type Description as Proprietary; do not infer additional proprietary processing behavior unless another applicable source rule requires it. |
 | CARD-100-001-041 | `041` | Certegy / Telecredit | A financial Prompt Code may identify Certegy / Telecredit with card type `041` when the applicable check-processing rules are satisfied. |
 | CARD-100-001-045 | `045` | Generic Check | A financial Prompt Code may identify Generic Check with card type `045` when the applicable check-processing rules are satisfied. |
 | CARD-100-001-046 | `046` | ECA / TeleCheck | A financial Prompt Code may identify ECA / TeleCheck with card type `046` when the applicable check-processing rules are satisfied. |
@@ -51,7 +51,7 @@ Each row is an independently testable allowlist requirement. The category is des
 | CARD-100-001-072 | `072` | Tesoro UCC | A financial Prompt Code may identify Tesoro UCC with card type `072` when the applicable proprietary-card rules are satisfied. |
 | CARD-100-001-073 | `073` | EBT Food Stamps | A financial Prompt Code may identify EBT Food Stamps with card type `073` when the applicable EBT rules are satisfied. |
 | CARD-100-001-074 | `074` | EBT Cash Benefits | A financial Prompt Code may identify EBT Cash Benefits with card type `074` when the applicable EBT rules are satisfied. |
-| CARD-100-001-075 | `075` | Citgo Fleet | A financial Prompt Code may identify Citgo Fleet with card type `075` when the applicable fleet rules are satisfied. |
+| CARD-100-001-075 | `075` | Citgo fleet (Proprietary) | A financial Prompt Code may identify Citgo fleet with card type `075` when the applicable proprietary-card and transaction-flow rules are satisfied. |
 | CARD-100-001-077 | `077` | Unocal | A financial Prompt Code may identify Unocal with card type `077` when the applicable proprietary-card rules are satisfied. |
 | CARD-100-001-078 | `078` | Phone | A financial Prompt Code may identify Phone with card type `078` when the applicable stored-value and transaction-flow rules are satisfied. |
 | CARD-100-001-079 | `079` | Stored Value | A financial Prompt Code may identify Stored Value with card type `079` when the applicable stored-value and transaction-flow rules are satisfied. |

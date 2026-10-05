@@ -210,8 +210,8 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 
 **Validate:**
 
-- Every data item links to a test case.
-- Every test-data item declares readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`; missing or unknown readiness is a validation defect. Readiness describes fixture usability, while `expectedValidation` describes whether the test input should pass or fail; do not conflate them.
+- Every canonical data item links to a test case via `testData[].testCaseIds`. `coversBr` alone is not a TC link; preserve BR-only data as an unlinked review candidate until a real TC is authored and linked.
+- Every canonical test-data item declares readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`; missing or unknown readiness is normalized to `REVIEW_REQUIRED`, never promoted. Generated chain placeholders are always review-required. Readiness describes fixture usability, while `expectedValidation` describes whether the test input should pass or fail; do not conflate them.
 - Payload matches the expected schema and message category.
 - Required fields and segments are present.
 - Calculated values are marked and independently recalculated.

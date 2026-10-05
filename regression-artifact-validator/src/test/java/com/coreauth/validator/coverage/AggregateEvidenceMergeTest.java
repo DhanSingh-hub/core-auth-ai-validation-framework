@@ -39,4 +39,46 @@ class AggregateEvidenceMergeTest {
             .isInstanceOf(IllegalStateException.class).hasMessageContaining("BR-1").hasMessageContaining("first.json").hasMessageContaining("second.json");
         assertThat(counts[0]).isEqualTo(1);
     }
+
+    @Test
+    void coversBrAloneDoesNotQualifyTestDataForCanonicalChain() throws Exception {
+        JsonNode testData = mapper.readTree("""
+                {"id":"TD-1","coversBr":"BR-1","readiness":"EXECUTABLE",
+                 "expectedValidation":"PASS"}
+                """);
+
+        assertThat(CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(testData)).isFalse();
+        var candidate = CanonicalTestDataLinkPolicy.unlinkedCandidate(
+                testData, "appendix-o.json", mapper);
+
+        assertThat(candidate.path("disposition").asText()).isEqualTo("NOT_IN_CANONICAL_CHAIN");
+        assertThat(candidate.path("sourceArtifactId").asText()).isEqualTo("TD-1");
+        assertThat(candidate.path("producerClaimedReadiness").asText()).isEqualTo("EXECUTABLE");
+        assertThat(candidate.path("sourceArtifact").path("coversBr").asText()).isEqualTo("BR-1");
+        assertThat(candidate.path("reason").asText()).contains("not a canonical testCaseIds link");
+    }
+
+    @Test
+    void canonicalTestDataRequiresNonEmptyTestCaseIds() throws Exception {
+        assertThat(CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(
+                mapper.readTree("{\"id\":\"TD-1\",\"testCaseIds\":[\"TC-1\"]}"))).isTrue();
+        assertThat(CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(
+                mapper.readTree("{\"id\":\"TD-1\",\"testCaseIds\":[]}"))).isFalse();
+        assertThat(CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(
+                mapper.readTree("{\"id\":\"TD-1\",\"testCaseIds\":[\" \"]}"))).isFalse();
+    }
+
+    @Test
+    void absentOrUnknownReadinessIsReviewRequired() throws Exception {
+        var missing = (com.fasterxml.jackson.databind.node.ObjectNode) mapper.readTree("{\"id\":\"TD-1\"}");
+        var unknown = (com.fasterxml.jackson.databind.node.ObjectNode) mapper.readTree(
+                "{\"id\":\"TD-2\",\"readiness\":\"EXECUTION_READY\"}");
+
+        CanonicalTestDataLinkPolicy.requireExplicitReadiness(missing);
+        CanonicalTestDataLinkPolicy.requireExplicitReadiness(unknown);
+
+        assertThat(missing.path("readiness").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(unknown.path("readiness").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(unknown.path("producerDeclaredReadiness").asText()).isEqualTo("EXECUTION_READY");
+    }
 }

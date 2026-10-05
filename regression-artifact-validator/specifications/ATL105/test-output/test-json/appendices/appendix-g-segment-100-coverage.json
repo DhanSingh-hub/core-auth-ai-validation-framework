@@ -6,25 +6,32 @@
   "applicability": "Directly applicable to Segment 100 Element 78 Prompt Code transaction-type position.",
   "source": "docs/specs/extracted_text.txt Appendix G-1 through G-2",
   "codeCounts": {"allAppendixGCodes":23,"standardFinancialCodes":13,"specialOrNonstandardCodes":10},
+  "classificationEvidence": {
+    "chainPackage": "../appendix-g-transaction-type-chain-package.json",
+    "catalog": "src/main/java/com/coreauth/validator/canonical/AppendixGTransactionTypeCatalog.java",
+    "validCodeChains": 23,
+    "unknownOrMalformedNegativeChains": 7,
+    "scope": "One-character source code recognition and classification only; no Prompt Code/card-type combination or special-flow certification."
+  },
   "standardFinancialCodes": ["0","3","4","5","6","7","8","A","B","C","S","U","Z"],
   "specialOrNonstandardCodes": ["9","D","E","K","L","M","N","Q","T","V"],
   "businessRequirements": [
-    {"id":"BR-SEG100-APPG-PROMPT-COMPOSITION","title":"Segment 100 Element 78 Prompt Code combines one valid Appendix G Transaction Type code with one valid Appendix E Card Type code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"prompt-code-composition"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPG-PROMPT-COMPOSITION","title":"Segment 100 Element 78 Prompt Code combines one valid Appendix G Transaction Type code with one valid Appendix E Card Type code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"prompt-code-composition"},"status":"PARTIALLY_COVERED","coverageNote":"Code catalog and standard-financial type recognition are covered separately. Full Prompt Code composition, especially code 9's stated Card Type restriction (00 and 81-97), remains unverified."},
     {"id":"BR-SEG100-APPG-FINANCIAL-CODES","title":"Standard financial Segment 100 requests support the 13 source-defined financial Transaction Type codes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"standard-financial-transaction-types"},"status":"COVERED"},
     {"id":"BR-SEG100-APPG-SPECIAL-CODE-9","title":"Transaction Type 9 denotes a special transaction and shall not be treated as a standard financial Segment 100 request.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"special-transaction-type-9"},"status":"COVERED"},
     {"id":"BR-SEG100-APPG-LIFECYCLE-CODES","title":"Lifecycle transaction types use the source-defined relationships for completion, cancellation, reversal, void, and timeout recovery.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"lifecycle-transaction-types"},"status":"COVERED"},
     {"id":"BR-SEG100-APPG-MASTERCARD-CONTEXT","title":"Authorization/completion and sale/reversal lifecycle behavior shall preserve the applicable MasterCard preauthorization or final-authorization context when relevant.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix G","segment":"100","element":"78","rule":"mastercard-authorization-context"},"status":"REVIEW_REQUIRED"}
   ],
   "testScenarios": [
-    {"id":"TS-SEG100-APPG-CODE-MATRIX","covers":["BR-SEG100-APPG-PROMPT-COMPOSITION","BR-SEG100-APPG-FINANCIAL-CODES","BR-SEG100-APPG-SPECIAL-CODE-9"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPG-CODE-MATRIX","covers":["BR-SEG100-APPG-PROMPT-COMPOSITION","BR-SEG100-APPG-FINANCIAL-CODES","BR-SEG100-APPG-SPECIAL-CODE-9"],"status":"PARTIALLY_COVERED"},
     {"id":"TS-SEG100-APPG-LIFECYCLE","covers":["BR-SEG100-APPG-LIFECYCLE-CODES"],"status":"COVERED"},
     {"id":"TS-SEG100-APPG-MASTERCARD","covers":["BR-SEG100-APPG-MASTERCARD-CONTEXT"],"status":"REVIEW_REQUIRED"}
   ],
   "testCases": [
-    {"id":"TC-SEG100-APPG-CODE-MATRIX","scenarioId":"TS-SEG100-APPG-CODE-MATRIX","positive":"All 13 financial codes with valid card types","negative":["Unknown transaction code","special code 9 treated as financial","invalid code/card combination"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPG-CODE-MATRIX","scenarioId":"TS-SEG100-APPG-CODE-MATRIX","positive":"All 13 standard financial codes recognized; all 23 Appendix G codes classified in the linked independent package","negative":["Unknown transaction code","special code 9 treated as financial"],"status":"PARTIALLY_COVERED","reviewRequired":["Code 9 Card Type restriction and complete Prompt Code combinations"]},
     {"id":"TC-SEG100-APPG-LIFECYCLE","scenarioId":"TS-SEG100-APPG-LIFECYCLE","positive":"Valid lifecycle code sequence","negative":["Wrong follow-up code","duplicate completion","invalid TOR expectation"],"status":"COVERED"},
     {"id":"TC-SEG100-APPG-MASTERCARD","scenarioId":"TS-SEG100-APPG-MASTERCARD","positive":"Applicable preauthorization/final-authorization context preserved","negative":["Context mismatch"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "13-code Segment 100 oracle, card-type oracle, lifecycle validators, and negative tests are implemented.",
-  "remaining": ["Validate AI-generated Prompt Codes across all 13 financial types and applicable card types.","Resolve MasterCard-specific interpretation through source/client review."]
+  "testDataStatus": "13 standard financial types have independent oracle tests; linked Appendix G classification package has 23 positive and 7 unknown/malformed independent TD chains. Lifecycle tests remain separate. The 9/Card Type Prompt Code constraint and full combination behavior are not certified.",
+  "remaining": ["Validate AI-generated Prompt Codes across all 13 financial types and applicable card types.","Resolve code 9 Card Type representation and combination semantics against Appendix E/Element 78.","Resolve MasterCard-specific interpretation through source/client review."]
 }

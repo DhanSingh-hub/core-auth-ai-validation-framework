@@ -159,6 +159,8 @@ ATL105 source
 
 The LLM is trained to produce candidate artifacts. The Test Solution independently validates those artifacts and remains the authority for structural, semantic, traceability, and coverage decisions.
 
+For canonical chain counting, `testData[].testCaseIds` is the required TC -> TD edge. `coversBr` may be preserved as a BR-level candidate hint, but it does not identify which TC the data exercises and must not enter canonical `testData[]` coverage. Preserve unlinked records with provenance outside the canonical chain until an author supplies a real TC link. Missing or unknown readiness is `REVIEW_REQUIRED`; a producer `EXECUTABLE` label does not establish a linked or validated chain.
+
 ## Common LLM Training Rules
 
 The LLM shall:
@@ -659,7 +661,9 @@ ATL105 Section 5's 16 normalized leaves are a mixed taxonomy of payment methods,
 
 Receipt Card Type IDs are a separate namespace: ATL105 §10.1.7.3 lists seven named brand/network labels and generic Debit/EBT IDs. Use the [draft Card Type ID BRs](segment-100/card-type-id-business-requirements.md); do not equate those receipt IDs with Appendix E Element 14 card codes or Appendix C authorizer codes.
 
-Appendix E has three distinct families: 56 Table Load Response entries, 36 financial Prompt Code card types, and 11 special Prompt Codes. Keep their message roles and validators separate. Financial Prompt Code allowlist coverage is in place; Table Load enumeration is partial and special Prompt Code chains remain draft. Use the [Appendix E training note](segment-100/appendix-e-card-type-training.md); do not mark the appendix fully covered until the Table Load and special-family gaps close.
+Appendix E has three distinct families: 56 Table Load Response entries, 36 financial Prompt Code card types, and 11 special Prompt Codes. Keep their message roles and validators separate. Financial and Table Load allowlist checks are implemented; nine special prompts have validator-harness chains, while `900` and `997` remain review-blocked. Feature effects, production configuration, full special-operation behavior, converter readiness, and AI coverage remain separate gates. See the [Appendix E training note](segment-100/appendix-e-card-type-training.md) and [special-prompt chain package](../../../test-output/test-json/appendix-e-special-prompt-chain-package.json).
+
+For family-wise Test Solution backlog across Appendix A-AE, use the [Appendix Family Gap Closure Register](segment-100/appendix-family-gap-closure-register.md). It distinguishes resolvable BR -> TS -> TC -> independent TD work from SME, configuration, external-spec, and external-fixture blockers. Do not claim an appendix is `COVERED` from source BR counts or metadata-only TD placeholders.
 
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
 

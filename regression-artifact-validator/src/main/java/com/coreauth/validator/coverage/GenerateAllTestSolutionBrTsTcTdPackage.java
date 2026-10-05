@@ -38,6 +38,7 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         Map<String, String> scenarioSources = new LinkedHashMap<>();
         Map<String, String> caseSources = new LinkedHashMap<>();
         Map<String, String> dataSources = new LinkedHashMap<>();
+        Map<String, JsonNode> unlinkedTestDataCandidates = new LinkedHashMap<>();
         Map<String, Set<String>> sourceFilesBySegment = new TreeMap<>();
         Set<String> excludedFiles = new LinkedHashSet<>();
         Map<String, int[]> countsBySegment = new TreeMap<>();
@@ -55,7 +56,7 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                     String segment = standaloneSegment(root, file);
                     String relative = relative(inputRoot, file);
                     sourceFilesBySegment.computeIfAbsent(segment, ignored -> new LinkedHashSet<>()).add(relative);
-                    int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[4]);
+                    int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[5]);
                     addStandaloneTestData(root, scenarios, testCases, testData, counts);
                     continue;
                 }
@@ -66,11 +67,12 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                 String segment = segment(file.getFileName().toString());
                 String relative = relative(inputRoot, file);
                 sourceFilesBySegment.computeIfAbsent(segment, ignored -> new LinkedHashSet<>()).add(relative);
-                int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[4]);
+                int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[5]);
                 merge(root.path("businessRequirements"), requirements, requirementSources, relative, counts, 0);
                 merge(root.path("testScenarios"), scenarios, scenarioSources, relative, counts, 1);
                 merge(root.path("testCases"), testCases, caseSources, relative, counts, 2);
-                merge(root.path("testData"), testData, dataSources, relative, counts, 3);
+                mergeTestData(root.path("testData"), testData, dataSources,
+                    unlinkedTestDataCandidates, relative, counts);
             }
         }
 
@@ -101,8 +103,10 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
             row.put("testScenarios", counts[1]);
             row.put("testCases", counts[2]);
             row.put("testData", counts[3]);
+            row.put("unlinkedTestDataCandidates", counts[4]);
         }
         provenance.set("excludedFiles", mapper.valueToTree(excludedFiles));
+        provenance.set("unlinkedTestDataCandidates", values(unlinkedTestDataCandidates, mapper));
         ObjectNode summary = output.putObject("summary");
         summary.put("businessRequirements", requirements.size());
         summary.put("testScenarios", scenarios.size());
@@ -110,6 +114,7 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         summary.put("testData", testData.size());
         summary.put("segmentsWithCanonicalEvidence", sourceFilesBySegment.size());
         summary.put("excludedFiles", excludedFiles.size());
+        summary.put("unlinkedTestDataCandidates", unlinkedTestDataCandidates.size());
         summary.put("standaloneTestDataNormalized", countStandaloneTestData(testData));
         summary.put("executionReady", false);
         summary.put("reason", "Aggregate contains independent Test Solution evidence only; excluded partial packages and missing links remain REVIEW_REQUIRED.");
@@ -190,6 +195,38 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         }
     }
 
+    private static void mergeTestData(JsonNode values,
+                                      Map<String, JsonNode> linkedTestData,
+                                      Map<String, String> dataSources,
+                                      Map<String, JsonNode> unlinkedCandidates,
+                                      String source,
+                                      int[] counts) {
+        if (!values.isArray()) return;
+        ObjectMapper mapper = new ObjectMapper();
+        int missingIdIndex = 0;
+        for (JsonNode value : values) {
+            String id = value.path("id").asText("");
+            if (!CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(value) || id.isBlank()) {
+                String candidateKey = source + "|" + (id.isBlank() ? "<missing-id-" + missingIdIndex++ + ">" : id);
+                JsonNode candidate = CanonicalTestDataLinkPolicy.unlinkedCandidate(value, source, mapper);
+                JsonNode existingCandidate = unlinkedCandidates.putIfAbsent(candidateKey, candidate);
+                if (existingCandidate == null) counts[4]++;
+                else if (!existingCandidate.equals(candidate)) {
+                    throw new IllegalStateException("Conflicting unlinked test-data candidate " + candidateKey);
+                }
+                continue;
+            }
+            JsonNode existing = linkedTestData.putIfAbsent(id, value);
+            if (existing == null) {
+                dataSources.put(id, source);
+                counts[3]++;
+            } else if (!existing.equals(value)) {
+                throw new IllegalStateException("Conflicting artifact id " + id + " in "
+                        + dataSources.get(id) + " and " + source);
+            }
+        }
+    }
+
     private static long countStandaloneTestData(Map<String, JsonNode> testData) {
         return testData.keySet().stream().filter(value -> value.startsWith("TEST-DATA-")).count();
     }
@@ -235,13 +272,15 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                 .append("| TS | ").append(summary.path("testScenarios").asInt()).append(" |\n")
                 .append("| TC | ").append(summary.path("testCases").asInt()).append(" |\n")
                 .append("| TD | ").append(summary.path("testData").asInt()).append(" |\n\n")
-                .append("## Segment evidence\n\n| Segment | BR | TS | TC | TD | Source files |\n|---|---:|---:|---:|---:|---:|\n");
+                .append("## Segment evidence\n\n| Segment | BR | TS | TC | Linked TD | Unlinked TD candidates | Source files |\n|---|---:|---:|---:|---:|---:|---:|\n");
         for (Map.Entry<String, Set<String>> entry : filesBySegment.entrySet()) {
             int[] counts = countsBySegment.get(entry.getKey());
             text.append('|').append(entry.getKey()).append('|').append(counts[0]).append('|').append(counts[1])
-                    .append('|').append(counts[2]).append('|').append(counts[3]).append('|').append(entry.getValue().size()).append("|\n");
+                    .append('|').append(counts[2]).append('|').append(counts[3]).append('|')
+                    .append(counts[4]).append('|').append(entry.getValue().size()).append("|\n");
         }
-        text.append("\nExcluded partial/legacy files: **").append(excludedFiles.size()).append("**. They need normalization before they can contribute to the canonical chain.\n");
+            text.append("\nUnlinked TD candidates are retained in provenance but excluded from canonical `testData[]` counts until linked to a test case.\n\n")
+                .append("Excluded partial/legacy files: **").append(excludedFiles.size()).append("**. They need normalization before they can contribute to the canonical chain.\n");
         return text.toString();
     }
 }

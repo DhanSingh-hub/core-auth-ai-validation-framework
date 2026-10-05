@@ -28,10 +28,23 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         Map<String, JsonNode> requirementsById = ruleRequirements(loadRules(mapper), mapper);
         Map<String, JsonNode> scenariosById = index(existing.path("testScenarios"));
         Map<String, JsonNode> testCasesById = index(existing.path("testCases"));
-        Map<String, JsonNode> testDataById = index(existing.path("testData"));
+        List<JsonNode> unlinkedTestDataCandidates = new ArrayList<>(
+                list(existing.path("provenance").path("unlinkedTestDataCandidates")));
+        List<JsonNode> canonicalTestData = new ArrayList<>();
+        for (JsonNode data : list(existing.path("testData"))) {
+            if (!CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(data)) {
+                unlinkedTestDataCandidates.add(CanonicalTestDataLinkPolicy.unlinkedCandidate(
+                        data, "all-test-solution-br-ts-tc-td-training-package.json", mapper));
+                continue;
+            }
+            if (data instanceof ObjectNode objectData) {
+                CanonicalTestDataLinkPolicy.requireExplicitReadiness(objectData);
+            }
+            canonicalTestData.add(data);
+        }
         List<JsonNode> scenarios = new ArrayList<>(list(existing.path("testScenarios")));
         List<JsonNode> testCases = new ArrayList<>(list(existing.path("testCases")));
-        List<JsonNode> testData = new ArrayList<>(list(existing.path("testData")));
+        List<JsonNode> testData = canonicalTestData;
         List<JsonNode> preservedRequirements = new ArrayList<>();
         int placeholderScenarios = 0;
         int placeholderTestCases = 0;
@@ -56,7 +69,14 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 if (!containsId(testCases, testCase.path("id").asText())) testCases.add(testCase);
             }
             for (JsonNode data : lifecyclePackage.path("testData")) {
-                testDataById.putIfAbsent(data.path("id").asText(), data);
+                if (!CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(data)) {
+                    unlinkedTestDataCandidates.add(CanonicalTestDataLinkPolicy.unlinkedCandidate(
+                            data, "segment-100-multistep-flow-catalog.json", mapper));
+                    continue;
+                }
+                if (data instanceof ObjectNode objectData) {
+                    CanonicalTestDataLinkPolicy.requireExplicitReadiness(objectData);
+                }
                 if (!containsId(testData, data.path("id").asText())) testData.add(data);
             }
         }
@@ -101,11 +121,11 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                         data.put("id", "TD-REVIEW-" + safe(testCaseId));
                         data.putArray("testCaseIds").add(testCaseId);
                         data.set("sourceAnchors", testCase.path("sourceAnchors"));
+                        data.put("readiness", "REVIEW_REQUIRED");
                         data.put("expectedValidation", "REVIEW_REQUIRED");
                         data.put("trainingStatus", "TEST_DATA_DERIVATION_REQUIRED");
                         data.putObject("payload").put("fixtureStatus", "SME_FIXTURE_REQUIRED");
                         testData.add(data);
-                        testDataById.put(data.path("id").asText(), data);
                         placeholderTestData++;
                     }
                 }
@@ -131,6 +151,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             data.put("id", "TD-REVIEW-" + safe(testCase.path("id").asText()));
             data.putArray("testCaseIds").add(testCase.path("id").asText());
             data.set("sourceAnchors", testCase.path("sourceAnchors"));
+            data.put("readiness", "REVIEW_REQUIRED");
             data.put("expectedValidation", "REVIEW_REQUIRED");
             data.put("trainingStatus", "TEST_DATA_DERIVATION_REQUIRED");
             data.putObject("payload").put("fixtureStatus", "SME_FIXTURE_REQUIRED");
@@ -152,6 +173,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         output.set("testCases", array(testCases, mapper));
         output.set("testData", array(testData, mapper));
         output.putArray("requirementCrosswalk");
+        ObjectNode provenance = output.putObject("provenance");
+        provenance.set("unlinkedTestDataCandidates", array(unlinkedTestDataCandidates, mapper));
         ObjectNode summary = output.putObject("summary");
         summary.put("independentRuleDenominator", independentRuleCount);
         summary.put("businessRequirements", completeRequirements.size());
@@ -159,6 +182,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         summary.put("testScenarios", scenarios.size());
         summary.put("testCases", testCases.size());
         summary.put("testData", testData.size());
+        summary.put("unlinkedTestDataCandidates", unlinkedTestDataCandidates.size());
         summary.put("placeholderScenarios", placeholderScenarios);
         summary.put("placeholderTestCases", placeholderTestCases);
         summary.put("placeholderTestData", placeholderTestData);
@@ -266,6 +290,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 + "| TS | " + summary.path("testScenarios").asInt() + " |\n"
                 + "| TC | " + summary.path("testCases").asInt() + " |\n"
                 + "| TD | " + summary.path("testData").asInt() + " |\n"
+                + "| Unlinked TD candidates (excluded from canonical chain) | " + summary.path("unlinkedTestDataCandidates").asInt() + " |\n"
                 + "| Placeholder TS | " + summary.path("placeholderScenarios").asInt() + " |\n"
                 + "| Placeholder TC | " + summary.path("placeholderTestCases").asInt() + " |\n"
                 + "| Placeholder TD | " + summary.path("placeholderTestData").asInt() + " |\n"

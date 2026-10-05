@@ -64,6 +64,10 @@ public final class TableLoadPayloadValidator {
             if (!BLOCKS.contains(entry.getKey())) result.addError(SOURCE, "Unknown Table Load Response block " + entry.getKey() + " (TABLE-RESP-004)");
         }
         JsonNode dl1 = response.path("DL1");
+        String cardType = text(dl1, "CardType");
+        if (cardType != null && !AppendixETableLoadCardTypeCodes.supportedCodes().contains(cardType)) {
+            result.addError(SOURCE, "Unsupported Appendix E Table Load Card Type code " + cardType + " (TABLE-RESP-006)");
+        }
         if (dl1.isObject() && "173".equals(text(dl1, "CardType")) && !response.path("DL6").isObject()) {
             result.addError(SOURCE, "DL6 is required when DL1 contains Card Type 173 (TABLE-RESP-005)");
         }

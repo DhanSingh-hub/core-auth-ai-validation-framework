@@ -17,7 +17,7 @@
 | Authored evidence | `test-output/test-json/` and `GenerateAllTestSolutionBrTsTcTdPackage` | Independent Test Solution packages | Aggregate evidence; conflicting canonical IDs fail closed |
 | Structural completion | `GenerateCompleteCanonicalTestSolutionPackage` | Aggregate evidence and rule catalogs | One BR per rule ID plus explicit missing-chain placeholders |
 | Chain integrity | `CanonicalTraceabilityValidator` | Canonical artifacts and source anchors | Anchor continuity and contract errors |
-| Aggregate review | `ValidateAllTestSolutionBrTsTcTdAggregate` | Aggregate evidence | Link gaps, duplicate IDs; never execution certification by itself |
+| Aggregate review | `GenerateAllTestSolutionBrTsTcTdPackage`, `GenerateCompleteCanonicalTestSolutionPackage`, `ValidateAllTestSolutionBrTsTcTdAggregate` | Aggregate evidence; canonical TDs with `testCaseIds`; separately preserved unlinked TD candidates | Link gaps, duplicate IDs, unlinked-candidate count, and readiness; never execution certification by itself |
 | Pre-SME AI validation | `ValidateRun2TrainedSegments`, `Run2PayloadBatchValidator`, and `Run2SegmentValidationEvidenceWriter` | Immutable Run2 payloads, independent catalogs and crosswalks | Technical checks and bounded review evidence; never SME approval or execution certification |
 | AI validation controls | `docs/test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md` | Versioned AI delivery and the applicable AIV control set | Rule/method coverage of the Test Solution validator, kept separate from ATL105 BR coverage |
 | Element review | `GenerateAtl105ElementChainCoverage` | Complete package and element reference | Per-element structural and non-placeholder chain measures |

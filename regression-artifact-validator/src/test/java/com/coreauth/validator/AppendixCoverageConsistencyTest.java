@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +24,7 @@ class AppendixCoverageConsistencyTest {
         assertThat(report.appendixCount()).isEqualTo(31);
         assertThat(report.missingFiles()).isEmpty();
         assertThat(report.countMismatches()).isEmpty();
-        assertThat(report.incompleteEvidence()).contains("appendix-e-segment-100-coverage.json does not embed testScenarios and testCases arrays");
+        assertThat(report.incompleteEvidence()).doesNotContain("appendix-e-segment-100-coverage.json does not embed testScenarios and testCases arrays");
         assertThat(report.invalidTestDataReadiness()).isEmpty();
         assertThat(report.danglingTestDataReferences()).isEmpty();
         assertThat(report.isConsistent()).isTrue();
@@ -36,11 +38,16 @@ class AppendixCoverageConsistencyTest {
         JsonNode appendixEPackage = MAPPER.readTree(Path.of(
             "specifications/ATL105/test-output/test-json/appendices/appendix-e-segment-100-coverage.json").toFile());
         assertThat(appendixE.path("status").asText()).isEqualTo("PARTIALLY_COVERED");
-        assertThat(appendixE.path("brRecords").asInt()).isEqualTo(5);
-        assertThat(appendixEPackage.path("businessRequirements")).hasSize(5);
+        assertThat(appendixE.path("brRecords").asInt()).isEqualTo(61);
+        assertThat(appendixEPackage.path("businessRequirements")).hasSize(61);
+        assertThat(appendixEPackage.path("testScenarios")).hasSize(57);
+        assertThat(appendixEPackage.path("testCases")).hasSize(57);
+        assertThat(appendixEPackage.path("testData")).hasSize(57);
         assertThat(appendixEPackage.path("codeFamilies").path("tableLoadResponseCodes").path("count").asInt()).isEqualTo(56);
         assertThat(appendixEPackage.path("codeFamilies").path("financialPromptCodes").path("count").asInt()).isEqualTo(36);
         assertThat(appendixEPackage.path("codeFamilies").path("specialPromptCodes").path("count").asInt()).isEqualTo(11);
+        assertThat(appendixEPackage.path("tableLoadCoverageSummary").path("perValueBrTsTcTdChains").asInt()).isEqualTo(56);
+        assertTableLoadCodeChains(appendixEPackage);
     }
 
       private static JsonNode findAppendix(JsonNode inventory, String id) {
@@ -48,6 +55,50 @@ class AppendixCoverageConsistencyTest {
           if (id.equals(appendix.path("id").asText())) return appendix;
         }
         throw new AssertionError("Missing Appendix " + id);
+      }
+
+      private static void assertTableLoadCodeChains(JsonNode appendixEPackage) {
+        JsonNode requirements = appendixEPackage.path("businessRequirements");
+        JsonNode scenarios = appendixEPackage.path("testScenarios");
+        JsonNode cases = appendixEPackage.path("testCases");
+        JsonNode testData = appendixEPackage.path("testData");
+        Set<String> codeBrIds = new HashSet<>();
+
+        for (JsonNode requirement : requirements) {
+          String brId = requirement.path("id").asText();
+          if (!brId.startsWith("BR-SEG100-APPE-TABLE-LOAD-CODE-")) continue;
+          codeBrIds.add(brId);
+          String code = requirement.path("code").asText();
+          String tsId = "TS-SEG100-APPE-TABLE-LOAD-" + code;
+          String tcId = "TC-SEG100-APPE-TABLE-LOAD-" + code + "-PASS";
+          String tdId = "TD-SEG100-APPE-TABLE-LOAD-" + code + "-PASS";
+          JsonNode scenario = findById(scenarios, tsId);
+          JsonNode testCase = findById(cases, tcId);
+          JsonNode data = findById(testData, tdId);
+
+            assertThat(arrayContains(scenario.path("requirementIds"), brId)).isTrue();
+            assertThat(arrayContains(testCase.path("scenarioIds"), tsId)).isTrue();
+            assertThat(arrayContains(testCase.path("testDataIds"), tdId)).isTrue();
+            assertThat(arrayContains(data.path("testCaseIds"), tcId)).isTrue();
+          assertThat(data.path("coversBr").asText()).isEqualTo(brId);
+          assertThat(data.path("producer").asText()).isEqualTo("TEST_SOLUTION");
+          assertThat(data.path("readiness").asText()).isEqualTo("EXECUTABLE");
+        }
+        assertThat(codeBrIds).hasSize(56);
+      }
+
+      private static JsonNode findById(JsonNode artifacts, String id) {
+        for (JsonNode artifact : artifacts) {
+          if (id.equals(artifact.path("id").asText())) return artifact;
+        }
+        throw new AssertionError("Missing Appendix E artifact " + id);
+      }
+
+      private static boolean arrayContains(JsonNode values, String expected) {
+        for (JsonNode value : values) {
+          if (expected.equals(value.asText())) return true;
+        }
+        return false;
       }
 
     @Test

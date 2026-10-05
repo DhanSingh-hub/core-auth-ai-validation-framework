@@ -6,33 +6,36 @@ ATL105 Appendix E contains three distinct code families. Keep them separate in B
 
 | Appendix E family | Count | Wire/message use | Current Test Solution evidence |
 |---|---:|---|---|
-| Table Load Response codes | 56 entries: 43 card-type entries and 13 terminal feature/configuration entries | DL blocks in a Table Load Response; not the same table as financial Prompt Code types | `TableLoadPayloadValidator` checks request/response shape and the code-173 -> DL6 dependency. It does not enforce the full 56-entry Appendix E allowlist. Partial. |
+| Table Load Response codes | 56 entries: 43 card-type entries and 13 terminal feature/configuration entries | DL blocks in a Table Load Response; not the same table as financial Prompt Code types | `AppendixETableLoadCardTypeCodes` and `TableLoadPayloadValidator` accept all 56 listed values and reject unknown values; per-value BR -> TS -> TC -> independent TD chains exist. Feature effects and production configuration remain separate. |
 | Financial Transaction Prompt Code card types | 36 codes | Three-digit Element 14 card type combined with an Appendix G transaction type in Prompt Code 78 | 36 per-code BRs in `financial-card-type-business-requirements.md`; `Segment100CardTypeOracle` and tests cover all 36 syntactic card values. Transaction/card business eligibility remains a separate check. |
-| Special Transaction Prompt Codes | 11 codes: `900`-`905`, `981`, `990`, `995`-`997` | Three-character special Prompt Code values, separate from financial Prompt Codes | Present in the code-9 special BR draft package. Those BR/TS/TC/TD records remain draft/review-only, not certified execution coverage. |
+| Special Transaction Prompt Codes | 11 codes: `900`-`905`, `981`, `990`, `995`-`997` | Three-character special Prompt Code values, separate from financial Prompt Codes | Nine have independent validator-harness chains. `900` and `997` remain blocked; harness validation is not business/converter certification. |
 
 ## Existing BR Audit
 
 The machine-readable [Appendix E coverage package](../../../../test-output/test-json/appendices/appendix-e-segment-100-coverage.json) now has five family-level BRs: financial card types, Prompt Code composition, Conoco's internal-code boundary, special-code separation, and the Table Load family boundary. The [canonical appendix inventory](../../../../test-output/test-json/knowledge/segment-100-canonical-appendix-inventory.json) marks Appendix E `PARTIALLY_COVERED`. The 36 financial card-code BRs are maintained separately in the financial card-type catalog.
 
 - The financial allowlist BR is supported for syntactic recognition of the 36 financial card types. It must not be described as proving every transaction/card combination is business-valid.
+- Revalidation found and corrected a financial-card BR conflict: Appendix E's Financial Transaction Prompt Code table gives card type `075` as `Citgo fleet` with type `Proprietary`; the former BR incorrectly directed it to fleet rules. Do not infer the type from the word "fleet" in the display label.
+- The same numeric code may have different names by table: `020` is `Visa Fleet Credit` in Table Load Response but `Credit` in the Financial Transaction Prompt Code table. The financial `020 = Credit` BR is valid in its stated scope.
+- Code `040` is named `Loyalty` and has Appendix E Card Type Description `Proprietary`. The BR identifies the named financial card type; it does not infer all proprietary processing rules from that description.
 - Prompt Code composition checks the financial code namespaces; applicability and product/card restrictions remain separate.
 - Conoco's backend code `089` is not the merchant Prompt Code; merchants use `090`, as Appendix E states.
 - Special Prompt Code family separation is distinct from the special prompt operations' business behavior.
-- The broad BR set does not provide 56 Table Load response code BRs or 11 certified special-prompt BR chains.
-- The current Table Load validator test verifies message shape and the `173` -> DL6 dependency; it does not prove all Table Load values are valid.
+- The package now includes 56 code-specific Table Load BR chains plus an unknown-code negative. Those test `DL1.CardType` allowlist recognition, not every terminal feature effect or production setting.
+- Nine special prompts (`901`-`905`, `981`, `990`, `995`, `996`) have structured validator-harness chains in the [special-prompt chain package](../../../../test-output/test-json/appendix-e-special-prompt-chain-package.json). Codes `900` and `997` remain blocked on exact message-family/payload contracts.
+- Harness-validator success is not a claim of converter, receipt-rendering, AI-artifact, or business-operation certification.
 
-## Deferred Table Load Coverage
+## Deferred Table Load Behavior
 
-The Appendix E package adds `BR-SEG100-APPE-TABLE-LOAD-FAMILY`, currently `PARTIALLY_COVERED`. It records the family boundary without claiming exhaustive code validation. Next evidence needed:
+All 56 Table Load values now have per-code allowlist BR -> TS -> TC -> independent TD chains. Remaining work is outside the allowlist assertion:
 
-1. A source-derived enumeration of the 43 Table Load card-type entries and 13 terminal feature/configuration entries, kept distinct from the 36 financial Prompt Code types.
-2. Positive tests for each enumerated Table Load value in its proper DL block, plus unknown/incorrect-family negatives.
-3. Independent Test Solution TDs linked to the Table Load BR, TS, and TC; AI input fixtures do not count as independent TDs.
-4. Explicit testing of feature-code dependencies, including the existing `173` -> DL6 rule, without inferring other dependencies from feature descriptions.
+1. Validate device behavior/side effects for each terminal feature code where Appendix E describes an effect.
+2. Confirm production/configuration enablement separately; a code can be source-valid but unavailable in an environment.
+3. Add DL block fields and dependencies only where their message-family source defines them.
 
 ## Deferred Special Prompt Coverage
 
-Appendix E's 11 special Prompt Codes are already described in the code-9 special-flow BR draft baseline. Keep those operation BRs review-required until their prompt directions, request/response message family, payload behavior, and independent physical TDs are validated. Do not merge them into the financial-card oracle.
+Appendix E's 11 special Prompt Codes are separate from the financial card oracle. The new package chains nine values through existing source-backed validators; `900` and `997` remain `REVIEW_REQUIRED`. The nine chains validate only the linked message-family validator scope, not full operation behavior or converter output. Keep them `VALIDATOR_HARNESS_SCOPE_ONLY` until SME/Test Team and converter-level gates pass.
 
 ## Learning Rules
 
@@ -41,7 +44,7 @@ Appendix E's 11 special Prompt Codes are already described in the code-9 special
 3. A financial Prompt Code is a transaction type plus a three-digit financial card type; a special Prompt Code is its separate source-defined three-character value.
 4. Table Load Response values include both accepted card types and terminal features; do not feed all of them to the financial card-type oracle.
 5. Use only source-supported transaction/card combinations. A cross-product generated from two independent allowlists is not proof of business eligibility.
-6. Keep unenumerated Table Load values and unvalidated special-prompt flows `REVIEW_REQUIRED`; do not report Appendix E as fully covered while these families are partial or draft.
+6. Keep terminal feature effects, production enablement, prompts `900`/`997`, and special-operation/converter certification `REVIEW_REQUIRED`; do not report Appendix E as fully covered while these gaps remain.
 
 ## Source References
 
@@ -49,6 +52,7 @@ Appendix E's 11 special Prompt Codes are already described in the code-9 special
 - [Appendix E coverage package](../../../../test-output/test-json/appendices/appendix-e-segment-100-coverage.json)
 - [Financial card-type BRs](financial-card-type-business-requirements.md)
 - [Special transaction-type BR draft](../../../../test-output/test-json/special-transaction-type-br-baseline.json)
+- [Special Prompt Code validator-harness chains](../../../../test-output/test-json/appendix-e-special-prompt-chain-package.json)
 - [Table Load validator](../../../../../../src/main/java/com/coreauth/validator/canonical/TableLoadPayloadValidator.java)
 - [Table Load validator tests](../../../../../../src/test/java/com/coreauth/validator/TableLoadPayloadValidatorTest.java)
 - [Financial card-type oracle](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment100CardTypeOracle.java)

@@ -32,6 +32,9 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Response Code (Element 83) Training](response-code-training.md)
 - [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
 - [Appendix E Card Type Training (three separate code families)](appendix-e-card-type-training.md)
+- [Appendix F Product Code Training (table classification and transaction context)](appendix-f-product-code-training.md)
+- [Appendix G Transaction Type Training (code classification and flow boundaries)](appendix-g-transaction-type-training.md)
+- [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
 ## Scope
