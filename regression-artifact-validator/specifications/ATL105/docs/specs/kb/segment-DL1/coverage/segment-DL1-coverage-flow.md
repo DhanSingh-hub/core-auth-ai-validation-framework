@@ -24,4 +24,4 @@ flowchart TD
     S --> K
 ```
 
-Rules currently `REVIEW_REQUIRED` by design: `SEGDL1-R-003`, `R-006` (P-02), `R-012` (P-03), `R-009` (P-04).
+Rules currently `REVIEW_REQUIRED` by design: `SEGDL1-R-003` and `R-006` (P-02), `R-005` and `R-012` (P-03), and `R-009` (P-04). The provisional [coverage package](../../../../test-output/test-json/segment-DL1-coverage-package.json) maps 12 scenarios, 26 test cases, and 26 symbolic request/response pairs; they are unapproved and unexecuted, so no rule is certified `COVERED`.

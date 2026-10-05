@@ -55,12 +55,13 @@ Each requirement restates one catalog rule as an independently testable statemen
 | BR-SEGDL1-NEG-011 | `SEGDL1-R-011` | MUT-002 Format | Phone `5555550100   ` | Fail citing SEGDL1-R-011 |
 | BR-SEGDL1-NEG-012 | `SEGDL1-R-012` | MUT-010 Structural requirement | DL6 before End-of-Load of block 3 | Fail or REVIEW citing SEGDL1-R-012 |
 | BR-SEGDL1-NEG-013 | `SEGDL1-R-011` | MUT-008 Enumeration out of bounds | Store Number `0000000000000000` | Fail citing SEGDL1-R-011 |
+| BR-SEGDL1-NEG-014 | `SEGDL1-R-011` | MUT-008 Enumeration out of bounds | Store Number `000000000000000A` | Fail citing SEGDL1-R-011 |
 
 ## Coverage denominator
 
 - **In scope:** all 12 catalog rules.
 - **Out of scope:** device card-acceptance behaviour after the load, merchant-profile administration at BUYPASS, and DL2/DL3/DL6 field rules (owned by their segments).
-- **Required counts for completion:** 12 BRs, at least 12 scenarios, 24 test cases (one positive and one negative per rule), and 24 request/response test-data records.
+- **Required counts for completion:** 12 BRs, at least 12 scenarios, and at least 26 test cases and request/response test-data records (one positive and one negative per rule, plus separate coverage for both invalid Store Number examples).
 
 ## Open SME items
 

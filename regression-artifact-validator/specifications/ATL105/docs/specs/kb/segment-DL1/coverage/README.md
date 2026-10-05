@@ -16,6 +16,7 @@ Authoritative rule catalog (12 rules)
 - [Rule catalog](segment-DL1-rule-catalog.json)
 - [Coverage note](segment-DL1-coverage-sme-tba-note.md) · [Coverage flow](segment-DL1-coverage-flow.md)
 - [Business requirements](../segment-DL1-business-requirements.md)
+- [Provisional BR/TS/TC/test-data package](../../../../../test-output/test-json/segment-DL1-coverage-package.json)
 - [SME/TBA input register](../segment-DL1-sme-tba-input-register.md) · [AI-vs-Test comparison](../segment-DL1-ai-vs-test-requirement-comparison.md)
 
 ## Approval Gate
@@ -24,3 +25,4 @@ Authoritative rule catalog (12 rules)
 2. A rule is `COVERED` only when BR, scenario, test case and test data share its source anchor and the test data proves the behaviour.
 3. Rules linked to `SEGDL1-SME-002`, `-003`, `-004` stay `REVIEW_REQUIRED`.
 4. Test data is synthetic until `SEGDL1-SME-001` approves synthesized fixtures.
+5. The provisional package defines 12 scenarios, 26 test cases, and 26 symbolic request/response pairs. It is not executed evidence: all fixtures remain unapproved, and no rule is certified `COVERED`.
