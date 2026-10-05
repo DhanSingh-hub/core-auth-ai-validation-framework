@@ -1,0 +1,886 @@
+{
+  "_meta": {
+    "provisional": true,
+    "status": "REVIEW_REQUIRED",
+    "provisionalReason": "Independent DL8 candidate package only. Fixture approval (P-01), Table Load placement/Special definition (P-02), and RID/card-type/floor-limit interpretation (P-03) remain open. No pair is approved or executed."
+  },
+  "manifest": {
+    "packageId": "ATL105-SEGDL8-COVERAGE-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "DL8",
+    "title": "EMV Terminal Floor Limits Data Segment independent coverage candidates",
+    "ruleCatalog": "../../docs/specs/kb/segment-DL8/coverage/segment-DL8-rule-catalog.json",
+    "businessRequirements": "../../docs/specs/kb/segment-DL8/segment-DL8-business-requirements.md",
+    "fixtureApproval": "PENDING-SEGDL8-SME-001",
+    "placementStatus": "REVIEW_REQUIRED-SEGDL8-SME-002",
+    "formatBoundaryStatus": "REVIEW_REQUIRED-SEGDL8-SME-003",
+    "executionStatus": "NOT_EXECUTED",
+    "representation": "Synthetic logical request/response objects. Table Load placement, Special name, RID representation, and card-type values are explicit placeholders pending SME decisions."
+  },
+  "coverageSummary": {
+    "catalogRules": 5,
+    "businessRequirementsMapped": 5,
+    "scenarioDefinitions": 5,
+    "testCasesDefined": 10,
+    "symbolicRequestResponsePairs": 10,
+    "approvedTestDataPairs": 0,
+    "executedTestCases": 0,
+    "certifiedCoveredRules": 0,
+    "overallStatus": "INCOMPLETE_REVIEW_REQUIRED"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEGDL8-001",
+      "ruleId": "SEGDL8-R-001",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "rule": "special-flag-gated-table-load"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "BR-SEGDL8-002",
+      "ruleId": "SEGDL8-R-002",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "element": "24,84",
+        "rule": "hybrid-framing-same-as-dl7"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "BR-SEGDL8-003",
+      "ruleId": "SEGDL8-R-003",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "element": "233,234,235,236",
+        "rule": "per-rid-repeating-floor-limit-structure"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL8-004",
+      "ruleId": "SEGDL8-R-004",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL8",
+        "element": "233,234,235,236",
+        "rule": "floor-limit-group-element-formats"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "BR-SEGDL8-005",
+      "ruleId": "SEGDL8-R-005",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL8",
+        "element": "84",
+        "rule": "segment-length-three-digits-whole-groups"
+      },
+      "status": "SPEC_DERIVED"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-SEGDL8-001",
+      "requirementIds": [
+        "BR-SEGDL8-001"
+      ],
+      "title": "Special-gated table-load inclusion",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TS-SEGDL8-002",
+      "requirementIds": [
+        "BR-SEGDL8-002"
+      ],
+      "title": "DL8 hybrid framing and absence of end marker",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TS-SEGDL8-003",
+      "requirementIds": [
+        "BR-SEGDL8-003"
+      ],
+      "title": "Floor Limit Data group repetition bounds",
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TS-SEGDL8-004",
+      "requirementIds": [
+        "BR-SEGDL8-004"
+      ],
+      "title": "RID, stand-in, floor-limit, and card-type element formats",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TS-SEGDL8-005",
+      "requirementIds": [
+        "BR-SEGDL8-005"
+      ],
+      "title": "Segment Length whole-group calculation",
+      "status": "DRAFT_NOT_EXECUTED"
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-SEGDL8-001-P-SPECIAL",
+      "scenarioIds": [
+        "TS-SEGDL8-001"
+      ],
+      "requirementId": "BR-SEGDL8-001",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A terminal profile is marked with the DL8 Special and BUYPASS host floor-limit data has changed.",
+      "when": "An isolated candidate Table Load Response includes a DL8 segment.",
+      "then": "Treat inclusion as a candidate pending placement and Special-name confirmation under SEGDL8-SME-002.",
+      "testDataIds": [
+        "TD-SEGDL8-001-P-SPECIAL"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TC-SEGDL8-001-N-NON-SPECIAL",
+      "scenarioIds": [
+        "TS-SEGDL8-001"
+      ],
+      "requirementId": "BR-SEGDL8-001",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A terminal profile is not marked with the DL8 Special.",
+      "when": "A DL8 segment is included in the candidate table load.",
+      "then": "Reject DL8 inclusion for the non-Special terminal under SEGDL8-R-001.",
+      "testDataIds": [
+        "TD-SEGDL8-001-N-NON-SPECIAL"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TC-SEGDL8-002-P",
+      "scenarioIds": [
+        "TS-SEGDL8-002"
+      ],
+      "requirementId": "BR-SEGDL8-002",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A DL8 segment contains two 26-byte Floor Limit Data groups.",
+      "when": "The segment starts with % and the Segment Length is 052 with no trailing End-of-Data Indicator.",
+      "then": "Accept the hybrid framing as candidate evidence; placement and Segment Length source remain pending SEGDL8-SME-002.",
+      "testDataIds": [
+        "TD-SEGDL8-002-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TC-SEGDL8-002-N-MARKER",
+      "scenarioIds": [
+        "TS-SEGDL8-002"
+      ],
+      "requirementId": "BR-SEGDL8-002",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL8 segment contains otherwise valid fields.",
+      "when": "The Data Type Indicator is changed from % to ^.",
+      "then": "Reject the incorrect DL8 Data Type Indicator under SEGDL8-R-002.",
+      "testDataIds": [
+        "TD-SEGDL8-002-N-MARKER"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL8-003-P",
+      "scenarioIds": [
+        "TS-SEGDL8-003"
+      ],
+      "requirementId": "BR-SEGDL8-003",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "The host maintains EMV floor-limit data for two RIDs.",
+      "when": "The DL8 candidate carries exactly two complete 26-byte Floor Limit Data groups.",
+      "then": "The group count is within the 1-24 rule and the repeated structure is complete.",
+      "testDataIds": [
+        "TD-SEGDL8-003-P"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL8-003-N-TOO-MANY",
+      "scenarioIds": [
+        "TS-SEGDL8-003"
+      ],
+      "requirementId": "BR-SEGDL8-003",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A terminal has more than the maximum number of RID floor-limit entries.",
+      "when": "The candidate attempts to serialize 25 complete 26-byte Floor Limit Data groups.",
+      "then": "Reject the segment because DL8 allows no more than 24 groups.",
+      "testDataIds": [
+        "TD-SEGDL8-003-N-TOO-MANY"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL8-004-P",
+      "scenarioIds": [
+        "TS-SEGDL8-004"
+      ],
+      "requirementId": "BR-SEGDL8-004",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A candidate group uses RID A000000003, Stand-in 2, a 12-digit Floor Limit, and a 3-character card type.",
+      "when": "The group is evaluated against the element 233-236 width and type rules.",
+      "then": "Treat the formats as candidate evidence while RID hex representation and card-type values remain pending SEGDL8-SME-003.",
+      "testDataIds": [
+        "TD-SEGDL8-004-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL8-004-N-STANDIN",
+      "scenarioIds": [
+        "TS-SEGDL8-004"
+      ],
+      "requirementId": "BR-SEGDL8-004",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A candidate Floor Limit Data group is otherwise well formed.",
+      "when": "The Stand-in Indicator is set to 4.",
+      "then": "Reject the group because Stand-in Indicator valid values are 1, 2, and 3.",
+      "testDataIds": [
+        "TD-SEGDL8-004-N-STANDIN"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL8-005-P",
+      "scenarioIds": [
+        "TS-SEGDL8-005"
+      ],
+      "requirementId": "BR-SEGDL8-005",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "A DL8 candidate contains two complete 26-byte groups.",
+      "when": "The Segment Length Indicator is 052.",
+      "then": "The length is three digits and describes a whole number of 26-byte groups.",
+      "testDataIds": [
+        "TD-SEGDL8-005-P"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL8-005-N-PARTIAL",
+      "scenarioIds": [
+        "TS-SEGDL8-005"
+      ],
+      "requirementId": "BR-SEGDL8-005",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A DL8 candidate declares two groups but omits the final card-type byte.",
+      "when": "The Segment Length Indicator is 051 for the post-indicator content.",
+      "then": "Reject the length because it is not an integer multiple of the 26-byte Floor Limit Data group.",
+      "testDataIds": [
+        "TD-SEGDL8-005-N-PARTIAL"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-SEGDL8-001-P-SPECIAL",
+      "testCaseIds": [
+        "TC-SEGDL8-001-P-SPECIAL"
+      ],
+      "description": "Synthetic DL8 positive candidate for BR-SEGDL8-001; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "ACCEPT_OR_REVIEW",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TD-SEGDL8-001-N-NON-SPECIAL",
+      "testCaseIds": [
+        "TC-SEGDL8-001-N-NON-SPECIAL"
+      ],
+      "description": "Synthetic DL8 negative candidate for BR-SEGDL8-001; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": false,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "REJECT",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TD-SEGDL8-002-P",
+      "testCaseIds": [
+        "TC-SEGDL8-002-P"
+      ],
+      "description": "Synthetic DL8 positive candidate for BR-SEGDL8-002; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "ACCEPT_OR_REVIEW",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TD-SEGDL8-002-N-MARKER",
+      "testCaseIds": [
+        "TC-SEGDL8-002-N-MARKER"
+      ],
+      "description": "Synthetic DL8 negative candidate for BR-SEGDL8-002; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "REJECT",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL8-003-P",
+      "testCaseIds": [
+        "TC-SEGDL8-003-P"
+      ],
+      "description": "Synthetic DL8 positive candidate for BR-SEGDL8-003; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "ACCEPT_OR_REVIEW",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL8-003-N-TOO-MANY",
+      "testCaseIds": [
+        "TC-SEGDL8-003-N-TOO-MANY"
+      ],
+      "description": "Synthetic DL8 negative candidate for BR-SEGDL8-003; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "AAAAAAAAA0",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA1",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA2",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA3",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA4",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA5",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA6",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA7",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA8",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAAA9",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA10",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA11",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA12",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA13",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA14",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA15",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA16",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA17",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA18",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA19",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA20",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA21",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA22",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA23",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "AAAAAAAA24",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "REJECT",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL8-004-P",
+      "testCaseIds": [
+        "TC-SEGDL8-004-P"
+      ],
+      "description": "Synthetic DL8 positive candidate for BR-SEGDL8-004; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "ACCEPT_OR_REVIEW",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TD-SEGDL8-004-N-STANDIN",
+      "testCaseIds": [
+        "TC-SEGDL8-004-N-STANDIN"
+      ],
+      "description": "Synthetic DL8 negative candidate for BR-SEGDL8-004; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "4",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "REJECT",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL8-005-P",
+      "testCaseIds": [
+        "TC-SEGDL8-005-P"
+      ],
+      "description": "Synthetic DL8 positive candidate for BR-SEGDL8-005; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "052",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "021"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "ACCEPT_OR_REVIEW",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL8-005-N-PARTIAL",
+      "testCaseIds": [
+        "TC-SEGDL8-005-N-PARTIAL"
+      ],
+      "description": "Synthetic DL8 negative candidate for BR-SEGDL8-005; not approved or executed.",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "placementStatus": "OMITTED_PENDING_P02",
+          "terminalProfile": {
+            "dl8Special": true,
+            "specialName": "OMITTED_PENDING_P02"
+          },
+          "dl8": {
+            "dataTypeIndicator": "%",
+            "segmentLengthIndicator": "051",
+            "floorLimitData": [
+              {
+                "rid": "A000000003",
+                "standInIndicator": "2",
+                "floorLimit": "000000005000",
+                "buypassRidCardType": "020"
+              },
+              {
+                "rid": "A000000004",
+                "standInIndicator": "3",
+                "floorLimit": "000000010000",
+                "buypassRidCardType": "02"
+              }
+            ],
+            "endOfDataIndicatorPresent": false
+          }
+        },
+        "response": {
+          "candidateDisposition": "REJECT",
+          "approved": false,
+          "executed": false,
+          "expectedRuleEvidence": "symbolic-only"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    }
+  ]
+}

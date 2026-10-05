@@ -1,6 +1,6 @@
 # Segment DL8 — EMV Terminal Floor Limits Data Segment
 
-**Specification:** ATL105 2026-3, Section 12.49 (layout), 13.2 (Elements 24, 84, 233-236) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17636-17690 · **Rules:** 5 · **Item Progress:** 1/8 (Coverage Closure in progress; Items 2-3 blocked on `SEGDL8-SME-001`, validator blocked on `SEGDL8-SME-003`)
+**Specification:** ATL105 2026-3, Section 12.49 (layout), 13.2 (Elements 24, 84, 233-236) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17636-17690 · **Rules:** 5 · **Item Progress:** candidate coverage/report complete; execution blocked by SME decisions and approved fixtures
 
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md). Sibling framing: [Segment DL7](../segment-DL7/README.md).
 
