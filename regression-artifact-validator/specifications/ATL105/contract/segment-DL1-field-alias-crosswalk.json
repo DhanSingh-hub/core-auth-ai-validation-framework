@@ -1,0 +1,22 @@
+{
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "DL1",
+  "sourceRun": "2026-09-29/phase_1_single_leg",
+  "scope": "Observed AI test-data field names and occurrence counts; comparison aid only, not a validator input.",
+  "fieldAliases": [
+    {"aiElementName":"DataTypeIndicator","testElementNumber":"24","testRuleId":"SEGDL1-R-002","testRule":"DL1 Data Type Indicator is fixed '#'","occurrencesObserved":3},
+    {"aiElementName":"MerchantName","testElementNumber":"53","testRuleId":"SEGDL1-R-003","testRule":"Merchant Name is a required host-sourced merchant identity field","occurrencesObserved":3},
+    {"aiElementName":"StoreNumber","testElementNumber":"98","testRuleId":"SEGDL1-R-003","testRule":"Store Number is a required host-sourced merchant identity field; range validation is covered by SEGDL1-R-011","occurrencesObserved":3},
+    {"aiElementName":"AddressLine1","testElementNumber":"3","testRuleId":"SEGDL1-R-003","testRule":"Address Line 1 is a required host-sourced merchant identity field","occurrencesObserved":3},
+    {"aiElementName":"AddressLine2","testElementNumber":"4","testRuleId":"SEGDL1-R-003","testRule":"Address Line 2 is a required host-sourced merchant identity field; positional validation is covered by SEGDL1-R-010","occurrencesObserved":3},
+    {"aiElementName":"MerchantPhoneNumber","testElementNumber":"54","testRuleId":"SEGDL1-R-003","testRule":"Merchant Phone Number is a required host-sourced merchant identity field; format validation is covered by SEGDL1-R-011","occurrencesObserved":3},
+    {"aiElementName":"NumberofCardTypes","testElementNumber":"59","testRuleId":"SEGDL1-R-004","testRule":"Number of Card Types identifies the number of repeated Card Type fields","occurrencesObserved":3}
+  ],
+  "gaps": [
+    "The representative AI chain asserts only that DL1 field 1 is present; the other observed payload fields do not create additional AI BR coverage.",
+    "No observed AI field establishes field 8 Card Type values, the DL1 End-of-Data marker, separator-free wire serialization, TABL load-flag gating, or Table Load Response block-order/end-load framing.",
+    "Observed merchant identity fields remain comparison-only because padding and parse-boundary decisions are still open under SEGDL1-SME-002."
+  ],
+  "governance": "Comparison-only vocabulary crosswalk. It must not derive or validate Test Solution rules. All AI-to-oracle associations remain review-required."
+}

@@ -44,6 +44,20 @@ Candidate definitions are not executed coverage. AI input is one representative 
 | SEGDL1-R-011 | — | MISSING | COMPLETE_NOT_EXECUTED (4 TCs / 4 data pairs) |
 | SEGDL1-R-012 | — | MISSING | COMPLETE_NOT_EXECUTED (2 TCs / 2 data pairs) |
 
+## AI field-name crosswalk
+
+| AI field name | ATL105 element | Rule | Observed occurrences |
+|---|---:|---|---:|
+| DataTypeIndicator | 24 | SEGDL1-R-002 | 3 |
+| MerchantName | 53 | SEGDL1-R-003 | 3 |
+| StoreNumber | 98 | SEGDL1-R-003 | 3 |
+| AddressLine1 | 3 | SEGDL1-R-003 | 3 |
+| AddressLine2 | 4 | SEGDL1-R-003 | 3 |
+| MerchantPhoneNumber | 54 | SEGDL1-R-003 | 3 |
+| NumberofCardTypes | 59 | SEGDL1-R-004 | 3 |
+
+The field-name crosswalk is comparison-only and does not define the oracle denominator or validator rules.
+
 ## Validation of supplied AI test data
 
 | Rule | Status | Observation |
