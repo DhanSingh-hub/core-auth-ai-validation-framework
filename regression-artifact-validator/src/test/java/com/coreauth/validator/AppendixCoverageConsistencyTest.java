@@ -1,6 +1,8 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.AppendixCoverageConsistency;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -9,6 +11,8 @@ import java.nio.file.Path;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AppendixCoverageConsistencyTest {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     @Test
     void allAppendixRecordsMatchTheCanonicalInventory() throws Exception {
         var report = new AppendixCoverageConsistency().validate(
@@ -25,7 +29,26 @@ class AppendixCoverageConsistencyTest {
         assertThat(report.statusCounts()).containsKeys("COVERED", "PARTIALLY_COVERED", "REVIEW_REQUIRED");
         assertThat(report.readinessCounts()).containsKeys("EXECUTABLE", "EXTERNAL_FIXTURE_REQUIRED");
         assertThat(report.readinessCounts().get("EXTERNAL_FIXTURE_REQUIRED")).isEqualTo(4);
+
+        JsonNode inventory = MAPPER.readTree(Path.of(
+            "specifications/ATL105/test-output/test-json/knowledge/segment-100-canonical-appendix-inventory.json").toFile());
+        JsonNode appendixE = findAppendix(inventory, "E");
+        JsonNode appendixEPackage = MAPPER.readTree(Path.of(
+            "specifications/ATL105/test-output/test-json/appendices/appendix-e-segment-100-coverage.json").toFile());
+        assertThat(appendixE.path("status").asText()).isEqualTo("PARTIALLY_COVERED");
+        assertThat(appendixE.path("brRecords").asInt()).isEqualTo(5);
+        assertThat(appendixEPackage.path("businessRequirements")).hasSize(5);
+        assertThat(appendixEPackage.path("codeFamilies").path("tableLoadResponseCodes").path("count").asInt()).isEqualTo(56);
+        assertThat(appendixEPackage.path("codeFamilies").path("financialPromptCodes").path("count").asInt()).isEqualTo(36);
+        assertThat(appendixEPackage.path("codeFamilies").path("specialPromptCodes").path("count").asInt()).isEqualTo(11);
     }
+
+      private static JsonNode findAppendix(JsonNode inventory, String id) {
+        for (JsonNode appendix : inventory.path("appendices")) {
+          if (id.equals(appendix.path("id").asText())) return appendix;
+        }
+        throw new AssertionError("Missing Appendix " + id);
+      }
 
     @Test
     void rejectsInvalidReadinessAndDanglingTestDataReferences(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {

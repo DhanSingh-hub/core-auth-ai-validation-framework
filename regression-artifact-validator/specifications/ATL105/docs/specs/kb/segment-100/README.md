@@ -31,6 +31,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Final Closure Flow](final-closure-flow.md)
 - [Response Code (Element 83) Training](response-code-training.md)
 - [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
+- [Appendix E Card Type Training (three separate code families)](appendix-e-card-type-training.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
 ## Scope

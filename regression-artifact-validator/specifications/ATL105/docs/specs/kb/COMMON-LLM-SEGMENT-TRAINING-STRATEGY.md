@@ -659,6 +659,8 @@ ATL105 Section 5's 16 normalized leaves are a mixed taxonomy of payment methods,
 
 Receipt Card Type IDs are a separate namespace: ATL105 §10.1.7.3 lists seven named brand/network labels and generic Debit/EBT IDs. Use the [draft Card Type ID BRs](segment-100/card-type-id-business-requirements.md); do not equate those receipt IDs with Appendix E Element 14 card codes or Appendix C authorizer codes.
 
+Appendix E has three distinct families: 56 Table Load Response entries, 36 financial Prompt Code card types, and 11 special Prompt Codes. Keep their message roles and validators separate. Financial Prompt Code allowlist coverage is in place; Table Load enumeration is partial and special Prompt Code chains remain draft. Use the [Appendix E training note](segment-100/appendix-e-card-type-training.md); do not mark the appendix fully covered until the Table Load and special-family gaps close.
+
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
 
 ## Handbook History
