@@ -31,5 +31,6 @@ BR:  Access Code and Pause Indicator shall be present together or not at all (SE
 TS:  PBX merchant dialing '9' before the phone number.
 TC+: Primary '3' '9' 'B' '5555550100' 'A'. Expected PASS.
 TC+: Primary '3' '5555550100' 'A' (no access code). Expected PASS.
-TC-: Primary '3' '9' '5555550100' 'A'. Expected FAIL citing SEGDL2-R-005.
+TC-: Structured primary {redialCount: 3, accessCode: '9', pauseIndicator: absent, phoneNumber: '5555550100'}.
+     Expected FAIL citing SEGDL2-R-005. Do not assert this as serialized bytes until SEGDL2-SME-004 resolves field-boundary parsing.
 ```
