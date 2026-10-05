@@ -12,6 +12,8 @@ This shared ledger coordinates Test Solution training for all 23 Appendix G tran
 6. Before handing off, update `handoff.nextAction`, `handoff.notes`, and owner. Set `UNCLAIMED` when releasing the task.
 7. Commit and push the code task file and event. Run `GenerateTransactionTypeTrainingLedger` to refresh the index and overview.
 
+For codes `9`, `D`, `E`, `K`, `L`, `M`, `N`, `Q`, `T`, and `V`, follow [the special-flow training technique](special-flow-training-technique.md) and review the [draft BR baseline](../../../../../test-output/test-json/special-transaction-type-br-baseline.md). These are separate from the standard-financial Segment 100 code-flow package.
+
 ## Completion Gate
 
 Do not mark a code `COMPLETE` until source review, independent BRs, applicable positive/negative/boundary/scenario cases, lifecycle or justified N/A, physical synthetic Test Data JSON, schema/rule/chain validation, and reviewer/handoff evidence are recorded. Never copy AI output into Test Solution truth.
