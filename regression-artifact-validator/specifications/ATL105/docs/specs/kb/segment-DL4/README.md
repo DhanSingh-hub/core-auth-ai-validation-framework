@@ -1,6 +1,6 @@
 # Segment DL4 — Software Dial Load Data Segment
 
-**Specification:** ATL105 2026-3, Section 12.45 (layout), 11.7.4 (Software Load), 10.10 (Software Update Processing), 13.2 (elements) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17363-17445, 9455-9580, 6166-6200 · **Rules:** 8 · **Item Progress:** 1/8 (Coverage Closure in progress; Items 2-3 blocked on `SEGDL4-SME-001`, validator blocked on `SEGDL4-SME-003`)
+**Specification:** ATL105 2026-3, Section 12.45 (layout), 11.7.4 (Software Load), 10.10 (Software Update Processing), 13.2 (elements) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17363-17445, 9455-9580, 6166-6200 · **Rules:** 8 · **Candidate progress:** 8/8 BR → TS → TC → TD traces with positive and negative test intent. Approval/execution remain incomplete; P-01 through P-03 are open.
 
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md). Reuse Segment 100's method; do not reuse its Field Separator or Segment Length rules.
 
@@ -18,7 +18,7 @@
 | Business requirements | [segment-DL4-business-requirements.md](segment-DL4-business-requirements.md) |
 | Companion compatibility | [Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) · [Flow](companion-compatibility/companion-segment-compatibility-flow.md) |
 | Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
-| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-DL4-rule-catalog.json) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-DL4-rule-catalog.json) · [AI artifact report](coverage/segment-DL4-ai-artifact-coverage-report.md) |
 | SME/TBA input register | [Input register](segment-DL4-sme-tba-input-register.md) |
 | AI vs Test comparison | [Comparison](segment-DL4-ai-vs-test-requirement-comparison.md) |
 
@@ -72,3 +72,4 @@
 - Do not assume DL4 and DL5 are mutually exclusive — 11.7.4.2 marks both Required and 10.10 sends both. (The earlier KB statement had no source and is withdrawn.)
 - Do not assume DL4 applies to vendor-managed devices — it never does.
 - Do not expect DL4 in a Table Load, Phone Load or Date and Time Load Response until `SEGDL4-SME-002` is answered.
+- Candidate package and AI comparison do not count as fixture approval, execution, or certification; see [coverage closure](coverage/README.md).

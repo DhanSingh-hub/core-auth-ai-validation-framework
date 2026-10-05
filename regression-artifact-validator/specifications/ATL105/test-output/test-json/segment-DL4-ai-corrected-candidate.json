@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "status": "CANDIDATE_NOT_APPROVED_OR_EXECUTED",
+    "basedOn": "phase_1_single_leg DL4 sample TC-000004",
+    "changes": [
+      "Preserves ATL105 source field names' meaning while using logical structured values.",
+      "Uses Software Load Response with DL4 and DL5 both present per Section 11.7.4.2; exchange reconciliation stays open under P-02.",
+      "Uses synthetic BUYPASS/SOFT context only.",
+      "Withholds the phone field value and all serialized-byte assertions pending P-03.",
+      "Does not claim device lifecycle, retry, or execution evidence."
+    ]
+  },
+  "context": {
+    "deviceManagement": "BUYPASS",
+    "merchantLoadFlag": "SOFT",
+    "profileDllBit": "REVIEW_REQUIRED_SEGDL4_SME_002"
+  },
+  "Software Load Response": {
+    "placementStatus": "REVIEW_REQUIRED_SEGDL4_SME_002",
+    "dl4": {
+      "dataTypeIndicator": "@",
+      "newSoftwareVersion": "APP02.10",
+      "softwareTerminalRecordId": "STR0000000123",
+      "softwareLoadPhoneNumber": null,
+      "phoneFieldStatus": "OMITTED_PENDING_SEGDL4_SME_003",
+      "softwareLoadRequestDate": "101526",
+      "softwareLoadRequestTime": "0200",
+      "softwareLoadType": "F",
+      "endOfDataIndicator": "~"
+    },
+    "dl5": {
+      "present": true,
+      "payloadStatus": "NOT_ASSERTED_IN_DL4_CANDIDATE"
+    },
+    "representation": "Synthetic logical fields only; not serialized bytes or an executable package."
+  }
+}
