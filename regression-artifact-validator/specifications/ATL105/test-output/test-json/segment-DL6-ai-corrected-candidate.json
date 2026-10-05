@@ -1,0 +1,661 @@
+{
+  "_meta": {
+    "synthetic": true,
+    "approvalStatus": "UNAPPROVED_REVIEW_REQUIRED",
+    "source": "Derived from DL6 rule catalog and business requirements; not SME-approved test data."
+  },
+  "segment": "DL6",
+  "representativeAiChain": {
+    "run": "2026-09-29/phase_1_single_leg",
+    "chain": "segment_DL6.json",
+    "testCaseId": "TC-000006"
+  },
+  "correctedCandidateSummary": {
+    "businessRequirements": 7,
+    "testScenarios": 7,
+    "testCases": 14,
+    "testData": 14,
+    "approvedTestDataPairs": 0,
+    "executedTestCases": 0,
+    "certifiedCoveredRules": 0
+  },
+  "rules": [
+    {
+      "id": "BR-SEGDL6-001",
+      "ruleId": "SEGDL6-R-001",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL1,DL6",
+        "element": "14",
+        "rule": "conditional-on-dl1-card-type-173"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL6-002",
+      "ruleId": "SEGDL6-R-002",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "element": "24,34",
+        "rule": "max-length-9-markers"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03",
+      "additionalProvisionalItems": [
+        "P-04"
+      ]
+    },
+    {
+      "id": "BR-SEGDL6-003",
+      "ruleId": "SEGDL6-R-003",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "element": "166",
+        "rule": "start-end-time-shared-element-number"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "BR-SEGDL6-004",
+      "ruleId": "SEGDL6-R-004",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "rule": "no-field-separator-next-field-immediately-follows"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL6-005",
+      "ruleId": "SEGDL6-R-005",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL6",
+        "element": "166",
+        "rule": "start-end-time-hhmm-0000-2359"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL6-006",
+      "ruleId": "SEGDL6-R-006",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "11.7.1.2",
+        "segment": "DL6",
+        "element": "35",
+        "rule": "table-load-response-data-block-4-after-end-of-load"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-06"
+    },
+    {
+      "id": "BR-SEGDL6-007",
+      "ruleId": "SEGDL6-R-007",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "Appendix E",
+        "segment": "DL6",
+        "element": "14,166",
+        "rule": "daily-store-and-forward-blocking-window"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ],
+  "candidateTestCases": [
+    {
+      "id": "TC-SEGDL6-001-P-CARDTYPE-173",
+      "scenarioIds": [
+        "TS-SEGDL6-001"
+      ],
+      "requirementId": "BR-SEGDL6-001",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "DL1 carries Card Type 173.",
+      "when": "A Table Load Response includes DL6.",
+      "then": "Accept DL6 applicability under SEGDL6-R-001.",
+      "testDataIds": [
+        "TD-SEGDL6-001-P-CARDTYPE-173"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-001-N-MISSING-173",
+      "scenarioIds": [
+        "TS-SEGDL6-001"
+      ],
+      "requirementId": "BR-SEGDL6-001",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "DL6 is present but the DL1 Card Type 173 trigger is absent.",
+      "when": "The response is evaluated for DL6 applicability.",
+      "then": "Reject DL6 without DL1 Card Type 173 under SEGDL6-R-001.",
+      "testDataIds": [
+        "TD-SEGDL6-001-N-MISSING-173"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-002-P-MARKERS",
+      "scenarioIds": [
+        "TS-SEGDL6-002"
+      ],
+      "requirementId": "BR-SEGDL6-002",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A DL6 segment uses the source-defined marker fields.",
+      "when": "The logical segment is \\01000500~.",
+      "then": "Treat framing as candidate valid, with the stated 9-versus-10 length conflict pending P-03/P-04.",
+      "testDataIds": [
+        "TD-SEGDL6-002-P-MARKERS"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL6-002-N-BAD-MARKER",
+      "scenarioIds": [
+        "TS-SEGDL6-002"
+      ],
+      "requirementId": "BR-SEGDL6-002",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL6 segment is present.",
+      "when": "The leading Data Type Indicator is $ instead of \\.",
+      "then": "Reject the incorrect DL6 start marker under SEGDL6-R-002.",
+      "testDataIds": [
+        "TD-SEGDL6-002-N-BAD-MARKER"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL6-003-P-E166-BOTH",
+      "scenarioIds": [
+        "TS-SEGDL6-003"
+      ],
+      "requirementId": "BR-SEGDL6-003",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "Start Time and End Time are both modeled as Element 166.",
+      "when": "The DL6 candidate carries two HHMM values.",
+      "then": "Retain as review-required until SEGDL6-SME-001 confirms Element 166 reuse.",
+      "testDataIds": [
+        "TD-SEGDL6-003-P-E166-BOTH"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TC-SEGDL6-003-N-END-ELEMENT-UNKNOWN",
+      "scenarioIds": [
+        "TS-SEGDL6-003"
+      ],
+      "requirementId": "BR-SEGDL6-003",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "The End Time element assignment is not confirmed by SME.",
+      "when": "The candidate omits an End Time Element 166 assertion.",
+      "then": "Do not invent an alternate element; hold the negative candidate pending P-01.",
+      "testDataIds": [
+        "TD-SEGDL6-003-N-END-ELEMENT-UNKNOWN"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TC-SEGDL6-004-P-NO-SEPARATORS",
+      "scenarioIds": [
+        "TS-SEGDL6-004"
+      ],
+      "requirementId": "BR-SEGDL6-004",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "DL6 has fixed-width HHMM values.",
+      "when": "The fields are concatenated as \\01000500~ with no Field Separators.",
+      "then": "Accept the separator-free logical representation under SEGDL6-R-004.",
+      "testDataIds": [
+        "TD-SEGDL6-004-P-NO-SEPARATORS"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-004-N-FIELD-SEPARATOR",
+      "scenarioIds": [
+        "TS-SEGDL6-004"
+      ],
+      "requirementId": "BR-SEGDL6-004",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A DL6 segment is present.",
+      "when": "A Field Separator is inserted between Start Time and End Time.",
+      "then": "Reject the separator-bearing representation under SEGDL6-R-004.",
+      "testDataIds": [
+        "TD-SEGDL6-004-N-FIELD-SEPARATOR"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-005-P-HHMM-RANGE",
+      "scenarioIds": [
+        "TS-SEGDL6-005"
+      ],
+      "requirementId": "BR-SEGDL6-005",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "Start Time and End Time are source-defined HHMM fields.",
+      "when": "The values are 0000 and 2359.",
+      "then": "Accept both values as valid HHMM 0000-2359 candidates.",
+      "testDataIds": [
+        "TD-SEGDL6-005-P-HHMM-RANGE"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-005-N-HHMM-2400",
+      "scenarioIds": [
+        "TS-SEGDL6-005"
+      ],
+      "requirementId": "BR-SEGDL6-005",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A DL6 Start Time is supplied.",
+      "when": "The value 2400 is used.",
+      "then": "Reject 2400 because HHMM valid values are 0000-2359 under SEGDL6-R-005.",
+      "testDataIds": [
+        "TD-SEGDL6-005-N-HHMM-2400"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL6-006-P-DATABLOCK4",
+      "scenarioIds": [
+        "TS-SEGDL6-006"
+      ],
+      "requirementId": "BR-SEGDL6-006",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A Table Load Response closes Data Block 3 with *.",
+      "when": "DL6 appears as Data Block 4 and is followed by *.",
+      "then": "Hold block-boundary assertions pending SEGDL1-SME-003/P-06.",
+      "testDataIds": [
+        "TD-SEGDL6-006-P-DATABLOCK4"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-06"
+    },
+    {
+      "id": "TC-SEGDL6-006-N-WRONG-BLOCK",
+      "scenarioIds": [
+        "TS-SEGDL6-006"
+      ],
+      "requirementId": "BR-SEGDL6-006",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "DL6 placement relative to the Table Load blocks is under review.",
+      "when": "DL6 is modeled before Data Block 3 closes.",
+      "then": "Do not certify the placement mutation until SEGDL1-SME-003 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL6-006-N-WRONG-BLOCK"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-06"
+    },
+    {
+      "id": "TC-SEGDL6-007-P-BLOCK-WINDOW",
+      "scenarioIds": [
+        "TS-SEGDL6-007"
+      ],
+      "requirementId": "BR-SEGDL6-007",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "Card Type 173 enables a daily store-and-forward blocking window.",
+      "when": "The observed local time is within 0100-0500.",
+      "then": "Expected blocking remains review-required pending P-05 semantics.",
+      "testDataIds": [
+        "TD-SEGDL6-007-P-BLOCK-WINDOW"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TC-SEGDL6-007-N-ALLOWED-IN-WINDOW",
+      "scenarioIds": [
+        "TS-SEGDL6-007"
+      ],
+      "requirementId": "BR-SEGDL6-007",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "Window semantics across equality, midnight, and time basis are open.",
+      "when": "The device would allow store-and-forward while inside the candidate window.",
+      "then": "Hold the behavioral negative pending SEGDL6-SME-005.",
+      "testDataIds": [
+        "TD-SEGDL6-007-N-ALLOWED-IN-WINDOW"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ],
+  "candidateTestData": [
+    {
+      "id": "TD-SEGDL6-001-P-CARDTYPE-173",
+      "testCaseIds": [
+        "TC-SEGDL6-001-P-CARDTYPE-173"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "DL1": {
+            "CardType": "173"
+          },
+          "DL6": {
+            "segment": "\\01000500~"
+          }
+        },
+        "response": {
+          "disposition": "ACCEPT_CANDIDATE"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-001-N-MISSING-173",
+      "testCaseIds": [
+        "TC-SEGDL6-001-N-MISSING-173"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "DL1": {
+            "CardType": "OMITTED_PENDING_P02"
+          },
+          "DL6": {
+            "segment": "\\01000500~"
+          }
+        },
+        "response": {
+          "errorRule": "SEGDL6-R-001"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-002-P-MARKERS",
+      "testCaseIds": [
+        "TC-SEGDL6-002-P-MARKERS"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "DataTypeIndicator": "\\",
+            "StartTime": "0100",
+            "EndTime": "0500",
+            "EndofDataIndicator": "~",
+            "logicalLength": "10_PENDING_P03"
+          }
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P03_P04"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TD-SEGDL6-002-N-BAD-MARKER",
+      "testCaseIds": [
+        "TC-SEGDL6-002-N-BAD-MARKER"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "DataTypeIndicator": "$",
+            "StartTime": "0100",
+            "EndTime": "0500",
+            "EndofDataIndicator": "~"
+          }
+        },
+        "response": {
+          "errorRule": "SEGDL6-R-002"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TD-SEGDL6-003-P-E166-BOTH",
+      "testCaseIds": [
+        "TC-SEGDL6-003-P-E166-BOTH"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTime": {
+              "value": "0100",
+              "element": "166"
+            },
+            "EndTime": {
+              "value": "0500",
+              "element": "166"
+            }
+          }
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P01"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TD-SEGDL6-003-N-END-ELEMENT-UNKNOWN",
+      "testCaseIds": [
+        "TC-SEGDL6-003-N-END-ELEMENT-UNKNOWN"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTimeElement": "166",
+            "EndTimeElement": "OMITTED_PENDING_P01"
+          }
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P01"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TD-SEGDL6-004-P-NO-SEPARATORS",
+      "testCaseIds": [
+        "TC-SEGDL6-004-P-NO-SEPARATORS"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "serialized": "\\01000500~",
+            "fieldSeparators": 0
+          }
+        },
+        "response": {
+          "disposition": "ACCEPT_CANDIDATE"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-004-N-FIELD-SEPARATOR",
+      "testCaseIds": [
+        "TC-SEGDL6-004-N-FIELD-SEPARATOR"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "serialized": "\\0100<FS>0500~",
+            "fieldSeparators": 1
+          }
+        },
+        "response": {
+          "errorRule": "SEGDL6-R-004"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-005-P-HHMM-RANGE",
+      "testCaseIds": [
+        "TC-SEGDL6-005-P-HHMM-RANGE"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTime": "0000",
+            "EndTime": "2359"
+          }
+        },
+        "response": {
+          "disposition": "ACCEPT_CANDIDATE"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-005-N-HHMM-2400",
+      "testCaseIds": [
+        "TC-SEGDL6-005-N-HHMM-2400"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTime": "2400",
+            "EndTime": "0500"
+          }
+        },
+        "response": {
+          "errorRule": "SEGDL6-R-005"
+        }
+      },
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TD-SEGDL6-006-P-DATABLOCK4",
+      "testCaseIds": [
+        "TC-SEGDL6-006-P-DATABLOCK4"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "dataBlocks": "DL1...DL3*\\\\01000500~*",
+          "blockBoundary": "PENDING_SEGDL1_SME_003"
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P06"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-06"
+    },
+    {
+      "id": "TD-SEGDL6-006-N-WRONG-BLOCK",
+      "testCaseIds": [
+        "TC-SEGDL6-006-N-WRONG-BLOCK"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "messageFamily": "Table Load Response",
+          "dataBlocks": "DL6_BEFORE_DL3_PENDING_SEGDL1_SME_003"
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P06"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-06"
+    },
+    {
+      "id": "TD-SEGDL6-007-P-BLOCK-WINDOW",
+      "testCaseIds": [
+        "TC-SEGDL6-007-P-BLOCK-WINDOW"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTime": "0100",
+            "EndTime": "0500"
+          },
+          "observationTime": "0300_PENDING_P05"
+        },
+        "response": {
+          "storeAndForwardDisposition": "OMITTED_PENDING_P05"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TD-SEGDL6-007-N-ALLOWED-IN-WINDOW",
+      "testCaseIds": [
+        "TC-SEGDL6-007-N-ALLOWED-IN-WINDOW"
+      ],
+      "segment": "DL6",
+      "source": "SYNTHETIC_CANDIDATE_NOT_APPROVED",
+      "payload": {
+        "request": {
+          "DL6": {
+            "StartTime": "0100",
+            "EndTime": "0500"
+          },
+          "storeAndForwardAttempt": "ALLOWED_AT_0300_PENDING_P05"
+        },
+        "response": {
+          "disposition": "REVIEW_REQUIRED_PENDING_P05"
+        }
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ]
+}
