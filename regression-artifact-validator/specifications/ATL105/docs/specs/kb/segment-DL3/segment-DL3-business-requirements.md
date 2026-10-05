@@ -62,4 +62,5 @@ Each requirement restates one catalog rule. Requirements come only from the ATL1
 ## Implementation traceability
 
 - Rule catalog: [coverage/segment-DL3-rule-catalog.json](coverage/segment-DL3-rule-catalog.json)
-- Validator: _not yet implemented_ (`SegmentDL3PayloadValidator`, blocked on `SEGDL3-SME-003`)
+- Independent coverage/report validator: `GenerateSegmentDl3AiArtifactCoverageReport` (validates candidate package traceability and the representative AI sample; does not certify unresolved rules or execute serialized/device behavior).
+- Production payload validator: _not yet implemented_; byte-level Date and Time Load Response validation remains blocked on `SEGDL3-SME-003`.
