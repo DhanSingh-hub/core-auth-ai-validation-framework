@@ -43,6 +43,9 @@ class GenerateSegmentDl2AiArtifactCoverageReportTest {
                 .path("rulesWithCandidateAiMappingsPendingReview").asInt()).isEqualTo(5);
         assertThat(report.path("aiCoverageOfTestSolutionOracle").path("rulesWithoutAiEvidence").asInt()).isEqualTo(4);
         assertThat(report.path("suppliedAiDl2Requirements").size()).isEqualTo(16);
+        assertThat(report.path("testSolutionMetrics").path("approvedTestDataPairs").asInt()).isZero();
+        assertThat(report.path("testSolutionMetrics").path("executedTestCases").asInt()).isZero();
+        assertThat(report.path("testSolutionMetrics").path("certifiedCoveredRules").asInt()).isZero();
     }
 
     @Test
@@ -155,6 +158,29 @@ class GenerateSegmentDl2AiArtifactCoverageReportTest {
     }
 
     @Test
+    void generatesConsolidatedReportAndValidatesFieldAliasCrosswalk(@TempDir Path tempDir) throws Exception {
+        JsonNode report = generate(tempDir);
+        Path dataFile = Atl105Paths.testInput().resolve(Path.of(
+                "ai-solution", "runs", "2026-09-29", "phase_1_single_leg",
+                "test_data", "TC-000002.json"));
+        String phone = mapper.readTree(dataFile.toFile()).findValue("PhoneNumber").asText();
+        Path consolidated = tempDir.resolve("SEGMENT-DL2-CONSOLIDATED-REPORT.txt");
+        String consolidatedText = Files.readString(consolidated);
+
+        assertThat(report.path("fieldAliasCrosswalkPath").asText())
+                .isEqualTo("specifications/ATL105/contract/segment-DL2-field-alias-crosswalk.json");
+        assertThat(report.path("aiFieldAliasCrosswalk").size()).isEqualTo(6);
+        assertThat(report.path("aiFieldAliasCrosswalkGovernance").asText())
+                .contains("Comparison-only vocabulary crosswalk");
+        assertThat(consolidatedText).contains("SEGMENT DL2 CONSOLIDATED TEST SOLUTION READINESS");
+        assertThat(consolidatedText).contains("Candidate BR-TS-TC-TD chains: 9/9");
+        assertThat(consolidatedText).contains("Approved data pairs / executed cases / certified rules: 0 / 0 / 0");
+        assertThat(consolidatedText).contains("Independent sample validation: 1 PASS, 6 FAIL, 0 REVIEW_REQUIRED, 2 NOT_ASSERTABLE");
+        assertThat(mapper.writeValueAsString(report)).doesNotContain(phone);
+        assertThat(consolidatedText).doesNotContain(phone);
+    }
+
+    @Test
     void correctedCandidateFixesKnownLogicalDefectsWithoutGuessingOpenRules() throws Exception {
         JsonNode candidate = mapper.readTree(
                 Atl105Paths.testJson("segment-DL2-ai-corrected-candidate.json").toFile());
@@ -182,8 +208,9 @@ class GenerateSegmentDl2AiArtifactCoverageReportTest {
     void failsExplicitlyWhenRequiredInputIsMissing(@TempDir Path tempDir) {
         assertThatThrownBy(() -> generator.generate(tempDir, Path.of("missing-package.json"),
                 Path.of("missing-catalog.json"), Path.of("missing-ai-catalog.json"),
-                Path.of("missing-candidate.json"),
-                tempDir.resolve("report.json"), tempDir.resolve("report.md")))
+                Path.of("missing-crosswalk.json"), Path.of("missing-candidate.json"),
+                tempDir.resolve("report.json"), tempDir.resolve("report.md"),
+                tempDir.resolve("readiness.txt")))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("Required DL2 coverage input is missing");
     }
@@ -193,15 +220,19 @@ class GenerateSegmentDl2AiArtifactCoverageReportTest {
                 "ai-solution", "runs", "2026-09-29", "phase_1_single_leg"));
         Path reportJson = tempDir.resolve("segment-DL2-report.json");
         Path reportMarkdown = tempDir.resolve("segment-DL2-report.md");
+        Path consolidated = tempDir.resolve("SEGMENT-DL2-CONSOLIDATED-REPORT.txt");
         Path suppliedAiCatalog = Atl105Paths.testOutput().resolve(Path.of(
                 "ai-artifacts", "coverage-reports", "supplied-ai-catalog", "supplied-ai-catalog-coverage.json"));
+        Path crosswalk = Atl105Paths.root().resolve(Path.of(
+                "contract", "segment-DL2-field-alias-crosswalk.json"));
         JsonNode report = generator.generate(runRoot, Atl105Paths.testJson("segment-DL2-coverage-package.json"),
-                Atl105Paths.ruleCatalog("DL2"), suppliedAiCatalog,
+                Atl105Paths.ruleCatalog("DL2"), suppliedAiCatalog, crosswalk,
                 Atl105Paths.testJson("segment-DL2-ai-corrected-candidate.json"),
-                reportJson, reportMarkdown);
+                reportJson, reportMarkdown, consolidated);
 
         assertThat(Files.isRegularFile(reportJson)).isTrue();
         assertThat(Files.isRegularFile(reportMarkdown)).isTrue();
+        assertThat(Files.isRegularFile(consolidated)).isTrue();
         assertThat(mapper.readTree(reportJson.toFile()).path("artifact").asText())
                 .isEqualTo("segment-dl2-ai-artifact-coverage");
         return report;

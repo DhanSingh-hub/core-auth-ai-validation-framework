@@ -21,7 +21,7 @@
 | Complete candidate rule chains | 9 / 9 (100.0%) |
 | Rules with positive and negative candidates | 9 / 9 (100.0%) |
 | Candidate test cases / request-response pairs | 29 / 29 |
-| Executed cases / certified rules | 0 / 0 |
+| Approved data pairs / executed cases / certified rules | 0 / 0 / 0 |
 | Oracle rules with candidate AI mappings pending review | 5 / 9 |
 | Oracle rules without a candidate supplied-catalog mapping | 4 / 9 |
 
@@ -49,6 +49,19 @@ Candidate mappings are not confirmed semantic equivalence or execution evidence.
 | REQ-SRC-ATL105-PDF-001:3293 | ENT-FIELD-DL2-7 | POTENTIAL_MATCH_REVIEW_REQUIRED | SEGDL2-R-007 | CANDIDATE_MAPPING_REVIEW_REQUIRED |
 
 AI catalog links are source-element candidate mappings only. The AI-vs-Test comparison and SME decisions remain authoritative for disposition; heuristic matches are not requirement coverage.
+
+## Observed AI field-name crosswalk
+
+| AI field | Element | Rule | Occurrences |
+|---|---:|---|---:|
+| DataTypeIndicator | 24 | SEGDL2-R-001 | 4 |
+| DialStringType | 28 | SEGDL2-R-002 | 4 |
+| RedialCount | 82 | SEGDL2-R-006 | 4 |
+| PauseIndicator | 66 | SEGDL2-R-005 | 4 |
+| PhoneNumber | 75 | SEGDL2-R-007 | 4 |
+| DialStringTerminator | 27 | SEGDL2-R-007 | 4 |
+
+Crosswalk is comparison-only and must not influence the oracle.
 
 ## Candidate rule coverage
 
