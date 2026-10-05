@@ -26,7 +26,7 @@ Each requirement restates one catalog rule as an independently testable statemen
 | ID | Class | Requirement | Valid representation | Invalid representation | Source | Status |
 |---|---|---|---|---|---|---|
 | BR-SEGDL1-001 | serialization | DL1 shall not exceed 399 characters and is host-originated | 111 characters with 3 Card Types | 402 characters (100 Card Types; also violates the 01-99 Card Type count in `SEGDL1-R-004`) | `SEGDL1-R-001` §12.42 | SPEC_DERIVED |
-| BR-SEGDL1-002 | structure | DL1 shall begin with `#` and end with `~` and carry no Segment Type/Length | `#...~` | Starts `100`, or missing `~` | `SEGDL1-R-002` §12.42 | SPEC_DERIVED |
+| BR-SEGDL1-002 | structure | DL1 shall begin with `#` and end with `~` and carry no Segment Type/Length | `#...~` | Missing `#`, starts `100`, or missing `~` | `SEGDL1-R-002` §12.42 | SPEC_DERIVED |
 | BR-SEGDL1-003 | field | Merchant Name, Store Number, Address Line 1, Address Line 2 and Merchant Phone Number shall all be present; transmitted widths and padding remain subject to P-02 | All five present; exact widths/padding pending P-02 | Merchant Name missing | `SEGDL1-R-003` §12.42 | REVIEW_REQUIRED (P-02) |
 | BR-SEGDL1-004 | structure | The number of Card Type occurrences shall equal Number of Card Types (01-99) | `03` + 3 codes | `03` + 2 codes; `00`; 100 codes | `SEGDL1-R-004` §12.42 | SPEC_DERIVED |
 | BR-SEGDL1-005 | lifecycle | A Card Type `173` shall be accompanied by DL6 in the same Table Load Response, and DL6 shall not appear without it | `173` + DL6 | `173` without DL6; DL6 without `173` | `SEGDL1-R-005` §12.42, §12.47 | REVIEW_REQUIRED (P-03) |
@@ -56,12 +56,13 @@ Each requirement restates one catalog rule as an independently testable statemen
 | BR-SEGDL1-NEG-012 | `SEGDL1-R-012` | MUT-010 Structural requirement | DL6 before End-of-Load of block 3 | Fail or REVIEW citing SEGDL1-R-012 |
 | BR-SEGDL1-NEG-013 | `SEGDL1-R-011` | MUT-008 Enumeration out of bounds | Store Number `0000000000000000` | Fail citing SEGDL1-R-011 |
 | BR-SEGDL1-NEG-014 | `SEGDL1-R-011` | MUT-008 Enumeration out of bounds | Store Number `000000000000000A` | Fail citing SEGDL1-R-011 |
+| BR-SEGDL1-NEG-015 | `SEGDL1-R-002` | MUT-001 Required marker omitted | Remove the leading Data Type Indicator `#` | Fail citing SEGDL1-R-002 |
 
 ## Coverage denominator
 
 - **In scope:** all 12 catalog rules.
 - **Out of scope:** device card-acceptance behaviour after the load, merchant-profile administration at BUYPASS, and DL2/DL3/DL6 field rules (owned by their segments).
-- **Required counts for completion:** 12 BRs, at least 12 scenarios, and at least 26 test cases and request/response test-data records (one positive and one negative per rule, plus separate coverage for both invalid Store Number examples).
+- **Required counts for completion:** 12 BRs, at least 12 scenarios, and at least 27 test cases and request/response test-data records (one positive and one negative per rule, plus separate coverage for both invalid Store Number examples and omission of the required Data Type Indicator).
 
 ## Open SME items
 
