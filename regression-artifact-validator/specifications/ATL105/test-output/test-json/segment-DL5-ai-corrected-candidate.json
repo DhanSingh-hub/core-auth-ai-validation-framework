@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "status": "CANDIDATE_NOT_APPROVED_OR_EXECUTED",
+    "basedOn": "phase_1_single_leg DL5 sample TC-000005",
+    "changes": [
+      "Preserves ATL105 source field names while using logical structured values.",
+      "Uses Software Load Response with DL4 and DL5 both present per Section 11.7.4.2; exchange reconciliation stays open under SEGDL4-SME-002.",
+      "Uses synthetic BUYPASS/SOFT context only.",
+      "Withholds IP/URL address content, phone values, password values, and serialized-byte assertions pending SME decisions.",
+      "Does not claim device lifecycle, retry, or execution evidence."
+    ]
+  },
+  "context": {
+    "deviceManagement": "BUYPASS",
+    "merchantLoadFlag": "SOFT",
+    "profileDllBit": "REVIEW_REQUIRED_SEGDL4_SME_002"
+  },
+  "Software Load Response": {
+    "placementStatus": "REVIEW_REQUIRED_SEGDL4_SME_002",
+    "dl4": {
+      "present": true,
+      "payloadStatus": "CO_PRESENT_NOT_ASSERTED_IN_DL5_CANDIDATE"
+    },
+    "dl5": {
+      "dataTypeIndicator": "$",
+      "newSoftwareVersion": "SYNTH001",
+      "softwareTerminalRecordId": "TERM000000001",
+      "softwareLoadIpUrlAddress": null,
+      "ipUrlFieldStatus": "OMITTED_PENDING_P03",
+      "softwareLoadRequestDate": "101526",
+      "softwareLoadRequestTime": "0200",
+      "softwareLoadType": "F",
+      "endOfDataIndicator": "~"
+    },
+    "representation": "Synthetic logical fields only; not serialized bytes or an executable package."
+  }
+}
