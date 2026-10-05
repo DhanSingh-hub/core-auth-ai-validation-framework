@@ -115,6 +115,8 @@ For every new or changed rule, the trainer must record:
 
 Training supplied by a Test Team member to an assistant follows the same record. The assistant must distinguish source fact, derived interpretation, and open question; it must not silently convert an instruction into an approved rule.
 
+For parallel Appendix G transaction-type training, use the shared [transaction-type handoff ledger](segment-100/transaction-type-training/README.md). Each transaction code has its own task file under `segment-100/transaction-type-training/codes/`; claim ownership with user, machine, branch, and timestamp before working. Record each substantive action in that code's `workLog` and add an immutable, uniquely named event under `segment-100/transaction-type-training/events/`. This shared Git-backed record is the handoff source across machines; baseline applicability entries are not completion evidence.
+
 ## Controlled Improvement
 
 This standard may be improved when evidence shows that a gate is incomplete, ambiguous, inefficient, or unable to detect a defect. Proposed changes must identify the affected phase or gate, the observed evidence, the risk addressed, the compatibility impact, and the regression tests or examples required. The change becomes effective only after Test Team review and documentation in this common strategy; existing segment addenda must then be checked for alignment.
