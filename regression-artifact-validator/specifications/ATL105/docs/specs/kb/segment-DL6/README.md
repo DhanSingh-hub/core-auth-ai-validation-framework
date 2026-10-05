@@ -1,6 +1,6 @@
 # Segment DL6 — Store and Forward Data Segment
 
-**Specification:** ATL105 2026-3, Section 12.47 (layout), 11.7.1.2 (Table Load Data Block 4), 13.2 (Element 166), Appendix E (Card Type 173) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17532-17585, 9180-9236 · **Rules:** 7 · **Item Progress:** 1/8 (Coverage Closure in progress; Items 2-3 blocked on `SEGDL6-SME-002`, mutations blocked on `SEGDL6-SME-003`)
+**Specification:** ATL105 2026-3, Section 12.47 (layout), 11.7.1.2 (Table Load Data Block 4), 13.2 (Element 166), Appendix E (Card Type 173) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17532-17585, 9180-9236 · **Rules:** 7 · **Item Progress:** 8/8 candidate artifacts drafted; SME approval, approved fixtures, mutation execution, and certification remain blocked by `SEGDL6-SME-001` through `SEGDL6-SME-005` and `SEGDL1-SME-003`
 
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md). Trigger segment: [Segment DL1](../segment-DL1/README.md) (Card Type `173`).
 
