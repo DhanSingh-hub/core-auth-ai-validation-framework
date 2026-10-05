@@ -32,16 +32,19 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
                 new GenerateSegmentDl2AiArtifactCoverageReport();
         Path suppliedAiCatalog = Atl105Paths.testOutput().resolve(Path.of(
                 "ai-artifacts", "coverage-reports", "supplied-ai-catalog", "supplied-ai-catalog-coverage.json"));
+        Path aliasCrosswalk = Atl105Paths.root().resolve(Path.of(
+                "contract", "segment-DL2-field-alias-crosswalk.json"));
         generator.generate(runRoot, Atl105Paths.testJson("segment-DL2-coverage-package.json"),
-                Atl105Paths.ruleCatalog("DL2"), suppliedAiCatalog,
+                Atl105Paths.ruleCatalog("DL2"), suppliedAiCatalog, aliasCrosswalk,
                 Atl105Paths.testJson("segment-DL2-ai-corrected-candidate.json"),
                 docs.resolve("segment-DL2-ai-artifact-coverage-report.json"),
-                docs.resolve("segment-DL2-ai-artifact-coverage-report.md"));
+                docs.resolve("segment-DL2-ai-artifact-coverage-report.md"),
+                Atl105Paths.consolidatedReport("DL2"));
     }
 
     JsonNode generate(Path runRoot, Path packageFile, Path catalogFile, Path suppliedAiCatalogFile,
-                      Path correctedCandidate,
-                      Path reportJson, Path reportMarkdown) throws IOException {
+                      Path aliasCrosswalkFile, Path correctedCandidate,
+                      Path reportJson, Path reportMarkdown, Path consolidatedReport) throws IOException {
         Path chainFile = runRoot.resolve(Path.of("chains", "segment_DL2.json"));
         Path dataFile = runRoot.resolve(Path.of("test_data", "TC-000002.json"));
         Path metadataFile = runRoot.resolve(Path.of("test_data", "TC-000002.meta.json"));
@@ -51,7 +54,7 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         Path indexFile = runRoot.resolve("INDEX.json");
         for (Path required : List.of(chainFile, dataFile, metadataFile, requirementsFile,
                 scenariosFile, casesFile, indexFile, packageFile, catalogFile,
-                suppliedAiCatalogFile, correctedCandidate)) {
+                suppliedAiCatalogFile, aliasCrosswalkFile, correctedCandidate)) {
             if (!Files.isRegularFile(required)) {
                 throw new IOException("Required DL2 coverage input is missing: " + required);
             }
@@ -67,6 +70,7 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         JsonNode testSolution = read(packageFile);
         JsonNode catalog = read(catalogFile);
         JsonNode suppliedAiCatalog = read(suppliedAiCatalogFile);
+        JsonNode aliases = read(aliasCrosswalkFile);
         List<JsonNode> suppliedAiRecords = array(suppliedAiCatalog, "records");
         List<JsonNode> dl2AiCatalogRequirements = suppliedAiRecords.stream()
                 .filter(row -> "DL2".equalsIgnoreCase(text(row.path("segment")))).toList();
@@ -87,6 +91,7 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         List<JsonNode> scenarios = array(testSolution, "testScenarios");
         List<JsonNode> cases = array(testSolution, "testCases");
         List<JsonNode> dataRecords = array(testSolution, "testDataRecords");
+        validateAliases(aliases, observeAliases(runRoot.resolve("test_data")), rules);
 
         ObjectNode report = mapper.createObjectNode();
         report.put("artifact", "segment-dl2-ai-artifact-coverage");
@@ -96,25 +101,35 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         report.put("status", "INCOMPLETE_REVIEW_REQUIRED");
         report.put("authority", "INDEPENDENT_TEST_SOLUTION");
         report.put("aiInputScope", "Supplied AI DL2 catalog crosswalk plus one representative phase-one DL2 chain and payload.");
+        report.put("smeStatus", "P-01 through P-04 OPEN");
+        report.put("testSolutionPackagePath", "specifications/ATL105/test-output/test-json/segment-DL2-coverage-package.json");
         report.put("correctedCandidatePath", "specifications/ATL105/test-output/test-json/segment-DL2-ai-corrected-candidate.json");
         report.put("suppliedAiCatalogPath",
                 "specifications/ATL105/test-output/ai-artifacts/coverage-reports/supplied-ai-catalog/supplied-ai-catalog-coverage.json");
+        report.put("fieldAliasCrosswalkPath", "specifications/ATL105/contract/segment-DL2-field-alias-crosswalk.json");
         addInventory(report, allRequirements, allScenarios, allCases, dl2Requirements,
-                dl2Scenarios, dl2Cases, dl2AiCatalogRequirements.size(), index);
+                dl2Scenarios, dl2Cases, dl2AiCatalogRequirements.size(), index,
+                countTestDataFiles(runRoot.resolve("test_data")));
         addChainIntegrity(report, chain, metadata, dataFile, metadataFile);
         addCandidateMetrics(report, rules, brs, scenarios, cases, dataRecords);
         addAiEvidence(report, rules, dl2Requirements, dl2AiCatalogRequirements);
+        report.set("aiFieldAliasCrosswalk", aliases.path("fieldAliases").deepCopy());
+        report.put("aiFieldAliasCrosswalkGovernance", text(aliases.path("governance")));
         addAiDataValidation(report, aiData, metadata);
+        report.set("implementationItemProgress", catalog.path("itemProgress").deepCopy());
         Files.createDirectories(reportJson.toAbsolutePath().getParent());
         mapper.writerWithDefaultPrettyPrinter().writeValue(reportJson.toFile(), report);
         Files.writeString(reportMarkdown, markdown(report));
+        Files.createDirectories(consolidatedReport.toAbsolutePath().getParent());
+        Files.writeString(consolidatedReport, consolidatedText(report));
         return report;
     }
 
     private void addInventory(ObjectNode report, List<JsonNode> allRequirements,
                               List<JsonNode> allScenarios, List<JsonNode> allCases,
                               List<JsonNode> dl2Requirements, List<JsonNode> dl2Scenarios,
-                              List<JsonNode> dl2Cases, int dl2AiCatalogRequirements, JsonNode index) {
+                              List<JsonNode> dl2Cases, int dl2AiCatalogRequirements, JsonNode index,
+                              int testDataFilesScanned) {
         ObjectNode inventory = report.putObject("aiArtifactInventory");
         inventory.put("phaseOneRequirements", allRequirements.size());
         inventory.put("phaseOneScenarios", allScenarios.size());
@@ -125,6 +140,7 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         inventory.put("suppliedAiCatalogDl2Requirements", dl2AiCatalogRequirements);
         inventory.put("dl2TestDataFiles", 1);
         inventory.put("dl2MetadataFiles", 1);
+        inventory.put("phaseOneTestDataFilesScannedForFieldNames", testDataFilesScanned);
         inventory.put("indexStatus", segmentStatus(index));
         inventory.put("scope", "Phase-one generator intentionally produces one representative requirement per segment.");
     }
@@ -219,6 +235,7 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
         metrics.put("candidateTestCases", totalCaseCount);
         metrics.put("candidateRequestResponsePairs", totalPairCount);
         metrics.put("brokenDataLinks", brokenLinks);
+        metrics.put("approvedTestDataPairs", 0);
         metrics.put("executedTestCases", 0);
         metrics.put("executionCoveragePercent", 0.0);
         metrics.put("certifiedCoveredRules", 0);
@@ -291,6 +308,61 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
             case "ENT-FIELD-DL2-1" -> List.of("SEGDL2-R-001");
             default -> List.of();
         };
+    }
+
+    private static Map<String, Integer> observeAliases(Path testDataDirectory) throws IOException {
+        Map<String, Integer> counts = new HashMap<>();
+        try (var files = Files.list(testDataDirectory)) {
+            for (Path file : files.filter(path -> path.getFileName().toString().matches("TC-[0-9]+\\.json"))
+                    .toList()) {
+                countDl2Fields(read(file), counts);
+            }
+        }
+        return counts;
+    }
+
+    private static void countDl2Fields(JsonNode node, Map<String, Integer> counts) {
+        if (node.isObject()) {
+            JsonNode dl2 = node.get("Dial String Data Segment");
+            if (dl2 != null && dl2.isObject()) {
+                dl2.fieldNames().forEachRemaining(name -> counts.merge(name, 1, Integer::sum));
+            }
+            node.elements().forEachRemaining(child -> countDl2Fields(child, counts));
+        } else if (node.isArray()) {
+            node.elements().forEachRemaining(child -> countDl2Fields(child, counts));
+        }
+    }
+
+    private static int countTestDataFiles(Path testDataDirectory) throws IOException {
+        try (var files = Files.list(testDataDirectory)) {
+            return (int) files.filter(path -> path.getFileName().toString().matches("TC-[0-9]+\\.json"))
+                    .count();
+        }
+    }
+
+    private static void validateAliases(JsonNode aliases, Map<String, Integer> observed, List<JsonNode> rules) {
+        Set<String> seen = new HashSet<>();
+        for (JsonNode alias : array(aliases, "fieldAliases")) {
+            String name = text(alias.path("aiElementName"));
+            String ruleId = text(alias.path("testRuleId"));
+            if (!seen.add(name)) throw new IllegalArgumentException("Duplicate AI field alias: " + name);
+            if (!observed.containsKey(name) || observed.get(name) != alias.path("occurrencesObserved").asInt()) {
+                throw new IllegalArgumentException("AI field alias occurrence count does not match delivered data: " + name);
+            }
+            JsonNode rule = rules.stream().filter(row -> ruleId.equals(text(row.path("ruleId"))))
+                    .findFirst().orElse(null);
+            if (rule == null) {
+                throw new IllegalArgumentException("Field alias references unknown Test Solution rule: " + ruleId);
+            }
+            String elementNumbers = text(rule.path("sourceAnchor").path("element"));
+            String expectedElement = text(alias.path("testElementNumber"));
+            if (!List.of(elementNumbers.split(",")).contains(expectedElement)) {
+                throw new IllegalArgumentException("Field alias element is not anchored by its Test Solution rule: " + name);
+            }
+        }
+        if (!seen.equals(observed.keySet())) {
+            throw new IllegalArgumentException("Field alias crosswalk omits or invents an observed AI field name");
+        }
     }
 
     void addAiDataValidation(ObjectNode report, JsonNode aiData, JsonNode metadata) {
@@ -390,7 +462,10 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
                 .append("| Complete candidate rule chains | ").append(metrics.path("rulesWithCompleteCandidateChains").asInt()).append(" / ").append(metrics.path("oracleRuleCount").asInt()).append(" (").append(metrics.path("completeCandidateChainPercent").asText()).append("%) |\n")
                 .append("| Rules with positive and negative candidates | ").append(metrics.path("rulesWithPositiveAndNegativeCandidates").asInt()).append(" / ").append(metrics.path("oracleRuleCount").asInt()).append(" (").append(metrics.path("positiveNegativeCandidatePercent").asText()).append("%) |\n")
                 .append("| Candidate test cases / request-response pairs | ").append(metrics.path("candidateTestCases").asInt()).append(" / ").append(metrics.path("candidateRequestResponsePairs").asInt()).append(" |\n")
-                .append("| Executed cases / certified rules | ").append(metrics.path("executedTestCases").asInt()).append(" / ").append(metrics.path("certifiedCoveredRules").asInt()).append(" |\n")
+                .append("| Approved data pairs / executed cases / certified rules | ")
+                .append(metrics.path("approvedTestDataPairs").asInt()).append(" / ")
+                .append(metrics.path("executedTestCases").asInt()).append(" / ")
+                .append(metrics.path("certifiedCoveredRules").asInt()).append(" |\n")
                 .append("| Oracle rules with candidate AI mappings pending review | ").append(aiCoverage.path("rulesWithCandidateAiMappingsPendingReview").asInt()).append(" / ").append(aiCoverage.path("oracleRuleCount").asInt()).append(" |\n")
                 .append("| Oracle rules without a candidate supplied-catalog mapping | ").append(aiCoverage.path("rulesWithoutAiEvidence").asInt()).append(" / ").append(aiCoverage.path("oracleRuleCount").asInt()).append(" |\n\n")
                 .append("Candidate mappings are not confirmed semantic equivalence or execution evidence. Phase-one chain data remains one representative DL2 sample; the supplied AI catalog is separately crosswalked below.\n\n")
@@ -405,6 +480,14 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
                     .append(row.path("candidateDisposition").asText()).append(" |\n");
         }
         out.append("\nAI catalog links are source-element candidate mappings only. The AI-vs-Test comparison and SME decisions remain authoritative for disposition; heuristic matches are not requirement coverage.\n\n")
+                .append("## Observed AI field-name crosswalk\n\n| AI field | Element | Rule | Occurrences |\n|---|---:|---|---:|\n");
+        for (JsonNode alias : report.path("aiFieldAliasCrosswalk")) {
+            out.append("| ").append(alias.path("aiElementName").asText()).append(" | ")
+                    .append(alias.path("testElementNumber").asText()).append(" | ")
+                    .append(alias.path("testRuleId").asText()).append(" | ")
+                    .append(alias.path("occurrencesObserved").asInt()).append(" |\n");
+        }
+        out.append("\nCrosswalk is comparison-only and must not influence the oracle.\n\n")
                 .append("## Candidate rule coverage\n\n| Rule | Cases | Positive | Negative | Status |\n|---|---:|---:|---:|---|\n");
         for (JsonNode row : report.path("testSolutionRuleCoverage")) {
             out.append("| ").append(row.path("ruleId").asText()).append(" | ")
@@ -427,6 +510,49 @@ public final class GenerateSegmentDl2AiArtifactCoverageReport {
                 .append("The separate [corrected AI sample candidate](../../../../../test-output/test-json/segment-DL2-ai-corrected-candidate.json) fixes the known response-family, primary/secondary block, terminator, access/pause pairing, and end-marker defects. ")
                 .append("It remains synthetic, unapproved, unexecuted, and logical-only. Do not infer Phone Load framing (P-03), fallback timing (P-01), or serialized field boundaries (P-04).");
         return out.toString();
+    }
+
+    private static String consolidatedText(JsonNode report) {
+        JsonNode metrics = report.path("testSolutionMetrics");
+        JsonNode validation = report.path("aiTestDataValidationSummary");
+        JsonNode progress = report.path("implementationItemProgress");
+        StringBuilder out = new StringBuilder("SEGMENT DL2 CONSOLIDATED TEST SOLUTION READINESS\n")
+                .append("Status: INCOMPLETE_REVIEW_REQUIRED\n")
+                .append("Specification: ATL105 2026-3; Dial String Data Segment (DL2)\n")
+                .append("Authority: Independent Test Solution; AI evidence is comparison input only.\n\n")
+                .append("CANDIDATE COVERAGE\n")
+                .append("Oracle rules: ").append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Candidate BR-TS-TC-TD chains: ")
+                .append(metrics.path("rulesWithCompleteCandidateChains").asInt()).append('/')
+                .append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Rules with positive and negative candidates: ")
+                .append(metrics.path("rulesWithPositiveAndNegativeCandidates").asInt()).append('/')
+                .append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Candidate cases / symbolic data pairs: ")
+                .append(metrics.path("candidateTestCases").asInt()).append(" / ")
+                .append(metrics.path("candidateRequestResponsePairs").asInt()).append('\n')
+                .append("Approved data pairs / executed cases / certified rules: 0 / 0 / 0\n\n")
+                .append("AI EVIDENCE\n")
+                .append("Supplied AI catalog DL2 requirements: ")
+                .append(report.path("aiCoverageOfTestSolutionOracle").path("suppliedAiDl2RequirementCount").asInt()).append('\n')
+                .append("Representative phase-one chain: ")
+                .append(text(report.path("aiChainIntegrity").path("testCaseId")))
+                .append(" (non-exhaustive phase-one scope)\n")
+                .append("Independent sample validation: ").append(validation.path("pass").asInt()).append(" PASS, ")
+                .append(validation.path("fail").asInt()).append(" FAIL, ")
+                .append(validation.path("reviewRequired").asInt()).append(" REVIEW_REQUIRED, ")
+                .append(validation.path("notAssertable").asInt()).append(" NOT_ASSERTABLE\n")
+                .append("Phone numbers are excluded from this report.\n\n")
+                .append("OPEN SME GATES\n")
+                .append("P-01 / SEGDL2-SME-001: Secondary-phone fallback timing and recovery behavior.\n")
+                .append("P-02 / SEGDL2-SME-002: AI/Test fixture package or isolated synthetic fixture approval.\n")
+                .append("P-03 / SEGDL2-SME-003: Phone Load Response field-1 framing.\n")
+                .append("P-04 / SEGDL2-SME-004: Separator-free variable field boundaries and access-code parsing.\n\n")
+                .append("EIGHT-ITEM IMPLEMENTATION STATUS\n");
+        progress.fields().forEachRemaining(entry -> out.append(entry.getKey()).append(": ")
+                .append(entry.getValue().asText()).append('\n'));
+        return out.append("\nNEXT: Resolve SME decisions, approve isolated synthetic data, then implement serializer-aware DL2 parsing and execute mutation/lifecycle checks.")
+                .toString();
     }
 
     private static JsonNode read(Path path) throws IOException {
