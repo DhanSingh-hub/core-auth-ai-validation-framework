@@ -101,6 +101,8 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
         report.put("aiInputScope", "One representative DL1 chain from the 2026-09-29 phase_1_single_leg run; not the complete AI DL1 catalog.");
         report.put("aiTestDataPath", runRootRelative(testDataFile));
         report.put("aiMetadataPath", runRootRelative(metadataFile));
+        report.put("correctedCandidatePath",
+                "specifications/ATL105/test-output/test-json/segment-DL1-ai-corrected-candidate.json");
         addInventory(report, aiRequirements, aiScenarios, aiCases, dl1Requirements,
                 dl1Scenarios, dl1Cases, testCaseId, testDataFile, metadataFile, index, chain);
         addChainIntegrity(report, chain, metadata, testCaseId, testDataFile, metadataFile);
@@ -485,6 +487,10 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
                 .append(summary.path("reviewRequired").asInt()).append(" REVIEW_REQUIRED**, **")
                 .append(summary.path("notAssertable").asInt()).append(" NOT_ASSERTABLE**. ")
                 .append("The AI sample is not valid for execution against the DL1 oracle.\n");
+        output.append("\n## Corrected candidate\n\n")
+                .append("A separate [corrected AI sample candidate](../../../../../test-output/test-json/segment-DL1-ai-corrected-candidate.json) addresses the concrete data failures without altering the original AI artifact. ")
+                .append("It uses a Table Load Response, includes `~`, aligns one documented Card Type `020` with count `01`, omits DL6 without Card Type `173`, and corrects Address Line 2 and Merchant Phone. ")
+                .append("This logical-only synthetic fixture remains unapproved and unexecuted; P-02 and P-04 remain open, and it is not wire-serialization or coverage certification evidence.\n");
         return output.toString();
     }
 

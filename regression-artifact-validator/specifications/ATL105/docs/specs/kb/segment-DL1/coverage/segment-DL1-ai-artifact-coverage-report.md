@@ -62,3 +62,7 @@ Candidate definitions are not executed coverage. AI input is one representative 
 | SEGDL1-R-012 | REVIEW_REQUIRED | The structured response contains DL1/DL2/DL3/DL6 blocks, but serialized End-of-Load framing is absent and the DL6 end-marker count remains open under P-03. |
 
 Validation totals: **0 PASS**, **6 FAIL**, **2 REVIEW_REQUIRED**, **4 NOT_ASSERTABLE**. The AI sample is not valid for execution against the DL1 oracle.
+
+## Corrected candidate
+
+A separate [corrected AI sample candidate](../../../../../test-output/test-json/segment-DL1-ai-corrected-candidate.json) addresses the concrete data failures without altering the original AI artifact. It uses a Table Load Response, includes `~`, aligns one documented Card Type `020` with count `01`, omits DL6 without Card Type `173`, and corrects Address Line 2 and Merchant Phone. This logical-only synthetic fixture remains unapproved and unexecuted; P-02 and P-04 remain open, and it is not wire-serialization or coverage certification evidence.

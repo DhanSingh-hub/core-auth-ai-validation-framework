@@ -27,6 +27,8 @@ class GenerateSegmentDl1AiArtifactCoverageReportTest {
         assertThat(report.path("aiArtifactInventory").path("dl1TestCases").asInt()).isEqualTo(1);
         assertThat(report.path("aiChainIntegrity").path("traceabilityStatus").asText()).isEqualTo("COMPLETE");
         assertThat(report.path("aiChainIntegrity").path("sourceEvidenceConsistent").asBoolean()).isTrue();
+        assertThat(report.path("correctedCandidatePath").asText())
+                .endsWith("segment-DL1-ai-corrected-candidate.json");
 
         assertThat(report.path("testSolutionMetrics").path("oracleRuleCount").asInt()).isEqualTo(12);
         assertThat(report.path("testSolutionMetrics").path("rulesWithCompleteCandidateChains").asInt()).isEqualTo(12);
@@ -69,6 +71,26 @@ class GenerateSegmentDl1AiArtifactCoverageReportTest {
                 Path.of("missing-rule-catalog.json"), tempDir.resolve("report.json"), tempDir.resolve("report.md")))
                 .isInstanceOf(IOException.class)
                 .hasMessageContaining("Required DL1 coverage input is missing");
+    }
+
+    @Test
+    void correctedSampleCandidateFixesConcreteDataFailuresWithoutClaimingExecution() throws Exception {
+        JsonNode candidate = mapper.readTree(Atl105Paths.testJson("segment-DL1-ai-corrected-candidate.json").toFile());
+        JsonNode response = candidate.path("Table Load Response");
+        JsonNode fields = response.path("dataBlock1").path("fields");
+
+        assertThat(candidate.path("_meta").path("status").asText())
+                .isEqualTo("CANDIDATE_NOT_APPROVED_OR_EXECUTED");
+        assertThat(candidate.path("context").path("merchantProfileLoadFlag").asText()).isEqualTo("TABL");
+        assertThat(fields.path("DataTypeIndicator").asText()).isEqualTo("#");
+        assertThat(fields.path("EndofDataIndicator").asText()).isEqualTo("~");
+        assertThat(fields.path("NumberofCardTypes").asText()).isEqualTo("01");
+        assertThat(fields.path("CardTypes").size()).isEqualTo(1);
+        assertThat(fields.path("CardTypes").get(0).asText()).isEqualTo("020");
+        assertThat(response.path("optionalDataBlocks").size()).isZero();
+        assertThat(fields.path("AddressLine2").asText()).matches(".{12} [A-Za-z]{2} .{5}");
+        assertThat(fields.path("MerchantPhoneNumber").asText()).matches("\\([0-9]{3}\\)[0-9]{3}-[0-9]{4}");
+        assertThat(response.path("representation").asText()).contains("not serialized");
     }
 
     private JsonNode generate(Path tempDir) throws Exception {
