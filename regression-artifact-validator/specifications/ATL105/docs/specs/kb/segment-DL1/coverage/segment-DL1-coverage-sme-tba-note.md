@@ -30,10 +30,10 @@
 
 | Rule | Status | Reason |
 |---|---|---|
-| R-001, R-002, R-004, R-005, R-007, R-008, R-010, R-011 | MISSING | No TS/TC/TD yet (`SEGDL1-SME-001`) |
-| R-003, R-006 | REVIEW_REQUIRED | Padding (`SEGDL1-SME-002`) |
-| R-012 | REVIEW_REQUIRED | End-of-Load count (`SEGDL1-SME-003`) |
-| R-009 | REVIEW_REQUIRED | Card Type set (`SEGDL1-SME-004`) |
+| R-001, R-002, R-004, R-007, R-008, R-010, R-011 | CANDIDATE_COMPLETE_NOT_EXECUTED | BR/TS/TC/TD chains exist, but fixtures are synthetic and unapproved (`SEGDL1-SME-001`) |
+| R-003, R-006 | REVIEW_REQUIRED | Padding and parse boundaries (`SEGDL1-SME-002`) |
+| R-005, R-012 | REVIEW_REQUIRED | DL6 and End-of-Load framing (`SEGDL1-SME-003`) |
+| R-009 | REVIEW_REQUIRED | Complete Card Type set (`SEGDL1-SME-004`) |
 
 ## Semantic Evidence Checks
 
@@ -44,4 +44,4 @@
 
 ## Field-Alias Crosswalk Status
 
-No DL1 AI test-data payload exists, so no crosswalk is built. The supplied AI catalog contains DL1 element- and field-level requirements; see the [comparison](../segment-DL1-ai-vs-test-requirement-comparison.md).
+The DL1 crosswalk is generated from observed phase-one AI test-data field names in `Merchant Data Segment` payloads. It is a comparison aid only; it does not define the denominator, validate the Test Solution, approve fixtures, execute cases, or certify coverage. The supplied AI catalog contains DL1 element- and field-level requirements; see the [comparison](../segment-DL1-ai-vs-test-requirement-comparison.md).

@@ -30,16 +30,26 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
                 "ai-solution", "runs", "2026-09-29", "phase_1_single_leg"));
         Path packageFile = Atl105Paths.testJson("segment-DL1-coverage-package.json");
         Path catalogFile = Atl105Paths.ruleCatalog("DL1");
+        Path aliasCrosswalk = Atl105Paths.root().resolve(Path.of(
+                "contract", "segment-DL1-field-alias-crosswalk.json"));
         Path reportRoot = Atl105Paths.docs().resolve(Path.of(
                 "specs", "kb", "segment-DL1", "coverage"));
         new GenerateSegmentDl1AiArtifactCoverageReport().generate(
                 runRoot, packageFile, catalogFile,
+                aliasCrosswalk,
                 reportRoot.resolve("segment-DL1-ai-artifact-coverage-report.json"),
-                reportRoot.resolve("segment-DL1-ai-artifact-coverage-report.md"));
+                reportRoot.resolve("segment-DL1-ai-artifact-coverage-report.md"),
+                Atl105Paths.consolidatedReport("DL1"));
     }
 
     public ObjectNode generate(Path runRoot, Path testSolutionPackageFile, Path ruleCatalogFile,
                                Path jsonOutput, Path markdownOutput) throws IOException {
+        return generate(runRoot, testSolutionPackageFile, ruleCatalogFile, null, jsonOutput, markdownOutput, null);
+    }
+
+    ObjectNode generate(Path runRoot, Path testSolutionPackageFile, Path ruleCatalogFile,
+                        Path aliasCrosswalkFile, Path jsonOutput, Path markdownOutput,
+                        Path consolidatedOutput) throws IOException {
         JsonNode requirements = readRequired(runRoot.resolve(Path.of(
                 "requirements", "requirement_candidates.json")));
         JsonNode scenarios = readRequired(runRoot.resolve(Path.of(
@@ -55,15 +65,29 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
         Path metadataFile = runRoot.resolve(Path.of("test_data", testCaseId + ".meta.json"));
         JsonNode testData = readRequired(testDataFile);
         JsonNode metadata = readRequired(metadataFile);
+        JsonNode aliases = aliasCrosswalkFile == null ? null : readRequired(aliasCrosswalkFile);
 
         ObjectNode report = analyze(requirements, scenarios, testCases, chain, index,
                 testData, metadata, testSolution, catalog, testCaseId, testDataFile, metadataFile);
+        if (aliases != null) {
+            Map<String, Integer> observedAliases = observeAliases(runRoot.resolve("test_data"));
+            validateAliases(aliases, observedAliases, array(catalog, "rules"));
+            report.put("fieldAliasCrosswalkPath",
+                    "specifications/ATL105/contract/segment-DL1-field-alias-crosswalk.json");
+            report.set("aiFieldAliasCrosswalk", aliases.path("fieldAliases").deepCopy());
+            report.put("aiFieldAliasCrosswalkGovernance", text(aliases.path("governance")));
+        }
         Path jsonParent = jsonOutput.toAbsolutePath().normalize().getParent();
         Path markdownParent = markdownOutput.toAbsolutePath().normalize().getParent();
         if (jsonParent != null) Files.createDirectories(jsonParent);
         if (markdownParent != null) Files.createDirectories(markdownParent);
         mapper.writerWithDefaultPrettyPrinter().writeValue(jsonOutput.toFile(), report);
         Files.writeString(markdownOutput, markdown(report));
+        if (consolidatedOutput != null) {
+            Path consolidatedParent = consolidatedOutput.toAbsolutePath().normalize().getParent();
+            if (consolidatedParent != null) Files.createDirectories(consolidatedParent);
+            Files.writeString(consolidatedOutput, consolidatedText(report));
+        }
         return report;
     }
 
@@ -113,6 +137,7 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
         addRuleCoverageMatrix(report, rules, dl1Requirements, testSolutionBrs,
                 testSolutionScenarios, testSolutionCases, testSolutionData);
         addAiTestDataValidation(report, aiTestData);
+        report.set("implementationItemProgress", catalog.path("itemProgress").deepCopy());
         report.with("aiChainIntegrity").put("behaviorValidationStatus",
                 report.path("aiTestDataValidationSummary").path("overallStatus").asText());
         return report;
@@ -140,6 +165,8 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
         inventory.put("dl1TestDataFiles", Files.isRegularFile(testDataFile) ? 1 : 0);
         inventory.put("dl1MetadataFiles", Files.isRegularFile(metadataFile) ? 1 : 0);
         inventory.put("dl1TestDataCaseId", testCaseId);
+        inventory.put("phaseOneTestDataFilesScannedForFieldNames",
+                countTestDataFiles(testDataFile.getParent()));
         inventory.put("indexStatus", text(dl1Index == null ? null : dl1Index.path("status")));
         inventory.put("representativeRequirementId", text(chain.path("requirement").path("id")));
         inventory.put("representativeScenarioId", text(chain.path("scenario").path("id")));
@@ -438,6 +465,70 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
         return count;
     }
 
+    private JsonNode read(Path path) {
+        try {
+            return mapper.readTree(path.toFile());
+        } catch (IOException ex) {
+            throw new IllegalStateException("Unable to read DL1 coverage input: " + path, ex);
+        }
+    }
+
+    private Map<String, Integer> observeAliases(Path testDataDirectory) throws IOException {
+        Map<String, Integer> counts = new HashMap<>();
+        try (var paths = Files.list(testDataDirectory)) {
+            for (Path path : paths.filter(file ->
+                    file.getFileName().toString().matches("TC-[0-9]+\\.json")).toList()) {
+                countDl1Fields(read(path), counts);
+            }
+        }
+        return counts;
+    }
+
+    private static void countDl1Fields(JsonNode node, Map<String, Integer> counts) {
+        if (node.isObject()) {
+            JsonNode dl1 = node.get("Merchant Data Segment");
+            if (dl1 != null && dl1.isObject()) {
+                dl1.fieldNames().forEachRemaining(name -> counts.merge(name, 1, Integer::sum));
+            }
+            node.elements().forEachRemaining(child -> countDl1Fields(child, counts));
+        } else if (node.isArray()) {
+            node.elements().forEachRemaining(child -> countDl1Fields(child, counts));
+        }
+    }
+
+    private static int countTestDataFiles(Path directory) {
+        try (var files = Files.list(directory)) {
+            return (int) files.filter(file -> file.getFileName().toString().matches("TC-[0-9]+\\.json"))
+                    .count();
+        } catch (IOException ex) {
+            return 0;
+        }
+    }
+
+    private static void validateAliases(JsonNode aliases, Map<String, Integer> observed, List<JsonNode> rules) {
+        Set<String> names = new HashSet<>();
+        for (JsonNode alias : array(aliases, "fieldAliases")) {
+            String name = text(alias.path("aiElementName"));
+            String ruleId = text(alias.path("testRuleId"));
+            if (!names.add(name)) throw invalid("Duplicate observed AI field name: " + name);
+            if (!observed.containsKey(name) || observed.get(name) != alias.path("occurrencesObserved").asInt()) {
+                throw invalid("AI alias occurrence count differs from delivered payloads: " + name);
+            }
+            JsonNode rule = rules.stream().filter(row -> ruleId.equals(text(row.path("ruleId"))))
+                    .findFirst().orElse(null);
+            if (rule == null) throw invalid("Alias references an unknown DL1 rule: " + ruleId);
+            String element = text(rule.path("sourceAnchor").path("element"));
+            String testElement = text(alias.path("testElementNumber"));
+            if (!element.isBlank() && !element.contains(testElement)) {
+                throw invalid("Alias element does not align to the referenced DL1 rule: " + name);
+            }
+        }
+    }
+
+    private static IllegalArgumentException invalid(String message) {
+        return new IllegalArgumentException("Invalid DL1 coverage package: " + message);
+    }
+
     private static String markdown(JsonNode report) {
         StringBuilder output = new StringBuilder("# DL1 AI Artifact Coverage and Validation\n\n");
         output.append("**Status:** ").append(report.path("status").asText()).append("\n\n")
@@ -474,6 +565,17 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
                     .append(tsRow.path("testCaseCount").asInt()).append(" TCs / ")
                     .append(tsRow.path("testDataPairCount").asInt()).append(" data pairs) |\n");
         }
+        if (report.path("aiFieldAliasCrosswalk").isArray()) {
+            output.append("\n## AI field-name crosswalk\n\n")
+                    .append("| AI field name | ATL105 element | Rule | Observed occurrences |\n|---|---:|---|---:|\n");
+            for (JsonNode alias : report.path("aiFieldAliasCrosswalk")) {
+                output.append("| ").append(text(alias.path("aiElementName"))).append(" | ")
+                        .append(text(alias.path("testElementNumber"))).append(" | ")
+                        .append(text(alias.path("testRuleId"))).append(" | ")
+                        .append(alias.path("occurrencesObserved").asInt()).append(" |\n");
+            }
+            output.append("\nThe field-name crosswalk is comparison-only and does not define the oracle denominator or validator rules.\n");
+        }
         output.append("\n## Validation of supplied AI test data\n\n")
                 .append("| Rule | Status | Observation |\n|---|---|---|\n");
         for (JsonNode finding : report.path("aiTestDataRuleValidation")) {
@@ -491,6 +593,52 @@ public final class GenerateSegmentDl1AiArtifactCoverageReport {
                 .append("A separate [corrected AI sample candidate](../../../../../test-output/test-json/segment-DL1-ai-corrected-candidate.json) addresses the concrete data failures without altering the original AI artifact. ")
                 .append("It uses a Table Load Response, includes `~`, aligns one documented Card Type `020` with count `01`, omits DL6 without Card Type `173`, and corrects Address Line 2 and Merchant Phone. ")
                 .append("This logical-only synthetic fixture remains unapproved and unexecuted; P-02 and P-04 remain open, and it is not wire-serialization or coverage certification evidence.\n");
+        return output.toString();
+    }
+
+    private static String consolidatedText(JsonNode report) {
+        JsonNode metrics = report.path("testSolutionMetrics");
+        JsonNode validation = report.path("aiTestDataValidationSummary");
+        JsonNode progress = report.path("implementationItemProgress");
+        StringBuilder output = new StringBuilder("SEGMENT DL1 CONSOLIDATED TEST SOLUTION READINESS\n")
+                .append("Status: INCOMPLETE_REVIEW_REQUIRED\n")
+                .append("Specification: ATL105 2026-3; Merchant Data Segment (DL1)\n")
+                .append("Authority: Independent Test Solution; AI evidence is comparison input only.\n\n")
+                .append("CANDIDATE COVERAGE\n")
+                .append("Oracle rules: ").append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Candidate BR-TS-TC-TD chains: ")
+                .append(metrics.path("rulesWithCompleteCandidateChains").asInt()).append('/')
+                .append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Rules with positive and negative candidates: ")
+                .append(metrics.path("rulesWithPositiveAndNegativeCandidates").asInt()).append('/')
+                .append(metrics.path("oracleRuleCount").asInt()).append('\n')
+                .append("Candidate cases / symbolic data pairs: ")
+                .append(metrics.path("candidateTestCases").asInt()).append(" / ")
+                .append(metrics.path("candidateRequestResponsePairs").asInt()).append('\n')
+                .append("Approved data pairs / executed cases / certified rules: 0 / 0 / 0\n\n")
+                .append("AI EVIDENCE\n")
+                .append("Representative DL1 requirements in phase-one run: ")
+                .append(report.path("aiArtifactInventory").path("dl1Requirements").asInt()).append('\n')
+                .append("Representative chain: ")
+                .append(report.path("aiArtifactInventory").path("dl1TestDataCaseId").asText()).append(" (non-exhaustive phase-one scope)\n")
+                .append("Sample validation: ").append(validation.path("pass").asInt()).append(" PASS, ")
+                .append(validation.path("fail").asInt()).append(" FAIL, ")
+                .append(validation.path("reviewRequired").asInt()).append(" REVIEW_REQUIRED, ")
+                .append(validation.path("notAssertable").asInt()).append(" NOT_ASSERTABLE\n")
+                .append("Sensitive values are excluded from all reports.\n\n")
+                .append("OPEN SME GATES\n")
+                .append("P-01 / SEGDL1-SME-001: Dedicated DL1 AI/Test package or synthetic fixture approval.\n")
+                .append("P-02 / SEGDL1-SME-002: Fixed/up-to-length padding and parse boundaries.\n")
+                .append("P-03 / SEGDL1-SME-003: DL6 and End-of-Load framing/count.\n")
+                .append("P-04 / SEGDL1-SME-004: Complete Appendix E DL1 Card Type valid set.\n\n")
+                .append("EIGHT-ITEM STATUS\n");
+        if (progress.isObject()) {
+            progress.fields().forEachRemaining(entry -> output.append(entry.getKey()).append(": ")
+                    .append(text(entry.getValue())).append('\n'));
+        } else {
+            output.append("item status unavailable\n");
+        }
+        output.append("\nNEXT: Resolve SME decisions, approve isolated synthetic data, then implement serializer-aware validation and execute mutation/lifecycle checks.");
         return output.toString();
     }
 
