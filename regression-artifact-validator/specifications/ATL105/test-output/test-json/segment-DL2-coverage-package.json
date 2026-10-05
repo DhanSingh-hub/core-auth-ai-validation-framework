@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "provisional": true,
+    "status": "REVIEW_REQUIRED",
+    "provisionalReason": "Candidate definitions only. SME approvals remain open for fallback timing (P-01), fixture approval (P-02), Phone Load framing (P-03), and separator/field parsing (P-04). No candidate is executed or certified COVERED."
+  },
+  "manifest": {
+    "packageId": "ATL105-SEGDL2-COVERAGE-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "DL2",
+    "title": "Dial String Data Segment coverage candidates",
+    "ruleCatalog": "../../docs/specs/kb/segment-DL2/coverage/segment-DL2-rule-catalog.json",
+    "businessRequirements": "../../docs/specs/kb/segment-DL2/segment-DL2-business-requirements.md",
+    "correctedAiSampleCandidate": "segment-DL2-ai-corrected-candidate.json",
+    "fixtureApproval": "PENDING-SEGDL2-SME-002",
+    "executionStatus": "NOT_EXECUTED",
+    "wireSerializationStatus": "BLOCKED_PENDING-SEGDL2-SME-004"
+  },
+  "coverageSummary": {
+    "catalogRules": 9,
+    "businessRequirementsMapped": 9,
+    "scenarioDefinitions": 9,
+    "testCasesDefined": 29,
+    "symbolicRequestResponsePairs": 29,
+    "approvedTestDataPairs": 0,
+    "executedTestCases": 0,
+    "certifiedCoveredRules": 0,
+    "overallStatus": "INCOMPLETE_REVIEW_REQUIRED"
+  },
+  "testDataDefaults": {
+    "context": "baseTestContext; record-level context overrides take precedence",
+    "request": "basePhoneLoadRequest",
+    "response": "basePhoneLoadResponse",
+    "representation": "Logical structured fields and named mutations only; not serialized DL2 bytes. No field-boundary assumption is made while P-04 is open."
+  },
+  "businessRequirements": [
+    {"id":"BR-SEGDL2-001","ruleId":"SEGDL2-R-001","status":"SPEC_DERIVED"},
+    {"id":"BR-SEGDL2-002","ruleId":"SEGDL2-R-002","status":"SPEC_DERIVED"},
+    {"id":"BR-SEGDL2-003","ruleId":"SEGDL2-R-003","status":"REVIEW_REQUIRED","provisionalItem":"P-01"},
+    {"id":"BR-SEGDL2-004","ruleId":"SEGDL2-R-004","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"BR-SEGDL2-005","ruleId":"SEGDL2-R-005","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"BR-SEGDL2-006","ruleId":"SEGDL2-R-006","status":"SPEC_DERIVED"},
+    {"id":"BR-SEGDL2-007","ruleId":"SEGDL2-R-007","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"BR-SEGDL2-008","ruleId":"SEGDL2-R-008","status":"REVIEW_REQUIRED","provisionalItem":"P-03"},
+    {"id":"BR-SEGDL2-009","ruleId":"SEGDL2-R-009","status":"SPEC_DERIVED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEGDL2-001","requirementIds":["BR-SEGDL2-001"],"title":"DL2 markers and maximum length","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TS-SEGDL2-002","requirementIds":["BR-SEGDL2-002"],"title":"Dial String Type and required primary block","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TS-SEGDL2-003","requirementIds":["BR-SEGDL2-003"],"title":"Secondary dial string structure and fallback order","status":"REVIEW_REQUIRED","provisionalItem":"P-01"},
+    {"id":"TS-SEGDL2-004","requirementIds":["BR-SEGDL2-004"],"title":"Separator-free DL2 serialization","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TS-SEGDL2-005","requirementIds":["BR-SEGDL2-005"],"title":"Paired Access Code and Pause Indicator conditions","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TS-SEGDL2-006","requirementIds":["BR-SEGDL2-006"],"title":"Primary and secondary Redial Count range","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TS-SEGDL2-007","requirementIds":["BR-SEGDL2-007"],"title":"Phone number length, digits, and terminators","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TS-SEGDL2-008","requirementIds":["BR-SEGDL2-008"],"title":"DL2 response placement and conditional presence","status":"REVIEW_REQUIRED","provisionalItem":"P-03"},
+    {"id":"TS-SEGDL2-009","requirementIds":["BR-SEGDL2-009"],"title":"Phone Load PHON flag lifecycle","status":"DRAFT_NOT_EXECUTED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEGDL2-001-P","scenarioId":"TS-SEGDL2-001","requirementId":"BR-SEGDL2-001","expectedOutcome":"PASS","mutation":"None; start with !, end with ~, total length within 69.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-001-N-INDICATOR","scenarioId":"TS-SEGDL2-001","requirementId":"BR-SEGDL2-001","expectedOutcome":"FAIL","mutation":"Replace the required leading ! Data Type Indicator with #.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-001-N-END","scenarioId":"TS-SEGDL2-001","requirementId":"BR-SEGDL2-001","expectedOutcome":"FAIL","mutation":"Omit the final ~.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-001-N-LENGTH","scenarioId":"TS-SEGDL2-001","requirementId":"BR-SEGDL2-001","expectedOutcome":"FAIL","mutation":"Use maximum-width primary and secondary fields plus an over-limit payload (70 characters); raw serialization remains blocked by P-04.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-002-P","scenarioId":"TS-SEGDL2-002","requirementId":"BR-SEGDL2-002","expectedOutcome":"PASS","mutation":"Dial String Type 1; required primary block ends with A.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-002-N-TYPE","scenarioId":"TS-SEGDL2-002","requirementId":"BR-SEGDL2-002","expectedOutcome":"FAIL","mutation":"Change Dial String Type from 1 to 2.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-002-N-TERM","scenarioId":"TS-SEGDL2-002","requirementId":"BR-SEGDL2-002","expectedOutcome":"FAIL","mutation":"Omit primary terminator A.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-003-P","scenarioId":"TS-SEGDL2-003","requirementId":"BR-SEGDL2-003","expectedOutcome":"PASS_OR_REVIEW","mutation":"Include a secondary block terminated by F; fallback timing follows primary retry exhaustion and is pending P-01.","status":"REVIEW_REQUIRED","provisionalItem":"P-01"},
+    {"id":"TC-SEGDL2-003-N-TERM","scenarioId":"TS-SEGDL2-003","requirementId":"BR-SEGDL2-003","expectedOutcome":"FAIL","mutation":"Change the secondary terminator F to A.","status":"REVIEW_REQUIRED","provisionalItem":"P-01"},
+    {"id":"TC-SEGDL2-003-N-ORDER","scenarioId":"TS-SEGDL2-003","requirementId":"BR-SEGDL2-003","expectedOutcome":"FAIL_OR_REVIEW","mutation":"Attempt the secondary number before primary retry attempts are exhausted; detailed recovery sequence pending P-01.","status":"REVIEW_REQUIRED","provisionalItem":"P-01"},
+    {"id":"TC-SEGDL2-004-P","scenarioId":"TS-SEGDL2-004","requirementId":"BR-SEGDL2-004","expectedOutcome":"PASS_OR_REVIEW","mutation":"Represent the fields as contiguous DL2 data with no Field Separators; byte-level parse assertion pending P-04.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-004-N-FS","scenarioId":"TS-SEGDL2-004","requirementId":"BR-SEGDL2-004","expectedOutcome":"FAIL","mutation":"Insert a Field Separator between adjacent DL2 fields; raw parser proof pending P-04.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-005-P-ABSENT","scenarioId":"TS-SEGDL2-005","requirementId":"BR-SEGDL2-005","expectedOutcome":"PASS","mutation":"Omit both Access Code and Pause Indicator in a structured block.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-005-P-PAIRED","scenarioId":"TS-SEGDL2-005","requirementId":"BR-SEGDL2-005","expectedOutcome":"PASS_OR_REVIEW","mutation":"Provide Access Code and the immediately following B Pause Indicator together.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-005-N-CODE","scenarioId":"TS-SEGDL2-005","requirementId":"BR-SEGDL2-005","expectedOutcome":"FAIL","mutation":"Provide Access Code but omit its required B Pause Indicator.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-005-N-PAUSE","scenarioId":"TS-SEGDL2-005","requirementId":"BR-SEGDL2-005","expectedOutcome":"FAIL","mutation":"Provide B Pause Indicator without an Access Code.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-006-P","scenarioId":"TS-SEGDL2-006","requirementId":"BR-SEGDL2-006","expectedOutcome":"PASS","mutation":"Use Redial Count 1 on primary and 3 on secondary.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-006-N-ZERO","scenarioId":"TS-SEGDL2-006","requirementId":"BR-SEGDL2-006","expectedOutcome":"FAIL","mutation":"Set primary Redial Count to 0.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-006-N-FOUR","scenarioId":"TS-SEGDL2-006","requirementId":"BR-SEGDL2-006","expectedOutcome":"FAIL","mutation":"Set secondary Redial Count to 4.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-006-N-ALPHA","scenarioId":"TS-SEGDL2-006","requirementId":"BR-SEGDL2-006","expectedOutcome":"FAIL","mutation":"Set primary Redial Count to A.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-007-P","scenarioId":"TS-SEGDL2-007","requirementId":"BR-SEGDL2-007","expectedOutcome":"PASS_OR_REVIEW","mutation":"Use a numeric Phone Number of 1 digit primary and 18 digits secondary, with A and F terminators respectively.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-007-N-LENGTH","scenarioId":"TS-SEGDL2-007","requirementId":"BR-SEGDL2-007","expectedOutcome":"FAIL","mutation":"Set a Phone Number to 19 digits.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-007-N-NONDIGIT","scenarioId":"TS-SEGDL2-007","requirementId":"BR-SEGDL2-007","expectedOutcome":"FAIL","mutation":"Insert a non-digit into the Phone Number.","status":"REVIEW_REQUIRED","provisionalItem":"P-04"},
+    {"id":"TC-SEGDL2-008-P-TABLE-DIAL","scenarioId":"TS-SEGDL2-008","requirementId":"BR-SEGDL2-008","expectedOutcome":"PASS_OR_REVIEW","mutation":"Include DL2 as Table Load Response Data Block 2 on a dial connection.","status":"REVIEW_REQUIRED","provisionalItem":"P-03"},
+    {"id":"TC-SEGDL2-008-P-TABLE-IP","scenarioId":"TS-SEGDL2-008","requirementId":"BR-SEGDL2-008","expectedOutcome":"PASS","mutation":"Include conditional DL2 on TCP/IP without the preceding Start-of-Data Block Indicator; that indicator is omitted for TCP/IP.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-008-N-WRONG-MSG","scenarioId":"TS-SEGDL2-008","requirementId":"BR-SEGDL2-008","expectedOutcome":"FAIL","mutation":"Include DL2 in a Software Load Response.","status":"REVIEW_REQUIRED","provisionalItem":"P-03"},
+    {"id":"TC-SEGDL2-008-N-PHONE-MISSING","scenarioId":"TS-SEGDL2-008","requirementId":"BR-SEGDL2-008","expectedOutcome":"FAIL","mutation":"Omit required DL2 from a valid Phone Load Response; exact response framing pending P-03.","status":"REVIEW_REQUIRED","provisionalItem":"P-03"},
+    {"id":"TC-SEGDL2-009-P","scenarioId":"TS-SEGDL2-009","requirementId":"BR-SEGDL2-009","expectedOutcome":"PASS","mutation":"With merchant load flag PHON, return a Phone Load Response containing DL2.","status":"DRAFT_NOT_EXECUTED"},
+    {"id":"TC-SEGDL2-009-N-FLAG","scenarioId":"TS-SEGDL2-009","requirementId":"BR-SEGDL2-009","expectedOutcome":"FAIL","mutation":"With merchant load flag absent or not PHON, return DL2 instead of only the error and terminating blocks.","status":"DRAFT_NOT_EXECUTED"}
+  ],
+  "baseTestContext": {
+    "merchantProfileLoadFlag": "PHON",
+    "dialConnection": true
+  },
+  "basePhoneLoadRequest": {
+    "informationByte": "?",
+    "terminalIdentifier": "TESTCA0000001",
+    "loadType": "P",
+    "messageType": "Phone Load Request"
+  },
+  "basePhoneLoadResponse": {
+    "representation": "logical structured fields; not serialized DL2 wire bytes",
+    "messageType": "Phone Load Response",
+    "phoneLoadFraming": "UNRESOLVED_SEGDL2_SME_003",
+    "segment": {
+      "name": "DL2",
+      "dataTypeIndicator": "!",
+      "dialStringType": "1",
+      "primary": {
+        "redialCount": "2",
+        "accessCode": null,
+        "pauseIndicator": null,
+        "phoneNumber": "5555550100",
+        "terminator": "A"
+      },
+      "secondary": {
+        "redialCount": "2",
+        "accessCode": null,
+        "pauseIndicator": null,
+        "phoneNumber": "5555550199",
+        "terminator": "F"
+      },
+      "endOfDataIndicator": "~"
+    }
+  },
+  "baseTableLoadResponse": {
+    "representation": "logical structured fields; not serialized to wire bytes",
+    "messageType": "Table Load Response",
+    "dataBlock1": "DL1",
+    "dataBlock2": {
+      "segment": "DL2",
+      "startOfDataBlockIndicator": ") when transport is dial; omitted for TCP/IP",
+      "fields": {
+        "dataTypeIndicator": "!",
+        "dialStringType": "1",
+        "primary": {"redialCount":"2","accessCode":null,"pauseIndicator":null,"phoneNumber":"5555550100","terminator":"A"},
+        "secondary": {"redialCount":"2","accessCode":null,"pauseIndicator":null,"phoneNumber":"5555550199","terminator":"F"},
+        "endOfDataIndicator": "~"
+      }
+    },
+    "transport": "dial connection"
+  },
+  "testDataRecords": [
+    {"id":"TD-SEGDL2-001-P","testCaseId":"TC-SEGDL2-001-P","scenarioId":"TS-SEGDL2-001","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":[]}},
+    {"id":"TD-SEGDL2-001-N-INDICATOR","testCaseId":"TC-SEGDL2-001-N-INDICATOR","scenarioId":"TS-SEGDL2-001","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["replace dataTypeIndicator ! with #"]}},
+    {"id":"TD-SEGDL2-001-N-END","testCaseId":"TC-SEGDL2-001-N-END","scenarioId":"TS-SEGDL2-001","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["omit final ~"]}},
+    {"id":"TD-SEGDL2-001-N-LENGTH","testCaseId":"TC-SEGDL2-001-N-LENGTH","scenarioId":"TS-SEGDL2-001","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["construct 70-character maximal payload; serialized fixture blocked pending parser decision"]}},
+    {"id":"TD-SEGDL2-002-P","testCaseId":"TC-SEGDL2-002-P","scenarioId":"TS-SEGDL2-002","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":[]}},
+    {"id":"TD-SEGDL2-002-N-TYPE","testCaseId":"TC-SEGDL2-002-N-TYPE","scenarioId":"TS-SEGDL2-002","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set dialStringType to 2"]}},
+    {"id":"TD-SEGDL2-002-N-TERM","testCaseId":"TC-SEGDL2-002-N-TERM","scenarioId":"TS-SEGDL2-002","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["omit primary terminator A"]}},
+    {"id":"TD-SEGDL2-003-P","testCaseId":"TC-SEGDL2-003-P","scenarioId":"TS-SEGDL2-003","status":"REVIEW_REQUIRED","provisionalItem":"P-01","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["retain secondary terminator F; fallback retry schedule awaits external protocol decision"]}},
+    {"id":"TD-SEGDL2-003-N-TERM","testCaseId":"TC-SEGDL2-003-N-TERM","scenarioId":"TS-SEGDL2-003","status":"REVIEW_REQUIRED","provisionalItem":"P-01","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["change secondary terminator F to A"]}},
+    {"id":"TD-SEGDL2-003-N-ORDER","testCaseId":"TC-SEGDL2-003-N-ORDER","scenarioId":"TS-SEGDL2-003","status":"REVIEW_REQUIRED","provisionalItem":"P-01","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["attempt secondary before primary retries are exhausted"]}},
+    {"id":"TD-SEGDL2-004-P","testCaseId":"TC-SEGDL2-004-P","scenarioId":"TS-SEGDL2-004","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["serialize contiguous fields without separators only after SME parse rule is confirmed"]}},
+    {"id":"TD-SEGDL2-004-N-FS","testCaseId":"TC-SEGDL2-004-N-FS","scenarioId":"TS-SEGDL2-004","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["insert a Field Separator between DL2 fields"]}},
+    {"id":"TD-SEGDL2-005-P-ABSENT","testCaseId":"TC-SEGDL2-005-P-ABSENT","scenarioId":"TS-SEGDL2-005","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["omit accessCode and pauseIndicator together"]}},
+    {"id":"TD-SEGDL2-005-P-PAIRED","testCaseId":"TC-SEGDL2-005-P-PAIRED","scenarioId":"TS-SEGDL2-005","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set accessCode 9 and pauseIndicator B"]}},
+    {"id":"TD-SEGDL2-005-N-CODE","testCaseId":"TC-SEGDL2-005-N-CODE","scenarioId":"TS-SEGDL2-005","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set accessCode 9 and omit pauseIndicator"]}},
+    {"id":"TD-SEGDL2-005-N-PAUSE","testCaseId":"TC-SEGDL2-005-N-PAUSE","scenarioId":"TS-SEGDL2-005","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["omit accessCode and set pauseIndicator B"]}},
+    {"id":"TD-SEGDL2-006-P","testCaseId":"TC-SEGDL2-006-P","scenarioId":"TS-SEGDL2-006","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["primary redialCount 1; secondary redialCount 3"]}},
+    {"id":"TD-SEGDL2-006-N-ZERO","testCaseId":"TC-SEGDL2-006-N-ZERO","scenarioId":"TS-SEGDL2-006","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set primary redialCount 0"]}},
+    {"id":"TD-SEGDL2-006-N-FOUR","testCaseId":"TC-SEGDL2-006-N-FOUR","scenarioId":"TS-SEGDL2-006","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set secondary redialCount 4"]}},
+    {"id":"TD-SEGDL2-006-N-ALPHA","testCaseId":"TC-SEGDL2-006-N-ALPHA","scenarioId":"TS-SEGDL2-006","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set primary redialCount A"]}},
+    {"id":"TD-SEGDL2-007-P","testCaseId":"TC-SEGDL2-007-P","scenarioId":"TS-SEGDL2-007","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["use one-digit primary and 18-digit secondary; retain terminators A and F"]}},
+    {"id":"TD-SEGDL2-007-N-LENGTH","testCaseId":"TC-SEGDL2-007-N-LENGTH","scenarioId":"TS-SEGDL2-007","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["set phoneNumber to 19 digits"]}},
+    {"id":"TD-SEGDL2-007-N-NONDIGIT","testCaseId":"TC-SEGDL2-007-N-NONDIGIT","scenarioId":"TS-SEGDL2-007","status":"REVIEW_REQUIRED","provisionalItem":"P-04","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["insert letter X in phoneNumber"]}},
+    {"id":"TD-SEGDL2-008-P-TABLE-DIAL","testCaseId":"TC-SEGDL2-008-P-TABLE-DIAL","scenarioId":"TS-SEGDL2-008","status":"REVIEW_REQUIRED","provisionalItem":"P-03","request":{"template":"basePhoneLoadRequest","overrides":{"messageType":"Table Load Request"}},"response":{"template":"baseTableLoadResponse","mutations":["include DL2 as Block 2 on dial connection"]}},
+    {"id":"TD-SEGDL2-008-P-TABLE-IP","testCaseId":"TC-SEGDL2-008-P-TABLE-IP","scenarioId":"TS-SEGDL2-008","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","request":{"template":"basePhoneLoadRequest","overrides":{"messageType":"Table Load Request"}},"response":{"template":"baseTableLoadResponse","mutations":["set transport TCP/IP; include DL2 without a preceding Start-of-Data Block Indicator"]}},
+    {"id":"TD-SEGDL2-008-N-WRONG-MSG","testCaseId":"TC-SEGDL2-008-N-WRONG-MSG","scenarioId":"TS-SEGDL2-008","status":"REVIEW_REQUIRED","provisionalItem":"P-03","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["place DL2 in Software Load Response"]}},
+    {"id":"TD-SEGDL2-008-N-PHONE-MISSING","testCaseId":"TC-SEGDL2-008-N-PHONE-MISSING","scenarioId":"TS-SEGDL2-008","status":"REVIEW_REQUIRED","provisionalItem":"P-03","request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["omit required DL2; Phone Load framing remains unresolved"]}},
+    {"id":"TD-SEGDL2-009-P","testCaseId":"TC-SEGDL2-009-P","scenarioId":"TS-SEGDL2-009","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","context":{"template":"baseTestContext","overrides":{"merchantProfileLoadFlag":"PHON"}},"request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":[]}},
+    {"id":"TD-SEGDL2-009-N-FLAG","testCaseId":"TC-SEGDL2-009-N-FLAG","scenarioId":"TS-SEGDL2-009","status":"SYNTHETIC_CANDIDATE_NOT_APPROVED","context":{"template":"baseTestContext","overrides":{"merchantProfileLoadFlag":"unset"}},"request":{"template":"basePhoneLoadRequest"},"response":{"template":"basePhoneLoadResponse","mutations":["return DL2 despite absent PHON flag"]}}
+  ]
+}

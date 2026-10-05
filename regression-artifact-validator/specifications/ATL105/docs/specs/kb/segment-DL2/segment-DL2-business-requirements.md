@@ -64,3 +64,4 @@ Each requirement restates one catalog rule as an independently testable statemen
 
 - Rule catalog: [coverage/segment-DL2-rule-catalog.json](coverage/segment-DL2-rule-catalog.json)
 - Validator: _not yet implemented_ (`SegmentDL2PayloadValidator`, blocked on `SEGDL2-SME-004`)
+- Candidate coverage package: [coverage/README.md](coverage/README.md) · [BR/TS/TC/test-data JSON](../../../../test-output/test-json/segment-DL2-coverage-package.json)
