@@ -1,0 +1,859 @@
+{
+  "_meta": {
+    "provisional": true,
+    "status": "REVIEW_REQUIRED",
+    "provisionalReason": "Independent candidate package only. Fixture approval (P-01), maximum-length conflict (P-02), Element 114 content/padding (P-03), and DL4/DL5 exchange reconciliation remain open. No pair is approved or executed."
+  },
+  "manifest": {
+    "packageId": "ATL105-SEGDL5-COVERAGE-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "DL5",
+    "title": "Software IP Load Data Segment independent coverage candidates",
+    "ruleCatalog": "../../docs/specs/kb/segment-DL5/coverage/segment-DL5-rule-catalog.json",
+    "businessRequirements": "../../docs/specs/kb/segment-DL5/segment-DL5-business-requirements.md",
+    "fixtureApproval": "PENDING-SEGDL5-SME-001",
+    "maximumLengthStatus": "REVIEW_REQUIRED-SEGDL5-SME-002",
+    "ipUrlFieldStatus": "REVIEW_REQUIRED-SEGDL5-SME-003",
+    "executionStatus": "NOT_EXECUTED",
+    "representation": "Synthetic logical request/response objects with named mutations. No IP/URL address, serialized DL5 bytes, password, phone number, or unapproved lifecycle evidence is asserted."
+  },
+  "coverageSummary": {
+    "catalogRules": 7,
+    "businessRequirementsMapped": 7,
+    "scenarioDefinitions": 7,
+    "testCasesDefined": 14,
+    "symbolicRequestResponsePairs": 14,
+    "approvedTestDataPairs": 0,
+    "executedTestCases": 0,
+    "certifiedCoveredRules": 0,
+    "overallStatus": "INCOMPLETE_REVIEW_REQUIRED"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEGDL5-001",
+      "ruleId": "SEGDL5-R-001",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "buypass-managed-devices-only-ip"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL5-002",
+      "ruleId": "SEGDL5-R-002",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "max-length-64-markers",
+        "element": "24,34"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "BR-SEGDL5-003",
+      "ruleId": "SEGDL5-R-003",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.45,12.46",
+        "segment": "DL4,DL5",
+        "element": "114,91",
+        "rule": "dl5-mirrors-dl4-except-ip-vs-phone"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL5-004",
+      "ruleId": "SEGDL5-R-004",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "no-field-separator-next-field-immediately-follows"
+      },
+      "status": "SPEC_DERIVED"
+    },
+    {
+      "id": "BR-SEGDL5-005",
+      "ruleId": "SEGDL5-R-005",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL5",
+        "element": "114,57,95,92,93,94",
+        "rule": "software-ip-load-element-formats"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "BR-SEGDL5-006",
+      "ruleId": "SEGDL5-R-006",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "11.7.4.2",
+        "segment": "DL5",
+        "rule": "software-load-response-field-3-after-dl4"
+      },
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-SEGDL5-007",
+      "ruleId": "SEGDL5-R-007",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "10.10",
+        "segment": "DL5",
+        "rule": "software-ip-load-scheduled-attempts"
+      },
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-SEGDL5-001",
+      "requirementIds": [
+        "BR-SEGDL5-001"
+      ],
+      "title": "Device-management model applicability",
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TS-SEGDL5-002",
+      "requirementIds": [
+        "BR-SEGDL5-002"
+      ],
+      "title": "DL5 framing markers and maximum length",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TS-SEGDL5-003",
+      "requirementIds": [
+        "BR-SEGDL5-003"
+      ],
+      "title": "DL5 mirrors DL4 with Element 114 in field 4",
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TS-SEGDL5-004",
+      "requirementIds": [
+        "BR-SEGDL5-004"
+      ],
+      "title": "Separator-free DL5 representation",
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TS-SEGDL5-005",
+      "requirementIds": [
+        "BR-SEGDL5-005"
+      ],
+      "title": "DL5 field formats and Element 114 candidate width",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TS-SEGDL5-006",
+      "requirementIds": [
+        "BR-SEGDL5-006"
+      ],
+      "title": "Software Load Response placement after DL4 and SOFT flag",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-SEGDL5-007",
+      "requirementIds": [
+        "BR-SEGDL5-007"
+      ],
+      "title": "Scheduled IP-load lifecycle and retry limit",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-SEGDL5-001-P-BUYPASS",
+      "scenarioIds": [
+        "TS-SEGDL5-001"
+      ],
+      "requirementId": "BR-SEGDL5-001",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "A device uses the BUYPASS-supported management system.",
+      "when": "The device-management model applicability candidate is evaluated against ATL105 source anchors.",
+      "then": "DL5 applicability is allowed for BUYPASS-managed devices only.",
+      "testDataIds": [
+        "TD-SEGDL5-001-P-BUYPASS"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-001-N-VENDOR",
+      "scenarioIds": [
+        "TS-SEGDL5-001"
+      ],
+      "requirementId": "BR-SEGDL5-001",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-001.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject DL5 for a vendor-managed device under SEGDL5-R-001.",
+      "testDataIds": [
+        "TD-SEGDL5-001-N-VENDOR"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-002-P-MARKERS",
+      "scenarioIds": [
+        "TS-SEGDL5-002"
+      ],
+      "requirementId": "BR-SEGDL5-002",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-002.",
+      "when": "The dl5 framing markers and maximum length candidate is evaluated against ATL105 source anchors.",
+      "then": "Treat the marker and maximum-length check as review-required until the 64-vs-66 conflict is resolved.",
+      "testDataIds": [
+        "TD-SEGDL5-002-P-MARKERS"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TC-SEGDL5-002-N-BADMARKER",
+      "scenarioIds": [
+        "TS-SEGDL5-002"
+      ],
+      "requirementId": "BR-SEGDL5-002",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-002.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject an incorrect marker or over-limit representation under SEGDL5-R-002.",
+      "testDataIds": [
+        "TD-SEGDL5-002-N-BADMARKER"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-02"
+    },
+    {
+      "id": "TC-SEGDL5-003-P-ELEMENT114",
+      "scenarioIds": [
+        "TS-SEGDL5-003"
+      ],
+      "requirementId": "BR-SEGDL5-003",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-003.",
+      "when": "The dl5 mirrors dl4 with element 114 in field 4 candidate is evaluated against ATL105 source anchors.",
+      "then": "The DL5 field order uses Element 114 where DL4 uses Element 91.",
+      "testDataIds": [
+        "TD-SEGDL5-003-P-ELEMENT114"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-003-N-PHONEFIELD",
+      "scenarioIds": [
+        "TS-SEGDL5-003"
+      ],
+      "requirementId": "BR-SEGDL5-003",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-003.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject a phone-number field in the DL5 field-4 slot under SEGDL5-R-003.",
+      "testDataIds": [
+        "TD-SEGDL5-003-N-PHONEFIELD"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-004-P-NOFS",
+      "scenarioIds": [
+        "TS-SEGDL5-004"
+      ],
+      "requirementId": "BR-SEGDL5-004",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-004.",
+      "when": "The separator-free dl5 representation candidate is evaluated against ATL105 source anchors.",
+      "then": "Fields are represented contiguously with no Field Separators.",
+      "testDataIds": [
+        "TD-SEGDL5-004-P-NOFS"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-004-N-FIELDSEP",
+      "scenarioIds": [
+        "TS-SEGDL5-004"
+      ],
+      "requirementId": "BR-SEGDL5-004",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-004.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject a Field Separator inserted between fixed-position DL5 fields.",
+      "testDataIds": [
+        "TD-SEGDL5-004-N-FIELDSEP"
+      ],
+      "status": "DRAFT_NOT_EXECUTED"
+    },
+    {
+      "id": "TC-SEGDL5-005-P-FORMAT",
+      "scenarioIds": [
+        "TS-SEGDL5-005"
+      ],
+      "requirementId": "BR-SEGDL5-005",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-005.",
+      "when": "The dl5 field formats and element 114 candidate width candidate is evaluated against ATL105 source anchors.",
+      "then": "Treat Element 114 AN/30 content as review-required until SME answers P-03.",
+      "testDataIds": [
+        "TD-SEGDL5-005-P-FORMAT"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL5-005-N-WIDTH",
+      "scenarioIds": [
+        "TS-SEGDL5-005"
+      ],
+      "requirementId": "BR-SEGDL5-005",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-005.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject a non-candidate field width or invalid load type under SEGDL5-R-005.",
+      "testDataIds": [
+        "TD-SEGDL5-005-N-WIDTH"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL5-006-P-PLACEMENT",
+      "scenarioIds": [
+        "TS-SEGDL5-006"
+      ],
+      "requirementId": "BR-SEGDL5-006",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-006.",
+      "when": "The software load response placement after dl4 and soft flag candidate is evaluated against ATL105 source anchors.",
+      "then": "DL5 appears as field 3 after DL4 in a Software Load Response candidate.",
+      "testDataIds": [
+        "TD-SEGDL5-006-P-PLACEMENT"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-SEGDL5-006-N-NODL4",
+      "scenarioIds": [
+        "TS-SEGDL5-006"
+      ],
+      "requirementId": "BR-SEGDL5-006",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL_OR_REVIEW",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-006.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject or review a response where DL5 appears without DL4 or before DL4.",
+      "testDataIds": [
+        "TD-SEGDL5-006-N-NODL4"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-SEGDL5-007-P-LIFECYCLE",
+      "scenarioIds": [
+        "TS-SEGDL5-007"
+      ],
+      "requirementId": "BR-SEGDL5-007",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "given": "A logical DL5 candidate is prepared for SEGDL5-R-007.",
+      "when": "The scheduled ip-load lifecycle and retry limit candidate is evaluated against ATL105 source anchors.",
+      "then": "The candidate lifecycle observes no more than three scheduled IP-load attempts.",
+      "testDataIds": [
+        "TD-SEGDL5-007-P-LIFECYCLE"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-SEGDL5-007-N-FOURTHATTEMPT",
+      "scenarioIds": [
+        "TS-SEGDL5-007"
+      ],
+      "requirementId": "BR-SEGDL5-007",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A logical DL5 candidate is prepared with a mutation for SEGDL5-R-007.",
+      "when": "The mutation is evaluated without using approved execution data.",
+      "then": "Reject a fourth attempt or missing decline observation after unsuccessful loads.",
+      "testDataIds": [
+        "TD-SEGDL5-007-N-FOURTHATTEMPT"
+      ],
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-SEGDL5-001-P-BUYPASS",
+      "testCaseIds": [
+        "TC-SEGDL5-001-P-BUYPASS"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "PASS",
+          "citedRule": "SEGDL5-R-001",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-001-N-VENDOR",
+      "testCaseIds": [
+        "TC-SEGDL5-001-N-VENDOR"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "VENDOR_MANAGED",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          },
+          "mutation": "VENDOR"
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-001",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-002-P-MARKERS",
+      "testCaseIds": [
+        "TC-SEGDL5-002-P-MARKERS"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL5-R-002",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-002-N-BADMARKER",
+      "testCaseIds": [
+        "TC-SEGDL5-002-N-BADMARKER"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "@",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          },
+          "mutation": "BADMARKER"
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-002",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-003-P-ELEMENT114",
+      "testCaseIds": [
+        "TC-SEGDL5-003-P-ELEMENT114"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "PASS",
+          "citedRule": "SEGDL5-R-003",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-003-N-PHONEFIELD",
+      "testCaseIds": [
+        "TC-SEGDL5-003-N-PHONEFIELD"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~",
+            "invalidField4Meaning": "PHONE_NUMBER_NOT_ELEMENT_114"
+          },
+          "mutation": "PHONEFIELD"
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-003",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-004-P-NOFS",
+      "testCaseIds": [
+        "TC-SEGDL5-004-P-NOFS"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "PASS",
+          "citedRule": "SEGDL5-R-004",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-004-N-FIELDSEP",
+      "testCaseIds": [
+        "TC-SEGDL5-004-N-FIELDSEP"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~",
+            "fieldSeparatorInsertedAfterRecordId": true
+          },
+          "mutation": "FIELDSEP"
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-004",
+          "reviewOnly": false,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-005-P-FORMAT",
+      "testCaseIds": [
+        "TC-SEGDL5-005-P-FORMAT"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL5-R-005",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-005-N-WIDTH",
+      "testCaseIds": [
+        "TC-SEGDL5-005-N-WIDTH"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03_LENGTH_29_OR_31",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          },
+          "mutation": "WIDTH"
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-005",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-006-P-PLACEMENT",
+      "testCaseIds": [
+        "TC-SEGDL5-006-P-PLACEMENT"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL5-R-006",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-006-N-NODL4",
+      "testCaseIds": [
+        "TC-SEGDL5-006-N-NODL4"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "OMITTED_PENDING_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          },
+          "mutation": "NODL4"
+        },
+        "response": {
+          "validationDisposition": "FAIL_OR_REVIEW",
+          "citedRule": "SEGDL5-R-006",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-007-P-LIFECYCLE",
+      "testCaseIds": [
+        "TC-SEGDL5-007-P-LIFECYCLE"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL5-R-007",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL5-007-N-FOURTHATTEMPT",
+      "testCaseIds": [
+        "TC-SEGDL5-007-N-FOURTHATTEMPT"
+      ],
+      "payload": {
+        "request": {
+          "deviceManagement": "BUYPASS",
+          "merchantLoadFlag": "SOFT",
+          "representation": "SYNTHETIC_LOGICAL_ONLY",
+          "dl4CoPresence": "PRESENT_REVIEW_REQUIRED_SEGDL4_SME_002",
+          "dl5": {
+            "dataTypeIndicator": "$",
+            "newSoftwareVersion": "SYNTH001",
+            "softwareTerminalRecordId": "TERM000000001",
+            "softwareLoadIpUrlAddress": "OMITTED_PENDING_P03",
+            "softwareLoadRequestDate": "101526",
+            "softwareLoadRequestTime": "0200",
+            "softwareLoadType": "F",
+            "endOfDataIndicator": "~"
+          },
+          "mutation": "FOURTHATTEMPT",
+          "lifecycleAttemptCount": 4
+        },
+        "response": {
+          "validationDisposition": "FAIL",
+          "citedRule": "SEGDL5-R-007",
+          "reviewOnly": true,
+          "approved": false,
+          "executed": false
+        }
+      }
+    }
+  ]
+}

@@ -1,20 +1,169 @@
 {
-  "catalogId": "ATL105-SEGDL5-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "DL5", "segmentName": "Software IP Load Data Segment",
+  "catalogId": "ATL105-SEGDL5-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "DL5",
+  "segmentName": "Software IP Load Data Segment",
   "scope": "Segment DL5 host-originated, separator-free, self-delimited ('$' ... '~') software-download schedule for devices loaded through the BUYPASS device management system over IP/URL; carried together with DL4 in the Software Load Response",
   "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 17447-17530 (Section 12.46), 9455-9580 (Section 11.7.4 Software Load), 6166-6200 (Section 10.10), 22470-22480 (Section 13.2 Element 114)",
   "rules": [
-    {"ruleId":"SEGDL5-R-001","title":"Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP; vendors who support their own applications do NOT use this segment","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.46","segment":"DL5","rule":"buypass-managed-devices-only-ip"},"sourceEvidenceSections":["12.46","10.10","11.7"]},
-    {"ruleId":"SEGDL5-R-002","title":"Segment DL5 maximum length is 64 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '$' (field 1), End-of-Data Indicator fixed '~' (last field)","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.46","segment":"DL5","rule":"max-length-64-markers"},"note":"64 = '$' + 8 + 13 + 30 + 6 + 4 + 1 + '~'. The Software Load Response layout (11.7.4.2) states a maximum of 66 (SEGDL5-SME-002)."},
-    {"ruleId":"SEGDL5-R-003","title":"Segment DL5 is structurally identical to Segment DL4 except field 4 is Software Load IP/URL Address (Element 114, 30 characters) instead of DL4's Software Load Phone Number (Element 91, 18 characters)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.45,12.46","segment":"DL4,DL5","element":"114,91","rule":"dl5-mirrors-dl4-except-ip-vs-phone"},"sourceEvidenceSections":["12.45","12.46"]},
-    {"ruleId":"SEGDL5-R-004","title":"Segment DL5 fields are not separated by Field Separators; when a field is not populated, the next field immediately follows","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.46","segment":"DL5","rule":"no-field-separator-next-field-immediately-follows"},"note":"All DL5 fields are Required and fixed width (Element 114 is 'fixed length of 30'), so DL5 parses by position."},
-    {"ruleId":"SEGDL5-R-005","title":"Software Load IP/URL Address (Element 114) is AN fixed length 30; New Software Version (57) AN 8, Software Terminal Record ID (95) AN 13, Request Date (92) MMDDYY, Request Time (93) HHMM, Software Load Type (94) 'F' or 'P' follow the same rules as in DL4","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13.2","segment":"DL5","element":"114,57,95,92,93,94","rule":"software-ip-load-element-formats"},"note":"Element 114's purpose ('terminal number used to access the device management system') and valid values ('01-999, a-z, A-Z') do not describe an IP address or URL (SEGDL5-SME-003)."},
-    {"ruleId":"SEGDL5-R-006","title":"Segment DL5 is Required in the Software Load Response as field 3, immediately after DL4 (field 2), and is sent only on a Software Load Response; the load requires merchant load flag SOFT","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11.7.4.2","segment":"DL5","rule":"software-load-response-field-3-after-dl4"},"sourceEvidenceSections":["11.7.4.2","11.7.4"],"note":"The 10.10 Table Load placement conflict is tracked once, under SEGDL4-SME-002."},
-    {"ruleId":"SEGDL5-R-007","title":"At the Software Load Request Date and Time the device accesses the Software Load IP/URL Address and requests the application load, with at most three attempts; an unsuccessful attempt prints the 'decline' message; after a successful load the device requests a Table Load","class":"lifecycle","severity":"review","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"10.10","segment":"DL5","rule":"software-ip-load-scheduled-attempts"}}
+    {
+      "ruleId": "SEGDL5-R-001",
+      "title": "Segment DL5 is used to download an application from a BUYPASS-supported device management system via IP; vendors who support their own applications do NOT use this segment",
+      "class": "applicability",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "buypass-managed-devices-only-ip"
+      },
+      "sourceEvidenceSections": [
+        "12.46",
+        "10.10",
+        "11.7"
+      ]
+    },
+    {
+      "ruleId": "SEGDL5-R-002",
+      "title": "Segment DL5 maximum length is 64 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '$' (field 1), End-of-Data Indicator fixed '~' (last field)",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "max-length-64-markers",
+        "element": "24,34"
+      },
+      "note": "64 = '$' + 8 + 13 + 30 + 6 + 4 + 1 + '~'. The Software Load Response layout (11.7.4.2) states a maximum of 66 (SEGDL5-SME-002)."
+    },
+    {
+      "ruleId": "SEGDL5-R-003",
+      "title": "Segment DL5 is structurally identical to Segment DL4 except field 4 is Software Load IP/URL Address (Element 114, 30 characters) instead of DL4's Software Load Phone Number (Element 91, 18 characters)",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.45,12.46",
+        "segment": "DL4,DL5",
+        "element": "114,91",
+        "rule": "dl5-mirrors-dl4-except-ip-vs-phone"
+      },
+      "sourceEvidenceSections": [
+        "12.45",
+        "12.46"
+      ]
+    },
+    {
+      "ruleId": "SEGDL5-R-004",
+      "title": "Segment DL5 fields are not separated by Field Separators; when a field is not populated, the next field immediately follows",
+      "class": "serialization",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.46",
+        "segment": "DL5",
+        "rule": "no-field-separator-next-field-immediately-follows"
+      },
+      "note": "All DL5 fields are Required and fixed width (Element 114 is 'fixed length of 30'), so DL5 parses by position."
+    },
+    {
+      "ruleId": "SEGDL5-R-005",
+      "title": "Software Load IP/URL Address (Element 114) is AN fixed length 30; New Software Version (57) AN 8, Software Terminal Record ID (95) AN 13, Request Date (92) MMDDYY, Request Time (93) HHMM, Software Load Type (94) 'F' or 'P' follow the same rules as in DL4",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL5",
+        "element": "114,57,95,92,93,94",
+        "rule": "software-ip-load-element-formats"
+      },
+      "note": "Element 114's purpose ('terminal number used to access the device management system') and valid values ('01-999, a-z, A-Z') do not describe an IP address or URL (SEGDL5-SME-003)."
+    },
+    {
+      "ruleId": "SEGDL5-R-006",
+      "title": "Segment DL5 is Required in the Software Load Response as field 3, immediately after DL4 (field 2), and is sent only on a Software Load Response; the load requires merchant load flag SOFT",
+      "class": "applicability",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "11.7.4.2",
+        "segment": "DL5",
+        "rule": "software-load-response-field-3-after-dl4"
+      },
+      "sourceEvidenceSections": [
+        "11.7.4.2",
+        "11.7.4"
+      ],
+      "note": "The 10.10 Table Load placement conflict is tracked once, under SEGDL4-SME-002."
+    },
+    {
+      "ruleId": "SEGDL5-R-007",
+      "title": "At the Software Load Request Date and Time the device accesses the Software Load IP/URL Address and requests the application load, with at most three attempts; an unsuccessful attempt prints the 'decline' message; after a successful load the device requests a Table Load",
+      "class": "lifecycle",
+      "severity": "review",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "10.10",
+        "segment": "DL5",
+        "rule": "software-ip-load-scheduled-attempts"
+      }
+    }
   ],
   "provisionalItems": [
-    {"id":"P-01","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEGDL5-SME-001"},
-    {"id":"P-02","status":"OPEN","impacts":["SEGDL5-R-002"],"blocks":["Item 5"],"registerId":"SEGDL5-SME-002"},
-    {"id":"P-03","status":"OPEN","impacts":["SEGDL5-R-005"],"blocks":["Item 5","Item 7"],"registerId":"SEGDL5-SME-003"}
+    {
+      "id": "P-01",
+      "status": "OPEN",
+      "impacts": [
+        "AI-artifacts, test-data"
+      ],
+      "blocks": [
+        "Item 2",
+        "Item 3"
+      ],
+      "registerId": "SEGDL5-SME-001"
+    },
+    {
+      "id": "P-02",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL5-R-002"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL5-SME-002"
+    },
+    {
+      "id": "P-03",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL5-R-005"
+      ],
+      "blocks": [
+        "Item 5",
+        "Item 7"
+      ],
+      "registerId": "SEGDL5-SME-003"
+    }
   ],
-  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P01","item3_independence":"BLOCKED_BY_P01","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"IN_PROGRESS","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"BLOCKED_BY_P03","item8_consolidatedReport":"NOT_STARTED"}
+  "itemProgress": {
+    "item1_coverageClosure": "CANDIDATE_COMPLETE_REVIEW_REQUIRED",
+    "item2_artifactComparison": "CANDIDATE_COMPARISON_COMPLETE_REVIEW_REQUIRED",
+    "item3_independence": "CANDIDATE_ORACLE_SEPARATED_APPROVAL_PENDING_P01",
+    "item4_traceabilityMatrix": "CANDIDATE_TRACEABILITY_COMPLETE_REVIEW_REQUIRED",
+    "item5_mutationDefinition": "CANDIDATE_MUTATIONS_DEFINED_NOT_EXECUTED",
+    "item6_mutationExecution": "BLOCKED_BY_SME_AND_APPROVED_FIXTURES",
+    "item7_validatorEnhancement": "LOGICAL_SAMPLE_VALIDATION_ONLY_BLOCKED_BY_P03",
+    "item8_consolidatedReport": "CANDIDATE_REPORT_COMPLETE_REVIEW_REQUIRED"
+  }
 }

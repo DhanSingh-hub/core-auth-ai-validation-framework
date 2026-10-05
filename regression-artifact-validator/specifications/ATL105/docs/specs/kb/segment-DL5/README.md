@@ -1,6 +1,6 @@
 # Segment DL5 — Software IP Load Data Segment
 
-**Specification:** ATL105 2026-3, Section 12.46 (layout), 11.7.4 (Software Load), 10.10 (Software Update Processing), 13.2 (elements) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17447-17530, 9455-9580, 6166-6200 · **Rules:** 7 · **Item Progress:** 1/8 (Coverage Closure in progress; Items 2-3 blocked on `SEGDL5-SME-001`, validator blocked on `SEGDL5-SME-003`)
+**Specification:** ATL105 2026-3, Section 12.46 (layout), 11.7.4 (Software Load), 10.10 (Software Update Processing), 13.2 (elements) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17447-17530, 9455-9580, 6166-6200 · **Rules:** 7 · **Item Progress:** 5/8 candidate-complete/review-required; Items 6-7 blocked by SME decisions and approved fixtures; consolidated candidate report generated.
 
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md). Companion: [Segment DL4](../segment-DL4/README.md) — DL5 is DL4 with an IP/URL address instead of a phone number.
 
