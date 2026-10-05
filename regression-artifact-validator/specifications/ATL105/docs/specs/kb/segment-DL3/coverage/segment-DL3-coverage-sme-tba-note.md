@@ -29,11 +29,12 @@
 
 | Rule | Status | Reason |
 |---|---|---|
-| R-002, R-004, R-008, R-009 | MISSING | No TS/TC/TD yet (`SEGDL3-SME-001`) |
+| R-002, R-004, R-008 | CANDIDATE_DEFINED | Independent TS/TC/symbolic TD candidates exist; not SME-approved or executed. |
+| R-009 | REVIEW_REQUIRED | Candidate lifecycle cases exist; device-level timing evidence is not executed and rule has review severity. |
 | R-003, R-006 | REVIEW_REQUIRED | Password source (`SEGDL3-SME-002`) |
 | R-001, R-007 | REVIEW_REQUIRED | `~` in Date and Time Load Response (`SEGDL3-SME-003`) |
 | R-005 | REVIEW_REQUIRED | HHMM ranges (`SEGDL3-SME-004`) |
 
 ## Field-Alias Crosswalk Status
 
-No DL3 AI test-data payload exists; no crosswalk is built. See the [comparison](../segment-DL3-ai-vs-test-requirement-comparison.md).
+The phase-one AI delivery contains one representative DL3 payload, not a dedicated AI test package. The [coverage report](segment-DL3-ai-artifact-coverage-report.md) validates this sample separately from the supplied AI catalog; the [field-alias crosswalk](../../../../../contract/segment-DL3-field-alias-crosswalk.json) records observed AI field names and occurrence counts without changing the oracle. See the [AI-vs-Test comparison](../segment-DL3-ai-vs-test-requirement-comparison.md).
