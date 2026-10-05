@@ -1,6 +1,6 @@
 # Segment DL7 — Supplemental Terminal Data Segment
 
-**Specification:** ATL105 2026-3, Section 12.48 (layout), Appendix W (Download Data Layout), 13.2 (Elements 24, 84, 232) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17587-17634, 35814-35830 · **Rules:** 6 · **Item Progress:** 1/8 (Coverage Closure in progress; Items 2-3 blocked on `SEGDL7-SME-002`, validator blocked on `SEGDL7-SME-005`)
+**Specification:** ATL105 2026-3, Section 12.48 (layout), Appendix W (Download Data Layout), 13.2 (Elements 24, 84, 232) · **Source:** [extracted_text.txt](../../extracted_text.txt) lines 17587-17634, 35814-35830 · **Rules:** 6 · **Item Progress:** candidate package/report complete, review required; mutation execution and executable validator remain blocked by open SME decisions and approved fixtures.
 
 **Benchmark:** [Segment 100 Learning Module](../segment-100/README.md). Sibling framing: [Segment DL8](../segment-DL8/README.md).
 

@@ -1,0 +1,696 @@
+{
+  "_meta": {
+    "provisional": true,
+    "status": "REVIEW_REQUIRED",
+    "provisionalReason": "Independent candidate package only. Appendix W scope (P-01), fixture approval (P-02), table-data length semantics (P-03), DL7 message placement/spanning (P-04), and Segment Length counting/source (P-05) remain open. No pair is approved or executed."
+  },
+  "manifest": {
+    "packageId": "ATL105-SEGDL7-COVERAGE-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "segment": "DL7",
+    "title": "Supplemental Terminal Data Segment independent coverage candidates",
+    "ruleCatalog": "../../docs/specs/kb/segment-DL7/coverage/segment-DL7-rule-catalog.json",
+    "businessRequirements": "../../docs/specs/kb/segment-DL7/segment-DL7-business-requirements.md",
+    "fixtureApproval": "PENDING-SEGDL7-SME-002",
+    "messagePlacementStatus": "REVIEW_REQUIRED-SEGDL7-SME-004",
+    "appendixWScopeStatus": "REVIEW_REQUIRED-SEGDL7-SME-001",
+    "segmentLengthStatus": "REVIEW_REQUIRED-SEGDL7-SME-005",
+    "executionStatus": "NOT_EXECUTED",
+    "representation": "Synthetic isolated request/response objects with explicit placeholders for unresolved SME decisions; no serialized production payload is asserted."
+  },
+  "coverageSummary": {
+    "catalogRules": 6,
+    "businessRequirementsMapped": 6,
+    "scenarioDefinitions": 6,
+    "testCasesDefined": 12,
+    "symbolicRequestResponsePairs": 12,
+    "approvedTestDataPairs": 0,
+    "executedTestCases": 0,
+    "certifiedCoveredRules": 0,
+    "overallStatus": "INCOMPLETE_REVIEW_REQUIRED"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEGDL7-001",
+      "ruleId": "SEGDL7-R-001",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "24,84",
+        "rule": "hybrid-data-type-plus-segment-length-framing"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "BR-SEGDL7-002",
+      "ruleId": "SEGDL7-R-002",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "84",
+        "rule": "segment-length-excludes-data-type-indicator"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "BR-SEGDL7-003",
+      "ruleId": "SEGDL7-R-003",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48,AppendixW",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "download-data-tlv-appendix-w"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "BR-SEGDL7-004",
+      "ruleId": "SEGDL7-R-004",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "appendix-w-table-001-site-language-002-postal-code"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "BR-SEGDL7-005",
+      "ruleId": "SEGDL7-R-005",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "download-data-variable-up-to-100"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "BR-SEGDL7-006",
+      "ruleId": "SEGDL7-R-006",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL7",
+        "element": "84",
+        "rule": "segment-length-three-digits-matches-content"
+      },
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-SEGDL7-001",
+      "requirementIds": [
+        "BR-SEGDL7-001"
+      ],
+      "title": "DL7 hybrid framing and absence of End-of-Data marker",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TS-SEGDL7-002",
+      "requirementIds": [
+        "BR-SEGDL7-002"
+      ],
+      "title": "Segment Length counting convention excluding Data Type Indicator",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TS-SEGDL7-003",
+      "requirementIds": [
+        "BR-SEGDL7-003"
+      ],
+      "title": "Download Data TLV representation from Appendix W",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TS-SEGDL7-004",
+      "requirementIds": [
+        "BR-SEGDL7-004"
+      ],
+      "title": "Appendix W table IDs 001 and 002 data lengths",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TS-SEGDL7-005",
+      "requirementIds": [
+        "BR-SEGDL7-005"
+      ],
+      "title": "Download Data alphanumeric maximum length and spanning ambiguity",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TS-SEGDL7-006",
+      "requirementIds": [
+        "BR-SEGDL7-006"
+      ],
+      "title": "Three-digit Segment Length matches DL7 content",
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-SEGDL7-001-P",
+      "scenarioIds": [
+        "TS-SEGDL7-001"
+      ],
+      "requirementId": "BR-SEGDL7-001",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-001 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-04 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-001-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TC-SEGDL7-001-N",
+      "scenarioIds": [
+        "TS-SEGDL7-001"
+      ],
+      "requirementId": "BR-SEGDL7-001",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-001 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-001; retain as REVIEW_REQUIRED until open SME item P-04 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-001-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TC-SEGDL7-002-P",
+      "scenarioIds": [
+        "TS-SEGDL7-002"
+      ],
+      "requirementId": "BR-SEGDL7-002",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-002 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-05 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-002-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TC-SEGDL7-002-N",
+      "scenarioIds": [
+        "TS-SEGDL7-002"
+      ],
+      "requirementId": "BR-SEGDL7-002",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-002 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-002; retain as REVIEW_REQUIRED until open SME item P-05 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-002-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TC-SEGDL7-003-P",
+      "scenarioIds": [
+        "TS-SEGDL7-003"
+      ],
+      "requirementId": "BR-SEGDL7-003",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-003 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-01 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-003-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TC-SEGDL7-003-N",
+      "scenarioIds": [
+        "TS-SEGDL7-003"
+      ],
+      "requirementId": "BR-SEGDL7-003",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-003 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-003; retain as REVIEW_REQUIRED until open SME item P-01 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-003-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01"
+    },
+    {
+      "id": "TC-SEGDL7-004-P",
+      "scenarioIds": [
+        "TS-SEGDL7-004"
+      ],
+      "requirementId": "BR-SEGDL7-004",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-004 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-03 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-004-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL7-004-N",
+      "scenarioIds": [
+        "TS-SEGDL7-004"
+      ],
+      "requirementId": "BR-SEGDL7-004",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-004 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-004; retain as REVIEW_REQUIRED until open SME item P-03 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-004-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03"
+    },
+    {
+      "id": "TC-SEGDL7-005-P",
+      "scenarioIds": [
+        "TS-SEGDL7-005"
+      ],
+      "requirementId": "BR-SEGDL7-005",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-005 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-04 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-005-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TC-SEGDL7-005-N",
+      "scenarioIds": [
+        "TS-SEGDL7-005"
+      ],
+      "requirementId": "BR-SEGDL7-005",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-005 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-005; retain as REVIEW_REQUIRED until open SME item P-04 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-005-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04"
+    },
+    {
+      "id": "TC-SEGDL7-006-P",
+      "scenarioIds": [
+        "TS-SEGDL7-006"
+      ],
+      "requirementId": "BR-SEGDL7-006",
+      "candidatePolarity": "POSITIVE",
+      "expectedOutcome": "PASS_OR_REVIEW",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-006 as a source-conformant symbolic candidate.",
+      "then": "Retain as REVIEW_REQUIRED until open SME item P-05 is resolved; do not certify execution.",
+      "testDataIds": [
+        "TD-SEGDL7-006-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    },
+    {
+      "id": "TC-SEGDL7-006-N",
+      "scenarioIds": [
+        "TS-SEGDL7-006"
+      ],
+      "requirementId": "BR-SEGDL7-006",
+      "candidatePolarity": "NEGATIVE",
+      "expectedOutcome": "FAIL",
+      "given": "A synthetic isolated DL7 segment candidate is available; message placement and fixture approval remain pending SEGDL7-SME-002/004.",
+      "when": "The candidate is evaluated for SEGDL7-R-006 as a single-rule mutation candidate.",
+      "then": "Reject if the mutation violates SEGDL7-R-006; retain as REVIEW_REQUIRED until open SME item P-05 is resolved.",
+      "testDataIds": [
+        "TD-SEGDL7-006-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05"
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-SEGDL7-001-P",
+      "testCaseIds": [
+        "TC-SEGDL7-001-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-001",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-001",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-001-N",
+      "testCaseIds": [
+        "TC-SEGDL7-001-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": false,
+            "ruleUnderTest": "SEGDL7-R-001",
+            "candidatePolarity": "NEGATIVE",
+            "endOfDataIndicator": "~"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-001",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-002-P",
+      "testCaseIds": [
+        "TC-SEGDL7-002-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "OMITTED_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-002",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-002",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-002-N",
+      "testCaseIds": [
+        "TC-SEGDL7-002-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "OMITTED_COUNTS_CARET_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-002",
+            "candidatePolarity": "NEGATIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-002",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-003-P",
+      "testCaseIds": [
+        "TC-SEGDL7-003-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-003",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-003",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-003-N",
+      "testCaseIds": [
+        "TC-SEGDL7-003-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-01",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "FREE_TEXT_NOT_TLV",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-003",
+            "candidatePolarity": "NEGATIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-003",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-004-P",
+      "testCaseIds": [
+        "TC-SEGDL7-004-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-004",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-004",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-004-N",
+      "testCaseIds": [
+        "TC-SEGDL7-004-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-03",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "001004eng",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-004",
+            "candidatePolarity": "NEGATIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-004",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-005-P",
+      "testCaseIds": [
+        "TC-SEGDL7-005-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-005",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-005",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-005-N",
+      "testCaseIds": [
+        "TC-SEGDL7-005-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-04",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "SYMBOLIC_3_DIGITS_PENDING_P05",
+            "downloadData": "OMITTED_101_BYTES_PENDING_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-005",
+            "candidatePolarity": "NEGATIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-005",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-006-P",
+      "testCaseIds": [
+        "TC-SEGDL7-006-P"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "OMITTED_PENDING_P05",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-006",
+            "candidatePolarity": "POSITIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "REVIEW_REQUIRED",
+          "citedRule": "SEGDL7-R-006",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    },
+    {
+      "id": "TD-SEGDL7-006-N",
+      "testCaseIds": [
+        "TC-SEGDL7-006-N"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "provisionalItem": "P-05",
+      "payload": {
+        "request": {
+          "messageFamily": "OMITTED_PENDING_P04",
+          "segmentDL7": {
+            "dataTypeIndicator": "^",
+            "segmentLengthIndicator": "28",
+            "downloadData": "OMITTED_PENDING_P01_P03_P04",
+            "noEndOfDataIndicator": true,
+            "ruleUnderTest": "SEGDL7-R-006",
+            "candidatePolarity": "NEGATIVE"
+          }
+        },
+        "response": {
+          "validationDisposition": "FAIL_EXPECTED",
+          "citedRule": "SEGDL7-R-006",
+          "approval": "UNAPPROVED_SYNTHETIC_CANDIDATE"
+        }
+      }
+    }
+  ]
+}
