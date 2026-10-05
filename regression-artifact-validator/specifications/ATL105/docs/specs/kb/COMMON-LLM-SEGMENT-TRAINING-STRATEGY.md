@@ -21,7 +21,7 @@
 1. Read this handbook end to end once. The governance sections are mandatory, not background.
 2. Check out the segment branch (`Segment_<NNN>`) from an up-to-date `Develop`. Run the test suite and record any failure that already exists (see [L10](#lessons-learned)).
 3. Open `kb/segment-<NNN>/` and the segment's entry in `specifications/ATL105/training-status.json` to see which gates are already passed.
-4. Work through the [Nine-Phase Strategy](#common-nine-phase-strategy) in order. Each phase is a gate in `training-status.json`; do not skip one.
+4. Work through the [Nine-Phase Strategy](#common-nine-phase-strategy) in order. Each phase is a gate in `training-status.json`; do not skip one. For lifecycle or transaction-context training, complete the trainer prompts in the [Reusable Segment Training Questionnaire](../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md) with a Test Team trainer; unresolved answers remain `REVIEW_REQUIRED`.
 5. Build the Test Solution code with the [8-Item Framework](#test-solution-implementation-8-item-framework).
 6. Write anything that is specific to the segment in the segment's addendum (its `README.md`), not in this handbook. Record every open question in the [Communication Register](#communication-register).
 7. Pass the [Completion Gate](#completion-gate) and the [Sign-Off Checklist](#sign-off-checklist), then commit to the segment branch and merge to `Develop`.
@@ -46,6 +46,12 @@ An agent or automation may perform Phases 1-4 (Source Inventory through Independ
 ## Automatic Update Rule
 
 This document must be updated in the same change set whenever a training-relevant decision is made, not on request. This applies to (but is not limited to): adding or changing a phase or gate, adding a new artifact type (for example a field-alias crosswalk), changing required package field names or contract shapes, changing coverage-denominator or matching policy, or discovering a segment-package conformance defect. The update happens automatically as part of doing the work; do not wait for an explicit instruction to "update the training strategy."
+
+For every change to AI-output validation code, schemas, adapters, canonical matching, coverage denominators/calculations, statuses, or report semantics, update this handbook and the [AI Solution Output Validation Plan](../../test-validation-strategy/AI-Solution-Output-Validation-Plan.md) in the same change set. Update the affected `AIV-*` control and implementation/test evidence in [AI Artifact Validation Controls](../../test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md), add or revise regression tests for repeatable behavior, and refresh any affected per-delivery validation result. A validation implementation change without synchronized strategy, handbook, control-evidence, and regression-test updates is incomplete.
+
+Every canonical TD record must declare readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`. Missing or unknown readiness fails appendix/evidence consistency validation. Keep readiness (fixture usability) separate from `expectedValidation` (expected pass/fail result); unresolved dependencies stay `REVIEW_REQUIRED` and are not counted as executable evidence.
+
+Keep unresolved or blocked BRs in a separately identified blocked/review collection with a reason and required evidence. Do not place an unlinked blocked BR in the active canonical `businessRequirements` chain or count it as covered; do not silently discard it. When its blocker is resolved, promote it into the active chain with source anchor and complete links, then update the active BR count and regression test.
 
 When aggregating existing Test Solution evidence, standalone `testDataId`/`testCaseId`/`scenarioId` inventories may be normalized into canonical `testData[]` plus review-required TS/TC placeholders. This normalization may not fabricate a BR, source anchor, execution status, or segment identity: derive the segment only from an unambiguous payload `segmentType`; otherwise retain `CONTEXT_REVIEW_REQUIRED` and preserve the original file as provenance.
 
@@ -112,6 +118,7 @@ For every new or changed rule, the trainer must record:
 5. BR -> TS -> TC -> request Test Data traceability.
 6. Positive, negative, boundary, conditional, lifecycle, or serialization evidence as applicable.
 7. Validation result, reviewer, date, and unresolved review items.
+8. For LLM training supplied by a Test Team member, the completed trainer questionnaire, its source evidence, decisions, and unresolved questions.
 
 Training supplied by a Test Team member to an assistant follows the same record. The assistant must distinguish source fact, derived interpretation, and open question; it must not silently convert an instruction into an approved rule.
 
@@ -355,6 +362,8 @@ Use a finding per defect and name its evidence and affected stage. At minimum di
 
 One symptom may have multiple causes. Separate, for example, an AI missing anchor from a Test Solution rule that lacks an element anchor; do not report the former as a producer defect until both sides are checked.
 
+For every `REVIEW_REQUIRED` BR, preserve a stable deferred-item ID, blocker, affected BR/TS/TC/TD IDs, owner or review channel, and the exact evidence needed to close it. Keep dependent scenarios, cases, and data review-gated; do not count them as confirmed coverage or silently promote status. Close the item only after the evidence is recorded, the affected validator/test is rerun, and the disposition is reviewed. Current Segment 100 examples are `APPD-REVIEW-001` (ANSI `00` / Table 041) and `APPD-REVIEW-002` (Element 12 Card Discretionary), recorded in the [Appendix D coverage package](../../../test-output/test-json/appendices/appendix-d-segment-100-coverage.json).
+
 #### 5. Determine the review outcome
 
 Assign an overall outcome and per-chain/per-rule disposition:
@@ -520,7 +529,11 @@ For Segment 100 transaction-context training, the Test Solution must maintain th
 
 The transaction-type baseline is Test Solution-owned ATL105 evidence. It is not derived from AI output. Lifecycle groups such as authorization completion, purchase reversal/void, refund void-of-return, authorization cancellation, and timeout reversal are maintained separately and must preserve original-sequence correlation where the source requires it.
 
-For specification-wide training, the Test Solution also maintains `specifications/ATL105/test-output/test-json/all-segments-all-23-transaction-type-training-baseline.json`. This is a 48-segment by 23-code applicability matrix covering all numbered and download segments in the ATL105 inventory. Segment 100 entries are the executable transaction baseline; other segment/code combinations remain `CONTEXT_REVIEW_REQUIRED` until the segment rule catalog, message-family applicability, lifecycle evidence, and request Test Data JSON establish a valid segment-specific training package. This prevents the Test Solution from fabricating applicability merely because a transaction code exists in Appendix G.
+The generated Segment 100 code-flow BR/TS/TC package is a **starter mapping**, not proof of an independent executable chain: its per-code `testDataFile` references point into AI input, and lifecycle rows reuse a shared catalog that includes source and corrected variants. Never count an AI-owned fixture as independent Test Solution TD evidence. A code-level matrix must record each BR -> TS -> TC -> TD edge and label data ownership (`AI_INPUT`, shared Test Solution catalog, independent Test Solution fixture, or non-executable draft stub).
+
+The ten Appendix G special/nonfinancial types (`9`, `D`, `E`, `K`, `L`, `M`, `N`, `Q`, `T`, `V`) require specialized message-family training; do not force them through the standard financial purchase template. Use the source-backed [special-flow training technique](segment-100/transaction-type-training/special-flow-training-technique.md), the draft [special BR baseline](../../../test-output/test-json/special-transaction-type-br-baseline.md), [special chain draft package](../../../test-output/test-json/special-transaction-type-br-ts-tc-td-draft-package.md), and [combined 23-code matrix](../../../test-output/test-json/combined-23-transaction-type-br-ts-tc-td-matrix.md). Draft TS/TC links and schema-only TD stubs are not execution coverage. Code `D` remains Appendix-G-only for detailed request/response behavior; code `T` remains blocked on the external TransArmor specification. Record such blockers and keep status `REVIEW_REQUIRED` rather than filling protocol details by analogy.
+
+For specification-wide training, the Test Solution also maintains `specifications/ATL105/test-output/test-json/all-segments-all-23-transaction-type-training-baseline.json`. This is a 48-segment by 23-code applicability matrix covering all numbered and download segments in the ATL105 inventory. Segment 100 entries are the standard-financial transaction starter baseline; their fixture ownership and lifecycle references must be checked before claiming independent execution. Other segment/code combinations remain `CONTEXT_REVIEW_REQUIRED` until the segment rule catalog, message-family applicability, lifecycle evidence, and independent request Test Data JSON establish a valid segment-specific training package. This prevents the Test Solution from fabricating applicability merely because a transaction code exists in Appendix G.
 
 ## Completion Gate
 
@@ -613,9 +626,38 @@ Segment 100 was trained first and is the worked example for every phase and item
 - [Core rule catalog](segment-100/coverage/segment-100-rule-catalog.json)
 - [BR baseline index](../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json), [field inventory](../../../test-output/test-json/knowledge/segment-100-field-knowledge-inventory.json), [context model](../../../test-output/test-json/knowledge/segment-100-context-model.json)
 - [Annexure BR baseline](../../../test-output/test-json/segment-100-annexure-br-baseline-package.json) and [multi-step flow catalog](../../../test-output/test-json/segment-100-multistep-flow-catalog.json)
+- [Single-step and multi-step BR traceability, including invalid-flow findings](segment-100/transaction-type-training/single-multi-step-br-traceability.md)
 - [eWIC gap package](../../../test-output/test-json/segment-100-ewic-gap-package.json), [response-code package](../../../test-output/test-json/segment-100-response-code-package.json), [response family matrix](../../../test-output/test-json/atl105-response-code-family-matrix.json)
 - [Validation evidence](../../../test-output/traceability-matrix/segment-100/segment-100-validation-evidence.md)
 - Code: `src/main/java/com/coreauth/validator/canonical/Segment100*.java`
+
+### Transaction Lifecycle Training Rules
+
+Treat transaction-code eligibility, lifecycle participation, and a complete multi-leg scenario as separate concepts. Use the source-backed [BR traceability and requirement cross-check](segment-100/transaction-type-training/single-multi-step-br-traceability.md) when deriving or reviewing these flows.
+
+Before teaching these rules to the Test LLM, have a Test Team trainer complete the lifecycle prompts in the [Reusable Segment Training Questionnaire](../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md). Ask the trainer to explain the evidence for valid and invalid paths, not only confirm a proposed answer. Persist decisions in the source/SME register and decision record; keep unsupported answers `REVIEW_REQUIRED`.
+
+The source-supported lifecycle families are:
+
+| Flow | Transaction-code path | Core learning rule |
+|---|---|---|
+| Authorization completion | `3`, `5`, or `B` -> `0` | Reuse the authorization's Element 86 Sequence Number; completion amount may differ. |
+| Authorization-only cancellation | `3`, `5`, or `B` -> `S` | Use Prompt Code `S`; preserve the original Approval Number and Sequence Number. |
+| Purchase/capture reversal | `0` or `4` -> `8`; `6` -> `C` | Select reversal code from the original transaction context; do not cross-pair `8` and `C`. |
+| Refund void | `7` -> `U` | Correlate the void to the original return/refund; apply other identity checks only where sourced. |
+| Timeout reversal | Eligible Purchase/Capture `0`, CAT purchase `4`, or Mail/Phone purchase `6` -> `Z` | Use the original Sequence Number and same device. Distinguish code `0` Purchase/Capture from preauthorized completion and enforce card/product restrictions. |
+
+Do not derive a direct Authorization Only -> code `8` flow. ATL105 specifies `S` for Authorization Only Reversal; purchase reversal/void code `8` is not its substitute. The separate Authorization -> Completion -> Void chain remains `REVIEW_REQUIRED` under [SEG100-SME-002](segment-100/segment-100-sme-tba-input-register.md), including its void target and debit eligibility.
+
+For TOR timing and retries, distinguish the 30-second response interval from the source recommendation to forward a TOR at least 30 seconds after the original transaction has timed out. The retry limit is three unsuccessful attempts on each available connection route, not a global three-attempt cap. Partial-approval amount rules are card/product-specific; do not assert universal amount equality. Debit POS/CAT capture TORs are unsupported.
+
+Do not treat current validator acceptance as source approval: the validator and lifecycle catalog still accept or record invalid direct Authorization Only -> `8`, cross-paired purchase reversal codes, overly broad TOR originals, and blanket TerminalID equality. Check the relevant ATL105 clauses in the [extracted specification](../extracted_text.txt) and keep unresolved cases review-required.
+
+### Payment-Network Type Training
+
+ATL105 Section 5's 16 normalized leaves are a mixed taxonomy of payment methods, check services, card/benefit programs, and stored-value/loyalty products; they are not 16 card brands. Teach each leaf as a classification only. Do not infer Appendix E card codes, transaction eligibility, authorizer routing, or companion segments without a separate source-backed mapping. The Section 5 context-consistency BR is `REVIEW_REQUIRED` until those mappings are evidenced. See [Payment-Network Type Training](segment-100/payment-network-type-training.md), the [16-leaf BR matrix](../../../test-output/test-json/section-5-payment-network-segment-100-matrix.json), and the [BR -> TS -> TC -> TD package](../../../test-output/test-json/payment-network-card-type-br-ts-tc-td-matrix.json).
+
+Receipt Card Type IDs are a separate namespace: ATL105 §10.1.7.3 lists seven named brand/network labels and generic Debit/EBT IDs. Use the [draft Card Type ID BRs](segment-100/card-type-id-business-requirements.md); do not equate those receipt IDs with Appendix E Element 14 card codes or Appendix C authorizer codes.
 
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
 
@@ -624,6 +666,7 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | Date | Change |
 |---|---|
 | 2026-10-01 | Added the versioned Element 83 source-backed assertion manifest and fail-closed source gate. Separated citation resolution, literal assertion backing, draft case derivation and SME approval; no new certification gate or executable coverage claim. |
+| 2026-10-05 | Added Segment 100 single-/multi-step BR traceability and source cross-check findings; clarified authorization cancellation, TOR scope, retry/timing rules, review-required completion-to-void behavior, trainer-led LLM questionnaire use, and the 16-leaf Section 5 payment-network taxonomy. |
 | 2026-10-01 | Added conservative body-location triage for all catalog rules; TOC entries and ambiguous chapter/appendix references cannot promote review-only locations into assertions. |
 | 2026-10-01 | Added bounded cross-section evidence for Segment 118 Site Configuration and Host Discount response-code contexts. Recorded second-source lines/fingerprints and partial-rule draft cases without certifying the broader workflow. |
 | 2026-10-01 | Added a separate Element 84 source gate for Segment 130 four-digit and Segment 132 three-digit width claims. Both Chapter 13 exception lists and segment layout rows must agree; examples remain width-only and review-required. |

@@ -30,6 +30,8 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Final Closure SME Note](final-closure-sme-tba-note.md)
 - [Final Closure Flow](final-closure-flow.md)
 - [Response Code (Element 83) Training](response-code-training.md)
+- [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
+- [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
 ## Scope
 
@@ -48,6 +50,7 @@ It does not claim that Segment 100 alone represents every ATL105 transaction. Se
 ## Authoritative Neighboring Knowledge
 
 - [Segment 100 canonical anchors](../segment-100-canonical-anchors.md)
+- [Appendix code tables, including Appendix D state codes](../appendix-code-tables.md)
 - [Segment compatibility matrix](../segment-compatibility-matrix.md)
 - [Financial transaction request sections](../11-financial-transaction-request-sections.md)
 - [Section 1 and Section 2 refinement](../atl105-knowledge-notes/section1-section2-business-requirement-refinement.md)

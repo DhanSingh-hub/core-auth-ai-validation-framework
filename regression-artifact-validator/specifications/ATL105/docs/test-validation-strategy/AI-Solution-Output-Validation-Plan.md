@@ -5,6 +5,12 @@
 **Primary source inspected:** `core-auth-test-generation-platform/src/pipeline`  
 **Purpose:** Define how Test Validation independently validates the AI Solution generation workflow and every outcome artifact
 
+**Validation-control register:** Stable `AIV-*` controls, implementation/test evidence, and the distinction between validator-control coverage and ATL105 BR coverage are maintained in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md). This plan defines the workflow; the control register defines how we verify that the workflow itself is implemented and tested.
+
+**Mandatory change synchronization:** Every change to AI-output validation code, schemas, adapters, canonical matching, coverage denominators/calculations, validation statuses, or report semantics must update this plan and the [Common LLM Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) in the same change set. Update the affected `AIV-*` control's implementation/test evidence in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md), add or revise regression tests for repeatable behavior, and refresh any affected per-delivery result. A code-only or report-only change without its strategy/handbook/evidence updates is incomplete.
+
+**Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
+
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
@@ -137,6 +143,7 @@ An AI output can be syntactically valid and still be invalid because:
 - Every approved item has an approval decision.
 - Rejected items do not feed downstream generation.
 - Review-required items remain visible.
+- Unresolved or blocked requirements remain in an explicit blocked/review collection with a reason; do not insert unlinked blocked records into the active canonical chain or count them as covered.
 - Approval actor, timestamp, source version, and decision are recorded.
 - Knowledge counts reconcile across extracted, approved, rejected, and flagged items.
 
@@ -204,6 +211,7 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 **Validate:**
 
 - Every data item links to a test case.
+- Every test-data item declares readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`; missing or unknown readiness is a validation defect. Readiness describes fixture usability, while `expectedValidation` describes whether the test input should pass or fail; do not conflate them.
 - Payload matches the expected schema and message category.
 - Required fields and segments are present.
 - Calculated values are marked and independently recalculated.

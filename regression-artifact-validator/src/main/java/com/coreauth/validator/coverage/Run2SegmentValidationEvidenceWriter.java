@@ -30,14 +30,7 @@ public final class Run2SegmentValidationEvidenceWriter {
         assessment.put("technicalChecksPassed", report.executionReady());
         assessment.put("smeApprovalStatus", "NOT_ESTABLISHED_BY_THIS_REPORT");
         assessment.put("executionCertified", false);
-        assessment.put("coverageDenominator", report.coverageDenominator());
-        assessment.put("confirmedRequirements", report.confirmedRequirements());
-        assessment.put("fullChainRequirements", report.fullChainRequirements());
-        assessment.put("reviewRequired", report.reviewRequired());
-        assessment.put("missingRequirements", report.missingRequirements());
-        assessment.put("unmatchedAiRequirements", report.unmatchedAiRequirements());
-        assessment.put("confirmedRequirementCoveragePercent", report.confirmedRequirementCoveragePercent());
-        assessment.put("fullChainCoveragePercent", report.fullChainCoveragePercent());
+        AiCoverageAssessmentJsonFields.write(assessment, report);
         assessment.set("strategyReadiness", mapper.valueToTree(report.strategyReadiness()));
         addValidation(assessment, "baselineValidation", report.baselineValidation());
         addValidation(assessment, "testCaseValidation", report.testCaseValidation());

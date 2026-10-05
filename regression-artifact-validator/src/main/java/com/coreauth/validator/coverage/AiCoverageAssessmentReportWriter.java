@@ -16,14 +16,7 @@ public final class AiCoverageAssessmentReportWriter {
     public void write(AiCoverageAssessmentReport report, Path outputFile) throws IOException {
         ObjectNode root = mapper.createObjectNode();
         root.put("decision", report.executionReady() ? "EXECUTION_READY" : "REVIEW_REQUIRED");
-        root.put("coverageDenominator", report.coverageDenominator());
-        root.put("confirmedRequirements", report.confirmedRequirements());
-        root.put("fullChainRequirements", report.fullChainRequirements());
-        root.put("reviewRequired", report.reviewRequired());
-        root.put("missingRequirements", report.missingRequirements());
-        root.put("unmatchedAiRequirements", report.unmatchedAiRequirements());
-        root.put("confirmedRequirementCoveragePercent", report.confirmedRequirementCoveragePercent());
-        root.put("fullChainCoveragePercent", report.fullChainCoveragePercent());
+        AiCoverageAssessmentJsonFields.write(root, report);
         root.set("strategyReadiness", mapper.valueToTree(report.strategyReadiness()));
 
         ObjectNode validation = root.putObject("validation");

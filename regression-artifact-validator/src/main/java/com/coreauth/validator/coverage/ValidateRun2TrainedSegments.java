@@ -64,10 +64,11 @@ public final class ValidateRun2TrainedSegments {
                     safeSize(segmentPackage.getTestCases()),
                     safeSize(segmentPackage.getTestData()), assessment, payloadBatch);
             writer.write(evidence, outputRoot.resolve("segment-" + segment + "-validation.json"));
-            System.out.printf("segment=%s br=%d sc=%d tc=%d td=%d confirmed=%.1f fullChain=%.1f "
+            System.out.printf("segment=%s br=%d sc=%d tc=%d td=%d ruleCoverage=%s fullChainRuleCoverage=%s "
                             + "payloads=%d valid=%d invalid=%d validator=%s%n",
                     segment, evidence.requirements(), evidence.scenarios(), evidence.testCases(), evidence.testData(),
-                    assessment.confirmedRequirementCoveragePercent(), assessment.fullChainCoveragePercent(),
+                    formatPercent(assessment.confirmedRequirementCoveragePercent()),
+                    formatPercent(assessment.fullChainCoveragePercent()),
                     payloadBatch.applicablePayloadFiles(), payloadBatch.validPayloadFiles(),
                     payloadBatch.invalidPayloadFiles(), payloadBatch.validatorImplemented());
         }
@@ -108,4 +109,8 @@ public final class ValidateRun2TrainedSegments {
     private static int safeSize(List<?> values) {
         return values == null ? 0 : values.size();
     }
+
+        private static String formatPercent(Double value) {
+                return value == null ? "NOT_CALCULABLE" : "%.1f%%".formatted(value);
+        }
 }

@@ -71,6 +71,25 @@ For each BR:
 5. What is the retry limit and terminal behavior?
 6. Are duplicate follow-ups invalid?
 
+## Trainer/Tester Interview for LLM Lifecycle Training
+
+Complete this section with a Test Team trainer before teaching a lifecycle flow to the Test LLM. Ask for source evidence and reasoning; do not treat agreement with a proposed answer or current validator behavior as approval.
+
+1. Which ATL105 release and exact sections/elements establish each flow? What source text supports the rule, and what is interpretation?
+2. For each flow, what is the exact original -> follow-up sequence? Is it a two-message pair, a three-leg chain, or a queued recovery flow?
+3. Which transaction codes are valid in each role, and which similar-looking combinations are invalid? Distinguish code `0` Purchase/Capture from preauthorized completion.
+4. Which identity fields must match for this flow (Sequence Number, Approval Number, account, amount, device/terminal), and which are conditional rather than universal?
+5. How do card type, transaction channel, product, partial approval, and response outcome change applicability or required amounts?
+6. For TOR, what starts the response timeout, when may the TOR be forwarded, what is the queue ordering, and what must happen before the next financial request?
+7. What is the retry limit per connection route? What response or exhaustion condition clears the queued TOR?
+8. Which approved, declined, partial-approved, debit, and completion variants are explicitly supported, explicitly prohibited, or not established?
+9. Is Authorization -> Completion -> Void a confirmed flow for this context? Identify the void target and any debit/EMV restrictions; otherwise record the SME/TBA item and keep it `REVIEW_REQUIRED`.
+10. Provide one valid example and at least one near-miss invalid example per flow. For each, explain the expected result and cite the rule that decides it.
+11. Which existing BR, scenario, test case, fixture, validator, matrix, or catalog conflicts with the source? What correction or blocker should be recorded?
+12. What question remains unanswered, who owns the answer, and what evidence will close it?
+
+Record each answer with: trainer/tester, date, specification release, flow/context, source anchor, evidence or source quote location, decision (`SOURCE_SUPPORTED`, `INVALID`, or `REVIEW_REQUIRED`), rationale, affected BR/TS/TC/TD IDs, reviewer, and next action. An SME answer without an applicable source citation remains `REVIEW_REQUIRED`.
+
 ## Response Questions
 
 1. Which response codes apply to this message family?

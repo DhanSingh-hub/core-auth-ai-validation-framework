@@ -54,6 +54,8 @@ class AiCoverageAssessmentServiceTest {
 
         assertThat(report.confirmedRequirements()).isZero();
         assertThat(report.reviewRequired()).isEqualTo(1);
+        assertThat(report.confirmedAiBusinessRequirements()).isZero();
+        assertThat(report.reviewRequiredAiBusinessRequirements()).isEqualTo(1);
         assertThat(report.confirmedRequirementCoveragePercent()).isZero();
         assertThat(report.fullChainCoveragePercent()).isZero();
         assertThat(report.executionReady()).isFalse();
@@ -73,6 +75,54 @@ class AiCoverageAssessmentServiceTest {
         assertThat(report.strategyReadiness().get("TEST_CASE_QUALITY")).isFalse();
         assertThat(report.strategyReadiness().get("INDEPENDENT_TRACEABILITY")).isFalse();
     }
+
+        @Test
+        void keepsAiRequirementInventorySeparateFromIndependentRuleDenominator() {
+        SourceAnchor anchor = anchor("account-number-format");
+        CanonicalArtifactPackage artifactPackage = fullChainPackage(anchor);
+        CanonicalRequirement additionalRequirement = new CanonicalRequirement();
+        additionalRequirement.setId("AI-BR-UNMAPPED");
+        additionalRequirement.setSourceAnchors(List.of(anchor("unmapped-rule")));
+        artifactPackage.setBusinessRequirements(List.of(
+            artifactPackage.getBusinessRequirements().getFirst(), additionalRequirement));
+
+        AiCoverageAssessmentReport report = service.assess(artifactPackage, baseline(anchor),
+            List.of(validPayloadValidator()));
+
+        assertThat(report.coverageDenominator()).isEqualTo(1);
+        assertThat(report.independentRuleDenominatorStructurallyValid()).isTrue();
+        assertThat(report.confirmedRequirements()).isEqualTo(1);
+        assertThat(report.confirmedRequirementCoveragePercent()).isEqualTo(100.0);
+        assertThat(report.aiBusinessRequirementDenominator()).isEqualTo(2);
+        assertThat(report.aiBusinessRequirementsWithCrosswalkDisposition()).isEqualTo(1);
+        assertThat(report.confirmedAiBusinessRequirements()).isEqualTo(1);
+        assertThat(report.unmappedAiBusinessRequirements()).isEqualTo(1);
+        assertThat(report.confirmedAiBusinessRequirementInventoryPercent()).isEqualTo(50.0);
+        }
+
+        @Test
+        void doesNotReportZeroCoverageWhenIndependentBaselineIsInvalid(@TempDir Path tempDir) throws Exception {
+        SourceAnchor anchor = anchor("account-number-format");
+        IndependentRequirementBaseline invalidBaseline = new IndependentRequirementBaseline(List.of(
+            new IndependentRequirementBaseline.Requirement("TS-BR-1", List.of(anchor), true),
+            new IndependentRequirementBaseline.Requirement("TS-BR-2", List.of(anchor), true)));
+
+        AiCoverageAssessmentReport report = service.assess(fullChainPackage(anchor), invalidBaseline,
+            List.of(validPayloadValidator()));
+
+        assertThat(report.coverageDenominator()).isEqualTo(2);
+        assertThat(report.independentRuleDenominatorStructurallyValid()).isFalse();
+        assertThat(report.confirmedRequirementCoveragePercent()).isNull();
+        assertThat(report.fullChainCoveragePercent()).isNull();
+        assertThat(report.executionReady()).isFalse();
+
+        Path output = tempDir.resolve("invalid-baseline-assessment.json");
+        new AiCoverageAssessmentReportWriter().write(report, output);
+        var json = mapper.readTree(output.toFile());
+        assertThat(json.path("coverageDenominatorStructurallyValid").asBoolean()).isFalse();
+        assertThat(json.path("confirmedRequirementCoveragePercent").isNull()).isTrue();
+        assertThat(json.path("fullChainCoveragePercent").isNull()).isTrue();
+        }
 
     @Test
     void confirmedCrosswalkWithoutEvidenceReasonIsReviewRequired() {
@@ -158,6 +208,10 @@ class AiCoverageAssessmentServiceTest {
         var json = mapper.readTree(output.toFile());
         assertThat(json.path("decision").asText()).isEqualTo("EXECUTION_READY");
         assertThat(json.path("strategyReadiness").size()).isEqualTo(6);
+        assertThat(json.path("coverageDenominatorType").asText()).isEqualTo("INDEPENDENT_TEST_SOLUTION_RULES");
+        assertThat(json.path("aiBusinessRequirementDenominator").asInt()).isEqualTo(1);
+        assertThat(json.path("confirmedAiBusinessRequirements").asInt()).isEqualTo(1);
+        assertThat(json.path("confirmedAiBusinessRequirementInventoryPercent").asDouble()).isEqualTo(100.0);
         assertThat(json.path("fullChainCoveragePercent").asDouble()).isEqualTo(100.0);
         assertThat(json.path("validation").path("traceability").path("valid").asBoolean()).isTrue();
     }

@@ -32,12 +32,6 @@ public final class Segment110PayloadValidator {
     private static final Pattern ALPHANUMERIC_MAX_8 = Pattern.compile("^[A-Za-z0-9]{1,8}$");
     private static final Pattern STATE_CODE = Pattern.compile("^[A-Za-z]{2}$");
 
-    private static final Set<String> VALID_STATE_CODES = Set.of(
-        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN",
-        "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH",
-        "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
-        "VT", "VA", "WA", "WV", "WI", "WY", "GU", "PR", "VI", "AA", "AE", "AP", "XX",
-        "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT", "NA");
     private static final Set<String> VALID_CHECK_TYPES = Set.of("P", "C");
     private static final String REQUEST_ROOT_KEY = "ECA/TeleCheck Service Transaction Request";
     // Segment 100 + Data Section 3 Field Nos. 4-6 (110, 111, conditional 113) per Section 11.3.1.
@@ -146,7 +140,7 @@ public final class Segment110PayloadValidator {
         if (stateCode == null || stateCode.isBlank()) {
             return;
         }
-        if (!matches(stateCode, STATE_CODE) || !VALID_STATE_CODES.contains(stateCode.toUpperCase())) {
+        if (!matches(stateCode, STATE_CODE) || !AppendixDStateCodes.isValidAlphabeticalCode(stateCode)) {
             result.addError(SOURCE, "Check Data Segment.StateCode must be a valid Appendix D state code (SEG110-R-010)");
         }
     }

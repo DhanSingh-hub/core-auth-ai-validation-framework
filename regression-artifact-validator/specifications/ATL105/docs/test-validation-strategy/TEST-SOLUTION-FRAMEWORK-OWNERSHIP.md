@@ -19,6 +19,7 @@
 | Chain integrity | `CanonicalTraceabilityValidator` | Canonical artifacts and source anchors | Anchor continuity and contract errors |
 | Aggregate review | `ValidateAllTestSolutionBrTsTcTdAggregate` | Aggregate evidence | Link gaps, duplicate IDs; never execution certification by itself |
 | Pre-SME AI validation | `ValidateRun2TrainedSegments`, `Run2PayloadBatchValidator`, and `Run2SegmentValidationEvidenceWriter` | Immutable Run2 payloads, independent catalogs and crosswalks | Technical checks and bounded review evidence; never SME approval or execution certification |
+| AI validation controls | `docs/test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md` | Versioned AI delivery and the applicable AIV control set | Rule/method coverage of the Test Solution validator, kept separate from ATL105 BR coverage |
 | Element review | `GenerateAtl105ElementChainCoverage` | Complete package and element reference | Per-element structural and non-placeholder chain measures |
 | Limitations | `GenerateAtl105RemainingLimitationsStatus` | Published review matrices | Summary of unresolved semantic and execution gates |
 

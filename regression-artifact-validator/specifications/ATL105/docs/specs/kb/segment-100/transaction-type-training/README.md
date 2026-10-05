@@ -12,7 +12,9 @@ This shared ledger coordinates Test Solution training for all 23 Appendix G tran
 6. Before handing off, update `handoff.nextAction`, `handoff.notes`, and owner. Set `UNCLAIMED` when releasing the task.
 7. Commit and push the code task file and event. Run `GenerateTransactionTypeTrainingLedger` to refresh the index and overview.
 
-For codes `9`, `D`, `E`, `K`, `L`, `M`, `N`, `Q`, `T`, and `V`, follow [the special-flow training technique](special-flow-training-technique.md) and review the [draft BR baseline](../../../../../test-output/test-json/special-transaction-type-br-baseline.md). These are separate from the standard-financial Segment 100 code-flow package.
+For codes `9`, `D`, `E`, `K`, `L`, `M`, `N`, `Q`, `T`, and `V`, follow [the special-flow training technique](special-flow-training-technique.md), review the [draft BR baseline](../../../../../test-output/test-json/special-transaction-type-br-baseline.md), [draft chain package](../../../../../test-output/test-json/special-transaction-type-br-ts-tc-td-draft-package.md), and [combined 23-code matrix](../../../../../test-output/test-json/combined-23-transaction-type-br-ts-tc-td-matrix.md). These are separate from the standard-financial Segment 100 code-flow package.
+
+For the BR inventory and traceability split, see [single-step and multi-step BR traceability](single-multi-step-br-traceability.md). It records counts, source anchors, multi-step catalog gaps, and the TOR eligibility discrepancy.
 
 ## Completion Gate
 

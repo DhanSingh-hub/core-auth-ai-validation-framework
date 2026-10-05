@@ -17,4 +17,6 @@ Use this method for Appendix G transaction types `9`, `D`, `E`, `K`, `L`, `M`, `
 
 ## Current Draft Package
 
-[Special transaction-type BR baseline](../../../../../test-output/test-json/special-transaction-type-br-baseline.md) contains source-cited draft BR candidates only. It intentionally contains no scenarios, test cases, or Test Data JSON and does not certify any code.
+[Special transaction-type BR baseline](../../../../../test-output/test-json/special-transaction-type-br-baseline.md) contains source-cited draft BR candidates. The [special BR -> TS -> TC -> TD draft package](../../../../../test-output/test-json/special-transaction-type-br-ts-tc-td-draft-package.md) adds linked review scaffolds for source-supported BRs and lists Appendix-G-only blockers separately. Its TD JSON files are schema-only stubs, not protocol-valid executable fixtures, so the package does not certify any code.
+
+The [combined 23-code mapping matrix](../../../../../test-output/test-json/combined-23-transaction-type-br-ts-tc-td-matrix.md) joins these special-flow drafts with the standard financial starter chains. It labels AI-input fixtures, shared lifecycle-catalog references, non-executable special TD stubs, and blocked BRs separately. `executionReady` remains false until independent fixtures, source review, and required validations pass.

@@ -3,10 +3,10 @@
 Code-to-description lookup tables from the flat, ENUM-style appendices - the most directly
 useful reference data for building JSON field validation rules.
 
-> Appendix C below was verified verbatim against `docs/specs/extracted_text.txt` (line
-> 25935-26069). The other tables were transcribed by an automated pass and only spot-checked,
-> so treat them as a strong draft - re-verify against the source before hardening into a
-> production rule, especially the "partial extraction" tables noted below.
+> Appendix C was verified verbatim against `docs/specs/extracted_text.txt` (source lines
+> 25935-26069). Appendix D's 72 alphabetical/ANSI pairs were transcribed against the full source
+> table; tests exercise all 72 values in each code family. Other tables were transcribed by an
+> automated pass and only spot-checked; treat them as drafts and re-verify before hardening.
 
 ---
 
@@ -117,8 +117,22 @@ First Data Corporation representative for additional information."
 
 ## Appendix D: Valid State Codes (Elements 4, 12, 102, 124)
 
-Source: `extracted_text.txt` line ~26070-26242. **Partial extraction** - first 20 US states shown;
-full table (all 50 states + territories + military codes + Canadian provinces) needs re-extraction.
+Source: `extracted_text.txt` lines 26070-26242. The source table is complete and verified; this
+page shows representative entries only. The full 72 alphabetical/ANSI pairs are maintained in
+`AppendixDStateCodes`, and each 72-value code family is covered by the linked vectors in
+`test-output/test-json/appendices/appendix-d-segment-100-coverage.json`.
+
+Appendix D defines two different code families:
+
+- Alphabetical codes are used by Elements 4, 12, and 124.
+- Two-digit ANSI codes are used at positions 3-4 of Element 102 (Terminal Identifier).
+- ANSI code `00` is listed for locations outside the US/Canada and conditionally requires
+	Variable Information Table 041; its executable dependency remains `REVIEW_REQUIRED`.
+
+Do not substitute an alphabetical code such as `CA` into Element 102 where the ANSI code `06`
+is required.
+
+### Representative entries (excerpt)
 
 | State | Alphabetical | ANSI |
 |-------|--------------|------|
@@ -143,8 +157,22 @@ full table (all 50 states + territories + military codes + Canadian provinces) n
 | Louisiana | LA | 22 |
 | Maine | ME | 23 |
 
-Note: full table also includes remaining US states, territories (PR, VI, etc.), military codes
-(AA, AE, AP), and Canadian provinces (AB, BC, MB, ON, QC, SK, etc.) - not yet transcribed.
+The remaining source entries cover all US states, territories, military identifiers, Canadian
+provinces/territories, and `NA`; the full numeric and alphabetical value sets are exercised by
+`AppendixDStateCodesTest`. The tests do not infer arbitrary conversions between the two code
+families.
+
+### Deferred Appendix D review items
+
+- `APPD-REVIEW-001`: ANSI state code `00` is accepted as a listed value, but its Table 041 Country
+	Subdivision dependency remains `REVIEW_REQUIRED` until an actual serialized Variable
+	Information fixture is modeled and validated.
+- `APPD-REVIEW-002`: Element 124 alphabetical State Code is covered against Appendix D; Element 12
+	Card Discretionary Block Data remains partial until its source-backed representation and
+	positive/negative validation fixtures are added.
+
+These items remain outside the covered numerator. Do not promote their BR/TS/TC/TD statuses based
+on the existence of the Appendix D lookup table alone.
 
 ---
 

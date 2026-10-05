@@ -22,6 +22,7 @@ Identify it from the transaction flow:
 | Lifecycle flow | Original transaction | Follow-up |
 | --- | --- | --- |
 | Authorization -> completion | Authorization-only request | Preauthorized completion |
+| Authorization-only reversal | POS, CAT, or Mail/Phone authorization-only request | Cancellation, Prompt Code `S` |
 | Purchase -> reversal/void | Purchase/capture request | Purchase reversal or void |
 | Refund -> void of return | Merchandise return/refund request | Void of merchandise return |
 | Request timeout -> reversal | Request whose final host outcome is unknown | Time-out reversal |
@@ -41,7 +42,9 @@ Ask these questions in order:
 
 ### Important Boundary
 
-An authorization request is the original transaction for a completion. A purchase request is the original transaction for a purchase reversal or void. A refund is the original transaction for a void of return. A timed-out request remains the original transaction even when no final host response was received.
+An authorization request is the original transaction for a completion or authorization-only cancellation. A purchase request is the original transaction for a purchase reversal or void. A refund is the original transaction for a void of return. A timed-out request remains the original transaction even when no final host response was received.
+
+For Authorization Only Reversal, ATL105 specifies Prompt Code `S` (cancellation), not Purchase Reversal/Void code `8`. Element 86 identifies original authorization types `3`, `B`, and `5`; the reversal must carry the same Approval Number and Sequence Number when those values are present in the original. Do not model authorization-only reversal as a separate code-8 flow.
 
 If the available messages do not establish which request is original, classify the lifecycle relationship as `REVIEW_REQUIRED`; do not guess from file order or matching amounts alone.
 
@@ -230,8 +233,9 @@ The source also states that a TOR is for financial transactions. To remove the h
 
 Additional source-supported controls:
 
-- A TOR must not be sent until the 30-second timeout has expired.
-- A TOR should not be attempted more than three times.
+- A timeout occurs after the 30-second response interval expires. The source separately recommends forwarding the TOR at least 30 seconds after the original transaction has timed out; model these as two timing intervals, not one.
+- If no valid TOR response is received, the source retry limit is three attempts on each available connection route, subject to health-message rules. Do not impose a global three-attempt limit across all routes.
+- A partially approved TOR must use the amount required for the applicable card/product rule; it is not universally the original request amount or the approved amount.
 - Approval or decline is a successful termination of the TOR; timeout or no response is not.
 - Multiple transactions and TORs may be in flight, but the device must track outstanding transactions and their queue.
 

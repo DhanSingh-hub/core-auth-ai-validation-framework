@@ -1,0 +1,2316 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-PAYMENT-NETWORK-CARDTYPE-TRACEABILITY",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION",
+    "producer": "TEST_SOLUTION",
+    "aiArtifactsIncluded": false,
+    "dataPolicy": "Embedded synthetic Test Solution fixtures; not copied from AI artifacts.",
+    "readiness": "PARTIAL_TRACEABILITY",
+    "businessRequirementCount": 26
+  },
+  "scope": {
+    "section5NetworkLeafTypes": 16,
+    "receiptCardTypeIds": 9,
+    "businessRequirementCount": 28,
+    "testScenarioCount": 26,
+    "testCaseCount": 26,
+    "testDataCount": 26,
+    "blockedRequirementCount": 2,
+    "testDataLimitations": [
+      "Section 5 fixtures are classifier-oracle harness payloads with Segment 100 presence; they are not converter-ready ATL105 messages.",
+      "Receipt fixtures test expected label mappings only; they do not claim to execute receipt formatting or prove which input card codes select each receipt ID."
+    ]
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-SEG100-SEC5-NETWORK",
+      "scope": "TRAINING_METADATA_ONLY_NOT_WIRE_FIELD",
+      "title": "A declared Section 5 training classification uses one of the 16 listed leaf values.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-ACH-PREAUTHORIZED-DEBIT",
+      "networkType": "ACH_PREAUTHORIZED_DEBIT",
+      "title": "Recognize ACH preauthorized debit cards as a Section 5 leaf.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ach-preauthorized-debit-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-ATM-PIN-DEBIT",
+      "networkType": "ATM_PIN_DEBIT",
+      "title": "Recognize ATM PIN debit as a Section 5 debit subtype.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pin-debit"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-ATM-PINLESS-DEBIT",
+      "networkType": "ATM_PINLESS_DEBIT",
+      "title": "Recognize ATM PINless debit as a Section 5 debit subtype.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pinless-debit"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-CHECK-GUARANTEE",
+      "networkType": "CHECK_GUARANTEE",
+      "title": "Recognize check guarantee services as a Section 5 check type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-guarantee-services"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-CHECK-VERIFICATION-BUYPASS",
+      "networkType": "CHECK_VERIFICATION_BUYPASS",
+      "title": "Recognize BUYPASS-provided check verification as a distinct Section 5 check type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-buypass"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-CHECK-VERIFICATION-EXTERNAL",
+      "networkType": "CHECK_VERIFICATION_EXTERNAL",
+      "title": "Recognize check verification provided by others as a distinct Section 5 check type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-provided-by-others"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-CREDIT-NONPROPRIETARY",
+      "networkType": "CREDIT_NONPROPRIETARY",
+      "title": "Recognize nonproprietary credit cards as a Section 5 credit type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-nonproprietary"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-CREDIT-PROPRIETARY",
+      "networkType": "CREDIT_PROPRIETARY",
+      "title": "Recognize proprietary credit cards as a Section 5 credit type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-proprietary"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-EBT-FOOD",
+      "networkType": "EBT_FOOD",
+      "title": "Recognize EBT food-stamp benefits as a Section 5 EBT type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-food-stamp-benefits"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-EBT-CASH",
+      "networkType": "EBT_CASH",
+      "title": "Recognize EBT cash benefits as a Section 5 EBT type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-cash-benefits"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-EBT-EWIC",
+      "networkType": "EBT_EWIC",
+      "title": "Recognize eWIC as a distinct Section 5 EBT type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-ewic"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-PROPRIETARY-CARD",
+      "networkType": "PROPRIETARY_CARD",
+      "title": "Recognize proprietary cards as a Section 5 type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-PETROLEUM-PROPRIETARY",
+      "networkType": "PETROLEUM_PROPRIETARY",
+      "title": "Recognize petroleum proprietary cards as a Section 5 type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "petroleum-proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-FLEET",
+      "networkType": "FLEET",
+      "title": "Recognize fleet cards as a Section 5 type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "fleet-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-STORED-VALUE",
+      "networkType": "STORED_VALUE",
+      "title": "Recognize stored value cards as a Section 5 type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "stored-value-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-SEC5-LEAF-LOYALTY",
+      "networkType": "LOYALTY",
+      "title": "Recognize loyalty cards as a Section 5 type.",
+      "status": "READY",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "loyalty-cards"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-AMEX",
+      "receiptCardTypeId": "AX",
+      "title": "Amex maps to receipt Card Type ID AX.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-amex"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-DEBIT",
+      "receiptCardTypeId": "DB",
+      "title": "Generic Debit maps to receipt Card Type ID DB.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-debit"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB",
+      "receiptCardTypeId": "DCI-DISC",
+      "title": "Diners Club maps to receipt Card Type ID DCI-DISC.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-diners-club"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-DISCOVER",
+      "receiptCardTypeId": "DS",
+      "title": "Discover Network maps to receipt Card Type ID DS.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-discover"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-EBT",
+      "receiptCardTypeId": "EB",
+      "title": "Generic EBT maps to receipt Card Type ID EB.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-ebt"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-JCB",
+      "receiptCardTypeId": "JCB-DISC",
+      "title": "JCB maps to receipt Card Type ID JCB-DISC.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-jcb"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-MASTERCARD",
+      "receiptCardTypeId": "MC",
+      "title": "MasterCard maps to receipt Card Type ID MC.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-mastercard"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-VISA",
+      "receiptCardTypeId": "VISA",
+      "title": "Visa maps to receipt Card Type ID VISA.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-visa"
+        }
+      ]
+    },
+    {
+      "id": "BR-SEG100-RECEIPT-CARDTYPE-STAR-SIGNATURE-DEBIT",
+      "receiptCardTypeId": "STAR",
+      "title": "STAR Signature Debit maps to receipt Card Type ID STAR.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-star-signature-debit"
+        }
+      ]
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-ACH-PREAUTHORIZED-DEBIT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ach-preauthorized-debit-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-ATM-PIN-DEBIT",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-ATM-PIN-DEBIT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pin-debit"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-ATM-PINLESS-DEBIT",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-ATM-PINLESS-DEBIT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pinless-debit"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-CHECK-GUARANTEE",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-CHECK-GUARANTEE"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-guarantee-services"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-CHECK-VERIFICATION-BUYPASS"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-buypass"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-CHECK-VERIFICATION-EXTERNAL"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-provided-by-others"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-CREDIT-NONPROPRIETARY",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-CREDIT-NONPROPRIETARY"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-nonproprietary"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-CREDIT-PROPRIETARY",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-CREDIT-PROPRIETARY"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-proprietary"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-EBT-FOOD",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-EBT-FOOD"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-food-stamp-benefits"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-EBT-CASH",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-EBT-CASH"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-cash-benefits"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-EBT-EWIC",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-EBT-EWIC"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-ewic"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-PROPRIETARY-CARD",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-PROPRIETARY-CARD"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-PETROLEUM-PROPRIETARY",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-PETROLEUM-PROPRIETARY"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "petroleum-proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-FLEET",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-FLEET"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "fleet-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-STORED-VALUE",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-STORED-VALUE"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "stored-value-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-LOYALTY",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK",
+        "BR-SEG100-SEC5-LEAF-LOYALTY"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "loyalty-cards"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-PAYNET-UNKNOWN-NEGATIVE",
+      "requirementIds": [
+        "BR-SEG100-SEC5-NETWORK"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-AMEX",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-AMEX"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-amex"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-DEBIT",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-DEBIT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-debit"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-diners-club"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-DISCOVER",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-DISCOVER"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-discover"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-EBT",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-EBT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-ebt"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-JCB",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-JCB"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-jcb"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-MASTERCARD",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-MASTERCARD"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-mastercard"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-VISA",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-VISA"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-visa"
+        }
+      ]
+    },
+    {
+      "id": "TS-SEG100-RECEIPT-CARDTYPE-STAR",
+      "requirementIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-STAR-SIGNATURE-DEBIT"
+      ],
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-star-signature-debit"
+        }
+      ]
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ach-preauthorized-debit-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-ATM-PIN-DEBIT-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-ATM-PIN-DEBIT"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-ATM-PIN-DEBIT-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pin-debit"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-ATM-PINLESS-DEBIT-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-ATM-PINLESS-DEBIT"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-ATM-PINLESS-DEBIT-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pinless-debit"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-CHECK-GUARANTEE-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-CHECK-GUARANTEE"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-CHECK-GUARANTEE-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-guarantee-services"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-buypass"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-provided-by-others"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-CREDIT-NONPROPRIETARY-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-CREDIT-NONPROPRIETARY"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-CREDIT-NONPROPRIETARY-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-nonproprietary"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-CREDIT-PROPRIETARY-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-CREDIT-PROPRIETARY"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-CREDIT-PROPRIETARY-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-proprietary"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-EBT-FOOD-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-EBT-FOOD"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-EBT-FOOD-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-food-stamp-benefits"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-EBT-CASH-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-EBT-CASH"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-EBT-CASH-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-cash-benefits"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-EBT-EWIC-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-EBT-EWIC"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-EBT-EWIC-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-ewic"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-PROPRIETARY-CARD-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-PROPRIETARY-CARD"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-PROPRIETARY-CARD-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-PETROLEUM-PROPRIETARY-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-PETROLEUM-PROPRIETARY"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-PETROLEUM-PROPRIETARY-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "petroleum-proprietary-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-FLEET-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-FLEET"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-FLEET-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "fleet-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-STORED-VALUE-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-STORED-VALUE"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-STORED-VALUE-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "stored-value-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-LOYALTY-PASS",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-LOYALTY"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-LOYALTY-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "loyalty-cards"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-PAYNET-UNKNOWN-NEGATIVE",
+      "scenarioIds": [
+        "TS-SEG100-PAYNET-UNKNOWN-NEGATIVE"
+      ],
+      "testDataIds": [
+        "TD-SEG100-PAYNET-UNKNOWN-NEGATIVE"
+      ],
+      "expectedOutcome": "FAIL",
+      "category": "classification-harness",
+      "status": "READY_FOR_ORACLE_TEST",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-AMEX-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-AMEX"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-AMEX-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-amex"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-DEBIT-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-DEBIT"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-DEBIT-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-debit"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-diners-club"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-DISCOVER-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-DISCOVER"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-DISCOVER-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-discover"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-EBT-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-EBT"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-EBT-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-ebt"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-JCB-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-JCB"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-JCB-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-jcb"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-MASTERCARD-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-MASTERCARD"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-MASTERCARD-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-mastercard"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-VISA-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-VISA"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-VISA-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-visa"
+        }
+      ]
+    },
+    {
+      "id": "TC-SEG100-RECEIPT-CARDTYPE-STAR-PASS",
+      "scenarioIds": [
+        "TS-SEG100-RECEIPT-CARDTYPE-STAR"
+      ],
+      "testDataIds": [
+        "TD-SEG100-RECEIPT-CARDTYPE-STAR-PASS"
+      ],
+      "expectedOutcome": "PASS",
+      "category": "receipt-id-mapping-harness",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-star-signature-debit"
+        }
+      ]
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-ACH-PREAUTHORIZED-DEBIT-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ach-preauthorized-debit-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "ACH_PREAUTHORIZED_DEBIT"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-ATM-PIN-DEBIT-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-ATM-PIN-DEBIT-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pin-debit"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "ATM_PIN_DEBIT"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-ATM-PINLESS-DEBIT-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-ATM-PINLESS-DEBIT-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "atm-debit-pinless-debit"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "ATM_PINLESS_DEBIT"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-CHECK-GUARANTEE-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-CHECK-GUARANTEE-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-guarantee-services"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "CHECK_GUARANTEE"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-CHECK-VERIFICATION-BUYPASS-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-buypass"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "CHECK_VERIFICATION_BUYPASS"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-CHECK-VERIFICATION-EXTERNAL-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "check-verification-provided-by-others"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "CHECK_VERIFICATION_EXTERNAL"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-CREDIT-NONPROPRIETARY-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-CREDIT-NONPROPRIETARY-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-nonproprietary"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "CREDIT_NONPROPRIETARY"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-CREDIT-PROPRIETARY-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-CREDIT-PROPRIETARY-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "credit-cards-proprietary"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "CREDIT_PROPRIETARY"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-EBT-FOOD-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-EBT-FOOD-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-food-stamp-benefits"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "EBT_FOOD"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-EBT-CASH-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-EBT-CASH-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-cash-benefits"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "EBT_CASH"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-EBT-EWIC-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-EBT-EWIC-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "ebt-ewic"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "EBT_EWIC"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-PROPRIETARY-CARD-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-PROPRIETARY-CARD-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "proprietary-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "PROPRIETARY_CARD"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-PETROLEUM-PROPRIETARY-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-PETROLEUM-PROPRIETARY-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "petroleum-proprietary-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "PETROLEUM_PROPRIETARY"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-FLEET-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-FLEET-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "fleet-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "FLEET"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-STORED-VALUE-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-STORED-VALUE-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "stored-value-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "STORED_VALUE"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-LOYALTY-PASS",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-LOYALTY-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        },
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "loyalty-cards"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "LOYALTY"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-PAYNET-UNKNOWN-NEGATIVE",
+      "testCaseIds": [
+        "TC-SEG100-PAYNET-UNKNOWN-NEGATIVE"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "NETWORK_CLASSIFIER_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "FAIL",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "5",
+          "rule": "supported-payment-network-type"
+        }
+      ],
+      "payload": {
+        "metadata": {
+          "paymentNetworkType": "UNKNOWN"
+        },
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "Standard Segment": {
+            "SegmentType": "100"
+          }
+        }
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-AMEX-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-AMEX-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-amex"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "Amex",
+        "expectedReceiptCardTypeId": "AX"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-DEBIT-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-DEBIT-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-debit"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "Debit",
+        "expectedReceiptCardTypeId": "DB"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-DINERS-CLUB-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-diners-club"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "Diners Club",
+        "expectedReceiptCardTypeId": "DCI-DISC"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-DISCOVER-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-DISCOVER-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-discover"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "Discover Network",
+        "expectedReceiptCardTypeId": "DS"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-EBT-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-EBT-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-ebt"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "EBT",
+        "expectedReceiptCardTypeId": "EB"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-JCB-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-JCB-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-jcb"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "JCB",
+        "expectedReceiptCardTypeId": "JCB-DISC"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-MASTERCARD-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-MASTERCARD-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-mastercard"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "MasterCard",
+        "expectedReceiptCardTypeId": "MC"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-VISA-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-VISA-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-visa"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "Visa",
+        "expectedReceiptCardTypeId": "VISA"
+      }
+    },
+    {
+      "id": "TD-SEG100-RECEIPT-CARDTYPE-STAR-PASS",
+      "testCaseIds": [
+        "TC-SEG100-RECEIPT-CARDTYPE-STAR-PASS"
+      ],
+      "producer": "TEST_SOLUTION",
+      "origin": "SYNTHETIC_INDEPENDENT_FIXTURE",
+      "fixtureKind": "RECEIPT_ID_MAPPING_HARNESS",
+      "converterReady": false,
+      "expectedValidation": "PASS",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.3",
+          "rule": "receipt-card-type-id-star-signature-debit"
+        }
+      ],
+      "payload": {
+        "sourceLabel": "STAR Signature Debit",
+        "expectedReceiptCardTypeId": "STAR"
+      }
+    }
+  ],
+  "blockedRequirements": [
+    {
+      "businessRequirementId": "BR-SEG100-SEC5-CONTEXT",
+      "status": "REVIEW_REQUIRED",
+      "reason": "No source-backed Section 5 leaf to Prompt Code/card code/companion/lifecycle/response mapping. No TS, TC, or TD is generated."
+    },
+    {
+      "businessRequirementId": "BR-SEG100-RECEIPT-CARD-TYPE-ID-PRINT",
+      "status": "REVIEW_REQUIRED",
+      "reason": "Receipt output shape and application of the generic Debit, EBT, and STAR Signature Debit IDs need Test Team confirmation. The mapping harnesses do not claim to render receipts."
+    }
+  ],
+  "validationStatus": "Trace links are complete for the 16 Section 5 leaf classifications, one unknown-label negative, and nine receipt-ID mapping drafts. Compatibility behavior and actual receipt rendering remain unvalidated."
+}

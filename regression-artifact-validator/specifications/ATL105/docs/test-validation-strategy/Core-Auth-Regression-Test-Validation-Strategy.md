@@ -167,6 +167,8 @@ For every AI artifact package, execute these checks in order:
 
 The AI package may contain more or fewer requirements than the independent catalog. Count equality is not an acceptance criterion; every difference must be explained and dispositioned.
 
+The stable validation controls for this workflow are catalogued separately as `AIV-*` in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md). `AIV-*` control coverage measures whether the Test Solution's validator rules have implementation and regression evidence; it is not ATL105 business-rule coverage. Per-delivery BR/TS/TC/TD dispositions and coverage results are recorded separately under `test-output/ai-solution-independent-review/`.
+
 ### Proposed Coverage and Reporting Model (Pending Fiserv Leadership Approval)
 
 The following coverage and reporting model is a proposal for review. It is not an approved Fiserv governance policy until Fiserv Leadership accepts it. The current implementation can produce evidence using this model, but the acceptance denominator, mandatory gates, and final status rules remain subject to approval.

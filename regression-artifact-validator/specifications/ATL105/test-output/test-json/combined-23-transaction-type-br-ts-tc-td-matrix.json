@@ -1,0 +1,2517 @@
+{
+  "artifact" : "atl105-combined-23-transaction-type-br-ts-tc-td-mapping-matrix",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "authority" : "INDEPENDENT_TEST_SOLUTION",
+  "aiArtifactsIncluded" : false,
+  "policy" : "Standard financial starter references and special-flow draft chains are separated by data ownership and execution status. No draft or AI-input fixture is counted as executable independent Test Solution TD coverage.",
+  "matrixRowCount" : 23,
+  "businessRequirementCountsByCode" : {
+    "0" : 1,
+    "3" : 1,
+    "4" : 1,
+    "5" : 1,
+    "6" : 1,
+    "7" : 1,
+    "8" : 1,
+    "9" : 13,
+    "A" : 1,
+    "B" : 1,
+    "C" : 1,
+    "D" : 1,
+    "E" : 2,
+    "K" : 1,
+    "L" : 2,
+    "M" : 2,
+    "N" : 1,
+    "Q" : 1,
+    "S" : 1,
+    "T" : 1,
+    "U" : 1,
+    "V" : 10,
+    "Z" : 1
+  },
+  "transactionTypes" : [ {
+    "transactionTypeCode" : "0",
+    "transactionTypeName" : "POS Purchase/Capture or Preauthorized Completion",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-0",
+    "singleStepEligible" : true,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP", "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-0",
+      "title" : "Segment 100 supports POS Purchase/Capture and preauthorized completion."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-0",
+      "title" : "Validate POS Purchase/Capture Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-0-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-0-pos-purchase-capture.json"
+    }, {
+      "id" : "TC-SEG100-TX-0-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-0-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "purchase-completion/reversal/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-0-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-0-pos-purchase-capture.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-0-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-0",
+      "testScenarioId" : "TS-SEG100-TX-0",
+      "testCaseId" : "TC-SEG100-TX-0-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-0-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-0-pos-purchase-capture.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-0",
+      "testScenarioId" : "TS-SEG100-TX-0",
+      "testCaseId" : "TC-SEG100-TX-0-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-0",
+      "testScenarioId" : "TS-SEG100-TX-0",
+      "testCaseId" : "TC-SEG100-TX-0-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-0-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "3",
+    "transactionTypeName" : "POS Authorization Only",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-3",
+    "singleStepEligible" : true,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-3",
+      "title" : "Segment 100 supports POS Authorization Only."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-3",
+      "title" : "Validate POS Authorization Only Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-3-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-3-pos-auth-only.json"
+    }, {
+      "id" : "TC-SEG100-TX-3-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-3-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "authorization-completion/cancellation/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-3-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-3-pos-auth-only.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-3-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-3",
+      "testScenarioId" : "TS-SEG100-TX-3",
+      "testCaseId" : "TC-SEG100-TX-3-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-3-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-3-pos-auth-only.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-3",
+      "testScenarioId" : "TS-SEG100-TX-3",
+      "testCaseId" : "TC-SEG100-TX-3-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-3",
+      "testScenarioId" : "TS-SEG100-TX-3",
+      "testCaseId" : "TC-SEG100-TX-3-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-3-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "4",
+    "transactionTypeName" : "Customer-activated Purchase/Capture",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-4",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-4",
+      "title" : "Segment 100 supports Customer-activated Purchase/Capture."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-4",
+      "title" : "Validate Customer-activated Purchase/Capture Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-4-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-4-customer-purchase.json"
+    }, {
+      "id" : "TC-SEG100-TX-4-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-4-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "purchase-reversal/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-4-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-4-customer-purchase.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-4-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-4",
+      "testScenarioId" : "TS-SEG100-TX-4",
+      "testCaseId" : "TC-SEG100-TX-4-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-4-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-4-customer-purchase.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-4",
+      "testScenarioId" : "TS-SEG100-TX-4",
+      "testCaseId" : "TC-SEG100-TX-4-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-4",
+      "testScenarioId" : "TS-SEG100-TX-4",
+      "testCaseId" : "TC-SEG100-TX-4-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-4-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "5",
+    "transactionTypeName" : "Customer-activated Authorization Only",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-5",
+    "singleStepEligible" : true,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-5",
+      "title" : "Segment 100 supports Customer-activated Authorization Only."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-5",
+      "title" : "Validate Customer-activated Authorization Only Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-5-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-5-customer-auth-only.json"
+    }, {
+      "id" : "TC-SEG100-TX-5-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-5-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "authorization-completion/cancellation/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-5-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-5-customer-auth-only.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-5-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-5",
+      "testScenarioId" : "TS-SEG100-TX-5",
+      "testCaseId" : "TC-SEG100-TX-5-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-5-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-5-customer-auth-only.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-5",
+      "testScenarioId" : "TS-SEG100-TX-5",
+      "testCaseId" : "TC-SEG100-TX-5-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-5",
+      "testScenarioId" : "TS-SEG100-TX-5",
+      "testCaseId" : "TC-SEG100-TX-5-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-5-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "6",
+    "transactionTypeName" : "Mail/Phone Purchase",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-6",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-6",
+      "title" : "Segment 100 supports Mail/Phone Purchase."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-6",
+      "title" : "Validate Mail/Phone Purchase Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-6-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-6-mail-phone-purchase.json"
+    }, {
+      "id" : "TC-SEG100-TX-6-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-6-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "purchase-reversal/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-6-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-6-mail-phone-purchase.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-6-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-6",
+      "testScenarioId" : "TS-SEG100-TX-6",
+      "testCaseId" : "TC-SEG100-TX-6-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-6-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-6-mail-phone-purchase.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-6",
+      "testScenarioId" : "TS-SEG100-TX-6",
+      "testCaseId" : "TC-SEG100-TX-6-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-6",
+      "testScenarioId" : "TS-SEG100-TX-6",
+      "testCaseId" : "TC-SEG100-TX-6-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-6-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "7",
+    "transactionTypeName" : "Merchandise Return/Refund",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-7",
+    "singleStepEligible" : true,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-7",
+      "title" : "Segment 100 supports Merchandise Return/Refund."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-7",
+      "title" : "Validate Merchandise Return/Refund Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-7-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-7-return-refund.json"
+    }, {
+      "id" : "TC-SEG100-TX-7-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-7-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "refund-void-of-return",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-7-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-7-return-refund.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-7-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-7",
+      "testScenarioId" : "TS-SEG100-TX-7",
+      "testCaseId" : "TC-SEG100-TX-7-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-7-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-7-return-refund.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-7",
+      "testScenarioId" : "TS-SEG100-TX-7",
+      "testCaseId" : "TC-SEG100-TX-7-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-7",
+      "testScenarioId" : "TS-SEG100-TX-7",
+      "testCaseId" : "TC-SEG100-TX-7-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-7-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "8",
+    "transactionTypeName" : "Purchase Reversal/Void",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-8",
+    "singleStepEligible" : false,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-8",
+      "title" : "Segment 100 supports Purchase Reversal/Void."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-8",
+      "title" : "Validate Purchase Reversal/Void Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-8-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "multi-step",
+      "testDataFile" : "type-8-purchase-reversal-void.json"
+    }, {
+      "id" : "TC-SEG100-TX-8-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "multi-step",
+      "mutation" : "Sequence mismatch",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-8-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-8-purchase-reversal-void.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-8-FAIL",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-8",
+      "testScenarioId" : "TS-SEG100-TX-8",
+      "testCaseId" : "TC-SEG100-TX-8-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-8-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-8-purchase-reversal-void.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-8",
+      "testScenarioId" : "TS-SEG100-TX-8",
+      "testCaseId" : "TC-SEG100-TX-8-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-8-FAIL",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 0,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "A",
+    "transactionTypeName" : "Account Verification",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-A",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-A",
+      "title" : "Segment 100 supports Account Verification."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-A",
+      "title" : "Validate Account Verification Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-A-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-A-account-verification.json"
+    }, {
+      "id" : "TC-SEG100-TX-A-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-A-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-A-account-verification.json",
+      "independentTestSolutionData" : false
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-A",
+      "testScenarioId" : "TS-SEG100-TX-A",
+      "testCaseId" : "TC-SEG100-TX-A-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-A-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-A-account-verification.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-A",
+      "testScenarioId" : "TS-SEG100-TX-A",
+      "testCaseId" : "TC-SEG100-TX-A-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 1,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "B",
+    "transactionTypeName" : "Mail/Phone Authorization Only",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-B",
+    "singleStepEligible" : true,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "ORIGINAL" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-B",
+      "title" : "Segment 100 supports Mail/Phone Authorization Only."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-B",
+      "title" : "Validate Mail/Phone Authorization Only Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-B-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "single-step",
+      "testDataFile" : "type-B-mail-phone-auth-only.json"
+    }, {
+      "id" : "TC-SEG100-TX-B-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "single-step",
+      "mutation" : "Invalid Segment 100 field"
+    }, {
+      "id" : "TC-SEG100-TX-B-LIFECYCLE",
+      "expectedOutcome" : "PASS_OR_FAIL",
+      "flow" : "authorization-completion/cancellation/timeout",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-B-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-B-mail-phone-auth-only.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-B-LIFECYCLE",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-B",
+      "testScenarioId" : "TS-SEG100-TX-B",
+      "testCaseId" : "TC-SEG100-TX-B-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-B-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-B-mail-phone-auth-only.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-B",
+      "testScenarioId" : "TS-SEG100-TX-B",
+      "testCaseId" : "TC-SEG100-TX-B-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-B",
+      "testScenarioId" : "TS-SEG100-TX-B",
+      "testCaseId" : "TC-SEG100-TX-B-LIFECYCLE",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-B-LIFECYCLE",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 3,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 1,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "C",
+    "transactionTypeName" : "Mail/Phone Reversal/Void",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-C",
+    "singleStepEligible" : false,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-C",
+      "title" : "Segment 100 supports Mail/Phone Reversal/Void."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-C",
+      "title" : "Validate Mail/Phone Reversal/Void Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-C-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "multi-step",
+      "testDataFile" : "type-C-mail-phone-reversal-void.json"
+    }, {
+      "id" : "TC-SEG100-TX-C-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "multi-step",
+      "mutation" : "Sequence mismatch",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-C-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-C-mail-phone-reversal-void.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-C-FAIL",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-C",
+      "testScenarioId" : "TS-SEG100-TX-C",
+      "testCaseId" : "TC-SEG100-TX-C-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-C-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-C-mail-phone-reversal-void.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-C",
+      "testScenarioId" : "TS-SEG100-TX-C",
+      "testCaseId" : "TC-SEG100-TX-C-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-C-FAIL",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 0,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "S",
+    "transactionTypeName" : "Cancellation",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-S",
+    "singleStepEligible" : false,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-S",
+      "title" : "Segment 100 supports Cancellation of an authorization-only transaction."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-S",
+      "title" : "Validate authorization cancellation Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-S-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "multi-step",
+      "testDataFile" : "transaction-type-S-cancellation.json"
+    }, {
+      "id" : "TC-SEG100-TX-S-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "multi-step",
+      "mutation" : "Sequence mismatch",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-S-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/transaction-type-S-cancellation.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-S-FAIL",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-S",
+      "testScenarioId" : "TS-SEG100-TX-S",
+      "testCaseId" : "TC-SEG100-TX-S-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-S-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/transaction-type-S-cancellation.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-S",
+      "testScenarioId" : "TS-SEG100-TX-S",
+      "testCaseId" : "TC-SEG100-TX-S-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-S-FAIL",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 0,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "U",
+    "transactionTypeName" : "Void of Merchandise Return",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-U",
+    "singleStepEligible" : false,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-U",
+      "title" : "Segment 100 supports Void of a Merchandise Return."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-U",
+      "title" : "Validate void-of-return Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-U-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "multi-step",
+      "testDataFile" : "type-U-void-of-return.json"
+    }, {
+      "id" : "TC-SEG100-TX-U-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "multi-step",
+      "mutation" : "Sequence mismatch",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-U-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-U-void-of-return.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-U-FAIL",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-U",
+      "testScenarioId" : "TS-SEG100-TX-U",
+      "testCaseId" : "TC-SEG100-TX-U-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-U-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-U-void-of-return.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-U",
+      "testScenarioId" : "TS-SEG100-TX-U",
+      "testCaseId" : "TC-SEG100-TX-U-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-U-FAIL",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 0,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "Z",
+    "transactionTypeName" : "Time-out Reversal",
+    "transactionClass" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-Z",
+    "singleStepEligible" : false,
+    "multiStepEligible" : true,
+    "multiStepLifecycleRoles" : [ "FOLLOW_UP" ],
+    "scope" : "STANDARD_FINANCIAL",
+    "status" : "STARTER_CHAIN_WITH_AI_INPUT_FIXTURES",
+    "businessRequirements" : [ {
+      "id" : "BR-SEG100-TX-Z",
+      "title" : "Segment 100 supports Time-out Reversal."
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-SEG100-TX-Z",
+      "title" : "Validate timeout reversal Segment 100 data."
+    } ],
+    "testCases" : [ {
+      "id" : "TC-SEG100-TX-Z-PASS",
+      "expectedOutcome" : "PASS",
+      "flow" : "multi-step",
+      "testDataFile" : "type-Z-timeout-reversal.json"
+    }, {
+      "id" : "TC-SEG100-TX-Z-FAIL",
+      "expectedOutcome" : "FAIL",
+      "flow" : "multi-step",
+      "mutation" : "Sequence mismatch",
+      "testDataCatalog" : "segment-100-multistep-flow-catalog.json"
+    } ],
+    "testDataReferences" : [ {
+      "testCaseId" : "TC-SEG100-TX-Z-PASS",
+      "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+      "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-Z-timeout-reversal.json",
+      "independentTestSolutionData" : false
+    }, {
+      "testCaseId" : "TC-SEG100-TX-Z-FAIL",
+      "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+      "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-SEG100-TX-Z",
+      "testScenarioId" : "TS-SEG100-TX-Z",
+      "testCaseId" : "TC-SEG100-TX-Z-PASS",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-Z-PASS",
+        "kind" : "AI_INPUT_FIXTURE_REFERENCE",
+        "path" : "test-input/ai-solution/test-data/segment-100/transaction-types/type-Z-timeout-reversal.json",
+        "independentTestSolutionData" : false
+      } ]
+    }, {
+      "businessRequirementId" : "BR-SEG100-TX-Z",
+      "testScenarioId" : "TS-SEG100-TX-Z",
+      "testCaseId" : "TC-SEG100-TX-Z-FAIL",
+      "mappingStatus" : "STARTER_MAPPING_REVIEW_REQUIRED",
+      "testDataReferences" : [ {
+        "testCaseId" : "TC-SEG100-TX-Z-FAIL",
+        "kind" : "SHARED_TEST_SOLUTION_LIFECYCLE_CATALOG_REFERENCE",
+        "path" : "test-output/test-json/segment-100-multistep-flow-catalog.json",
+        "independentTestSolutionData" : true
+      } ]
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "unlinkedTestCaseCount" : 0,
+    "mappingPolicy" : "The package links BR->TS->TC; direct per-code files are AI inputs, while lifecycle refs reuse the shared Test Solution catalog. This is not a per-code independent JSON fixture set."
+  }, {
+    "transactionTypeCode" : "9",
+    "transactionTypeName" : "Special Transactions",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-9",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "transactionTypeCode" : "9",
+      "title" : "Special transactions shall be routed to specialized nonfinancial flows, not treated as standard financial purchases.",
+      "requirement" : "Special transactions shall be routed to specialized nonfinancial flows, not treated as standard financial purchases.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Special-flow prompt and message-family applicability must be mapped before deriving executable cases.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix G",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-9-special-flow"
+      } ]
+    }, {
+      "id" : "BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "transactionTypeCode" : "9",
+      "title" : "Special transaction Prompt Codes shall use the three-character special-data code without appending a financial card type.",
+      "requirement" : "Special transaction Prompt Codes shall use the three-character special-data code without appending a financial card type.",
+      "evidenceLevel" : "DIRECT_FORMAT_RULE",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "The permitted code-by-code prompt behavior still needs operation-specific TS/TC/TD derivation.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-code-three-character-format"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-900",
+      "transactionTypeCode" : "9",
+      "title" : "Communications Status transaction",
+      "requirement" : "The 900 special prompt requests communications-status behavior.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-900"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-901",
+      "transactionTypeCode" : "9",
+      "title" : "Custom receipt text",
+      "requirement" : "The 901 special prompt retrieves custom text to print on receipts.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-901"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-902",
+      "transactionTypeCode" : "9",
+      "title" : "Dynamic card table",
+      "requirement" : "The 902 special prompt retrieves dynamic card-table data.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-902"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-903",
+      "transactionTypeCode" : "9",
+      "title" : "Site configuration data",
+      "requirement" : "The 903 special prompt submits site-configuration data.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-903"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-904",
+      "transactionTypeCode" : "9",
+      "title" : "Host discount data",
+      "requirement" : "The 904 special prompt retrieves host-discount data by product code for AFP transactions.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-904"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-905",
+      "transactionTypeCode" : "9",
+      "title" : "Fuel volume data",
+      "requirement" : "The 905 special prompt submits fuel-volume data.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-905"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-981",
+      "transactionTypeCode" : "9",
+      "title" : "Nonproprietary electronic mail",
+      "requirement" : "The 981 special prompt retrieves nonproprietary electronic mail.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-981"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-990",
+      "transactionTypeCode" : "9",
+      "title" : "Totals",
+      "requirement" : "The 990 special prompt returns totals as a single-block fixed-length response with no print data.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-990"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-995",
+      "transactionTypeCode" : "9",
+      "title" : "Electronic mail submission",
+      "requirement" : "The 995 special prompt submits electronic mail.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-995"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-996",
+      "transactionTypeCode" : "9",
+      "title" : "Proprietary electronic mail",
+      "requirement" : "The 996 special prompt retrieves proprietary electronic mail.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-996"
+      } ]
+    }, {
+      "id" : "BR-TX9-PROMPT-997",
+      "transactionTypeCode" : "9",
+      "title" : "Electronic mail status reset",
+      "requirement" : "The 997 special prompt resets electronic-mail status.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix E",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "special-prompt-997"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "businessRequirementId" : "BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW"
+    }, {
+      "id" : "TS-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "businessRequirementId" : "BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-900",
+      "businessRequirementId" : "BR-TX9-PROMPT-900"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-901",
+      "businessRequirementId" : "BR-TX9-PROMPT-901"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-902",
+      "businessRequirementId" : "BR-TX9-PROMPT-902"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-903",
+      "businessRequirementId" : "BR-TX9-PROMPT-903"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-904",
+      "businessRequirementId" : "BR-TX9-PROMPT-904"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-905",
+      "businessRequirementId" : "BR-TX9-PROMPT-905"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-981",
+      "businessRequirementId" : "BR-TX9-PROMPT-981"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-990",
+      "businessRequirementId" : "BR-TX9-PROMPT-990"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-995",
+      "businessRequirementId" : "BR-TX9-PROMPT-995"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-996",
+      "businessRequirementId" : "BR-TX9-PROMPT-996"
+    }, {
+      "id" : "TS-DRAFT-BR-TX9-PROMPT-997",
+      "businessRequirementId" : "BR-TX9-PROMPT-997"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "testScenarioId" : "TS-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW"
+    }, {
+      "id" : "TC-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "testScenarioId" : "TS-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-900",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-900"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-901",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-901"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-902",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-902"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-903",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-903"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-904",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-904"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-905",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-905"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-981",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-981"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-990",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-990"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-995",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-995"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-996",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-996"
+    }, {
+      "id" : "TC-DRAFT-BR-TX9-PROMPT-997",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-997"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-9-transaction-type-9-special-flow.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-9-special-prompt-code-three-character-format.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-900",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-900.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-901",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-901.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-902",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-902.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-903",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-903.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-904",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-904.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-905",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-905.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-981",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-981.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-990",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-990.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-995",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-995.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-996",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-996.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-997",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-997.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "testCaseId" : "TC-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "testDataId" : "TD-DRAFT-BR-TX-9-TRANSACTION-TYPE-9-SPECIAL-FLOW",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-9-transaction-type-9-special-flow.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "testCaseId" : "TC-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "testDataId" : "TD-DRAFT-BR-TX-9-SPECIAL-PROMPT-CODE-THREE-CHARACTER-FORMAT",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-9-special-prompt-code-three-character-format.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-900",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-900",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-900",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-900",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-900.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-901",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-901",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-901",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-901",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-901.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-902",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-902",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-902",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-902",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-902.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-903",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-903",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-903",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-903",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-903.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-904",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-904",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-904",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-904",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-904.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-905",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-905",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-905",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-905",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-905.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-981",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-981",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-981",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-981",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-981.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-990",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-990",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-990",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-990",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-990.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-995",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-995",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-995",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-995",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-995.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-996",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-996",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-996",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-996",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-996.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX9-PROMPT-997",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX9-PROMPT-997",
+      "testCaseId" : "TC-DRAFT-BR-TX9-PROMPT-997",
+      "testDataId" : "TD-DRAFT-BR-TX9-PROMPT-997",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx9-prompt-997.json",
+      "executable" : false
+    } ],
+    "brCount" : 13,
+    "tsCount" : 13,
+    "tcCount" : 13,
+    "tdReferenceCount" : 13,
+    "tdDraftStubCount" : 13,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "D",
+    "transactionTypeName" : "RBC Loyalty Lookup",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-D",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_WITH_SOURCE_REVIEW_BLOCKERS",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-D-TRANSACTION-TYPE-D-RBC-LOYALTY-LOOKUP",
+      "transactionTypeCode" : "D",
+      "title" : "Transaction type D performs RBC Loyalty Lookup to identify the loyalty number associated with an RBC card.",
+      "requirement" : "Transaction type D performs RBC Loyalty Lookup to identify the loyalty number associated with an RBC card.",
+      "evidenceLevel" : "APPENDIX_G_ONLY",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "ATL105 gives the operation name and purpose only; message request/response details need an authoritative source.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix G",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-D-rbc-loyalty-lookup"
+      } ]
+    } ],
+    "testScenarios" : [ ],
+    "testCases" : [ ],
+    "testDataReferences" : [ ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-D-TRANSACTION-TYPE-D-RBC-LOYALTY-LOOKUP",
+      "status" : "BLOCKED_SOURCE_REVIEW_REQUIRED",
+      "blocker" : "ATL105 gives the operation name and purpose only; message request/response details need an authoritative source."
+    } ],
+    "brCount" : 1,
+    "tsCount" : 0,
+    "tcCount" : 0,
+    "tdReferenceCount" : 0,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 1,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "E",
+    "transactionTypeName" : "Balance Inquiry",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-E",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "transactionTypeCode" : "E",
+      "title" : "Balance Inquiry supports balance inquiry for credit, EBT cash-benefit, and stored-value contexts.",
+      "requirement" : "Balance Inquiry supports balance inquiry for credit, EBT cash-benefit, and stored-value contexts.",
+      "evidenceLevel" : "DIRECT_DESCRIPTION",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Per-family response and payload assertions must be derived from the corresponding sections.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix G",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-E-balance-inquiry"
+      } ]
+    }, {
+      "id" : "BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "transactionTypeCode" : "E",
+      "title" : "Stored-value Balance Inquiry reports the remaining balance and does not change stored-value quantity or amount totals.",
+      "requirement" : "Stored-value Balance Inquiry reports the remaining balance and does not change stored-value quantity or amount totals.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Test both returned balance and unchanged totals using an independent synthetic fixture.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.11",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-E-svc-balance-inquiry-no-total-change"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "businessRequirementId" : "BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY"
+    }, {
+      "id" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "businessRequirementId" : "BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "testScenarioId" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY"
+    }, {
+      "id" : "TC-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "testScenarioId" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-e-transaction-type-e-balance-inquiry.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-e-transaction-type-e-svc-balance-inquiry-no-total-change.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "testCaseId" : "TC-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "testDataId" : "TD-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-BALANCE-INQUIRY",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-e-transaction-type-e-balance-inquiry.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "testCaseId" : "TC-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "testDataId" : "TD-DRAFT-BR-TX-E-TRANSACTION-TYPE-E-SVC-BALANCE-INQUIRY-NO-TOTAL-CHANGE",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-e-transaction-type-e-svc-balance-inquiry-no-total-change.json",
+      "executable" : false
+    } ],
+    "brCount" : 2,
+    "tsCount" : 2,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 2,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "K",
+    "transactionTypeName" : "Activate Stored Value Card",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-K",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "transactionTypeCode" : "K",
+      "title" : "Activation activates the stored-value account for a specified dollar amount; after successful activation, charges may be made against the account.",
+      "requirement" : "Activation activates the stored-value account for a specified dollar amount; after successful activation, charges may be made against the account.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Card-product applicability and response details require separate rules where not stated here.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.6",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-K-svc-activation"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "businessRequirementId" : "BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "testScenarioId" : "TS-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-k-transaction-type-k-svc-activation.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "testCaseId" : "TC-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "testDataId" : "TD-DRAFT-BR-TX-K-TRANSACTION-TYPE-K-SVC-ACTIVATION",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-k-transaction-type-k-svc-activation.json",
+      "executable" : false
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 1,
+    "tdReferenceCount" : 1,
+    "tdDraftStubCount" : 1,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "L",
+    "transactionTypeName" : "Deactivate Stored Value Card",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-L",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "transactionTypeCode" : "L",
+      "title" : "For non-First-Data Standard Gift Card deactivation, the requested amount equals the account balance; after success the account may be closed according to client configuration.",
+      "requirement" : "For non-First-Data Standard Gift Card deactivation, the requested amount equals the account balance; after success the account may be closed according to client configuration.",
+      "evidenceLevel" : "DIRECT_CONDITIONAL_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Client account-close configuration is an external input and must not be inferred.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.7",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-L-standard-gift-deactivation"
+      } ]
+    }, {
+      "id" : "BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "transactionTypeCode" : "L",
+      "title" : "For First Data Premium Gift Card cash-out, the amount is greater than zero and no more than the balance; the remaining balance becomes zero and the used amount is returned as Approved Amount.",
+      "requirement" : "For First Data Premium Gift Card cash-out, the amount is greater than zero and no more than the balance; the remaining balance becomes zero and the used amount is returned as Approved Amount.",
+      "evidenceLevel" : "DIRECT_CONDITIONAL_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Premium Gift Card product scope and fixture values require isolated branch coverage.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.7",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-L-first-data-cashout"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "businessRequirementId" : "BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION"
+    }, {
+      "id" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "businessRequirementId" : "BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "testScenarioId" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION"
+    }, {
+      "id" : "TC-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "testScenarioId" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-l-transaction-type-l-standard-gift-deactivation.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-l-transaction-type-l-first-data-cashout.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "testCaseId" : "TC-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "testDataId" : "TD-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-STANDARD-GIFT-DEACTIVATION",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-l-transaction-type-l-standard-gift-deactivation.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "testCaseId" : "TC-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "testDataId" : "TD-DRAFT-BR-TX-L-TRANSACTION-TYPE-L-FIRST-DATA-CASHOUT",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-l-transaction-type-l-first-data-cashout.json",
+      "executable" : false
+    } ],
+    "brCount" : 2,
+    "tsCount" : 2,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 2,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "M",
+    "transactionTypeName" : "Balance Merge",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-M",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "transactionTypeCode" : "M",
+      "title" : "Balance Merge combines at most two stored-value card balances onto one of those cards and reduces the remaining card balance to zero.",
+      "requirement" : "Balance Merge combines at most two stored-value card balances onto one of those cards and reduces the remaining card balance to zero.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Use two synthetic accounts and assert both destination and zeroed source balances.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.9",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-M-balance-merge-two-cards"
+      } ]
+    }, {
+      "id" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "transactionTypeCode" : "M",
+      "title" : "If more than two stored-value cards must be merged, repeat the merge until one card retains the combined balance.",
+      "requirement" : "If more than two stored-value cards must be merged, repeat the merge until one card retains the combined balance.",
+      "evidenceLevel" : "DIRECT_LIFECYCLE_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Multi-message lifecycle and intermediate balances need linked TS/TC/TD evidence.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.9",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-M-balance-merge-repeat"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "businessRequirementId" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS"
+    }, {
+      "id" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "businessRequirementId" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "testScenarioId" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS"
+    }, {
+      "id" : "TC-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "testScenarioId" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-m-transaction-type-m-balance-merge-two-cards.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-m-transaction-type-m-balance-merge-repeat.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "testCaseId" : "TC-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "testDataId" : "TD-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-TWO-CARDS",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-m-transaction-type-m-balance-merge-two-cards.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "testCaseId" : "TC-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "testDataId" : "TD-DRAFT-BR-TX-M-TRANSACTION-TYPE-M-BALANCE-MERGE-REPEAT",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-m-transaction-type-m-balance-merge-repeat.json",
+      "executable" : false
+    } ],
+    "brCount" : 2,
+    "tsCount" : 2,
+    "tcCount" : 2,
+    "tdReferenceCount" : 2,
+    "tdDraftStubCount" : 2,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "N",
+    "transactionTypeName" : "Replace Card",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-N",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "transactionTypeCode" : "N",
+      "title" : "Replace Card transfers the balance of a lost, stolen, or damaged card to a new card with a new account number and reduces the old account balance to zero.",
+      "requirement" : "Replace Card transfers the balance of a lost, stolen, or damaged card to a new card with a new account number and reduces the old account balance to zero.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Receipt-based recovery of old account number is noted by source but operational details require a separate scenario.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.10",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-N-replace-card"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "businessRequirementId" : "BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "testScenarioId" : "TS-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-n-transaction-type-n-replace-card.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "testCaseId" : "TC-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "testDataId" : "TD-DRAFT-BR-TX-N-TRANSACTION-TYPE-N-REPLACE-CARD",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-n-transaction-type-n-replace-card.json",
+      "executable" : false
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 1,
+    "tdReferenceCount" : 1,
+    "tdDraftStubCount" : 1,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "Q",
+    "transactionTypeName" : "Recharge Card",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-Q",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "transactionTypeCode" : "Q",
+      "title" : "Recharge/Issue Card adds the entered amount to the current stored-value balance without exceeding the card's original value.",
+      "requirement" : "Recharge/Issue Card adds the entered amount to the current stored-value balance without exceeding the card's original value.",
+      "evidenceLevel" : "DIRECT_BOUNDARY_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Derive exact boundary and reject-over-cap expected results in source-anchored TC/TD cases.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.7.3.8",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-Q-recharge-original-value-cap"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "businessRequirementId" : "BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "testScenarioId" : "TS-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-q-transaction-type-q-recharge-original-value-cap.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "testCaseId" : "TC-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "testDataId" : "TD-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-tx-q-transaction-type-q-recharge-original-value-cap.json",
+      "executable" : false
+    } ],
+    "brCount" : 1,
+    "tsCount" : 1,
+    "tcCount" : 1,
+    "tdReferenceCount" : 1,
+    "tdDraftStubCount" : 1,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "T",
+    "transactionTypeName" : "Token Registration",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-T",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_WITH_SOURCE_REVIEW_BLOCKERS",
+    "businessRequirements" : [ {
+      "id" : "BR-TX-T-TRANSACTION-TYPE-T-TRANSARMOR-TOKEN-REGISTRATION",
+      "transactionTypeCode" : "T",
+      "title" : "Transaction type T identifies TransArmor token registration.",
+      "requirement" : "Transaction type T identifies TransArmor token registration.",
+      "evidenceLevel" : "APPENDIX_G_ONLY",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "blocker" : "Detailed request, response, token lifecycle, and security assertions are deferred to the external TransArmor processing specification referenced by ATL105 10.12.",
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "Appendix G",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-T-transarmor-token-registration"
+      } ]
+    } ],
+    "testScenarios" : [ ],
+    "testCases" : [ ],
+    "testDataReferences" : [ ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TX-T-TRANSACTION-TYPE-T-TRANSARMOR-TOKEN-REGISTRATION",
+      "status" : "BLOCKED_SOURCE_REVIEW_REQUIRED",
+      "blocker" : "Detailed request, response, token lifecycle, and security assertions are deferred to the external TransArmor processing specification referenced by ATL105 10.12."
+    } ],
+    "brCount" : 1,
+    "tsCount" : 0,
+    "tcCount" : 0,
+    "tdReferenceCount" : 0,
+    "tdDraftStubCount" : 0,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 1,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  }, {
+    "transactionTypeCode" : "V",
+    "transactionTypeName" : "Loyalty Advice Function",
+    "transactionClass" : "SPECIAL_NONFINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-V",
+    "singleStepEligible" : true,
+    "multiStepEligible" : false,
+    "multiStepLifecycleRoles" : [ ],
+    "scope" : "SPECIAL_NONFINANCIAL",
+    "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+    "businessRequirements" : [ {
+      "id" : "BR-TXV-ADD-ACCOUNT",
+      "transactionTypeCode" : "V",
+      "title" : "Add account",
+      "requirement" : "Adds a new loyalty account to the loyalty host; the device captures a new card and customer street number and telephone number.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-add-account"
+      } ]
+    }, {
+      "id" : "BR-TXV-COUPON-REDEEM",
+      "transactionTypeCode" : "V",
+      "title" : "Coupon redemption",
+      "requirement" : "Redeems coupons for payment using loyalty account/card and Coupon ID and Coupon Amount; when the card is unavailable, street number and telephone number substitute for account number.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-coupon-redeem"
+      } ]
+    }, {
+      "id" : "BR-TXV-EXPIRATION-UPDATE",
+      "transactionTypeCode" : "V",
+      "title" : "Expiration date update",
+      "requirement" : "Updates loyalty-account expiration; when the card is unavailable, street number and telephone number substitute for account number, and the host extends the account by a predefined interval.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-expiration-update"
+      } ]
+    }, {
+      "id" : "BR-TXV-ACCOUNT-INQUIRY",
+      "transactionTypeCode" : "V",
+      "title" : "Account inquiry",
+      "requirement" : "Inquires about loyalty-account status and returns merchant-maintained Loyalty Print Data; street number and telephone number may substitute when the card is unavailable.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-account-inquiry"
+      } ]
+    }, {
+      "id" : "BR-TXV-POINTS-REDEEM",
+      "transactionTypeCode" : "V",
+      "title" : "Points redemption",
+      "requirement" : "Redeems a specified number of loyalty points for payment; street number and telephone number may substitute when the card is unavailable.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-points-redeem"
+      } ]
+    }, {
+      "id" : "BR-TXV-COUPON-REVERSAL",
+      "transactionTypeCode" : "V",
+      "title" : "Reversal of coupon redeem",
+      "requirement" : "Reverses a previously approved coupon redemption using Coupon ID, Coupon Amount, and the prior approval number; street number and telephone number may substitute when the card is unavailable.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-coupon-reversal"
+      } ]
+    }, {
+      "id" : "BR-TXV-POINTS-REVERSAL",
+      "transactionTypeCode" : "V",
+      "title" : "Reversal of points redeemed",
+      "requirement" : "Reverses previously approved points redemption using point amount and prior approval number; street number and telephone number may substitute when the card is unavailable.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-points-reversal"
+      } ]
+    }, {
+      "id" : "BR-TXV-SALE-UPDATE",
+      "transactionTypeCode" : "V",
+      "title" : "Sale update",
+      "requirement" : "Updates the loyalty host with noncredit-card/cash sale amount for a loyalty account; street number and telephone number may substitute when the card is unavailable.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-sale-update"
+      } ]
+    }, {
+      "id" : "BR-TXV-ACCOUNT-UPDATE",
+      "transactionTypeCode" : "V",
+      "title" : "Account update",
+      "requirement" : "Updates loyalty-account street and telephone numbers; both new values are required by the described operation.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-account-update"
+      } ]
+    }, {
+      "id" : "BR-TXV-TOTALS-REPORT",
+      "transactionTypeCode" : "V",
+      "title" : "Totals Report, Loyalty",
+      "requirement" : "Requests a summary of loyalty transactions subtotaled by card number; the host returns the report for printing.",
+      "evidenceLevel" : "DIRECT_BEHAVIOR",
+      "status" : "DRAFT_REVIEW_REQUIRED",
+      "executionReady" : false,
+      "sourceAnchors" : [ {
+        "specification" : "ATL105",
+        "version" : "2026-3",
+        "section" : "10.9.3",
+        "segment" : "100",
+        "element" : "78",
+        "rule" : "transaction-type-V-loyalty-totals-report"
+      } ]
+    } ],
+    "testScenarios" : [ {
+      "id" : "TS-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "businessRequirementId" : "BR-TXV-ADD-ACCOUNT"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-COUPON-REDEEM",
+      "businessRequirementId" : "BR-TXV-COUPON-REDEEM"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "businessRequirementId" : "BR-TXV-EXPIRATION-UPDATE"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "businessRequirementId" : "BR-TXV-ACCOUNT-INQUIRY"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-POINTS-REDEEM",
+      "businessRequirementId" : "BR-TXV-POINTS-REDEEM"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "businessRequirementId" : "BR-TXV-COUPON-REVERSAL"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "businessRequirementId" : "BR-TXV-POINTS-REVERSAL"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-SALE-UPDATE",
+      "businessRequirementId" : "BR-TXV-SALE-UPDATE"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "businessRequirementId" : "BR-TXV-ACCOUNT-UPDATE"
+    }, {
+      "id" : "TS-DRAFT-BR-TXV-TOTALS-REPORT",
+      "businessRequirementId" : "BR-TXV-TOTALS-REPORT"
+    } ],
+    "testCases" : [ {
+      "id" : "TC-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ADD-ACCOUNT"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-COUPON-REDEEM",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-COUPON-REDEEM"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-EXPIRATION-UPDATE"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ACCOUNT-INQUIRY"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-POINTS-REDEEM",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-POINTS-REDEEM"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-COUPON-REVERSAL"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-POINTS-REVERSAL"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-SALE-UPDATE",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-SALE-UPDATE"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ACCOUNT-UPDATE"
+    }, {
+      "id" : "TC-DRAFT-BR-TXV-TOTALS-REPORT",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-TOTALS-REPORT"
+    } ],
+    "testDataReferences" : [ {
+      "testDataId" : "TD-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-add-account.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-COUPON-REDEEM",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-coupon-redeem.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-expiration-update.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-account-inquiry.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-POINTS-REDEEM",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-points-redeem.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-coupon-reversal.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-points-reversal.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-SALE-UPDATE",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-sale-update.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-account-update.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    }, {
+      "testDataId" : "TD-DRAFT-BR-TXV-TOTALS-REPORT",
+      "path" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-totals-report.json",
+      "kind" : "NON_EXECUTABLE_TEST_SOLUTION_DRAFT_STUB",
+      "independentTestSolutionData" : true
+    } ],
+    "brTsTcTdMappings" : [ {
+      "businessRequirementId" : "BR-TXV-ADD-ACCOUNT",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "testCaseId" : "TC-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "testDataId" : "TD-DRAFT-BR-TXV-ADD-ACCOUNT",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-add-account.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-COUPON-REDEEM",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-COUPON-REDEEM",
+      "testCaseId" : "TC-DRAFT-BR-TXV-COUPON-REDEEM",
+      "testDataId" : "TD-DRAFT-BR-TXV-COUPON-REDEEM",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-coupon-redeem.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-EXPIRATION-UPDATE",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "testCaseId" : "TC-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "testDataId" : "TD-DRAFT-BR-TXV-EXPIRATION-UPDATE",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-expiration-update.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-ACCOUNT-INQUIRY",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "testCaseId" : "TC-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "testDataId" : "TD-DRAFT-BR-TXV-ACCOUNT-INQUIRY",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-account-inquiry.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-POINTS-REDEEM",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-POINTS-REDEEM",
+      "testCaseId" : "TC-DRAFT-BR-TXV-POINTS-REDEEM",
+      "testDataId" : "TD-DRAFT-BR-TXV-POINTS-REDEEM",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-points-redeem.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-COUPON-REVERSAL",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "testCaseId" : "TC-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "testDataId" : "TD-DRAFT-BR-TXV-COUPON-REVERSAL",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-coupon-reversal.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-POINTS-REVERSAL",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "testCaseId" : "TC-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "testDataId" : "TD-DRAFT-BR-TXV-POINTS-REVERSAL",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-points-reversal.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-SALE-UPDATE",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-SALE-UPDATE",
+      "testCaseId" : "TC-DRAFT-BR-TXV-SALE-UPDATE",
+      "testDataId" : "TD-DRAFT-BR-TXV-SALE-UPDATE",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-sale-update.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-ACCOUNT-UPDATE",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "testCaseId" : "TC-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "testDataId" : "TD-DRAFT-BR-TXV-ACCOUNT-UPDATE",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-account-update.json",
+      "executable" : false
+    }, {
+      "businessRequirementId" : "BR-TXV-TOTALS-REPORT",
+      "status" : "DRAFT_CHAIN_REVIEW_REQUIRED",
+      "testScenarioId" : "TS-DRAFT-BR-TXV-TOTALS-REPORT",
+      "testCaseId" : "TC-DRAFT-BR-TXV-TOTALS-REPORT",
+      "testDataId" : "TD-DRAFT-BR-TXV-TOTALS-REPORT",
+      "testDataDraftPath" : "test-output/test-json/special-transaction-type-test-data-drafts/td-draft-br-txv-totals-report.json",
+      "executable" : false
+    } ],
+    "brCount" : 10,
+    "tsCount" : 10,
+    "tcCount" : 10,
+    "tdReferenceCount" : 10,
+    "tdDraftStubCount" : 10,
+    "executableIndependentTdCount" : 0,
+    "blockedBrCount" : 0,
+    "mappingPolicy" : "Source-backed draft chains only; every chain and TD stub remains REVIEW_REQUIRED/non-executable."
+  } ],
+  "multiStepScenarios" : [ {
+    "id" : "AUTH-COMPLETION",
+    "originalCodes" : [ "3", "5", "B" ],
+    "followUpCodes" : [ "0" ],
+    "status" : "defined"
+  }, {
+    "id" : "PURCHASE-REVERSAL-VOID",
+    "originalCodes" : [ "0", "4", "6" ],
+    "followUpCodes" : [ "8", "C" ],
+    "status" : "defined"
+  }, {
+    "id" : "REFUND-VOID-OF-RETURN",
+    "originalCodes" : [ "7" ],
+    "followUpCodes" : [ "U" ],
+    "status" : "defined"
+  }, {
+    "id" : "AUTHORIZATION-CANCELLATION",
+    "originalCodes" : [ "3", "5", "B" ],
+    "followUpCodes" : [ "S" ],
+    "status" : "defined"
+  }, {
+    "id" : "TIMEOUT-REVERSAL",
+    "originalCodes" : [ "0", "3", "4", "5", "6", "B" ],
+    "followUpCodes" : [ "Z" ],
+    "status" : "defined"
+  } ],
+  "flowViews" : {
+    "singleStep" : {
+      "eligibleCodes" : [ "0", "3", "4", "5", "6", "7", "A", "B", "9", "D", "E", "K", "L", "M", "N", "Q", "T", "V" ],
+      "eligibleCodeCount" : 18,
+      "standardFinancialBusinessRequirements" : 8,
+      "standardFinancialTestScenarios" : 8,
+      "standardFinancialSingleStepTestCases" : 16,
+      "aiOwnedTestDataFixtureReferences" : 8,
+      "specialFlowDraftBusinessRequirements" : 34,
+      "specialFlowDraftChains" : 32,
+      "specialFlowDraftTestCases" : 32,
+      "specialFlowNonExecutableTestDataStubs" : 32,
+      "blockedSpecialBusinessRequirements" : 2,
+      "totalBusinessRequirements" : 42,
+      "totalTestScenarios" : 40,
+      "totalTestCases" : 48,
+      "executableIndependentTestDataFixtures" : 0
+    },
+    "multiStep" : {
+      "multiStepEligibleCodes" : [ "0", "3", "5", "7", "8", "B", "C", "S", "U", "Z" ],
+      "lifecycleParticipantCodes" : [ "0", "3", "4", "5", "6", "7", "8", "B", "C", "S", "U", "Z" ],
+      "eligibleCodeCount" : 10,
+      "lifecycleParticipantCodeCount" : 12,
+      "transactionPackageParticipantBrs" : 12,
+      "transactionPackageParticipantTestScenarios" : 12,
+      "transactionPackageLifecycleTestCases" : 17,
+      "transactionPackageAiFixtureReferences" : 5,
+      "transactionPackageSharedCatalogReferences" : 12,
+      "lifecycleScenarioFamilyCount" : 5,
+      "lifecycleCatalogBusinessRequirements" : 5,
+      "lifecycleCatalogTestScenarios" : 5,
+      "lifecycleCatalogTestCases" : 9,
+      "lifecycleCatalogTestData" : 9,
+      "independentExecutableFixtureCount" : 0,
+      "knownClassificationNote" : [ "Transaction types 4 and 6 are included as original sides of purchase-reversal/timeout lifecycle patterns even though their multiStepEligible flag is false." ]
+    }
+  },
+  "summary" : {
+    "transactionTypeCodes" : 23,
+    "businessRequirements" : 47,
+    "testScenarios" : 45,
+    "testCases" : 65,
+    "mappingEdgeCount" : 65,
+    "aiInputFixtureReferences" : 13,
+    "sharedTestSolutionLifecycleCatalogReferences" : 12,
+    "specialTestDataDraftStubs" : 32,
+    "sharedLifecycleCatalogTestDataRecords" : 9,
+    "executableIndependentTestDataFixtures" : 0,
+    "specialBusinessRequirementsBlocked" : 2,
+    "executionReady" : false,
+    "reason" : "Standard-code payload refs include AI-owned fixtures; special-flow fixtures are draft schema stubs; converter execution and source/SME review are not complete."
+  },
+  "validation" : {
+    "allAppendixGCodesPresent" : true,
+    "noDuplicateTransactionCodes" : true,
+    "allDraftSpecialChainsHaveBR_TS_TC_TD" : true,
+    "allSpecialTdDraftFilesExist" : true
+  }
+}
