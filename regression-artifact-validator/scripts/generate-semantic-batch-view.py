@@ -2,7 +2,18 @@ import argparse
 import hashlib
 import json
 import runpy
+from html.parser import HTMLParser
 from pathlib import Path
+
+
+class ReportLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.targets = []
+
+    def handle_starttag(self, tag, attributes):
+        if tag == "a":
+            self.targets.extend(value for name, value in attributes if name == "href" and value)
 
 
 def main():
@@ -23,9 +34,16 @@ def main():
     style += EXTRA_STYLE
     encoded = json.dumps(data, ensure_ascii=True, separators=(",", ":")).replace("</", "<\\/")
     html = TEMPLATE.replace("__STYLE__", style).replace("__DATA__", encoded)
+    parsed_links = ReportLinks()
+    parsed_links.feed(html)
+    assert all((root / target).is_file() for target in parsed_links.targets)
+    embedded = json.loads(html.split('<script type="application/json" id="data">', 1)[1].split("</script>", 1)[0])
+    assert len(embedded["cases"]) == 100 and len(embedded["queue"]) == 2005
+    assert all(hashlib.sha256((root / name).read_bytes()).hexdigest() == digest
+               for name, digest in embedded["reportInputHashes"].items())
     output = root / "SEMANTIC-FIRST-BATCH-REPORT.html"
     output.write_text(html, encoding="utf-8")
-    print(f"Generated {output}: 100 assessed cases, 2,005 outcome-review rows")
+    print(f"Generated {output}: 100 assessed cases, 2,005 outcome-review rows; hashes and links verified")
 
 
 EXTRA_STYLE = """
