@@ -19,7 +19,11 @@ a specific table in full.
 
 ## Appendix I: Variable Information Data Layouts (Element 111/113)
 
-Source: `extracted_text.txt` line ~27443-32490. 81 distinct Table IDs (001-081).
+Source: `extracted_text.txt` line ~27443-32490. The allocated range is 001-081,
+with 78 located top-level table definitions; 023, 061 and 074 are not located.
+See the [Appendix I training addendum](appendix-i/README.md) and its generated
+source inventory. The summaries below are historical navigation hints, not the
+field-level training oracle; verify every attribute against the source.
 
 | Table ID | Name/Title | Approx. Line | Sub-tables | Notes |
 |----------|-----------|-------------|-----------|-------|

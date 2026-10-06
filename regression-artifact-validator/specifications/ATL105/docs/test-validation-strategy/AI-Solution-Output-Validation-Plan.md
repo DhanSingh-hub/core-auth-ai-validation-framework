@@ -17,6 +17,35 @@
 
 ## 1. Understanding of the AI Architecture
 
+Appendix I training uses a source-only, hash-pinned table inventory and independent
+field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
+selected logical representations in Tables 001-009, not the complete segment wire
+grammar, network authorization, field allocation, conditional presence, or AI
+business equivalence. PASS means only the tested predicate passed; unknown scope
+is NOT_ASSERTABLE, missing network context is REVIEW_REQUIRED, and Table 009
+framing stays gated by SEG111-SME-002. No delivery coverage or execution-readiness
+promotion follows from these checks. See the [Appendix I addendum](../specs/kb/appendix-i/README.md).
+`AppendixISegmentWireValidator` separately checks common ASCII framing, contiguous
+records, exact lengths and separators for candidate Segment 111 fragments.
+Unknown encoding is NOT_ASSERTABLE and conflicted Table 009 framing remains
+REVIEW_REQUIRED. The first candidate generator emits 18 logical fragments and 16
+wire-segment fragments with explicit review gates; neither is a complete financial
+request or a canonical execution-ready package. Full-message/response validation
+and complete AI BR/TS/TC/TD reconstruction are still required.
+Additional Appendix I batches provide 178 draft logical candidate records for
+the remaining 69 tables, not executed or complete request fixtures. A bounded
+immutable-delivery intake hashes and joins the existing TC-000016 chain and
+reports missing segment length plus a single-record alias length discrepancy
+(AIF-0017). Identity joins and local predicates are measured separately from
+semantic equivalence, message-family validation and exhaustive AI coverage.
+The user selected offline source-backed full-message validation first.
+Appendix B's Segment 100 example declares 078 but represents 82 ASCII bytes;
+`AppendixIFullMessageSourceInspectionTest` reproduces the discrepancy from the
+hash-pinned source. `SEG111-SME-121` remains open. New synthetic candidates must
+calculate lengths under Section 12.1, without treating this process decision as
+approval of the example's other fields or companion applicability. Source
+inspection is not a generated full-request candidate or host-acceptance result.
+
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 
 ```text

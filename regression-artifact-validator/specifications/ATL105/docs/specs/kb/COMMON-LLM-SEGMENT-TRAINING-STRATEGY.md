@@ -111,6 +111,35 @@ An SME answer that changes coverage is still recorded in the [SME decision regis
 
 ## Required Training Record
 
+For Appendix I table training, use the [Appendix I addendum](appendix-i/README.md)
+alongside Segment 111. Preserve the distinction between Element 111 (selector),
+Element 112 (length), Element 113 (data), and the Segment 111 envelope. Inventory
+actual source-defined IDs rather than assuming every ID up to the largest value
+exists. Nested selector occurrences and source navigation spans are not semantic
+rules, completed BR/TS/TC/TD chains, or approval. Read preceding notes and page
+continuations, cross-check Chapter 13 and Section 12.10, and keep conflicting
+table-specific attributes review-gated with a central register reference.
+The bounded `AppendixILogicalDataValidator` implementation checks selected
+Tables 001-009 representation predicates independently of producer assertions.
+Its PASS is a predicate result, not a wire/transaction/AI-match or readiness
+decision; missing context remains REVIEW_REQUIRED and unsupported scope remains
+NOT_ASSERTABLE. Explicitly separate these predicate tests from complete,
+source-reviewed BR/TS/TC/TD chains.
+The companion wire predicate validates common ASCII Segment 111 fragments only,
+with separate unsupported-encoding and conflicted-framing gates. First-batch
+candidate chains retain REVIEW_REQUIRED and never count fragment payloads as
+complete requests, approved fixtures, AI-equivalent artifacts, or executed cases.
+Remaining-layout examples use explicit logical-fragment records with proposed
+predicate outcomes. They need implementation and full-message assembly before
+execution claims. Hash and join immutable producer artifacts for intake, report
+physical gaps independently, and never treat a linked ID or confidence-gated
+producer oracle as semantic acceptance.
+Full-message work is offline first, not host acceptance. Inspect referenced
+examples before adopting them as seeds: `AppendixIFullMessageSourceInspectionTest`
+reproduces Appendix B's Segment 100 length conflict (078 declared, 82 measured).
+Use Section 12.1's calculated length for new synthetic candidates while retaining
+`SEG111-SME-121`; a corrected length is not proof of a valid complete request.
+
 For every new or changed rule, the trainer must record:
 
 1. Authoritative source, version, page, and section.

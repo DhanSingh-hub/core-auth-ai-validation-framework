@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 16 open (16 total).
+**Status:** 17 open (17 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -24,6 +24,7 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0014](#aif-0014) | Build Electronic Mail Request test data with Segment 109 and verify the complete BR-to-data chain | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0015](#aif-0015) | Correct the phase-1 Electronic Mail Request payload before claiming verification PASS | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0016](#aif-0016) | Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads | OPEN | AI Solution Team | 2026-09-30 |
+| [AIF-0017](#aif-0017) | Complete Segment 111 physical length evidence in the immutable TC-000016 representative chain | OPEN | AI Solution Team | 2026-10-06 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -350,3 +351,20 @@ The supplied Segment 118 artifacts are not intake-ready. Run1 has 107 direct Seg
 - `AI delivery reporting/output/qe_shaped_test_data/`
 
 **Related:** [SEG118-SME-005](../../docs/specs/kb/segment-118/segment-118-sme-tba-input-register.md#seg118-sme-005), [TT-0015](test-team-discussion.md#tt-0015)
+
+<a id="aif-0017"></a>
+## AIF-0017: Complete Segment 111 physical length evidence in the immutable TC-000016 representative chain
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-10-06 by Test Solution training assistant
+- **Segments:** 111
+- **Target delivery:** 2026-09-29 phase_1_single_leg; correction in a new versioned delivery
+
+The chain REQ-SRC-ATL105-PDF-001:0821 -> SC-0018 -> TC-000016 has explicit linked IDs. Its physical TD omits required Segment Length. Under the bounded single-record alias interpretation, VariableInformationLength declares 001 but the sole TableID 001 Value has two characters. ATL105 2026-3 section12.10, extracted_text.txt lines12599-12622 defines the required lengths. Producer confidence, review flags and deferred calculations are not approved physical evidence. Supply a new versioned TD with explicit calculated segment/table lengths and matching wire evidence, or clarify the documented alias mapping. Do not modify the immutable delivery in place. Full message-family and semantic correctness remain unassessed; this one representative does not establish Appendix I AI coverage.
+
+**Evidence:**
+
+- `specifications/ATL105/test-output/ai-solution-independent-review/appendix-i/representative-intake.json`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000016.json`
+- `specifications/ATL105/docs/specs/extracted_text.txt section12.10 lines12599-12622`
