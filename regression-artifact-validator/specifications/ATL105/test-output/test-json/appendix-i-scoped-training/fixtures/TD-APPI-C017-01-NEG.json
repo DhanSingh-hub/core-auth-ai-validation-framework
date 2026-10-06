@@ -1,0 +1,54 @@
+{
+  "id" : "TD-APPI-C017-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C017-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C017-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-12",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t017-value-APPI-C017-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C017-01",
+        "tableId" : "017",
+        "ruleIds" : [ "APPI-T017-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-12",
+          "startLine" : 27921,
+          "endLine" : 27927
+        } ],
+        "data" : "33",
+        "context" : {
+          "brand" : "MasterCard",
+          "transactionClass" : "Purchase reversal request",
+          "cardPresence" : "CNP",
+          "suspectedFraud" : true
+        },
+        "clearScope" : [ "Fixed numeric34 and stated reversal context" ],
+        "excludedClaims" : [ "Response code", "Full reversal message" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Supplied fraud indicator equals34",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "33",
+          "targetedNegative" : "Wrong fixed indicator"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

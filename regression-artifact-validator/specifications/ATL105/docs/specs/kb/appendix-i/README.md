@@ -11,7 +11,9 @@ This is repository-based knowledge/rule training, not model-weight fine-tuning.
 No model-training service has been invoked.
 
 **Current stage: all 78 defined tables represented in draft source-knowledge
-batches; bounded Tables 001-009 predicate/fragment candidates implemented.
+batches; bounded Tables 001-009 predicate/fragment candidates implemented;
+11 selected logical examples for Tables 010-015 and 017 now independently
+evaluated and linked using the canonical review-only contract.
 Semantic completeness, full-message training and AI equivalence remain incomplete.**
 The generator locates 78 source-defined top-level table headings, not 81 consecutive
 definitions. IDs 023, 061 and 074 are unlocated within the allocated range; this alone
@@ -69,6 +71,9 @@ These are user-directed process decisions, not SME approval of business rules:
    does not approve the rest of the example or make it a ready full-request seed.
    [Source-example inspection](../../../../test-output/test-json/knowledge/appendix-i-full-message-source-inspection.json)
    records the discrepancy without copying account or verification values.
+10. Continue training on `Appendix-I`. AI Solution comparison is deferred by the
+    user. Any subsequent merge to `Develop` requires the user's explicit approval;
+    neither a passing test batch nor a pushed checkpoint is completion sign-off.
 
 ## Training batches and gates
 
@@ -137,6 +142,45 @@ context, optional/required companion segments and exact wire reconstruction.
 Those complete request fixtures and adapters are still pending, not silently
 substituted by a fragment or producer sample.
 
+## Executed scoped logical batch (continuation)
+
+[Canonical review-only package](../../../../test-output/test-json/appendix-i-scoped-training/package.json)
+contains 11 BR/TS pairs and 22 TC/TD pairs for selected examples from Tables
+010-015 and 017. Each TD has a physical JSON file, the canonical
+`testCaseIds` link, and REVIEW_REQUIRED readiness. Source anchors use a
+distinct scoped-check identity: these partial predicates must not be matched
+as though they implement every clause of the original source rule.
+
+`AppendixIScopedCandidateValidator` checks TAP component widths/hexadecimal and
+zero fill, tax mappings including the meaningful blank, printed market mappings,
+special-payment mapping and supplied recurring eligibility, user-data width/
+logical echo/nonforwarding, supplied Discover reference equality, and the
+fixed fraud indicator in the selected reversal context. Context comes from
+explicit synthetic preconditions; no real BIN, assignment, issuer trace,
+network availability or host response is verified.
+
+[Execution and rule ledger](../../../../test-output/test-json/appendix-i-scoped-training/evidence.json)
+pins the source and knowledge/example hashes, records actual findings for all
+22 logical evaluations, and reconciles all 302 draft rules. Eleven supplied
+targeted mutations are detected by their specific predicate. This is not
+the appendix-wide mutation threshold or complete coverage of those rules.
+The ledger identifies partial evidence **in this scoped batch**; it does not
+discard or override earlier first-batch evidence. Proposed outcomes in the
+original 178 example records remain unchanged.
+
+Generation fails on a changed source, invalid input scope, missing candidate,
+missing rule, absent mutation path, wrong target outcome or invalid canonical
+links. Unsupported candidates remain NOT_ASSERTABLE and incomplete context
+remains REVIEW_REQUIRED. No conflicted length header is serialized by this
+batch. The response object records NOT_EXECUTED, not a fabricated response.
+
+The [training status](../../../../training-status.json) records Appendix I
+separately under `appendixTraining.I`, using the existing nine phases.
+The 302 draft rules are not added to the numbered-segment catalog denominator.
+Source completeness, full messages, approval and final certification remain
+unestablished. This scoped batch follows the same framework gates without
+promoting a logical fragment to execution-ready request data.
+
 Do not infer source completeness from the heading count. For each table record
 every field, width/type, valid codes, requiredness, nesting, transaction/card/network
 conditions, directional role, absent/present behavior, exception, effective-date
@@ -166,6 +210,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Appendix I candidate generation failed' }
 java -cp ("target\classes;" + ($jars -join ';')) `
     com.coreauth.validator.coverage.GenerateAppendixIRepresentativeIntake
 if ($LASTEXITCODE -ne 0) { throw 'Appendix I representative intake failed' }
+java -cp ("target\classes;" + ($jars -join ';')) `
+    com.coreauth.validator.coverage.GenerateAppendixIScopedTraining
+if ($LASTEXITCODE -ne 0) { throw 'Appendix I scoped training generation failed' }
 ```
 
 The generator accepts optional ATL105-root and output-file arguments. Tests do
@@ -175,13 +222,18 @@ its denominator.
 
 ## Baseline and completion boundary
 
-Current targeted validation: 123 tests, zero failures/errors, covering Appendix I
+Current targeted validation: 151 tests, zero failures/errors, covering Appendix I
 inventory/knowledge/candidate metadata, first-batch predicates and framing,
 representative immutable AI intake, register/view consistency and existing
 Segment 111/producer-neutral contract behavior, plus a reproducible Appendix B
 dependency-length inspection. This is not the full-framework
-suite and does not execute the proposed predicates in every remaining-layout
-candidate. The two new physical-TD gaps are preserved in AIF-0017.
+suite. The continuation adds 23 focused checks for selected scoped predicates,
+canonical links, physical-file reproducibility and training-status gates,
+plus shared training-status/denominator regressions. Eleven of the 178
+remaining-layout example records now have separately recorded logical
+execution evidence; predicates for the others remain unimplemented.
+The two earlier physical-TD gaps are preserved in AIF-0017; AI comparison
+is deferred, and no new delivery assessment is made by this continuation.
 
 The targeted existing Segment 111 and contract tests passed before the change.
 The prior full-framework review of this same `Develop` baseline recorded four

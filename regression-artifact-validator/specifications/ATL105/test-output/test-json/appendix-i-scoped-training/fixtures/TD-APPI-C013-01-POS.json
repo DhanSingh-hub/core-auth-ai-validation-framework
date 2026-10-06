@@ -1,0 +1,54 @@
+{
+  "id" : "TD-APPI-C013-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C013-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C013-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-10",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t013-recurring-APPI-C013-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C013-01",
+        "tableId" : "013",
+        "ruleIds" : [ "APPI-T013-R001", "APPI-T013-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-10",
+          "startLine" : 27815,
+          "endLine" : 27821
+        } ],
+        "data" : "R",
+        "context" : {
+          "paymentKind" : "Recurring",
+          "cardType" : "020",
+          "binBrandClassification" : "Visa",
+          "classificationEvidence" : "Synthetic precondition only; no actual BIN supplied"
+        },
+        "clearScope" : [ "Recurring codeR under explicitly classified Visa credit precondition" ],
+        "excludedClaims" : [ "Verified BIN eligibility", "A1 length header" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "R requires cardType020",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "context.cardType",
+          "value" : "040",
+          "targetedNegative" : "Noncredit card type with unchangedR"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}
