@@ -18,13 +18,21 @@ class CommunicationsTestPayloadValidatorTest {
     }
 
     @Test
-    void acceptsCommunicationsTestResponseWithoutOptionalDisplayText() {
+    void candidateSc9522AcceptsOmissionOfConditionalElement100() {
         assertThat(new CommunicationsTestPayloadValidator().validatePayload(response(false)).errors()).isEmpty();
     }
 
     @Test
-    void acceptsCommunicationsTestResponseWithPassedDisplayText() {
+    void candidateSc9522AcceptsDocumentedValueForConditionalElement100() {
         assertThat(new CommunicationsTestPayloadValidator().validatePayload(response(true)).errors()).isEmpty();
+    }
+
+    @Test
+    void candidateSc9519RejectsMissingRequiredElement120() {
+        ObjectNode payload = request();
+        ((ObjectNode) payload.path(CommunicationsTestPayloadValidator.REQUEST_ROOT)).remove("NetworkManagementMessage");
+
+        assertRule(payload, "COMM-REQ-003");
     }
 
     @Test

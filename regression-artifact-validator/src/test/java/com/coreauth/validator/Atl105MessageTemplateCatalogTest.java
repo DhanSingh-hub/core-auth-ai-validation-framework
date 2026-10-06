@@ -119,6 +119,23 @@ class Atl105MessageTemplateCatalogTest {
     }
 
     @Test
+    void communicationsTestRequestPreservesUnnumberedElement63AndField2Element120() throws IOException {
+        JsonNode request = readCatalog().path("message_templates").path("Communications Test Request");
+        JsonNode fields = request.path("fields");
+
+        assertThat(fields).hasSize(3);
+        assertThat(fields.get(0).path("field_no").asText()).isEqualTo("1");
+        assertThat(fields.get(1).path("field_no").asText()).isEmpty();
+        assertThat(fields.get(1).path("element_no").asText()).isEqualTo("63");
+        assertThat(fields.get(1).path("position").asInt()).isEqualTo(7);
+        assertThat(fields.get(2).path("field_no").asText()).isEqualTo("2");
+        assertThat(fields.get(2).path("element_no").asText()).isEqualTo("120");
+        assertThat(fields.get(2).path("position").asInt()).isEqualTo(9);
+        assertThat(fields.get(2).path("source").path("page").asInt()).isEqualTo(184);
+        assertThat(request.path("notes").toString()).contains("Element 63 (Number of Segments) is an unnumbered required table row");
+    }
+
+    @Test
     void sectionElevenIndexCoversEveryMessageLayoutWithoutApprovingIt() throws IOException {
         JsonNode catalog = readCatalog();
         JsonNode index = MAPPER.readTree(Path.of("specifications", "ATL105", "docs", "specs", "kb", "section-11-message-layout-index.json").toFile());
