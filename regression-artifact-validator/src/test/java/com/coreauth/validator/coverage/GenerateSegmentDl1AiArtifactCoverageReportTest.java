@@ -93,6 +93,35 @@ class GenerateSegmentDl1AiArtifactCoverageReportTest {
         assertThat(response.path("representation").asText()).contains("not serialized");
     }
 
+    @Test
+    void validatesFieldAliasCrosswalkAndWritesConsolidatedReport(@TempDir Path tempDir) throws Exception {
+        Path runRoot = Atl105Paths.testInput().resolve(Path.of(
+                "ai-solution", "runs", "2026-09-29", "phase_1_single_leg"));
+        Path json = tempDir.resolve("segment-DL1-ai-artifact-coverage-report.json");
+        Path markdown = tempDir.resolve("segment-DL1-ai-artifact-coverage-report.md");
+        Path consolidated = tempDir.resolve("SEGMENT-DL1-CONSOLIDATED-REPORT.txt");
+        Path crosswalk = Atl105Paths.root().resolve(Path.of(
+                "contract", "segment-DL1-field-alias-crosswalk.json"));
+
+        JsonNode report = generator.generate(runRoot,
+                Atl105Paths.testJson("segment-DL1-coverage-package.json"),
+                Atl105Paths.ruleCatalog("DL1"),
+                crosswalk,
+                json,
+                markdown,
+                consolidated);
+
+        assertThat(report.path("fieldAliasCrosswalkPath").asText())
+                .endsWith("segment-DL1-field-alias-crosswalk.json");
+        assertThat(report.path("aiFieldAliasCrosswalk").size()).isEqualTo(7);
+        assertThat(report.path("aiFieldAliasCrosswalk").get(0).path("occurrencesObserved").asInt()).isEqualTo(3);
+        assertThat(Files.readString(markdown)).contains("AI field-name crosswalk");
+        assertThat(Files.readString(consolidated))
+                .contains("SEGMENT DL1 CONSOLIDATED TEST SOLUTION READINESS")
+                .contains("Approved data pairs / executed cases / certified rules: 0 / 0 / 0")
+                .contains("P-01 / SEGDL1-SME-001");
+    }
+
     private JsonNode generate(Path tempDir) throws Exception {
         Path runRoot = Atl105Paths.testInput().resolve(Path.of(
                 "ai-solution", "runs", "2026-09-29", "phase_1_single_leg"));
