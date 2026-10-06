@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C011-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C011-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C011-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-9",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t011-mapping-APPI-C011-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C011-02",
+        "tableId" : "011",
+        "ruleIds" : [ "APPI-T011-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-9",
+          "startLine" : 27779,
+          "endLine" : 27786
+        } ],
+        "data" : "Y",
+        "context" : {
+          "taxable" : false,
+          "salesTaxIncluded" : false
+        },
+        "clearScope" : [ "Nontaxable mapping" ],
+        "excludedClaims" : [ "Length-field encoding" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Nontaxable context usesN",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "Y",
+          "targetedNegative" : "Taxable/tax-included code in nontaxable context"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id" : "TD-APPI-C010-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C010-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C010-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-8",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t010-layout-APPI-C010-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C010-01",
+        "tableId" : "010",
+        "ruleIds" : [ "APPI-T010-R001", "APPI-T010-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-8",
+          "startLine" : 27751,
+          "endLine" : 27764
+        } ],
+        "logicalFields" : {
+          "visaBID" : "0000000000",
+          "visaTAP" : "000000000000",
+          "tppVarId" : "SYN001",
+          "reserved" : "  ",
+          "context" : {
+            "bidUsed" : false,
+            "tapUsed" : false,
+            "tppVarIncluded" : true
+          }
+        },
+        "clearScope" : [ "BID10/TAP12/TPP6/reserved2 component widths", "Unused BID/TAP zero fill when TPP supplied", "Reserved spaces" ],
+        "excludedClaims" : [ "Length-header type", "Real TPP assignment", "Wire serialization" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Reserved field is two spaces",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Unused BID/TAP zero filled",
+          "positive" : "PASS",
+          "mutated" : "PASS"
+        } ],
+        "mutation" : {
+          "path" : "reserved",
+          "value" : " X",
+          "targetedNegative" : "Second reserved position is nonspace"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}
