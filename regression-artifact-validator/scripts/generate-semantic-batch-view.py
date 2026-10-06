@@ -37,7 +37,7 @@ def main():
     matrix_tools = None
     if (root / matrix_name).is_file():
         matrix = json.loads((root / matrix_name).read_text(encoding="utf-8"))
-        data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition"]}
+        data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition", "reconstruction", "supplementHistory"] if key in matrix}
         data["reportInputHashes"][matrix_name] = hashlib.sha256((root / matrix_name).read_bytes()).hexdigest()
         matrix_tools = runpy.run_path(str(Path(__file__).with_name("assess-late-traceability-matrix.py")))
         matrix_section = matrix_tools["report_section"](matrix)

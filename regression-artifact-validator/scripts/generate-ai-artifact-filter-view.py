@@ -215,9 +215,26 @@ def export_pdf(root, data):
         story.append(paragraph(f"Flat excerpt: {independent['leafRows']:,} rows; {independent['presentDeclaredDataPaths']:,} / {independent['uniqueDeclaredDataPaths']:,} declared TD paths present; {len(matrix['issues']):,} review issues. FULLY_TRACED on a no-TC/no-TD leaf is not accepted as a complete chain. Unrepresented rows are unavailable evidence, not identified missing links."))
         story.append(paragraph(escape("Gap-complement additional BRs: " + ", ".join(independent["matrixOnlyTracedBrIds"])) + f". The declared 3,661 / 6,887 equals {independent['producerNumeratorPercent']:.2f}%, not the printed 53.13%. Full-chain 53.2% remains a producer claim."))
         story.append(paragraph("Preserved matrix SHA-256: " + matrix["intake"]["sha256"]))
+        if matrix.get("reconstruction"):
+            rebuilt = matrix["reconstruction"]
+            heading_block("Complete independent matrix reconstruction")
+            table(["Measure", "Independent reconstruction"], [
+                ["Frozen BRs represented", rebuilt["requirementsRepresented"]],
+                ["Complete BR-chain leaves", rebuilt["leafRows"]],
+                ["Producer-declared rows / difference", f"{rebuilt['producerFlatRowsDeclared']:,} / {rebuilt['rowCountDelta']:+,}"],
+                ["Physical-data-complete structural leaves", rebuilt["leafStatusCounts"].get("FULLY_TRACED", 0)],
+                ["Scenario-only leaves", rebuilt["leafStatusCounts"].get("SCENARIO_ONLY", 0)],
+                ["TC leaves missing data", rebuilt["leafStatusCounts"].get("TEST_CASE_NO_DATA", 0)],
+                ["Detailed requirement statuses agreeing", f"{rebuilt['detailStatusAgreementCount']} / {len(rebuilt['detailStatusComparison'])}"],
+                ["Leaf status disagreements", len(rebuilt["flatExcerptStatusDisagreements"])],
+            ], [340, 350])
+            story.append(paragraph("The 75 leaf differences are requirement-level FULLY_TRACED labels propagated onto independently SCENARIO_ONLY leaves, not 75 new missing-TD cases. The complete independent JSON/CSV reconstruct the frozen graph; they are not the omitted producer JSON and do not certify business meaning or execution."))
+            story.append(paragraph("The 63-row difference and 63 fewer declared orphans are arithmetically consistent with additional attribution, but the missing producer edges are not supplied. The two disputed BR mappings remain review-required."))
         heading_block("Assessment history | Preserved before this update")
         story.append(paragraph(f"All {len(matrix['history']['files'])} previous assessment files were copied unchanged and hash-verified before this update. Prior run/semantic HTML reports, PDF, source registers and JSON evidence remain available under history/2026-10-06-before-late-matrix/."))
         story.append(paragraph("Independent coverage remains NOT_CALCULABLE; all previous semantic/host/SME blockers remain unresolved. See LATE-MATRIX-UPDATE.md and late-traceability-matrix-assessment.json for the status transition, intake provenance, discrepancies and snapshot hashes."))
+        if matrix.get("supplementHistory"):
+            story.append(paragraph(f"The earlier truncated-matrix-era assessment is separately preserved: {len(matrix['supplementHistory']['files'])} unchanged files under history/pre-reconciliation-20261006/. Both assessment history points retain recorded hashes."))
 
     heading_block("Coverage | Overall linkage and inventory")
     coverage = data["coverage"]
@@ -302,7 +319,7 @@ def main():
     matrix_section = ""
     if matrix_file.is_file():
         matrix = load(matrix_file.name)
-        data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition"]}
+        data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition", "reconstruction", "supplementHistory"] if key in matrix}
         matrix_section = runpy.run_path(str(Path(__file__).with_name("assess-late-traceability-matrix.py")))["report_section"](matrix)
     assert len(data["scenarios"]) == data["summary"]["scenariosWithoutTc"] == 3732
     assert len(failures) == 27

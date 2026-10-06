@@ -45,6 +45,51 @@ and their snapshot hashes are recorded in
 
 ## Required Follow-Up
 
+## Complete Independent Reconciliation
+
+The truncated export is now compared with a complete **Test Solution-owned
+structural reconstruction**, without altering the received Markdown or claiming
+to recover the missing AI-produced JSON.
+
+| Measure | Independent result |
+|---|---|
+| BRs represented | 6,887 / 6,887 |
+| BR-chain leaves | 61,044 |
+| Producer-declared leaves | 61,107; 63 more than the frozen reconstruction |
+| Structurally traced leaves with physical data | 56,617 |
+| Scenario-only leaves | 4,400 |
+| TC leaves with no physical data | 27 |
+| Logical cases with all data files | 21,096 |
+| Displayed BR detail statuses agreeing | 200 / 200 |
+| Displayed leaf status disagreements | 75 |
+| Unattributed scenarios / cases | 155 / 155, retained separately |
+
+The 75 flat-row disagreements are now explained: **all displayed BR-level
+statuses agree**, but FULLY_TRACED is propagated from a BR with at least one
+complete chain to individual scenario-only leaves. Those leaves remain
+SCENARIO_ONLY in the independent matrix. This is a status-granularity issue,
+not 75 newly discovered missing-TD cases. The 27 missing TDs remain a separate
+population; multiple leaves per scenario/BR must not be confused with unique
+scenario or case counts.
+
+The 63 additional declared rows match the 63 fewer declared orphan scenarios
+arithmetically. This is consistent with additional producer attribution, but
+does not identify the actual missing edges. The disputed `:521` BR concerns
+AVS-driven Purchase Reversal; `:3226` concerns estimated/initial authorization
+when the final amount is unknown. Neither has a TC link in the frozen graph;
+do not assign the orphan scenarios by keywords or this arithmetic coincidence.
+
+Complete independent outputs are available as
+[reconstructed-requirement-matrix.json](reconstructed-requirement-matrix.json)
+and [reconstructed-requirement-matrix.csv](reconstructed-requirement-matrix.csv).
+Their hashes and leaf/detail comparisons are recorded in the reconciliation
+JSON. The earlier matrix-era assessment is also preserved unchanged as 27
+hash-recorded files under
+[history/pre-reconciliation-20261006](history/pre-reconciliation-20261006/AI-ARTIFACT-FILTER-VIEW.html).
+The original 24-file pre-matrix snapshot remains intact.
+
+## Remaining Follow-Up
+
 1. Obtain the complete traceability_matrix.json and exact BR/TS/TC catalog hashes
    used to generate it; preserve those as another immutable late supplement.
 2. Explain the two additional linked BRs and the 92-versus-155 orphan-scenario
