@@ -295,8 +295,10 @@ not independently re-verified.
 
 ## Appendix J: Valid Point-of-Service Entry Mode Codes (Element 113, w/ Element 111 Table 005)
 
-Source: `extracted_text.txt` line ~32491-32576. Transcribed in full per draft pass; not
-independently re-verified.
+Source: `extracted_text.txt` lines 32491-32576 (ATL105 2026-3, Appendix J-1/J-2). The 14 PAN
+mode values and 6 terminal capability values are checked against the extracted source by
+`AppendixJPosEntryModeOracleTest`. See the [Appendix J training note](segment-100/appendix-j-pos-entry-mode-training.md)
+for context restrictions and remaining evidence gaps.
 
 ### PAN Entry Mode Codes (positions 1-2)
 
@@ -389,5 +391,5 @@ fully transcribed - remaining entries live in the same source line range above.
 | E | Valid Card Type Codes | Partial (Table Load Response subset) | Elements 14, 78 |
 | F | Valid Payment Systems Product Codes | Partial (motor fuel sample only) | Element 77 |
 | G | Valid Transaction Type Codes | Complete draft (23 codes), not re-verified | Element 78 (1st position) |
-| J | Valid POS Entry Mode Codes | Complete draft (14 + 6 codes), not re-verified | Element 113 (w/ Element 111 Table 005) |
+| J | Valid POS Entry Mode Codes | 14 + 6 source-listed values verified; context/lifecycle partial | Element 113 (w/ Element 111 Table 005) |
 | L | Valid Currency Codes | Partial (~35 of 100+ currencies) | Element 20 |
