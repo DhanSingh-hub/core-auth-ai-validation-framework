@@ -143,6 +143,16 @@ examples before adopting them as seeds: `AppendixIFullMessageSourceInspectionTes
 reproduces Appendix B's Segment 100 length conflict (078 declared, 82 measured).
 Use Section 12.1's calculated length for new synthetic candidates while retaining
 `SEG111-SME-121`; a corrected length is not proof of a valid complete request.
+`GenerateAppendixIScopedTraining` produces canonical review-only logical chains
+for selected Tables 010-015 and 017. Its scoped source-anchor identities prevent
+partial predicates from being presented as complete source-rule equivalence.
+It records real logical findings and targeted mutation catches separately from
+full-request execution. Physical TD records remain REVIEW_REQUIRED and their
+response envelope explicitly says NOT_EXECUTED. The 302-entry draft-rule ledger
+is not a certified source-completeness denominator. Track these nine-phase
+gates under `training-status.json`'s `appendixTraining.I`, outside the numbered
+segment catalog summary. AI comparison is user-deferred and merging the next
+Appendix I checkpoint to Develop requires explicit user approval.
 
 For every new or changed rule, the trainer must record:
 

@@ -1,0 +1,56 @@
+{
+  "id" : "TD-APPI-C015-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C015-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C015-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-10",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t015-relation-APPI-C015-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C015-01",
+        "tableId" : "015",
+        "ruleIds" : [ "APPI-T015-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-10",
+          "startLine" : 27834,
+          "endLine" : 27839
+        } ],
+        "logicalFields" : {
+          "associatedResponseRRN" : "SYN000000000001",
+          "subsequentRequestRRN" : "SYN000000000002",
+          "context" : {
+            "brand" : "Discover",
+            "initiation" : "MIT",
+            "cofState" : "Subsequent"
+          }
+        },
+        "clearScope" : [ "Fixed15-character RRN", "Response-derived equality in explicit Discover subsequent MIT COF" ],
+        "excludedClaims" : [ "Length-header representation", "Real network RRN", "Broader follow-on scope" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Subsequent RRN equals associated response RRN",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "subsequentRequestRRN",
+          "value" : "SYN000000000002",
+          "targetedNegative" : "Wrong response reference"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

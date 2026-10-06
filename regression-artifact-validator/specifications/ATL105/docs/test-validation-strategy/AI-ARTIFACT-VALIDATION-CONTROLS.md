@@ -39,6 +39,13 @@ measures the referenced Appendix B Segment 100 example (078 declared versus
 82 ASCII bytes), retaining `SEG111-SME-121`. It is source-dependency evidence,
 not full-message execution. New candidates use Section 12.1 calculated lengths;
 offline validation never establishes host acceptance.
+`GenerateAppendixIScopedTrainingTest` adds AIV-005/AIV-006/AIV-011 evidence:
+11 independently evaluated scoped logical examples, 22 physical review-only TD
+records with canonical links, specific mutation-target detection, literal source
+checks, input hashes and reproducible artifacts. Distinct scoped anchors do not
+claim whole-rule equivalence. Supplied context and logical response relations
+are not BIN/network/issuer evidence. The 302-rule ledger is a draft inventory,
+not proof of semantic completeness or an approved AI coverage denominator.
 These controls do not establish complete field extraction, wire validity,
 semantic equivalence, approved fixtures, AI coverage, or execution certification.
 

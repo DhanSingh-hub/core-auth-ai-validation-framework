@@ -49,6 +49,16 @@ hash-pinned source. `SEG111-SME-121` remains open. New synthetic candidates must
 calculate lengths under Section 12.1, without treating this process decision as
 approval of the example's other fields or companion applicability. Source
 inspection is not a generated full-request candidate or host-acceptance result.
+The continuation's `GenerateAppendixIScopedTraining` evaluates 11 selected
+logical examples for Tables 010-015 and 017, emits 22 linked review-only TC/TD
+records and physical TD files, and validates the strict canonical graph.
+Scoped source-anchor identities and assertion boundaries preserve partial-rule
+status. Its measured mutation catches apply only to those supplied mutations;
+the appendix-wide threshold remains unestablished. Input hashes and a
+302-draft-rule ledger preserve reproducibility without certifying completeness.
+AI comparison is deferred by the user; no new producer artifacts are assessed.
+Appendix I remains IN_PROGRESS in the shared training status and the next
+merge to Develop requires explicit user approval.
 
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 
