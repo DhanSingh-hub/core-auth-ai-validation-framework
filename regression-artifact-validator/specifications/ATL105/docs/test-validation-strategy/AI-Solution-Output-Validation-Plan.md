@@ -17,6 +17,22 @@
 
 ## 1. Understanding of the AI Architecture
 
+Appendix I training uses a source-only, hash-pinned table inventory and independent
+field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
+selected logical representations in Tables 001-009, not the complete segment wire
+grammar, network authorization, field allocation, conditional presence, or AI
+business equivalence. PASS means only the tested predicate passed; unknown scope
+is NOT_ASSERTABLE, missing network context is REVIEW_REQUIRED, and Table 009
+framing stays gated by SEG111-SME-002. No delivery coverage or execution-readiness
+promotion follows from these checks. See the [Appendix I addendum](../specs/kb/appendix-i/README.md).
+`AppendixISegmentWireValidator` separately checks common ASCII framing, contiguous
+records, exact lengths and separators for candidate Segment 111 fragments.
+Unknown encoding is NOT_ASSERTABLE and conflicted Table 009 framing remains
+REVIEW_REQUIRED. The first candidate generator emits 18 logical fragments and 16
+wire-segment fragments with explicit review gates; neither is a complete financial
+request or a canonical execution-ready package. Full-message/response validation
+and complete AI BR/TS/TC/TD reconstruction are still required.
+
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 
 ```text

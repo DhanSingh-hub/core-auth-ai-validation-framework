@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +25,12 @@ class AppendixITrainingKnowledgeTest {
         inventory.path("tables").forEach(row -> sourceIds.add(row.path("tableId").asText()));
         Set<String> tableIds = new HashSet<>();
         Set<String> ruleIds = new HashSet<>();
+        Set<String> issueIds = new HashSet<>();
+        Map<String, JsonNode> register = new HashMap<>();
+        for (JsonNode item : MAPPER.readTree(ROOT.resolve(Path.of("registers",
+                "atl105-communication-register.json")).toFile()).path("items")) {
+            assertThat(register.put(item.path("id").asText(), item)).as("Unique register ID").isNull();
+        }
         int sourceLineCount = Files.readAllLines(ROOT.resolve(Path.of("docs", "specs", "extracted_text.txt"))).size();
         Path knowledge = ROOT.resolve(Path.of("test-output", "test-json", "knowledge"));
         try (var files = Files.list(knowledge)) {
@@ -52,6 +60,18 @@ class AppendixITrainingKnowledgeTest {
                             evidence(field, sourceLineCount);
                         }
                     }
+                    assertThat(table.path("pendingIssues").isArray()).isTrue();
+                    for (JsonNode issue : table.path("pendingIssues")) {
+                        assertThat(issueIds.add(issue.path("id").asText())).as("Unique local issue ID").isTrue();
+                        evidence(issue, sourceLineCount);
+                        String registerId = issue.path("registerId").asText();
+                        assertThat(registerId).matches("SEG111-SME-[0-9]{3}");
+                        assertThat(register).containsKey(registerId);
+                        JsonNode query = register.get(registerId);
+                        assertThat(query.path("channel").asText()).isEqualTo("SME_QUERY");
+                        assertThat(query.path("segments")).anyMatch(segment -> segment.asText().equals("111"));
+                        assertThat(query.path("subject").asText()).isNotBlank();
+                    }
                     assertThat(table.path("rules").isArray()).isTrue();
                     assertThat(table.path("rules")).isNotEmpty();
                     for (JsonNode rule : table.path("rules")) {
@@ -75,7 +95,7 @@ class AppendixITrainingKnowledgeTest {
                 }
             }
         }
-        assertThat(tableIds).contains("001", "002", "003", "004", "005", "006", "007", "008", "009");
+        assertThat(tableIds).containsExactlyInAnyOrderElementsOf(sourceIds);
         assertThat(ruleIds).isNotEmpty();
     }
 

@@ -16,6 +16,21 @@ The source of truth for the stages and methods is the [AI Solution Output Valida
 
 ## Control Catalogue
 
+Appendix I evidence for `AIV-005`, `AIV-011`, and `AIV-012`:
+`GenerateAppendixITrainingInventoryTest` verifies source boundaries/hashes and
+actual selector identity; `AppendixITrainingKnowledgeTest` verifies draft source
+evidence, unique IDs, and rule/test-design metadata; `AppendixILogicalDataValidatorTest`
+checks selected Tables 001-009 representation predicates, 13 targeted format
+mutations, unresolved scope/context, and sensitive-value non-disclosure.
+`AppendixISegmentWireValidatorTest` adds six framing mutations, repeated-record
+parsing, conflicted wire, unsupported encoding/scope, and zero-length checks.
+`GenerateAppendixIFirstBatchCandidatesTest` checks candidate links and exact
+wire/structured-fragment correspondence, preserving review/approval boundaries.
+Knowledge reconciliation requires every discovered top-level selector exactly
+once and every pending issue to reference a central Segment 111 SME query.
+These controls do not establish complete field extraction, wire validity,
+semantic equivalence, approved fixtures, AI coverage, or execution certification.
+
 | Control | Validation requirement | Method / implementation surface | Regression evidence | Current format boundary |
 |---|---|---|---|---|
 | `AIV-001` | Freeze the received delivery; retain source location, revision, received time, and file/package hashes. Never normalize the preserved source copy. | `AiArtifactIntakeService`, source-specific intake adapters, artifact storage policy | `AiArtifactIntakeServiceTest`; provenance/hash checks for each intake workflow | Intake adapters resolve local/shared/checked-out Git sources. Hash-manifest generation is not established by the location adapters themselves. |

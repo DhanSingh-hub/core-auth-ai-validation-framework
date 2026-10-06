@@ -117,6 +117,16 @@ exists. Nested selector occurrences and source navigation spans are not semantic
 rules, completed BR/TS/TC/TD chains, or approval. Read preceding notes and page
 continuations, cross-check Chapter 13 and Section 12.10, and keep conflicting
 table-specific attributes review-gated with a central register reference.
+The bounded `AppendixILogicalDataValidator` implementation checks selected
+Tables 001-009 representation predicates independently of producer assertions.
+Its PASS is a predicate result, not a wire/transaction/AI-match or readiness
+decision; missing context remains REVIEW_REQUIRED and unsupported scope remains
+NOT_ASSERTABLE. Explicitly separate these predicate tests from complete,
+source-reviewed BR/TS/TC/TD chains.
+The companion wire predicate validates common ASCII Segment 111 fragments only,
+with separate unsupported-encoding and conflicted-framing gates. First-batch
+candidate chains retain REVIEW_REQUIRED and never count fragment payloads as
+complete requests, approved fixtures, AI-equivalent artifacts, or executed cases.
 
 For every new or changed rule, the trainer must record:
 

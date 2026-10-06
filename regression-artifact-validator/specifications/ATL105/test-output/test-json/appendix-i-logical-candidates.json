@@ -1,0 +1,1412 @@
+{
+  "packageId" : "ATL105-APPENDIX-I-LOGICAL-CANDIDATES-001",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "status" : "REVIEW_REQUIRED",
+  "artifactShape" : "BOUNDED_LOGICAL_FRAGMENTS_NOT_CANONICAL_EXECUTION_PACKAGE",
+  "scope" : "One selected representation predicate per Table 001-009, not every rule, context, conditional presence, cryptographic validity, or wire serialization.",
+  "producer" : "com.coreauth.validator.coverage.GenerateAppendixIFirstBatchCandidates",
+  "businessRequirements" : [ {
+    "id" : "BR-APPI-T001-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T001-R001",
+    "statement" : "UPC data is numeric and does not exceed 35 bytes; this maximum does not establish a universal minimum or UPC checksum rule.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T002-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T002-R001",
+    "statement" : "Table 002 contains a three-byte alphanumeric program identifier from the source-listed values; WUG is reserved rather than evidence of active program availability.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T003-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T003-R001",
+    "statement" : "AVS data starts with a nine-character postal prefix: a five-character ZIP followed by four spaces, or a nine-character ZIP+4; an optional zero-to-twenty-character street suffix follows, with overall maximum 29.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T004-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T004-R001",
+    "statement" : "Present numeric card-verification data uses four bytes for American Express and three for Discover, Visa or MasterCard; the overall maximum is four.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T005-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T005-R001",
+    "statement" : "POS Entry Mode is populated for all transactions from every POS device, including EMV, magnetic-stripe and keyed transactions. The data contains three numeric bytes: two for PAN entry and one for PIN-entry capability, selected from Appendix J.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T006-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T006-R001",
+    "statement" : "Currency data contains three numeric bytes identifying originating-country currency; the documented default is 840 for the United States, not a universal fixed value.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T007-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T007-R001",
+    "statement" : "SIC information consists of four, five or six numeric bytes identifying the establishment's industry; for Discover third-party installments it represents the underlying retailer's MCC/SIC rather than the third-party provider's own classification.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T008-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T008-R001",
+    "statement" : "Table008 carries the numeric account number, maximum19 digits, of the account reduced to zero during a stored-value gift-card Balance Merge M or Replace N; it is not a monetary amount or automatically the receiving account.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  }, {
+    "id" : "BR-APPI-T009-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "ruleId" : "APPI-T009-R001",
+    "statement" : "Partial-approval data is one character: 0 means unsupported, 1 supported, and 5 supports receipt of card balance but not partial approval; the scope is credit/debit/fleet merchant support.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    },
+    "assertionBoundary" : "Only the implemented logical representation predicate; other clauses and context in the source rule remain unverified."
+  } ],
+  "testScenarios" : [ {
+    "id" : "TS-APPI-T001-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T001-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    }
+  }, {
+    "id" : "TS-APPI-T002-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T002-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    }
+  }, {
+    "id" : "TS-APPI-T003-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T003-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    }
+  }, {
+    "id" : "TS-APPI-T004-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T004-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    }
+  }, {
+    "id" : "TS-APPI-T005-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T005-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    }
+  }, {
+    "id" : "TS-APPI-T006-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T006-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    }
+  }, {
+    "id" : "TS-APPI-T007-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T007-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    }
+  }, {
+    "id" : "TS-APPI-T008-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T008-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    }
+  }, {
+    "id" : "TS-APPI-T009-LOGICAL",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-APPI-T009-LOGICAL" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    }
+  } ],
+  "testCases" : [ {
+    "id" : "TC-APPI-T001-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T001-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T001-POS" ],
+    "given" : "A synthetic logical fragment for Table 001",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    }
+  }, {
+    "id" : "TC-APPI-T001-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T001-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T001-NEG" ],
+    "given" : "A synthetic logical fragment for Table 001",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    }
+  }, {
+    "id" : "TC-APPI-T002-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T002-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T002-POS" ],
+    "given" : "A synthetic logical fragment for Table 002",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    }
+  }, {
+    "id" : "TC-APPI-T002-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T002-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T002-NEG" ],
+    "given" : "A synthetic logical fragment for Table 002",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    }
+  }, {
+    "id" : "TC-APPI-T003-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T003-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T003-POS" ],
+    "given" : "A synthetic logical fragment for Table 003",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    }
+  }, {
+    "id" : "TC-APPI-T003-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T003-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T003-NEG" ],
+    "given" : "A synthetic logical fragment for Table 003",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    }
+  }, {
+    "id" : "TC-APPI-T004-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T004-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T004-POS" ],
+    "given" : "A synthetic logical fragment for Table 004 in declared VISA context",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    }
+  }, {
+    "id" : "TC-APPI-T004-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T004-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T004-NEG" ],
+    "given" : "A synthetic logical fragment for Table 004 in declared VISA context",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    }
+  }, {
+    "id" : "TC-APPI-T005-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T005-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T005-POS" ],
+    "given" : "A synthetic logical fragment for Table 005",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    }
+  }, {
+    "id" : "TC-APPI-T005-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T005-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T005-NEG" ],
+    "given" : "A synthetic logical fragment for Table 005",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    }
+  }, {
+    "id" : "TC-APPI-T006-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T006-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T006-POS" ],
+    "given" : "A synthetic logical fragment for Table 006",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    }
+  }, {
+    "id" : "TC-APPI-T006-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T006-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T006-NEG" ],
+    "given" : "A synthetic logical fragment for Table 006",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    }
+  }, {
+    "id" : "TC-APPI-T007-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T007-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T007-POS" ],
+    "given" : "A synthetic logical fragment for Table 007",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    }
+  }, {
+    "id" : "TC-APPI-T007-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T007-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T007-NEG" ],
+    "given" : "A synthetic logical fragment for Table 007",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    }
+  }, {
+    "id" : "TC-APPI-T008-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T008-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T008-POS" ],
+    "given" : "A synthetic logical fragment for Table 008",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    }
+  }, {
+    "id" : "TC-APPI-T008-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T008-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T008-NEG" ],
+    "given" : "A synthetic logical fragment for Table 008",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    }
+  }, {
+    "id" : "TC-APPI-T009-POS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T009-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T009-POS" ],
+    "given" : "A synthetic logical fragment for Table 009",
+    "when" : "Validate the bounded source-derived representation",
+    "then" : "The target rule must return PASS; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "PASS_FOR_TARGET_PREDICATE_ONLY",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    }
+  }, {
+    "id" : "TC-APPI-T009-NEG",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-APPI-T009-LOGICAL" ],
+    "testDataIds" : [ "TD-APPI-T009-NEG" ],
+    "given" : "A synthetic logical fragment for Table 009",
+    "when" : "Apply the single supplied type/value/width mutation and validate",
+    "then" : "The target rule must return FAIL; any unresolved framing remains REVIEW_REQUIRED.",
+    "expectedResult" : "FAIL_FOR_TARGET_PREDICATE",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    }
+  } ],
+  "testData" : [ {
+    "id" : "TD-APPI-T001-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T001-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "001",
+        "data" : "11111111111111111111111111111111111"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T001-R001",
+      "status" : "PASS",
+      "reason" : "Numeric UPC representation within 35 bytes."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "050",
+      "variableInformationIndicator" : "001",
+      "variableInformationLength" : "035",
+      "variableInformation" : "11111111111111111111111111111111111",
+      "wireFormat" : "111\u001C050\u001C00103511111111111111111111111111111111111\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T001-R001",
+        "status" : "PASS",
+        "reason" : "Numeric UPC representation within 35 bytes."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T001-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T001-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-3",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "upc-numeric-max-35"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "001",
+        "data" : "111111111111111111111111111111111111"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T001-R001",
+      "status" : "FAIL",
+      "reason" : "UPC data must be numeric data within the source maximum."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "051",
+      "variableInformationIndicator" : "001",
+      "variableInformationLength" : "036",
+      "variableInformation" : "111111111111111111111111111111111111",
+      "wireFormat" : "111\u001C051\u001C001036111111111111111111111111111111111111\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T001-R001",
+        "status" : "FAIL",
+        "reason" : "UPC data must be numeric data within the source maximum."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T002-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T002-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "002",
+        "data" : "PWC"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T002-R001",
+      "status" : "PASS",
+      "reason" : "Three-byte program code is source-listed."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "002",
+      "variableInformationLength" : "003",
+      "variableInformation" : "PWC",
+      "wireFormat" : "111\u001C018\u001C002003PWC\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T002-R001",
+        "status" : "PASS",
+        "reason" : "Three-byte program code is source-listed."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T002-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T002-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-4",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "program-identifier-source-values"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "002",
+        "data" : "XXX"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T002-R001",
+      "status" : "FAIL",
+      "reason" : "Program code is not source-listed."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "002",
+      "variableInformationLength" : "003",
+      "variableInformation" : "XXX",
+      "wireFormat" : "111\u001C018\u001C002003XXX\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T002-R001",
+        "status" : "FAIL",
+        "reason" : "Program code is not source-listed."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T003-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T003-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "003",
+        "data" : "12345    "
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T003-R001",
+      "status" : "PASS",
+      "reason" : "Postal prefix and optional street suffix fit the layout; ZIP allocation is not checked."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "024",
+      "variableInformationIndicator" : "003",
+      "variableInformationLength" : "009",
+      "variableInformation" : "12345    ",
+      "wireFormat" : "111\u001C024\u001C00300912345    \u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T003-R001",
+        "status" : "PASS",
+        "reason" : "Postal prefix and optional street suffix fit the layout; ZIP allocation is not checked."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T003-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T003-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "avs-postal-prefix-street-layout"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "003",
+        "data" : "12345   "
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T003-R001",
+      "status" : "FAIL",
+      "reason" : "Postal prefix or street width is invalid."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "023",
+      "variableInformationIndicator" : "003",
+      "variableInformationLength" : "008",
+      "variableInformation" : "12345   ",
+      "wireFormat" : "111\u001C023\u001C00300812345   \u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T003-R001",
+        "status" : "FAIL",
+        "reason" : "Postal prefix or street width is invalid."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T004-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T004-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "004",
+        "data" : "123",
+        "network" : "VISA"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T004-R001",
+      "status" : "PASS",
+      "reason" : "Verification-data width fits the declared network."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "004",
+      "variableInformationLength" : "003",
+      "variableInformation" : "123",
+      "wireFormat" : "111\u001C018\u001C004003123\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T004-R001",
+        "status" : "PASS",
+        "reason" : "Verification-data width fits the declared network."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T004-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T004-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-5",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "verification-network-specific-width"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "004",
+        "data" : "1234",
+        "network" : "VISA"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T004-R001",
+      "status" : "FAIL",
+      "reason" : "Verification-data type or network-specific width is invalid."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "019",
+      "variableInformationIndicator" : "004",
+      "variableInformationLength" : "004",
+      "variableInformation" : "1234",
+      "wireFormat" : "111\u001C019\u001C0040041234\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T004-R001",
+        "status" : "FAIL",
+        "reason" : "Verification-data type or network-specific width is invalid."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T005-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T005-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "005",
+        "data" : "012"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T005-R001",
+      "status" : "PASS",
+      "reason" : "POS entry components are in Appendix J's enumerations."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "005",
+      "variableInformationLength" : "003",
+      "variableInformation" : "012",
+      "wireFormat" : "111\u001C018\u001C005003012\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T005-R001",
+        "status" : "PASS",
+        "reason" : "POS entry components are in Appendix J's enumerations."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T005-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T005-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "pos-entry-mode-required-three-digit-components"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "005",
+        "data" : "019"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T005-R001",
+      "status" : "FAIL",
+      "reason" : "POS entry width or component code is invalid."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "005",
+      "variableInformationLength" : "003",
+      "variableInformation" : "019",
+      "wireFormat" : "111\u001C018\u001C005003019\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T005-R001",
+        "status" : "FAIL",
+        "reason" : "POS entry width or component code is invalid."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T006-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T006-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "006",
+        "data" : "840"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T006-R001",
+      "status" : "PASS",
+      "reason" : "Currency representation has three decimal digits."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "006",
+      "variableInformationLength" : "003",
+      "variableInformation" : "840",
+      "wireFormat" : "111\u001C018\u001C006003840\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T006-R001",
+        "status" : "PASS",
+        "reason" : "Currency representation has three decimal digits."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T006-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T006-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-6",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "currency-three-digit-context-default"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "006",
+        "data" : "84"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T006-R001",
+      "status" : "FAIL",
+      "reason" : "Currency representation must have three decimal digits."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "017",
+      "variableInformationIndicator" : "006",
+      "variableInformationLength" : "002",
+      "variableInformation" : "84",
+      "wireFormat" : "111\u001C017\u001C00600284\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T006-R001",
+        "status" : "FAIL",
+        "reason" : "Currency representation must have three decimal digits."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T007-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T007-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "007",
+        "data" : "1234"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T007-R001",
+      "status" : "PASS",
+      "reason" : "SIC representation has four to six decimal digits."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "019",
+      "variableInformationIndicator" : "007",
+      "variableInformationLength" : "004",
+      "variableInformation" : "1234",
+      "wireFormat" : "111\u001C019\u001C0070041234\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T007-R001",
+        "status" : "PASS",
+        "reason" : "SIC representation has four to six decimal digits."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T007-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T007-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "sic-width-and-discover-underlying-retailer"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "007",
+        "data" : "123"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T007-R001",
+      "status" : "FAIL",
+      "reason" : "SIC type or width is invalid."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "018",
+      "variableInformationIndicator" : "007",
+      "variableInformationLength" : "003",
+      "variableInformation" : "123",
+      "wireFormat" : "111\u001C018\u001C007003123\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T007-R001",
+        "status" : "FAIL",
+        "reason" : "SIC type or width is invalid."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T008-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T008-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "008",
+        "data" : "1111111111111111111"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T008-R001",
+      "status" : "PASS",
+      "reason" : "Account representation is numeric and within 19 bytes."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "034",
+      "variableInformationIndicator" : "008",
+      "variableInformationLength" : "019",
+      "variableInformation" : "1111111111111111111",
+      "wireFormat" : "111\u001C034\u001C0080191111111111111111111\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T008-R001",
+        "status" : "PASS",
+        "reason" : "Account representation is numeric and within 19 bytes."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T008-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T008-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-7",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "balance-transfer-source-account-and-width"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "008",
+        "data" : "11111111111111111111"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T008-R001",
+      "status" : "FAIL",
+      "reason" : "Account type or width is invalid."
+    } ],
+    "segmentSerializationCandidate" : {
+      "scope" : "SEGMENT_111_FRAGMENT_NOT_COMPLETE_MESSAGE",
+      "readiness" : "REVIEW_REQUIRED",
+      "segmentType" : "111",
+      "segmentLength" : "035",
+      "variableInformationIndicator" : "008",
+      "variableInformationLength" : "020",
+      "variableInformation" : "11111111111111111111",
+      "wireFormat" : "111\u001C035\u001C00802011111111111111111111\u001C",
+      "sourceEvidence" : [ {
+        "section" : "12.10",
+        "startLine" : 12569,
+        "endLine" : 12625
+      } ],
+      "validation" : [ {
+        "ruleId" : "APPI-T008-R001",
+        "status" : "FAIL",
+        "reason" : "Account type or width is invalid."
+      }, {
+        "ruleId" : "APPI-S111-WIRE",
+        "status" : "PASS",
+        "reason" : "Common segment framing matches section 12.10; full-message and table-context validity are not asserted."
+      } ]
+    }
+  }, {
+    "id" : "TD-APPI-T009-POS",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "POSITIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T009-POS" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "009",
+        "data" : "5"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T009-R001",
+      "status" : "PASS",
+      "reason" : "Logical partial-approval value is source-listed."
+    }, {
+      "ruleId" : "SEG111-SME-002",
+      "status" : "REVIEW_REQUIRED",
+      "reason" : "Table Length wire representation is unresolved; no serialized verdict is issued."
+    } ],
+    "segmentSerializationStatus" : "REVIEW_REQUIRED_SEG111_SME_002"
+  }, {
+    "id" : "TD-APPI-T009-NEG",
+    "readiness" : "REVIEW_REQUIRED",
+    "candidatePolarity" : "NEGATIVE",
+    "payloadScope" : "SYNTHETIC_LOGICAL_FRAGMENT_NOT_COMPLETE_ATL105_REQUEST",
+    "testCaseIds" : [ "TC-APPI-T009-NEG" ],
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-8",
+      "segment" : "111",
+      "element" : "113",
+      "rule" : "partial-approval-one-character-values"
+    },
+    "request" : {
+      "variableInformation" : {
+        "tableId" : "009",
+        "data" : "2"
+      }
+    },
+    "logicalValidation" : [ {
+      "ruleId" : "APPI-T009-R001",
+      "status" : "FAIL",
+      "reason" : "Logical partial-approval data must be one of the three source-listed values."
+    }, {
+      "ruleId" : "SEG111-SME-002",
+      "status" : "REVIEW_REQUIRED",
+      "reason" : "Table Length wire representation is unresolved; no serialized verdict is issued."
+    } ],
+    "segmentSerializationStatus" : "REVIEW_REQUIRED_SEG111_SME_002"
+  } ],
+  "counts" : {
+    "selectedPredicates" : 9,
+    "candidateScenarios" : 9,
+    "candidateCases" : 18,
+    "logicalFragments" : 18,
+    "segmentWireFragments" : 16,
+    "approvedRules" : 0,
+    "completeExecutableRequests" : 0,
+    "executedBusinessCases" : 0,
+    "certifiedRules" : 0,
+    "aiCoveragePercent" : null
+  },
+  "aiIntakeStatus" : "NOT_ASSESSED"
+}
