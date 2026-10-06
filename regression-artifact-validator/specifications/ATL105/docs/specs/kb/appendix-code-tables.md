@@ -339,7 +339,7 @@ verified**: all 161 source rows (153 distinct three-digit codes) are listed belo
 order, cross-checked by [`AppendixLCurrencyCodeCatalogTest`](../../../../src/test/java/com/coreauth/validator/AppendixLCurrencyCodeCatalogTest.java)
 against the extracted specification text. Six codes - `230`, `356`, `578`, `710`, `840`, `978` - are
 listed more than once with a *different* Visa/MC/Both value per country; both/all of their rows are
-kept below rather than collapsed. See [appendix-l-currency-code-training.md](segment-100/appendix-l-currency-code-training.md)
+kept below rather than collapsed. See [appendix-l-currency-code-training.md](appendix-l/README.md)
 for the full usage map (Element 20, Element 153, Element 76, Appendix I Table 006/056, Appendix M)
 and network-scope-conflict handling.
 
