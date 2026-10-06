@@ -12,6 +12,10 @@ The JSON and CSV exports provide Chapter 13 type, length, representation and val
 
 `NOT_LISTED_IN_TEMPLATE` means the extracted Section 11 template has no field row; it does **not** mean prohibited or not transmitted. `NOT_EXPLICITLY_ESTABLISHED` means no direct absence rule was found by this extractor. Explicit source-rule candidates still require context review before an element can be called prohibited or not applicable. Conditional, optional, provisional, repeated, and duplicate definitions remain distinct.
 
+## Field Rule Decision Contract
+
+Each element/family/segment context carries `fieldRuleDecision` with separate applicability, conditional-trigger, permitted-omission, and cross-segment-dependency states. R/O/C markers are scoped to the declared Section 11 template. Conditional description text is preserved verbatim but is not treated as a resolved trigger; dependency links are element-level candidates until mapped to a specific context. Every generated decision remains `REVIEW_REQUIRED`, and whole-observation validation cannot pass while these rules are unresolved.
+
 ## Validation
 
 Use `Atl105ElementReferenceValidator` with a 2026-3 observation containing message family, segment instances and element-number-keyed string values. Baseline overlength/numeric shape checks run where Chapter 13 extraction is unambiguous; contextual profiles/rules are applied only where the existing Test Solution has source and catalog evidence. Unknown combinations remain REVIEW_REQUIRED.

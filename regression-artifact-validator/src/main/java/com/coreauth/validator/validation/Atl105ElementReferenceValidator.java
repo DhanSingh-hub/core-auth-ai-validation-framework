@@ -76,6 +76,8 @@ public final class Atl105ElementReferenceValidator {
             return new ObservationResult(Status.REVIEW_REQUIRED, List.of(new Finding("", Status.REVIEW_REQUIRED, "",
                 "No extracted Section 11 template for message family " + family)));
         }
+        findings.add(new Finding("", Status.REVIEW_REQUIRED, "",
+            "Full validation is blocked while field applicability, conditional triggers, permitted omission and cross-segment dependencies remain unapproved in the source-derived rule reference"));
         Set<String> present = new HashSet<>();
         for (JsonNode segmentNode : observation.path("segments")) {
             String segment = segmentNode.path("segment").asText();

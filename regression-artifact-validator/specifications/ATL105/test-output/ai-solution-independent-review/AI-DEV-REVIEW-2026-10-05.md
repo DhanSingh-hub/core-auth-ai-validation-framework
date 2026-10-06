@@ -1,5 +1,7 @@
 # AI-DEV Review: ATL105 BR and Scenario Delivery
 
+**2026-10-06 supplement notice:** A fuller handoff of the same Run1 has now been received and archived unchanged. Its four BR/TS catalog hashes match this original delivery; it adds 21,123 TC candidates and 21,210 physical payload/metadata pairs. Statements below about absent TC/TD refer to the original received subset, not the supplement. The composer failed its own generation gates; independent coverage remains unestablished. See the [detailed supplement review](2026-10-06-complete-handoff/DETAILED-REVIEW.md). Original findings below are retained as dated evidence.
+
 **Review date:** 2026-10-05
 **Delivery:** `SRC-ATL105-PDF-001`, generated 2026-10-01 and received 2026-10-05
 **Disposition:** `REVIEW_REQUIRED`

@@ -1,5 +1,7 @@
 # AI Validation Control Coverage: October 5 Delivery
 
+**2026-10-06 supplement notice:** This matrix is the historical original-subset assessment. A [same-run supplement review](2026-10-06-complete-handoff/DETAILED-REVIEW.md) now verifies received TC candidates and payloads. Historical AIV-006/AIV-010 references to absent TC/TD no longer describe the complete received inventory; receipt does not establish downstream validation, a production adapter, SME approval, or independent coverage. No historical control outcome is silently promoted by this notice.
+
 **Delivery:** `SRC-ATL105-PDF-001`, one combined AI run archived as `2026-10-05/Run1`
 **Control catalogue:** [AI Artifact Validation Controls](../../docs/test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md)
 **BR coverage result:** `NOT_CALCULABLE - REVIEW_REQUIRED`

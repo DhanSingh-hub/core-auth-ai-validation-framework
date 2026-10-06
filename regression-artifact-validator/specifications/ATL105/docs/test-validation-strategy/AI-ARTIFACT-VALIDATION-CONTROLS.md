@@ -35,6 +35,8 @@ The source of truth for the stages and methods is the [AI Solution Output Valida
 
 ## Validation-Control Coverage Method
 
+For `AIV-010` and `AIV-013`, assessment readiness uses `CanonicalTraceabilityValidator.validateForExecution`, not producer-selectable structural mode. The regression evidence in `AiCoverageAssessmentServiceTest` covers non-strict review-required scenarios, absent/draft/blocked/review states at BR/TS/TC levels, non-executable TDs, missing request/response envelopes, future dates and failed/absent payload validators. `Run2PreSmeEvidenceWriterTest` rejects abbreviated strategy maps. Structural coverage and readiness remain separate; these checks do not verify an approval signature or grant SME certification.
+
 Control coverage answers: **does the Test Solution have an implemented method and regression evidence for each applicable AIV control?** It does not measure how many ATL105 rules the AI covered.
 
 For each control, report:

@@ -4,6 +4,7 @@ import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.nio.file.Files;
@@ -144,6 +145,8 @@ public final class GenerateAtl105ElementReference {
                 String presence = presence(template, segment);
                 context.put("segmentPresence", presence);
                 context.put("elementPresence", fieldPresence(usage.path("field")));
+                addTemplateFieldEvidence(context, usage.path("field"));
+                context.set("fieldRuleDecision", fieldRuleDecision(usage.path("field"), true));
                 context.put("contextKind", "ACTIVE_TEMPLATE_FIELD");
                 context.put("evidenceStatus", usage.path("status").asText("REVIEW_REQUIRED"));
                 context.put("evidence", template.path("source_section").asText("Section 11 template") + "; template path " + usage.path("path").asText());
@@ -170,6 +173,7 @@ public final class GenerateAtl105ElementReference {
                     missing.put("segment", segment);
                     missing.put("segmentPresence", presence(template, segment));
                     missing.put("elementPresence", "NOT_LISTED_IN_TEMPLATE");
+                    missing.set("fieldRuleDecision", fieldRuleDecision(null, false));
                     missing.put("contextKind", segmentListed ? "SEGMENT_LISTED_FIELD_NOT_LISTED" : "SEGMENT_NOT_LISTED_IN_FAMILY_TEMPLATE");
                     missing.put("evidenceStatus", "REVIEW_REQUIRED_NOT_PROOF_OF_ABSENCE");
                     missing.put("evidence", segmentListed
@@ -256,6 +260,11 @@ public final class GenerateAtl105ElementReference {
             row.put("absenceConclusion", absence.isEmpty() ? "NO_EXPLICIT_ABSENCE_RULE_FOUND_NOT_PROOF_OF_USAGE" : "EXPLICIT_RULES_LISTED_REVIEW_SCOPE");
             dependencyCandidates += dependencies.size();
             explicitAbsenceCandidates += absence.size();
+            addDependencyDecision(contexts, dependencies);
+            for (JsonNode contextRow : contextRows) {
+                if (id.equals(contextRow.path("element").asText()))
+                    addDependencyDecision((ObjectNode) contextRow, dependencies);
+            }
 
             ArrayNode txCodes = row.putArray("transactionTypeCodes");
             if ("78".equals(id)) {
@@ -287,6 +296,18 @@ public final class GenerateAtl105ElementReference {
         summary.put("elementRuleBrReferences", linkedBusinessRuleReferences);
         summary.put("dependencyRuleCandidates", dependencyCandidates);
         summary.put("explicitAbsenceOrConditionRuleCandidates", explicitAbsenceCandidates);
+        TreeMap<String, Integer> fieldDecisionCounts = new TreeMap<>();
+        for (JsonNode context : contextRows) {
+            JsonNode decision = context.path("fieldRuleDecision");
+            fieldDecisionCounts.merge("decisionStatus:" + decision.path("decisionStatus").asText("MISSING"), 1, Integer::sum);
+            fieldDecisionCounts.merge("applicability:" + decision.path("applicability").path("status").asText("MISSING"), 1, Integer::sum);
+            fieldDecisionCounts.merge("conditionalTrigger:" + decision.path("conditionalTrigger").path("status").asText("MISSING"), 1, Integer::sum);
+            fieldDecisionCounts.merge("permittedOmission:" + decision.path("permittedOmission").path("status").asText("MISSING"), 1, Integer::sum);
+            fieldDecisionCounts.merge("crossSegmentDependency:" + decision.path("crossSegmentDependency").path("status").asText("MISSING"), 1, Integer::sum);
+            if (!decision.path("crossSegmentDependency").path("candidateRuleIds").isEmpty())
+                fieldDecisionCounts.merge("contextsWithDependencyCandidates", 1, Integer::sum);
+        }
+        summary.set("fieldRuleDecisionCounts", mapper.valueToTree(fieldDecisionCounts));
         summary.put("elementsWithActiveSection11FieldUsages", elementsWithActiveTemplateUsages);
         summary.put("elementsWithAnyFamilySegmentContextRows", elementsWithContextRows);
         summary.put("activeSection11FieldContextRows", activeContextRows);
@@ -326,6 +347,14 @@ public final class GenerateAtl105ElementReference {
             if (element.path("businessRuleSemanticsApproved").asBoolean() || element.path("combinationsVerified").asBoolean())
                 throw new IllegalStateException("Generated element claims approval without review: " + id);
             for (JsonNode context : element.path("messageFamilyContexts")) {
+                JsonNode decision = context.path("fieldRuleDecision");
+                if (!"REVIEW_REQUIRED".equals(decision.path("decisionStatus").asText())
+                    || !hasDecisionStatus(decision, "applicability")
+                    || !hasDecisionStatus(decision, "conditionalTrigger")
+                    || !hasDecisionStatus(decision, "permittedOmission")
+                    || !hasDecisionStatus(decision, "crossSegmentDependency")
+                    || !decision.path("crossSegmentDependency").path("candidateRuleIds").isArray())
+                    throw new IllegalStateException("Incomplete or over-promoted field-rule decision for Element " + id);
                 if ("NOT_LISTED_IN_TEMPLATE".equals(context.path("elementPresence").asText())
                     && !"REVIEW_REQUIRED_NOT_PROOF_OF_ABSENCE".equals(context.path("evidenceStatus").asText()))
                     throw new IllegalStateException("Template omission was promoted to a negative rule: " + id);
@@ -335,6 +364,10 @@ public final class GenerateAtl105ElementReference {
             return;
         }
         throw new IllegalStateException("Generated element reference cannot be APPROVED automatically");
+    }
+
+    private static boolean hasDecisionStatus(JsonNode decision, String dimension) {
+        return !decision.path(dimension).path("status").asText().isBlank();
     }
 
     private static Map<String, JsonNode> loadRules(ObjectMapper mapper, Path pack) throws Exception {
@@ -370,6 +403,64 @@ public final class GenerateAtl105ElementReference {
         if (entry.equals("O")) return "OPTIONAL_IN_TEMPLATE";
         if (entry.equals("C")) return "CONDITIONAL_IN_TEMPLATE";
         return entry.isBlank() ? "TEMPLATE_FIELD_STATUS_NOT_STATED" : entry;
+    }
+
+    private static void addTemplateFieldEvidence(ObjectNode context, JsonNode field) {
+        context.put("templateFieldEntry", field.path("entry").asText());
+        context.put("templateFieldDescription", field.path("description").asText());
+        if (field.has("source")) context.set("templateFieldSource", field.path("source").deepCopy());
+    }
+
+    private static ObjectNode fieldRuleDecision(JsonNode field, boolean active) {
+        String entry = active ? field.path("entry").asText("") : "";
+        String description = active ? field.path("description").asText("") : "";
+        ObjectNode decision = JsonNodeFactory.instance.objectNode();
+        decision.put("decisionStatus", "REVIEW_REQUIRED");
+
+        ObjectNode applicability = decision.putObject("applicability");
+        applicability.put("status", !active ? "NOT_ESTABLISHED_TEMPLATE_OMISSION_NOT_PROOF" : switch (entry) {
+            case "R" -> "REQUIRED_IN_DECLARED_TEMPLATE";
+            case "O" -> "OPTIONAL_IN_DECLARED_TEMPLATE";
+            case "C" -> "CONDITIONAL_IN_DECLARED_TEMPLATE";
+            default -> "NOT_ESTABLISHED_TEMPLATE_ENTRY_UNKNOWN";
+        });
+        applicability.put("evidence", active ? "Section 11 template entry marker; does not establish transaction-code or cross-segment applicability." :
+            "No active field row in this template; absence is not proof of prohibition or non-applicability.");
+
+        ObjectNode trigger = decision.putObject("conditionalTrigger");
+        trigger.put("status", !active ? "NOT_ESTABLISHED" : "C".equals(entry)
+            ? (description.isBlank() ? "TRIGGER_NOT_STATED_REVIEW_REQUIRED" : "DESCRIPTION_CAPTURED_TRIGGER_NOT_SEMANTICALLY_RESOLVED")
+            : "NO_CONDITION_MARKER_IN_THIS_ROW_OTHER_RULES_UNCHECKED");
+        trigger.put("sourceText", description);
+
+        ObjectNode omission = decision.putObject("permittedOmission");
+        omission.put("status", !active ? "NOT_ESTABLISHED_TEMPLATE_OMISSION_NOT_PROOF" : switch (entry) {
+            case "R" -> "NOT_PERMITTED_WHEN_DECLARED_TEMPLATE_APPLIES";
+            case "O" -> "PERMITTED_BY_DECLARED_TEMPLATE";
+            case "C" -> "CONDITION_DEPENDENT_TRIGGER_REVIEW_REQUIRED";
+            default -> "NOT_ESTABLISHED_TEMPLATE_ENTRY_UNKNOWN";
+        });
+        omission.put("evidence", "Section 11 template entry marker only; complete request conditions and separators require contextual review.");
+
+        ObjectNode dependency = decision.putObject("crossSegmentDependency");
+        dependency.put("status", "POPULATED_FROM_ELEMENT_RULE_SCAN_AFTER_CONTEXT_BUILD");
+        dependency.putArray("candidateRuleIds");
+        return decision;
+    }
+
+    private static void addDependencyDecision(ObjectNode context, JsonNode dependencies) {
+        ObjectNode decision = (ObjectNode) context.path("fieldRuleDecision");
+        ObjectNode dependency = (ObjectNode) decision.path("crossSegmentDependency");
+        ArrayNode ids = (ArrayNode) dependency.path("candidateRuleIds");
+        dependencies.forEach(candidate -> ids.add(candidate.path("ruleId").asText()));
+        dependency.put("status", dependencies.isEmpty()
+            ? "NO_CANDIDATE_FOUND_NOT_PROOF_OF_NO_DEPENDENCY"
+            : "ELEMENT_LEVEL_CANDIDATES_NOT_SCOPED_TO_THIS_CONTEXT_REVIEW_REQUIRED");
+        dependency.put("reviewArtifact", "atl105-dependency-absence-review-matrix.json");
+    }
+
+    private static void addDependencyDecision(ArrayNode contexts, JsonNode dependencies) {
+        contexts.forEach(context -> addDependencyDecision((ObjectNode) context, dependencies));
     }
 
     private static String validCodesEvidence(String definition) {
@@ -492,6 +583,8 @@ public final class GenerateAtl105ElementReference {
             .append("The 23 source-defined transaction codes are listed only as Element 78 Prompt Code components. See `atl105-element-transaction-applicability.json` and `.csv` for the exhaustive 231 x 23 review matrix. Transaction-code applicability for other elements is not exhaustively specified in the extracted knowledge base and remains REVIEW_REQUIRED. Message-family labels are not a complete transaction-code cross-product.\n\n");
         text.append("## Reading Absence\n\n")
             .append("`NOT_LISTED_IN_TEMPLATE` means the extracted Section 11 template has no field row; it does **not** mean prohibited or not transmitted. `NOT_EXPLICITLY_ESTABLISHED` means no direct absence rule was found by this extractor. Explicit source-rule candidates still require context review before an element can be called prohibited or not applicable. Conditional, optional, provisional, repeated, and duplicate definitions remain distinct.\n\n");
+        text.append("## Field Rule Decision Contract\n\n")
+            .append("Each element/family/segment context carries `fieldRuleDecision` with separate applicability, conditional-trigger, permitted-omission, and cross-segment-dependency states. R/O/C markers are scoped to the declared Section 11 template. Conditional description text is preserved verbatim but is not treated as a resolved trigger; dependency links are element-level candidates until mapped to a specific context. Every generated decision remains `REVIEW_REQUIRED`, and whole-observation validation cannot pass while these rules are unresolved.\n\n");
         text.append("## Validation\n\n").append("Use `Atl105ElementReferenceValidator` with a 2026-3 observation containing message family, segment instances and element-number-keyed string values. Baseline overlength/numeric shape checks run where Chapter 13 extraction is unambiguous; contextual profiles/rules are applied only where the existing Test Solution has source and catalog evidence. Unknown combinations remain REVIEW_REQUIRED.\n\n");
         text.append("Example observation:\n\n```json\n{\n  \"specificationVersion\": \"2026-3\",\n  \"messageFamily\": \"Financial Transaction Request\",\n  \"transactionTypeCode\": \"0\",\n  \"completeness\": \"PARTIAL\",\n  \"segments\": [{\"segment\": \"100\", \"elements\": {\"84\": \"001\", \"85\": \"100\", \"86\": \"123456\"}}]\n}\n```\n\n");
         text.append("Regenerate from the Java module with `GenerateAtl105ElementReference specifications/ATL105`; validate with `Atl105ElementReferenceValidator specifications/ATL105 observation.json report.json`. Export the Excel workbook with `powershell -File scripts/export-atl105-element-reference-to-excel.ps1`. The validator reports CHECKS_PASSED only for checks backed by the available source/profile evidence.\n\n");

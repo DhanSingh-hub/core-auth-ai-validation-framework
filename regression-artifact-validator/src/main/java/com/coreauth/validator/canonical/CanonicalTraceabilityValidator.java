@@ -15,6 +15,14 @@ import java.util.stream.Collectors;
 public final class CanonicalTraceabilityValidator {
 
     public ValidationResult validate(CanonicalArtifactPackage artifactPackage) {
+        return validate(artifactPackage, false);
+    }
+
+    public ValidationResult validateForExecution(CanonicalArtifactPackage artifactPackage) {
+        return validate(artifactPackage, true);
+    }
+
+    private ValidationResult validate(CanonicalArtifactPackage artifactPackage, boolean forExecution) {
         String packageId = artifactPackage == null || artifactPackage.getManifest() == null
                 ? "canonical-package" : artifactPackage.getManifest().getPackageId();
         ValidationResult result = new ValidationResult(packageId == null ? "canonical-package" : packageId);
@@ -24,7 +32,7 @@ public final class CanonicalTraceabilityValidator {
         }
 
         validateManifest(artifactPackage.getManifest(), result);
-        boolean strict = artifactPackage.getManifest() != null && artifactPackage.getManifest().isStrictExecutionContract();
+        boolean strict = forExecution || (artifactPackage.getManifest() != null && artifactPackage.getManifest().isStrictExecutionContract());
         Map<String, CanonicalRequirement> requirements = index(artifactPackage.getBusinessRequirements(),
                 CanonicalRequirement::getId, CanonicalRequirement::getSourceAnchors, "BusinessRequirement", result);
         Map<String, CanonicalScenario> scenarios = index(artifactPackage.getTestScenarios(),
@@ -41,10 +49,35 @@ public final class CanonicalTraceabilityValidator {
         validateTestData(testData, testCases, strict, result);
         validateChainAnchorContinuity(requirements, scenarios, testCases, testData, result);
         validateExecutionStatuses(requirements, scenarios, testCases, testData, strict, result);
+        if (forExecution) {
+            for (CanonicalRequirement requirement : requirements.values()) {
+                requireExecutionReady(requirement.getExecutionStatus(), requirement.getId(), result);
+            }
+            for (CanonicalScenario scenario : scenarios.values()) {
+                requireExecutionReady(scenario.getStatus() == null ? null : scenario.getStatus().name(), scenario.getId(), result);
+            }
+            for (CanonicalTestCase testCase : testCases.values()) {
+                requireExecutionReady(testCase.getStatus(), testCase.getId(), result);
+            }
+            for (CanonicalTestData data : testData.values()) {
+                if (data.getReadiness() != TestDataReadiness.EXECUTABLE) {
+                    result.addError("ExecutionReadiness", data.getId() + " must have EXECUTABLE readiness");
+                }
+                if ("REVIEW_REQUIRED".equals(data.getExpectedValidation())) {
+                    result.addError("ExecutionReadiness", data.getId() + " has an unresolved expectedValidation");
+                }
+            }
+        }
         validateScheduledAvailability(requirements, scenarios, testCases, result);
         validateRequirementCrosswalk(artifactPackage.getRequirementCrosswalk(), requirements, result);
         validateOrphans(requirements, scenarios, testCases, testData, result);
         return result;
+    }
+
+    private static void requireExecutionReady(String status, String id, ValidationResult result) {
+        if (!"EXECUTION_READY".equals(status)) {
+            result.addError("ExecutionReadiness", id + " must have EXECUTION_READY status, got: " + status);
+        }
     }
 
     private static void validateManifest(PackageManifest manifest, ValidationResult result) {

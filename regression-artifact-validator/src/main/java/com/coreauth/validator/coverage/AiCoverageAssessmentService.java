@@ -39,7 +39,7 @@ public final class AiCoverageAssessmentService {
                                              List<NamedPayloadValidator> payloadValidators) {
         ValidationResult baselineValidation = baseline.validate();
         ValidationResult testCaseValidation = testCaseValidator.validate(aiPackage);
-        ValidationResult traceabilityValidation = traceabilityValidator.validate(aiPackage);
+        ValidationResult traceabilityValidation = traceabilityValidator.validateForExecution(aiPackage);
         ValidationResult payloadValidation = validatePayloads(aiPackage, payloadValidators);
 
         List<IndependentRequirementBaseline.Requirement> denominator = baseline.inScopeRequirements();

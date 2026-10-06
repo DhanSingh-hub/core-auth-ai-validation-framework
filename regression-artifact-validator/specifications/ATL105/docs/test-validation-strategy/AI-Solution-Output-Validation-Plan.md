@@ -78,6 +78,7 @@ AI stage output
 
 ### Adapter and evaluator safeguards
 
+- `AiCoverageAssessmentService` always uses `CanonicalTraceabilityValidator.validateForExecution` for readiness. Producer non-strict mode may not bypass execution metadata, BR/TS/TC `EXECUTION_READY` states, TD `EXECUTABLE` readiness, request/response envelopes, or availability dates. All six named strategies and validation results must pass against a positive, fully confirmed denominator. A linked chain with an unresolved scenario may retain structural coverage but must serialize a review-required execution verdict. Declared readiness is not independent SME approval or proof of source authenticity; those remain separate evidence gates.
 - Treat content variation between runs as normal; treat schema/format changes as contract changes. Every delivery must declare its producer, schema/contract version, generator version, specification version, and run identity.
 - Select only an explicit versioned adapter. Preserve the original files and record adapter version, hashes, row counts, unknown fields, and normalization dispositions. If no adapter supports the declared format, stop before matching and report `ADAPTER_UNSUPPORTED` / `NOT_ASSESSED`; do not guess field mappings or report zero coverage.
 - Verify normalization losslessly for supported fields: source-to-canonical counts, unique IDs, status/flag distributions, and every declared BR/TS/TC/TD link must reconcile. Workbook exports from one run are provenance-linked views, not extra records.

@@ -3,6 +3,7 @@ package com.coreauth.validator.coverage;
 import com.coreauth.validator.validation.ValidationResult;
 
 import java.util.Map;
+import java.util.Set;
 
 /** One independent verdict spanning the six Test Solution review strategies. */
 public record AiCoverageAssessmentReport(
@@ -54,7 +55,19 @@ public record AiCoverageAssessmentReport(
 
     public boolean executionReady() {
         return independentRuleDenominatorStructurallyValid
-            && strategyReadiness.values().stream().allMatch(Boolean::booleanValue)
-                && fullChainRequirements == coverageDenominator;
+                && coverageDenominator > 0
+                && confirmedRequirements == coverageDenominator
+                && fullChainRequirements == coverageDenominator
+                && reviewRequired == 0 && missingRequirements == 0
+                && Set.of("CANONICAL_ANCHORS", "INDEPENDENT_BR_BASELINE", "TEST_CASE_QUALITY",
+                        "PAYLOAD_COMPLIANCE", "COVERAGE_DENOMINATOR", "INDEPENDENT_TRACEABILITY")
+                        .stream().allMatch(strategy -> Boolean.TRUE.equals(strategyReadiness.get(strategy)))
+                && strategyReadiness.values().stream().allMatch(Boolean::booleanValue)
+                && valid(baselineValidation) && valid(testCaseValidation)
+                && valid(traceabilityValidation) && valid(payloadValidation);
+    }
+
+    private static boolean valid(ValidationResult result) {
+        return result != null && result.isValid();
     }
 }

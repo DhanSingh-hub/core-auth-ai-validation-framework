@@ -16,7 +16,7 @@ class Run2PreSmeEvidenceWriterTest {
 
     @Test
     void passingTechnicalChecksStillRequireSmeReview() throws Exception {
-        JsonNode result = write(Map.of("TRACEABILITY", true, "PAYLOAD", true), 1);
+        JsonNode result = write(strategies(true), 1);
         assertThat(result.path("assessment").path("decision").asText())
             .isEqualTo("PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED");
         assertThat(result.path("assessment").path("technicalChecksPassed").asBoolean()).isTrue();
@@ -26,10 +26,23 @@ class Run2PreSmeEvidenceWriterTest {
 
     @Test
     void failingTechnicalChecksStayReviewRequired() throws Exception {
-        JsonNode result = write(Map.of("TRACEABILITY", true, "PAYLOAD", false), 0);
+        JsonNode result = write(strategies(false), 0);
         assertThat(result.path("assessment").path("decision").asText()).isEqualTo("REVIEW_REQUIRED");
         assertThat(result.path("assessment").path("technicalChecksPassed").asBoolean()).isFalse();
         assertThat(result.path("assessment").path("executionCertified").asBoolean()).isFalse();
+    }
+
+    @Test
+    void abbreviatedStrategiesCannotClaimTechnicalReadiness() throws Exception {
+        JsonNode result = write(Map.of("TRACEABILITY", true, "PAYLOAD", true), 1);
+        assertThat(result.path("assessment").path("technicalChecksPassed").asBoolean()).isFalse();
+        assertThat(result.path("assessment").path("decision").asText()).isEqualTo("REVIEW_REQUIRED");
+    }
+
+    private Map<String, Boolean> strategies(boolean payloadReady) {
+        return Map.of("CANONICAL_ANCHORS", true, "INDEPENDENT_BR_BASELINE", true,
+                "TEST_CASE_QUALITY", true, "PAYLOAD_COMPLIANCE", payloadReady,
+                "COVERAGE_DENOMINATOR", true, "INDEPENDENT_TRACEABILITY", true);
     }
 
     private JsonNode write(Map<String, Boolean> strategies, int fullChain) throws Exception {

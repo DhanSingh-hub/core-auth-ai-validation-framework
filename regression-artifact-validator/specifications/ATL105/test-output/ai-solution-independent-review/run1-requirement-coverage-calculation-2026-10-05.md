@@ -1,5 +1,7 @@
 # October 5 AI Requirement Coverage Assessment
 
+**2026-10-06 supplement notice:** TC/TD artifacts are now present in an unchanged same-run supplement. The [detailed supplement review](2026-10-06-complete-handoff/DETAILED-REVIEW.md) recounts 21,123 TC candidates, 21,096 logical cases with physical outputs, and 21,210 payloads. This closes receipt of downstream artifacts, not their semantic acceptance or execution certification. The assessment below describes the original BR/TS-only subset; `NOT_CALCULABLE` remains applicable because this review has not established an eligible same-run independent crosswalk and validated full chains.
+
 **Delivery:** One AI pipeline run, `SRC-ATL105-PDF-001`, generated 2026-10-01
 **BR denominator:** 6,887 AI requirements
 **Disposition:** `NOT_CALCULABLE - REVIEW_REQUIRED`
