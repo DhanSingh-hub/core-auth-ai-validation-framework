@@ -109,6 +109,9 @@ def declared_case_files(case, payload_root):
         if ".." in parts or normalized.startswith("/") or ":" in normalized or not normalized.endswith(".json") or normalized.endswith(".meta.json"):
             issues.append("UNSAFE_OR_UNSUPPORTED_DATA_PATH")
             continue
+        if len(parts) > 1 and parts[0] != "qe_shaped_test_data":
+            issues.append("UNSUPPORTED_DECLARED_DATA_ROOT")
+            continue
         filename = normalized.rsplit("/", 1)[-1]
         if not filename.startswith(case["id"] + ".") and not filename.startswith(case["id"] + "_"):
             issues.append("DECLARED_FILE_CASE_ID_MISMATCH")
@@ -200,6 +203,12 @@ def self_test():
     assert {row["status"] for row in rows} == {"SCENARIO_ONLY", "REQUIREMENT_ONLY"}
     assert requirement_status([{"status": "SCENARIO_ONLY"}, {"status": "FULLY_TRACED"}]) == "FULLY_TRACED"
     assert requirement_status([{"status": "SCENARIO_ONLY"}]) == "SCENARIO_ONLY"
+    files, issues = declared_case_files({"id": "TC-1", "test_data_file": "../TC-1.json"}, Path("."))
+    assert not files and "UNSAFE_OR_UNSUPPORTED_DATA_PATH" in issues
+    files, issues = declared_case_files({"id": "TC-1", "test_data_file": "qe_shaped_test_data/TC-2.json"}, Path("."))
+    assert not files and "DECLARED_FILE_CASE_ID_MISMATCH" in issues
+    files, issues = declared_case_files({"id": "TC-1", "is_flow": True}, Path("."))
+    assert not files and "FLOW_LEG_FILES_NOT_DECLARED" in issues
     print("PASS: escaped-pipe/inline-code Markdown cells, empty columns and independent BR link extraction")
 
 
@@ -365,6 +374,32 @@ def assess(matrix, root, source):
                                "completeJson": "reconstructed-requirement-matrix.json", "completeCsv": "reconstructed-requirement-matrix.csv"}
     rebuilt_document = {"producer": "TEST_SOLUTION_INDEPENDENT_RECONSTRUCTION", "sourceInputSha256": result["inputSha256"],
                         "summary": rebuilt_summary, "leaves": rebuilt}
+    manifest_file = root / "intake-file-hashes.csv"
+    with manifest_file.open(encoding="utf-8-sig", newline="") as stream:
+        manifest = {row["path"]: row for row in csv.DictReader(stream)}
+    for file in [requirement_file, scenario_file, case_file]:
+        expected_hash = manifest.get(file.relative_to(archive).as_posix(), {}).get("sha256")
+        if expected_hash != result["inputSha256"][file.name]:
+            raise ValueError(f"Frozen catalog differs from original intake hash: {file.name}")
+    physical_hashes = {}
+    unlinked_cases = []
+    for case_id, case in cases.items():
+        files, issues = declared_case_files(case, archive / "pipeline_run_artifacts/qe_shaped_test_data")
+        for item in files:
+            if not item["present"] or item["file"] in physical_hashes:
+                continue
+            entry = manifest.get("pipeline_run_artifacts/" + item["file"], {})
+            digest = sha256(archive / "pipeline_run_artifacts" / item["file"])
+            if digest != entry.get("sha256") or entry.get("sourceCopyVerified", "").lower() != "true":
+                raise ValueError(f"Physical data differs from source-verified intake: {item['file']}")
+            physical_hashes[item["file"]] = digest
+        if not case["brIds"]:
+            unlinked_cases.append({"caseId": case_id, "scenarioId": case["scenarioId"], "testDataFiles": files,
+                                   "status": reconstructed_leaf_status(case, files, issues), "issues": issues})
+    rebuilt_document["unlinkedCases"] = unlinked_cases
+    rebuilt_document["physicalFileSha256"] = physical_hashes
+    result["reconstruction"]["hashVerifiedPhysicalFiles"] = len(physical_hashes)
+    result["reconstruction"]["originalIntakeManifestSha256"] = sha256(manifest_file)
     (root / "reconstructed-requirement-matrix.json").write_text(json.dumps(rebuilt_document, indent=2, ensure_ascii=True), encoding="utf-8")
     with (root / "reconstructed-requirement-matrix.csv").open("w", encoding="utf-8-sig", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=["requirementId", "scenarioId", "caseId", "status", "testDataFiles", "issues", "linkBasis"])
@@ -404,6 +439,7 @@ def report_section(assessment):
         reconstruction = f'''<h3>Complete independent reconstruction</h3>
 <p class="scope">All {rebuilt['requirementsRepresented']:,} frozen BRs reconstructed into {rebuilt['leafRows']:,} structural leaves; producer declares {rebuilt['producerFlatRowsDeclared']:,} ({rebuilt['rowCountDelta']:+,} difference). {escape(statuses)}. {rebuilt['logicalCasesWithAllDataFiles']:,} logical cases have their data files; {rebuilt['logicalCasesWithoutData']:,} lack data. Orphan BR attribution remains unresolved: {len(rebuilt['orphanScenarioIds'])} scenarios / {len(rebuilt['orphanCaseIds'])} cases.</p>
 <p class="scope">Detailed requirement statuses agree for {rebuilt['detailStatusAgreementCount']} / {len(rebuilt['detailStatusComparison'])} displayed BRs. The {len(rebuilt['flatExcerptStatusDisagreements'])} leaf disagreements reflect requirement-level FULLY_TRACED labels on independently SCENARIO_ONLY leaves; complete requirements and complete individual leaves are different denominators. The 63-row/orphan difference is consistent with additional mappings, not proof of those missing producer edges.</p>
+<p class="scope">All three catalog inputs and {rebuilt['hashVerifiedPhysicalFiles']:,} present physical payload files match the original source-verified intake hashes. Unattributed cases are preserved separately, not silently assigned to a BR.</p>
 <p><a href="reconstructed-requirement-matrix.json">Complete independent matrix JSON</a> &middot; <a href="reconstructed-requirement-matrix.csv">Complete independent matrix CSV</a></p>
 <p class="scope">This is Test Solution-owned reconstruction, not the omitted AI JSON. Structural completeness does not confirm business meaning, full-message validity, host outcomes or execution approval.</p>'''
     later_history = ""

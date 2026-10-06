@@ -220,7 +220,7 @@ def export_pdf(root, data):
             heading_block("Complete independent matrix reconstruction")
             table(["Measure", "Independent reconstruction"], [
                 ["Frozen BRs represented", rebuilt["requirementsRepresented"]],
-                ["Complete BR-chain leaves", rebuilt["leafRows"]],
+                ["Reconstructed BR-chain leaves", rebuilt["leafRows"]],
                 ["Producer-declared rows / difference", f"{rebuilt['producerFlatRowsDeclared']:,} / {rebuilt['rowCountDelta']:+,}"],
                 ["Physical-data-complete structural leaves", rebuilt["leafStatusCounts"].get("FULLY_TRACED", 0)],
                 ["Scenario-only leaves", rebuilt["leafStatusCounts"].get("SCENARIO_ONLY", 0)],

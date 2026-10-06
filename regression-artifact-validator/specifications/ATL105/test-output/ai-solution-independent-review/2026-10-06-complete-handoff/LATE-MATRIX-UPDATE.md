@@ -43,8 +43,6 @@ and their snapshot hashes are recorded in
   declaring source ID SRC-ATL105-PDF-001 and version 2026-3. Identity and source
   hashes must be reconciled before accepting new graph/coverage declarations.
 
-## Required Follow-Up
-
 ## Complete Independent Reconciliation
 
 The truncated export is now compared with a complete **Test Solution-owned
@@ -72,6 +70,11 @@ not 75 newly discovered missing-TD cases. The 27 missing TDs remain a separate
 population; multiple leaves per scenario/BR must not be confused with unique
 scenario or case counts.
 
+All 155 cases without BR attribution have valid scenario parents. They are not
+155 broken TC-to-scenario links: the producer's zero orphan TCs can agree when
+"orphan TC" means a missing scenario parent. Keep the BR-attribution and
+scenario-parent definitions separate when comparing these counters.
+
 The 63 additional declared rows match the 63 fewer declared orphan scenarios
 arithmetically. This is consistent with additional producer attribution, but
 does not identify the actual missing edges. The disputed `:521` BR concerns
@@ -87,6 +90,12 @@ JSON. The earlier matrix-era assessment is also preserved unchanged as 27
 hash-recorded files under
 [history/pre-reconciliation-20261006](history/pre-reconciliation-20261006/AI-ARTIFACT-FILTER-VIEW.html).
 The original 24-file pre-matrix snapshot remains intact.
+
+The three frozen catalog inputs and all 21,210 present physical payload files
+are independently hash-checked against the original source-verified intake
+manifest before publishing the reconstruction. The complete JSON retains the
+155 unlinked cases separately, with their actual scenario and data-file links;
+they are not silently dropped or attributed to an invented BR.
 
 ## Remaining Follow-Up
 

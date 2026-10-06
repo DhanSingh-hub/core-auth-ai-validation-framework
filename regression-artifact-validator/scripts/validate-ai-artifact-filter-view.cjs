@@ -93,6 +93,27 @@ if(data.lateMatrix){
     assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))),'Missing matrix/history target: '+link.getAttribute('href'));
   }
   assert.equal(createHash('sha256').update(fs.readFileSync(data.lateMatrix.intake.file)).digest('hex'),data.lateMatrix.intake.sha256);
+  if(data.lateMatrix.reconstruction){
+    const rebuilt=data.lateMatrix.reconstruction;
+    assert.equal(rebuilt.leafRows,61044);
+    assert.equal(rebuilt.requirementsRepresented,6887);
+    assert.equal(rebuilt.rowCountDelta,-63);
+    assert.equal(rebuilt.detailStatusAgreementCount,200);
+    assert.equal(rebuilt.flatExcerptStatusDisagreements.length,75);
+    assert.deepEqual(rebuilt.leafStatusCounts,{SCENARIO_ONLY:4400,FULLY_TRACED:56617,TEST_CASE_NO_DATA:27});
+    assert.equal(rebuilt.logicalCasesWithAllDataFiles,21096);
+    assert.equal(rebuilt.hashVerifiedPhysicalFiles,21210);
+    assert.equal(rebuilt.orphanCaseIds.length,155);
+    assert.equal(Object.keys(data.lateMatrix.supplementHistory.files).length,27);
+    for(const [name,digest] of Object.entries(data.lateMatrix.supplementHistory.files))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,data.lateMatrix.supplementHistory.directory,name))).digest('hex'),digest);
+    for(const [name,digest] of Object.entries(rebuilt.outputSha256))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,name))).digest('hex'),digest);
+    const full=JSON.parse(fs.readFileSync(path.join(directory,rebuilt.completeJson),'utf8'));
+    assert.equal(full.producer,'TEST_SOLUTION_INDEPENDENT_RECONSTRUCTION');
+    assert.equal(full.leaves.length,61044);
+    assert.equal(full.unlinkedCases.length,155);
+    assert.equal(full.summary.executionCertified,false);
+    assert.ok(element('matrix-history').textContent.includes('Complete independent reconstruction'));
+  }
 }
 assert.deepEqual(errors,[]);
 dom.window.close();

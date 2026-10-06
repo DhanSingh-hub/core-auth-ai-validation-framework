@@ -103,6 +103,14 @@ if(data.lateMatrix){
     assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,data.lateMatrix.history.directory,name))).digest('hex'),digest);
   }
   for(const link of element('matrix-history').querySelectorAll('a'))assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))));
+  if(data.lateMatrix.reconstruction){
+    assert.equal(data.lateMatrix.reconstruction.leafRows,61044);
+    assert.equal(data.lateMatrix.reconstruction.detailStatusAgreementCount,200);
+    assert.equal(data.lateMatrix.reconstruction.hashVerifiedPhysicalFiles,21210);
+    assert.equal(data.lateMatrix.reconstruction.executionCertified,false);
+    assert.ok(element('matrix-history').textContent.includes('Earlier matrix-era semantic report'));
+    for(const [name,digest] of Object.entries(data.lateMatrix.supplementHistory.files))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,data.lateMatrix.supplementHistory.directory,name))).digest('hex'),digest);
+  }
 }
 assert.deepEqual(errors,[]);
 dom.window.close();
