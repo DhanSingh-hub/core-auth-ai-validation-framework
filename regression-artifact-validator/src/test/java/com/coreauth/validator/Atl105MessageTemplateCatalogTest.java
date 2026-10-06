@@ -93,6 +93,26 @@ class Atl105MessageTemplateCatalogTest {
     }
 
     @Test
+    void responseFieldSourcePagesFollowTheSectionElevenPageBreaks() throws IOException {
+        JsonNode templates = readCatalog().path("message_templates");
+        JsonNode approvedTotals = templates.path("Approved Totals Response");
+        int[] approvedPages = {178, 178, 178, 179, 179, 179, 179, 179, 179};
+
+        assertThat(approvedTotals.path("fields")).hasSize(approvedPages.length);
+        for (int index = 0; index < approvedPages.length; index++) {
+            assertThat(approvedTotals.path("fields").get(index).path("source").path("page").asInt())
+                .as("Approved Totals Response field %d", index + 1).isEqualTo(approvedPages[index]);
+        }
+        assertThat(approvedTotals.path("source").path("page").asInt()).isEqualTo(178);
+
+        JsonNode emailResponse = templates.path("Electronic Mail Response");
+        assertThat(emailResponse.path("fields")).hasSize(8);
+        for (JsonNode field : emailResponse.path("fields"))
+            assertThat(field.path("source").path("page").asInt()).isEqualTo(183);
+        assertThat(emailResponse.path("source").path("page").asInt()).isEqualTo(183);
+    }
+
+    @Test
     void loyaltyAndEcaResponsesExplicitlyReuseFinancialResponse() throws IOException {
         JsonNode templates = readCatalog().path("message_templates");
 
