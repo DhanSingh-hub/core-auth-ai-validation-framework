@@ -1,5 +1,78 @@
 # Canonical Artifact Contract
 
+## Semantic Evidence Gate Sidecar (Version 1)
+
+`SemanticEvidenceValidator` and `SemanticEvidenceBatch` implement technical
+gates for complete declared BR claims, isolated mutations, compatibility,
+captured wire bytes and request-bound outcome oracles. The sidecar is Test
+Solution-owned evidence, never a producer's self-verdict or a replacement for
+the independent-producer rules below. Missing/unsupported evidence returns
+`NOT_ASSESSED`; demonstrated contradictions return `FAIL`.
+
+The optional sidecar is an object with `schemaVersion: 1` and `cases`, an array
+of `{caseId, observation, evidence}` objects. The runner rejects duplicate JSON
+keys, duplicate IDs, unknown versions and IDs outside the selected register.
+Inputs are hashed, original registers are unchanged, and the CLI writes only a
+new report file. Use a new report path on each replay.
+
+Every gate's `source` contains `file`, `sha256`, `startLine`, `endLine`, and an
+exact `quote`. Files must remain within the explicitly supplied trusted-source
+root, including after symbolic-link resolution. Hashes and line-bounded quotes
+are verified, not merely recorded. The root must contain independently vetted
+source/evidence, not an AI intake directory. A hash/quote establishes provenance;
+it does not prove that a human interpretation of the quoted prose is correct.
+
+| Gate | Observation | Independent evidence | Technical scope |
+|---|---|---|---|
+| `brEquivalence` | `brClaims` | `brEquivalence.independentClaims`, `source` | Each claim object requires `claimsComplete: true`, complete context (`specification`, `version`, `messageFamily`, `transactionType`, `cardType`, `lifecycleRole`) and nonempty unique `atoms`. Context must be ATL105/2026-3. Atoms contain `subject`, supported `operator`, `modality`, `units`, typed `value`, `conditions` object, and `exceptions` array. Exact structured equality ignores object-key/atom order, not context, conditions, exceptions, modality or values. IDs and prose similarity are not evidence. |
+| `negativeIsolation` | Actual `controlPayload`, `mutantPayload` | `negativeIsolation.source`, `targetPointer`, `targetRule`, nonempty `controlScope` array of `{pointer, rule}` | Exactly one JSON-pointer change; all declared control predicates pass; mutant fails the target and no unrelated declared predicate. Supported predicates: `SEG100_TYPE`, `SEQUENCE_SIX_DIGITS`, `REQUIRED`, `BLOCK_MAX_51`. No universal Element 12 enum is invented. |
+| `negativeEffectiveness` | Above plus `controlCanonicalPayload`, `canonicalPayload`, `controlRequest`, `request`, `controlResponse`, `response`, `controlWireHex`, `wireHex` | `negativeIsolation.fullControl` with `scopeComplete`, `source`, `compatibility`, `wireValidation`, `hostOutcome`; mutant contracts at evidence root | Requires matching physical request identities, complete declared valid positive control, full-message wire for both legs, positive ACCEPT and negative REJECT authoritative oracles, and no unrelated mutant compatibility/wire failure. Scoped preservation alone cannot pass this gate. |
+| `compatibility` | `canonicalPayload.request` with Section 1/count, `dataSection2.standardSegment`, `dataSection3` array | `compatibility.source`, `messageCategory: STANDARD_FINANCIAL_REQUEST`, explicit `requiredSegments`, `allowedSegments`, optional `expectedOrder` | Source-profile companion allowlist/requirements, Segment 100 cardinality, physical count including Section 3, duplicate and declared-order checks. Producer `testControls` cannot override the independent profile. Other message categories remain unassessed. |
+| `wireValidation` | Actual `wireHex` | `wireValidation.source`, explicit scope and framing manifest | `SEGMENT_100` checks actual ASCII/1C bytes, resolved 3-digit length including separators and ordered values. This is bounded, not full-message validation. `FULL_MESSAGE` covers every captured byte against the independent manifest: UINT16 network-order transport body length, five-byte TPDU, nine Section 1 elements (ATL105 first/count last), segment identities/length widths/resolved byte lengths, order, fields and separators. |
+| `hostOutcome` | Actual `request`, nonempty observed `response` | `hostOutcome.source`, `expectedResponse`, canonical `requestSha256`, `responseSha256`, `responseFamily`, `oracleKind`, `environment`, `stateFixtureSha256` | Exact response comparison tied to this request/response. Allowed oracle kinds: `SOURCE_DEFINED_DETERMINISTIC`, `INDEPENDENT_HOST_REFERENCE`. Family-membership conflicts remain unassessed for source adjudication, never automatic acceptance. |
+
+BR operators are `required`, `fixed`, `maxLength`, `range`, `enum`, `equals`,
+and `prohibited`; modalities are `must`, `must-not`, `should`, `may`. Absence of
+conditions/exceptions must be represented explicitly as `{}`/`[]`. The claim
+producer is responsible for complete source interpretation; structured equality
+does not independently establish prose entailment or full rule-catalog coverage.
+
+Full wire contracts use `encoding: US-ASCII`, `fieldSeparatorHex: 1c`,
+`transportLengthConvention: UINT16_BE_BODY_INCLUDING_TPDU`, `tpduHex`,
+`section1Fields` (nine ordered strings), and `segments` (each has `fields`,
+including explicit segment type and resolved length). Bounded Segment 100
+contracts instead use `orderedFields`. Calculation placeholders, other encodings
+and unsupported transport layouts do not become valid no-op results.
+
+Canonical request/response hashes use SHA-256 of compact UTF-8 JSON with object
+keys recursively sorted; array order remains significant. The state-fixture hash
+is required oracle metadata, not a substitute for storing/reviewing that fixture.
+An offline response comparison does not itself establish that a processor was
+contacted, that oracle authority is genuine, or that host-state replay occurred.
+Keep those provenance/approval obligations with the Test Validation Team.
+
+From the module, run after compiling:
+
+```text
+java -cp <module-classes-and-dependencies> com.coreauth.validator.canonical.SemanticEvidenceBatch <register.json> <new-report.json> <trusted-source-root> [sidecar.json]
+```
+
+Reports always retain `executionCertified: false` and do not grant semantic/SME
+approval. `allTechnicalGatesPassed` is an evidence-check result, not an approved
+crosswalk, a semantic coverage percentage or execution certification. SME items,
+including unresolved source interpretations and response-family conflicts, stay
+`REVIEW_REQUIRED` until independently adjudicated.
+
+Full negative-effectiveness checking also forces `Segment100PayloadValidator`
+on the actual positive control, regardless of producer opt-in flags. Its current
+core-field scope is the single-Segment-100 financial profile. Controls with
+companion segments remain unassessed here because the existing core validator's
+count model does not cover Section 3; compatibility/framing checks do not
+substitute for those companion semantics. The full manifest is an independent
+reference, not a universal ATL105 serializer or proof of every segment's field
+rules. Report this support boundary rather than treating unsupported profiles
+as fully validated controls.
+
 The validation package uses producer-local IDs plus shared `sourceAnchors`. IDs may differ between the AI solution and the Test Validation solution; source anchors provide the stable semantic identity.
 
 ```json

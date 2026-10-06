@@ -30,6 +30,7 @@ Sources: ATL105 2026-3, Section 12.10, elements 85, 84, 111, 112, 113.
 - [Companion-Segment Compatibility Flow](companion-compatibility/companion-segment-compatibility-flow.md)
 - [Serialization and Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
 - [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
+- [Combined Segment 111/112 Supplemental Information Flow](../supplemental-information-111-112-flow.md)
 
 ## Scope
 
@@ -47,7 +48,9 @@ It does not claim that the envelope validates Appendix I Table-ID-specific
 content. Approximately 400 Table-ID business rules for elements 111 and 113
 remain out of scope and are tracked in the
 [coverage closure](coverage/README.md) as `REVIEW_REQUIRED`, not silently
-passed. Two provisional items remain open pending SME resolution: `P-01`
+passed. The combined flow now applies bounded Appendix I logical predicates
+for Tables 001-009; Tables 010-081 remain unasserted unless separately
+implemented. Two provisional items remain open pending SME resolution: `P-01`
 (Ship-to/Ship-from Postal Code format) and `P-02` (Segment 111 cardinality).
 
 ## Validation resources

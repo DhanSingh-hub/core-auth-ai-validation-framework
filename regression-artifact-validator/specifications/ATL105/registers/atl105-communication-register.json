@@ -1915,6 +1915,60 @@
       "raisedBy": "Rishabh Kumar"
     },
     {
+      "id": "SEG112-SME-008",
+      "channel": "SME_QUERY",
+      "segments": [
+        "112"
+      ],
+      "subject": "Confirm the effective Segment 112 length ceiling in a Financial Transaction Response: Section 11.1.2 lists a 349 maximum for the Segment 112 field, while Section 12.11 gives Segment 112 a 999-character maximum. Is 349 a response-context cap, a narrower field allocation, or a stale value? Clarify the unit and applicable boundary.",
+      "context": "ATL105 2026-3 Section 11.1.2 places Segment 112 in Data Section 2 with Max. Len. 349 and allows Segment 115 to follow under its own condition. Section 12.11 states a 999-character Segment 112 maximum and a 990-byte repeated-section maximum. These statements may be context-scoped rather than contradictory; no precedence rule is recorded.",
+      "impact": "Response-context Segment 112 length validation, boundary fixtures, and certification of the combined flow above 349 characters.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-06",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG112-SME-003",
+        "SEG115-SME-004"
+      ],
+      "links": {
+        "catalogItem": "P-08",
+        "rules": [
+          "SEG112-R-002",
+          "SEG112-R-003"
+        ],
+        "blocks": [
+          "response-context Segment 112 lengths above 349"
+        ]
+      }
+    },
+    {
+      "id": "SEG112-SME-009",
+      "channel": "SME_QUERY",
+      "segments": [
+        "112"
+      ],
+      "subject": "Resolve Segment 112 response placement: Section 12.11 says it appears at the end of a Financial Transaction Response, while Section 11.1.2 places it in Data Section 2 Field 16/17/18 and allows Segment 115 to follow in Field 17/18/19. Is Segment 112 last within Data Section 1, or may Segment 115 follow it in the response?",
+      "context": "Section 11.1.2 presents Segment 112 and Segment 115 as independently conditional Data Section 2 entries; Section 12.11 describes Segment 112 as appearing at the end of the Financial Transaction response. The current flow validates direction and flag agreement but deliberately does not enforce a relative order.",
+      "impact": "Combined response segment ordering, co-occurrence fixtures, and SEG112-R-004 certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-06",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG115-SME-004"
+      ],
+      "links": {
+        "catalogItem": "P-09",
+        "rules": [
+          "SEG112-R-004"
+        ],
+        "blocks": [
+          "Segment 112/115 relative order certification"
+        ]
+      }
+    },
+    {
       "id": "SEG113-SME-001",
       "channel": "SME_QUERY",
       "segments": [

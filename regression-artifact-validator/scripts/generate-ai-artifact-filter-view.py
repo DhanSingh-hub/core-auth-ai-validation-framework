@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 import re
+import runpy
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -202,6 +203,22 @@ def export_pdf(root, data):
     story.append(paragraph("225,091 self-audit findings across 21,063 cases. Populations overlap; these are producer signals, not independent business-defect decisions. All 21,123 candidate cases have null/empty expected responses. The composer reports exit 1."))
     story.append(paragraph("Scope limitation: this report does not execute host/converter messages or independently certify every source interpretation. Filters select records; they do not grant acceptance or silently reduce the original denominator."))
     story.append(PageBreak())
+    if data.get("lateMatrix"):
+        matrix = data["lateMatrix"]
+        heading_block("Late requirement matrix | October 6 update")
+        story.append(paragraph("Matrix received and independently reconciled: REVIEW_REQUIRED. This structural export does not confirm business equivalence or execution readiness."))
+        story.append(paragraph(escape(" ".join(matrix["producer"]["limitations"])) + " The complete JSON companion was not supplied."))
+        table(["Measure", "Previous", "AI matrix", "Frozen recount", "Current status"],
+              [[row[key] for key in ["metric", "previous", "producer", "current", "status"]] for row in matrix["comparison"]],
+              [175, 95, 150, 95, 180])
+        independent = matrix["independent"]
+        story.append(paragraph(f"Flat excerpt: {independent['leafRows']:,} rows; {independent['presentDeclaredDataPaths']:,} / {independent['uniqueDeclaredDataPaths']:,} declared TD paths present; {len(matrix['issues']):,} review issues. FULLY_TRACED on a no-TC/no-TD leaf is not accepted as a complete chain. Unrepresented rows are unavailable evidence, not identified missing links."))
+        story.append(paragraph(escape("Gap-complement additional BRs: " + ", ".join(independent["matrixOnlyTracedBrIds"])) + f". The declared 3,661 / 6,887 equals {independent['producerNumeratorPercent']:.2f}%, not the printed 53.13%. Full-chain 53.2% remains a producer claim."))
+        story.append(paragraph("Preserved matrix SHA-256: " + matrix["intake"]["sha256"]))
+        heading_block("Assessment history | Preserved before this update")
+        story.append(paragraph(f"All {len(matrix['history']['files'])} previous assessment files were copied unchanged and hash-verified before this update. Prior run/semantic HTML reports, PDF, source registers and JSON evidence remain available under history/2026-10-06-before-late-matrix/."))
+        story.append(paragraph("Independent coverage remains NOT_CALCULABLE; all previous semantic/host/SME blockers remain unresolved. See LATE-MATRIX-UPDATE.md and late-traceability-matrix-assessment.json for the status transition, intake provenance, discrepancies and snapshot hashes."))
+
     heading_block("Coverage | Overall linkage and inventory")
     coverage = data["coverage"]
     def percentage(value):
@@ -281,10 +298,19 @@ def main():
             "run": load("complete-handoff-analysis.json"),
             "scenarios": load("scenario-no-tc-register.json"), "failures": failures}
     data["coverage"] = build_coverage(root, data["run"])
+    matrix_file = root / "late-traceability-matrix-assessment.json"
+    matrix_section = ""
+    if matrix_file.is_file():
+        matrix = load(matrix_file.name)
+        data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition"]}
+        matrix_section = runpy.run_path(str(Path(__file__).with_name("assess-late-traceability-matrix.py")))["report_section"](matrix)
     assert len(data["scenarios"]) == data["summary"]["scenariosWithoutTc"] == 3732
     assert len(failures) == 27
     encoded = json.dumps(data, ensure_ascii=True, separators=(",", ":")).replace("</", "<\\/")
     html = TEMPLATE.replace("__DATA__", encoded)
+    if matrix_section:
+        html = html.replace("<main>", '<main><section id="matrix-history" role="tabpanel" hidden>' + matrix_section + "</section>", 1)
+        html = html.replace("</nav>", '<button role="tab" aria-selected="false" aria-controls="matrix-history" data-tab="matrix-history">Matrix &amp; history</button></nav>', 1)
     target = root / "AI-ARTIFACT-FILTER-VIEW.html"
     target.write_text(html, encoding="utf-8")
     print(f"Generated {target}: {len(data['scenarios'])} scenarios, {len(failures)} failed writes")

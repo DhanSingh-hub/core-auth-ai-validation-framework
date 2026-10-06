@@ -61,6 +61,23 @@ semantic equivalence, approved fixtures, AI coverage, or execution certification
 
 ## Validation-Control Coverage Method
 
+For `AIV-009`, `AIV-010`, `AIV-012` and `AIV-013`, Java
+`SemanticEvidenceValidator` adds complete declared structured-claim comparison,
+isolated control/mutant predicates, independently profiled companion checks,
+captured segment/full-message framing, request-bound outcome comparison and a
+separate full negative-effectiveness gate. `SemanticEvidenceBatch` runs those
+gates without modifying the intake or prior assessment. The versioned evidence
+contract is documented in [Canonical Artifact Contract](../canonical-artifact-contract.md).
+`SemanticEvidenceValidatorTest` tests positive/contradictory/missing/stale source
+evidence, unintended mutations, invalid controls, actual wire lengths, unsupported
+formats, exact oracle bindings and batch identity/version handling. Regression
+success demonstrates the methods, not that the October delivery supplied the
+structured claims, complete control profiles, wire captures or authoritative
+host oracles. Unprovided evidence remains `NOT_ASSESSED`; SME approval and
+execution certification are never inferred from a technical gate pass.
+
+The bounded follow-up for `AIV-009`, `AIV-010` and `AIV-012` adds paired omission/presence, exact composite/changed packing, sequence agreement/difference, ambiguous-label refusal and review-matrix disagreement tests to `scripts/assess-ai-semantic-batch.py --self-test`. `semantic-bounded-control-pairs.json` is source-hash-bound, predicate-scoped evidence. The actual-data run records 20 preserved values, four preserved omissions and one external-oracle blocker. The code-1 queue retains all 2,005 rows, physical hashes where available and matrix/source concerns; no reviewed decision or execution status is inferred. The HTML regression checks the 880/1,098/27 context partition and 165 review concerns.
+
 For `AIV-009`, `AIV-010` and `AIV-012`, `scripts/assess-ai-semantic-batch.py` provides a bounded first-batch assessment and controlled `--self-test` evidence for explicit metadata interpretation, source-fixed identity/six-digit predicates, mutation preservation/change and unsupported roots. The run register distinguishes intended negative predicate failures from AI defects, and preserves composite/absence/oracle blockers. All expected-code-1 queue rows remain independently unassessed. These checks do not certify complete BR objectives, isolated negative effectiveness, source-family response behavior or execution coverage.
 
 For `AIV-011` and `AIV-013`, the complete-handoff Coverage presentation is implemented by `scripts/generate-ai-artifact-filter-view.py`. Its streaming BR/TS/TC calculations assert agreement with the independently recounted handoff totals. `scripts/validate-ai-artifact-filter-view.cjs` checks overall percentages, segment N/A/unassigned rows, transaction-group reconciliation, response declarations, scenario types and unavailable semantic status. The JSON evidence binds AI input, response-matrix and catalog hashes. These presentation checks do not certify semantic coverage; the HTML/PDF retain `NOT_CALCULABLE` / `NOT_ASSESSED` and non-additive segment warnings.

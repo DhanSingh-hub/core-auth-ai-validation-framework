@@ -1,0 +1,748 @@
+{
+  "id": "TC-000001",
+  "scenario_id": "SC-0001",
+  "scenario_type": "positive",
+  "transaction_type": "ECA/TeleCheck Service Transaction",
+  "priority": "P2",
+  "priority_score": 0.44,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:013",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:013",
+    "REQ-SRC-ATL105-PDF-001:052",
+    "REQ-SRC-ATL105-PDF-001:093",
+    "REQ-SRC-ATL105-PDF-001:095",
+    "REQ-SRC-ATL105-PDF-001:097",
+    "REQ-SRC-ATL105-PDF-001:127",
+    "REQ-SRC-ATL105-PDF-001:130",
+    "REQ-SRC-ATL105-PDF-001:142",
+    "REQ-SRC-ATL105-PDF-001:146",
+    "REQ-SRC-ATL105-PDF-001:149"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "7e9e0ebb6301a56d61ae0f887e107e7b5c552a8f79b8eca925c11ab61d269c5f",
+  "request": {
+    "Standard Message Data Segment": {
+      "Segment Type": {
+        "value": "100",
+        "method": "fixed_value",
+        "source_page": 220,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 220,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Information Byte": {
+        "value": "0",
+        "method": "scenario_parameter_literal",
+        "source_page": 220,
+        "flags": [],
+        "element_no": "44",
+        "data_ref": {
+          "segment": "100",
+          "element": "Information Byte",
+          "variant": "valid"
+        }
+      },
+      "Terminal Identifier": {
+        "value": "OZGR571884741443877350",
+        "method": "realistic_terminal_id",
+        "source_page": 220,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "102",
+        "data_ref": {
+          "segment": "100",
+          "element": "Terminal Identifier",
+          "variant": "valid"
+        }
+      },
+      "Prompt Code": {
+        "value": "0001",
+        "method": "composite_from_spec_parts",
+        "source_page": 220,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+          "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+          "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)"
+        ],
+        "element_no": "78",
+        "data_ref": {
+          "segment": "100",
+          "element": "Prompt Code",
+          "variant": "valid"
+        }
+      },
+      "Account Number": {
+        "value": "4111111234567890123456 1",
+        "method": "llm_plausible_value",
+        "source_page": 221,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+          "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+          "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify \u2014 skipped rather than misapplied as a universal value",
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)",
+          "LLM_PLAUSIBLE_VALUE: suggested by LLM Value Synthesizer for QA readability only \u2014 not a spec-asserted business value, still character_type/length-validated"
+        ],
+        "element_no": "2",
+        "data_ref": {
+          "segment": "100",
+          "element": "Account Number",
+          "variant": "valid"
+        }
+      },
+      "Card Discretionary Block Data": {
+        "value": "0625",
+        "method": "qe_example_value",
+        "source_page": 221,
+        "flags": [
+          "SCENARIO_VALUE_REJECTED: 'Card Discretionary Block Data'/'(MMDDYY).' failed character_type/length validation"
+        ],
+        "element_no": "12",
+        "data_ref": {
+          "segment": "100",
+          "element": "Card Discretionary Block Data",
+          "variant": "valid"
+        }
+      },
+      "Encrypted PIN Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "33",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Encrypted PIN Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Pump/Lane Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "79",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Pump/Lane Number",
+          "variant": "omitted"
+        }
+      },
+      "Fuel Purchase Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "41",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Fuel Purchase Amount",
+          "variant": "omitted"
+        }
+      },
+      "Nonfuel Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "58",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Nonfuel Amount",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "99",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "Cash Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "17",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Cash Amount",
+          "variant": "omitted"
+        }
+      },
+      "Sequence Number": {
+        "value": "000001",
+        "method": "scenario_parameter_range_lowbound",
+        "source_page": 221,
+        "flags": [],
+        "element_no": "86",
+        "data_ref": {
+          "segment": "100",
+          "element": "Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "Approval Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "5",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Approval Number",
+          "variant": "omitted"
+        }
+      },
+      "Local Date and Local Time": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "49",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Local Date and Local Time",
+          "variant": "omitted"
+        }
+      },
+      "Partial Approval Indicator": {
+        "value": "0",
+        "method": "scenario_parameter_literal",
+        "source_page": 222,
+        "flags": [],
+        "element_no": "121",
+        "data_ref": {
+          "segment": "100",
+          "element": "Partial Approval Indicator",
+          "variant": "valid"
+        }
+      }
+    },
+    "Check Data Segment": {
+      "Segment Type": {
+        "value": "110",
+        "method": "fixed_value",
+        "source_page": 241,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "110",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 241,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "110",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "MICR Data": {
+        "value": "YWN57MGYMTBTPUI9TT2D7O0ANWL088240HMZ8D16JVVYEZ2Z6Y",
+        "method": "format_synthesis",
+        "source_page": 241,
+        "flags": [],
+        "element_no": "122",
+        "data_ref": {
+          "segment": "110",
+          "element": "MICR Data",
+          "variant": "valid"
+        }
+      },
+      "Driver's License": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "123",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "110",
+          "element": "Driver's License",
+          "variant": "omitted"
+        }
+      },
+      "State Code": {
+        "value": "AL",
+        "method": "qe_example_value",
+        "source_page": 241,
+        "flags": [
+          "SCENARIO_VALUE_REJECTED: 'State Code'/'001' failed character_type/length validation"
+        ],
+        "element_no": "124",
+        "data_ref": {
+          "segment": "110",
+          "element": "State Code",
+          "variant": "valid"
+        }
+      },
+      "Date of Birth": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "125",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "110",
+          "element": "Date of Birth",
+          "variant": "omitted"
+        }
+      },
+      "Check Type": {
+        "value": "C",
+        "method": "scenario_parameter_literal",
+        "source_page": 241,
+        "flags": [],
+        "element_no": "126",
+        "data_ref": {
+          "segment": "110",
+          "element": "Check Type",
+          "variant": "valid"
+        }
+      },
+      "Check Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "127",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "110",
+          "element": "Check Number",
+          "variant": "omitted"
+        }
+      },
+      "Customer Phone Number": {
+        "value": "2145550123",
+        "method": "llm_plausible_value",
+        "source_page": 241,
+        "flags": [
+          "LLM_PLAUSIBLE_VALUE: suggested by LLM Value Synthesizer for QA readability only \u2014 not a spec-asserted business value, still character_type/length-validated"
+        ],
+        "element_no": "128",
+        "data_ref": {
+          "segment": "110",
+          "element": "Customer Phone Number",
+          "variant": "valid"
+        }
+      },
+      "Customer Last Name": {
+        "value": "2BX3AG83A2G01MUC43U50QHE",
+        "method": "format_synthesis",
+        "source_page": 242,
+        "flags": [],
+        "element_no": "129",
+        "data_ref": {
+          "segment": "110",
+          "element": "Customer Last Name",
+          "variant": "valid"
+        }
+      },
+      "Check Issue Date": {
+        "value": "06152025",
+        "method": "qe_example_value",
+        "source_page": 242,
+        "flags": [],
+        "element_no": "130",
+        "data_ref": {
+          "segment": "110",
+          "element": "Check Issue Date",
+          "variant": "valid"
+        }
+      },
+      "Alternate MICR IND": {
+        "value": "UNKNOWN",
+        "method": "placeholder",
+        "source_page": 242,
+        "flags": [
+          "UNKNOWN: no character_type/valid_values available for this field",
+          "ELEMENT_NO_COLLISION: attribute catalog's element_no 239 record is 'Enhanced Fleet Data', not this template field's own name 'Alternate MICR IND' (ATL105 reuses element numbers per-segment) \u2014 attribute not trusted for this field"
+        ],
+        "element_no": "239",
+        "data_ref": {
+          "segment": "110",
+          "element": "Alternate MICR IND",
+          "variant": "valid"
+        }
+      }
+    },
+    "Variable Information Data Segment": {
+      "Segment Type": {
+        "value": "111",
+        "method": "fixed_value",
+        "source_page": 243,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 243,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator": {
+        "value": "005",
+        "method": "fixed_value",
+        "source_page": 548,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length": {
+        "value": "003",
+        "method": "derived_from_table_data",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 \u2014 replace with the client's real value via VarInfoTable[005]"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information": {
+        "value": "000",
+        "method": "spec_unspecified_code",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 \u2014 replace with the client's real value via VarInfoTable[005]"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator [2]": {
+        "value": "031",
+        "method": "fixed_value",
+        "source_page": 562,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length [2]": {
+        "value": "002",
+        "method": "derived_from_table_data",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 \u2014 replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information [2]": {
+        "value": "00",
+        "method": "spec_unspecified_code",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 \u2014 replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      }
+    },
+    "ECA/ TeleCheck Data Segment Format \u00ae": {
+      "Segment Type": {
+        "value": "113",
+        "method": "fixed_value",
+        "source_page": 246,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "113",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 246,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "113",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "ECA/ TeleCheck \u00ae Clerk ID": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 246,
+        "flags": [],
+        "element_no": "131",
+        "data_ref": {
+          "segment": "113",
+          "element": "ECA/ TeleCheck \u00ae Clerk ID",
+          "variant": "valid"
+        }
+      },
+      "ECA/ TeleCheck \u00ae Product Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "132",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "113",
+          "element": "ECA/ TeleCheck \u00ae Product Code",
+          "variant": "omitted"
+        }
+      },
+      "ECA/ TeleCheck \u00ae Phone Number": {
+        "value": "3105550198",
+        "method": "llm_plausible_value",
+        "source_page": 246,
+        "flags": [
+          "LLM_PLAUSIBLE_VALUE: suggested by LLM Value Synthesizer for QA readability only \u2014 not a spec-asserted business value, still character_type/length-validated"
+        ],
+        "element_no": "133",
+        "data_ref": {
+          "segment": "113",
+          "element": "ECA/ TeleCheck \u00ae Phone Number",
+          "variant": "valid"
+        }
+      },
+      "ECA/ TeleCheck \u00ae Trace ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "134",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "113",
+          "element": "ECA/ TeleCheck \u00ae Trace ID",
+          "variant": "omitted"
+        }
+      },
+      "Merchant Trace ID": {
+        "value": "99LPICIFNXTRF8CAU4B86NKA2",
+        "method": "format_synthesis",
+        "source_page": 246,
+        "flags": [],
+        "element_no": "135",
+        "data_ref": {
+          "segment": "113",
+          "element": "Merchant Trace ID",
+          "variant": "valid"
+        }
+      },
+      "Denial Record Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "136",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "113",
+          "element": "Denial Record Number",
+          "variant": "omitted"
+        }
+      },
+      "Extended MICR Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "137",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "113",
+          "element": "Extended MICR Data",
+          "variant": "omitted"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "100": "R",
+    "110": "R",
+    "111": "R",
+    "113": "UNKNOWN"
+  },
+  "forced_segments": [
+    "111"
+  ],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": null,
+        "method": null,
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": []
+        }
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        }
+      }
+    },
+    "source": "universal_request_envelope"
+  },
+  "flags": [
+    "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+    "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+    "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)",
+    "CONDITIONAL_FIELD_OMITTED",
+    "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+    "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "ELEMENT_NO_COLLISION: attribute catalog's element_no 239 record is 'Enhanced Fleet Data', not this template field's own name 'Alternate MICR IND' (ATL105 reuses element numbers per-segment) \u2014 attribute not trusted for this field",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 \u2014 replace with the client's real value via VarInfoTable[005]",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 \u2014 replace with the client's real value via VarInfoTable[031]",
+    "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify \u2014 skipped rather than misapplied as a universal value",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+    "SCENARIO_VALUE_REJECTED: 'Card Discretionary Block Data'/'(MMDDYY).' failed character_type/length validation",
+    "SCENARIO_VALUE_REJECTED: 'State Code'/'001' failed character_type/length validation",
+    "UNKNOWN: no character_type/valid_values available for this field",
+    "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+  ],
+  "completeness_status": "COMPLETE",
+  "completeness_findings": [],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) \u2014 validate against ATL105 PDF Ch.13 before trusting as ground truth"
+  },
+  "source_rule_id": null,
+  "source_page": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": null,
+  "confidence_score": 0.15,
+  "confidence_pct": 0,
+  "confidence_band": "LOW",
+  "confidence_factors": [
+    "prior_confidence_score=0.15",
+    "minor_flags=-57"
+  ],
+  "test_data_file": "qe_shaped_test_data/TC-000001.json"
+}

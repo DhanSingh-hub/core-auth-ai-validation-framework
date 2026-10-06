@@ -1,26 +1,3173 @@
 {
-  "appendix": "K",
-  "title": "Additional Information Data Layouts",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to additional information in financial responses associated with Segment 100 requests; controlled by Element 116 and carried in Element 118/Segment 118.",
-  "source": "docs/specs/extracted_text.txt Appendix K-1 onward",
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPK-FLAG","title":"A financial response shall set the Additional Information Data Segment Flag consistently with whether Segment 118 follows.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"11","segment":"FINANCIAL-RESPONSE","element":"116","rule":"additional-information-flag"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPK-TABLE-LAYOUT","title":"Additional Information Segment 118 shall use a valid Appendix K Table ID, length, and maximum data layout.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"116,118","rule":"additional-information-table-layout"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPK-BALANCE","title":"Balance Information Table ID 001 shall use its source-defined fixed layout when a financial response returns balance data.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"balance-information-table-001"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPK-AVS-NVS","title":"AVS/NVS Additional Information Table ID 003 shall use the source-defined signed response representation and issuer response code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"avs-nvs-table-003"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPK-CARD-VERIFICATION","title":"Card Verification Additional Information shall use the source-defined Table ID 004 layout when the response returns CVV/CVC/CID/DTVV results.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K","segment":"118","element":"118","rule":"card-verification-table-004"},"status":"REVIEW_REQUIRED"}
-  ],
-  "representativeTableIds": ["001 balance","002 reserved","003 AVS/NVS","004 card verification","005 ECA trace ID","006 ECA denial record","008 loyalty","009 Visa product result","010 loyalty v2","020 host prompts","028 transaction identifier","030 merchant advice","038 transaction link identifier"],
-  "testScenarios": [
-    {"id":"TS-SEG100-APPK-FLAG","covers":["BR-SEG100-APPK-FLAG"],"status":"PARTIALLY_COVERED"},
-    {"id":"TS-SEG100-APPK-TABLES","covers":["BR-SEG100-APPK-TABLE-LAYOUT","BR-SEG100-APPK-BALANCE","BR-SEG100-APPK-AVS-NVS","BR-SEG100-APPK-CARD-VERIFICATION"],"status":"REVIEW_REQUIRED"}
-  ],
-  "testCases": [
-    {"id":"TC-SEG100-APPK-FLAG","scenarioId":"TS-SEG100-APPK-FLAG","positive":"Flag and Segment 118 presence agree","negative":["Flag says absent while Segment 118 follows","Flag says present without Segment 118"],"status":"PARTIALLY_COVERED"},
-    {"id":"TC-SEG100-APPK-TABLES","scenarioId":"TS-SEG100-APPK-TABLES","positive":"Table ID, length, and data layout are valid","negative":["Unknown Table ID","length mismatch","invalid AVS/NVS sign or response code"],"status":"REVIEW_REQUIRED"}
-  ],
-  "testDataStatus": "Additional Information flag and response structure are known; dedicated Appendix K table-layout validation awaits response artifacts.",
-  "remaining": ["Validate AI-generated response artifacts containing Segment 118.","Enumerate each applicable Appendix K table used by Segment 100 transaction families."]
+  "appendix" : "K",
+  "title" : "Additional Information Data Layouts",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "applicability" : "Appendix K defines the layouts selected by Element 116 and carried in Element 118 of response-only Segment 112. Element 115 controls whether Segment 112 follows the Financial Transaction Response.",
+  "source" : "docs/specs/extracted_text.txt Appendix K-1 onward",
+  "businessRequirements" : [ {
+    "id" : "BR-SEG100-APPK-FLAG",
+    "title" : "A Financial Transaction Response shall set Element 115 consistently with whether response-only Segment 112 follows.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "11",
+      "segment" : "FINANCIAL-RESPONSE",
+      "element" : "115",
+      "rule" : "additional-information-segment-flag"
+    },
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "BR-SEG100-APPK-TABLE-LAYOUT",
+    "title" : "Segment 112 Additional Information selectors shall resolve to the source-defined Appendix K layouts for Elements 116 and 118.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116,118",
+      "rule" : "additional-information-table-layout"
+    },
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "BR-SEG100-APPK-BALANCE",
+    "title" : "Appendix K selector 001 identifies the Balance Information layout carried in Element 118 of Segment 112.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116,118",
+      "rule" : "balance-information-table-001"
+    },
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "BR-SEG100-APPK-AVS-NVS",
+    "title" : "Appendix K selector 003 identifies the AVS/NVS response layout carried in Element 118 of Segment 112.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116,118",
+      "rule" : "avs-nvs-table-003"
+    },
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "BR-SEG100-APPK-CARD-VERIFICATION",
+    "title" : "Appendix K selector 004 identifies the Card Verification Value response layout carried in Element 118 of Segment 112.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116,118",
+      "rule" : "card-verification-table-004"
+    },
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "BR-SEG100-APPK-ID-001",
+    "title" : "Appendix K selector 001 identifies Balance Information in Segment 112.",
+    "selector" : "001",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-001"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-003",
+    "title" : "Appendix K selector 003 identifies AVS or NVS or Both Information in Segment 112.",
+    "selector" : "003",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-003"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-004",
+    "title" : "Appendix K selector 004 identifies Card Verification Value Information in Segment 112.",
+    "selector" : "004",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-004"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-005",
+    "title" : "Appendix K selector 005 identifies ECA/TeleCheck Trace ID in Segment 112.",
+    "selector" : "005",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-005"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-006",
+    "title" : "Appendix K selector 006 identifies ECA/TeleCheck Denial Record Number in Segment 112.",
+    "selector" : "006",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-006"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-007",
+    "title" : "Appendix K selector 007 identifies ECA/TeleCheck Return Check Data in Segment 112.",
+    "selector" : "007",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-007"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-008",
+    "title" : "Appendix K selector 008 identifies Loyalty Information - Version 1 in Segment 112.",
+    "selector" : "008",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-008"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-009",
+    "title" : "Appendix K selector 009 identifies Visa Product Result Information in Segment 112.",
+    "selector" : "009",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-009"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-010",
+    "title" : "Appendix K selector 010 identifies Loyalty Information - Version 2 in Segment 112.",
+    "selector" : "010",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-010"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-011",
+    "title" : "Appendix K selector 011 identifies User Data Information in Segment 112.",
+    "selector" : "011",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-011"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-012",
+    "title" : "Appendix K selector 012 identifies Discover Network Retrieval Reference Number in Segment 112.",
+    "selector" : "012",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-012"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-013",
+    "title" : "Appendix K selector 013 identifies Expiration Date - TransArmor VeriFone in Segment 112.",
+    "selector" : "013",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-013"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-016",
+    "title" : "Appendix K selector 016 identifies BUYPASS Card Type Code in Segment 112.",
+    "selector" : "016",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-016"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-017",
+    "title" : "Appendix K selector 017 identifies PIN on Receipt Information in Segment 112.",
+    "selector" : "017",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-017"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-018",
+    "title" : "Appendix K selector 018 identifies PINless Debit Information in Segment 112.",
+    "selector" : "018",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-018"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-019",
+    "title" : "Appendix K selector 019 identifies Visa Spend Qualified Indicator Information in Segment 112.",
+    "selector" : "019",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-019"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-020",
+    "title" : "Appendix K selector 020 identifies Host Prompts Information in Segment 112.",
+    "selector" : "020",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-020"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-021",
+    "title" : "Appendix K selector 021 identifies Re-Price Data Response Information in Segment 112.",
+    "selector" : "021",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-021"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-022",
+    "title" : "Appendix K selector 022 identifies CAVV Result in Segment 112.",
+    "selector" : "022",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-022"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-023",
+    "title" : "Appendix K selector 023 identifies MCX Reference Number in Segment 112.",
+    "selector" : "023",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-023"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-024",
+    "title" : "Appendix K selector 024 identifies Carwash Indicator in Segment 112.",
+    "selector" : "024",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-024"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-025",
+    "title" : "Appendix K selector 025 identifies Language Indicator in Segment 112.",
+    "selector" : "025",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-025"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-026",
+    "title" : "Appendix K selector 026 identifies DST Response in Segment 112.",
+    "selector" : "026",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-026"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-027",
+    "title" : "Appendix K selector 027 identifies Universal Unique Identifier in Segment 112.",
+    "selector" : "027",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-027"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-028",
+    "title" : "Appendix K selector 028 identifies Transaction Identifier in Segment 112.",
+    "selector" : "028",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-028"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-029",
+    "title" : "Appendix K selector 029 identifies PAR (Payment Account Reference) Data in Segment 112.",
+    "selector" : "029",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-029"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-030",
+    "title" : "Appendix K selector 030 identifies Merchant Advice Code in Segment 112.",
+    "selector" : "030",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-030"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-031",
+    "title" : "Appendix K selector 031 identifies DAF Indicator in Segment 112.",
+    "selector" : "031",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-031"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-032",
+    "title" : "Appendix K selector 032 identifies Agreement ID in Segment 112.",
+    "selector" : "032",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-032"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-034",
+    "title" : "Appendix K selector 034 identifies Host-based Purchase Restriction in Segment 112.",
+    "selector" : "034",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-034"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-035",
+    "title" : "Appendix K selector 035 identifies Cardholder Additional Information Result Code in Segment 112.",
+    "selector" : "035",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-035"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-036",
+    "title" : "Appendix K selector 036 identifies Account Type in Segment 112.",
+    "selector" : "036",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-036"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-037",
+    "title" : "Appendix K selector 037 identifies Account Funding Source in Segment 112.",
+    "selector" : "037",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-037"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-038",
+    "title" : "Appendix K selector 038 identifies Transaction Link Identifier in Segment 112.",
+    "selector" : "038",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-038"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-039",
+    "title" : "Appendix K selector 039 identifies Transaction Link Action Indicator in Segment 112.",
+    "selector" : "039",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-039"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-040",
+    "title" : "Appendix K selector 040 identifies Fraud Score in Segment 112.",
+    "selector" : "040",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-040"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-041",
+    "title" : "Appendix K selector 041 identifies Fraud Score Reason Code in Segment 112.",
+    "selector" : "041",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-041"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-042",
+    "title" : "Appendix K selector 042 identifies Authentication Data Quality Indicator in Segment 112.",
+    "selector" : "042",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-042"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-043",
+    "title" : "Appendix K selector 043 identifies Token Update First Use Indicator in Segment 112.",
+    "selector" : "043",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-043"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-044",
+    "title" : "Appendix K selector 044 identifies Merchant Tran ID in Segment 112.",
+    "selector" : "044",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-044"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-045",
+    "title" : "Appendix K selector 045 identifies Applied Special Service in Segment 112.",
+    "selector" : "045",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-045"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-046",
+    "title" : "Appendix K selector 046 identifies Voyager Restriction Code in Segment 112.",
+    "selector" : "046",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-046"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-047",
+    "title" : "Appendix K selector 047 identifies Visa Category Code in Segment 112.",
+    "selector" : "047",
+    "layoutAssertionScope" : "TABLE_ID_RECOGNITION_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-047"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPK-ID-BOUNDARY",
+    "title" : "Appendix K table selector classification distinguishes the reserved 002 value and unlisted values from assigned selectors.",
+    "layoutAssertionScope" : "TABLE_ID_CLASSIFICATION_BOUNDARY_ONLY",
+    "status" : "REVIEW_REQUIRED",
+    "smeApproved" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ]
+  } ],
+  "representativeTableIds" : [ "001 balance", "002 reserved", "003 AVS/NVS", "004 card verification", "005 ECA trace ID", "006 ECA denial record", "008 loyalty", "009 Visa product result", "010 loyalty v2", "020 host prompts", "028 transaction identifier", "030 merchant advice", "038 transaction link identifier" ],
+  "testScenarios" : [ {
+    "id" : "TS-SEG100-APPK-FLAG",
+    "covers" : [ "BR-SEG100-APPK-FLAG" ],
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "TS-SEG100-APPK-TABLES",
+    "covers" : [ "BR-SEG100-APPK-TABLE-LAYOUT", "BR-SEG100-APPK-BALANCE", "BR-SEG100-APPK-AVS-NVS", "BR-SEG100-APPK-CARD-VERIFICATION" ],
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "TS-SEG100-APPK-ID-001",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-001" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-001"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-003",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-003" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-003"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-004",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-004" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-004"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-005",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-005" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-005"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-006",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-006" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-006"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-007",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-007" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-007"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-008",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-008"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-009",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-009"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-010",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-010" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-010"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-011",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-011" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-011"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-012",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-012"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-013",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-013" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-013"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-016",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-016" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-016"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-017",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-017" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-017"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-018",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-018" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-018"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-019",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-019" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-019"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-020",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-020" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-020"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-021",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-021" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-021"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-022",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-022" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-022"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-023",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-023" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-023"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-024",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-024" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-024"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-025",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-025" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-025"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-026",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-026" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-026"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-027",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-027" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-027"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-028",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-028" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-028"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-029",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-029" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-029"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-030",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-030" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-030"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-031",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-031" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-031"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-032",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-032" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-032"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-034",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-034" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-034"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-035",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-035" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-035"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-036",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-036" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-036"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-037",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-037" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-037"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-038",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-038" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-038"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-039",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-039" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-039"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-040",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-040" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-040"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-041",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-041" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-041"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-042",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-042" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-042"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-043",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-043" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-043"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-044",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-044" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-044"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-045",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-045" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-045"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-046",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-046" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-046"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-047",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-047" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-047"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPK-ID-BOUNDARY",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-SEG100-APPK-ID-BOUNDARY" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ]
+  } ],
+  "testCases" : [ {
+    "id" : "TC-SEG100-APPK-FLAG",
+    "scenarioId" : "TS-SEG100-APPK-FLAG",
+    "positive" : "Flag and Segment 118 presence agree",
+    "negative" : [ "Flag says absent while Segment 118 follows", "Flag says present without Segment 118" ],
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "TC-SEG100-APPK-TABLES",
+    "scenarioId" : "TS-SEG100-APPK-TABLES",
+    "positive" : "Table ID, length, and data layout are valid",
+    "negative" : [ "Unknown Table ID", "length mismatch", "invalid AVS/NVS sign or response code" ],
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "TC-SEG100-APPK-ID-001",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-001" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-001" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-001"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-003",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-003" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-003" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-003"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-004",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-004" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-004" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-004"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-005",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-005" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-005" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-005"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-006",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-006" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-006" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-006"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-007",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-007" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-007" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-007"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-008",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-008" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-008"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-009",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-009" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-009"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-010",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-010" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-010" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-010"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-011",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-011" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-011" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-011"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-012",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-012" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-012"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-013",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-013" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-013" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-013"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-016",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-016" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-016" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-016"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-017",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-017" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-017" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-017"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-018",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-018" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-018" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-018"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-019",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-019" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-019" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-019"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-020",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-020" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-020" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-020"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-021",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-021" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-021" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-021"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-022",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-022" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-022" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-022"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-023",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-023" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-023" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-023"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-024",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-024" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-024" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-024"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-025",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-025" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-025" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-025"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-026",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-026" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-026" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-026"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-027",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-027" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-027" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-027"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-028",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-028" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-028" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-028"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-029",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-029" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-029" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-029"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-030",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-030" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-030" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-030"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-031",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-031" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-031" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-031"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-032",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-032" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-032" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-032"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-034",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-034" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-034" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-034"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-035",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-035" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-035" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-035"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-036",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-036" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-036" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-036"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-037",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-037" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-037" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-037"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-038",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-038" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-038" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-038"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-039",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-039" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-039" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-039"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-040",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-040" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-040" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-040"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-041",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-041" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-041" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-041"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-042",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-042" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-042" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-042"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-043",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-043" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-043" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-043"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-044",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-044" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-044" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-044"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-045",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-045" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-045" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-045"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-046",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-046" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-046" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-046"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-047",
+    "expectedOutcome" : "PASS",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-047" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-047" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-047"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPK-ID-BOUNDARY",
+    "expectedOutcome" : "REVIEW",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-SEG100-APPK-ID-BOUNDARY" ],
+    "testDataIds" : [ "TD-SEG100-APPK-ID-BOUNDARY-002", "TD-SEG100-APPK-ID-BOUNDARY-014", "TD-SEG100-APPK-ID-BOUNDARY-015", "TD-SEG100-APPK-ID-BOUNDARY-033" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ]
+  } ],
+  "testDataStatus" : "43 assigned Appendix K selectors have executable recognition-harness TDs. Bounded Element 118 predicates exist for Tables 001, 003, and 004; 004 requires network context for code meaning. Full table semantics and complete Segment 112 response fixtures remain incomplete.",
+  "remaining" : [ "Derive and independently validate the 40 remaining assigned Table IDs' Element 118 layouts, data lengths, and applicable conditions; expand Tables 001, 003, and 004 beyond bounded representation predicates.", "Add physical response-envelope fixtures for Segment 112, Element 115 flag behavior, and repeated Element 116/117/118 triads.", "Resolve issuer/network-specific, external-code, and unresolved table semantics; keep them REVIEW_REQUIRED until evidence is recorded." ],
+  "testData" : [ {
+    "id" : "TD-SEG100-APPK-ID-001",
+    "coversBr" : "BR-SEG100-APPK-ID-001",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-001" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-001"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "001"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Balance Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-003",
+    "coversBr" : "BR-SEG100-APPK-ID-003",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-003" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-003"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "003"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "AVS or NVS or Both Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-004",
+    "coversBr" : "BR-SEG100-APPK-ID-004",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-004" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-004"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "004"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Card Verification Value Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-005",
+    "coversBr" : "BR-SEG100-APPK-ID-005",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-005" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-005"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "005"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "ECA/TeleCheck Trace ID",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-006",
+    "coversBr" : "BR-SEG100-APPK-ID-006",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-006" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-006"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "006"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "ECA/TeleCheck Denial Record Number",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-007",
+    "coversBr" : "BR-SEG100-APPK-ID-007",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-007" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-007"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "007"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "ECA/TeleCheck Return Check Data",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-008",
+    "coversBr" : "BR-SEG100-APPK-ID-008",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-008"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "008"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Loyalty Information - Version 1",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-009",
+    "coversBr" : "BR-SEG100-APPK-ID-009",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-009"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "009"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Visa Product Result Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-010",
+    "coversBr" : "BR-SEG100-APPK-ID-010",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-010" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-010"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "010"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Loyalty Information - Version 2",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-011",
+    "coversBr" : "BR-SEG100-APPK-ID-011",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-011" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-011"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "011"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "User Data Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-012",
+    "coversBr" : "BR-SEG100-APPK-ID-012",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-012"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "012"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Discover Network Retrieval Reference Number",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-013",
+    "coversBr" : "BR-SEG100-APPK-ID-013",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-013" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-013"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "013"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Expiration Date - TransArmor VeriFone",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-016",
+    "coversBr" : "BR-SEG100-APPK-ID-016",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-016" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-016"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "016"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "BUYPASS Card Type Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-017",
+    "coversBr" : "BR-SEG100-APPK-ID-017",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-017" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-017"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "017"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "PIN on Receipt Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-018",
+    "coversBr" : "BR-SEG100-APPK-ID-018",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-018" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-018"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "018"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "PINless Debit Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-019",
+    "coversBr" : "BR-SEG100-APPK-ID-019",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-019" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-019"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "019"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Visa Spend Qualified Indicator Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-020",
+    "coversBr" : "BR-SEG100-APPK-ID-020",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-020" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-020"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "020"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Host Prompts Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-021",
+    "coversBr" : "BR-SEG100-APPK-ID-021",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-021" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-021"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "021"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Re-Price Data Response Information",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-022",
+    "coversBr" : "BR-SEG100-APPK-ID-022",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-022" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-022"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "022"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "CAVV Result",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-023",
+    "coversBr" : "BR-SEG100-APPK-ID-023",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-023" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-023"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "023"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "MCX Reference Number",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-024",
+    "coversBr" : "BR-SEG100-APPK-ID-024",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-024" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-024"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "024"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Carwash Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-025",
+    "coversBr" : "BR-SEG100-APPK-ID-025",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-025" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-025"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "025"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Language Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-026",
+    "coversBr" : "BR-SEG100-APPK-ID-026",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-026" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-026"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "026"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "DST Response",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-027",
+    "coversBr" : "BR-SEG100-APPK-ID-027",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-027" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-027"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "027"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Universal Unique Identifier",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-028",
+    "coversBr" : "BR-SEG100-APPK-ID-028",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-028" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-028"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "028"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Transaction Identifier",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-029",
+    "coversBr" : "BR-SEG100-APPK-ID-029",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-029" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-029"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "029"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "PAR (Payment Account Reference) Data",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-030",
+    "coversBr" : "BR-SEG100-APPK-ID-030",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-030" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-030"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "030"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Merchant Advice Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-031",
+    "coversBr" : "BR-SEG100-APPK-ID-031",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-031" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-031"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "031"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "DAF Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-032",
+    "coversBr" : "BR-SEG100-APPK-ID-032",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-032" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-032"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "032"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Agreement ID",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-034",
+    "coversBr" : "BR-SEG100-APPK-ID-034",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-034" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-034"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "034"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Host-based Purchase Restriction",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-035",
+    "coversBr" : "BR-SEG100-APPK-ID-035",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-035" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-035"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "035"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Cardholder Additional Information Result Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-036",
+    "coversBr" : "BR-SEG100-APPK-ID-036",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-036" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-036"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "036"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Account Type",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-037",
+    "coversBr" : "BR-SEG100-APPK-ID-037",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-037" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-037"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "037"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Account Funding Source",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-038",
+    "coversBr" : "BR-SEG100-APPK-ID-038",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-038" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-038"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "038"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Transaction Link Identifier",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-039",
+    "coversBr" : "BR-SEG100-APPK-ID-039",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-039" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-039"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "039"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Transaction Link Action Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-040",
+    "coversBr" : "BR-SEG100-APPK-ID-040",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-040" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-040"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "040"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Fraud Score",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-041",
+    "coversBr" : "BR-SEG100-APPK-ID-041",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-041" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-041"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "041"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Fraud Score Reason Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-042",
+    "coversBr" : "BR-SEG100-APPK-ID-042",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-042" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-042"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "042"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Authentication Data Quality Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-043",
+    "coversBr" : "BR-SEG100-APPK-ID-043",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-043" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-043"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "043"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Token Update First Use Indicator",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-044",
+    "coversBr" : "BR-SEG100-APPK-ID-044",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-044" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-044"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "044"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Merchant Tran ID",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-045",
+    "coversBr" : "BR-SEG100-APPK-ID-045",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-045" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-045"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "045"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Applied Special Service",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-046",
+    "coversBr" : "BR-SEG100-APPK-ID-046",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-046" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-046"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "046"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Voyager Restriction Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-047",
+    "coversBr" : "BR-SEG100-APPK-ID-047",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "PASS",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-047" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "table-id-047"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "047"
+    },
+    "expected" : {
+      "disposition" : "ASSIGNED",
+      "title" : "Visa Category Code",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-BOUNDARY-002",
+    "coversBr" : "BR-SEG100-APPK-ID-BOUNDARY",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "REVIEW_REQUIRED",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "REVIEW",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-BOUNDARY" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "002"
+    },
+    "expected" : {
+      "disposition" : "RESERVED",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-BOUNDARY-014",
+    "coversBr" : "BR-SEG100-APPK-ID-BOUNDARY",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "REVIEW_REQUIRED",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "REVIEW",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-BOUNDARY" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "014"
+    },
+    "expected" : {
+      "disposition" : "UNLISTED",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-BOUNDARY-015",
+    "coversBr" : "BR-SEG100-APPK-ID-BOUNDARY",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "REVIEW_REQUIRED",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "REVIEW",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-BOUNDARY" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "015"
+    },
+    "expected" : {
+      "disposition" : "UNLISTED",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  }, {
+    "id" : "TD-SEG100-APPK-ID-BOUNDARY-033",
+    "coversBr" : "BR-SEG100-APPK-ID-BOUNDARY",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "REVIEW_REQUIRED",
+    "fixtureKind" : "APPENDIX_K_TABLE_ID_CLASSIFICATION_HARNESS",
+    "expectedValidation" : "REVIEW",
+    "testCaseIds" : [ "TC-SEG100-APPK-ID-BOUNDARY" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix K",
+      "segment" : "112",
+      "element" : "116",
+      "rule" : "reserved-and-unlisted-table-id-boundary"
+    } ],
+    "payload" : {
+      "mode" : "TABLE_ID_CLASSIFICATION",
+      "segmentType" : "112",
+      "element" : "116",
+      "tableId" : "033"
+    },
+    "expected" : {
+      "disposition" : "UNLISTED",
+      "layoutSemantics" : "NOT_EVALUATED"
+    }
+  } ],
+  "tableIdCatalog" : {
+    "sourceSelectorCount" : 44,
+    "assignedSelectorCount" : 43,
+    "reservedSelectorIds" : "002",
+    "unlistedGapIds" : "014,015,033",
+    "classificationScope" : "TABLE_ID_ONLY",
+    "layoutPredicateTableIds" : "001,003,004",
+    "remainingAssignedLayouts" : 40,
+    "element118LayoutSemanticsValidated" : false
+  }
 }

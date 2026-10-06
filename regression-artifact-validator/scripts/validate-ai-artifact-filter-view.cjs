@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
+const {createHash} = require('node:crypto');
 const {JSDOM, VirtualConsole} = require(process.argv[3] || 'jsdom');
 const directory = path.resolve(process.argv[2]);
 const errors = [];
@@ -72,6 +73,27 @@ choose('coverage-mode','types');
 assert.equal(element('coverage-types').rows.length,data.coverage.scenarioTypes.length);
 assert.equal(data.coverage.scenarioTypes.reduce((count,row)=>count+row.scenarios,0),12679);
 assert.equal(data.coverage.executionCertified,false);
+if(data.lateMatrix){
+  document.querySelector('[data-tab="matrix-history"]').click();
+  assert.equal(element('matrix-history').hidden,false);
+  assert.equal(element('coverage').hidden,true);
+  assert.ok(element('matrix-history').textContent.includes('61,107'));
+  assert.ok(element('matrix-history').textContent.includes('REVIEW_REQUIRED'));
+  assert.equal(data.lateMatrix.independent.leafRows,2000);
+  assert.equal(data.lateMatrix.independent.detailRequirementCount,200);
+  assert.equal(data.lateMatrix.independent.directOrScenarioBrs,3659);
+  assert.equal(data.lateMatrix.issues.length,75);
+  assert.deepEqual(data.lateMatrix.independent.matrixOnlyTracedBrIds,['REQ-SRC-ATL105-PDF-001:3226','REQ-SRC-ATL105-PDF-001:521']);
+  assert.equal(Object.keys(data.lateMatrix.history.files).length,24);
+  for(const [name,digest] of Object.entries(data.lateMatrix.history.files)){
+    const file=path.join(directory,data.lateMatrix.history.directory,name);
+    assert.equal(createHash('sha256').update(fs.readFileSync(file)).digest('hex'),digest,'Historical snapshot changed: '+name);
+  }
+  for(const link of element('matrix-history').querySelectorAll('a')){
+    assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))),'Missing matrix/history target: '+link.getAttribute('href'));
+  }
+  assert.equal(createHash('sha256').update(fs.readFileSync(data.lateMatrix.intake.file)).digest('hex'),data.lateMatrix.intake.sha256);
+}
 assert.deepEqual(errors,[]);
 dom.window.close();
 console.log('PASS: filters, CSV, pagination, queues, full registers and all five Coverage dimensions');

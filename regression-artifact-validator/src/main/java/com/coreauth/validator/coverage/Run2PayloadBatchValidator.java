@@ -2,6 +2,7 @@ package com.coreauth.validator.coverage;
 
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalTestData;
+import com.coreauth.validator.canonical.AdditionalInformationTransactionFlowValidator;
 import com.coreauth.validator.canonical.Segment100AiJsonCompatibilityValidator;
 import com.coreauth.validator.canonical.Segment101PayloadValidator;
 import com.coreauth.validator.canonical.Segment103PayloadValidator;
@@ -9,6 +10,7 @@ import com.coreauth.validator.canonical.Segment104PayloadValidator;
 import com.coreauth.validator.canonical.Segment108PayloadValidator;
 import com.coreauth.validator.canonical.Segment109PayloadValidator;
 import com.coreauth.validator.canonical.Segment111PayloadValidator;
+import com.coreauth.validator.canonical.Segment112PayloadValidator;
 import com.coreauth.validator.canonical.Segment113PayloadValidator;
 import com.coreauth.validator.validation.ValidationResult;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -38,6 +40,7 @@ public final class Run2PayloadBatchValidator {
         int applicable = 0;
         int valid = 0;
         int invalid = 0;
+        int reviewRequired = 0;
         int unreadable = 0;
         List<String> samples = new ArrayList<>();
         for (String relative : files) {
@@ -53,8 +56,13 @@ public final class Run2PayloadBatchValidator {
                 applicable++;
                 if (validator == null) continue;
                 ValidationResult result = validator.apply(normalizeForValidator(payload, segment));
-                if (result.isValid()) {
+                boolean review = hasReviewWarnings(result);
+                if (result.isValid() && !review) {
                     valid++;
+                } else if (result.isValid()) {
+                    reviewRequired++;
+                    result.warnings().stream().limit(3)
+                            .forEach(warning -> sample(samples, relative + ": " + warning));
                 } else {
                     invalid++;
                     result.errors().stream().limit(3)
@@ -65,9 +73,15 @@ public final class Run2PayloadBatchValidator {
                 sample(samples, relative + ": " + exception.getMessage());
             }
         }
-        return new BatchResult(segment, validator != null, files.size(), applicable, valid, invalid,
+        return new BatchResult(segment, validator != null, files.size(), applicable, valid, invalid, reviewRequired,
                 unreadable, List.copyOf(samples));
     }
+
+        private static boolean hasReviewWarnings(ValidationResult result) {
+        return result.warnings().stream().map(String::toLowerCase)
+            .anyMatch(warning -> warning.contains("review_required") || warning.contains("not_assertable")
+                || warning.contains("appendixklayoutscope"));
+        }
 
     private static JsonNode normalizeForValidator(JsonNode payload, String segment) {
         if (!(payload.deepCopy() instanceof ObjectNode normalized)) return payload;
@@ -91,7 +105,8 @@ public final class Run2PayloadBatchValidator {
             case "104" -> new Segment104PayloadValidator()::validatePayload;
             case "108" -> new Segment108PayloadValidator()::validatePayload;
             case "109" -> new Segment109PayloadValidator()::validatePayload;
-            case "111" -> new Segment111PayloadValidator()::validatePayload;
+            case "111" -> new AdditionalInformationTransactionFlowValidator()::validateRequestPayload;
+            case "112" -> new AdditionalInformationTransactionFlowValidator()::validateResponsePayload;
             case "113" -> new Segment113PayloadValidator()::validatePayload;
             default -> null;
         };
@@ -100,7 +115,7 @@ public final class Run2PayloadBatchValidator {
     private static boolean containsSegment(JsonNode node, String segment) {
         if (node == null) return false;
         if (node.isObject()) {
-            String compact = node.path("SegmentType").asText(null);
+            String compact = node.path("SegmentType").asText(node.path("segmentType").asText(null));
             String spaced = node.path("Segment Type").asText(null);
             if (segment.equals(compact) || segment.equals(spaced)) return true;
             var fields = node.elements();
@@ -121,7 +136,15 @@ public final class Run2PayloadBatchValidator {
 
     public record BatchResult(String segment, boolean validatorImplemented, int linkedPayloadFiles,
                               int applicablePayloadFiles, int validPayloadFiles, int invalidPayloadFiles,
+                              int reviewRequiredPayloadFiles,
                               int unreadablePayloadFiles, List<String> errorSamples) {
+        public BatchResult(String segment, boolean validatorImplemented, int linkedPayloadFiles,
+                           int applicablePayloadFiles, int validPayloadFiles, int invalidPayloadFiles,
+                           int unreadablePayloadFiles, List<String> errorSamples) {
+            this(segment, validatorImplemented, linkedPayloadFiles, applicablePayloadFiles,
+                    validPayloadFiles, invalidPayloadFiles, 0, unreadablePayloadFiles, errorSamples);
+        }
+
         public ValidationResult asValidationResult() {
             ValidationResult result = new ValidationResult("segment-" + segment + "-payload-batch");
             if (!validatorImplemented) {
@@ -129,10 +152,14 @@ public final class Run2PayloadBatchValidator {
             }
             if (applicablePayloadFiles == 0) {
                 result.addError("PayloadCompliance", "Segment " + segment + " has no applicable linked payload files to validate");
-            } else if (validatorImplemented && (validPayloadFiles == 0
-                    || validPayloadFiles + invalidPayloadFiles != applicablePayloadFiles)) {
+                } else if (validatorImplemented && validPayloadFiles + invalidPayloadFiles
+                    + reviewRequiredPayloadFiles != applicablePayloadFiles) {
                 result.addError("PayloadCompliance", "Segment " + segment + " has no valid payload or incomplete validation outcomes");
             }
+                if (reviewRequiredPayloadFiles > 0) {
+                result.addError("PayloadCompliance", reviewRequiredPayloadFiles
+                    + " applicable linked payload files are REVIEW_REQUIRED and cannot certify execution");
+                }
             if (unreadablePayloadFiles > 0) {
                 result.addError("PayloadCompliance", unreadablePayloadFiles + " linked payload files are unreadable");
             }

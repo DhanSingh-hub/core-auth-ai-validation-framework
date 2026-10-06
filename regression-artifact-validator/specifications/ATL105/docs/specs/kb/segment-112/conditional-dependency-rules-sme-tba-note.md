@@ -55,7 +55,7 @@ _No open provisional items are linked to these rules._
 
 ## Current Validator Boundary
 
-No `Segment112PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
+The implemented `Segment112PayloadValidator` enforces the Element 115 flag/Segment 112 presence agreement. Element 115 catalog ownership remains `REVIEW_REQUIRED` under `SEG112-SME-003`; this validator does not promote that cross-catalog decision. See the [combined supplemental-information flow](../supplemental-information-111-112-flow.md).
 
 ## Review Checklist
 

@@ -3,7 +3,7 @@
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.11 Additional Information Data Segment (pages 12-30 to 12-31), Elements 115-118 (chapter 13.2, pages 424-429), Appendix K Additional Information Data Layouts (Table IDs 001-047)
 **Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
-**Item Progress:** Item 1 — Coverage Closure in progress. Core structure and repeating-section rules are derived directly from the specification text; full Element 116 value enumeration and Appendix K sub-table layouts remain `REVIEW_REQUIRED` (see [SME/TBA Input Register](segment-112-sme-tba-input-register.md)).
+**Item Progress:** Combined Segment 111/112 envelope flow is implemented. Appendix K selector inventory and recognition chains cover 43 assigned IDs plus reserved/unlisted boundaries; per-table Element 118 layouts remain `REVIEW_REQUIRED` except bounded representation checks for Tables 001, 003, and 004 (see [Appendix K training note](../segment-100/appendix-k-additional-information-training.md)).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
@@ -20,6 +20,7 @@
 - [Companion-Segment Compatibility Flow](companion-compatibility/segment-111-112-companion-compatibility-flow.md)
 - [Serialization and Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
 - [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
+- [Combined Segment 111/112 Supplemental Information Flow](../supplemental-information-111-112-flow.md)
 - [Coverage Closure](coverage/README.md)
 - [Segment 112 Rule Catalog (authoritative, draft)](coverage/segment-112-rule-catalog.json)
 - [AI-to-Test Requirement Crosswalk](coverage/segment-112-ai-to-test-requirement-crosswalk.md)
@@ -39,7 +40,7 @@
 | Segment number | 112 | Section 12.11 |
 | Segment name | Additional Information Data Segment | Section 12.11 heading |
 | Purpose | Carries host-originated supplemental data (balances, AVS/CVV results, loyalty, tokens, fraud scores, and 40+ other information types) in a Financial Transaction Response | Section 12.11 opening |
-| Placement | Appears at the end of a Financial Transaction response | Section 12.11 |
+| Placement | Response-only; Section 11.1.2 places it in Data Section 2 Field 16/17/18. Relative order against optional Segment 115 remains `REVIEW_REQUIRED` (`SEG112-SME-009`, `SEG115-SME-004`). | Sections 11.1.2, 12.11 |
 | Origin | BUYPASS (Host) originates transmission of the segment's content | Section 12.11 |
 | Segment length range | 001–999 alphanumeric characters | Section 12.11 |
 | Included when | Element 115 (Additional Information Data Segment Flag) equals `1` in the Financial Transaction Response | Section 13.2, Element 115 |
@@ -65,7 +66,7 @@ Fields 3–5 form the **Additional Information Section**, a repeating triad (Ind
 
 ## 3. Rule Set — Draft (Directly Derived from Specification)
 
-Rule ID prefix: `SEG112-R-###`. Every rule carries a canonical source anchor: `spec | version | section | segment | element | rule`. See [the authoritative catalog](coverage/segment-112-rule-catalog.json) for the full machine-readable list (currently 10 core rules; full Element 116 value enumeration and Appendix K sub-table rules are tracked as follow-on work in the [SME/TBA Input Register](segment-112-sme-tba-input-register.md)).
+Rule ID prefix: `SEG112-R-###`. Every rule carries a canonical source anchor: `spec | version | section | segment | element | rule`. See [the authoritative catalog](coverage/segment-112-rule-catalog.json) for the 10 core envelope/applicability rules. Appendix K's 44 selectors are independently inventoried and recognition-tested; per-table Element 118 rules remain partial, as described in the [Appendix K training note](../segment-100/appendix-k-additional-information-training.md).
 
 | Rule ID | Title | Class |
 |---|---|---|

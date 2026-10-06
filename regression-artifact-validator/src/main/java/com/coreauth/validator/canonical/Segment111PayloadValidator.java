@@ -82,7 +82,7 @@ public final class Segment111PayloadValidator {
         }
 
         List<JsonNode> reps = repetitions(segment);
-        int repeatedLength = 0;
+        List<IndicatorLengthValueSectionValidator.Triad> triads = new ArrayList<>();
         for (int i = 0; i < reps.size(); i++) {
             JsonNode rep = reps.get(i);
             validateRepetitionOrder(rep, i, r);
@@ -91,29 +91,30 @@ public final class Segment111PayloadValidator {
             JsonNode lenNode = first(rep, "variableInformationLength", "VariableInformationLength", "length");
             String len = lenNode != null && lenNode.isTextual() ? lenNode.asText() : null;
             String value = textual(rep, "variableInformation", "VariableInformation", "value");
-
-            if (indicator == null || !THREE_DIGITS.matcher(indicator).matches()) {
-                r.addError(SOURCE, "SEG111-R-003 repetition " + i + " indicator must be a present 3-digit textual field");
-            }
-            if (len == null || !THREE_DIGITS.matcher(len).matches()) {
-                r.addError(SOURCE, "SEG111-R-004 repetition " + i + " length must be a present 3-digit textual field");
-            }
-            if (value == null) {
-                r.addError(SOURCE, "SEG111-R-004 repetition " + i + " variable information value is required");
-            }
-
-            int actual = value == null ? 0 : value.length();
-            if (actual > MAX_PER_REPETITION_VALUE_LENGTH) {
-                r.addError(SOURCE, "SEG111-R-004 repetition " + i + " variable information length exceeds per-repetition bound " + MAX_PER_REPETITION_VALUE_LENGTH);
-            }
-            if (len != null && THREE_DIGITS.matcher(len).matches() && Integer.parseInt(len) != actual) {
-                r.addError(SOURCE, "SEG111-R-004 repetition " + i + " length does not equal variable information value length");
-            }
-            repeatedLength += 6 + actual;
+            triads.add(new IndicatorLengthValueSectionValidator.Triad(indicator, len, value));
         }
 
-        if (repeatedLength > MAX_REPEATED_SECTION) {
-            r.addError(SOURCE, "SEG111-R-005 repeated Variable Information Section exceeds 991 characters");
+        var section = IndicatorLengthValueSectionValidator.validate(
+            triads, 1, MAX_PER_REPETITION_VALUE_LENGTH, MAX_REPEATED_SECTION);
+        int repeatedLength = section.sectionLength();
+        for (IndicatorLengthValueSectionValidator.Violation violation : section.violations()) {
+            int index = violation.repetitionIndex();
+            switch (violation.problem()) {
+                case INVALID_INDICATOR -> r.addError(SOURCE,
+                        "SEG111-R-003 repetition " + index + " indicator must be a present 3-digit textual field");
+                case INVALID_LENGTH -> r.addError(SOURCE,
+                        "SEG111-R-004 repetition " + index + " length must be a present 3-digit textual field");
+                case MISSING_VALUE -> r.addError(SOURCE,
+                        "SEG111-R-004 repetition " + index + " variable information value is required");
+                case VALUE_TOO_SHORT -> r.addError(SOURCE,
+                    "SEG111-R-004 repetition " + index + " variable information length must be at least " + violation.configuredLimit());
+                case VALUE_TOO_LONG -> r.addError(SOURCE,
+                        "SEG111-R-004 repetition " + index + " variable information length exceeds per-repetition bound " + violation.configuredLimit());
+                case LENGTH_MISMATCH -> r.addError(SOURCE,
+                        "SEG111-R-004 repetition " + index + " length does not equal variable information value length");
+                case SECTION_TOO_LONG -> r.addError(SOURCE,
+                        "SEG111-R-005 repeated Variable Information Section exceeds " + violation.configuredLimit() + " characters");
+            }
         }
 
         int computed = 3 + 3 + repeatedLength + 3;

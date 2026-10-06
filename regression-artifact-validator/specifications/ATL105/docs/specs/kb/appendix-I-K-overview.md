@@ -112,7 +112,13 @@ All Table IDs verified directly against `extracted_text.txt` in this pass.
 
 ## Appendix K: Additional Information Data Layouts (Element 116/118)
 
-Source: `extracted_text.txt` line ~32577-34456. 47 distinct Table IDs (001-047).
+Source: `extracted_text.txt` lines 32577-34456. Appendix K defines 44 selectors: 43 assigned
+IDs plus reserved `002`. IDs `014`, `015`, and `033` are not listed. The introductory code
+bullets omit `044`-`046`, but their table bodies appear on Appendix K-33; `018` is labeled
+"Additional Information Indicator" and `019` uses an `n2` field width. The regression test
+checks the fixed-selector rows throughout the Appendix K source span. See the [Appendix K
+training note](segment-100/appendix-k-additional-information-training.md) for the completed
+selector-only chains and the still-deferred Element 118 layouts.
 
 | Table ID | Name/Title | Approx. Line | Notes |
 |----------|-----------|-------------|-------|
@@ -129,8 +135,8 @@ Source: `extracted_text.txt` line ~32577-34456. 47 distinct Table IDs (001-047).
 | 011 | User Data Information | 33474 | User data echoed back |
 | 012 | Discover Network Retrieval Reference Number | 33482 | Fixed 15 bytes |
 | 013 | Expiration Date (MMYY) - TransArmor VeriFone | 33500 | Fixed 4 bytes |
-| 016 | PIN-on-Receipt Information | 33524 | PIN-on-receipt data layout |
-| 017 | BUYPASS Host Card Type | 33531 | 3-byte card type code |
+| 016 | BUYPASS Card Type Code | 33524 | 3-byte card type code |
+| 017 | PIN-on-Receipt Information | 33531 | PIN-on-receipt data layout |
 | 018 | PINless Debit Information | 33546 | Fixed 3 bytes |
 | 019 | Visa Spend Qualified Indicator | 33584 | Spend qualification status |
 | 020 | Host Prompts Information | 33592 | Host prompt data |
@@ -167,8 +173,8 @@ All Table IDs verified directly against `extracted_text.txt` in this pass.
 
 ## Summary
 
-- **Appendix I**: 81 Table IDs indexed, all line numbers verified; complex/nested ones are 016, 030, 032, 049, 056, 060, 064, 066, 078, 079.
-- **Appendix K**: 47 Table IDs indexed (001-047, excluding 002 which is reserved), all line numbers verified.
+- **Appendix I**: 78 top-level Table IDs located in the allocated 001-081 range; 023, 061 and 074 remain unlocated, not inferred valid or invalid. See the [source inventory](../../../test-output/test-json/knowledge/appendix-i-inventory.json). Complex/nested IDs include 016, 030, 032, 049, 056, 060, 064, 066, 078, 079.
+- **Appendix K**: 44 selectors verified in the table bodies; 43 assigned and `002` reserved. `014`, `015`, and `033` are unlisted.
 - Element 111: Variable Information Indicator (3-digit table ID); Element 113: Variable Information data (up to 982 bytes).
 - Element 116: Additional Information Indicator (3-digit table ID); Element 118: Additional Information data (up to 984 bytes).
 
