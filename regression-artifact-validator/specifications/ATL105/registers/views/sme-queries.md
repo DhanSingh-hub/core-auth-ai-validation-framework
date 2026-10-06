@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 309 open, 3 reopened, 29 resolved, 2 deferred (343 total).
+**Status:** 310 open, 3 reopened, 29 resolved, 2 deferred (344 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -218,6 +218,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | [SEG111-SME-118](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-118) | What domain identifier applies to biometric program 3? Are stated domain/program pairings mandatory or advisory, and must completion repeat identical values or merely include the fields? | Training issue APPI-T066-Q001 (INTERPRETATION), batch APPI-050-067. ATL105 2026-3 extracted_text.txt: Appendix I-76 lines 31619-31656. Domain2 is expected for programs4/5/6 and domain0 for program0, but no pairing is stated for3; continuation says sent again, not unchanged. | OPEN |  | 2026-10-06 |
 | [SEG111-SME-119](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-119) | What serialization, entity-type codes, delimiters and method/reference formats govern digital Program Type Details 03 and Check-in Details 04? Do their payloads contain further defined structure? | Training issue APPI-T066-Q002 (INTERPRETATION), batch APPI-050-067. ATL105 2026-3 extracted_text.txt: Appendix I-76 lines 31671-31683; I-77 lines 31684-31711. The source states purpose, ans limits15/40 and NextGen presence, but no entity/method code list or internal split. | OPEN |  | 2026-10-06 |
 | [SEG111-SME-120](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-120) | Is Anticipated Amount fixed twelve digits or variable up to twelve? Reconcile the eight-byte example with twelve-character prose and confirm padding and counting for currency-dependent implied decimals. | Training issue APPI-T067-Q001 (SOURCE_CONFLICT), batch APPI-050-067. ATL105 2026-3 extracted_text.txt: Appendix I-77 lines 31723-31737. Length says variable up to12, data says a12-character right-justified zero-filled amount, and example declares008 with eight amount bytes. | OPEN |  | 2026-10-06 |
+| [SEG111-SME-121](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-121) | Reconcile Appendix B Segment 100 declared length 078 with the 82 bytes represented by its printed fields and separators. | Appendix I full-request dependency inspection. ATL105 2026-3 extracted_text.txt lines25577-25755 (Appendix B-1 through B-3): the parsed example contains seventeen Segment 100 fields, including a thirteen-byte terminal identifier and twenty-byte account representation. Removing explanatory spaces and rendering each triangle as one field separator yields 82 ASCII bytes, not the declared078. Section12.1 lines11209-11389 requires counting the segment type and field separators. The source example is not an acceptance oracle. | OPEN |  | 2026-10-06 |
 
 ## Segment 112 ([register](../../docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md))
 

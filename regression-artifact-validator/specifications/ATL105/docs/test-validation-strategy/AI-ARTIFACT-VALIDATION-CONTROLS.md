@@ -34,6 +34,11 @@ batches' rule/evidence links, table reconciliation and review-only scope.
 the linked representative BR/TS/TC/TD IDs, independent physical length gaps and
 non-disclosure. This is bounded AIV-001/AIV-010 evidence, not proof of complete
 chain quality, semantic entailment, producer approval or whole-appendix AI coverage.
+`AppendixIFullMessageSourceInspectionTest` pins the source hash and independently
+measures the referenced Appendix B Segment 100 example (078 declared versus
+82 ASCII bytes), retaining `SEG111-SME-121`. It is source-dependency evidence,
+not full-message execution. New candidates use Section 12.1 calculated lengths;
+offline validation never establishes host acceptance.
 These controls do not establish complete field extraction, wire validity,
 semantic equivalence, approved fixtures, AI coverage, or execution certification.
 

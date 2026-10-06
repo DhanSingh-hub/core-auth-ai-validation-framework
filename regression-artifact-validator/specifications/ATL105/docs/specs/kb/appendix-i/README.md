@@ -61,6 +61,14 @@ These are user-directed process decisions, not SME approval of business rules:
 7. Build synthetic logical and full-message candidates for every unambiguous
    layout, preserving conflicted layouts as review-gated. Full-message generation
    is a subsequent gate, not a claim about the current logical/segment fragments.
+8. Perform full-message validation offline first. Offline structural/predicate
+   results must not be described as host acceptance.
+9. Calculate new synthetic Segment 100 lengths using Section 12.1 while retaining
+   the Appendix B example conflict as `SEG111-SME-121`. Its seventeen printed
+   fields total 82 ASCII bytes, but its declared length is 078. This decision
+   does not approve the rest of the example or make it a ready full-request seed.
+   [Source-example inspection](../../../../test-output/test-json/knowledge/appendix-i-full-message-source-inspection.json)
+   records the discrepancy without copying account or verification values.
 
 ## Training batches and gates
 
@@ -167,10 +175,11 @@ its denominator.
 
 ## Baseline and completion boundary
 
-Current targeted validation: 122 tests, zero failures/errors, covering Appendix I
+Current targeted validation: 123 tests, zero failures/errors, covering Appendix I
 inventory/knowledge/candidate metadata, first-batch predicates and framing,
 representative immutable AI intake, register/view consistency and existing
-Segment 111/producer-neutral contract behavior. This is not the full-framework
+Segment 111/producer-neutral contract behavior, plus a reproducible Appendix B
+dependency-length inspection. This is not the full-framework
 suite and does not execute the proposed predicates in every remaining-layout
 candidate. The two new physical-TD gaps are preserved in AIF-0017.
 

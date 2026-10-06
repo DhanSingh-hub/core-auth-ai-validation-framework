@@ -38,6 +38,13 @@ immutable-delivery intake hashes and joins the existing TC-000016 chain and
 reports missing segment length plus a single-record alias length discrepancy
 (AIF-0017). Identity joins and local predicates are measured separately from
 semantic equivalence, message-family validation and exhaustive AI coverage.
+The user selected offline source-backed full-message validation first.
+Appendix B's Segment 100 example declares 078 but represents 82 ASCII bytes;
+`AppendixIFullMessageSourceInspectionTest` reproduces the discrepancy from the
+hash-pinned source. `SEG111-SME-121` remains open. New synthetic candidates must
+calculate lengths under Section 12.1, without treating this process decision as
+approval of the example's other fields or companion applicability. Source
+inspection is not a generated full-request candidate or host-acceptance result.
 
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 

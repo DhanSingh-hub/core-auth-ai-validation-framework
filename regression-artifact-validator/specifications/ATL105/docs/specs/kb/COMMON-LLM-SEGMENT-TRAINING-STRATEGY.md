@@ -132,6 +132,11 @@ predicate outcomes. They need implementation and full-message assembly before
 execution claims. Hash and join immutable producer artifacts for intake, report
 physical gaps independently, and never treat a linked ID or confidence-gated
 producer oracle as semantic acceptance.
+Full-message work is offline first, not host acceptance. Inspect referenced
+examples before adopting them as seeds: `AppendixIFullMessageSourceInspectionTest`
+reproduces Appendix B's Segment 100 length conflict (078 declared, 82 measured).
+Use Section 12.1's calculated length for new synthetic candidates while retaining
+`SEG111-SME-121`; a corrected length is not proof of a valid complete request.
 
 For every new or changed rule, the trainer must record:
 
