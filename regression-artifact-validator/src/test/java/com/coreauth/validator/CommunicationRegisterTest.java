@@ -88,16 +88,23 @@ class CommunicationRegisterTest {
     }
 
     @Test
-    void crossSegmentCatalogDependencyRequiresExplicitRelatedCatalogLink() throws IOException {
-        ObjectNode register = (ObjectNode) register();
-        for (JsonNode value : register.path("items")) {
-            if ("SEGDL1-SME-003".equals(value.path("id").asText())) {
-                ((ObjectNode) value.path("links")).remove("relatedCatalogItems");
-            }
-        }
+    void crossSegmentCatalogDependencyRequiresExplicitRelatedCatalogLink(@TempDir Path kb) throws IOException {
+        ObjectNode register = (ObjectNode) MAPPER.readTree("""
+                {"registerId":"R","channels":{"SME_QUERY":{"idPattern":"^SEG[0-9A-Z]+-SME-[0-9]{3}$"}},
+                 "statuses":["OPEN"],"segments":{"DL1":{},"DL6":{}},
+                 "items":[{"id":"SEGDL1-SME-003","channel":"SME_QUERY","segments":["DL1"],"subject":"Q?",
+                           "status":"OPEN","owner":"SME/TBA","raisedOn":"2026-09-29","raisedBy":"t",
+                           "links":{"relatedCatalogItems":[
+                             {"segment":"DL6","catalogItem":"P-06","ruleId":"SEGDL6-R-006"}]}}]}""");
+        Path coverage = Files.createDirectories(kb.resolve("segment-DL6").resolve("coverage"));
+        Files.writeString(coverage.resolve("segment-DL6-rule-catalog.json"), """
+                {"segment":"DL6","rules":[],"provisionalItems":[
+                  {"id":"P-06","status":"OPEN","impacts":["SEGDL6-R-006"],"registerId":"SEGDL1-SME-003"}]}""");
+        CommunicationRegisterValidator validator = new CommunicationRegisterValidator();
+        assertThat(validator.validate(register, kb).errors()).isEmpty();
+        ((ObjectNode) register.path("items").get(0).path("links")).remove("relatedCatalogItems");
 
-        ValidationResult result = new CommunicationRegisterValidator().validate(
-                register, GenerateCommunicationRegisterViews.KNOWLEDGE_BASE);
+        ValidationResult result = validator.validate(register, kb);
 
         assertThat(result.errors()).anyMatch(error -> error.reason().contains("segment-DL6-rule-catalog.json P-06"));
     }
