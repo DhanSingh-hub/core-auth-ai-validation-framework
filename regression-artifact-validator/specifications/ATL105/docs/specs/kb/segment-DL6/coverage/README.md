@@ -22,7 +22,7 @@ Authoritative rule catalog (7 rules)
 
 1. The 7-rule catalog represents the intended DL6 scope.
 2. Every DL6 test record must include the DL1 that triggers (or does not trigger) it.
-3. Rules linked to `SEGDL6-SME-001`, `-003`, `-004`, `-005` and `SEGDL1-SME-003` stay `REVIEW_REQUIRED`.
+3. Rules linked to `SEGDL6-SME-001`, `-003`, `-004`, `-005` and `-006` stay `REVIEW_REQUIRED`. P-06 uses DL6-owned `SEGDL6-SME-006`, related to the still-open shared `SEGDL1-SME-003`; this ownership repair does not answer either question.
 
 ## Candidate package outputs
 

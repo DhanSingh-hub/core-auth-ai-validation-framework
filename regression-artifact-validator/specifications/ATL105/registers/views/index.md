@@ -8,7 +8,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 190 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 224 |
+| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 192 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 226 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
@@ -24,7 +24,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | 108 | 7 | 1 | 3 | 0 | 11 | [segment-108](../../docs/specs/kb/segment-108/segment-108-sme-tba-input-register.md) |
 | 109 | 12 | 0 | 0 | 0 | 12 | [segment-109](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md) |
 | 110 | 7 | 0 | 2 | 0 | 9 | [segment-110](../../docs/specs/kb/segment-110/segment-110-sme-tba-input-register.md) |
-| 111 | 1 | 0 | 0 | 0 | 1 | [segment-111](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md) |
+| 111 | 2 | 0 | 0 | 0 | 2 | [segment-111](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md) |
 | 112 | 3 | 0 | 4 | 0 | 7 | [segment-112](../../docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md) |
 | 113 | 4 | 0 | 6 | 0 | 10 | [segment-113](../../docs/specs/kb/segment-113/segment-113-sme-tba-input-register.md) |
 | 114 | 0 | 2 | 4 | 0 | 6 | [segment-114](../../docs/specs/kb/segment-114/segment-114-sme-tba-input-register.md) |
@@ -61,7 +61,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | DL3 | 4 | 0 | 0 | 0 | 4 | [segment-DL3](../../docs/specs/kb/segment-DL3/segment-DL3-sme-tba-input-register.md) |
 | DL4 | 3 | 0 | 0 | 0 | 3 | [segment-DL4](../../docs/specs/kb/segment-DL4/segment-DL4-sme-tba-input-register.md) |
 | DL5 | 3 | 0 | 0 | 0 | 3 | [segment-DL5](../../docs/specs/kb/segment-DL5/segment-DL5-sme-tba-input-register.md) |
-| DL6 | 5 | 0 | 0 | 0 | 5 | [segment-DL6](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md) |
+| DL6 | 6 | 0 | 0 | 0 | 6 | [segment-DL6](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md) |
 | DL7 | 5 | 0 | 0 | 0 | 5 | [segment-DL7](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md) |
 | DL8 | 3 | 0 | 0 | 0 | 3 | [segment-DL8](../../docs/specs/kb/segment-DL8/segment-DL8-sme-tba-input-register.md) |
 | 104 | 2 | 0 | 0 | 0 | 2 | [segment-104](../../docs/specs/kb/segment-104/segment-104-sme-tba-input-register.md) |

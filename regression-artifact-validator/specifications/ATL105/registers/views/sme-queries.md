@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 190 open, 3 reopened, 29 resolved, 2 deferred (224 total).
+**Status:** 192 open, 3 reopened, 29 resolved, 2 deferred (226 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -100,6 +100,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEG111-SME-001](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-001) | Section 11.3.1 lists Segment 111 with Max. Len. 20 in the ECA/TeleCheck Service Transaction Request, but Section 12.10 defines a 999 maximum. Is 20 a deliberate cap for ECA/TeleCheck requests only, or a documentation error? |  | OPEN | `P-01`, SEG111-R-008 | 2026-09-29 |
+| [SEG111-SME-002](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-002) | For Appendix I Table 009, is the Table Length encoded as the three numeric bytes required by Section 12.10 and Element 112, or does Appendix I-8's two-character Table Length attribute define a table-specific exception? | ATL105 2026-3: extracted_text.txt lines 12569-12625 (Section 12.10), 22151-22160 (Element 112), and 27735-27745 (Appendix I-8). Table Data is one character with values 0, 1 or 5; the length-field representation is the unresolved issue. The user authorized continuing unambiguous training on 2026-10-06, not choosing a wire encoding. | OPEN |  | 2026-10-06 |
 
 ## Segment 112 ([register](../../docs/specs/kb/segment-112/segment-112-sme-tba-input-register.md))
 
@@ -411,6 +412,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | [SEGDL6-SME-003](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-003) | Section 12.47 and the Table Load Response (11.7.1.2) give DL6 a maximum length of 9, but its four fields sum to 10 ('\' + Start Time 4 + End Time 4 + '~'). Which is correct? | Section 12.47 introduction and field list; Section 11.7.1.2 field 8 Max. Len. | OPEN | `P-03`, SEGDL6-R-002 | 2026-09-30 |
 | [SEGDL6-SME-004](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-004) | DL6 field 1 says 'Indicates that software IP load data follows' (copied from DL5), Element 34 lists End-of-Data only for DL1-DL5, and End Time has no Source. Please confirm DL6 is framed by '\' and '~' and that End Time is Host-sourced. | Section 12.47 fields 1, 3, 4; Section 13.2 Elements 24 and 34. | OPEN | `P-04`, SEGDL6-R-002 | 2026-09-30 |
 | [SEGDL6-SME-005](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-005) | Store and Forward blocking applies 'for a designated range of time each day' (Appendix E, Card Type 173). May Start Time be later than End Time (window crossing midnight, e.g. 2300-0500)? What does Start Time = End Time mean? Are the times device-local or BUYPASS host time? | Appendix E Card Type 173; Section 12.47 fields 2-3; Section 13.2 Element 166. | OPEN | `P-05`, SEGDL6-R-007 | 2026-09-30 |
+| [SEGDL6-SME-006](../../docs/specs/kb/segment-DL6/segment-DL6-sme-tba-input-register.md#segdl6-sme-006) | For DL6 Data Block 4, confirm whether the Table Load Response carries '*' both before and after DL6, or only once at the end, and how omitted DL2/DL3 blocks affect framing. | Section 11.7.1.2 fields 1-9 and Section 12.47. This DL6-owned P-06 query depends on the shared framing decision in SEGDL1-SME-003. Creating the local query repairs register ownership only; it does not answer or supersede the DL1 question. | OPEN | `P-06`, SEGDL6-R-006 | 2026-10-06 |
 
 ## Segment DL7 ([register](../../docs/specs/kb/segment-DL7/segment-DL7-sme-tba-input-register.md))
 

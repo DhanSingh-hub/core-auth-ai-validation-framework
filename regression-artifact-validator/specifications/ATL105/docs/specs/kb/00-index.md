@@ -40,7 +40,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | F | Valid Payment Systems Product Codes | Product codes: fuel, automotive, aviation, marine, merchandise, FSA/HRA (Element 77) | 26485-27246 |
 | G | Valid Transaction Type Codes | Transaction type codes (Element 78, 1st position) | 27247-27347 |
 | H | Decline Codes Permitting Clerk/Customer Intervention | Decline codes allowing merchant/customer action (Element 26) | 27348-27442 |
-| I | Variable Information Data Layouts | Table IDs 001-081 for Element 111/113 | 27443-32490 |
+| I | [Variable Information Data Layouts training](appendix-i/README.md) | 78 located top-level IDs in allocated range 001-081; Elements 111/112/113; semantic training in progress | 27443-32490 |
 | J | Valid Point-of-Service Entry Mode Codes | PAN entry mode + PIN entry capability (Element 113, w/ Element 111 Table 005) | 32491-32576 |
 | K | Additional Information Data Layouts | Table IDs 001-047 for Element 116/118 | 32577-34456 |
 | L | Valid Currency Codes | Currencies with ISO codes, Visa/MasterCard support (Element 20) | 34457-34890 |

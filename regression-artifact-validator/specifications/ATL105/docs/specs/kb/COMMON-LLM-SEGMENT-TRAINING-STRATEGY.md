@@ -109,6 +109,15 @@ An SME answer that changes coverage is still recorded in the [SME decision regis
 
 ## Required Training Record
 
+For Appendix I table training, use the [Appendix I addendum](appendix-i/README.md)
+alongside Segment 111. Preserve the distinction between Element 111 (selector),
+Element 112 (length), Element 113 (data), and the Segment 111 envelope. Inventory
+actual source-defined IDs rather than assuming every ID up to the largest value
+exists. Nested selector occurrences and source navigation spans are not semantic
+rules, completed BR/TS/TC/TD chains, or approval. Read preceding notes and page
+continuations, cross-check Chapter 13 and Section 12.10, and keep conflicting
+table-specific attributes review-gated with a central register reference.
+
 For every new or changed rule, the trainer must record:
 
 1. Authoritative source, version, page, and section.
