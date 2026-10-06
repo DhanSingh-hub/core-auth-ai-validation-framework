@@ -69,6 +69,7 @@ All 100 selected cases contain `derived_at_wire_encoding` and `spec_unspecified_
 
 ## Deliverables and Reproduction
 
+- [Detailed interactive HTML report](SEMANTIC-FIRST-BATCH-REPORT.html): executive findings, searchable 100-case evidence register, seven negative blockers, paginated 2,005-case outcome-review queue, source quotes and input hashes. Filters and CSV exports never grant semantic acceptance.
 - [100-case CSV register](semantic-first-batch-register.csv): intents, both BR-link sets, source-backed observations, rendered-path evidence, mutation status, blockers and confounders.
 - [100-case JSON register](semantic-first-batch-register.json): preserved structured evidence and physical payload/metadata hashes.
 - [Summary and input hashes](semantic-first-batch-summary.json): selection, source quotes, outcome counts and assurance boundary.
@@ -76,3 +77,5 @@ All 100 selected cases contain `derived_at_wire_encoding` and `spec_unspecified_
 - [Structured expected-code-1 queue](expected-code-1-review-register.json).
 
 Run `scripts/assess-ai-semantic-batch.py --self-test` for the controlled predicate/mutation checks, then `scripts/assess-ai-semantic-batch.py <review-directory>` for this preserved handoff. The script uses the archive path in the existing intake analysis, case-sensitive JSON, streaming testcase parsing, and extended Windows paths. It changes analysis outputs only. Source-predicate tests include correct and incorrect values, non-ASCII-digit rejection, mutation preservation/change and unsupported roots. No AI input, independent catalog, approval register or Java validator is modified.
+
+Generate the HTML with `scripts/generate-semantic-batch-view.py <review-directory>`. The report embeds all batch and outcome-queue evidence and reuses the existing assessment styling without a web server. `scripts/validate-semantic-batch-view.cjs <review-directory> <jsdom-module-path>` checks case/queue filters, row evidence, blocker links, pagination, CSV contents and non-certification states. Browser checks cover desktop and mobile layout and the seven-blocker filter. This is presentation validation, not an additional semantic verdict.
