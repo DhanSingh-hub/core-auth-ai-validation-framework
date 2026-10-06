@@ -32,6 +32,12 @@ REVIEW_REQUIRED. The first candidate generator emits 18 logical fragments and 16
 wire-segment fragments with explicit review gates; neither is a complete financial
 request or a canonical execution-ready package. Full-message/response validation
 and complete AI BR/TS/TC/TD reconstruction are still required.
+Additional Appendix I batches provide 178 draft logical candidate records for
+the remaining 69 tables, not executed or complete request fixtures. A bounded
+immutable-delivery intake hashes and joins the existing TC-000016 chain and
+reports missing segment length plus a single-record alias length discrepancy
+(AIF-0017). Identity joins and local predicates are measured separately from
+semantic equivalence, message-family validation and exhaustive AI coverage.
 
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 

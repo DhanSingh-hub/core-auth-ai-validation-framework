@@ -28,6 +28,12 @@ parsing, conflicted wire, unsupported encoding/scope, and zero-length checks.
 wire/structured-fragment correspondence, preserving review/approval boundaries.
 Knowledge reconciliation requires every discovered top-level selector exactly
 once and every pending issue to reference a central Segment 111 SME query.
+`AppendixILogicalCandidateKnowledgeTest` checks the remaining four example
+batches' rule/evidence links, table reconciliation and review-only scope.
+`GenerateAppendixIRepresentativeIntakeTest` verifies hash-bearing input identity,
+the linked representative BR/TS/TC/TD IDs, independent physical length gaps and
+non-disclosure. This is bounded AIV-001/AIV-010 evidence, not proof of complete
+chain quality, semantic entailment, producer approval or whole-appendix AI coverage.
 These controls do not establish complete field extraction, wire validity,
 semantic equivalence, approved fixtures, AI coverage, or execution certification.
 

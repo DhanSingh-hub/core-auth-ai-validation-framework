@@ -106,6 +106,29 @@ network eligibility and conditional table presence are not established.
 Zero data length is rejected by Element 112's range, not an inferred universal
 table-specific minimum. The Table 009 framing conflict remains REVIEW_REQUIRED.
 
+## Remaining-layout synthetic candidate stage
+
+The subsequent source-only batches contain 178 scoped candidate records across
+the remaining 69 tables. Records include concrete synthetic strings, structured
+fields/byte arrays, mutation descriptions, proposed predicate outcomes and
+explicit excluded claims. These are not machine-executed predicates or canonical
+BR/TS/TC/TD packages; multiple variants/outcomes per record are not comparable
+to a count of executed cases. Consumer adapters must preserve these boundaries.
+
+| Candidate batch | Records | Source scope |
+|---|---:|---|
+| [010-048](../../../../test-output/test-json/knowledge/appendix-i-candidates-010-048.json) | 75 | All 38 tables classified; 82 distinct draft rule references |
+| [049](../../../../test-output/test-json/knowledge/appendix-i-candidates-049.json) | 24 | All 24 defined nested selectors classified; fleet/framing conflicts retained |
+| [050-067](../../../../test-output/test-json/knowledge/appendix-i-candidates-050-067.json) | 42 | 17 table-level and 25 nested-layout records; 129 field paths classified |
+| [068-081](../../../../test-output/test-json/knowledge/appendix-i-candidates-068-081.json) | 37 | All 13 tables and 24 nested layouts classified; 078 blob grammar withheld |
+
+Every record remains REVIEW_REQUIRED / LOGICAL_FRAGMENT. Classification does not
+prove exhaustive conditions, variants or tested semantics. Full-message assembly
+requires source-backed Data Sections 1/2/3, an applicable synthetic Segment 100
+context, optional/required companion segments and exact wire reconstruction.
+Those complete request fixtures and adapters are still pending, not silently
+substituted by a fragment or producer sample.
+
 Do not infer source completeness from the heading count. For each table record
 every field, width/type, valid codes, requiredness, nesting, transaction/card/network
 conditions, directional role, absent/present behavior, exception, effective-date
@@ -121,7 +144,7 @@ needs review. These observations are not completed semantic training.
 Run from `regression-artifact-validator`:
 
 ```powershell
-mvn '-Dtest=GenerateAppendixITrainingInventoryTest,AppendixITrainingKnowledgeTest,AppendixILogicalDataValidatorTest,AppendixISegmentWireValidatorTest,GenerateAppendixIFirstBatchCandidatesTest,CommunicationRegisterTest,Segment111*Test,ProducerNeutralContractTest' test
+mvn '-Dtest=GenerateAppendixITrainingInventoryTest,AppendixITrainingKnowledgeTest,AppendixILogicalCandidateKnowledgeTest,AppendixILogicalDataValidatorTest,AppendixISegmentWireValidatorTest,GenerateAppendixIFirstBatchCandidatesTest,GenerateAppendixIRepresentativeIntakeTest,CommunicationRegisterTest,Segment111*Test,ProducerNeutralContractTest' test
 
 $jars = Get-ChildItem "$env:USERPROFILE\.m2\repository\com\fasterxml\jackson\core" `
     -Filter '*2.18.9.jar' -Recurse | Select-Object -ExpandProperty FullName
@@ -132,6 +155,9 @@ if ($LASTEXITCODE -ne 0) { throw 'Appendix I inventory generation failed' }
 java -cp ("target\classes;" + ($jars -join ';')) `
     com.coreauth.validator.coverage.GenerateAppendixIFirstBatchCandidates
 if ($LASTEXITCODE -ne 0) { throw 'Appendix I candidate generation failed' }
+java -cp ("target\classes;" + ($jars -join ';')) `
+    com.coreauth.validator.coverage.GenerateAppendixIRepresentativeIntake
+if ($LASTEXITCODE -ne 0) { throw 'Appendix I representative intake failed' }
 ```
 
 The generator accepts optional ATL105-root and output-file arguments. Tests do
@@ -140,6 +166,13 @@ fail explicitly. Generation uses only the specification; AI input cannot change
 its denominator.
 
 ## Baseline and completion boundary
+
+Current targeted validation: 122 tests, zero failures/errors, covering Appendix I
+inventory/knowledge/candidate metadata, first-batch predicates and framing,
+representative immutable AI intake, register/view consistency and existing
+Segment 111/producer-neutral contract behavior. This is not the full-framework
+suite and does not execute the proposed predicates in every remaining-layout
+candidate. The two new physical-TD gaps are preserved in AIF-0017.
 
 The targeted existing Segment 111 and contract tests passed before the change.
 The prior full-framework review of this same `Develop` baseline recorded four
@@ -173,7 +206,16 @@ Source:
 `test-input/ai-solution/runs/2026-10-05/Run1/step5_requirements/approved/requirement_catalog.json`.
 
 The 2026-09-29 phase-one index lists one representative Segment 111 selector
-chain, TC-000016, labelled OK by its producer. This is not exhaustive Appendix I
-TS/TC/TD evidence or independent acceptance. Complete chain/payload reconstruction
-and semantic comparison remain pending. Do not carry producer approval/OK labels
-into Test Solution approval or execution counts.
+chain, TC-000016, labelled OK by its producer. The
+[independent representative intake](../../../../test-output/ai-solution-independent-review/appendix-i/representative-intake.json)
+now hashes the five immutable BR/TS/TC/TD/metadata inputs and joins their explicit
+IDs. Selector presence and the bounded UPC representation pass, but physical TD
+omits the required Segment Length. Under the explicit single-record alias
+interpretation, its declared data length is 1 while actual data has 2 characters.
+These gaps are recorded as `AIF-0017` for the AI Solution Team.
+
+Identity links and the bounded findings are not complete BR/TS/TC/TD semantic
+equivalence. The CA Public Key File Load message family, companion segments,
+negative-case intent, full wire and host responses remain unassessed. Complete
+Appendix I AI mapping and October-delivery TC/TD intake remain pending. Producer
+approval/OK labels never enter Test Solution approval or execution counts.

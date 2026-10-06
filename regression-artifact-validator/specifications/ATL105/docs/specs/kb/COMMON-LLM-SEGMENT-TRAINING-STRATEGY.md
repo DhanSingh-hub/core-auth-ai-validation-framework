@@ -127,6 +127,11 @@ The companion wire predicate validates common ASCII Segment 111 fragments only,
 with separate unsupported-encoding and conflicted-framing gates. First-batch
 candidate chains retain REVIEW_REQUIRED and never count fragment payloads as
 complete requests, approved fixtures, AI-equivalent artifacts, or executed cases.
+Remaining-layout examples use explicit logical-fragment records with proposed
+predicate outcomes. They need implementation and full-message assembly before
+execution claims. Hash and join immutable producer artifacts for intake, report
+physical gaps independently, and never treat a linked ID or confidence-gated
+producer oracle as semantic acceptance.
 
 For every new or changed rule, the trainer must record:
 
