@@ -18,12 +18,12 @@ class Atl105DependencyReviewMatrixTest {
         GenerateAtl105DependencyReviewMatrix.main(new String[]{PACK.toString()});
         Path output = PACK.resolve("test-output/test-solution-independent-review/atl105-dependency-absence-review-matrix.json");
         JsonNode matrix = MAPPER.readTree(output.toFile());
-        assertThat(matrix.path("candidateCount").asInt()).isEqualTo(235);
-        assertThat(matrix.path("dependencyCandidateCount").asInt()).isEqualTo(227);
+        assertThat(matrix.path("candidateCount").asInt()).isEqualTo(236);
+        assertThat(matrix.path("dependencyCandidateCount").asInt()).isEqualTo(228);
         assertThat(matrix.path("explicitAbsenceOrConditionCandidateCount").asInt()).isEqualTo(8);
         assertThat(matrix.path("semanticApprovedCount").asInt()).isZero();
         assertThat(matrix.path("enforcedCount").asInt()).isZero();
-        assertThat(matrix.path("reviewRequiredCount").asInt()).isEqualTo(235);
+        assertThat(matrix.path("reviewRequiredCount").asInt()).isEqualTo(236);
         for (JsonNode row : matrix.path("rows")) {
             assertThat(row.path("semanticReviewStatus").asText()).isEqualTo("REVIEW_REQUIRED");
             assertThat(row.path("approvalStatus").asText()).isEqualTo("NOT_SME_APPROVED");

@@ -5,12 +5,13 @@ Every independent rule-catalog BR has a structural BR -> TS -> TC -> TD chain. P
 | Metric | Count |
 |---|---:|
 | Independent BR denominator | 601 |
-| BR | 1289 |
-| TS | 1940 |
-| TC | 1992 |
-| TD | 1999 |
+| BR | 1326 |
+| TS | 1961 |
+| TC | 2043 |
+| TD | 2057 |
 | Unlinked TD candidates (excluded from canonical chain) | 22 |
-| Placeholder TS | 639 |
-| Placeholder TC | 654 |
-| Placeholder TD | 687 |
+| Synthetic review fixture drafts | 18 |
+| Placeholder TS | 618 |
+| Placeholder TC | 619 |
+| Placeholder TD | 641 |
 | Execution ready | false |

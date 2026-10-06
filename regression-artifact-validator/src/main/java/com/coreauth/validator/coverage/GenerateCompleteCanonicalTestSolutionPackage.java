@@ -59,7 +59,15 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         Path lifecyclePackageFile = Atl105Paths.testJson().resolve("segment-100-multistep-flow-catalog.json");
         if (Files.isRegularFile(lifecyclePackageFile)) {
             JsonNode lifecyclePackage = mapper.readTree(lifecyclePackageFile.toFile());
-            preservedRequirements.addAll(list(lifecyclePackage.path("businessRequirements")));
+            for (JsonNode requirement : list(lifecyclePackage.path("businessRequirements"))) {
+                String requirementId = requirement.path("id").asText();
+                JsonNode existingRequirement = requirementsById.putIfAbsent(requirementId, requirement);
+                if (existingRequirement == null) {
+                    preservedRequirements.add(requirement);
+                } else if (!existingRequirement.equals(requirement)) {
+                    throw new IllegalStateException("Conflicting lifecycle business requirement " + requirementId);
+                }
+            }
             for (JsonNode scenario : lifecyclePackage.path("testScenarios")) {
                 scenariosById.putIfAbsent(scenario.path("id").asText(), scenario);
                 if (!containsId(scenarios, scenario.path("id").asText())) scenarios.add(scenario);
@@ -82,7 +90,6 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         }
 
         List<JsonNode> completeRequirements = new ArrayList<>(requirementsById.values());
-        completeRequirements.addAll(preservedRequirements);
         for (JsonNode br : completeRequirements) {
             String brId = br.path("id").asText();
             List<JsonNode> linkedScenarios = scenariosForRequirement(scenarios, brId);
@@ -183,6 +190,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         summary.put("testCases", testCases.size());
         summary.put("testData", testData.size());
         summary.put("unlinkedTestDataCandidates", unlinkedTestDataCandidates.size());
+        summary.put("syntheticReviewFixtureDrafts", unlinkedTestDataCandidates.stream()
+            .filter(candidate -> candidate.path("fixtureDraftCreated").asBoolean()).count());
         summary.put("placeholderScenarios", placeholderScenarios);
         summary.put("placeholderTestCases", placeholderTestCases);
         summary.put("placeholderTestData", placeholderTestData);
@@ -291,6 +300,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 + "| TC | " + summary.path("testCases").asInt() + " |\n"
                 + "| TD | " + summary.path("testData").asInt() + " |\n"
                 + "| Unlinked TD candidates (excluded from canonical chain) | " + summary.path("unlinkedTestDataCandidates").asInt() + " |\n"
+                + "| Synthetic review fixture drafts | " + summary.path("syntheticReviewFixtureDrafts").asInt() + " |\n"
                 + "| Placeholder TS | " + summary.path("placeholderScenarios").asInt() + " |\n"
                 + "| Placeholder TC | " + summary.path("placeholderTestCases").asInt() + " |\n"
                 + "| Placeholder TD | " + summary.path("placeholderTestData").asInt() + " |\n"

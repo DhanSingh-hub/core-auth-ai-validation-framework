@@ -41,7 +41,7 @@ public final class GenerateAppendixGTransactionTypeChains {
             requirement.put("title", "Appendix G transaction type " + code + " is recognized as " + entry.scope() + ".");
             requirement.put("code", code);
             requirement.put("scope", entry.scope().name());
-            requirement.put("status", "COVERED");
+            requirement.put("status", "REVIEW_REQUIRED");
             requirement.put("assertionScope", "SOURCE_CODE_CLASSIFICATION_ONLY");
             requirement.put("smeApproved", false);
             requirement.putArray("sourceAnchors").add(anchor.deepCopy());
@@ -53,7 +53,7 @@ public final class GenerateAppendixGTransactionTypeChains {
         ObjectNode invalidBr = ((ArrayNode) pack.path("businessRequirements")).addObject();
         invalidBr.put("id", "BR-APPG-UNKNOWN-OR-MALFORMED");
         invalidBr.put("title", "Unknown or malformed values are not classified as valid Appendix G transaction types.");
-        invalidBr.put("status", "COVERED");
+        invalidBr.put("status", "REVIEW_REQUIRED");
         invalidBr.put("assertionScope", "CODE_RECOGNITION_ONLY");
         invalidBr.put("smeApproved", false);
         invalidBr.putArray("sourceAnchors").add(unknownAnchor.deepCopy());
@@ -83,10 +83,10 @@ public final class GenerateAppendixGTransactionTypeChains {
         String tcId = "TC-APPG-" + suffix;
         String tdId = "TD-APPG-" + suffix;
         ObjectNode ts = ((ArrayNode) pack.path("testScenarios")).addObject();
-        ts.put("id", tsId).put("status", "COVERED");
+        ts.put("id", tsId).put("status", "REVIEW_REQUIRED");
         ts.putArray("requirementIds").add(brId);
         ObjectNode testCase = ((ArrayNode) pack.path("testCases")).addObject();
-        testCase.put("id", tcId).put("expectedOutcome", expected.path("outcome").asText()).put("status", "COVERED");
+        testCase.put("id", tcId).put("expectedOutcome", expected.path("outcome").asText()).put("status", "REVIEW_REQUIRED");
         testCase.putArray("scenarioIds").add(tsId);
         testCase.putArray("testDataIds").add(tdId);
         ObjectNode data = ((ArrayNode) pack.path("testData")).addObject();

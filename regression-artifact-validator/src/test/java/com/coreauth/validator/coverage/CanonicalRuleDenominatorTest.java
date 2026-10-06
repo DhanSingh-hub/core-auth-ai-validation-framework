@@ -26,8 +26,12 @@ class CanonicalRuleDenominatorTest {
             .map(requirement -> requirement.path("id").asText())
             .filter(id -> id.startsWith("BR-RULE-"))
             .collect(Collectors.toSet());
+        List<String> allRequirementIds = StreamSupport.stream(packageRoot.path("businessRequirements").spliterator(), false)
+            .map(requirement -> requirement.path("id").asText())
+            .toList();
         assertThat(packageRoot.path("summary").path("independentRuleDenominator").asInt()).isEqualTo(ruleCount);
         assertThat(ruleIds).hasSize(ruleCount);
+        assertThat(allRequirementIds).doesNotHaveDuplicates();
         assertThat(packageRoot.path("summary").path("executionReady").asBoolean()).isFalse();
     }
 

@@ -8,7 +8,7 @@ This report verifies whether each limitation has a review artifact and an explic
 |element-family-segment-omissions|OMISSION_CLASSIFICATION_COMPLETE_NOT_PROHIBITION_PROOF|12893|285|12608|
 |element-118-context|CONTEXT_MATRIX_COMPLETE_SEMANTIC_REVIEW_REQUIRED|3|3|3|
 |br-sme-approval|AUTHORED_LINKAGE_COMPLETE_SME_APPROVAL_PENDING|601|601|601|
-|dependency-absence-review|CANDIDATE_MATRIX_COMPLETE_ENFORCEMENT_BLOCKED|235|0|235|
+|dependency-absence-review|CANDIDATE_MATRIX_COMPLETE_ENFORCEMENT_BLOCKED|236|0|236|
 |br-ts-tc-td-execution|STRUCTURAL_PLACEHOLDER_CHAINS_COMPLETE_EXECUTABLE_COVERAGE_MISSING|539|0|539|
 
 - **transaction-type-applicability**: Every Element x Appendix-G transaction-code pair is represented, but only Element 78 has source-defined transaction-code domain semantics. Artifact: `atl105-element-transaction-applicability.json`.

@@ -135,9 +135,11 @@ public final class CommunicationRegisterValidator {
                     continue;
                 }
                 linkedFromCatalogs.add(registerId);
-                if (!"SME_QUERY".equals(text(item, "channel", ""))
-                        || !segment.equals(item.path("segments").path(0).asText())
-                        || !text(provisional, "id", "").equals(item.path("links").path("catalogItem").asText())) {
+                String provisionalId = text(provisional, "id", "");
+                boolean localLink = segment.equals(item.path("segments").path(0).asText())
+                    && provisionalId.equals(item.path("links").path("catalogItem").asText());
+                boolean declaredCrossSegmentLink = hasRelatedCatalogLink(item, segment, provisional);
+                if (!"SME_QUERY".equals(text(item, "channel", "")) || (!localLink && !declaredCrossSegmentLink)) {
                     result.addError(SOURCE, where + " links to " + registerId + ", which is not the SME query for that segment and catalog item");
                 }
                 if (!text(provisional, "status", "").equals(text(item, "status", ""))) {
@@ -155,6 +157,20 @@ public final class CommunicationRegisterValidator {
                         + " but no catalog links back to it");
             }
         });
+    }
+
+    private static boolean hasRelatedCatalogLink(JsonNode item, String segment, JsonNode provisional) {
+        JsonNode links = item.path("links").path("relatedCatalogItems");
+        if (!links.isArray()) return false;
+        String provisionalId = text(provisional, "id", "");
+        Set<String> impacts = new HashSet<>();
+        provisional.path("impacts").forEach(impact -> impacts.add(impact.asText()));
+        for (JsonNode link : links) {
+            if (segment.equals(text(link, "segment", ""))
+                    && provisionalId.equals(text(link, "catalogItem", ""))
+                    && impacts.contains(text(link, "ruleId", ""))) return true;
+        }
+        return false;
     }
 
     static String text(JsonNode node, String field, String fallback) {

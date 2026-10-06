@@ -52,9 +52,12 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                     excludedFiles.add(relative(inputRoot, file) + " [invalid JSON]");
                     continue;
                 }
+                String relative = relative(inputRoot, file);
+                if (isAppendixCoveragePackage(relative, root)) {
+                    root = AppendixCoveragePackageNormalizer.normalize(root);
+                }
                 if (isStandaloneTestData(root)) {
                     String segment = standaloneSegment(root, file);
-                    String relative = relative(inputRoot, file);
                     sourceFilesBySegment.computeIfAbsent(segment, ignored -> new LinkedHashSet<>()).add(relative);
                     int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[5]);
                     addStandaloneTestData(root, scenarios, testCases, testData, counts);
@@ -65,7 +68,6 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                     continue;
                 }
                 String segment = segment(file.getFileName().toString());
-                String relative = relative(inputRoot, file);
                 sourceFilesBySegment.computeIfAbsent(segment, ignored -> new LinkedHashSet<>()).add(relative);
                 int[] counts = countsBySegment.computeIfAbsent(segment, ignored -> new int[5]);
                 merge(root.path("businessRequirements"), requirements, requirementSources, relative, counts, 0);
@@ -75,6 +77,10 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                     unlinkedTestDataCandidates, relative, counts);
             }
         }
+
+        resolveCandidateTestCaseLinks(unlinkedTestDataCandidates, scenarios, testCases, mapper);
+        int syntheticReviewFixtureDrafts = addSyntheticReviewFixtureDrafts(
+            unlinkedTestDataCandidates, requirements, testData, dataSources, mapper);
 
         ObjectNode output = mapper.createObjectNode();
         ObjectNode manifest = output.putObject("manifest");
@@ -115,6 +121,10 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
         summary.put("segmentsWithCanonicalEvidence", sourceFilesBySegment.size());
         summary.put("excludedFiles", excludedFiles.size());
         summary.put("unlinkedTestDataCandidates", unlinkedTestDataCandidates.size());
+        summary.put("unlinkedCandidatesWithResolvedTestCasePath", unlinkedTestDataCandidates.values().stream()
+            .filter(candidate -> "TC_PATH_RESOLVED_FIXTURE_REQUIRED".equals(candidate.path("candidateResolution").asText()))
+            .count());
+        summary.put("syntheticReviewFixtureDrafts", syntheticReviewFixtureDrafts);
         summary.put("standaloneTestDataNormalized", countStandaloneTestData(testData));
         summary.put("executionReady", false);
         summary.put("reason", "Aggregate contains independent Test Solution evidence only; excluded partial packages and missing links remain REVIEW_REQUIRED.");
@@ -131,6 +141,78 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                 && root.path("testScenarios").isArray()
                 && root.path("testCases").isArray()
                 && root.path("testData").isArray();
+    }
+
+    private static boolean isAppendixCoveragePackage(String relativePath, JsonNode root) {
+        return relativePath.replace('\\', '/').matches("appendices/appendix-[orsty]-segment-100-coverage\\.json")
+                && root.path("appendix").isTextual();
+    }
+
+    static void resolveCandidateTestCaseLinks(Map<String, JsonNode> candidates,
+                                              Map<String, JsonNode> scenarios,
+                                              Map<String, JsonNode> testCases,
+                                              ObjectMapper mapper) {
+        for (Map.Entry<String, JsonNode> entry : candidates.entrySet()) {
+            ObjectNode candidate = ((ObjectNode) entry.getValue()).deepCopy();
+            JsonNode requirementHint = candidate.path("sourceArtifact").path("coversBr");
+            String requirementId = requirementHint.isTextual() ? requirementHint.asText() : "";
+            Set<String> scenarioIds = new LinkedHashSet<>();
+            if (!requirementId.isBlank()) {
+                for (JsonNode scenario : scenarios.values()) {
+                    for (JsonNode linkedRequirement : scenario.path("requirementIds")) {
+                        if (requirementId.equals(linkedRequirement.asText())) {
+                            scenarioIds.add(scenario.path("id").asText());
+                        }
+                    }
+                }
+            }
+            Set<String> testCaseIds = new LinkedHashSet<>();
+            for (JsonNode testCase : testCases.values()) {
+                for (JsonNode scenarioId : testCase.path("scenarioIds")) {
+                    if (scenarioIds.contains(scenarioId.asText())) {
+                        testCaseIds.add(testCase.path("id").asText());
+                    }
+                }
+            }
+            candidate.set("candidateTestCaseIds", mapper.valueToTree(testCaseIds));
+            if (requirementId.isBlank()) {
+                candidate.put("candidateResolution", "NO_BUSINESS_REQUIREMENT_HINT");
+            } else if (testCaseIds.isEmpty()) {
+                candidate.put("candidateResolution", "NO_CANONICAL_TEST_CASE_PATH");
+            } else {
+                candidate.put("candidateResolution", "TC_PATH_RESOLVED_FIXTURE_REQUIRED");
+            }
+            entry.setValue(candidate);
+        }
+    }
+
+    private static int addSyntheticReviewFixtureDrafts(Map<String, JsonNode> candidates,
+                                                       Map<String, JsonNode> requirements,
+                                                       Map<String, JsonNode> testData,
+                                                       Map<String, String> dataSources,
+                                                       ObjectMapper mapper) throws Exception {
+        int generated = 0;
+        for (Map.Entry<String, JsonNode> entry : candidates.entrySet()) {
+            JsonNode candidate = entry.getValue();
+            JsonNode requirementHint = candidate.path("sourceArtifact").path("coversBr");
+            String requirementId = requirementHint.isTextual() ? requirementHint.asText() : "";
+            JsonNode requirement = requirements.get(requirementId);
+            if (requirement == null) continue;
+            ObjectNode fixture = AppendixSyntheticFixtureDrafts.create(candidate, requirement, mapper);
+            if (fixture == null) continue;
+            String fixtureId = fixture.path("id").asText();
+            JsonNode prior = testData.putIfAbsent(fixtureId, fixture);
+            if (prior != null && !prior.equals(fixture)) {
+                throw new IllegalStateException("Conflicting generated appendix fixture " + fixtureId);
+            }
+            dataSources.putIfAbsent(fixtureId, entry.getKey() + " [synthetic review draft]");
+            ObjectNode updatedCandidate = ((ObjectNode) candidate).deepCopy();
+            updatedCandidate.put("fixtureDraftCreated", true);
+            updatedCandidate.put("fixtureDraftId", fixtureId);
+            entry.setValue(updatedCandidate);
+            generated++;
+        }
+        return generated;
     }
 
     private static boolean isStandaloneTestData(JsonNode root) {
@@ -271,7 +353,11 @@ public final class GenerateAllTestSolutionBrTsTcTdPackage {
                 .append("| BR | ").append(summary.path("businessRequirements").asInt()).append(" |\n")
                 .append("| TS | ").append(summary.path("testScenarios").asInt()).append(" |\n")
                 .append("| TC | ").append(summary.path("testCases").asInt()).append(" |\n")
-                .append("| TD | ").append(summary.path("testData").asInt()).append(" |\n\n")
+                .append("| TD | ").append(summary.path("testData").asInt()).append(" |\n")
+                .append("| Unlinked candidates with resolved TC path | ")
+                .append(summary.path("unlinkedCandidatesWithResolvedTestCasePath").asInt()).append(" |\n")
+                .append("| Synthetic review fixture drafts | ")
+                .append(summary.path("syntheticReviewFixtureDrafts").asInt()).append(" |\n\n")
                 .append("## Segment evidence\n\n| Segment | BR | TS | TC | Linked TD | Unlinked TD candidates | Source files |\n|---|---:|---:|---:|---:|---:|---:|\n");
         for (Map.Entry<String, Set<String>> entry : filesBySegment.entrySet()) {
             int[] counts = countsBySegment.get(entry.getKey());

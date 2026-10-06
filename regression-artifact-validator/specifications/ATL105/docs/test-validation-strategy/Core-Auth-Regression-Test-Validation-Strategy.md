@@ -564,11 +564,13 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 
 | ID | Risk/Issue | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- |
-| R001 | AI JSON format changes without versioned schema | Intake and traceability failure | Require manifest, schema version, and approved adapters | AI Solution/Test |
+| R001 | AI JSON/workbook format changes without a declared contract version, or a supported adapter drops/misreads valid content | Valid AI artifacts are rejected or become false negatives before semantic comparison; traceability and coverage are understated | Require a run manifest and versioned schema; preserve raw input; select only an explicit adapter; reconcile input/output counts and links; unknown formats become `ADAPTER_UNSUPPORTED` / `NOT_ASSESSED` with no coverage credit | AI Solution/Test |
 | R002 | Specification rules are incomplete or ambiguous | False coverage confidence | Independent rule catalog and manual-review gate | TBA/SME |
 | R003 | Sensitive or production-like data enters repository | Security/compliance exposure | Synthetic/masked-data gate | AI Solution/Test |
 | R004 | ATL105 segment rules remain unmapped | Incomplete ATL105 certification | Segment-by-segment specification-pack roadmap | Test/SME |
-| R005 | Human approval decisions are not recorded | Un-auditable release | Versioned review and sign-off report | Fiserv Business/Development |
+| R005 | SME/TBA reviewer is unavailable or decisions are not recorded | Semantic defects or ambiguous interpretations may be mistaken for approved behavior; release decision is unauditable | Keep decisions `PENDING` / `REVIEW_REQUIRED`; automate evidence preparation and deterministic checks only; use a formally delegated reviewer or record explicit business risk acceptance; do not certify on silence | Test/Fiserv Business/Development |
+| R006 | Test Solution baseline omits a source-supported requirement found in AI output | A valid AI BR may be mislabeled AI-only, or coverage may use an incomplete denominator | Record a Test Solution omission candidate; independently re-derive from ATL105 without copying AI wording; keep coverage `NOT_CALCULABLE` for an incomplete eligible baseline | Test/TBA/SME |
+| R007 | Validator logic or rule catalog has a false-pass defect | Invalid AI behavior may pass the checks and appear covered | Bind validators to source-anchored rules; test positive, negative, boundary, and applicability cases; mutation-test wrong values, omitted checks, and context changes; report validator effectiveness separately from AI outcome; require independent review for unresolved semantics | Test/TBA/SME |
 
 ## Appendix A: ATL105 Demonstration
 

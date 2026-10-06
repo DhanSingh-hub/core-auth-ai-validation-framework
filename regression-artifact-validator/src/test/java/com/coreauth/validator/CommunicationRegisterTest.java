@@ -87,6 +87,21 @@ class CommunicationRegisterTest {
         assertThat(result.errors()).anyMatch(e -> e.reason().contains("must not repeat the question"));
     }
 
+    @Test
+    void crossSegmentCatalogDependencyRequiresExplicitRelatedCatalogLink() throws IOException {
+        ObjectNode register = (ObjectNode) register();
+        for (JsonNode value : register.path("items")) {
+            if ("SEGDL1-SME-003".equals(value.path("id").asText())) {
+                ((ObjectNode) value.path("links")).remove("relatedCatalogItems");
+            }
+        }
+
+        ValidationResult result = new CommunicationRegisterValidator().validate(
+                register, GenerateCommunicationRegisterViews.KNOWLEDGE_BASE);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("segment-DL6-rule-catalog.json P-06"));
+    }
+
     private static JsonNode register() throws IOException {
         return MAPPER.readTree(GenerateCommunicationRegisterViews.REGISTER.toFile());
     }

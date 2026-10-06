@@ -18,10 +18,21 @@ public final class GenerateSmeDecisionSummary {
         ObjectMapper mapper = new ObjectMapper();
         Path reviewRoot = Atl105Paths.testOutput().resolve("ai-solution-independent-review");
         JsonNode register = mapper.readTree(reviewRoot.resolve("ai-only-sme-decision-register.json").toFile());
+        ObjectNode summary = summarize(register, mapper);
+        Path json = reviewRoot.resolve("live-sme-decision-summary.json");
+        mapper.writerWithDefaultPrettyPrinter().writeValue(json.toFile(), summary);
+        Files.writeString(reviewRoot.resolve("live-sme-decision-summary.md"), markdown(summary,
+            mapper.convertValue(summary.path("byDecision"), new com.fasterxml.jackson.core.type.TypeReference<Map<String, Integer>>() { })));
+        System.out.printf("subjects=%d events=%d pending=%d%n", summary.path("effectiveSubjectCount").asInt(),
+            summary.path("decisionHistoryEventCount").asInt(), summary.path("byDecision").path("PENDING").asInt());
+        }
+
+        static ObjectNode summarize(JsonNode register, ObjectMapper mapper) {
         Map<String, Integer> byDecision = new TreeMap<>();
         Map<String, Integer> bySegment = new TreeMap<>();
         int segment111Pending = 0;
-        for (JsonNode decision : register.path("decisions")) {
+        Map<String, JsonNode> effective = SmeDecisionHistory.latestBySubject(register);
+        for (JsonNode decision : effective.values()) {
             String status = decision.path("decision").asText("UNKNOWN");
             String segment = decision.path("segment").asText("UNKNOWN");
             byDecision.merge(status, 1, Integer::sum);
@@ -31,13 +42,12 @@ public final class GenerateSmeDecisionSummary {
         ObjectNode summary = mapper.createObjectNode();
         summary.put("artifact", "live-sme-decision-summary");
         summary.put("segment111Pending", segment111Pending);
-        summary.put("totalDecisions", register.path("decisions").size());
+        summary.put("decisionHistoryEventCount", register.path("decisions").size());
+        summary.put("effectiveSubjectCount", effective.size());
+        summary.put("totalDecisions", effective.size());
         summary.set("byDecision", mapper.valueToTree(byDecision));
         summary.set("bySegment", mapper.valueToTree(bySegment));
-        Path json = reviewRoot.resolve("live-sme-decision-summary.json");
-        mapper.writerWithDefaultPrettyPrinter().writeValue(json.toFile(), summary);
-        Files.writeString(reviewRoot.resolve("live-sme-decision-summary.md"), markdown(summary, byDecision));
-        System.out.printf("segment111Pending=%d totalDecisions=%d%n", segment111Pending, register.path("decisions").size());
+        return summary;
     }
 
     private static String markdown(ObjectNode summary, Map<String, Integer> byDecision) {

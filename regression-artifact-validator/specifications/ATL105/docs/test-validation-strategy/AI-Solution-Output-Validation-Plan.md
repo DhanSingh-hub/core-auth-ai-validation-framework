@@ -76,6 +76,16 @@ AI stage output
   -> coverage impact
 ```
 
+### Adapter and evaluator safeguards
+
+- Treat content variation between runs as normal; treat schema/format changes as contract changes. Every delivery must declare its producer, schema/contract version, generator version, specification version, and run identity.
+- Select only an explicit versioned adapter. Preserve the original files and record adapter version, hashes, row counts, unknown fields, and normalization dispositions. If no adapter supports the declared format, stop before matching and report `ADAPTER_UNSUPPORTED` / `NOT_ASSESSED`; do not guess field mappings or report zero coverage.
+- Verify normalization losslessly for supported fields: source-to-canonical counts, unique IDs, status/flag distributions, and every declared BR/TS/TC/TD link must reconcile. Workbook exports from one run are provenance-linked views, not extra records.
+- Keep adapter outcome, structural validity, semantic disposition, and full-chain/execution status separate. `NOT_ASSESSED` from parser/adapter failure is not `MISSING`, `AI_ONLY`, or proof of an AI defect.
+- Guard against validator false passes with source-anchored expected behavior, positive/negative/boundary/context tests, mutation tests for missing or incorrect checks, and a risk-based independent review sample. A green test suite proves only tested behavior; it does not certify the source interpretation.
+- If no SME/TBA reviewer is available, retain semantic decisions as `PENDING` / `REVIEW_REQUIRED`. Automation may prepare evidence and verify deterministic source facts, but may not create a reviewed event, confirm semantic equivalence, or certify coverage. Use a formally delegated approver or record explicit business risk acceptance; do not infer approval from silence.
+- If an AI BR appears source-supported but is absent from the Test Solution baseline, record a baseline-omission candidate and re-derive the rule independently from ATL105. Do not copy the AI BR into the Test Solution or classify it as `AI_ONLY` until the eligible baseline is complete and comparison is performed.
+
 An AI output can be syntactically valid and still be invalid because:
 
 - The source page/rule is wrong.
@@ -211,6 +221,9 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 **Validate:**
 
 - Every canonical data item links to a test case via `testData[].testCaseIds`. `coversBr` alone is not a TC link; preserve BR-only data as an unlinked review candidate until a real TC is authored and linked.
+- Appendix O/R/S/T/Y source packages may be normalized from `sourceAnchor`, `covers`, and `scenarioId` into canonical anchors and links. Preserve producer status as metadata; normalized artifacts remain `REVIEW_REQUIRED` until independently validated.
+- A BR-only TD candidate may record a deterministic BR -> TS -> TC path in provenance; this is not a canonical TD link and does not remove the payload/fixture requirement.
+- For Appendix O/R/S/T/Y, generate synthetic payload drafts only for source records claiming synthetic fixtures are sufficient. Drafts use `expectedValidation=REVIEW` and `readiness=REVIEW_REQUIRED`; they are structural inputs, not validated outcomes or approvals. External-fixture and no-BR records remain provenance-only.
 - Every canonical test-data item declares readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`; missing or unknown readiness is normalized to `REVIEW_REQUIRED`, never promoted. Generated chain placeholders are always review-required. Readiness describes fixture usability, while `expectedValidation` describes whether the test input should pass or fail; do not conflate them.
 - Payload matches the expected schema and message category.
 - Required fields and segments are present.

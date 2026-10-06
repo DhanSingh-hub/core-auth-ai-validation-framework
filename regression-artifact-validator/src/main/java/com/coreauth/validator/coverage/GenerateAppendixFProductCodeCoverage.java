@@ -153,8 +153,7 @@ public final class GenerateAppendixFProductCodeCoverage {
 
     private static void addRequirement(ObjectNode pack, String id, String title, ObjectNode anchor, String scope) {
         ObjectNode br = ((ArrayNode) pack.path("businessRequirements")).addObject();
-        String status = id.equals("BR-APPF-ROW-895") || id.equals("BR-APPF-ROW-896") ? "REVIEW_REQUIRED" : "COVERED";
-        br.put("id", id).put("title", title).put("status", status).put("assertionScope", scope).put("smeApproved", false);
+        br.put("id", id).put("title", title).put("status", "REVIEW_REQUIRED").put("assertionScope", scope).put("smeApproved", false);
         br.putArray("sourceAnchors").add(anchor.deepCopy());
     }
 
@@ -162,7 +161,7 @@ public final class GenerateAppendixFProductCodeCoverage {
         String tsId = "TS-APPF-" + suffix;
         String tcId = "TC-APPF-" + suffix;
         String tdId = "TD-APPF-" + suffix;
-        String status = "REVIEW_REQUIRED".equals(expected.path("outcome").asText()) ? "REVIEW_REQUIRED" : "COVERED";
+        String status = "REVIEW_REQUIRED";
         ObjectNode ts = ((ArrayNode) pack.path("testScenarios")).addObject();
         ts.put("id", tsId).put("status", status);
         ts.putArray("requirementIds").add(br);

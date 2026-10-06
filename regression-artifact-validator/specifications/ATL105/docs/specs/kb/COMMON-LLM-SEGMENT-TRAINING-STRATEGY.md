@@ -75,9 +75,9 @@ The curated `chapter-13-rule-evidence.json` register and `GenerateAtl105Chapter1
 
 ## SME Decision Persistence
 
-All SME/TBA outcomes for AI-only BRs, draft Test Solution rules, crosswalks, and traceability chains must be recorded in the append-only `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json` before they affect coverage or training status. Each decision records the subject, segment, reviewer, date, evidence, rationale, and decision status. `PENDING` is allowed without review evidence and never counts toward coverage. `CONFIRMED_MATCH` and `NEW_RULE` require canonical source-anchor evidence plus reviewer/date; heuristic similarity or AI confidence is never sufficient. Decisions must not modify immutable AI input files.
+Route each SME outcome to its subject register: AI-to-Test crosswalk decisions go in `test-output/test-solution-independent-review/semantic-br-decision-register.json`; AI-only BR triage goes in `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json`. Keep both registers append-only. Resolve an existing pending subject by appending a revision with an explicit `supersedesDecisionId`; never edit or delete the pending event. Decisions must not modify immutable AI input files.
 
-The register is validated by `ValidateSmeDecisionRegister`; a decision register is invalid if decision IDs are duplicated, required evidence is absent, a promoted decision has no reviewer/date, or a promoted `CONFIRMED_MATCH`/`NEW_RULE` lacks a complete canonical source anchor.
+Use the [SME Decision and Promotion Workflow](../../test-validation-strategy/SME-DECISION-AND-PROMOTION-WORKFLOW.md) for the structured decision input and promotion gates. `ValidateSmeDecisionRegister` checks unique event IDs, linear revisions, reviewer evidence, and outcome-specific requirements. `NEW_RULE` additionally requires independently authored rule text, an explicit independence attestation, and a segment-matching ATL105 source anchor. Promotion uses only each subject's latest effective decision; it creates a BR candidate for chain derivation, not execution-ready coverage. Heuristic similarity, AI confidence, or a generated chain never substitutes for SME/TBA approval.
 
 ## Communication Register
 
@@ -161,10 +161,19 @@ The LLM is trained to produce candidate artifacts. The Test Solution independent
 
 For canonical chain counting, `testData[].testCaseIds` is the required TC -> TD edge. `coversBr` may be preserved as a BR-level candidate hint, but it does not identify which TC the data exercises and must not enter canonical `testData[]` coverage. Preserve unlinked records with provenance outside the canonical chain until an author supplies a real TC link. Missing or unknown readiness is `REVIEW_REQUIRED`; a producer `EXECUTABLE` label does not establish a linked or validated chain.
 
+Appendix O/R/S/T/Y packages can be adapted from `sourceAnchor`, `covers`, and `scenarioId` into canonical anchor and link fields. Keep the producer's original status as metadata and set the normalized status to `REVIEW_REQUIRED`; automation must not treat `COVERED` or `PARTIALLY_COVERED` as approval.
+
+A BR-only TD candidate may carry a provenance-only BR -> TS -> TC path when those links are explicit in the normalized source package. This does not become a `testData[].testCaseIds` edge or canonical TD until a payload and expected result are authored.
+
+Synthetic appendix fixture drafts may be generated from source-defined structural examples without waiting for an approval round, but they remain `expectedValidation=REVIEW` and `readiness=REVIEW_REQUIRED` until the applicable behavior is independently validated. Do not synthesize production/network cryptograms or configuration-dependent key fixtures.
+
 ## Common LLM Training Rules
 
 The LLM shall:
 
+- Emit the declared producer/schema/contract version, generator version, specification version, and run ID. Do not silently change JSON/workbook shape between runs; publish a versioned schema/adapter contract for any breaking format change.
+- Preserve stable local IDs within a run, source fields, approval claims, flags, and links. Never present an automated batch as SME approval; producer approval/verdict fields remain claims for independent validation.
+- Include all generated records and declare counts and link totals from the serialized output. If a record cannot be represented in the supported contract, emit an explicit unsupported/review disposition rather than silently omitting or reshaping it.
 - Use the exact specification version and source page/section for every rule.
 - Preserve segment identity, message family, request/response role, and applicability.
 - Distinguish required, optional, conditional, prohibited, and unknown behavior.
@@ -175,6 +184,8 @@ The LLM shall:
 - Preserve lifecycle relationships between original and follow-up requests.
 - Avoid treating AI confidence, generated counts, or AI coverage as approval.
 - Mark unsupported or ambiguous behavior for review instead of inventing values.
+
+The Test Solution intake must distinguish unsupported format, normalization failure, structural failure, semantic mismatch, baseline omission, and incomplete BR -> TS -> TC -> TD chain. Do not collapse these states into `MISSING`, `AI_ONLY`, or a zero-percent coverage result. A passing parser or validator only proves the checks it actually performs; source semantics and required approval gates remain separate.
 
 ## Canonical Source Anchors
 
