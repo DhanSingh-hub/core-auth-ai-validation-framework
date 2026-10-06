@@ -18,7 +18,7 @@ import java.nio.file.Path;
  * {@link GenerateAppendixGTransactionTypeChains} and {@code AppendixFProductCodeOracle} evidence:
  * source-code recognition only, not transaction eligibility, network-country certification, or the
  * Element 76 implied-decimal / Appendix M fixed-840 HIP subelement rules documented separately in
- * {@code docs/specs/kb/segment-100/appendix-l-currency-code-training.md}.
+ * {@code docs/specs/kb/appendix-l/README.md}.
  */
 public final class GenerateAppendixLCurrencyCodeChains {
     public static final Path OUTPUT = Path.of("specifications/ATL105/test-output/test-json/appendix-l-currency-code-chain-package.json");

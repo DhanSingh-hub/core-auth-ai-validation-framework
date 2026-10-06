@@ -26,7 +26,7 @@ import java.util.Set;
  * country and card network, neither of which is this element), does not certify the implied-decimal
  * relationship described for Element 76 Product Amount, and does not certify Appendix M's
  * fixed-840-only Currency Code subelement used by the HIP purchase/return amount. See
- * {@code docs/specs/kb/segment-100/appendix-l-currency-code-training.md} for the full usage map.
+ * {@code docs/specs/kb/appendix-l/README.md} for the full usage map.
  *
  * <p>The simple {@link AppendixLCurrencyCodes#isValid(String)} allowlist used by
  * {@link Segment103PayloadValidator} for the Element 153 WIC Discount Amount currency subfield is

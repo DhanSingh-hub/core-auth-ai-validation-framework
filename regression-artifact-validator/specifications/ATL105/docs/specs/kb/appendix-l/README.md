@@ -126,4 +126,4 @@ Keep these questions open for the next SME/Test Team review. Do not promote Appe
 - [Simple WIC currency allowlist used by Segment103PayloadValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/AppendixLCurrencyCodes.java)
 - [Source generator](../../../../../../src/main/java/com/coreauth/validator/coverage/GenerateAppendixLCurrencyCodeChains.java)
 - [Independent catalog and chain tests](../../../../../../src/test/java/com/coreauth/validator/AppendixLCurrencyCodeCatalogTest.java)
-- [Appendix family gap closure register](appendix-family-gap-closure-register.md)
+- [Appendix family gap closure register](../segment-100/appendix-family-gap-closure-register.md)
