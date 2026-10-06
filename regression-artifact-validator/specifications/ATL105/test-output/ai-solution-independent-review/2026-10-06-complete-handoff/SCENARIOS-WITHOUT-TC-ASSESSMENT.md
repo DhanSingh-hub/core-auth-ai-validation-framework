@@ -154,6 +154,8 @@ Closure requires every currently missing scenario to receive a hash-bound dispos
 
 ## Row-Level Evidence and Reproduction
 
+The HTML now includes a Coverage tab, mirrored as a PDF section, with overall BR/TS-to-TC linkage, physical-output presence, segment-attributed linkage, transaction-target labels, response-code declarations and scenario-type inventory. [Coverage evidence](coverage-view-assessment.json) binds the input hashes and all denominators. These are producer-internal linkage and inventory measures, not independently validated rule or execution coverage. Segment populations overlap; unknown targets and unassigned segments remain included. Code `1` is declared by 2,268 scenarios while 10,411 have no expected-code declaration; family-specific response coverage remains `NOT_ASSESSED`.
+
 - [Interactive HTML assessment](AI-ARTIFACT-FILTER-VIEW.html): searchable/paginated no-TC register, category/verdict/source filters, selected CSV export, detailed evidence, failed writes and aggregate quality signals. Filtering never changes acceptance status or the original denominator.
 - [PDF snapshot](AI-ARTIFACT-FILTER-VIEW.pdf): summary and full 3,732-scenario / 27-failed-write appendices. It is an exhaustive static snapshot, not the current HTML filter selection.
 - [Exhaustive CSV register](scenario-no-tc-register.csv): all 3,732 IDs, names/types, category, BR links, source fields, producer verdict/flags, skip diagnostics, response pairs and recommended action.

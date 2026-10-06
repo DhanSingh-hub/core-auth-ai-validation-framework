@@ -61,6 +61,8 @@ semantic equivalence, approved fixtures, AI coverage, or execution certification
 
 ## Validation-Control Coverage Method
 
+For `AIV-011` and `AIV-013`, the complete-handoff Coverage presentation is implemented by `scripts/generate-ai-artifact-filter-view.py`. Its streaming BR/TS/TC calculations assert agreement with the independently recounted handoff totals. `scripts/validate-ai-artifact-filter-view.cjs` checks overall percentages, segment N/A/unassigned rows, transaction-group reconciliation, response declarations, scenario types and unavailable semantic status. The JSON evidence binds AI input, response-matrix and catalog hashes. These presentation checks do not certify semantic coverage; the HTML/PDF retain `NOT_CALCULABLE` / `NOT_ASSESSED` and non-additive segment warnings.
+
 For `AIV-010` and `AIV-013`, assessment readiness uses `CanonicalTraceabilityValidator.validateForExecution`, not producer-selectable structural mode. The regression evidence in `AiCoverageAssessmentServiceTest` covers non-strict review-required scenarios, absent/draft/blocked/review states at BR/TS/TC levels, non-executable TDs, missing request/response envelopes, future dates and failed/absent payload validators. `Run2PreSmeEvidenceWriterTest` rejects abbreviated strategy maps. Structural coverage and readiness remain separate; these checks do not verify an approval signature or grant SME certification.
 
 Control coverage answers: **does the Test Solution have an implemented method and regression evidence for each applicable AIV control?** It does not measure how many ATL105 rules the AI covered.

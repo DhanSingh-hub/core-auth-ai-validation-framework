@@ -41,6 +41,8 @@ The Test Solution remains independent from the AI Solution. AI artifacts may be 
 
 The Test Solution owns matching and coverage decisions. AI-reported counts, confidence, approval labels, and coverage percentages are inputs under test, not acceptance evidence. Only an evidence-supported business-equivalent match may be `CONFIRMED`; heuristic, partial, conflicting, or unresolved matches remain `REVIEW_REQUIRED`.
 
+Coverage dashboards must distinguish producer-internal links, physical payload presence and expected-code declarations from confirmed rule coverage. Group segment views by declared attribution without adding overlapping counts into a run total. Keep exact transaction-target labels separate until a source-backed alias mapping exists. A response-code declaration cannot establish its message-family meaning or validated response behavior. Retain unassigned/undeclared rows, explicit denominators, input hashes and unavailable semantic results; never interpret a linked record or a rendered percentage as approval.
+
 An agent or automation may perform Phases 1-4 (Source Inventory through Independent BR Derivation) directly from the ATL105 specification text without human involvement, as long as it reads only the specification and cites exact section/page/line evidence; this does not require human assistance. It may not certify its own output: a rule produced this way is `DRAFT_REVIEW_REQUIRED` until an SME/TBA (or formally delegated business approver) reviews and signs off, per the Required Training Record below. Segment training status must reflect this distinction (`IN_PROGRESS` with a `sme-tba-certification-pending` blocker, not `TRAINED_FOR_INTAKE`).
 
 ## Automatic Update Rule

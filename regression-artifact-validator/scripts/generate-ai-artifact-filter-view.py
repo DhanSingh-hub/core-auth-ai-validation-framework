@@ -23,7 +23,8 @@ def build_coverage(root, run):
     matrix_file = module / "specifications/ATL105/docs/specs/kb/element-83-response-code/coverage/element-83-response-code-br-validation-matrix.json"
     matrix = read(matrix_file)
     catalog_counts = {}
-    for file in (module / "specifications/ATL105/docs/specs/kb").glob("segment-*/coverage/segment-*-rule-catalog.json"):
+    catalog_files = sorted((module / "specifications/ATL105/docs/specs/kb").glob("segment-*/coverage/segment-*-rule-catalog.json"))
+    for file in catalog_files:
         segment = file.name.removeprefix("segment-").removesuffix("-rule-catalog.json")
         catalog_counts[segment.upper()] = len(read(file).get("rules", []))
     def segments(row):
@@ -112,7 +113,7 @@ def build_coverage(root, run):
         {"metric": "Source code values declared as scenario expectations", "numerator": len(set(expected_groups) & baseline_codes), "denominator": len(baseline_codes), "percent": percent(len(set(expected_groups) & baseline_codes), len(baseline_codes)), "meaning": "Unique-code declaration inventory, not family/semantic coverage"},
     ]
     hashes = {}
-    for file in (scenario_file, requirement_file, case_file, matrix_file):
+    for file in (scenario_file, requirement_file, case_file, matrix_file, *catalog_files):
         with file.open("rb") as stream:
             hashes[file.name] = hashlib.file_digest(stream, "sha256").hexdigest()
     result = {"scope": "Producer-internal linkage and declaration inventory; not semantic or execution coverage",
