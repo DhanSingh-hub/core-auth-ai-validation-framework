@@ -334,8 +334,14 @@ for context restrictions and remaining evidence gaps.
 
 ## Appendix L: Valid Currency Codes (Element 20)
 
-Source: `extracted_text.txt` line ~34457-34890. **Partial extraction (sample only)** - reportedly
-100+ currencies total; only ~35 shown below, alphabetical by currency name.
+Source: `extracted_text.txt` lines 34456-34944 (Appendix L-1 through L-9). **Fully transcribed and
+verified**: all 161 source rows (153 distinct three-digit codes) are listed below in source page
+order, cross-checked by [`AppendixLCurrencyCodeCatalogTest`](../../../../src/test/java/com/coreauth/validator/AppendixLCurrencyCodeCatalogTest.java)
+against the extracted specification text. Six codes - `230`, `356`, `578`, `710`, `840`, `978` - are
+listed more than once with a *different* Visa/MC/Both value per country; both/all of their rows are
+kept below rather than collapsed. See [appendix-l-currency-code-training.md](segment-100/appendix-l-currency-code-training.md)
+for the full usage map (Element 20, Element 153, Element 76, Appendix I Table 006/056, Appendix M)
+and network-scope-conflict handling.
 
 | Currency | Country/Territory | ISO Code | Visa/MC Support |
 |----------|--------------------|----------|------------------|
@@ -344,7 +350,7 @@ Source: `extracted_text.txt` line ~34457-34890. **Partial extraction (sample onl
 | Angola Kwanza | Angola | 973 | Both |
 | Argentine Peso | Argentina | 032 | Both |
 | Armenian Dram | Armenia | 051 | Both |
-| Australian Dollar | Australia and associated territories | 036 | Both |
+| Australian Dollar | Australia, Christmas Island, Cocos (Keeling) Islands, Heard and McDonald Islands, Kiribati, Nauru, Norfolk Island, Tuvalu | 036 | Both |
 | Azerbaijanian Manat | Azerbaijan | 944 | Both |
 | Bahamian Dollar | Bahamas | 044 | Both |
 | Belarusian Ruble | Belarus | 933 | Both |
@@ -365,20 +371,149 @@ Source: `extracted_text.txt` line ~34457-34890. **Partial extraction (sample onl
 | Cayman Islands Dollar | Cayman Islands | 136 | Both |
 | Cedi | Ghana | 936 | Both |
 | CFP Franc | French Polynesia, New Caledonia, Wallis and Futuna | 953 | Both |
-| CFA Franc BCEAO | Benin, Burkina Faso, Ivory Coast, Guinea-Bissau, Mali, Niger, Senegal, Togo | 952 | Both |
-| CFA Franc BEAC | Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, Gabon | 950 | Both |
+| CFA Franc BCEAO (footnote 2) | Benin, Burkina Faso, Cote D'Ivoire (Ivory Coast), Guinea-Bissau, Mali, Niger, Senegal, Togo | 952 | Both |
+| CFA Franc BEAC (footnote 3) | Cameroon, Central African Republic, Chad, Congo, Equatorial Guinea, Gabon | 950 | Both |
 | Chilean Peso | Chile | 152 | Both |
 | Chinese People's Bank Dollar | China | 158 | MC |
 | Chinese Yuan Renminbi | China | 156 | Both |
-| Colombian Peso | Colombia | 170 | Both |
+| Colombian Peso | Columbia | 170 | Both |
 | Comoro Franc | Comoros | 174 | Both |
 | Congolese Franc | Democratic Republic of the Congo | 976 | Both |
 | Convertible Mark | Bosnia and Herzegovina | 977 | Both |
 | Cordoba Oro | Nicaragua | 558 | Both |
 | Costa Rican Colon | Costa Rica | 188 | Both |
+| Dalasi | Gambia | 270 | Both |
+| Danish Krone | Denmark, Faroe Islands, Greenland | 208 | Both |
+| Denar | Macedonia | 807 | Both |
+| Djibouti Franc | Djibouti | 262 | Both |
+| Dobra | Sao Tome and Principe | 930 | Both |
+| Dominican Peso | Dominican Republic | 214 | Both |
+| Dong | Vietnam | 704 | Both |
+| East Caribbean Dollar | Anguilla, Antigua and Barbuda, Dominica, Grenada, Montserrat, St. Kitts-Nevis, St. Lucia, St. Vincent and the Grenadines | 951 | Both |
+| Egyptian Pound | Egypt | 818 | Both |
+| El Salvador Colon | El Salvador | 222 | MC |
+| Eritrean Nakfa | Eritrea | 232 | Visa |
+| Ethiopian Birr | Ethiopia | 230 | Both |
+| Ethiopian Birr | Eritrea | 230 | **MC** (network-scope conflict with the row above - see training note) |
+| Euro | Saint Barthelemy, Saint Martin (French part) | 978 | MC |
+| Euro | France, Metropolitan | 978 | **Visa** (network-scope conflict - see training note) |
+| Euro (footnotes: Bulgaria eff. 1 Jan 2026\*\*, Croatia eff. 1 Jan 2023\*) | Aland Islands, Andorra, Austria, Belgium, Bulgaria, Croatia, Cyprus, Estonia, European Union Countries, Finland, France, French Guiana, French Southern Territories, Germany, Greece, Guadeloupe, Holy See (Vatican City State), Ireland, Italy, Kosovo (UNMIK), Latvia, Lithuania, Luxembourg, Malta, Martinique, Mayotte, Monaco, Montenegro, Netherlands, Portugal, Reunion, St. Pierre and Miquelon, San Marino, Slovakia, Slovenia, Spain | 978 | Both |
+| Falkland Islands Pound | Falkland Islands (Malvinas) | 238 | Both |
+| Fiji Dollar | Fiji | 242 | Both |
+| Forint | Hungary | 348 | Both |
+| Gibraltar Pound | Gibraltar | 292 | Both |
+| Gourde | Haiti | 332 | Both |
+| Guarani | Paraguay | 600 | Both |
+| Guilder | Aruba | 533 | Both |
+| Guinea Franc | Guinea | 324 | Both |
+| Guyana Dollar | Guyana | 328 | Both |
+| Hong Kong Dollar | Hong Kong | 344 | Both |
+| Hryvnia | Ukraine | 980 | Both |
+| Iceland Krona | Iceland | 352 | Both |
+| Indian Rupee | Bhutan | 356 | MC |
+| Indian Rupee | India | 356 | **Both** (network-scope conflict with the row above - see training note) |
+| Iraqi Dinar | Iraq | 368 | Both |
+| Jamaican Dollar | Jamaica | 388 | Both |
+| Jordanian Dinar | Jordan | 400 | Both |
+| Kenyan Shilling | Kenya | 404 | Both |
+| Kina | Papua New Guinea | 598 | Both |
+| Kip | Lao People's Democratic Republic | 418 | Both |
+| Koruna | Czech Republic | 203 | Both |
+| Kuwaiti Dinar | Kuwait | 414 | Both |
+| Lari | Georgia | 981 | Both |
+| Lebanese Pound | Lebanon | 422 | Both |
+| Lek | Albania | 008 | Both |
+| Lempira | Honduras | 340 | Both |
+| Leone | Sierra Leone | 925 | Both |
+| Liberian Dollar | Liberia | 430 | Both |
+| Libyan Dinar | Libyan Arab Jamahiriya | 434 | Visa |
+| Lilangeni | Swaziland | 748 | Both |
+| Loti | Lesotho | 426 | Both |
+| Malagasy Ariary | Madagascar | 969 | Both |
+| Malaysian Ringgit | Malaysia | 458 | Both |
+| Malawi Kwacha | Malawi | 454 | Both |
+| Manat | Turkmenistan | 934 | Both |
+| Mauritius Rupee | Mauritius | 480 | Both |
+| Mexican Peso | Mexico | 484 | Both |
+| Moldovan Lau | Moldova, Republic of | 498 | Both |
+| Moroccan Dirham | Morocco, Western Sahara | 504 | Both |
+| Mozambique Metical | Mozambique | 943 | Both |
+| Myanmar Kyat | Myanmar | 104 | Both |
+| Naira | Nigeria | 566 | Both |
+| Namibian Dollar | Namibia | 516 | Both |
+| Nepalese Rupee | Nepal | 524 | Both |
+| Caribbean Guilder | Curacao, Sint Maarten (Dutch Part) | 532 | Both |
+| New Israeli Shekel | Israel | 376 | Both |
+| New Taiwan Dollar | The Republic of China (Taiwan) | 901 | Both |
+| New Zealand Dollar | Cook Islands, New Zealand, Niue, Pitcairn, Tokelau | 554 | Both |
+| Norwegian Krone | Bouvet Island, Norway, Svalbard and Jan Mayen | 578 | Both |
+| Norwegian Krone | Antarctica | 578 | **MC** (network-scope conflict with the row above - see training note) |
+| Nuevo Sol | Peru | 604 | Both |
+| Ouguiya | Mauritania | 929 | Both |
+| Pa'anga | Tonga | 776 | Both |
+| Pakistan Rupee | Pakistan | 586 | Both |
+| Pataca | Macao | 446 | Both |
+| Peso Uruguayo | Uruguay | 858 | Both |
+| Philippine Peso | Philippines | 608 | Both |
+| Pound Sterling | Guernsey, Isle of Man, Jersey, United Kingdom | 826 | Both |
+| Pound Sterling | South Georgia and South Sandwich Islands | 826 | Both (duplicate row, same scope - not a conflict) |
+| Pula | Botswana | 072 | Both |
+| Qatari Rial | Qatar | 634 | Both |
+| Quetzal | Guatemala | 320 | Both |
+| Rand | Lesotho, Namibia | 710 | Visa |
+| Rand | South Africa | 710 | **Both** (network-scope conflict with the row above - see training note) |
+| Rial Omani | Oman | 512 | Both |
+| Riel | Cambodia | 116 | Both |
+| Romanian Leu | Romania | 946 | Both |
+| Rufiyaa | Maldives | 462 | Both |
+| Rupiah | Indonesia | 360 | Both |
+| Russian Ruble | Russian Federation | 643 | Both |
+| Rwanda Franc | Rwanda | 646 | Both |
+| Saudi Riyal | Saudi Arabia | 682 | Both |
+| Serbian Dinar | Serbia | 891 | MC |
+| Serbian Dinar | Serbia, Republic of | 941 | Both |
+| Seychelles Rupee | Seychelles | 690 | Both |
+| Singapore Dollar | Singapore | 702 | Both |
+| Som | Kyrgyzstan | 417 | Both |
+| Solomon Islands Dollar | Solomon Islands | 090 | Both |
+| Somali Shilling | Somalia | 706 | Both |
+| South Sudanese Pound | Republic of South Sudan | 728 | Both |
+| Spanish Peseta (ESA) | Brazil | 996 | MC |
+| Sri Lanka Rupee | Sri Lanka | 144 | Both |
+| St. Helena Pound | St. Helena | 654 | Both |
+| Sudan Pound | Sudan | 938 | Both |
+| Suriname Dollar | Suriname | 968 | Both |
+| Swedish Krona | Sweden | 752 | Both |
+| Swiss Franc | Liechtenstein, Switzerland | 756 | Both |
+| Tajikistan Somoni | Tajikistan | 972 | Both |
+| Taka | Bangladesh | 050 | Both |
+| Tala | Samoa | 882 | Both |
+| Tanzanian Shilling | Tanzania, United Republic of | 834 | Both |
+| Tenge | Kazakhstan | 398 | Both |
+| Trinidad and Tobago Dollar | Trinidad and Tobago | 780 | Both |
+| Tugrik | Mongolia | 496 | Both |
+| Tunisian Dinar | Tunisia | 788 | Both |
+| Turkish Lira | Turkey | 949 | Both |
+| UAE Dirham | United Arab Emirates | 784 | Both |
+| Uganda Shilling | Uganda | 800 | Both |
+| U.S. Dollar | Libyan Arab Jamahiriya, Palestine, Panama | 840 | MC |
+| U.S. Dollar | American Samoa, Bonaire/Sint Eustatius/Saba, British Indian Ocean Territory, Ecuador, El Salvador, Guam, Marshall Islands, Micronesia, Northern Mariana Islands, Palau, Puerto Rico, Timor-Leste, Turks and Caicos Islands, United States, U.S. Minor Outlying Islands, Virgin Islands (British), Virgin Islands (U.S.) | 840 | **Both** (network-scope conflict with the row above - see training note) |
+| Uzbekistan Sum | Uzbekistan | 860 | Both |
+| Vatu | Vanuatu | 548 | Both |
+| Won | Korea, Republic of | 410 | Both |
+| Yemeni Rial | Yemen | 886 | Both |
+| Yen | Japan | 392 | Both |
+| Zambian Kwacha | Zambia | 967 | Both |
+| Zimbabwe Gold | Zimbabwe | 924 | Both |
+| Zloty | Poland | 985 | Both |
 
-Note: default currency if not specified is 840 (USD). Full table (100+ currencies) not yet
-fully transcribed - remaining entries live in the same source line range above.
+Footnotes (source): 2 = CFA Franc BCEAO, responsible authority Banque Centrale des Etats de
+l'Afrique de l'Ouest; 3 = CFA Franc BEAC, responsible authority Banque des Etats de l'Afrique
+Centrale; \*\* Euro became Bulgaria's currency effective 1 January 2026; \* Euro became Croatia's
+currency effective 1 January 2023. Default currency if Element 20 is not specified is `840` (USD),
+and Element 20 is documented as ignored during transaction processing (totals follow the merchant's
+bound currency) - see the training note for the full processing-rule text and every other place
+this code set is reused (Element 153, Element 76, Appendix I Table 006/056, Appendix M).
 
 ---
 
@@ -392,4 +527,4 @@ fully transcribed - remaining entries live in the same source line range above.
 | F | Valid Payment Systems Product Codes | Partial (motor fuel sample only) | Element 77 |
 | G | Valid Transaction Type Codes | Complete draft (23 codes), not re-verified | Element 78 (1st position) |
 | J | Valid POS Entry Mode Codes | 14 + 6 source-listed values verified; context/lifecycle partial | Element 113 (w/ Element 111 Table 005) |
-| L | Valid Currency Codes | Partial (~35 of 100+ currencies) | Element 20 |
+| L | Valid Currency Codes | Complete, verified against source (161 rows / 153 codes); 6 network-scope-conflict codes review-gated | Element 20 (also Element 153, Element 76, Appendix I Table 006/056, Appendix M) |
