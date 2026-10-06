@@ -10,12 +10,12 @@ import com.coreauth.validator.canonical.Segment120RuleCatalogLoader.Catalog;
 import com.coreauth.validator.canonical.Segment120TraceabilityMatrix;
 import com.coreauth.validator.canonical.Segment120TraceabilityMatrix.MatrixReport;
 import com.coreauth.validator.canonical.SourceAnchor;
+import com.coreauth.validator.paths.Atl105Paths;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class Segment120TraceabilityMatrixTest {
 
-    private static final Path SEG120_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-120", "coverage", "segment-120-rule-catalog.json");
+    private static final Path SEG120_RULE_CATALOG = Atl105Paths.ruleCatalog("120");
 
     private static Catalog loadCatalog() throws IOException {
         return new Segment120RuleCatalogLoader().load(SEG120_RULE_CATALOG);

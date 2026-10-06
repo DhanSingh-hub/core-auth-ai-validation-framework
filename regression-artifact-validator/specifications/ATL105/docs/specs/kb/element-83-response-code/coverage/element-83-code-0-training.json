@@ -1,0 +1,97 @@
+{
+  "artifact": "ATL105-ELEMENT-83-CODE-0-COVERAGE-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "element": "83",
+  "responseCode": "0",
+  "responseCodeMeaning": "Approved—Purchase/Capture",
+  "trainingStatus": "SOURCE_DERIVED_REVIEW_REQUIRED",
+  "sourceAnchors": [
+    {"section":"13.2","element":"83","rule":"code-0-approved-purchase-capture"},
+    {"section":"Appendix G","element":"78","rule":"purchase-transaction-type-contexts"},
+    {"section":"11.1.2","element":"83","rule":"financial-response-layout"},
+    {"section":"11.2.2","element":"83","rule":"loyalty-response-alias"},
+    {"section":"11.3.2","element":"83","rule":"eca-telecheck-response-alias"},
+    {"section":"11.8.2","element":"83","rule":"emv-financial-response-layout"}
+  ],
+  "purchaseTransactionTypes": [
+    {"code":"0","name":"POS Purchase/Capture or preauthorized completion","sourceStatus":"DIRECT_SOURCE"},
+    {"code":"4","name":"Customer-activated Purchase/Capture","sourceStatus":"DIRECT_SOURCE"},
+    {"code":"6","name":"Mail/Phone Purchase","sourceStatus":"DIRECT_SOURCE"}
+  ],
+  "transactionTypeCompatibilityPolicy": {
+    "accepted": ["0","4","6"],
+    "explicitlyRejectedByCurrentCompatibilityTests": ["3","5","7","8"],
+    "otherAppendixGTypesNotClassifiedAsPurchases": ["9","A","B","C","D","E","K","L","M","N","Q","S","T","U","V","Z"],
+    "basis": "Source-defined transaction type descriptions combined with Test Solution purchase-family classification; ATL105 does not publish an exhaustive Response Code x transaction type x card type cross-table.",
+    "status": "TEST_SOLUTION_RULE_SOURCE_ALIGNED_NOT_EXPLICIT_CROSS_TAB"
+  },
+  "responseFamilies": [
+    {
+      "family":"Financial Transaction Response",
+      "responseSection":"11.1.2",
+      "responseAliasOf":null,
+      "responseShape":"Data Section 1 contains Element 83 at Field 1; no Field Separators.",
+      "requestSection":"11.1.1",
+      "requiredRequestSegments":[{"segment":"100","dataSection":2}],
+      "conditionalRequestSegments":["101","102","103","104","111","123","135","143","145","146","151","152","153"],
+      "separateApprovedExtension":[{"segment":"110","basis":"§12.9 / SEG110-R-001 SME-approved extension, not in the literal §11.1.1 table"}],
+      "conditionalResponseCompanions":[
+        {"segment":"112","condition":"Element 115 indicates Segment 112 follows"},
+        {"segment":"115","condition":"Print data indicated and request Loyalty Version Number is 2"}
+      ],
+      "element83Field":false
+    },
+    {
+      "family":"Loyalty Card Transaction Response",
+      "responseSection":"11.2.2",
+      "responseAliasOf":"Financial Transaction Response",
+      "responseShape":"Same information and layout as §11.1.2.",
+      "requestSection":"11.2.1",
+      "requiredRequestSegments":[{"segment":"100","dataSection":2},{"segment":"108","dataSection":3}],
+      "conditionalRequestSegments":["114"],
+      "conditionalResponseCompanions":"Same response companion conditions as Financial Transaction Response.",
+      "element83Field":false
+    },
+    {
+      "family":"ECA/TeleCheck Service Transaction Response",
+      "responseSection":"11.3.2",
+      "responseAliasOf":"Financial Transaction Response",
+      "responseShape":"Same information and layout as §11.1.2.",
+      "requestSection":"11.3.1",
+      "requiredRequestSegments":[{"segment":"100","dataSection":2},{"segment":"110","dataSection":3},{"segment":"111","dataSection":3},{"segment":"113","dataSection":3}],
+      "conditionalRequestSegments":[],
+      "conditionalResponseCompanions":"Same response companion conditions as Financial Transaction Response.",
+      "element83Field":false
+    },
+    {
+      "family":"EMV Financial Transaction Response",
+      "responseSection":"11.8.2",
+      "responseAliasOf":null,
+      "responseShape":"Data Section 1 contains Element 83 at Field 1; fixed-length response with no Field Separators.",
+      "requestSection":"11.8.1",
+      "requiredRequestSegments":[{"segment":"100","dataSection":2},{"segment":"130","dataSection":3}],
+      "conditionalRequestSegments":["101","102","103","104","111","123","135","143","145","146","151","152","153"],
+      "conditionalResponseCompanions":[
+        {"segment":"112","condition":"Element 115 indicates Additional Information follows"},
+        {"segment":"115","condition":"Print data condition and request Loyalty Version Number 2"},
+        {"segment":"120","condition":"Print data condition and request Loyalty Version Number 2"},
+        {"segment":"131","condition":"Conditional EMV response data per §11.8.2 table; §12.21 placement conflict remains review-required"},
+        {"segment":"134","condition":"Conditional Transaction Attributes data per §11.8.2 table"}
+      ],
+      "element83Field":false
+    }
+  ],
+  "conditionalElement5ApprovalNumber": {
+    "requiredUniversallyForCode0": false,
+    "requireWhenLifecycleContextSaysRequired": true,
+    "source": "§11.1.2 marks Approval Number Conditional; SEG100-R-049 and Segment 100 lifecycle training scope it to flows requiring a prior-authorization reference.",
+    "status": "CONDITIONAL"
+  },
+  "evidenceBoundary": {
+    "responseCodeValidatorTests": "Covers transaction types 0/4/6, negative authorization/return contexts, and conditional Approval Number behavior.",
+    "humanApproval": false,
+    "aiExecutionCoverage": false,
+    "note": "Response-code package test data remains REVIEW; this file records source-based Test Solution training, not accepted AI BR/TS/TC/TD evidence."
+  }
+}

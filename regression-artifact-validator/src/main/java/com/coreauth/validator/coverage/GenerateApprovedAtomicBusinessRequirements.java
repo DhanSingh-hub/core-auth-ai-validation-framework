@@ -20,17 +20,35 @@ public final class GenerateApprovedAtomicBusinessRequirements {
         Path outputRoot = Atl105Paths.testOutput().resolve("test-solution-independent-review");
         Path registerFile = outputRoot.resolve("semantic-br-decision-register.json");
         JsonNode register = mapper.readTree(registerFile.toFile());
+        ObjectNode output = generate(register, mapper);
+        JsonNode summary = output.path("summary");
+        mapper.writerWithDefaultPrettyPrinter().writeValue(
+            outputRoot.resolve("approved-atomic-test-solution-business-requirements.json").toFile(), output);
+        Files.writeString(outputRoot.resolve("approved-atomic-test-solution-business-requirements.md"), markdown(summary));
+        System.out.printf("approvedNewRules=%d pending=%d confirmedMatches=%d duplicates=%d rejected=%d%n",
+            summary.path("approvedNewRuleDecisions").asInt(), summary.path("pendingDecisions").asInt(),
+            summary.path("confirmedMatchesNotNewRules").asInt(), summary.path("duplicatesNotNewRules").asInt(),
+            summary.path("rejectedNotNewRules").asInt());
+        }
+
+        static ObjectNode generate(JsonNode register, ObjectMapper mapper) {
+            ValidateSmeDecisionRegister.validate(register);
         ArrayNode requirements = mapper.createArrayNode();
         Set<String> subjects = new LinkedHashSet<>();
         int pending = 0;
+        int reviewRequired = 0;
         int rejected = 0;
         int duplicates = 0;
         int confirmed = 0;
 
-        for (JsonNode decision : register.path("decisions")) {
+        for (JsonNode decision : SmeDecisionHistory.latestBySubject(register).values()) {
             String status = decision.path("decision").asText();
             if ("PENDING".equals(status)) {
                 pending++;
+                continue;
+            }
+            if ("REVIEW_REQUIRED".equals(status)) {
+                reviewRequired++;
                 continue;
             }
             if ("REJECT".equals(status)) {
@@ -46,13 +64,25 @@ public final class GenerateApprovedAtomicBusinessRequirements {
                 continue;
             }
             if (!"NEW_RULE".equals(status)) continue;
+            if (!"AI_TO_TEST_CROSSWALK".equals(decision.path("subjectType").asText())) {
+                throw new IllegalStateException("NEW_RULE promotion requires an AI_TO_TEST_CROSSWALK subject: "
+                        + decision.path("decisionId").asText());
+            }
             String subjectId = required(decision, "subjectId");
             if (!subjects.add(subjectId)) throw new IllegalStateException("Duplicate promoted subject: " + subjectId);
-            JsonNode anchor = canonicalAnchorEvidence(decision.path("evidence"));
             String segment = required(decision, "segment");
+            JsonNode anchor = canonicalAnchorEvidence(decision.path("evidence"), segment);
+            JsonNode approvedRule = decision.path("approvedRule");
+            String title = required(approvedRule, "title");
+            String requirement = required(approvedRule, "requirement");
+            if (!"ATL105".equals(approvedRule.path("source").asText())
+                    || !approvedRule.path("independentOfAiWording").asBoolean()) {
+                throw new IllegalStateException("NEW_RULE must be independently derived from ATL105 and independent of AI wording: " + subjectId);
+            }
             ObjectNode br = requirements.addObject();
             br.put("id", "BR-SME-" + safe(subjectId));
-            br.put("title", "Independently derived Test Solution rule for approved AI crosswalk candidate " + subjectId);
+            br.put("title", title);
+            br.put("requirement", requirement);
             br.put("status", "APPROVED_FOR_CHAIN_DERIVATION");
             br.put("source", "ATL105_SPECIFICATION_AND_SME_DECISION");
             br.put("segment", segment);
@@ -73,32 +103,33 @@ public final class GenerateApprovedAtomicBusinessRequirements {
         ObjectNode summary = output.putObject("summary");
         summary.put("approvedNewRuleDecisions", requirements.size());
         summary.put("pendingDecisions", pending);
+        summary.put("reviewRequiredDecisions", reviewRequired);
         summary.put("confirmedMatchesNotNewRules", confirmed);
         summary.put("duplicatesNotNewRules", duplicates);
         summary.put("rejectedNotNewRules", rejected);
         summary.put("executionReady", false);
         summary.put("nextGate", "TS_TC_TD_DERIVATION_AND_CHAIN_VALIDATION");
 
-        mapper.writerWithDefaultPrettyPrinter().writeValue(
-                outputRoot.resolve("approved-atomic-test-solution-business-requirements.json").toFile(), output);
-        Files.writeString(outputRoot.resolve("approved-atomic-test-solution-business-requirements.md"), markdown(summary));
-        System.out.printf("approvedNewRules=%d pending=%d confirmedMatches=%d duplicates=%d rejected=%d%n",
-                requirements.size(), pending, confirmed, duplicates, rejected);
+        return output;
     }
 
-    private static JsonNode canonicalAnchorEvidence(JsonNode evidence) {
+    private static JsonNode canonicalAnchorEvidence(JsonNode evidence, String expectedSegment) {
         for (JsonNode item : evidence) {
             JsonNode anchor = item.path("sourceAnchor");
-            if (anchor.isObject() && complete(anchor)) return anchor;
+            if (anchor.isObject() && complete(anchor, expectedSegment)) return anchor;
         }
-        throw new IllegalStateException("NEW_RULE requires complete canonical sourceAnchor evidence");
+        throw new IllegalStateException("NEW_RULE requires a complete ATL105 2026-3 source anchor for its segment");
     }
 
-    private static boolean complete(JsonNode anchor) {
-        return !anchor.path("specification").asText().isBlank()
-                && !anchor.path("version").asText().isBlank()
+    private static boolean complete(JsonNode anchor, String expectedSegment) {
+        boolean segmentMatches = false;
+        for (String segment : anchor.path("segment").asText("").split("[,|]")) {
+            if (expectedSegment.equals(segment.trim())) segmentMatches = true;
+        }
+        return "ATL105".equals(anchor.path("specification").asText())
+                && "2026-3".equals(anchor.path("version").asText())
                 && !anchor.path("section").asText().isBlank()
-                && !anchor.path("segment").asText().isBlank()
+                && segmentMatches
                 && !anchor.path("rule").asText().isBlank();
     }
 

@@ -3,6 +3,7 @@ package com.coreauth.validator;
 import com.coreauth.validator.canonical.Segment120ConsolidatedReport;
 import com.coreauth.validator.canonical.Segment120ConsolidatedReport.ReportInputs;
 import com.coreauth.validator.canonical.Segment120ConsolidatedReport.ReportSummary;
+import com.coreauth.validator.paths.Atl105Paths;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -84,9 +85,9 @@ class Segment120ConsolidatedReportTest {
     void writesReportFileToDisk(@TempDir Path tmp) throws IOException {
         Path output = tmp.resolve("SEGMENT-120-CONSOLIDATED-REPORT.txt");
         ReportInputs inputs = new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-120", "coverage", "segment-120-rule-catalog.json"),
+            Atl105Paths.ruleCatalog("120"),
             packageFile(tmp),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-120"),
+            Atl105Paths.aiTestData("120"),
             output
         );
 
@@ -126,9 +127,9 @@ class Segment120ConsolidatedReportTest {
 
     private static ReportInputs inputsFor(Path tmp) throws IOException {
         return new ReportInputs(
-            Paths.get("docs", "specs", "kb", "segment-120", "coverage", "segment-120-rule-catalog.json"),
+            Atl105Paths.ruleCatalog("120"),
             packageFile(tmp),
-            Paths.get("test-input", "ai-solution", "test-data", "segment-120"),
+            Atl105Paths.aiTestData("120"),
             tmp.resolve("SEGMENT-120-CONSOLIDATED-REPORT.txt")
         );
     }

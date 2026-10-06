@@ -1,0 +1,134 @@
+{
+  "specificationVersion": "2026-3",
+  "assertions": [
+    {
+      "ruleId": "SEGDL1-R-011",
+      "segment": "DL1",
+      "claimScope": "PARTIAL_CHAPTER_13_FIELD_DEFINITIONS",
+      "elements": [
+        {
+          "element": "54",
+          "sourceHeading": "Number: 54 Name: Merchant Phone",
+          "endHeading": "Number: 55 Name: Message Format",
+          "phrases": [
+            "Character Type: AN Maximum Length: 13 bytes",
+            "Representation: Fixed length of 13 alphanumeric characters",
+            "Purpose: Identifies the telephone number [(nnn)nnn-nnnn] of the transmitting device location.",
+            "Processing Rules: Used in Data Segment No. DL1, Merchant Data Segment."
+          ]
+        },
+        {
+          "element": "98",
+          "sourceHeading": "Number: 98 Name: Store Number",
+          "endHeading": "Number: 99 Name: Tax Amount",
+          "phrases": [
+            "Character Type: N Maximum Length: 16 bytes",
+            "Representation: Fixed length of up to 16 digits",
+            "Processing Rules: If the data is masked by all asterisks, the data is neither displayed nor printed.",
+            "Valid Codes/Values: 0000000000000001-9999999999999999"
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "SEGDL2-R-006",
+      "segment": "DL2",
+      "claimScope": "PARTIAL_CHAPTER_13_FIELD_DEFINITIONS",
+      "elements": [
+        {
+          "element": "82",
+          "sourceHeading": "Number: 82 Name: Redial Count",
+          "endHeading": "Number: 83 Name: Response Code",
+          "phrases": [
+            "Character Type: N Maximum Length: 1 byte",
+            "Representation: Fixed length of one digit",
+            "Purpose: Identifies the number of times the subsequent phone number in Data Segment No. DL2, Dial String Data Segment, can be redialed.",
+            "Valid Codes/Values: 1–3"
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "SEGDL2-R-007",
+      "segment": "DL2",
+      "claimScope": "PARTIAL_CHAPTER_13_FIELD_DEFINITIONS",
+      "elements": [
+        {
+          "element": "75",
+          "sourceHeading": "Number: 75 Name: Phone Number",
+          "endHeading": "Number: 76 Name: Product Amount",
+          "phrases": [
+            "Character Type: N Maximum Length: 18 bytes",
+            "Representation: Variable length of up to 18 digits",
+            "Purpose: Identifies the primary, secondary, or tertiary (assigned, but not used) Phone Number used in transaction dialing."
+          ]
+        },
+        {
+          "element": "28",
+          "sourceHeading": "Number: 28 Name: Dial String Type",
+          "endHeading": "Number: 29 Name: Direct Marketing",
+          "phrases": [
+            "Character Type: N Maximum Length: 1 byte",
+            "Processing Rules: Fixed value: 1",
+            "1 Transaction dial strings"
+          ]
+        },
+        {
+          "element": "27",
+          "sourceHeading": "Number: 27 Name: Dial String Terminator",
+          "endHeading": "Number: 28 Name: Dial String Type",
+          "phrases": [
+            "Representation: Fixed length of one alphanumeric character",
+            "A Indicates the end of the first dial string in the Dial String Data Segment (Data Segment No. DL2).",
+            "F Indicates the end of the second dial string in the Dial String Data Segment (Data Segment No. DL2)."
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "SEGDL2-R-005",
+      "segment": "DL2",
+      "claimScope": "PARTIAL_CHAPTER_13_FIELD_DEFINITIONS",
+      "elements": [
+        {
+          "element": "1",
+          "sourceHeading": "Number: 1 Name: Access Code",
+          "endHeading": "Number: 2 Name: Account Number",
+          "phrases": [
+            "Character Type: AN Maximum Length: 12 bytes",
+            "Representation: Variable length of up to 12 alphanumeric characters",
+            "Processing Rules: If Access Code information is not necessary, the dial string contains neither this element nor the Pause Indicator that immediately follows it; however, this element may be used to indicate a much longer than standard pause for use with phone systems that are slow to provide a dial tone.",
+            "In these cases, one or more B characters may be inserted in this element. Each one should be interpreted as a 1-second pause."
+          ]
+        },
+        {
+          "element": "66",
+          "sourceHeading": "Number: 66 Name: Pause Indicator",
+          "endHeading": "Number: 72 Name: PC Duty Amount",
+          "phrases": [
+            "Character Type: AN Maximum Length: 1 byte",
+            "Representation: Fixed length of one alphanumeric character",
+            "Valid Codes/Values: B"
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "SEGDL3-R-009",
+      "segment": "DL3",
+      "claimScope": "PARTIAL_CHAPTER_13_FIELD_DEFINITIONS",
+      "elements": [
+        {
+          "element": "23",
+          "sourceHeading": "Number: 23 Name: Cut Time",
+          "endHeading": "Number: 24 Name: Data Type Indicator",
+          "phrases": [
+            "Character Type: N Maximum Length: 4 bytes",
+            "Representation: Fixed length 4-digit number (HHMM)",
+            "Processing Rules: For devices that use an automatic cut time, the device should start the settlement procedure 30 minutes prior to the merchant’s cut time if the settlement has not been completed by the clerk for that business day."
+          ]
+        }
+      ]
+    }
+  ]
+}

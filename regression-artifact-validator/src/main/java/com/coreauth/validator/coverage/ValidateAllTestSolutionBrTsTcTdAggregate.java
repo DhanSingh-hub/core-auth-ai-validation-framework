@@ -20,7 +20,7 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
 
     public static void main(String[] args) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Path reviewRoot = Atl105Paths.testOutput().resolve("test-solution-independent-review");
+        Path reviewRoot = args.length > 1 ? Path.of(args[1]) : Atl105Paths.testOutput().resolve("test-solution-independent-review");
         Path input = args.length == 0
                 ? reviewRoot.resolve("all-test-solution-br-ts-tc-td-training-package.json") : Path.of(args[0]);
         JsonNode root = mapper.readTree(input.toFile());
@@ -35,9 +35,14 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         Set<String> requirementsWithoutScenario = new HashSet<>(requirements.keySet());
         Set<String> scenariosWithoutTestCase = new HashSet<>(scenarios.keySet());
         Set<String> testCasesWithoutData = new HashSet<>(testCases.keySet());
+        Set<String> scenarioLinksToMissingRequirements = new HashSet<>();
+        Set<String> testCaseLinksToMissingScenarios = new HashSet<>();
+        Set<String> testDataLinksToMissingTestCases = new HashSet<>();
+        Set<String> testCasesWithExecutableReadinessData = new HashSet<>();
+        Set<String> requirementsWithExecutableReadinessDataChain = new HashSet<>();
         Set<String> duplicateIds = new HashSet<>();
         boolean hasReviewPlaceholders = false;
-        Map<String, Integer> segmentCounts = new TreeMap<>();
+        Map<String, Integer> testDataReadinessCounts = new TreeMap<>();
 
         for (JsonNode scenario : root.path("testScenarios")) {
             for (JsonNode id : scenario.path("requirementIds")) {
@@ -45,6 +50,8 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
                 if (requirements.containsKey(requirementId)) {
                     usedRequirements.add(requirementId);
                     requirementsWithoutScenario.remove(requirementId);
+                } else {
+                    scenarioLinksToMissingRequirements.add(scenario.path("id").asText() + " -> " + requirementId);
                 }
             }
         }
@@ -54,15 +61,35 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
                 if (scenarios.containsKey(scenarioId)) {
                     usedScenarios.add(scenarioId);
                     scenariosWithoutTestCase.remove(scenarioId);
+                } else {
+                    testCaseLinksToMissingScenarios.add(testCase.path("id").asText() + " -> " + scenarioId);
                 }
             }
         }
         for (JsonNode data : root.path("testData")) {
+            String readiness = data.path("readiness").asText("READINESS_NOT_DECLARED");
+            testDataReadinessCounts.merge(readiness, 1, Integer::sum);
             for (JsonNode id : data.path("testCaseIds")) {
                 String testCaseId = id.asText();
                 if (testCases.containsKey(testCaseId)) {
                     usedTestCases.add(testCaseId);
                     testCasesWithoutData.remove(testCaseId);
+                    if ("EXECUTABLE".equals(readiness)) {
+                        testCasesWithExecutableReadinessData.add(testCaseId);
+                    }
+                } else {
+                    testDataLinksToMissingTestCases.add(data.path("id").asText() + " -> " + testCaseId);
+                }
+            }
+        }
+        for (String testCaseId : testCasesWithExecutableReadinessData) {
+            JsonNode testCase = testCases.get(testCaseId);
+            for (JsonNode scenarioId : testCase.path("scenarioIds")) {
+                JsonNode scenario = scenarios.get(scenarioId.asText());
+                if (scenario == null) continue;
+                for (JsonNode requirementId : scenario.path("requirementIds")) {
+                    String id = requirementId.asText();
+                    if (requirements.containsKey(id)) requirementsWithExecutableReadinessDataChain.add(id);
                 }
             }
         }
@@ -70,7 +97,8 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         duplicateIds.addAll(findDuplicateIds(root.path("testScenarios")));
         duplicateIds.addAll(findDuplicateIds(root.path("testCases")));
         duplicateIds.addAll(findDuplicateIds(root.path("testData")));
-        hasReviewPlaceholders = hasReviewPlaceholder(root);
+        hasReviewPlaceholders = hasReviewPlaceholder(root)
+            || root.path("provenance").path("unlinkedTestDataCandidates").size() > 0;
 
         ObjectNode result = mapper.createObjectNode();
         result.put("artifact", "all-test-solution-br-ts-tc-td-chain-validation");
@@ -82,20 +110,35 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
         result.put("requirementsWithoutScenario", requirementsWithoutScenario.size());
         result.put("scenariosWithoutTestCase", scenariosWithoutTestCase.size());
         result.put("testCasesWithoutData", testCasesWithoutData.size());
+        result.put("scenarioLinksToMissingRequirements", scenarioLinksToMissingRequirements.size());
+        result.put("testCaseLinksToMissingScenarios", testCaseLinksToMissingScenarios.size());
+        result.put("testDataLinksToMissingTestCases", testDataLinksToMissingTestCases.size());
+        result.put("unlinkedTestDataCandidates",
+            root.path("provenance").path("unlinkedTestDataCandidates").size());
+        result.put("testCasesWithExecutableReadinessData", testCasesWithExecutableReadinessData.size());
+        result.put("requirementsWithExecutableReadinessDataChain", requirementsWithExecutableReadinessDataChain.size());
+        result.set("testDataReadinessCounts", mapper.valueToTree(testDataReadinessCounts));
         result.put("duplicateArtifactIds", duplicateIds.size());
         result.put("fullyLinkedRequirements", requirements.size() - requirementsWithoutScenario.size());
         result.put("fullyLinkedTestCases", testCases.size() - testCasesWithoutData.size());
         boolean structurallyComplete = requirementsWithoutScenario.isEmpty() && scenariosWithoutTestCase.isEmpty()
-            && testCasesWithoutData.isEmpty() && duplicateIds.isEmpty();
+            && testCasesWithoutData.isEmpty() && scenarioLinksToMissingRequirements.isEmpty()
+            && testCaseLinksToMissingScenarios.isEmpty() && testDataLinksToMissingTestCases.isEmpty()
+            && duplicateIds.isEmpty();
         result.put("structurallyComplete", structurallyComplete);
         result.put("hasReviewPlaceholders", hasReviewPlaceholders);
-        result.put("executionReady", structurallyComplete && !hasReviewPlaceholders);
+        result.put("executionReady", false);
+        result.put("executionReadinessReason", "Link integrity alone cannot certify canonical anchor continuity, validated payloads or SME approval.");
         result.set("unlinkedRequirementIds", mapper.valueToTree(requirementsWithoutScenario));
         result.set("unlinkedScenarioIds", mapper.valueToTree(scenariosWithoutTestCase));
         result.set("unlinkedTestCaseIds", mapper.valueToTree(testCasesWithoutData));
+        result.set("scenarioLinksToMissingRequirementsList", mapper.valueToTree(scenarioLinksToMissingRequirements));
+        result.set("testCaseLinksToMissingScenariosList", mapper.valueToTree(testCaseLinksToMissingScenarios));
+        result.set("testDataLinksToMissingTestCasesList", mapper.valueToTree(testDataLinksToMissingTestCases));
         result.set("duplicateArtifactIdsList", mapper.valueToTree(duplicateIds));
 
         Path output = reviewRoot.resolve("all-test-solution-chain-validation.json");
+        Files.createDirectories(reviewRoot);
         mapper.writerWithDefaultPrettyPrinter().writeValue(output.toFile(), result);
         Files.writeString(reviewRoot.resolve("all-test-solution-chain-validation.md"), markdown(result));
         System.out.printf("BR=%d TS=%d TC=%d TD=%d BR_TS_gaps=%d TS_TC_gaps=%d TC_TD_gaps=%d executionReady=%s%n",
@@ -127,7 +170,8 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
             for (JsonNode value : root.path(collection)) {
                 if ("REVIEW_REQUIRED".equals(value.path("status").asText())
                         || value.path("trainingStatus").asText().endsWith("_REQUIRED")
-                        || "REVIEW_REQUIRED".equals(value.path("expectedValidation").asText())) return true;
+                    || "REVIEW_REQUIRED".equals(value.path("expectedValidation").asText())
+                    || "REVIEW_REQUIRED".equals(value.path("readiness").asText())) return true;
             }
         }
         return false;
@@ -143,9 +187,17 @@ public final class ValidateAllTestSolutionBrTsTcTdAggregate {
                 + "| BR -> TS gaps | " + result.path("requirementsWithoutScenario").asInt() + " |\n"
                 + "| TS -> TC gaps | " + result.path("scenariosWithoutTestCase").asInt() + " |\n"
                 + "| TC -> TD gaps | " + result.path("testCasesWithoutData").asInt() + " |\n"
+                + "| TS -> missing BR references | " + result.path("scenarioLinksToMissingRequirements").asInt() + " |\n"
+                + "| TC -> missing TS references | " + result.path("testCaseLinksToMissingScenarios").asInt() + " |\n"
+                + "| TD -> missing TC references | " + result.path("testDataLinksToMissingTestCases").asInt() + " |\n"
+                + "| Unlinked TD candidates (outside canonical chain) | " + result.path("unlinkedTestDataCandidates").asInt() + " |\n"
+                + "| TD readiness counts | " + result.path("testDataReadinessCounts") + " |\n"
+                + "| Test cases linked to EXECUTABLE-readiness TDs | " + result.path("testCasesWithExecutableReadinessData").asInt() + " |\n"
+                + "| BRs with linked EXECUTABLE-readiness TD chain | " + result.path("requirementsWithExecutableReadinessDataChain").asInt() + " |\n"
                 + "| Duplicate IDs | " + result.path("duplicateArtifactIds").asInt() + " |\n"
                 + "| Structural complete | " + result.path("structurallyComplete").asBoolean() + " |\n"
                 + "| Review placeholders | " + result.path("hasReviewPlaceholders").asBoolean() + " |\n\n"
-                + "Execution ready: **" + result.path("executionReady").asBoolean() + "**\n";
+                + "Execution ready: **" + result.path("executionReady").asBoolean() + "**. "
+                + result.path("executionReadinessReason").asText() + "\n";
     }
 }

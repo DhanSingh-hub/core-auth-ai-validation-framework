@@ -1,0 +1,19 @@
+{
+  "catalogId": "ATL105-SEG151-RULE-CATALOG-001", "specification": "ATL105", "specificationVersion": "2026-3", "segment": "151", "segmentName": "Incomm OTC Market Basket Data (Request) Segment",
+  "scope": "Segment 151 field-level rules for Incomm OTC (over-the-counter) market basket request data",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 16177-16243 (Section 12.36)",
+  "rules": [
+    {"ruleId":"SEG151-R-001","title":"Segment 151 can appear in ANY field slot of Data Section No. 3 (not a fixed position), originates at the device","class":"structure","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.36","segment":"151","rule":"any-field-position-data-section-3"}},
+    {"ruleId":"SEG151-R-002","title":"Segment 151 maximum length is documented as 2,309 alphanumeric characters in the opening statement, but the valid-values range given is 01-3,334 — a numeric inconsistency","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.36","segment":"151","rule":"max-length-inconsistency-2309-vs-3334"},"note":"PROVISIONAL: pending SME confirmation (SEG151-SME-001)."},
+    {"ruleId":"SEG151-R-003","title":"A Field Separator appears between each of the 3 fields","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.36","segment":"151","rule":"field-separator-between-all-3-fields"}},
+    {"ruleId":"SEG151-R-004","title":"Segment Type fixed 151, sourced at Host (despite the segment overall 'originating at the device' per the opening statement) — a sourcing inconsistency","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.36","segment":"151","element":"85","rule":"segment-type-host-vs-device-origin-conflict"},"note":"PROVISIONAL: the opening narrative says 'It originates at the device' but the field table lists Source: Host for fields 1-2. Pending SME confirmation (SEG151-SME-002)."},
+    {"ruleId":"SEG151-R-005","title":"Segment Length is 4 digits (not 3), max 2300 characters; Market Basket Data (unnumbered element) consists of one DV dataset followed by up to 10 PI datasets, with full format defined in a separate 'Buypass Incomm Market Basket Data format' document","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.36","segment":"151","rule":"market-basket-data-external-format-doc"},"note":"PROVISIONAL: the detailed DV/PI dataset format is defined in an external document not available in this KB pass. Pending SME confirmation (SEG151-SME-003) on scope and document location."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG151-R-002"],"blocks":["Item 5"],"registerId":"SEG151-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["SEG151-R-004"],"blocks":[],"registerId":"SEG151-SME-002"},
+    {"id":"P-03","status":"OPEN","impacts":["SEG151-R-005"],"blocks":["Item 1"],"registerId":"SEG151-SME-003"},
+    {"id":"P-04","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG151-SME-004"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P04","item3_independence":"BLOCKED_BY_P04","item4_traceabilityMatrix":"BLOCKED_BY_P03","item5_mutationDefinition":"BLOCKED_BY_P01","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 /** Validates Element 102 and its declared terminal-identifier dependencies. */
 public final class TerminalIdentifierValidator {
     private static final Pattern ALPHANUMERIC = Pattern.compile("^[A-Za-z0-9]+$");
-    private static final Pattern STATE_CODE = Pattern.compile("^[A-Z]{2}$");
+    private static final Pattern ANSI_STATE_CODE = Pattern.compile("^[0-9]{2}$");
 
     public ValidationResult validate(CanonicalArtifactPackage artifactPackage) {
         String packageId = artifactPackage == null || artifactPackage.getManifest() == null
@@ -39,6 +39,15 @@ public final class TerminalIdentifierValidator {
             result.addError("TerminalIdentifier", id + " Element 102 must be 1-22 alphanumeric characters");
             return;
         }
+        if (terminalId.length() < 4) {
+            result.addError("TerminalIdentifier", id + " Element 102 must contain a two-digit ANSI state code at positions 3-4");
+            return;
+        }
+        String ansiStateCode = terminalId.substring(2, 4);
+        if (!ANSI_STATE_CODE.matcher(ansiStateCode).matches()
+                || !AppendixDStateCodes.isValidAnsiCode(ansiStateCode)) {
+            result.addError("TerminalIdentifier", id + " Element 102 positions 3-4 must contain a valid Appendix D ANSI state code");
+        }
 
         String mode = controls.path("terminalIdentifierMode").asText("financial");
         if (isLoadMode(mode) && terminalId.length() > 13) {
@@ -60,8 +69,11 @@ public final class TerminalIdentifierValidator {
         if (deviceType == null || deviceType.length() != 2 || !ALPHANUMERIC.matcher(deviceType).matches()) {
             result.addError("TerminalIdentifier", id + " deviceType must be 2 alphanumeric characters");
         }
-        if (stateCode == null || !STATE_CODE.matcher(stateCode).matches()) {
-            result.addError("TerminalIdentifier", id + " stateCode must be two uppercase letters");
+        if (stateCode == null || !ANSI_STATE_CODE.matcher(stateCode).matches()
+                || !AppendixDStateCodes.isValidAnsiCode(stateCode)) {
+            result.addError("TerminalIdentifier", id + " stateCode must be a valid two-digit Appendix D ANSI code");
+        } else if (terminalId.length() >= 4 && !stateCode.equals(terminalId.substring(2, 4))) {
+            result.addError("TerminalIdentifier", id + " declared stateCode does not match Element 102 positions 3-4");
         }
         if (merchantNumber == null || merchantNumber.length() < 6 || merchantNumber.length() > 15
                 || !ALPHANUMERIC.matcher(merchantNumber).matches()) {

@@ -1,0 +1,136 @@
+{
+  "catalogId": "ATL105-SEGDL8-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "DL8",
+  "segmentName": "EMV Terminal Floor Limits Data Segment",
+  "scope": "Segment DL8 EMV floor-limit download segment ('%' + 3-digit Segment Length + 1-24 repeating 26-byte Floor Limit Data groups), gated by a terminal-level Special and sharing DL7's hybrid framing convention",
+  "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 17636-17690 (Section 12.49), 25170-25230 (Section 13.2 Elements 233, 234, 235, 236), 21313-21345 (Element 84), 20052-20083 (Element 24)",
+  "rules": [
+    {
+      "ruleId": "SEGDL8-R-001",
+      "title": "Segment DL8 contains EMV floor limits (as RID) for the terminal; inclusion in a table load depends on a 'Special' flag set at the terminal level; the data is maintained at the BUYPASS Host, and changes to it set the table download flag for all terminals with the Special flag",
+      "class": "lifecycle",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "rule": "special-flag-gated-table-load"
+      },
+      "note": "DL8's position in the Table Load Response is not given in 11.7.1.2 or the Chapter 12 matrix (SEGDL8-SME-002)."
+    },
+    {
+      "ruleId": "SEGDL8-R-002",
+      "title": "Data Type Indicator is fixed value '%' (Element 24); Segment Length Indicator (Element 84, 3 digits) is EXCLUSIVE of the Data Type Indicator's length, same hybrid framing convention as Segment DL7 (no End-of-Data Indicator)",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "element": "24,84",
+        "rule": "hybrid-framing-same-as-dl7"
+      },
+      "note": "Own-digit counting follows the DL7 decision (SEGDL7-SME-005); the 'Source: Device' label is part of SEGDL8-SME-002."
+    },
+    {
+      "ruleId": "SEGDL8-R-003",
+      "title": "Floor Limit Data repeats per RID, for a maximum of 24 RIDs, total variable length up to 624 bytes; each repetition contains RID (233,10, Host-sourced), Stand-in Indicator (234,1, Host-sourced), Floor Limit (235,12, Host-sourced, maximum allowable stand-in value), BUYPASS RID Card Type (236,3, Host-sourced)",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.49",
+        "segment": "DL8",
+        "element": "233,234,235,236",
+        "rule": "per-rid-repeating-floor-limit-structure"
+      },
+      "note": "Each group is 10 + 1 + 12 + 3 = 26 bytes; 24 x 26 = 624, which confirms the stated maximum."
+    },
+    {
+      "ruleId": "SEGDL8-R-004",
+      "title": "RID (Element 233) is AN fixed 10 and must be a valid EMV Registered Application Provider identifier; Stand-in Indicator (Element 234) is N1 with values 1 (No Stand-in), 2 (Domestic only Stand-in), 3 (Domestic & Foreign Stand-in); Floor Limit (Element 235) is N fixed 12, 000000000000-999999999999; BUYPASS RID Card Type (Element 236) is AN fixed 3",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL8",
+        "element": "233,234,235,236",
+        "rule": "floor-limit-group-element-formats"
+      },
+      "note": "Element 236 lists no valid values and the RID representation (hex text of the 5-byte RID) is not stated (SEGDL8-SME-003)."
+    },
+    {
+      "ruleId": "SEGDL8-R-005",
+      "title": "The DL8 Segment Length (Element 84) is three digits and must describe a whole number (1-24) of 26-byte Floor Limit Data groups after the Data Type Indicator",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL8",
+        "element": "84",
+        "rule": "segment-length-three-digits-whole-groups"
+      },
+      "sourceEvidenceSections": [
+        "13.2",
+        "12.49"
+      ]
+    }
+  ],
+  "provisionalItems": [
+    {
+      "id": "P-01",
+      "status": "OPEN",
+      "impacts": [
+        "AI-artifacts, test-data"
+      ],
+      "blocks": [
+        "Item 2",
+        "Item 3"
+      ],
+      "registerId": "SEGDL8-SME-001"
+    },
+    {
+      "id": "P-02",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL8-R-001",
+        "SEGDL8-R-002"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL8-SME-002"
+    },
+    {
+      "id": "P-03",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL8-R-004"
+      ],
+      "blocks": [
+        "Item 5",
+        "Item 7"
+      ],
+      "registerId": "SEGDL8-SME-003"
+    }
+  ],
+  "itemProgress": {
+    "item1_coverageClosure": "CANDIDATE_COMPLETE_REVIEW_REQUIRED",
+    "item2_artifactComparison": "CANDIDATE_COMPARISON_COMPLETE_REVIEW_REQUIRED",
+    "item3_independence": "CANDIDATE_ORACLE_SEPARATED_APPROVAL_PENDING_P01",
+    "item4_traceabilityMatrix": "CANDIDATE_TRACEABILITY_COMPLETE_REVIEW_REQUIRED",
+    "item5_mutationDefinition": "CANDIDATE_MUTATIONS_DEFINED_NOT_EXECUTED",
+    "item6_mutationExecution": "BLOCKED_BY_SME_AND_APPROVED_FIXTURES",
+    "item7_validatorEnhancement": "LOGICAL_SAMPLE_VALIDATION_ONLY_BLOCKED_BY_P03",
+    "item8_consolidatedReport": "CANDIDATE_REPORT_COMPLETE_REVIEW_REQUIRED"
+  }
+}

@@ -31,17 +31,33 @@ public final class Run2SegmentReportWriter {
         text.append("- Composite delivery: `").append(evidence.path("sourceRun").asText()).append("`\n");
         text.append("- Decision: **").append(assessment.path("decision").asText()).append("**\n");
         text.append("- Version resolution: `").append(evidence.path("versionResolutionId").asText()).append("`\n");
-        text.append("- Confirmed BR coverage: **").append(assessment.path("confirmedRequirementCoveragePercent").asDouble()).append("%**\n");
-        text.append("- Full-chain coverage: **").append(assessment.path("fullChainCoveragePercent").asDouble()).append("%**\n\n");
-        text.append("## Coverage\n\n");
-        text.append("| Denominator | Confirmed | Review required | Missing | Unmatched AI | Full chain |\n");
-        text.append("|---:|---:|---:|---:|---:|---:|\n|")
-                .append(assessment.path("coverageDenominator").asInt()).append('|')
+        text.append("- Confirmed independent-rule coverage: **")
+            .append(percentOrNotCalculable(assessment, "confirmedRequirementCoveragePercent")).append("**\n");
+        text.append("- Full-chain independent-rule coverage: **")
+            .append(percentOrNotCalculable(assessment, "fullChainCoveragePercent")).append("**\n\n");
+        text.append("## Independent Test Solution Rule Coverage\n\n");
+        text.append("Denominator type: **independent Test Solution in-scope rules**; structurally valid: **")
+            .append(baselineStructurallyValid(assessment)).append("**; certification: **")
+            .append(assessment.path("coverageDenominatorCertification").asText("NOT_RECORDED")).append("**.\n\n");
+        text.append("| Rule denominator | Confirmed rules | Review required | Missing rules | Full-chain rules |\n");
+        text.append("|---:|---:|---:|---:|---:|\n|")
+            .append(assessment.path("coverageDenominator").asInt()).append('|')
                 .append(assessment.path("confirmedRequirements").asInt()).append('|')
                 .append(assessment.path("reviewRequired").asInt()).append('|')
                 .append(assessment.path("missingRequirements").asInt()).append('|')
-                .append(assessment.path("unmatchedAiRequirements").asInt()).append('|')
                 .append(assessment.path("fullChainRequirements").asInt()).append("|\n\n");
+        text.append("## AI Business-Requirement Mapping\n\n");
+        text.append("This denominator is the AI BR inventory, not the independent Test Solution rule catalog. `Unmapped` means no crosswalk disposition; it is not a confirmed AI-only classification.\n\n");
+        text.append("| AI BR inventory | With crosswalk disposition | Confirmed AI BRs | Review required | Missing mapping | Unmapped | Confirmed / AI BR inventory |\n");
+        text.append("|---:|---:|---:|---:|---:|---:|---:|\n|")
+            .append(countOrNotRecorded(assessment, "aiBusinessRequirementDenominator")).append('|')
+            .append(countOrNotRecorded(assessment, "aiBusinessRequirementsWithCrosswalkDisposition")).append('|')
+            .append(countOrNotRecorded(assessment, "confirmedAiBusinessRequirements")).append('|')
+            .append(countOrNotRecorded(assessment, "reviewRequiredAiBusinessRequirements")).append('|')
+            .append(countOrNotRecorded(assessment, "missingMappedAiBusinessRequirements")).append('|')
+            .append(countOrNotRecorded(assessment, "unmappedAiBusinessRequirements")).append('|')
+            .append(percentOrNotCalculable(assessment, "confirmedAiBusinessRequirementInventoryPercent"))
+            .append("|\n\n");
         text.append("## Artifact chain\n\n");
         text.append("| AI BRs | Scenarios | Test cases | Test data |\n|---:|---:|---:|---:|\n|")
                 .append(artifacts.path("requirements").asInt()).append('|')
@@ -104,6 +120,24 @@ public final class Run2SegmentReportWriter {
             value.append(item.asText());
         }
         return value.toString();
+    }
+
+    private static String percentOrNotCalculable(JsonNode object, String field) {
+        JsonNode value = object.path(field);
+        return value.isNumber() ? value.asText() + "%" : "NOT_CALCULABLE";
+    }
+
+    private static String countOrNotRecorded(JsonNode object, String field) {
+        JsonNode value = object.path(field);
+        return value.isNumber() ? value.asText() : "NOT_RECORDED";
+    }
+
+    private static boolean baselineStructurallyValid(JsonNode assessment) {
+        if (assessment.has("coverageDenominatorStructurallyValid")) {
+            return assessment.path("coverageDenominatorStructurallyValid").asBoolean();
+        }
+        return assessment.path("baselineValidation").path("valid").asBoolean(
+                assessment.path("validation").path("baseline").path("valid").asBoolean());
     }
 
     private static String anchor(JsonNode value) {

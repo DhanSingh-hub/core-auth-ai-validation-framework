@@ -6,6 +6,7 @@ import com.coreauth.validator.canonical.CanonicalScenario;
 import com.coreauth.validator.canonical.CanonicalTestCase;
 import com.coreauth.validator.canonical.CanonicalTestData;
 import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
+import com.coreauth.validator.canonical.Element83AiCoverageValidator;
 import com.coreauth.validator.canonical.RequirementCrosswalkEntry;
 import com.coreauth.validator.canonical.RequirementMatchStatus;
 import com.coreauth.validator.canonical.SourceAnchor;
@@ -27,18 +28,27 @@ public final class AiCoverageAssessmentService {
     private final CanonicalTraceabilityValidator traceabilityValidator = new CanonicalTraceabilityValidator();
     private final CanonicalTestCaseQualityValidator testCaseValidator = new CanonicalTestCaseQualityValidator();
 
+    /** Returns the explicit full-ATL105 Element 83 BR -> TS -> TC -> TD completeness gate. */
+    public static NamedPayloadValidator element83ResponseCodeCoverageGate() {
+        Element83AiCoverageValidator validator = new Element83AiCoverageValidator();
+        return new NamedPayloadValidator("Element83ResponseCodeCoverage", validator::validate);
+    }
+
     public AiCoverageAssessmentReport assess(CanonicalArtifactPackage aiPackage,
                                              IndependentRequirementBaseline baseline,
                                              List<NamedPayloadValidator> payloadValidators) {
         ValidationResult baselineValidation = baseline.validate();
         ValidationResult testCaseValidation = testCaseValidator.validate(aiPackage);
-        ValidationResult traceabilityValidation = traceabilityValidator.validate(aiPackage);
+        ValidationResult traceabilityValidation = traceabilityValidator.validateForExecution(aiPackage);
         ValidationResult payloadValidation = validatePayloads(aiPackage, payloadValidators);
 
         List<IndependentRequirementBaseline.Requirement> denominator = baseline.inScopeRequirements();
         Map<String, CanonicalRequirement> aiRequirements = indexAiRequirements(aiPackage);
         Map<String, RequirementCrosswalkEntry> crosswalk = indexCrosswalk(aiPackage);
         Set<String> referencedAiIds = new HashSet<>();
+        Set<String> confirmedAiIds = new HashSet<>();
+        Set<String> reviewRequiredAiIds = new HashSet<>();
+        Set<String> missingMappedAiIds = new HashSet<>();
         List<CoverageCrosswalkRecord> coverageRecords = new ArrayList<>();
         int fullChain = 0;
         int missing = 0;
@@ -46,7 +56,8 @@ public final class AiCoverageAssessmentService {
 
         for (IndependentRequirementBaseline.Requirement requirement : denominator) {
             RequirementCrosswalkEntry entry = crosswalk.get(requirement.id());
-            String status = evidenceQualifiedStatus(aiPackage, requirement, entry, aiRequirements, referencedAiIds);
+                String status = evidenceQualifiedStatus(aiPackage, requirement, entry, aiRequirements,
+                    referencedAiIds, confirmedAiIds, reviewRequiredAiIds, missingMappedAiIds);
             CoverageCrosswalkRecord record = new CoverageCrosswalkRecord(status,
                     entry == null ? null : entry.getReviewOwner());
             boolean hasFullChain = "CONFIRMED".equals(status) && hasFullChain(aiPackage, requirement.sourceAnchors());
@@ -61,10 +72,21 @@ public final class AiCoverageAssessmentService {
         }
 
         int unmatchedAi = (int) aiRequirements.keySet().stream().filter(id -> !referencedAiIds.contains(id)).count();
+        confirmedAiIds.retainAll(aiRequirements.keySet());
+        reviewRequiredAiIds.retainAll(aiRequirements.keySet());
+        reviewRequiredAiIds.removeAll(confirmedAiIds);
+        missingMappedAiIds.retainAll(aiRequirements.keySet());
+        missingMappedAiIds.removeAll(confirmedAiIds);
+        missingMappedAiIds.removeAll(reviewRequiredAiIds);
         CoverageMappingRatioResult ratio = CoverageMappingRatioCalculator.calculate(
                 denominator.size(), coverageRecords, unmatchedAi);
-        double fullChainPercent = denominator.isEmpty() ? 0.0
-                : Math.round(1000.0 * fullChain / denominator.size()) / 10.0;
+        boolean independentRuleDenominatorStructurallyValid = baselineValidation.isValid() && !denominator.isEmpty();
+        Double confirmedRulePercent = independentRuleDenominatorStructurallyValid
+            ? ratio.confirmedBaselineCoveragePercent() : null;
+        Double fullChainPercent = independentRuleDenominatorStructurallyValid
+            ? percent(fullChain, denominator.size()) : null;
+        Double confirmedAiInventoryPercent = aiRequirements.isEmpty()
+            ? null : percent(confirmedAiIds.size(), aiRequirements.size());
 
         Map<String, Boolean> readiness = new LinkedHashMap<>();
         readiness.put("CANONICAL_ANCHORS", baselineValidation.isValid());
@@ -77,9 +99,12 @@ public final class AiCoverageAssessmentService {
                 && fullChain == denominator.size() && !denominator.isEmpty());
 
         return new AiCoverageAssessmentReport(denominator.size(), ratio.baselineCovered(), fullChain,
-                reviewRequired, missing, unmatchedAi, ratio.confirmedBaselineCoveragePercent(),
-                fullChainPercent, readiness, baselineValidation, testCaseValidation,
-                traceabilityValidation, payloadValidation);
+            reviewRequired, missing, unmatchedAi, confirmedRulePercent,
+            fullChainPercent, readiness, baselineValidation, testCaseValidation,
+                traceabilityValidation, payloadValidation, independentRuleDenominatorStructurallyValid,
+            aiRequirements.size(), referencedAiIds.size(), confirmedAiIds.size(),
+            reviewRequiredAiIds.size(), missingMappedAiIds.size(), unmatchedAi,
+            confirmedAiInventoryPercent);
     }
 
     private ValidationResult validatePayloads(CanonicalArtifactPackage aiPackage,
@@ -103,21 +128,39 @@ public final class AiCoverageAssessmentService {
                                            IndependentRequirementBaseline.Requirement baselineRequirement,
                                            RequirementCrosswalkEntry entry,
                                            Map<String, CanonicalRequirement> aiRequirements,
-                                           Set<String> referencedAiIds) {
-        if (entry == null || entry.getMatchStatus() == RequirementMatchStatus.MISSING) {
+                                           Set<String> referencedAiIds,
+                                           Set<String> confirmedAiIds,
+                                           Set<String> reviewRequiredAiIds,
+                                           Set<String> missingMappedAiIds) {
+        if (entry == null) {
             return "MISSING";
         }
-        List<String> aiIds = safe(entry.getAiRequirementIds());
+        List<String> aiIds = safe(entry.getAiRequirementIds()).stream()
+                .filter(aiRequirements::containsKey).distinct().toList();
         referencedAiIds.addAll(aiIds);
+        if (entry.getMatchStatus() == RequirementMatchStatus.MISSING) {
+            missingMappedAiIds.addAll(aiIds);
+            return "MISSING";
+        }
         if (entry.getMatchStatus() != RequirementMatchStatus.CONFIRMED || blank(entry.getMatchReason())) {
+            reviewRequiredAiIds.addAll(aiIds);
             return "REVIEW_REQUIRED";
         }
         if (!manifestMatchesAnchors(aiPackage, baselineRequirement.sourceAnchors())) {
+            reviewRequiredAiIds.addAll(aiIds);
             return "REVIEW_REQUIRED";
         }
-        boolean anchoredEvidence = aiIds.stream().map(aiRequirements::get).filter(value -> value != null)
-                .anyMatch(aiRequirement -> sharesAnchor(baselineRequirement.sourceAnchors(), aiRequirement.getSourceAnchors()));
-        return anchoredEvidence ? "CONFIRMED" : "REVIEW_REQUIRED";
+        Set<String> anchoredAiIds = aiIds.stream()
+                .filter(id -> sharesAnchor(baselineRequirement.sourceAnchors(),
+                        aiRequirements.get(id).getSourceAnchors()))
+                .collect(Collectors.toSet());
+        confirmedAiIds.addAll(anchoredAiIds);
+        aiIds.stream().filter(id -> !anchoredAiIds.contains(id)).forEach(reviewRequiredAiIds::add);
+        return anchoredAiIds.isEmpty() ? "REVIEW_REQUIRED" : "CONFIRMED";
+    }
+
+    private static double percent(int numerator, int denominator) {
+        return denominator == 0 ? 0.0 : Math.round(1000.0 * numerator / denominator) / 10.0;
     }
 
     private static boolean manifestMatchesAnchors(CanonicalArtifactPackage aiPackage, List<SourceAnchor> anchors) {

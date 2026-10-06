@@ -22,7 +22,7 @@ public final class GeneratePairTraceabilityMatrixReport {
         ObjectNode root = GenerateFourLevelTraceabilityMatchReport.buildPairTraceability(aiRequirementId, testRequirementId);
 
         Path outputRoot = Atl105Paths.testOutput().resolve(
-                Path.of("ai-solution-independent-review", "four-level-traceability-matches"));
+                Path.of("ai-solution-independent-review", "four-level-matches"));
         String slug = slug(aiRequirementId) + "__vs__" + slug(testRequirementId);
         mapper.writerWithDefaultPrettyPrinter().writeValue(
                 outputRoot.resolve("pair-traceability-" + slug + ".json").toFile(), root);

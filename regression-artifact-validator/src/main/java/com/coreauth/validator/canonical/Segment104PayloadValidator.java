@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * <p>Rule anchors correspond to {@code SEG104-R-###} in
  * {@code specifications/ATL105/docs/specs/kb/segment-104/coverage/segment-104-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md,
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md,
  * replicating the {@link Segment101PayloadValidator} pattern. PROVISIONAL items P-01
  * (Ship-to/Ship-from Postal Code format) and P-02 (Segment 104 cardinality) are called out
  * inline; those checks will tighten once SME input arrives.

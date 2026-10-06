@@ -1,0 +1,24 @@
+{
+  "catalogId": "ATL105-SEG134-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "134",
+  "segmentName": "Transaction Attributes Data Segment",
+  "scope": "Segment 134 field-level rules and fixed-length serialization",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14374-14420 (Section 12.23)",
+  "rules": [
+    {"ruleId":"SEG134-R-001","title":"Segment 134 originates at BUYPASS (the Host)","class":"metadata","severity":"info","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","rule":"origin-buypass-host"}},
+    {"ruleId":"SEG134-R-002","title":"Segment 134 uses NO Field Separators — fixed-length/positional, identical wire-format pattern to Segment 131","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","rule":"no-field-separators"}},
+    {"ruleId":"SEG134-R-003","title":"Segment 134 maximum length is 19 alphanumeric characters (01-19/a-z/A-Z)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","rule":"segment-length-max-19"},"note":"Field-length arithmetic (3+4+1+1+10=19) exactly reconciles with the stated maximum, consistent with there being no separators."},
+    {"ruleId":"SEG134-R-004","title":"Segment Type is fixed value 134, Segment Length is 4 digits","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","element":"85,84","rule":"segment-type-length"},"note":"PROVISIONAL: Segment 134 is not among the seven segments independently confirmed (via Segment 120's cross-reference) to require a 4-digit Segment Length, yet its own field table lists Segment Length as 4 characters. Flag this as an apparent addition to that family pending SME confirmation (SEG134-SME-001)."},
+    {"ruleId":"SEG134-R-005","title":"Settlement Type (Element 198) is required, 1 character, valid values D (Dual message), S (Single message), X (Non-traditional Signature Debit — availability must be confirmed with First Data Project/Relationship Manager)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","element":"198","rule":"settlement-type-enumeration"},"note":"PROVISIONAL: value X's availability is explicitly conditional on a business relationship configuration, not a pure technical rule. Pending SME confirmation (SEG134-SME-002) on which merchants/configurations have Signature Debit enabled."},
+    {"ruleId":"SEG134-R-006","title":"Signature Required (Element 199) is required, 1 character, valid values T (required), F (not required), Space (device software logic determines)","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","element":"199","rule":"signature-required-enumeration"}},
+    {"ruleId":"SEG134-R-007","title":"Receipt Card Description (Element 200) is required, 10 characters, left-justified and space-filled (e.g., 'STAR      ')","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.23","segment":"134","element":"200","rule":"receipt-card-description-format"}}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG134-R-004"],"blocks":[],"registerId":"SEG134-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["SEG134-R-005"],"blocks":["Item 4"],"registerId":"SEG134-SME-002"},
+    {"id":"P-03","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 1","Item 2","Item 3"],"registerId":"SEG134-SME-003"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P03","item3_independence":"BLOCKED_BY_P03","item4_traceabilityMatrix":"BLOCKED_BY_P02","item5_mutationDefinition":"BLOCKED_BY_P01","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

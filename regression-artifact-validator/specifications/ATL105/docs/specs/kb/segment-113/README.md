@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.12 ECA/TeleCheck® Data Segment (pages 12-32 to 12-33), 11.3 ECA/TeleCheck® Service Transactions (pages 11-13 to 11-15), 10.8 Check Processing Requirements (pages 10-53 to 10-55), Elements 131-137 (chapter 13.2)
-**Training Methodology:** [SEGMENT-100-TRAINING-METHODOLOGY.md](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md) (8-Item Framework)
+**Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
 **Item Progress:** Item 1 — Coverage Closure complete; SME intake held 2026-09-22 (5 of 6 open items resolved, see [SME/TBA Input Register](segment-113-sme-tba-input-register.md))
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
@@ -44,7 +44,7 @@
 | Origin | Device | Section 12.12 opening |
 | Segment length range | 001–156 alphanumeric characters | Section 12.12 opening |
 | Included when | ECA/TeleCheck® Service Transaction Request, alongside Segment 110 (required) and Segment 111 (optional) | Section 11.3.1 Data Section 3 table |
-| Message family | ECA/TeleCheck® Service Transaction Request — NOT a Financial Transaction Request companion | Section 11.1.1 companion list (101/102/103/104/111 only) vs Section 11.3.1 (110/111/113) |
+| Message family | ECA/TeleCheck® Service Transaction Request (conditional, Field No. 6). Financial Transaction Request presence is **REVIEW_REQUIRED** (P-09, reopened 2026-09-29) | Section 11.3.1; the Chapter 12 matrix marks 113 in the Financial Transaction Request column (like Segment 110) and Section 12.12 says it can appear in any Data Section 3 field; only the Section 11.1.1 table omits it |
 | Companion segments | Segment 110 (Check Data Segment, required), Segment 111 (Variable Information Data Segment, optional) | Section 11.3.1 Data Section 3 table |
 
 ---
@@ -73,7 +73,7 @@ Rule ID prefix: `SEG113-R-###`. Every rule carries a canonical source anchor: `s
 
 | Rule ID | Title | Class |
 |---|---|---|
-| SEG113-R-001 | Exclusive to ECA/TeleCheck Service Transaction Request | structure |
+| SEG113-R-001 | Exclusive to ECA/TeleCheck Service Transaction Request (PROVISIONAL, P-09 reopened) | structure |
 | SEG113-R-002 | Conditional member of that request's Data Section 3 | applicability |
 | SEG113-R-003 | Segment Type is 113 | field |
 | SEG113-R-004 | Segment Length is 3 digits | field |
@@ -104,6 +104,8 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 - **P-04** (cross-segment Extended MICR Data enforcement) → catalog only, not code-enforced.
 - **P-05** (real AI artifacts) → still OPEN, pending intake.
 - **P-06** (real test data) → resolved to proceed with synthetic placeholders.
+- **P-09** (Financial Transaction Request presence) → **OPEN**, reopened 2026-09-29: the Chapter 12 matrix and Section 12.12 allow it; only the Section 11.1.1 table omits it.
+- **P-10** (are ECA/TeleCheck voids supported?) → **OPEN**: Section 10.8.2 lists Purchase only, but the Trace ID field is required on Void requests.
 
 ---
 
@@ -121,7 +123,7 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 
 ## 6. Do-Not-Assume Rules
 
-1. Do not certify a Segment 113 + Segment 101/102/103/104/108 combination as a supported message — no specification citation supports this; Segment 113's message family is exclusive.
+1. Do not certify or reject a Financial Transaction Request carrying Segment 113 until P-09 is answered: the Chapter 12 matrix and Section 12.12 allow it, while the Section 11.1.1 table omits it.
 2. Do not treat Element 63's incomplete summary as authoritative over Section 11.3.1's explicit layout table — SME-confirmed resolution favors 11.3.1.
 3. Do not invent an enumeration for Element 132 (ECA/TeleCheck Product Code) — confirmed free-form.
 4. Do not enforce the Void-requires-Trace-ID or cross-segment Extended-MICR-Data business conditions in the payload validator — both are cataloged only per SME direction.
@@ -129,3 +131,21 @@ See the [SME/TBA Input Register](segment-113-sme-tba-input-register.md) for the 
 6. Do not use Card Type `070` (Valero Fleet) for ECA/TeleCheck fixtures — the correct check-processing codes are `041` (Certegy), `045` (Generic check), and `046` (ECA/TeleCheck Service); all Segment 113 fixtures use `046`.
 7. Do not treat Section 11.3.1's field-table "R" (Required) marking for Segment 113 as overriding its own narrative "none, one, or more" applicability language — SME-confirmed 2026-09-22 to keep Segment 113 conditional, not required (`SEG113-SME-007`).
 8. Do not assume Segment 100's Partial Approval Indicator (Element 121) applies to check/ECA-TeleCheck transactions — no specification text supports this; that topic is intentionally not mirrored here.
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-113-rule-catalog.json) (18 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 113 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-113-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-113-flow.md) |
+| Topic deep-dives | [account-number](account-number-sme-tba-note.md) · [field-definitions](field-definitions-sme-tba-note.md) · [lifecycle](lifecycle-sme-tba-note.md) · [prompt-code](prompt-code-sme-tba-note.md) |
+| Topic flows | [account-number](account-number-flow.md) · [field-definitions](field-definitions-flow.md) · [lifecycle](lifecycle-flow.md) · [prompt-code](prompt-code-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-113-business-requirements.md](segment-113-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-113-rule-catalog.json) |
+| SME/TBA input register | [Input register](segment-113-sme-tba-input-register.md) |

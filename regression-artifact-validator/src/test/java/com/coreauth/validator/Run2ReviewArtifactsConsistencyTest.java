@@ -1,6 +1,7 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.paths.Atl105Paths;
+import com.coreauth.validator.coverage.RuleCatalogBaselineLoader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,10 @@ class Run2ReviewArtifactsConsistencyTest {
             assertThat(validation.path("versionResolutionId").asText())
                     .isEqualTo("ATL105-RUN2-SPEC-VERSION-RESOLUTION-001");
             assertThat(validation.path("sourceRun").asText()).isEqualTo("2026-09-23/Run1+Run2");
+            int currentDenominator = new RuleCatalogBaselineLoader().load(List.of(Atl105Paths.ruleCatalog(segment)))
+                    .inScopeRequirements().size();
+            assertThat(validation.path("assessment").path("coverageDenominator").asInt())
+                    .as("Current independent denominator for %s", segment).isEqualTo(currentDenominator);
             denominator += validation.path("assessment").path("coverageDenominator").asInt();
             confirmed += validation.path("assessment").path("confirmedRequirements").asInt();
             review += validation.path("assessment").path("reviewRequired").asInt();
@@ -64,10 +69,11 @@ class Run2ReviewArtifactsConsistencyTest {
                 "run2-weighted-executive-report.json")).toFile());
         assertThat(executive.path("sourceRun").asText()).isEqualTo("2026-09-23/Run1+Run2");
         executive = executive.path("weightedSummary");
-        assertThat(executive.path("coverageDenominator").asInt()).isEqualTo(denominator).isEqualTo(235);
-        assertThat(executive.path("confirmedRequirements").asInt()).isEqualTo(confirmed).isEqualTo(30);
-        assertThat(executive.path("reviewRequired").asInt()).isEqualTo(review).isEqualTo(70);
-        assertThat(executive.path("missingRequirements").asInt()).isEqualTo(missing).isEqualTo(135);
+        assertThat(executive.path("coverageDenominator").asInt()).isEqualTo(denominator);
+        assertThat(executive.path("confirmedRequirements").asInt()).isEqualTo(confirmed);
+        assertThat(executive.path("reviewRequired").asInt()).isEqualTo(review);
+        assertThat(executive.path("missingRequirements").asInt()).isEqualTo(missing);
+        assertThat(confirmed + review + missing).isEqualTo(denominator);
         assertThat(executive.path("fullChainRequirements").asInt()).isEqualTo(fullChain).isEqualTo(25);
 
         JsonNode queue = mapper.readTree(root.resolve(Path.of("run2-sme-review-queue",

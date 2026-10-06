@@ -7,7 +7,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 ## Training and Validation Entry Points
 
 - [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
-- [Segment Training Methodology](../../../test-validation-strategy/SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)
 - [Reusable Segment Training Questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 100 BR Baseline Index](../../../../test-output/test-json/knowledge/segment-100-br-baseline-index.json)
 - [Segment 100 Annexure BR Baseline](../../../../test-output/test-json/segment-100-annexure-br-baseline-package.json)
@@ -29,6 +29,13 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Serialization and Wire-Format Flow](serialization-wire-format/serialization-wire-format-flow.md)
 - [Final Closure SME Note](final-closure-sme-tba-note.md)
 - [Final Closure Flow](final-closure-flow.md)
+- [Response Code (Element 83) Training](response-code-training.md)
+- [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
+- [Appendix E Card Type Training (three separate code families)](appendix-e-card-type-training.md)
+- [Appendix F Product Code Training (table classification and transaction context)](appendix-f-product-code-training.md)
+- [Appendix G Transaction Type Training (code classification and flow boundaries)](appendix-g-transaction-type-training.md)
+- [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
+- [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
 ## Scope
 
@@ -47,6 +54,7 @@ It does not claim that Segment 100 alone represents every ATL105 transaction. Se
 ## Authoritative Neighboring Knowledge
 
 - [Segment 100 canonical anchors](../segment-100-canonical-anchors.md)
+- [Appendix code tables, including Appendix D state codes](../appendix-code-tables.md)
 - [Segment compatibility matrix](../segment-compatibility-matrix.md)
 - [Financial transaction request sections](../11-financial-transaction-request-sections.md)
 - [Section 1 and Section 2 refinement](../atl105-knowledge-notes/section1-section2-business-requirement-refinement.md)

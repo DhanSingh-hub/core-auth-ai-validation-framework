@@ -1,0 +1,17 @@
+{
+  "catalogId": "ATL105-SEG139-RULE-CATALOG-001",
+  "specification": "ATL105", "specificationVersion": "2026-3", "segment": "139", "segmentName": "Moneris Day End Batch Balance (Request) Segment",
+  "scope": "Segment 139 field-level rules for retrieving Moneris debit totals before day-end batch close",
+  "extractionEvidence": "regression-artifact-validator/docs/specs/extracted_text.txt lines 14522-14597 (Section 12.26)",
+  "rules": [
+    {"ruleId":"SEG139-R-001","title":"Segment 139 is used to retrieve debit totals for the previous period, to be used in the day end batch close transaction (Segment 141)","class":"applicability","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.26","segment":"139,141","rule":"purpose-precedes-batch-close"}},
+    {"ruleId":"SEG139-R-002","title":"Segment Type is fixed value 139, Segment Length is 3 digits, both sourced at the Device","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.26","segment":"139","element":"85,84","rule":"segment-type-length"}},
+    {"ruleId":"SEG139-R-003","title":"Terminal Identifier (Element 102), SPDH Header (Element 206), Moneris Terminal Identifier (Element 207), Moneris Merchant ID (Element 208), Batch Number (Element 214), and Language Indicator (Element 215) are all required, Device-sourced","class":"field","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.26","segment":"139","element":"102,206,207,208,214,215","rule":"batch-balance-request-fields"}},
+    {"ruleId":"SEG139-R-004","title":"Field Separator behavior is not explicitly summarized in Section 12.26 (no 'Note:' sentence, unlike Segments 135/141)","class":"serialization","severity":"error","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.26","segment":"139","rule":"separator-behavior-undocumented"},"note":"PROVISIONAL: pending SME confirmation (SEG139-SME-001)."}
+  ],
+  "provisionalItems": [
+    {"id":"P-01","status":"OPEN","impacts":["SEG139-R-004"],"blocks":["Item 5"],"registerId":"SEG139-SME-001"},
+    {"id":"P-02","status":"OPEN","impacts":["AI-artifacts, test-data"],"blocks":["Item 2","Item 3"],"registerId":"SEG139-SME-002"}
+  ],
+  "itemProgress": {"item1_coverageClosure":"IN_PROGRESS","item2_artifactComparison":"BLOCKED_BY_P02","item3_independence":"BLOCKED_BY_P02","item4_traceabilityMatrix":"NOT_STARTED","item5_mutationDefinition":"BLOCKED_BY_P01","item6_mutationExecution":"NOT_STARTED","item7_validatorEnhancement":"NOT_STARTED","item8_consolidatedReport":"NOT_STARTED"}
+}

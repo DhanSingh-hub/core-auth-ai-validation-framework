@@ -5,11 +5,60 @@
 **Primary source inspected:** `core-auth-test-generation-platform/src/pipeline`  
 **Purpose:** Define how Test Validation independently validates the AI Solution generation workflow and every outcome artifact
 
+**Validation-control register:** Stable `AIV-*` controls, implementation/test evidence, and the distinction between validator-control coverage and ATL105 BR coverage are maintained in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md). This plan defines the workflow; the control register defines how we verify that the workflow itself is implemented and tested.
+
+**Mandatory change synchronization:** Every change to AI-output validation code, schemas, adapters, canonical matching, coverage denominators/calculations, validation statuses, or report semantics must update this plan and the [Common LLM Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) in the same change set. Update the affected `AIV-*` control's implementation/test evidence in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md), add or revise regression tests for repeatable behavior, and refresh any affected per-delivery result. A code-only or report-only change without its strategy/handbook/evidence updates is incomplete.
+
+**Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
+
+**Coverage presentation (2026-10-06):** The complete-handoff HTML/PDF Coverage view reports producer-internal BR/TS-to-TC linkage, physical-output presence, segment-attributed linkage, exact transaction-target labels, scenario-type inventory and expected response-code declarations. Every percentage names its numerator and denominator. Segment counts overlap; scenario groups inherit linked BR attribution and TC groups use direct BR references. Do not infer normalized transaction-code or code/family coverage from producer labels or code mentions. Catalog rule counts remain a separate inventory; semantic rule coverage is `NOT_CALCULABLE` and code/family validation is `NOT_ASSESSED` until evidence-qualified comparison is performed. Hash-bind the AI inputs, response matrix and catalogs used by the view.
+
+**Bounded semantic assessment (2026-10-06):** Assess interpretation, BR objective, negative mutation, expected outcome and broader payload checks in that order. `scripts/assess-ai-semantic-batch.py` records an initial 100-case deterministic batch, explicit metadata-path mappings and two literal source predicates (Segment 100 fixed identity and Sequence Number six-digit format). Distinguish intentional invalid inputs from unexpected failures; preserved mutations and shared BR IDs do not certify negative effectiveness or business equivalence. Composite/absence mappings, valid control fixtures, response-family oracles and full-message validation remain explicit gates. Retain source/physical-file hashes and unassessed cases; never extrapolate a non-random batch to run-wide semantic coverage.
+
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
 
 ## 1. Understanding of the AI Architecture
+
+Appendix I training uses a source-only, hash-pinned table inventory and independent
+field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
+selected logical representations in Tables 001-009, not the complete segment wire
+grammar, network authorization, field allocation, conditional presence, or AI
+business equivalence. PASS means only the tested predicate passed; unknown scope
+is NOT_ASSERTABLE, missing network context is REVIEW_REQUIRED, and Table 009
+framing stays gated by SEG111-SME-002. No delivery coverage or execution-readiness
+promotion follows from these checks. See the [Appendix I addendum](../specs/kb/appendix-i/README.md).
+`AppendixISegmentWireValidator` separately checks common ASCII framing, contiguous
+records, exact lengths and separators for candidate Segment 111 fragments.
+Unknown encoding is NOT_ASSERTABLE and conflicted Table 009 framing remains
+REVIEW_REQUIRED. The first candidate generator emits 18 logical fragments and 16
+wire-segment fragments with explicit review gates; neither is a complete financial
+request or a canonical execution-ready package. Full-message/response validation
+and complete AI BR/TS/TC/TD reconstruction are still required.
+Additional Appendix I batches provide 178 draft logical candidate records for
+the remaining 69 tables, not executed or complete request fixtures. A bounded
+immutable-delivery intake hashes and joins the existing TC-000016 chain and
+reports missing segment length plus a single-record alias length discrepancy
+(AIF-0017). Identity joins and local predicates are measured separately from
+semantic equivalence, message-family validation and exhaustive AI coverage.
+The user selected offline source-backed full-message validation first.
+Appendix B's Segment 100 example declares 078 but represents 82 ASCII bytes;
+`AppendixIFullMessageSourceInspectionTest` reproduces the discrepancy from the
+hash-pinned source. `SEG111-SME-121` remains open. New synthetic candidates must
+calculate lengths under Section 12.1, without treating this process decision as
+approval of the example's other fields or companion applicability. Source
+inspection is not a generated full-request candidate or host-acceptance result.
+The continuation's `GenerateAppendixIScopedTraining` evaluates 11 selected
+logical examples for Tables 010-015 and 017, emits 22 linked review-only TC/TD
+records and physical TD files, and validates the strict canonical graph.
+Scoped source-anchor identities and assertion boundaries preserve partial-rule
+status. Its measured mutation catches apply only to those supplied mutations;
+the appendix-wide threshold remains unestablished. Input hashes and a
+302-draft-rule ledger preserve reproducibility without certifying completeness.
+AI comparison is deferred by the user; no new producer artifacts are assessed.
+Appendix I remains IN_PROGRESS in the shared training status and the next
+merge to Develop requires explicit user approval.
 
 The AI Solution is a staged test-generation platform, not only a final JSON generator.
 
@@ -69,6 +118,17 @@ AI stage output
   -> downstream traceability validation
   -> coverage impact
 ```
+
+### Adapter and evaluator safeguards
+
+- `AiCoverageAssessmentService` always uses `CanonicalTraceabilityValidator.validateForExecution` for readiness. Producer non-strict mode may not bypass execution metadata, BR/TS/TC `EXECUTION_READY` states, TD `EXECUTABLE` readiness, request/response envelopes, or availability dates. All six named strategies and validation results must pass against a positive, fully confirmed denominator. A linked chain with an unresolved scenario may retain structural coverage but must serialize a review-required execution verdict. Declared readiness is not independent SME approval or proof of source authenticity; those remain separate evidence gates.
+- Treat content variation between runs as normal; treat schema/format changes as contract changes. Every delivery must declare its producer, schema/contract version, generator version, specification version, and run identity.
+- Select only an explicit versioned adapter. Preserve the original files and record adapter version, hashes, row counts, unknown fields, and normalization dispositions. If no adapter supports the declared format, stop before matching and report `ADAPTER_UNSUPPORTED` / `NOT_ASSESSED`; do not guess field mappings or report zero coverage.
+- Verify normalization losslessly for supported fields: source-to-canonical counts, unique IDs, status/flag distributions, and every declared BR/TS/TC/TD link must reconcile. Workbook exports from one run are provenance-linked views, not extra records.
+- Keep adapter outcome, structural validity, semantic disposition, and full-chain/execution status separate. `NOT_ASSESSED` from parser/adapter failure is not `MISSING`, `AI_ONLY`, or proof of an AI defect.
+- Guard against validator false passes with source-anchored expected behavior, positive/negative/boundary/context tests, mutation tests for missing or incorrect checks, and a risk-based independent review sample. A green test suite proves only tested behavior; it does not certify the source interpretation.
+- If no SME/TBA reviewer is available, retain semantic decisions as `PENDING` / `REVIEW_REQUIRED`. Automation may prepare evidence and verify deterministic source facts, but may not create a reviewed event, confirm semantic equivalence, or certify coverage. Use a formally delegated approver or record explicit business risk acceptance; do not infer approval from silence.
+- If an AI BR appears source-supported but is absent from the Test Solution baseline, record a baseline-omission candidate and re-derive the rule independently from ATL105. Do not copy the AI BR into the Test Solution or classify it as `AI_ONLY` until the eligible baseline is complete and comparison is performed.
 
 An AI output can be syntactically valid and still be invalid because:
 
@@ -137,6 +197,7 @@ An AI output can be syntactically valid and still be invalid because:
 - Every approved item has an approval decision.
 - Rejected items do not feed downstream generation.
 - Review-required items remain visible.
+- Unresolved or blocked requirements remain in an explicit blocked/review collection with a reason; do not insert unlinked blocked records into the active canonical chain or count them as covered.
 - Approval actor, timestamp, source version, and decision are recorded.
 - Knowledge counts reconcile across extracted, approved, rejected, and flagged items.
 
@@ -203,7 +264,11 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 
 **Validate:**
 
-- Every data item links to a test case.
+- Every canonical data item links to a test case via `testData[].testCaseIds`. `coversBr` alone is not a TC link; preserve BR-only data as an unlinked review candidate until a real TC is authored and linked.
+- Appendix O/R/S/T/Y source packages may be normalized from `sourceAnchor`, `covers`, and `scenarioId` into canonical anchors and links. Preserve producer status as metadata; normalized artifacts remain `REVIEW_REQUIRED` until independently validated.
+- A BR-only TD candidate may record a deterministic BR -> TS -> TC path in provenance; this is not a canonical TD link and does not remove the payload/fixture requirement.
+- For Appendix O/R/S/T/Y, generate synthetic payload drafts only for source records claiming synthetic fixtures are sufficient. Drafts use `expectedValidation=REVIEW` and `readiness=REVIEW_REQUIRED`; they are structural inputs, not validated outcomes or approvals. External-fixture and no-BR records remain provenance-only.
+- Every canonical test-data item declares readiness as `EXECUTABLE`, `EXTERNAL_FIXTURE_REQUIRED`, or `REVIEW_REQUIRED`; missing or unknown readiness is normalized to `REVIEW_REQUIRED`, never promoted. Generated chain placeholders are always review-required. Readiness describes fixture usability, while `expectedValidation` describes whether the test input should pass or fail; do not conflate them.
 - Payload matches the expected schema and message category.
 - Required fields and segments are present.
 - Calculated values are marked and independently recalculated.

@@ -1,0 +1,58 @@
+{
+  "id" : "TD-APPI-C010-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C010-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C010-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-8",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t010-zero-fill-APPI-C010-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C010-02",
+        "tableId" : "010",
+        "ruleIds" : [ "APPI-T010-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-8",
+          "startLine" : 27751,
+          "endLine" : 27756
+        } ],
+        "logicalFields" : {
+          "visaBID" : "0000000001",
+          "visaTAP" : "012345ABCDEF",
+          "tppVarId" : "SYN001",
+          "reserved" : "  ",
+          "context" : {
+            "bidUsed" : false,
+            "tapUsed" : true,
+            "tppVarIncluded" : true
+          }
+        },
+        "clearScope" : [ "Hexadecimal component syntax", "Unused BID zero fill with TAP supplied" ],
+        "excludedClaims" : [ "Actual TAP authentication", "AN3 length resolution" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Unused BID is ten zeros",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "visaBID",
+          "value" : "0000000001",
+          "targetedNegative" : "Unused BID becomes nonzero"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

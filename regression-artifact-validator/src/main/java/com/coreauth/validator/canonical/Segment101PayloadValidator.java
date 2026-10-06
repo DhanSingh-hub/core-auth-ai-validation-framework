@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * <p>Rule anchors correspond to {@code SEG101-R-###} in
  * {@code specifications/ATL105/docs/specs/kb/segment-101/coverage/segment-101-rule-catalog.json}.
  *
- * <p>Item 1 baseline validator (Coverage Closure) per SEGMENT-100-TRAINING-METHODOLOGY.md.
+ * <p>Item 1 baseline validator (Coverage Closure) per COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md.
  * PROVISIONAL items P-01, P-02, P-03, P-05, P-06, P-07 are called out inline; those checks
  * will tighten once SME input arrives.
  */

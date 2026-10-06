@@ -1,0 +1,30 @@
+{
+  "_meta": {
+    "artifactId": "SEG105-MESSAGE-NUM-SEGMENTS-02-INVALID-001",
+    "purpose": "Negative: a Totals Request with the correct single Segment 105 but Element 63 = 02. Section 11.4.1.1 fixes Element 63 at 01.",
+    "context": {"messageFamily": "TOTALS_REQUEST"},
+    "expected": "REJECT",
+    "expectedRules": ["SEG105-R-020"]
+  },
+  "Totals Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "02",
+    "Totals Data Segment": {
+      "SegmentType": "105",
+      "SegmentLength": "106",
+      "InformationByte": "0",
+      "TerminalID": "TL500001",
+      "PromptCode": "990",
+      "TotalsDate": "333333",
+      "HardwareVersion": "HW01",
+      "SoftwareVersion": "SW010203",
+      "FirmwareVersion": "FW010203",
+      "SequenceNumber": "000126",
+      "GrandTotal": "00012550",
+      "CategoryTotals": [
+        {"CardLabel": "CC", "CardTypeTotalCount": "00003", "CardTypeTotalAmount": "00010050"},
+        {"CardLabel": "DB", "CardTypeTotalCount": "00001", "CardTypeTotalAmount": "00002500"}
+      ]
+    }
+  }
+}

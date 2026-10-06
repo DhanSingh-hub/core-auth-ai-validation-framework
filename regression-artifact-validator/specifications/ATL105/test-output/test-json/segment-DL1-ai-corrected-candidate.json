@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "artifact": "segment-dl1-corrected-ai-sample-candidate",
+    "status": "CANDIDATE_NOT_APPROVED_OR_EXECUTED",
+    "sourceArtifact": "../../test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000001.json",
+    "purpose": "Correct the unambiguous DL1 sample-data failures while preserving the original AI artifact unchanged.",
+    "limitations": [
+      "Logical fields only; this is not serialized DL1 wire data.",
+      "Synthetic fixture requires approval under SEGDL1-SME-001.",
+      "Exact field widths and padding remain unresolved under P-02.",
+      "The complete Card Type set remains under review under P-04."
+    ],
+    "corrections": [
+      "Use Table Load Response, the message family for DL1.",
+      "Include the DL1 End-of-Data Indicator '~'.",
+      "Use one documented Card Type code (020), matching the declared count of 01.",
+      "Omit DL6 because Card Type 173 is absent.",
+      "Use the positional Address Line 2 value 'SPRINGFIELD  IL 62701'.",
+      "Use the documented Merchant Phone format '(nnn)nnn-nnnn'."
+    ]
+  },
+  "context": {
+    "merchantProfileLoadFlag": "TABL"
+  },
+  "Table Load Request": {
+    "informationByte": "?",
+    "terminalIdentifier": "TESTCA0000001",
+    "loadType": "P",
+    "hardwareVersion": "0001",
+    "softwareVersion": "00000001",
+    "firmwareVersion": "00000001"
+  },
+  "Table Load Response": {
+    "representation": "logical-fields-only; not serialized to wire bytes",
+    "startOfDataBlockIndicator": ")",
+    "dataBlock1": {
+      "segment": "DL1",
+      "fields": {
+        "DataTypeIndicator": "#",
+        "MerchantName": "TEST MERCHANT",
+        "StoreNumber": "0000000000001234",
+        "AddressLine1": "123 TEST ST",
+        "AddressLine2": "SPRINGFIELD  IL 62701",
+        "MerchantPhoneNumber": "(555)555-0100",
+        "NumberofCardTypes": "01",
+        "CardTypes": [
+          "020"
+        ],
+        "EndofDataIndicator": "~"
+      }
+    },
+    "optionalDataBlocks": [],
+    "endOfLoadIndicator": "*"
+  }
+}

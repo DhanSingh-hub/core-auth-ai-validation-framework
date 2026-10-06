@@ -162,16 +162,7 @@ By segment: 100 (65), 102 (44), 101 (31), 109 (24), 108 (21), 113 (19), 105 (16)
 
 ## 9. Required corrections previously sent to the AI team
 
-Already communicated in `AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md`, restated here for one consolidated record:
-
-1. Publish one composite delivery manifest declaring both Run1 and Run2 parts and their roles.
-2. Correct specification-version generation — derive from the source manifest, not a code constant; fail generation on filename/manifest/hash disagreement.
-3. Publish a standalone, machine-readable scenario catalog (not just embedded in Run2 traceability).
-4. Replace scripted `APPROVED` labeling with honest review-state semantics (`GENERATED` / `READY_FOR_REVIEW` / `REVIEW_REQUIRED` / `SME_APPROVED`).
-5. Complete source anchors at every level using the shared `specification | version | section | segment | element | rule` identity, carried through BR → TS → TC → TD.
-6. Repair test-data accounting — count by actual resolved files (independent resolution found 8,945 vs AI's reported 8,856) and publish file path, SHA-256, and status per test case.
-7. Align QE payload schemas with the agreed contract; resolve naming inconsistencies (Section 7 above).
-8. Improve full-chain completeness — prioritize the 135 missing-coverage rules and the 1,586+2,462+461 broken chain links over increasing raw artifact counts.
+Communicated in `AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md` and tracked, with current status, as items [AIF-0001 to AIF-0008](../../registers/views/ai-feedback.md) in the ATL105 communication register: composite delivery manifest, specification-version generation, standalone scenario catalog, review-state semantics, source anchors, test-data accounting, QE payload schemas (Section 7 above), and full-chain completeness (the 135 missing-coverage rules and the 1,586 + 2,462 + 461 broken chain links). Later items (AIF-0009 onward) are in the same view.
 
 **Requested next-delivery acceptance package:** composite delivery manifest with hashes; approved requirement catalog with honest review status; standalone scenario catalog; test-case catalog; test-data manifest with physical file hashes; full traceability matrix; versioned schemas for every artifact type; generation summary recomputed from physical artifacts; known-gap list and client-value dependencies; machine-readable change log from the previous delivery.
 
@@ -185,10 +176,10 @@ Already communicated in `AI-SOLUTION-FEEDBACK-RUN1-RUN2-COMPOSITE.md`, restated 
 | `run2-br-ts-tc-td-gap-details.csv` | All 4,509 gap rows (requirement, segment, trace_status, reason, page, counts) |
 | `run2-orphan-scenarios.csv` | All 102 orphan scenarios |
 | `run2-traceability-gap-analysis.json` | Independently recomputed link-gap counts (machine-readable) |
-| `matched-business-requirements/all-matched-business-requirements.{md,csv,json}` | All 100 matched BR mappings, 749 AI↔Test links |
-| `four-level-traceability-matches/four-level-traceability-matches.{md,json}` | Full BR/TS/TC/TD side-by-side comparison, all 100 mappings |
-| `four-level-traceability-matches/confirmed-traceability-matches.{md,json}` | Same comparison, filtered to the 30 `CONFIRMED` BRs only |
-| `four-level-traceability-matches/confirmed-traceability-matches-segment-100.{md,json}` | Segment 100 only, confirmed BRs |
+| `matched-brs/all-matched-business-requirements.{md,csv,json}` | All 100 matched BR mappings, 749 AI↔Test links |
+| `four-level-matches/four-level-traceability-matches.{md,json}` | Full BR/TS/TC/TD side-by-side comparison, all 100 mappings |
+| `four-level-matches/confirmed-traceability-matches.{md,json}` | Same comparison, filtered to the 30 `CONFIRMED` BRs only |
+| `four-level-matches/confirmed-traceability-matches-segment-100.{md,json}` | Segment 100 only, confirmed BRs |
 | `run2-executive-report/run2-weighted-executive-report.{md,json,html}` | Section 5/7 weighted summary |
 | `run2-segment-reports/segment-*-run2-review.md` | Per-segment crosswalk detail (10 files) |
 | `run2-sme-review-queue/run2-sme-review-queue.md` | All 263 open SME/remediation items |

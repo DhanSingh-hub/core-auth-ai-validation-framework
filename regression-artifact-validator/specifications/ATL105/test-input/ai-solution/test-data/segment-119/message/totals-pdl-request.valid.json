@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "artifactId": "SEG119-MESSAGE-TOTALS-PDL-REQUEST-VALID-001",
+    "purpose": "Totals with Proprietary Data Load Request per Section 11.4.1.2: Data Sections 1 and 3 only, Segment 119 alone in Field No. 3, Element 63 = 01. Synthetic values. SegmentLength 156 follows the Section 12.17 table: 105 characters in the 16 separated fields and their 16 Field Separators, two 17-character card buckets (Card Label padded to 4), and the Field Separator after the last bucket. The field numbering is PROVISIONAL (SEG119-SME-009).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.2","segment":"119","rule":"sections-1-and-3-no-section-2"},
+      {"specification":"ATL105","version":"2026-3","section":"11.4.1.2,13","segment":"119","element":"63","rule":"totals-pdl-request-segment-count"}
+    ],
+    "context": {"messageFamily": "TOTALS_WITH_PROPRIETARY_DATA_LOAD_REQUEST"},
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-01", "P-02"]
+  },
+  "Totals with Proprietary Data Load Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "01",
+    "Totals with Proprietary Data Load Data Segment": {
+      "SegmentType": "119",
+      "SegmentLength": "156",
+      "InformationByte": "0",
+      "TerminalID": "TL500001",
+      "PromptCode": "990",
+      "EmployeeNumber": "",
+      "Password": "",
+      "TotalsDate": "333333",
+      "HardwareVersion": "HW01",
+      "SoftwareVersion": "SW010203",
+      "FirmwareVersion": "FW010203",
+      "SequenceNumber": "000127",
+      "DeviceCardTableVersion": "00000000000000000000000000000000001",
+      "HostDiscountTimestamp": "202609291200",
+      "CurrencyCode": "",
+      "GrandTotal": "00012550",
+      "CategoryTotals": [
+        {"CardLabel": "CC", "CardTypeTotalCount": "00003", "CardTypeTotalAmount": "00010050"},
+        {"CardLabel": "DB", "CardTypeTotalCount": "00001", "CardTypeTotalAmount": "00002500"}
+      ]
+    }
+  }
+}

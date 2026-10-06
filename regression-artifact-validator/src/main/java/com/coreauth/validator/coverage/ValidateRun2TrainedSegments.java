@@ -1,9 +1,14 @@
 package com.coreauth.validator.coverage;
 
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
+import com.coreauth.validator.canonical.Element83AiCoverageValidator;
 import com.coreauth.validator.canonical.RequirementCrosswalkEntry;
 import com.coreauth.validator.paths.Atl105Paths;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,13 +64,32 @@ public final class ValidateRun2TrainedSegments {
                     safeSize(segmentPackage.getTestCases()),
                     safeSize(segmentPackage.getTestData()), assessment, payloadBatch);
             writer.write(evidence, outputRoot.resolve("segment-" + segment + "-validation.json"));
-            System.out.printf("segment=%s br=%d sc=%d tc=%d td=%d confirmed=%.1f fullChain=%.1f "
+            System.out.printf("segment=%s br=%d sc=%d tc=%d td=%d ruleCoverage=%s fullChainRuleCoverage=%s "
                             + "payloads=%d valid=%d invalid=%d validator=%s%n",
                     segment, evidence.requirements(), evidence.scenarios(), evidence.testCases(), evidence.testData(),
-                    assessment.confirmedRequirementCoveragePercent(), assessment.fullChainCoveragePercent(),
+                    formatPercent(assessment.confirmedRequirementCoveragePercent()),
+                    formatPercent(assessment.fullChainCoveragePercent()),
                     payloadBatch.applicablePayloadFiles(), payloadBatch.validPayloadFiles(),
                     payloadBatch.invalidPayloadFiles(), payloadBatch.validatorImplemented());
         }
+
+                var element83Result = new Element83AiCoverageValidator().validateFiles(adapted.artifactPackage(), runRoot);
+                ObjectMapper mapper = new ObjectMapper();
+                ObjectNode element83Report = mapper.createObjectNode();
+                element83Report.put("artifact", "atl105-run2-element-83-ai-coverage");
+                element83Report.put("specification", "ATL105");
+                element83Report.put("specificationVersion", "2026-3");
+                element83Report.put("evidenceRun", "2026-09-23/Run2");
+                element83Report.put("valid", element83Result.isValid());
+                ArrayNode errors = element83Report.putArray("errors");
+                element83Result.errors().forEach(error -> errors.add(error.reason()));
+                ArrayNode warnings = element83Report.putArray("warnings");
+                element83Result.warnings().forEach(warnings::add);
+                Path element83Output = outputRoot.resolve("element-83-response-code-coverage.json");
+                Files.createDirectories(element83Output.getParent());
+                mapper.writerWithDefaultPrettyPrinter().writeValue(element83Output.toFile(), element83Report);
+                System.out.printf("element=83 responseCodeCoverage=%s findings=%d report=%s%n",
+                                element83Result.isValid() ? "COMPLETE" : "INCOMPLETE", element83Result.errors().size(), element83Output);
     }
 
     private static List<RequirementCrosswalkEntry> canonicalCrosswalk(Run2Crosswalk crosswalk) {
@@ -85,4 +109,8 @@ public final class ValidateRun2TrainedSegments {
     private static int safeSize(List<?> values) {
         return values == null ? 0 : values.size();
     }
+
+        private static String formatPercent(Double value) {
+                return value == null ? "NOT_CALCULABLE" : "%.1f%%".formatted(value);
+        }
 }

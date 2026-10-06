@@ -60,8 +60,8 @@ class Segment111ArtifactComparisonTest {
         void loadsIndependentRuleCatalog() throws IOException {
             Catalog catalog = new Segment111RuleCatalogLoader().load(SEG111_RULE_CATALOG);
 
-            assertThat(catalog.catalogId()).isEqualTo("segment-111-rule-catalog");
-            assertThat(catalog.rules()).hasSize(7);
+            assertThat(catalog.catalogId()).isEqualTo("ATL105-SEG111-RULE-CATALOG-001");
+            assertThat(catalog.rules()).hasSize(8);
             assertThat(catalog.anchors())
                 .allMatch(a -> "ATL105".equals(a.getSpecification()) && "2026-3".equals(a.getVersion()));
         }
@@ -188,7 +188,7 @@ class Segment111ArtifactComparisonTest {
             CanonicalArtifactPackage aiPackage = new CanonicalArtifactPackage();
             ComparisonReport report = new Segment111ArtifactComparison().compare(aiPackage, catalog.anchors());
             assertThat(report.matched()).isEmpty();
-            assertThat(report.missing()).hasSize(7);
+            assertThat(report.missing()).hasSize(8);
             assertThat(report.overallDecision()).isEqualTo("REJECTED_MISSING_COVERAGE");
             assertThat(report.precision()).isEqualTo(1.0);
         }

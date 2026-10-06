@@ -1,0 +1,394 @@
+{
+  "batchId": "APPI-CANDIDATES-068-081",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "readiness": "REVIEW_REQUIRED",
+  "payloadScope": "LOGICAL_FRAGMENT",
+  "knowledgeReference": "appendix-i-068-081.json",
+  "policy": "Synthetic logical fragments only. PASS/FAIL below are proposed outcomes of named local predicates, not executed host results. No AI artifact, live identifier, full financial request, certification, approval or production enablement is asserted. Negative examples each change one targeted field or logical condition. Width predicates use the supplied ASCII values; source conflicts remain gated.",
+  "tableCoverage": [
+    {"tableId":"068","classification":"CLEAR_LOCAL_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C068-001"],"nestedLayoutCoverage":[],"gaps":["Currency scale, minimum/empty value and fee-slot assignment remain unresolved."],"pendingIssueIds":["APPI-T068-Q001"]},
+    {"tableId":"069","classification":"CLEAR_LOCAL_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C069-001"],"nestedLayoutCoverage":[],"gaps":["Currency scale, zero/absence policy and joint presence with fee 1 remain unresolved."],"pendingIssueIds":["APPI-T069-Q001"]},
+    {"tableId":"070","classification":"CLEAR_LOCAL_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C070-001"],"nestedLayoutCoverage":[],"gaps":["No inferred currency scale, minimum/zero rule or mandatory interpretation of should-send."],"pendingIssueIds":["APPI-T070-Q001"]},
+    {"tableId":"071","classification":"CLEAR_DATA_LAYOUT_CONFLICTED_EXAMPLE_AND_REFERENCE","candidateIds":["APPI-C071-001"],"nestedLayoutCoverage":[],"gaps":["Printed four-byte example conflicts with five-byte data definition.","Migration reference to sub-table 64 unresolved.","Actual network assignment not verified."],"pendingIssueIds":["APPI-T071-Q001","APPI-T071-Q002","APPI-T071-Q003"]},
+    {"tableId":"072","classification":"CLEAR_LOCAL_CANDIDATE_WITH_EXTERNAL_GAPS","candidateIds":["APPI-C072-001"],"nestedLayoutCoverage":[],"gaps":["No segment-delimiter escaping or complete special-character repertoire inferred.","Moneris encoding/assignment and missing-original-identifier behavior not verified."],"pendingIssueIds":["APPI-T072-Q001","APPI-T072-Q002"]},
+    {"tableId":"073","classification":"CLEAR_LOCAL_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C073-001"],"nestedLayoutCoverage":[],"gaps":["Amount scale, zero policy and required/exclusive network context not inferred."],"pendingIssueIds":["APPI-T073-Q001"]},
+    {"tableId":"075","classification":"CLEAR_LOGICAL_TAG_VALUES_WIRE_GRAMMAR_GATED","candidateIds":["APPI-C075-001"],"nestedLayoutCoverage":[
+      {"subTableId":"01","classification":"CLEAR_VALUE_CANDIDATE","candidateIds":["APPI-C075-002"],"gaps":["Tag presence, wire header widths and order not resolved."]},
+      {"subTableId":"02","classification":"CLEAR_VALUE_CANDIDATE","candidateIds":["APPI-C075-003"],"gaps":["Tag presence and wire grammar not resolved."]},
+      {"subTableId":"03","classification":"CLEAR_WIDTH_AND_ROLE_CANDIDATE","candidateIds":["APPI-C075-004"],"gaps":["No identifier character subset or real plan assignment inferred."]},
+      {"subTableId":"04","classification":"CLEAR_WIDTH_AND_ROLE_CANDIDATE","candidateIds":["APPI-C075-005"],"gaps":["No identifier character subset or real fleet-client assignment inferred."]},
+      {"subTableId":"05","classification":"CLEAR_WIDTH_AND_SCALE_CANDIDATE","candidateIds":["APPI-C075-006"],"gaps":["Individual character class, rounding and wire grammar not inferred."]}
+    ],"gaps":["Logical tag values are not serialized TLV; the five tags are not claimed mandatory.","Enrollment, plan/client authority and exact serialization within 53 bytes remain gated."],"pendingIssueIds":["APPI-T075-Q001","APPI-T075-Q002"]},
+    {"tableId":"076","classification":"CLEAR_POSITIONAL_DATA_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C076-001"],"nestedLayoutCoverage":[
+      {"subTableId":"line-item-repeat","classification":"CLEAR_POSITIONAL_CANDIDATE","candidateIds":["APPI-C076-002"],"gaps":["Unit discount, flat rate and total discount scales/defaults not inferred.","Fuel-code assignment and program eligibility are synthetic assumptions, not verified facts."]}
+    ],"gaps":["No production or enrollment claim; ambiguous length wording retained.","Count-zero, maximum-count and explicit scale endpoints supplied as logical variants, not host outcomes."],"pendingIssueIds":["APPI-T076-Q001","APPI-T076-Q002"]},
+    {"tableId":"077","classification":"CLEAR_FIXED_DATA_CANDIDATE_WITH_GAPS","candidateIds":["APPI-C077-001"],"nestedLayoutCoverage":[],"gaps":["No implied currency scale or multiproduct association/reconciliation asserted."],"pendingIssueIds":["APPI-T077-Q001"]},
+    {"tableId":"078","classification":"LOGICAL_SUBTABLE_CANDIDATES_FULL_WIRE_GATED","candidateIds":["APPI-C078-001"],"nestedLayoutCoverage":[
+      {"subTableId":"structure-78","classification":"PARTIAL_LOGICAL_IDENTIFIER_ONLY_WIRE_GATED","candidateIds":["APPI-C078-002"],"gaps":["Wrapper versus outer ID, array-length field and total-length count basis unresolved; no blob serialization."]},
+      {"subTableId":"product-line-item-group","classification":"CLEAR_PRODUCT_CODE_FRAGMENT_LENGTH_GATED","candidateIds":["APPI-C078-003"],"gaps":["Three-bit count versus n3 length and two-digit example unresolved; no product-length value fabricated."]},
+      {"subTableId":"01","classification":"CLEAR_SUBTABLE_FRAGMENT","candidateIds":["APPI-C078-004"],"gaps":["Whole blob, tag presence/order and service-to-segment correlation not inferred."]},
+      {"subTableId":"02","classification":"PARTIAL_ALPHA_AND_OPTIONALITY_WIDTH_GATED","candidateIds":["APPI-C078-005"],"gaps":["Fixed 35 header versus variable-alpha data unresolved; no padding/serialized description approved."]},
+      {"subTableId":"03","classification":"CLEAR_SUBTABLE_FRAGMENT","candidateIds":["APPI-C078-006"],"gaps":["No required presence or tax computation inferred."]},
+      {"subTableId":"04","classification":"CLEAR_SUBTABLE_FRAGMENT","candidateIds":["APPI-C078-007"],"gaps":["Absence/false representation and mandatory amount implication unresolved."]},
+      {"subTableId":"05","classification":"CLEAR_CONDITIONED_SUBTABLE_FRAGMENT","candidateIds":["APPI-C078-008"],"gaps":["Includes logical 04=1 premise; no missing-amount rejection inferred."]},
+      {"subTableId":"06","classification":"CLEAR_FORMAL_SCALE_SAMPLE_LABEL_GATED","candidateIds":["APPI-C078-009"],"gaps":["Printed 0025=2.5% conflict is not used as oracle."]},
+      {"subTableId":"10","classification":"CLEAR_DEFINED_SELECTOR_FRAGMENT","candidateIds":["APPI-C078-010"],"gaps":["Other/national terminology unresolved; no sample 07/08/09 selector invented."]},
+      {"subTableId":"11","classification":"CLEAR_CONDITIONED_SUBTABLE_FRAGMENT","candidateIds":["APPI-C078-011"],"gaps":["Includes logical 10=1 premise; no mandatory presence or sample selector 08 inferred."]},
+      {"subTableId":"12","classification":"CLEAR_DEFINED_SELECTOR_AND_SCALE_FRAGMENT","candidateIds":["APPI-C078-012"],"gaps":["No sample selector 09 or tax formula inferred."]},
+      {"subTableId":"14","classification":"CLEAR_INTERNAL_CODE_FRAGMENT_PRODUCTION_GATED","candidateIds":["APPI-C078-013"],"gaps":["Named appendix equivalence and production activation unverified; internal element-243 list explicitly cited."]}
+    ],"gaps":["No complete 078 blob, full message, extra selector or maximum legal enclosing payload inferred.","Previously-processed exception cutoff, tax-total mapping, required tags and tax-presence semantics unresolved."],"pendingIssueIds":["APPI-T078-Q001","APPI-T078-Q002","APPI-T078-Q003","APPI-T078-Q004","APPI-T078-Q005","APPI-T078-Q006","APPI-T078-Q007","APPI-T078-Q008","APPI-T078-Q009","APPI-T078-Q010"]},
+    {"tableId":"079","classification":"CLEAR_SUBTABLE_FRAGMENTS_AGGREGATE_POLICY_GATED","candidateIds":["APPI-C079-001"],"nestedLayoutCoverage":[
+      {"subTableId":"01","classification":"CLEAR_SUBTABLE_FRAGMENT","candidateIds":["APPI-C079-002"],"gaps":["False/absence and required presence unresolved."]},
+      {"subTableId":"02","classification":"CLEAR_CONDITIONED_SUBTABLE_FRAGMENT","candidateIds":["APPI-C079-003"],"gaps":["Includes logical 01=1 premise; no omission rejection inferred."]},
+      {"subTableId":"03","classification":"CLEAR_FUEL_RATE_FRAGMENT","candidateIds":["APPI-C079-004"],"gaps":["Nonfuel/mixed-product rate semantics unresolved."]},
+      {"subTableId":"07","classification":"CLEAR_SUBTABLE_FRAGMENT","candidateIds":["APPI-C079-005"],"gaps":["Other/national terminology and false/absence unresolved."]},
+      {"subTableId":"08","classification":"CLEAR_CONDITIONED_SUBTABLE_FRAGMENT","candidateIds":["APPI-C079-006"],"gaps":["Includes logical 07=1 premise; no mandatory-presence claim."]},
+      {"subTableId":"09","classification":"CLEAR_FUEL_RATE_FRAGMENT","candidateIds":["APPI-C079-007"],"gaps":["Nonfuel/mixed-product rate semantics unresolved."]}
+    ],"gaps":["Local 999 versus envelope cap remains gated; no maximally sized payload.","No mandatory nested order/set, duplicate policy or summed-078 reconciliation asserted."],"pendingIssueIds":["APPI-T079-Q001","APPI-T079-Q002","APPI-T079-Q003","APPI-T079-Q004"]},
+    {"tableId":"080","classification":"CLEAR_DATA_FRAGMENT_LENGTH_HEADER_GATED","candidateIds":["APPI-C080-001"],"nestedLayoutCoverage":[],"gaps":["N2 versus generic n3 header conflict; no 11/011 choice serialized.","Network/presence and genuine wallet-provider assignment unresolved."],"pendingIssueIds":["APPI-T080-Q001","APPI-T080-Q002","APPI-T080-Q003"]},
+    {"tableId":"081","classification":"CLEAR_DATA_AND_PRESENCE_FRAGMENT_HEADER_RESERVED_GATED","candidateIds":["APPI-C081-001"],"nestedLayoutCoverage":[],"gaps":["n2 versus generic n3 header conflict; no 11/011 choice serialized.","Remaining reserved-byte placement/width and genuine gateway assignment unresolved."],"pendingIssueIds":["APPI-T081-Q001","APPI-T081-Q002","APPI-T081-Q003"]}
+  ],
+  "candidates": [
+    {
+      "candidateId":"APPI-C068-001","tableId":"068","ruleIds":["APPI-T068-R001","APPI-T068-R002"],"sourceEvidence":[{"section":"Appendix I-77","startLine":31746,"endLine":31746},{"section":"Appendix I-78","startLine":31756,"endLine":31764}],
+      "syntheticData":{"positive":{"tableId":"068","declaredDataLength":"004","data":"1250","logicalContext":{"transaction":"EV charging","businessRole":"merchant additional fee 1"}},"negative":{"tableId":"068","declaredDataLength":"005","data":"1250","logicalContext":{"transaction":"EV charging","businessRole":"merchant additional fee 1"}},"positiveVariants":[{"declaredDataLength":"012","data":"123456789012"}]},
+      "clearScope":"Fixed selector; three-digit data-length field; numeric fee digits up to 12; EV additional-fee role.",
+      "excludedClaims":["Currency scale","Registered network behavior","Empty/zero/sign validity","Full segment or request"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data consists only of ASCII digits and length <= 12","outcome":"PASS"},{"predicate":"integer(declaredDataLength) equals actual data byte count","outcome":"PASS"}],"negative":[{"predicate":"integer(declaredDataLength) equals actual data byte count","outcome":"FAIL"},{"predicate":"data consists only of ASCII digits and length <= 12","outcome":"PASS"}]},
+      "mutation":{"target":"declaredDataLength","from":"004","to":"005","unchanged":"data and logical context","targetedFailure":"declared length differs from four actual bytes"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C069-001","tableId":"069","ruleIds":["APPI-T069-R001","APPI-T069-R002"],"sourceEvidence":[{"section":"Appendix I-78","startLine":31775,"endLine":31784}],
+      "syntheticData":{"positive":{"tableId":"069","declaredDataLength":"004","data":"0250","logicalContext":{"transaction":"EV charging","businessRole":"merchant additional fee 2"}},"negative":{"tableId":"069","declaredDataLength":"004","data":"02A0","logicalContext":{"transaction":"EV charging","businessRole":"merchant additional fee 2"}},"positiveVariants":[{"declaredDataLength":"012","data":"000000000250"}]},
+      "clearScope":"Numeric fee-2 data and local maximum, distinct selector and EV role.",
+      "excludedClaims":["Amount precision","Required co-presence of 068","Actual fee-slot assignment","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data is numeric","outcome":"PASS"},{"predicate":"declared length equals actual four bytes","outcome":"PASS"}],"negative":[{"predicate":"data is numeric","outcome":"FAIL"},{"predicate":"declared length equals actual four bytes","outcome":"PASS"}]},
+      "mutation":{"target":"data[2]","from":"5","to":"A","unchanged":"length, selector and context","targetedFailure":"one alphabetic character in numeric fee"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C070-001","tableId":"070","ruleIds":["APPI-T070-R001","APPI-T070-R002"],"sourceEvidence":[{"section":"Appendix I-78","startLine":31794,"endLine":31803}],
+      "syntheticData":{"positive":{"tableId":"070","declaredDataLength":"004","data":"6000","logicalContext":{"card":"debit","stage":"authorization request","businessRole":"anticipated completion amount"}},"negative":{"tableId":"070","declaredDataLength":"004","data":"60A0","logicalContext":{"card":"debit","stage":"authorization request","businessRole":"anticipated completion amount"}},"positiveVariants":[{"declaredDataLength":"012","data":"000000006000"}]},
+      "clearScope":"Variable numeric completion estimate, 12-byte cap, debit-authorization should-send context.",
+      "excludedClaims":["Mandatory all-debit presence","Currency scale","Authorizer selected or approval outcome","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"numeric data length <= 12","outcome":"PASS"},{"predicate":"context is the described debit authorization completion-estimate use","outcome":"PASS"}],"negative":[{"predicate":"numeric data length <= 12","outcome":"FAIL"},{"predicate":"declared byte count remains correct","outcome":"PASS"}]},
+      "mutation":{"target":"data[2]","from":"0","to":"A","unchanged":"width, selector and context","targetedFailure":"nonnumeric completion estimate"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C071-001","tableId":"071","ruleIds":["APPI-T071-R001","APPI-T071-R002"],"sourceEvidence":[{"section":"Appendix I-78","startLine":31813,"endLine":31818},{"section":"Appendix I-79","startLine":31830,"endLine":31845}],
+      "syntheticData":{"positive":{"tableId":"071","declaredDataLength":"005","data":"A1B2C","logicalContext":{"network":"Visa","entity":"hypothetical network-assigned enabler","assignmentVerified":false}},"negative":{"tableId":"071","declaredDataLength":"005","data":"A1B2C","logicalContext":{"network":"MasterCard","entity":"hypothetical network-assigned enabler","assignmentVerified":false}},"positiveVariants":[{"network":"Interlink","declaredDataLength":"005","data":"D3E4F"}]},
+      "clearScope":"Formal five-byte alphanumeric EVV definition and explicit Visa/Interlink-only scope, not the conflicting printed example.",
+      "excludedClaims":["Actual assignment","Resolution of sub-table-64 migration reference","Approval of printed four-byte example","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"five ASCII alphanumeric data bytes with declared length 005","outcome":"PASS"},{"predicate":"network is Visa or Interlink","outcome":"PASS"}],"negative":[{"predicate":"five ASCII alphanumeric data bytes with declared length 005","outcome":"PASS"},{"predicate":"network is Visa or Interlink","outcome":"FAIL"}]},
+      "mutation":{"target":"logicalContext.network","from":"Visa","to":"MasterCard","unchanged":"all field values and synthetic assignment status","targetedFailure":"outside explicitly stated network scope"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C072-001","tableId":"072","ruleIds":["APPI-T072-R001","APPI-T072-R002"],"sourceEvidence":[{"section":"Appendix I-79","startLine":31853,"endLine":31867},{"section":"Appendix K-30","startLine":34211,"endLine":34227}],
+      "syntheticData":{"positive":{"tableId":"072","declaredDataLength":"005","data":"AB-12","logicalContext":{"network":"MasterCard","stage":"subsequent request","originalResponse":{"segment":"112","tableId":"038","data":"AB-12"}}},"negative":{"tableId":"072","declaredDataLength":"005","data":"AB-13","logicalContext":{"network":"MasterCard","stage":"subsequent request","originalResponse":{"segment":"112","tableId":"038","data":"AB-12"}}},"positiveVariants":[{"declaredDataLength":"022","data":"ABCDEFGHIJKLMNOPQRSTUV","originalResponseData":"ABCDEFGHIJKLMNOPQRSTUV","network":"Maestro"}]},
+      "clearScope":"At-most-22-byte identifier, special-character permission and unchanged replay of a supplied original identifier.",
+      "excludedClaims":["Complete special-character repertoire or separator escaping","Actual network response","Moneris encoding","Automatic response inclusion without 049/22=Y","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data length is at most 22 and declared count matches","outcome":"PASS"},{"predicate":"subsequent identifier equals original response identifier","outcome":"PASS"}],"negative":[{"predicate":"data length is at most 22 and declared count matches","outcome":"PASS"},{"predicate":"subsequent identifier equals original response identifier","outcome":"FAIL"}]},
+      "mutation":{"target":"data[4]","from":"2","to":"3","unchanged":"original response value, width and context","targetedFailure":"subsequent request does not retain original link value"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C073-001","tableId":"073","ruleIds":["APPI-T073-R001","APPI-T073-R002"],"sourceEvidence":[{"section":"Appendix I-79","startLine":31875,"endLine":31885}],
+      "syntheticData":{"positive":{"tableId":"073","declaredDataLength":"012","data":"000000006000","logicalContext":{"consumer":"MasterCard","businessRole":"anticipated future completion"}},"negative":{"tableId":"073","declaredDataLength":"012","data":"00000000600A","logicalContext":{"consumer":"MasterCard","businessRole":"anticipated future completion"}}},
+      "clearScope":"Exactly twelve numeric bytes, 012 length value and future-completion meaning.",
+      "excludedClaims":["Currency scale","Guaranteed decline prevention","MasterCard-only prohibition","Zero-amount business validity","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"exactly twelve numeric data bytes","outcome":"PASS"},{"predicate":"declared count equals twelve actual bytes","outcome":"PASS"}],"negative":[{"predicate":"exactly twelve numeric data bytes","outcome":"FAIL"},{"predicate":"declared count equals twelve actual bytes","outcome":"PASS"}]},
+      "mutation":{"target":"data[11]","from":"0","to":"A","unchanged":"byte count and context","targetedFailure":"nonnumeric fixed-width amount"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-001","tableId":"075","ruleIds":["APPI-T075-R001"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31902,"endLine":31912}],
+      "syntheticData":{"positive":{"tableId":"075","logicalContext":{"network":"Visa","merchantProgram":"Visa Merchant Discount Program","enrollment":"synthetic premise, not verified"},"orderedTagModel":[{"tag":"01","valueLength":1,"value":"2"},{"tag":"02","valueLength":1,"value":"M"},{"tag":"03","valueLength":4,"value":"P123"},{"tag":"04","valueLength":15,"value":"CLIENT000000001"},{"tag":"05","valueLength":12,"value":"000000012345"}]},"negative":{"tableId":"074","logicalContext":{"network":"Visa","merchantProgram":"Visa Merchant Discount Program","enrollment":"synthetic premise, not verified"},"orderedTagModel":[{"tag":"01","valueLength":1,"value":"2"},{"tag":"02","valueLength":1,"value":"M"},{"tag":"03","valueLength":4,"value":"P123"},{"tag":"04","valueLength":15,"value":"CLIENT000000001"},{"tag":"05","valueLength":12,"value":"000000012345"}]}},
+      "clearScope":"Fixed 075 selector and a populated logical model of the five listed discount tags. Model ordering follows source presentation only.",
+      "excludedClaims":["Serialized TLV","Computed outer length or compliance with 53-byte cap for this model","Mandatory tag set/order","Real program enrollment","Definition of table 074","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"selector for this discount-program layout is 075","outcome":"PASS"},{"predicate":"logical values have the stated individual value lengths","outcome":"PASS"}],"negative":[{"predicate":"selector for this discount-program layout is 075","outcome":"FAIL"},{"predicate":"logical values have the stated individual value lengths","outcome":"PASS"}]},
+      "mutation":{"target":"tableId","from":"075","to":"074","unchanged":"all logical tags and context","targetedFailure":"wrong selector; 074 is only a negative mutation, never a defined layout"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-002","tableId":"075","nestedSelector":"01","ruleIds":["APPI-T075-R002"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31914,"endLine":31919}],
+      "syntheticData":{"positive":{"tag":"01","valueLength":1,"value":"2","meaning":"cost plus"},"negative":{"tag":"01","valueLength":1,"value":"4","meaning":"cost plus"},"positiveVariants":[{"value":"1","meaning":"retail minus"},{"value":"3","meaning":"best of retail minus or cost plus"}]},
+      "clearScope":"One-byte method code and all three explicitly listed meanings.",
+      "excludedClaims":["Method calculation algorithm","Wire length-header width","Mandatory presence or tag order"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"value is one of 1/2/3","outcome":"PASS"},{"predicate":"value has one byte","outcome":"PASS"}],"negative":[{"predicate":"value is one of 1/2/3","outcome":"FAIL"},{"predicate":"value has one byte","outcome":"PASS"}]},
+      "mutation":{"target":"value","from":"2","to":"4","unchanged":"tag, valueLength and intended cost-plus meaning","targetedFailure":"unlisted method code cannot represent the unchanged intended meaning"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-003","tableId":"075","nestedSelector":"02","ruleIds":["APPI-T075-R003"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31921,"endLine":31925}],
+      "syntheticData":{"positive":{"tag":"02","valueLength":1,"value":"M"},"negative":{"tag":"02","valueLength":1,"value":"X"},"positiveVariants":[{"value":"V","meaning":"Visa"},{"value":"M","meaning":"Merchant"}]},
+      "clearScope":"One-byte discount-agent code M or V.",
+      "excludedClaims":["Wire header width","Presence requirement","Method-agent compatibility restrictions"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"agent value is M or V","outcome":"PASS"}],"negative":[{"predicate":"agent value is M or V","outcome":"FAIL"},{"predicate":"value remains one byte","outcome":"PASS"}]},
+      "mutation":{"target":"value","from":"M","to":"X","unchanged":"tag and valueLength","targetedFailure":"unlisted discount agent"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-004","tableId":"075","nestedSelector":"03","ruleIds":["APPI-T075-R004"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31927,"endLine":31930}],
+      "syntheticData":{"positive":{"tag":"03","valueLength":4,"value":"P123","logicalRole":"synthetic applied discount plan"},"negative":{"tag":"03","valueLength":4,"value":"P12","logicalRole":"synthetic applied discount plan"}},
+      "clearScope":"Four-byte applied-plan identifier logical value.",
+      "excludedClaims":["Real plan assignment","Individual character-class restrictions","Padding","Serialized tag headers"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"actual plan value byte count equals stated valueLength 4","outcome":"PASS"}],"negative":[{"predicate":"actual plan value byte count equals stated valueLength 4","outcome":"FAIL"}]},
+      "mutation":{"target":"value","from":"P123","to":"P12","unchanged":"tag, stated valueLength and role","targetedFailure":"three-byte value for four-byte plan field"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-005","tableId":"075","nestedSelector":"04","ruleIds":["APPI-T075-R005"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31932,"endLine":31935}],
+      "syntheticData":{"positive":{"tag":"04","valueLength":15,"value":"CLIENT000000001","logicalRole":"synthetic fleet client"},"negative":{"tag":"04","valueLength":15,"value":"CLIENT00000001","logicalRole":"synthetic fleet client"}},
+      "clearScope":"Fifteen-byte fleet-client identifier, distinct from four-byte plan ID.",
+      "excludedClaims":["Assigned client validity","Character subset","Padding policy","Plan/client enrollment relationship"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"actual client value length equals 15","outcome":"PASS"}],"negative":[{"predicate":"actual client value length equals 15","outcome":"FAIL"}]},
+      "mutation":{"target":"value","from":"CLIENT000000001","to":"CLIENT00000001","unchanged":"tag, stated valueLength and role","targetedFailure":"fourteen-byte client value"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C075-006","tableId":"075","nestedSelector":"05","ruleIds":["APPI-T075-R006"],"sourceEvidence":[{"section":"Appendix I-80","startLine":31937,"endLine":31940}],
+      "syntheticData":{"positive":{"tag":"05","valueLength":12,"value":"000000012345","logicalPrice":"1.2345","impliedDecimalPlaces":4},"negative":{"tag":"05","valueLength":12,"value":"000000012345","logicalPrice":"123.45","impliedDecimalPlaces":4},"positiveVariants":[{"value":"000000000001","logicalPrice":"0.0001","impliedDecimalPlaces":4}]},
+      "clearScope":"Twelve-byte illustration of the explicit four-implied-decimal net-fuel-price rule.",
+      "excludedClaims":["New numeric-only source constraint","Price rounding","Business maximum","TLV serialization"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalPrice equals numeric illustrative value divided by 10000","outcome":"PASS"},{"predicate":"value length is 12","outcome":"PASS"}],"negative":[{"predicate":"logicalPrice equals numeric illustrative value divided by 10000","outcome":"FAIL"},{"predicate":"value length is 12","outcome":"PASS"}]},
+      "mutation":{"target":"logicalPrice","from":"1.2345","to":"123.45","unchanged":"encoded value, length and source precision","targetedFailure":"two-decimal interpretation instead of four"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C076-001","tableId":"076","ruleIds":["APPI-T076-R001","APPI-T076-R002"],"sourceEvidence":[{"section":"Appendix I-81","startLine":31957,"endLine":31998}],
+      "syntheticData":{"positive":{"tableId":"076","declaredDataLength":"052","data":"1001025000000025000000000075000000000100000000034567","logicalContext":{"network":"Visa","programParticipation":"synthetic premise"}},"negative":{"tableId":"076","declaredDataLength":"051","data":"1001025000000025000000000075000000000100000000034567","logicalContext":{"network":"Visa","programParticipation":"synthetic premise"}},"positiveVariants":[{"numberOfLineItems":"0","data":"0","declaredDataLength":"001","scope":"count-zero syntax only"},{"numberOfLineItems":"5","repeatItemData":"001025000000025000000000075000000000100000000034567","repetitions":5,"derivedDataLength":256,"scope":"logical count plus five exact item strings; not a host transaction"}]},
+      "clearScope":"Actual positional payload string: count 1 followed by widths 3/4/8/12/12/12, totaling 52 bytes. Count syntax endpoints 0 and 5 modeled separately.",
+      "excludedClaims":["Real enrollment/product assignment","Unit/flat/total discount scales","Host handling of count-zero entry","Full segment"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"declaredDataLength equals actual data length 52","outcome":"PASS"},{"predicate":"data length equals 1 + 51 times numeric leading count","outcome":"PASS"}],"negative":[{"predicate":"declaredDataLength equals actual data length 52","outcome":"FAIL"},{"predicate":"data length equals 1 + 51 times numeric leading count","outcome":"PASS"}]},
+      "mutation":{"target":"declaredDataLength","from":"052","to":"051","unchanged":"positional data and program premise","targetedFailure":"one-byte outer count mismatch"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C076-002","tableId":"076","nestedSelector":"line-item-repeat","ruleIds":["APPI-T076-R002","APPI-T076-R003","APPI-T076-R004","APPI-T076-R005","APPI-T076-R006","APPI-T076-R007","APPI-T076-R008"],"sourceEvidence":[{"section":"Appendix I-81","startLine":31966,"endLine":31998}],
+      "syntheticData":{"positive":{"numberOfLineItems":"1","items":[{"productCode":"001","discountRatePercentage":"0250","discountRateUnitDiscount":"00000025","flatDiscountRate":"000000000075","totalDiscountAmount":"000000000100","netFuelPrice":"000000034567"}],"logicalPercentage":"2.50","logicalNetFuelPrice":"3.4567"},"negative":{"numberOfLineItems":"2","items":[{"productCode":"001","discountRatePercentage":"0250","discountRateUnitDiscount":"00000025","flatDiscountRate":"000000000075","totalDiscountAmount":"000000000100","netFuelPrice":"000000034567"}],"logicalPercentage":"2.50","logicalNetFuelPrice":"3.4567"},"sourceFieldOrder":["productCode","discountRatePercentage","discountRateUnitDiscount","flatDiscountRate","totalDiscountAmount","netFuelPrice"]},
+      "clearScope":"All six nested fields populated with numeric source widths and leading-zero examples; percentage two decimals, net price four; exact counted repetition.",
+      "excludedClaims":["Fuel-code assignment validity","Implied scales of unit discount/flat rate/total discount","Calculation or reconciliation formulas","Object property order as wire format"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"numberOfLineItems equals actual items count","outcome":"PASS"},{"predicate":"field widths in source order are 3/4/8/12/12/12 and all values numeric","outcome":"PASS"},{"predicate":"0250 means 2.50 percent and 000000034567 means 3.4567 net price","outcome":"PASS"}],"negative":[{"predicate":"numberOfLineItems equals actual items count","outcome":"FAIL"},{"predicate":"all existing item fields still meet widths and types","outcome":"PASS"}]},
+      "mutation":{"target":"numberOfLineItems","from":"1","to":"2","unchanged":"one complete item and logical decimal annotations","targetedFailure":"count declares an absent second item"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C077-001","tableId":"077","ruleIds":["APPI-T077-R001","APPI-T077-R002"],"sourceEvidence":[{"section":"Appendix I-81","startLine":32006,"endLine":32008},{"section":"Appendix I-82","startLine":32018,"endLine":32021}],
+      "syntheticData":{"positive":{"tableId":"077","declaredDataLength":"012","data":"000000000250","logicalRole":"applied total discount for synthetic fuel product"},"negative":{"tableId":"077","declaredDataLength":"012","data":"00000000025A","logicalRole":"applied total discount for synthetic fuel product"}},
+      "clearScope":"Twelve numeric data bytes and 012 length value for applied fuel discount.",
+      "excludedClaims":["Amount currency scale","Multiproduct association","Equality with 076 totals","Universal presence","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"exactly twelve numeric data bytes","outcome":"PASS"}],"negative":[{"predicate":"exactly twelve numeric data bytes","outcome":"FAIL"},{"predicate":"declared count equals twelve actual bytes","outcome":"PASS"}]},
+      "mutation":{"target":"data[11]","from":"0","to":"A","unchanged":"width, headers and logical role","targetedFailure":"nonnumeric discount digit"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-001","tableId":"078","ruleIds":["APPI-T078-R001","APPI-T078-R002","APPI-T078-R003","APPI-T078-R004"],"sourceEvidence":[{"section":"Appendix I-82","startLine":32029,"endLine":32049}],
+      "syntheticData":{"positive":{"tableId":"078","logicalContext":{"network":"Visa","card":"fleet","product":"EV","previouslyProcessed":false},"lineItemProductCodes":["001","019"],"segment102ProductCodes":["001","019"],"amountModel":{"pretax":"100.00","applicableTax":"5.00","taxInclusiveTransactionTotal":"105.00"}},"negative":{"tableId":"078","logicalContext":{"network":"Visa","card":"fleet","product":"EV","previouslyProcessed":false},"lineItemProductCodes":["001","019"],"segment102ProductCodes":["001"],"amountModel":{"pretax":"100.00","applicableTax":"5.00","taxInclusiveTransactionTotal":"105.00"}}},
+      "clearScope":"Outer selector, future Visa fleet scope, logical tax-inclusive total and one-way requirement that all 078 product codes also appear in 102. Codes are opaque synthetic identifiers, not an EV product-code assignment.",
+      "excludedClaims":["Full 078 data blob or length field","Example code meanings/actual EV code","Standard field literally named Transaction Amount","Production activation","Previously-processed exception resolution","Full request"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"every line-item product code occurs in segment102ProductCodes","outcome":"PASS"},{"predicate":"logical transaction total includes applicable tax exactly once","outcome":"PASS"}],"negative":[{"predicate":"every line-item product code occurs in segment102ProductCodes","outcome":"FAIL"},{"predicate":"logical tax-inclusive total remains 105.00","outcome":"PASS"}]},
+      "mutation":{"target":"segment102ProductCodes","from":["001","019"],"to":["001"],"unchanged":"078 codes, context and amounts","targetedFailure":"019 has no companion 102 code"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-002","tableId":"078","nestedSelector":"structure-78","ruleIds":["APPI-T078-R006"],"sourceEvidence":[{"section":"Appendix I-82","startLine":32050,"endLine":32068},{"section":"Appendix I-83","startLine":32081,"endLine":32097}],
+      "syntheticData":{"positive":{"describedStructureIdentifier":"78","logicalLineItems":[{"productCode":"001","subTables":[{"id":"01","declaredValueLength":"04","data":"FLSV"}]}],"wireGate":"unresolved wrapper and lengths"},"negative":{"describedStructureIdentifier":"79","logicalLineItems":[{"productCode":"001","subTables":[{"id":"01","declaredValueLength":"04","data":"FLSV"}]}],"wireGate":"unresolved wrapper and lengths"}},
+      "clearScope":"Only the literal structure identifier in the source note and logical containment of a defined sub-table. Candidate is partial; no disputed length supplied.",
+      "excludedClaims":["Structure identifier duplication versus outer 078","Encoded totalLength","Array-length field","Product-length count basis","Complete wire grammar","Tag-order requirements"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"describedStructureIdentifier matches source note literal 78","outcome":"PASS"},{"predicate":"whole blob serialization can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"describedStructureIdentifier matches source note literal 78","outcome":"FAIL"},{"predicate":"whole blob serialization can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}]},
+      "mutation":{"target":"describedStructureIdentifier","from":"78","to":"79","unchanged":"logical contained item and wire gate","targetedFailure":"note identifier mismatch only, not a claimed serialized-selector validation"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-003","tableId":"078","nestedSelector":"product-line-item-group","ruleIds":["APPI-T078-R004","APPI-T078-R006"],"sourceEvidence":[{"section":"Appendix I-82","startLine":32045,"endLine":32046},{"section":"Appendix I-83","startLine":32091,"endLine":32097}],
+      "syntheticData":{"positive":{"productCode":"001","matchingSegment102Code":"001","productLengthState":"unresolved; no encoded length candidate"},"negative":{"productCode":"01","matchingSegment102Code":"001","productLengthState":"unresolved; no encoded length candidate"}},
+      "clearScope":"Numeric POS product-code field is three bytes with leading zeros; product-length field remains a gap.",
+      "excludedClaims":["Resolved productLength","Actual product assignment","Full group serialization","Reverse requirement that every 102 code needs 078"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"productCode is exactly three numeric bytes","outcome":"PASS"},{"predicate":"product-length interpretation can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"productCode is exactly three numeric bytes","outcome":"FAIL"},{"predicate":"product-length interpretation can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}]},
+      "mutation":{"target":"productCode","from":"001","to":"01","unchanged":"companion code and unresolved length state","targetedFailure":"dropped leading zero violates three-digit field"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-004","tableId":"078","nestedSelector":"01","ruleIds":["APPI-T078-R007"],"sourceEvidence":[{"section":"Appendix I-83","startLine":32098,"endLine":32118}],
+      "syntheticData":{"positive":{"id":"01","declaredValueLength":"04","data":"FLSV"},"negative":{"id":"01","declaredValueLength":"04","data":"XXXX"},"positiveVariants":[{"data":"HSDI","meaning":"high-speed dispense"},{"data":"SLSV","meaning":"self-service"},{"data":"FLSV","meaning":"full service"}]},
+      "clearScope":"Defined an2 ID 01, n2 length 04, a4 service type and all three listed codes.",
+      "excludedClaims":["Whole blob","Mandatory service tag","Sub-table order","Actual location service"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data is FLSV/HSDI/SLSV","outcome":"PASS"},{"predicate":"id/length/data widths are 2/2/4","outcome":"PASS"}],"negative":[{"predicate":"data is FLSV/HSDI/SLSV","outcome":"FAIL"},{"predicate":"id/length/data widths remain 2/2/4","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"FLSV","to":"XXXX","unchanged":"id and length","targetedFailure":"unlisted service code"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-005","tableId":"078","nestedSelector":"02","ruleIds":["APPI-T078-R008"],"sourceEvidence":[{"section":"Appendix I-83","startLine":32119,"endLine":32135}],
+      "syntheticData":{"positive":{"id":"02","logicalDescription":"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI","context":"fuel","presence":"optional","lengthInterpretation":"fixed 35 versus variable alpha unresolved"},"negative":{"id":"02","logicalDescription":"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH1","context":"fuel","presence":"optional","lengthInterpretation":"fixed 35 versus variable alpha unresolved"},"positiveVariants":[{"context":"fuel","presence":"omitted","logicalOutcome":"source explicitly permits fuel omission"}]},
+      "clearScope":"Alpha description, explicitly optional for fuel; supplied included value happens to have 35 bytes without adopting an unresolved padding policy.",
+      "excludedClaims":["Approved fixed/variable width reconciliation","Header serialization","Padding","Nonfuel mandatory presence"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalDescription contains only alpha characters","outcome":"PASS"},{"predicate":"description wire-length policy can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"logicalDescription contains only alpha characters","outcome":"FAIL"},{"predicate":"description wire-length policy can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}]},
+      "mutation":{"target":"logicalDescription[34]","from":"I","to":"1","unchanged":"35-byte count, context and width gate","targetedFailure":"numeric character conflicts with alpha description type"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-006","tableId":"078","nestedSelector":"03","ruleIds":["APPI-T078-R009"],"sourceEvidence":[{"section":"Appendix I-84","startLine":32147,"endLine":32164}],
+      "syntheticData":{"positive":{"id":"03","declaredValueLength":"01","data":"0"},"negative":{"id":"03","declaredValueLength":"01","data":"2"},"positiveVariants":[{"data":"0","meaning":"false, item not taxable"},{"data":"1","meaning":"true, item taxable"}]},
+      "clearScope":"Taxable indicator codes 0 and 1, fixed one-byte numeric value.",
+      "excludedClaims":["Tax formula","Required presence","0 allowed for included-tax tags","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"taxable data is 0 or 1","outcome":"PASS"}],"negative":[{"predicate":"taxable data is 0 or 1","outcome":"FAIL"},{"predicate":"data still has one numeric byte","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"0","to":"2","unchanged":"id and length","targetedFailure":"unlisted taxable indicator"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-007","tableId":"078","nestedSelector":"04","ruleIds":["APPI-T078-R010"],"sourceEvidence":[{"section":"Appendix I-84","startLine":32165,"endLine":32183}],
+      "syntheticData":{"positive":{"id":"04","declaredValueLength":"01","data":"1","logicalMeaning":"unit cost includes local tax"},"negative":{"id":"04","declaredValueLength":"01","data":"0","logicalMeaning":"unit cost includes local tax"}},
+      "clearScope":"Defined selector 04 and true-only listed included-local-tax code.",
+      "excludedClaims":["Allowed false encoding","Absent-tag semantics","Mandatory presence of 05","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data belongs to source-listed set {1}","outcome":"PASS"}],"negative":[{"predicate":"data belongs to source-listed set {1}","outcome":"FAIL"},{"predicate":"data width/type still n1","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"1","to":"0","unchanged":"id, length and intended included-local-tax meaning","targetedFailure":"unlisted code cannot represent the unchanged intended meaning; no false semantics invented"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-008","tableId":"078","nestedSelector":"05","ruleIds":["APPI-T078-R011"],"sourceEvidence":[{"section":"Appendix I-84","startLine":32184,"endLine":32200}],
+      "syntheticData":{"positive":{"id":"05","declaredValueLength":"12","data":"000000000125","logicalAmount":"1.25","impliedDecimalPlaces":2,"logicalPremise":{"tag04":"1"}},"negative":{"id":"05","declaredValueLength":"12","data":"000000000125","logicalAmount":"0.0125","impliedDecimalPlaces":2,"logicalPremise":{"tag04":"1"}},"positiveVariants":[{"data":"000000000001","logicalAmount":"0.01","logicalPremise":{"tag04":"1"}}]},
+      "clearScope":"Defined 05/12/n12 local amount and two-decimal scale under explicit 04=1 premise.",
+      "excludedClaims":["Missing-tag rejection","Other-tax or aggregate selector","Tax calculation","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalAmount equals data divided by 100","outcome":"PASS"},{"predicate":"data is twelve numeric bytes and 04=1 premise is present","outcome":"PASS"}],"negative":[{"predicate":"logicalAmount equals data divided by 100","outcome":"FAIL"},{"predicate":"data and premise still satisfy width/type/context","outcome":"PASS"}]},
+      "mutation":{"target":"logicalAmount","from":"1.25","to":"0.0125","unchanged":"encoded amount, precision and premise","targetedFailure":"four-decimal interpretation"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-009","tableId":"078","nestedSelector":"06","ruleIds":["APPI-T078-R012"],"sourceEvidence":[{"section":"Appendix I-84","startLine":32201,"endLine":32217}],
+      "syntheticData":{"positive":{"id":"06","declaredValueLength":"04","data":"0250","logicalPercentage":"2.50","impliedDecimalPlaces":2,"productContext":"fuel"},"negative":{"id":"06","declaredValueLength":"04","data":"0250","logicalPercentage":"25.0","impliedDecimalPlaces":2,"productContext":"fuel"},"positiveVariants":[{"data":"0001","logicalPercentage":"0.01"},{"data":"0025","logicalPercentage":"0.25","scope":"formal two-decimal rule only, conflicting example label not approved"}]},
+      "clearScope":"Formal local-tax percentage scale and fixed four numeric data bytes.",
+      "excludedClaims":["Printed 0025=2.5% claim","Rate business limits","Rounding or tax formulas","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalPercentage equals data divided by 100","outcome":"PASS"}],"negative":[{"predicate":"logicalPercentage equals data divided by 100","outcome":"FAIL"},{"predicate":"four numeric bytes and length 04 preserved","outcome":"PASS"}]},
+      "mutation":{"target":"logicalPercentage","from":"2.50","to":"25.0","unchanged":"data, header and fuel context","targetedFailure":"wrong implied decimal scale"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-010","tableId":"078","nestedSelector":"10","ruleIds":["APPI-T078-R013"],"sourceEvidence":[{"section":"Appendix I-85","startLine":32227,"endLine":32246}],
+      "syntheticData":{"positive":{"id":"10","declaredValueLength":"01","data":"1","sourceTitle":"Other Tax Included Indicator","sourceDescriptionTax":"national"},"negative":{"id":"10","declaredValueLength":"01","data":"0","sourceTitle":"Other Tax Included Indicator","sourceDescriptionTax":"national"}},
+      "clearScope":"Formal 10 selector, one-byte true-only listed indicator, preserved title/description distinction.",
+      "excludedClaims":["National/other tax equivalence","Sample selectors 07/08/09 in 078","False/absence policy","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data belongs to source-listed set {1}","outcome":"PASS"}],"negative":[{"predicate":"data belongs to source-listed set {1}","outcome":"FAIL"},{"predicate":"formal selector and widths preserved","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"1","to":"0","unchanged":"selector, headers and terminology","targetedFailure":"unlisted indicator code"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-011","tableId":"078","nestedSelector":"11","ruleIds":["APPI-T078-R014"],"sourceEvidence":[{"section":"Appendix I-85","startLine":32247,"endLine":32263}],
+      "syntheticData":{"positive":{"id":"11","declaredValueLength":"12","data":"000000000275","logicalAmount":"2.75","impliedDecimalPlaces":2,"logicalPremise":{"tag10":"1"}},"negative":{"id":"11","declaredValueLength":"12","data":"00000000027X","logicalAmount":"2.75","impliedDecimalPlaces":2,"logicalPremise":{"tag10":"1"}},"positiveVariants":[{"data":"000000000001","logicalAmount":"0.01","logicalPremise":{"tag10":"1"}}]},
+      "clearScope":"Defined 11 other-tax amount, n12 and two decimals under 10=1 premise.",
+      "excludedClaims":["Sample 08 selector","Mandatory amount presence","Tax terminology resolution","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data has exactly twelve numeric bytes","outcome":"PASS"},{"predicate":"numeric amount interpreted at two decimals is 2.75","outcome":"PASS"}],"negative":[{"predicate":"data has exactly twelve numeric bytes","outcome":"FAIL"},{"predicate":"numeric decimal conversion of invalid data","outcome":"NOT_EVALUATED_TYPE_FAILURE"}]},
+      "mutation":{"target":"data[11]","from":"5","to":"X","unchanged":"width, header and 10=1 premise","targetedFailure":"nonnumeric other-tax amount"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-012","tableId":"078","nestedSelector":"12","ruleIds":["APPI-T078-R015"],"sourceEvidence":[{"section":"Appendix I-85","startLine":32264,"endLine":32280}],
+      "syntheticData":{"positive":{"id":"12","declaredValueLength":"04","data":"0750","logicalPercentage":"7.50","impliedDecimalPlaces":2,"productContext":"fuel"},"negative":{"id":"12","declaredValueLength":"03","data":"0750","logicalPercentage":"7.50","impliedDecimalPlaces":2,"productContext":"fuel"},"positiveVariants":[{"data":"0001","logicalPercentage":"0.01"}]},
+      "clearScope":"Defined 12 selector, four-byte other-tax percentage and two-decimal scale.",
+      "excludedClaims":["Sample 09 selector in 078","Business rate limits","Tax computation","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"header fixed value 04 and actual value byte count agree","outcome":"PASS"},{"predicate":"data is n4 and percentage is 7.50","outcome":"PASS"}],"negative":[{"predicate":"header fixed value 04 and actual value byte count agree","outcome":"FAIL"},{"predicate":"data is n4 and percentage is 7.50","outcome":"PASS"}]},
+      "mutation":{"target":"declaredValueLength","from":"04","to":"03","unchanged":"data, logical scale and context","targetedFailure":"wrong fixed sub-table length"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C078-013","tableId":"078","nestedSelector":"14","ruleIds":["APPI-T078-R016","APPI-T078-R017","APPI-T078-R018"],"sourceEvidence":[{"section":"Appendix I-85","startLine":32281,"endLine":32298},{"section":"Appendix I-86","startLine":32308,"endLine":32314},{"section":"13-159","startLine":25363,"endLine":25389},{"section":"13-160","startLine":25400,"endLine":25429}],
+      "syntheticData":{"positive":{"id":"14","declaredValueLength":"04","data":"SQYA","logicalMeasurement":"Square Yard","logicalContext":{"network":"MasterCard","card":"Enhanced Fleet","product":"nonfuel","environment":"development/certification preparation","productionEnablement":"not verified"}},"negative":{"id":"14","declaredValueLength":"04","data":"SQYD","logicalMeasurement":"Square Yard","logicalContext":{"network":"MasterCard","card":"Enhanced Fleet","product":"nonfuel","environment":"development/certification preparation","productionEnablement":"not verified"}},"positiveVariants":[
+        {"data":"ACRE","meaning":"Acre"},{"data":"ARES","meaning":"Are"},{"data":"CELI","meaning":"Centiliter"},{"data":"CMET","meaning":"Centimeter"},{"data":"EACH","meaning":"Each"},{"data":"FOOT","meaning":"Foot"},
+        {"data":"GBGA","meaning":"GBGallon"},{"data":"GBOU","meaning":"GBOunce"},{"data":"GBPI","meaning":"GBPint"},{"data":"GBQA","meaning":"GBQuart"},{"data":"GRAM","meaning":"Gram"},{"data":"HECT","meaning":"Hectare"},
+        {"data":"INCH","meaning":"Inch"},{"data":"KILO","meaning":"Kilogram"},{"data":"KMET","meaning":"Kilometer"},{"data":"LITR","meaning":"Liter"},{"data":"METR","meaning":"Meter"},{"data":"MILE","meaning":"Mile"},
+        {"data":"MILI","meaning":"Milliliter"},{"data":"MMET","meaning":"Millimeter"},{"data":"PIEC","meaning":"Piece"},{"data":"PUND","meaning":"Pound"},{"data":"SCMT","meaning":"Square Centimeter"},{"data":"SMET","meaning":"Square Meter"},
+        {"data":"SMIL","meaning":"Square Millimeter"},{"data":"SQFO","meaning":"Square Foot"},{"data":"SQIN","meaning":"Square Inch"},{"data":"SQKI","meaning":"Square Kilometer"},{"data":"SQMI","meaning":"Square Mile"},{"data":"SQYA","meaning":"Square Yard"},
+        {"data":"TONS","meaning":"Ton"},{"data":"USGA","meaning":"USGallon"},{"data":"USOU","meaning":"USOunce"},{"data":"USPI","meaning":"USPint"},{"data":"USQA","meaning":"USQuart"},{"data":"YARD","meaning":"Yard"}
+      ]},
+      "clearScope":"Four-character formal selector-14 fragment and all 36 internally sourced element-243 codes; development/certification-only premise.",
+      "excludedClaims":["Named appendix equivalence","Production activation from date","Real nonfuel product assignment","Whole blob"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data is a four-alpha code in cited element-243 list","outcome":"PASS"},{"predicate":"production approval can be asserted","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"data is a four-alpha code in cited element-243 list","outcome":"FAIL"},{"predicate":"data still has four alpha bytes","outcome":"PASS"}]},
+      "mutation":{"target":"data[3]","from":"A","to":"D","unchanged":"width, header, intended Square Yard measurement and nonproduction context","targetedFailure":"SQYD is absent from cited code list"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-001","tableId":"079","ruleIds":["APPI-T079-R001","APPI-T079-R002"],"sourceEvidence":[{"section":"Appendix I-86","startLine":32321,"endLine":32328}],
+      "syntheticData":{"positive":{"tableId":"079","declaredDataLength":"021","logicalContext":{"network":"Visa","card":"commercial","scope":"future aggregate data"},"subTables":[{"id":"01","declaredValueLength":"01","data":"1"},{"id":"02","declaredValueLength":"12","data":"000000000125"}]},"negative":{"tableId":"079","declaredDataLength":"020","logicalContext":{"network":"Visa","card":"commercial","scope":"future aggregate data"},"subTables":[{"id":"01","declaredValueLength":"01","data":"1"},{"id":"02","declaredValueLength":"12","data":"000000000125"}]}},
+      "clearScope":"Small logical aggregate fragment; two formal sub-tables occupy (2+2+1)+(2+2+12)=21 bytes under their explicit local header widths.",
+      "excludedClaims":["Mandatory pair or order","Empty/duplicate handling","Maximum effective payload","078 aggregate reconciliation","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"declaredDataLength equals sum of explicit sub-table header and value widths, 21","outcome":"PASS"}],"negative":[{"predicate":"declaredDataLength equals sum of explicit sub-table header and value widths, 21","outcome":"FAIL"}]},
+      "mutation":{"target":"declaredDataLength","from":"021","to":"020","unchanged":"aggregate context and two sub-tables","targetedFailure":"outer data count mismatches logical sub-table widths"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-002","tableId":"079","nestedSelector":"01","ruleIds":["APPI-T079-R003"],"sourceEvidence":[{"section":"Appendix I-86","startLine":32329,"endLine":32347}],
+      "syntheticData":{"positive":{"id":"01","declaredValueLength":"01","data":"1","logicalMeaning":"unit cost includes local tax"},"negative":{"id":"01","declaredValueLength":"01","data":"0","logicalMeaning":"unit cost includes local tax"}},
+      "clearScope":"079 local included-tax true-only indicator and fixed headers.",
+      "excludedClaims":["False encoding permission","Mandatory presence","078 taxable indicator semantics"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data belongs to listed set {1}","outcome":"PASS"}],"negative":[{"predicate":"data belongs to listed set {1}","outcome":"FAIL"},{"predicate":"data remains n1","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"1","to":"0","unchanged":"id, length and intended included-local-tax meaning","targetedFailure":"unlisted indicator; no false semantics invented"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-003","tableId":"079","nestedSelector":"02","ruleIds":["APPI-T079-R004"],"sourceEvidence":[{"section":"Appendix I-86","startLine":32348,"endLine":32364}],
+      "syntheticData":{"positive":{"id":"02","declaredValueLength":"12","data":"000000000325","logicalAmount":"3.25","impliedDecimalPlaces":2,"logicalPremise":{"tag01":"1"}},"negative":{"id":"02","declaredValueLength":"12","data":"000000000325","logicalAmount":"0.0325","impliedDecimalPlaces":2,"logicalPremise":{"tag01":"1"}},"positiveVariants":[{"data":"000000000001","logicalAmount":"0.01","logicalPremise":{"tag01":"1"}}]},
+      "clearScope":"Aggregate local amount n12, length 12, two decimals and explicit 01=1 context.",
+      "excludedClaims":["Omission rejection","Tax calculation","Per-line amount meaning","Aggregate-to-078 equality"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalAmount equals data divided by 100","outcome":"PASS"}],"negative":[{"predicate":"logicalAmount equals data divided by 100","outcome":"FAIL"},{"predicate":"numeric width/header/premise unchanged","outcome":"PASS"}]},
+      "mutation":{"target":"logicalAmount","from":"3.25","to":"0.0325","unchanged":"encoded value, headers and premise","targetedFailure":"wrong decimal interpretation"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-004","tableId":"079","nestedSelector":"03","ruleIds":["APPI-T079-R005"],"sourceEvidence":[{"section":"Appendix I-87","startLine":32376,"endLine":32390}],
+      "syntheticData":{"positive":{"id":"03","declaredValueLength":"04","data":"0625","logicalPercentage":"6.25","impliedDecimalPlaces":2,"productContext":"fuel"},"negative":{"id":"03","declaredValueLength":"04","data":"0625","logicalPercentage":"62.5","impliedDecimalPlaces":2,"productContext":"fuel"},"positiveVariants":[{"data":"0001","logicalPercentage":"0.01"}]},
+      "clearScope":"Formal fuel VAT/local-rate n4 and two implied decimals.",
+      "excludedClaims":["Mixed-product or nonfuel aggregate formula","Business rate maximum","Real tax jurisdiction"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalPercentage equals data divided by 100","outcome":"PASS"}],"negative":[{"predicate":"logicalPercentage equals data divided by 100","outcome":"FAIL"},{"predicate":"fixed four-digit field still valid","outcome":"PASS"}]},
+      "mutation":{"target":"logicalPercentage","from":"6.25","to":"62.5","unchanged":"value, precision and fuel context","targetedFailure":"incorrect scale"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-005","tableId":"079","nestedSelector":"07","ruleIds":["APPI-T079-R006"],"sourceEvidence":[{"section":"Appendix I-87","startLine":32391,"endLine":32410}],
+      "syntheticData":{"positive":{"id":"07","declaredValueLength":"01","data":"1","sourceTitle":"Other Tax Included Indicator","sourceDescriptionTax":"national"},"negative":{"id":"07","declaredValueLength":"01","data":"0","sourceTitle":"Other Tax Included Indicator","sourceDescriptionTax":"national"}},
+      "clearScope":"Defined aggregate 07 selector and true-only code with source terminology preserved.",
+      "excludedClaims":["Other/national tax equivalence","False/absence encoding","078 selector substitution"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data belongs to listed set {1}","outcome":"PASS"}],"negative":[{"predicate":"data belongs to listed set {1}","outcome":"FAIL"},{"predicate":"fixed header widths and n1 value remain valid","outcome":"PASS"}]},
+      "mutation":{"target":"data","from":"1","to":"0","unchanged":"headers and terminology","targetedFailure":"unlisted included-tax code"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-006","tableId":"079","nestedSelector":"08","ruleIds":["APPI-T079-R007"],"sourceEvidence":[{"section":"Appendix I-87","startLine":32411,"endLine":32427}],
+      "syntheticData":{"positive":{"id":"08","declaredValueLength":"12","data":"000000000475","logicalAmount":"4.75","impliedDecimalPlaces":2,"logicalPremise":{"tag07":"1"}},"negative":{"id":"08","declaredValueLength":"12","data":"000000000475","logicalAmount":"0.0475","impliedDecimalPlaces":2,"logicalPremise":{"tag07":"1"}},"positiveVariants":[{"data":"000000000001","logicalAmount":"0.01","logicalPremise":{"tag07":"1"}}]},
+      "clearScope":"Defined 079 aggregate other-tax n12 and two-decimal scale under 07=1 premise.",
+      "excludedClaims":["Missing-tag rejection","Equivalent selector 08 in 078","Tax calculation","Real national/other-tax classification"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"logicalAmount equals data divided by 100","outcome":"PASS"}],"negative":[{"predicate":"logicalAmount equals data divided by 100","outcome":"FAIL"},{"predicate":"n12 value and premise remain valid","outcome":"PASS"}]},
+      "mutation":{"target":"logicalAmount","from":"4.75","to":"0.0475","unchanged":"encoded value, length and premise","targetedFailure":"four-decimal interpretation rather than two"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C079-007","tableId":"079","nestedSelector":"09","ruleIds":["APPI-T079-R008"],"sourceEvidence":[{"section":"Appendix I-87","startLine":32428,"endLine":32444}],
+      "syntheticData":{"positive":{"id":"09","declaredValueLength":"04","data":"0325","logicalPercentage":"3.25","impliedDecimalPlaces":2,"productContext":"fuel"},"negative":{"id":"09","declaredValueLength":"04","data":"03A5","logicalPercentage":"3.25","impliedDecimalPlaces":2,"productContext":"fuel"},"positiveVariants":[{"data":"0001","logicalPercentage":"0.01"}]},
+      "clearScope":"Formal 079 other-tax-rate selector 09, n4, two decimals and fuel context.",
+      "excludedClaims":["Missing 078 selector definition","Nonfuel/mixed-product rate logic","Host decline","Tax formula"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data is exactly four numeric bytes","outcome":"PASS"},{"predicate":"logical percentage equals numeric data divided by 100","outcome":"PASS"}],"negative":[{"predicate":"data is exactly four numeric bytes","outcome":"FAIL"},{"predicate":"decimal conversion of invalid data","outcome":"NOT_EVALUATED_TYPE_FAILURE"}]},
+      "mutation":{"target":"data[2]","from":"2","to":"A","unchanged":"width, header and fuel context","targetedFailure":"nonnumeric tax-rate data"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C080-001","tableId":"080","ruleIds":["APPI-T080-R001","APPI-T080-R002"],"sourceEvidence":[{"section":"Appendix I-88","startLine":32460,"endLine":32465}],
+      "syntheticData":{"positive":{"tableId":"080","data":"WALLET00001","logicalRole":"synthetic provider issuing the transaction token","headerLengthState":"N2 versus element112 n3 unresolved","assignmentVerified":false},"negative":{"tableId":"080","data":"WALLET0000","logicalRole":"synthetic provider issuing the transaction token","headerLengthState":"N2 versus element112 n3 unresolved","assignmentVerified":false}},
+      "clearScope":"Exactly eleven alphanumeric staged-wallet-provider data bytes; no disputed header encoded.",
+      "excludedClaims":["Choice of 11 versus 011 header","Real wallet assignment","Universal/network-specific presence","Full message"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"data has exactly eleven ASCII alphanumeric bytes","outcome":"PASS"},{"predicate":"length header encoding can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"data has exactly eleven ASCII alphanumeric bytes","outcome":"FAIL"},{"predicate":"length header encoding can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}]},
+      "mutation":{"target":"data","from":"WALLET00001","to":"WALLET0000","unchanged":"selector, role and header gate","targetedFailure":"ten-byte wallet ID"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    },
+    {
+      "candidateId":"APPI-C081-001","tableId":"081","ruleIds":["APPI-T081-R001","APPI-T081-R002","APPI-T081-R003"],"sourceEvidence":[{"section":"Appendix I-88","startLine":32472,"endLine":32481}],
+      "syntheticData":{"positive":{"tableId":"081","data":"GATEWAY0001","tablePresent":true,"logicalContext":{"network":"Visa","submitter":"gateway acting for merchant"},"headerLengthState":"n2 versus element112 n3 unresolved","reservedBytesState":"placement and width unspecified","assignmentVerified":false},"negative":{"tableId":"081","data":"GATEWAY0001","tablePresent":false,"logicalContext":{"network":"Visa","submitter":"gateway acting for merchant"},"headerLengthState":"n2 versus element112 n3 unresolved","reservedBytesState":"placement and width unspecified","assignmentVerified":false}},
+      "clearScope":"Eleven-alphanumeric-byte logical gateway value and explicit mandatory presence when a gateway submits for a merchant. Negative retains proposed field model but marks it absent from the logical transaction.",
+      "excludedClaims":["Encoded full request","Choice of 11 versus 011 header","Reserved bytes fill/width","Real Visa assignment","Missing-ID host decline/default"],
+      "expectedPredicateOutcomes":{"positive":[{"predicate":"gateway-submitted transaction has table081 present","outcome":"PASS"},{"predicate":"proposed gateway data is eleven alphanumeric bytes","outcome":"PASS"},{"predicate":"header/reserved-area wire encoding can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}],"negative":[{"predicate":"gateway-submitted transaction has table081 present","outcome":"FAIL"},{"predicate":"retained proposed value still has eleven alphanumeric bytes","outcome":"PASS"},{"predicate":"header/reserved-area wire encoding can be approved","outcome":"NOT_EVALUATED_REVIEW_GATE"}]},
+      "mutation":{"target":"tablePresent","from":true,"to":false,"unchanged":"proposed field value, context and gates","targetedFailure":"required table omitted in gateway-on-behalf-of-merchant context"},
+      "readiness":"REVIEW_REQUIRED","payloadScope":"LOGICAL_FRAGMENT"
+    }
+  ]
+}

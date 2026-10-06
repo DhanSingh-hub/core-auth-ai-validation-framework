@@ -29,7 +29,7 @@ review items. Automated validation must not infer table-specific semantics from 
 The canonical rule catalog and JSON rules file are the authoritative executable scope.
 
 **References:** [Segment 111 README](README.md), [validation rules](segment-111-validation-rules.json),
-[training methodology](../../../SEGMENT-100-TRAINING-METHODOLOGY.md), and the
+[training handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md), and the
 [training questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md).
 ## Session-confirmed scope decisions
 

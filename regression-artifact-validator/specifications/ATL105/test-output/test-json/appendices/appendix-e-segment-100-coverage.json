@@ -1,28 +1,3990 @@
 {
-  "appendix": "E",
-  "title": "Valid Card Type Codes",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to Segment 100 Prompt Code card context and to separate Table Load/Special Prompt Code families.",
-  "source": "docs/specs/extracted_text.txt Appendix E-1 through E-5",
-  "codeFamilies": {
-    "financialPromptCodes": {"count":36,"format":"Transaction Type + three-digit Card Type","segment100Applicable":true},
-    "tableLoadResponseCodes": {"scope":"Card acceptance and terminal feature configuration","segment100Applicable":false,"requiresSeparateFlow":true},
-    "specialPromptCodes": {"count":11,"format":"Three-character special Prompt Code","segment100Applicable":false,"requiresSeparateFlow":true}
+  "appendix" : "E",
+  "title" : "Valid Card Type Codes",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "applicability" : "Applies to Segment 100 Prompt Code card context and to separate Table Load/Special Prompt Code families.",
+  "source" : "docs/specs/extracted_text.txt Appendix E-1 through E-5",
+  "codeFamilies" : {
+    "financialPromptCodes" : {
+      "count" : 36,
+      "format" : "Transaction Type + three-digit Card Type",
+      "segment100Applicable" : true,
+      "status" : "COVERED_BY_FINANCIAL_CARD_TYPE_CATALOG_AND_ORACLE"
+    },
+    "tableLoadResponseCodes" : {
+      "count" : 56,
+      "cardTypeEntries" : 43,
+      "terminalFeatureEntries" : 13,
+      "scope" : "Card acceptance and terminal feature configuration",
+      "segment100Applicable" : false,
+      "requiresSeparateFlow" : true,
+      "status" : "ALLOWLIST_CHAIN_COVERED_FEATURE_EFFECTS_SEPARATE",
+      "validator" : "TableLoadPayloadValidator",
+      "testDataReadiness" : "INDEPENDENT_SYNTHETIC_VALIDATOR_HARNESS"
+    },
+    "specialPromptCodes" : {
+      "count" : 11,
+      "format" : "Three-character special Prompt Code",
+      "segment100Applicable" : false,
+      "requiresSeparateFlow" : true,
+      "status" : "PARTIAL_VALIDATOR_HARNESS_COVERAGE",
+      "chainPackage" : "appendix-e-special-prompt-chain-package.json",
+      "validatorHarnessChains" : 9,
+      "reviewBlockedPrompts" : [ "900", "997" ],
+      "businessCertified" : false,
+      "converterCertified" : false
+    }
   },
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPE-FINANCIAL-CARD-TYPES","title":"Financial Segment 100 Prompt Codes shall use one of the 36 Appendix E card types valid for financial transaction Prompt Codes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"financial-card-type"},"status":"COVERED"},
-    {"id":"BR-SEG100-APPE-PROMPT-COMPOSITION","title":"A financial Prompt Code shall combine a valid Appendix G transaction type with a valid Appendix E financial card type.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"prompt-code-card-type-composition"},"status":"COVERED"},
-    {"id":"BR-SEG100-APPE-CONoco-INTERNAL","title":"Conoco internal code 89 shall not be used as the merchant Prompt Code; merchant transactions use card type 090.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"100","element":"78","rule":"conoco-card-type-090"},"status":"COVERED"},
-    {"id":"BR-SEG100-APPE-SPECIAL-SEPARATION","title":"Special three-character Prompt Codes shall be validated as special transaction artifacts and not accepted as standard financial Segment 100 Prompt Codes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix E","segment":"SPECIAL","element":"78","rule":"special-prompt-code-family"},"status":"COVERED"}
-  ],
-  "financialCardTypeOracle": {
-    "count": 36,
-    "implementedIn": "Segment100CardTypeOracle.java",
-    "positiveTests": "Segment100CardTypeOracleTest.java",
-    "negativeExamples": ["021", "099", "XXX", "02A", "20"]
+  "businessRequirements" : [ {
+    "id" : "BR-SEG100-APPE-FINANCIAL-CARD-TYPES",
+    "title" : "Financial Segment 100 Prompt Codes shall use one of the 36 Appendix E card types valid for financial transaction Prompt Codes.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "financial-card-type"
+    },
+    "status" : "COVERED"
+  }, {
+    "id" : "BR-SEG100-APPE-PROMPT-COMPOSITION",
+    "title" : "A financial Prompt Code shall combine a valid Appendix G transaction type with a valid Appendix E financial card type.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "prompt-code-card-type-composition"
+    },
+    "status" : "COVERED"
+  }, {
+    "id" : "BR-SEG100-APPE-CONoco-INTERNAL",
+    "title" : "Conoco internal code 89 shall not be used as the merchant Prompt Code; merchant transactions use card type 090.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "100",
+      "element" : "78",
+      "rule" : "conoco-card-type-090"
+    },
+    "status" : "COVERED"
+  }, {
+    "id" : "BR-SEG100-APPE-SPECIAL-SEPARATION",
+    "title" : "Special three-character Prompt Codes shall be validated as special transaction artifacts and not accepted as standard financial Segment 100 Prompt Codes.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "SPECIAL",
+      "element" : "78",
+      "rule" : "special-prompt-code-family"
+    },
+    "status" : "COVERED"
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-FAMILY",
+    "title" : "Table Load Response card type and terminal feature values shall be interpreted using the Appendix E Table Load Response code table, separately from the financial Prompt Code allowlist.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "14",
+      "rule" : "table-load-card-type-and-feature-family"
+    },
+    "status" : "COVERED",
+    "coverageNote" : "The complete 56-value Appendix E Table Load allowlist is checked in DL1.CardType. This does not certify downstream terminal feature effects or production configuration."
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-071",
+    "title" : "Appendix E Table Load card type code 071 is recognized in the Table Load Response family.",
+    "code" : "071",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-071"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-072",
+    "title" : "Appendix E Table Load card type code 072 is recognized in the Table Load Response family.",
+    "code" : "072",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-072"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-073",
+    "title" : "Appendix E Table Load card type code 073 is recognized in the Table Load Response family.",
+    "code" : "073",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-073"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-074",
+    "title" : "Appendix E Table Load card type code 074 is recognized in the Table Load Response family.",
+    "code" : "074",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-074"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-075",
+    "title" : "Appendix E Table Load card type code 075 is recognized in the Table Load Response family.",
+    "code" : "075",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-075"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-077",
+    "title" : "Appendix E Table Load card type code 077 is recognized in the Table Load Response family.",
+    "code" : "077",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-077"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-078",
+    "title" : "Appendix E Table Load card type code 078 is recognized in the Table Load Response family.",
+    "code" : "078",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-078"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-079",
+    "title" : "Appendix E Table Load card type code 079 is recognized in the Table Load Response family.",
+    "code" : "079",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-079"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-020",
+    "title" : "Appendix E Table Load card type code 020 is recognized in the Table Load Response family.",
+    "code" : "020",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-020"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-050",
+    "title" : "Appendix E Table Load card type code 050 is recognized in the Table Load Response family.",
+    "code" : "050",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-050"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-051",
+    "title" : "Appendix E Table Load card type code 051 is recognized in the Table Load Response family.",
+    "code" : "051",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-051"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-052",
+    "title" : "Appendix E Table Load card type code 052 is recognized in the Table Load Response family.",
+    "code" : "052",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-052"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-053",
+    "title" : "Appendix E Table Load card type code 053 is recognized in the Table Load Response family.",
+    "code" : "053",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-053"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-055",
+    "title" : "Appendix E Table Load card type code 055 is recognized in the Table Load Response family.",
+    "code" : "055",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-055"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-056",
+    "title" : "Appendix E Table Load card type code 056 is recognized in the Table Load Response family.",
+    "code" : "056",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-056"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-057",
+    "title" : "Appendix E Table Load card type code 057 is recognized in the Table Load Response family.",
+    "code" : "057",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-057"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-058",
+    "title" : "Appendix E Table Load card type code 058 is recognized in the Table Load Response family.",
+    "code" : "058",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-058"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-059",
+    "title" : "Appendix E Table Load card type code 059 is recognized in the Table Load Response family.",
+    "code" : "059",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-059"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-080",
+    "title" : "Appendix E Table Load card type code 080 is recognized in the Table Load Response family.",
+    "code" : "080",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-080"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-081",
+    "title" : "Appendix E Table Load card type code 081 is recognized in the Table Load Response family.",
+    "code" : "081",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-081"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-084",
+    "title" : "Appendix E Table Load card type code 084 is recognized in the Table Load Response family.",
+    "code" : "084",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-084"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-085",
+    "title" : "Appendix E Table Load card type code 085 is recognized in the Table Load Response family.",
+    "code" : "085",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-085"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-086",
+    "title" : "Appendix E Table Load card type code 086 is recognized in the Table Load Response family.",
+    "code" : "086",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-086"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-088",
+    "title" : "Appendix E Table Load card type code 088 is recognized in the Table Load Response family.",
+    "code" : "088",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-088"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-001",
+    "title" : "Appendix E Table Load card type code 001 is recognized in the Table Load Response family.",
+    "code" : "001",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-001"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-060",
+    "title" : "Appendix E Table Load card type code 060 is recognized in the Table Load Response family.",
+    "code" : "060",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-060"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-061",
+    "title" : "Appendix E Table Load card type code 061 is recognized in the Table Load Response family.",
+    "code" : "061",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-061"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-064",
+    "title" : "Appendix E Table Load card type code 064 is recognized in the Table Load Response family.",
+    "code" : "064",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-064"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-090",
+    "title" : "Appendix E Table Load card type code 090 is recognized in the Table Load Response family.",
+    "code" : "090",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-090"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-091",
+    "title" : "Appendix E Table Load card type code 091 is recognized in the Table Load Response family.",
+    "code" : "091",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-091"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-092",
+    "title" : "Appendix E Table Load card type code 092 is recognized in the Table Load Response family.",
+    "code" : "092",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-092"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-093",
+    "title" : "Appendix E Table Load card type code 093 is recognized in the Table Load Response family.",
+    "code" : "093",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-093"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-094",
+    "title" : "Appendix E Table Load card type code 094 is recognized in the Table Load Response family.",
+    "code" : "094",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-094"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-095",
+    "title" : "Appendix E Table Load card type code 095 is recognized in the Table Load Response family.",
+    "code" : "095",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-095"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-096",
+    "title" : "Appendix E Table Load card type code 096 is recognized in the Table Load Response family.",
+    "code" : "096",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-096"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-011",
+    "title" : "Appendix E Table Load card type code 011 is recognized in the Table Load Response family.",
+    "code" : "011",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-011"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-012",
+    "title" : "Appendix E Table Load card type code 012 is recognized in the Table Load Response family.",
+    "code" : "012",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-012"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-013",
+    "title" : "Appendix E Table Load card type code 013 is recognized in the Table Load Response family.",
+    "code" : "013",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-013"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-040",
+    "title" : "Appendix E Table Load card type code 040 is recognized in the Table Load Response family.",
+    "code" : "040",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-040"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-041",
+    "title" : "Appendix E Table Load card type code 041 is recognized in the Table Load Response family.",
+    "code" : "041",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-041"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-045",
+    "title" : "Appendix E Table Load card type code 045 is recognized in the Table Load Response family.",
+    "code" : "045",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-045"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-046",
+    "title" : "Appendix E Table Load card type code 046 is recognized in the Table Load Response family.",
+    "code" : "046",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-046"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-070",
+    "title" : "Appendix E Table Load card type code 070 is recognized in the Table Load Response family.",
+    "code" : "070",
+    "codeKind" : "CARD_TYPE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-070"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-174",
+    "title" : "Appendix E Table Load terminal feature code 174 is recognized in the Table Load Response family.",
+    "code" : "174",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-174"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-127",
+    "title" : "Appendix E Table Load terminal feature code 127 is recognized in the Table Load Response family.",
+    "code" : "127",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-127"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-150",
+    "title" : "Appendix E Table Load terminal feature code 150 is recognized in the Table Load Response family.",
+    "code" : "150",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-150"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-148",
+    "title" : "Appendix E Table Load terminal feature code 148 is recognized in the Table Load Response family.",
+    "code" : "148",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-148"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-162",
+    "title" : "Appendix E Table Load terminal feature code 162 is recognized in the Table Load Response family.",
+    "code" : "162",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-162"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-163",
+    "title" : "Appendix E Table Load terminal feature code 163 is recognized in the Table Load Response family.",
+    "code" : "163",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-163"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-164",
+    "title" : "Appendix E Table Load terminal feature code 164 is recognized in the Table Load Response family.",
+    "code" : "164",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-164"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-165",
+    "title" : "Appendix E Table Load terminal feature code 165 is recognized in the Table Load Response family.",
+    "code" : "165",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-165"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-166",
+    "title" : "Appendix E Table Load terminal feature code 166 is recognized in the Table Load Response family.",
+    "code" : "166",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-166"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-167",
+    "title" : "Appendix E Table Load terminal feature code 167 is recognized in the Table Load Response family.",
+    "code" : "167",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-167"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-168",
+    "title" : "Appendix E Table Load terminal feature code 168 is recognized in the Table Load Response family.",
+    "code" : "168",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-168"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-171",
+    "title" : "Appendix E Table Load terminal feature code 171 is recognized in the Table Load Response family.",
+    "code" : "171",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-171"
+    } ]
+  }, {
+    "id" : "BR-SEG100-APPE-TABLE-LOAD-CODE-173",
+    "title" : "Appendix E Table Load terminal feature code 173 is recognized in the Table Load Response family.",
+    "code" : "173",
+    "codeKind" : "TERMINAL_FEATURE",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-173"
+    } ]
+  } ],
+  "financialCardTypeOracle" : {
+    "count" : 36,
+    "implementedIn" : "Segment100CardTypeOracle.java",
+    "positiveTests" : "Segment100CardTypeOracleTest.java",
+    "negativeExamples" : [ "021", "099", "XXX", "02A", "20" ]
   },
-  "specialPromptCodes": ["900","901","902","903","904","905","981","990","995","996","997"],
-  "testDataStatus": "Financial card-type oracle and Prompt Code combination tests are implemented; AI artifact coverage remains pending.",
-  "remaining": ["Validate AI-generated artifacts across all 36 financial card types.","Keep Table Load and Special Prompt Code artifacts in separate message-family packages."]
+  "specialPromptCodes" : [ "900", "901", "902", "903", "904", "905", "981", "990", "995", "996", "997" ],
+  "testDataStatus" : "Appendix E Table Load allowlist has independent synthetic validator chains for all 56 listed values plus an unknown-code negative. Payloads test DL1.CardType membership only; feature effects, device behavior, production configuration, and AI artifact coverage remain outside this evidence. Nine of 11 special prompts have structured validator-harness chains; 900 and 997 remain review-blocked. Harness success does not equal business or converter certification.",
+  "specialPromptChainPackage" : "appendix-e-special-prompt-chain-package.json",
+  "remaining" : [ "Validate downstream terminal feature effects and production configuration separately from Table Load allowlist membership.", "Resolve the exact request/message-family and expected behavior contracts for special prompts 900 and 997.", "Obtain Test Team/SME review and converter-level validation before claiming special-prompt operation certification.", "Validate AI-generated artifacts across all 36 financial Prompt Code card types." ],
+  "testScenarios" : [ {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-071",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-071" ],
+    "title" : "Recognize Appendix E Table Load value 071 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-071"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-072",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-072" ],
+    "title" : "Recognize Appendix E Table Load value 072 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-072"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-073",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-073" ],
+    "title" : "Recognize Appendix E Table Load value 073 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-073"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-074",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-074" ],
+    "title" : "Recognize Appendix E Table Load value 074 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-074"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-075",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-075" ],
+    "title" : "Recognize Appendix E Table Load value 075 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-075"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-077",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-077" ],
+    "title" : "Recognize Appendix E Table Load value 077 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-077"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-078",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-078" ],
+    "title" : "Recognize Appendix E Table Load value 078 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-078"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-079",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-079" ],
+    "title" : "Recognize Appendix E Table Load value 079 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-079"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-020",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-020" ],
+    "title" : "Recognize Appendix E Table Load value 020 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-020"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-050",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-050" ],
+    "title" : "Recognize Appendix E Table Load value 050 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-050"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-051",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-051" ],
+    "title" : "Recognize Appendix E Table Load value 051 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-051"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-052",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-052" ],
+    "title" : "Recognize Appendix E Table Load value 052 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-052"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-053",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-053" ],
+    "title" : "Recognize Appendix E Table Load value 053 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-053"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-055",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-055" ],
+    "title" : "Recognize Appendix E Table Load value 055 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-055"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-056",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-056" ],
+    "title" : "Recognize Appendix E Table Load value 056 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-056"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-057",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-057" ],
+    "title" : "Recognize Appendix E Table Load value 057 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-057"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-058",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-058" ],
+    "title" : "Recognize Appendix E Table Load value 058 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-058"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-059",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-059" ],
+    "title" : "Recognize Appendix E Table Load value 059 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-059"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-080",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-080" ],
+    "title" : "Recognize Appendix E Table Load value 080 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-080"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-081",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-081" ],
+    "title" : "Recognize Appendix E Table Load value 081 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-081"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-084",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-084" ],
+    "title" : "Recognize Appendix E Table Load value 084 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-084"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-085",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-085" ],
+    "title" : "Recognize Appendix E Table Load value 085 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-085"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-086",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-086" ],
+    "title" : "Recognize Appendix E Table Load value 086 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-086"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-088",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-088" ],
+    "title" : "Recognize Appendix E Table Load value 088 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-088"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-001",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-001" ],
+    "title" : "Recognize Appendix E Table Load value 001 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-001"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-060",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-060" ],
+    "title" : "Recognize Appendix E Table Load value 060 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-060"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-061",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-061" ],
+    "title" : "Recognize Appendix E Table Load value 061 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-061"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-064",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-064" ],
+    "title" : "Recognize Appendix E Table Load value 064 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-064"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-090",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-090" ],
+    "title" : "Recognize Appendix E Table Load value 090 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-090"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-091",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-091" ],
+    "title" : "Recognize Appendix E Table Load value 091 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-091"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-092",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-092" ],
+    "title" : "Recognize Appendix E Table Load value 092 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-092"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-093",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-093" ],
+    "title" : "Recognize Appendix E Table Load value 093 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-093"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-094",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-094" ],
+    "title" : "Recognize Appendix E Table Load value 094 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-094"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-095",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-095" ],
+    "title" : "Recognize Appendix E Table Load value 095 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-095"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-096",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-096" ],
+    "title" : "Recognize Appendix E Table Load value 096 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-096"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-011",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-011" ],
+    "title" : "Recognize Appendix E Table Load value 011 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-011"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-012",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-012" ],
+    "title" : "Recognize Appendix E Table Load value 012 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-012"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-013",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-013" ],
+    "title" : "Recognize Appendix E Table Load value 013 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-013"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-040",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-040" ],
+    "title" : "Recognize Appendix E Table Load value 040 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-040"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-041",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-041" ],
+    "title" : "Recognize Appendix E Table Load value 041 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-041"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-045",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-045" ],
+    "title" : "Recognize Appendix E Table Load value 045 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-045"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-046",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-046" ],
+    "title" : "Recognize Appendix E Table Load value 046 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-046"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-070",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-070" ],
+    "title" : "Recognize Appendix E Table Load value 070 as card type.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-070"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-174",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-174" ],
+    "title" : "Recognize Appendix E Table Load value 174 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-174"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-127",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-127" ],
+    "title" : "Recognize Appendix E Table Load value 127 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-127"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-150",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-150" ],
+    "title" : "Recognize Appendix E Table Load value 150 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-150"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-148",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-148" ],
+    "title" : "Recognize Appendix E Table Load value 148 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-148"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-162",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-162" ],
+    "title" : "Recognize Appendix E Table Load value 162 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-162"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-163",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-163" ],
+    "title" : "Recognize Appendix E Table Load value 163 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-163"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-164",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-164" ],
+    "title" : "Recognize Appendix E Table Load value 164 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-164"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-165",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-165" ],
+    "title" : "Recognize Appendix E Table Load value 165 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-165"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-166",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-166" ],
+    "title" : "Recognize Appendix E Table Load value 166 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-166"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-167",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-167" ],
+    "title" : "Recognize Appendix E Table Load value 167 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-167"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-168",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-168" ],
+    "title" : "Recognize Appendix E Table Load value 168 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-168"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-171",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-171" ],
+    "title" : "Recognize Appendix E Table Load value 171 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-171"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-173",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY", "BR-SEG100-APPE-TABLE-LOAD-CODE-173" ],
+    "title" : "Recognize Appendix E Table Load value 173 as terminal feature.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-173"
+    } ]
+  }, {
+    "id" : "TS-SEG100-APPE-TABLE-LOAD-UNKNOWN",
+    "requirementIds" : [ "BR-SEG100-APPE-TABLE-LOAD-FAMILY" ],
+    "title" : "Reject a code outside all Appendix E Table Load Response tables.",
+    "status" : "COVERED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-unknown-code-rejected"
+    } ]
+  } ],
+  "testCases" : [ {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-071-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-071" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-071-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-071"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-072-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-072" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-072-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-072"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-073-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-073" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-073-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-073"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-074-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-074" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-074-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-074"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-075-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-075" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-075-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-075"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-077-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-077" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-077-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-077"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-078-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-078" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-078-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-078"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-079-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-079" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-079-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-079"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-020-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-020" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-020-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-020"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-050-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-050" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-050-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-050"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-051-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-051" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-051-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-051"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-052-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-052" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-052-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-052"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-053-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-053" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-053-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-053"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-055-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-055" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-055-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-055"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-056-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-056" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-056-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-056"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-057-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-057" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-057-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-057"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-058-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-058" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-058-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-058"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-059-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-059" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-059-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-059"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-080-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-080" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-080-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-080"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-081-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-081" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-081-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-081"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-084-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-084" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-084-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-084"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-085-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-085" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-085-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-085"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-086-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-086" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-086-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-086"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-088-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-088" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-088-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-088"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-001-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-001" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-001-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-001"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-060-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-060" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-060-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-060"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-061-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-061" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-061-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-061"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-064-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-064" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-064-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-064"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-090-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-090" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-090-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-090"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-091-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-091" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-091-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-091"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-092-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-092" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-092-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-092"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-093-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-093" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-093-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-093"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-094-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-094" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-094-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-094"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-095-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-095" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-095-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-095"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-096-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-096" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-096-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-096"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-011-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-011" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-011-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-011"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-012-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-012" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-012-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-012"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-013-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-013" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-013-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-013"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-040-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-040" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-040-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-040"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-041-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-041" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-041-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-041"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-045-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-045" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-045-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-045"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-046-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-046" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-046-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-046"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-070-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-070" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-070-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-070"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-174-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-174" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-174-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-174"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-127-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-127" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-127-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-127"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-150-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-150" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-150-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-150"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-148-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-148" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-148-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-148"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-162-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-162" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-162-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-162"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-163-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-163" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-163-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-163"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-164-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-164" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-164-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-164"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-165-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-165" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-165-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-165"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-166-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-166" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-166-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-166"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-167-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-167" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-167-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-167"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-168-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-168" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-168-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-168"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-171-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-171" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-171-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-171"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-173-PASS",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-173" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-173-PASS" ],
+    "expectedOutcome" : "PASS",
+    "status" : "COVERED",
+    "assertionScope" : "DL1.CardType Appendix E Table Load allowlist only",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-173"
+    } ]
+  }, {
+    "id" : "TC-SEG100-APPE-TABLE-LOAD-UNKNOWN-FAIL",
+    "scenarioIds" : [ "TS-SEG100-APPE-TABLE-LOAD-UNKNOWN" ],
+    "testDataIds" : [ "TD-SEG100-APPE-TABLE-LOAD-UNKNOWN-FAIL" ],
+    "expectedOutcome" : "FAIL",
+    "status" : "COVERED",
+    "assertionScope" : "Reject unlisted DL1.CardType code; not special Prompt Code family behavior",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-unknown-code-rejected"
+    } ]
+  } ],
+  "testData" : [ {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-071-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-071-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-071",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-071"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "071"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-072-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-072-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-072",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-072"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "072"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-073-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-073-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-073",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-073"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "073"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-074-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-074-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-074",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-074"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "074"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-075-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-075-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-075",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-075"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "075"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-077-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-077-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-077",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-077"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "077"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-078-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-078-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-078",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-078"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "078"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-079-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-079-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-079",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-079"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "079"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-020-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-020-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-020",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-020"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "020"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-050-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-050-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-050",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-050"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "050"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-051-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-051-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-051",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-051"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "051"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-052-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-052-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-052",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-052"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "052"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-053-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-053-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-053",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-053"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "053"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-055-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-055-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-055",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-055"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "055"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-056-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-056-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-056",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-056"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "056"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-057-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-057-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-057",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-057"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "057"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-058-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-058-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-058",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-058"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "058"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-059-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-059-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-059",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-059"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "059"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-080-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-080-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-080",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-080"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "080"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-081-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-081-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-081",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-081"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "081"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-084-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-084-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-084",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-084"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "084"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-085-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-085-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-085",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-085"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "085"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-086-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-086-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-086",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-086"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "086"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-088-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-088-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-088",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-088"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "088"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-001-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-001-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-001",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-001"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "001"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-060-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-060-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-060",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-060"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "060"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-061-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-061-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-061",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-061"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "061"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-064-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-064-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-064",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-064"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "064"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-090-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-090-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-090",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-090"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "090"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-091-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-091-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-091",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-091"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "091"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-092-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-092-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-092",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-092"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "092"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-093-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-093-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-093",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-093"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "093"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-094-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-094-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-094",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-094"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "094"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-095-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-095-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-095",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-095"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "095"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-096-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-096-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-096",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-096"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "096"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-011-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-011-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-011",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-011"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "011"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-012-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-012-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-012",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-012"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "012"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-013-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-013-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-013",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-013"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "013"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-040-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-040-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-040",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-040"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "040"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-041-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-041-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-041",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-041"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "041"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-045-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-045-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-045",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-045"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "045"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-046-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-046-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-046",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-046"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "046"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-070-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-070-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-070",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-card_type-070"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "070"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-174-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-174-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-174",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-174"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "174"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-127-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-127-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-127",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-127"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "127"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-150-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-150-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-150",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-150"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "150"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-148-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-148-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-148",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-148"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "148"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-162-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-162-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-162",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-162"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "162"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-163-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-163-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-163",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-163"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "163"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-164-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-164-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-164",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-164"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "164"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-165-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-165-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-165",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-165"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "165"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-166-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-166-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-166",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-166"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "166"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-167-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-167-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-167",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-167"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "167"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-168-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-168-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-168",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-168"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "168"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-171-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-171-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-171",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-171"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "171"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-173-PASS",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-173-PASS" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-CODE-173",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "PASS",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-terminal_feature-173"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "173"
+        },
+        "DL2" : { },
+        "DL3" : { },
+        "DL6" : { }
+      }
+    }
+  }, {
+    "id" : "TD-SEG100-APPE-TABLE-LOAD-UNKNOWN-FAIL",
+    "testCaseIds" : [ "TC-SEG100-APPE-TABLE-LOAD-UNKNOWN-FAIL" ],
+    "coversBr" : "BR-SEG100-APPE-TABLE-LOAD-FAMILY",
+    "producer" : "TEST_SOLUTION",
+    "readiness" : "EXECUTABLE",
+    "fixtureKind" : "TABLE_LOAD_ALLOWLIST_VALIDATOR_HARNESS",
+    "expectedValidation" : "FAIL",
+    "converterReady" : false,
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix E",
+      "segment" : "TABLE-LOAD-RESPONSE",
+      "element" : "DL1.CardType",
+      "rule" : "table-load-unknown-code-rejected"
+    } ],
+    "payload" : {
+      "Table Load Response" : {
+        "DL1" : {
+          "CardType" : "999"
+        },
+        "DL2" : { },
+        "DL3" : { }
+      }
+    }
+  } ],
+  "tableLoadCoverageSummary" : {
+    "tableLoadValues" : 56,
+    "tableLoadCardTypes" : 43,
+    "terminalFeatureCodes" : 13,
+    "perValueBrTsTcTdChains" : 56,
+    "unknownCodeNegativeChains" : 1,
+    "terminalFeatureEffectsCertified" : false,
+    "productionConfigurationCertified" : false
+  },
+  "businessRequirementCount" : 61,
+  "testScenarioCount" : 57,
+  "testCaseCount" : 57,
+  "testDataCount" : 57
 }

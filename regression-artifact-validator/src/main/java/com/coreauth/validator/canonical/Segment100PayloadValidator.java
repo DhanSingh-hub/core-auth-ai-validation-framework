@@ -56,10 +56,17 @@ public final class Segment100PayloadValidator {
         
         // MUT-009: numberOfSegments must be present and valid
         String declaredSegments = section1.path("numberOfSegments").asText(null);
+        String rangeError = declaredSegments != null
+                && declaredSegments.matches(DataSection1StructureValidator.ELEMENT_63_PATTERN)
+                ? DataSection1StructureValidator.element63RangeError(Integer.parseInt(declaredSegments),
+                        DataSection1StructureValidator.isEmv(request))
+                : null;
         if (declaredSegments == null || declaredSegments.isEmpty()) {
             result.addError("Segment100Payload", id + " numberOfSegments is required");
-        } else if (!declaredSegments.matches("^[0-9]{2}$")) {
-            result.addError("Segment100Payload", id + " numberOfSegments must be two digits");
+        } else if (!declaredSegments.matches(DataSection1StructureValidator.ELEMENT_63_PATTERN)) {
+            result.addError("Segment100Payload", id + " numberOfSegments must be one or two digits");
+        } else if (rangeError != null) {
+            result.addError("Segment100Payload", id + " numberOfSegments '" + declaredSegments + "': " + rangeError);
         } else {
             // Count actual segments in dataSection2
             JsonNode dataSection2 = request.path("dataSection2");

@@ -40,7 +40,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | F | Valid Payment Systems Product Codes | Product codes: fuel, automotive, aviation, marine, merchandise, FSA/HRA (Element 77) | 26485-27246 |
 | G | Valid Transaction Type Codes | Transaction type codes (Element 78, 1st position) | 27247-27347 |
 | H | Decline Codes Permitting Clerk/Customer Intervention | Decline codes allowing merchant/customer action (Element 26) | 27348-27442 |
-| I | Variable Information Data Layouts | Table IDs 001-081 for Element 111/113 | 27443-32490 |
+| I | [Variable Information Data Layouts training](appendix-i/README.md) | 78 located top-level IDs in allocated range 001-081; Elements 111/112/113; semantic training in progress | 27443-32490 |
 | J | Valid Point-of-Service Entry Mode Codes | PAN entry mode + PIN entry capability (Element 113, w/ Element 111 Table 005) | 32491-32576 |
 | K | Additional Information Data Layouts | Table IDs 001-047 for Element 116/118 | 32577-34456 |
 | L | Valid Currency Codes | Currencies with ISO codes, Visa/MasterCard support (Element 20) | 34457-34890 |
@@ -66,9 +66,12 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 
 ## Related files in this knowledge base
 
+- [elements/README.md](elements/README.md) - all 231 element source/BR inventory, contextual validation profiles, implementation plan and explicit coverage gaps
 - [11-financial-transaction-request-sections.md](11-financial-transaction-request-sections.md) - TCP/IP header distinction, standard financial-request sections, Segment 100-only eligibility, and Section 3 conditions
 - [segment-100-canonical-anchors.md](segment-100-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 100 scope
 - [segment-100/README.md](segment-100/README.md) - focused Segment 100 SME, technical business analysis, and flow-learning module
+- [segment-100/response-code-training.md](segment-100/response-code-training.md) - source-derived Element 83 code families, contextual overlaps, and validation scope
+- [element-83-response-code/README.md](element-83-response-code/README.md) - dedicated Element 83 message-family training and [code 0 purchase/capture coverage](element-83-response-code/response-code-0-approved-purchase-capture.md)
 - [segment-100/coverage/README.md](segment-100/coverage/README.md) - Segment 100 rule coverage, approval gates, and report design
 - [segment-101/README.md](segment-101/README.md) - focused Segment 101 (Fleet Data Segment) SME, technical business analysis, and flow-learning module
 - [segment-102/README.md](segment-102/README.md) - focused Segment 102 Product Code SME, technical business analysis, and flow-learning module
@@ -78,10 +81,13 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [segment-108/README.md](segment-108/README.md) - focused Segment 108 (Loyalty Card Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (Loyalty Card Transaction Request, not a Financial Transaction Request companion)
 - [segment-108/segment-108-sme-tba-input-register.md](segment-108/segment-108-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 108
 - [segment-113/README.md](segment-113/README.md) - focused Segment 113 (ECA/TeleCheck® Data Segment) SME, technical business analysis, and flow-learning module; message-family-exclusive (ECA/TeleCheck® Service Transaction Request, not a Financial Transaction Request companion)
+- [moneris-key-load/README.md](moneris-key-load/README.md) - Section 11.7.8 Moneris Key Load request/response layouts and Appendix V SPDH header subfields
+- [section-11-message-layout-index.json](section-11-message-layout-index.json) - Section 11 layout coverage index and explicit provisional/blocked statuses
+- [segment-132/README.md](segment-132/README.md) - Segment 132 and the provisional Section 11.9 CA Public Key File Load request/response template status
 - [segment-112/README.md](segment-112/README.md) - focused Segment 112 (Additional Information Data Segment) SME, technical business analysis, and flow-learning module; response-only companion of the Financial Transaction Response, triggered by Element 115
 - [segment-112/segment-112-sme-tba-input-register.md](segment-112/segment-112-sme-tba-input-register.md) - tracked SME/TBA manual-input questions and resolutions for Segment 112
 - [segment-112-canonical-anchors.md](segment-112-canonical-anchors.md) - stable source-anchor vocabulary for independent AI and Test Validation artifacts in the current Segment 112 scope
-- [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) - common LLM training strategy for every ATL105 segment, with segment-specific addenda for specialized behavior
+- [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) - **ATL105 Segment Training Handbook**: the single strategy, rules, 8-item framework, and lessons learned for training every ATL105 segment, with segment-specific addenda for specialized behavior
 - Placeholder modules: Segments 110, 111, 114, 115, 118, 119, 120, 123, 130, 131, 132, 134, 135, 136, 139, 140, 141, 142, 143, 145, 146, 148, 149, 150, 151, 152, 153, 155, 156, 157, and DL1-DL8. Each placeholder README records the segment name and planned knowledge-base contents.
 - [Test Validation Strategy Package](../../test-validation-strategy/README.md) - complete ATL105 validation strategy and Segment 100 descriptive business requirements
 - [segment-compatibility-matrix.md](segment-compatibility-matrix.md) - conditional compatibility of Segment 100 with currently mapped Section 3 segments

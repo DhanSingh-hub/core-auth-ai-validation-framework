@@ -41,9 +41,9 @@ class Segment111ConsolidatedReportTest {
     }
 
     @Test
-    void reportsAllSevenRulesInCatalog(@TempDir Path tmp) throws IOException {
+    void reportsAllEightRulesInCatalog(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment111ConsolidatedReport().generate(inputsFor(tmp));
-        assertThat(summary.catalogRules()).isEqualTo(7);
+        assertThat(summary.catalogRules()).isEqualTo(8);
     }
 
     @Test
@@ -70,7 +70,7 @@ class Segment111ConsolidatedReportTest {
     @Test
     void reportsGenuineComparisonGapAgainstRealAiArtifact(@TempDir Path tmp) throws IOException {
         ReportSummary summary = new Segment111ConsolidatedReport().generate(inputsFor(tmp));
-        assertThat(summary.missingAnchors()).isEqualTo(7);
+        assertThat(summary.missingAnchors()).isEqualTo(8);
         assertThat(summary.matchedAnchors()).isEqualTo(0);
     }
 

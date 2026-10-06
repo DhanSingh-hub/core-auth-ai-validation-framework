@@ -21,7 +21,7 @@ flowchart TD
     E -->|Yes| G[Require literal wireFormat string]
     G --> H{wireFormat present?}
     H -->|No| Y[FAIL: wireFormat required]
-    H -->|Yes| I[Recompute length from wireFormat:<br/>3+1+3+1+sum(6+len(value))+1]
+    H -->|Yes| I["Recompute length from wireFormat:<br/>3+1+3+1+sum(6+len(value))+1"]
     I --> J{Declared segmentLength equals recomputed length?}
     J -->|No| Z1[FAIL: SegmentLength mismatch]
     J -->|Yes| K{Repeated body <= 991 and total <= 999?}

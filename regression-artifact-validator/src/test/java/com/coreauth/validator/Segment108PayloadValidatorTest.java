@@ -41,7 +41,7 @@ class Segment108PayloadValidatorTest {
     @Test
     void acceptsLoyaltyAccountInquiryCardNotPresent() {
         ValidationResult result = new Segment108PayloadValidator()
-            .validateFile(SEG108_ROOT.resolve(Path.of("lifecycle", "loyalty-account-inquiry-card-not-present.synthetic.json")));
+            .validateFile(SEG108_ROOT.resolve(Path.of("lifecycle", "loyalty-inquiry-no-card.synthetic.json")));
 
         assertThat(result.errors()).isEmpty();
     }
@@ -230,6 +230,69 @@ class Segment108PayloadValidatorTest {
 
         assertThat(result.errors())
             .anyMatch(error -> error.reason().contains("SEG108-R-001"));
+    }
+
+    @Test
+    void acceptsOptionalSkuSegmentWithUnpaddedCount() {
+        ObjectNode payload = validLoyaltyPayload();
+        ObjectNode request = (ObjectNode) payload.path("Loyalty Card Transaction Request");
+        request.put("NumSegments", "3");
+        request.putObject("SKU Data Segment").put("SegmentType", "114");
+
+        ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void rejectsNumSegmentsOutsideLoyaltyRange() {
+        for (String declared : new String[]{"1", "04"}) {
+            ObjectNode payload = validLoyaltyPayload();
+            ((ObjectNode) payload.path("Loyalty Card Transaction Request")).put("NumSegments", declared);
+
+            ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+            assertThat(result.errors())
+                .as("NumSegments %s", declared)
+                .anyMatch(error -> error.reason().contains("SEG108-R-025") && error.reason().contains("2-3 segments"));
+        }
+    }
+
+    @Test
+    void rejectsNumSegmentsThatDoNotMatchSegmentsPresent() {
+        ObjectNode payload = validLoyaltyPayload();
+        ((ObjectNode) payload.path("Loyalty Card Transaction Request")).put("NumSegments", "03");
+
+        ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG108-R-025") && error.reason().contains("contains 2 segments"));
+    }
+
+    @Test
+    void rejectsMissingOrNonNumericNumSegments() {
+        ObjectNode missing = validLoyaltyPayload();
+        ((ObjectNode) missing.path("Loyalty Card Transaction Request")).remove("NumSegments");
+        ObjectNode nonNumeric = validLoyaltyPayload();
+        ((ObjectNode) nonNumeric.path("Loyalty Card Transaction Request")).put("NumSegments", "A2");
+
+        assertThat(new Segment108PayloadValidator().validatePayload(missing).errors())
+            .anyMatch(error -> error.reason().contains("SEG108-R-025") && error.reason().contains("required"));
+        assertThat(new Segment108PayloadValidator().validatePayload(nonNumeric).errors())
+            .anyMatch(error -> error.reason().contains("SEG108-R-025") && error.reason().contains("one or two digits"));
+    }
+
+    @Test
+    void rejectsSegmentNotListedForLoyaltyRequest() {
+        ObjectNode payload = validLoyaltyPayload();
+        ObjectNode request = (ObjectNode) payload.path("Loyalty Card Transaction Request");
+        request.put("NumSegments", "03");
+        request.putObject("Fleet Segment").put("SegmentType", "101");
+
+        ValidationResult result = new Segment108PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors())
+            .anyMatch(error -> error.reason().contains("SEG108-R-023") && error.reason().contains("Segment 101"));
     }
 
     private static ObjectNode validLoyaltyPayload() {

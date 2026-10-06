@@ -10,7 +10,7 @@ flowchart TD
     B --> C[Validate JSON schema: segmentType, segmentLength, printData]
     C --> D{Envelope field values valid?<br/>SEG120-R-001..003}
     D -->|No| X[FAIL: envelope defect]
-    D -->|Yes| E[Compute structural length:<br/>3 (Segment Type) + len(printData) + 2 separators]
+    D -->|Yes| E["Compute structural length:<br/>3 (Segment Type) + len(printData) + 2 separators"]
     E --> F{Declared segmentLength equals computed length?}
     F -->|No| Y1[FAIL SEG120-R-002: SegmentLength mismatch]
     F -->|Yes| G{Computed length <= 1009?}

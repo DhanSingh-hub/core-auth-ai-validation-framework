@@ -1,0 +1,53 @@
+{
+  "id" : "TD-APPI-C012-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C012-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C012-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-9",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t012-mapping-APPI-C012-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C012-01",
+        "tableId" : "012",
+        "ruleIds" : [ "APPI-T012-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-9",
+          "startLine" : 27791,
+          "endLine" : 27800
+        } ],
+        "logicalFields" : {
+          "medical" : "M",
+          "billPayment" : "B",
+          "ecommerceAggregate" : "E",
+          "hotel" : "B"
+        },
+        "clearScope" : [ "All four printed one-character market mappings" ],
+        "excludedClaims" : [ "Operational supported codes", "A1/N3 header" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Hotel mapping isH",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "hotel",
+          "value" : "B",
+          "targetedNegative" : "Hotel fixture uses bill-payment code"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -52,7 +52,7 @@ passed. Two provisional items remain open pending SME resolution: `P-01`
 
 ## Validation resources
 
-- [Training methodology](../../../SEGMENT-100-TRAINING-METHODOLOGY.md)
+- [Training handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 - [Training questionnaire](../../../test-validation-strategy/SEGMENT-TRAINING-QUESTIONNAIRE.md)
 - [Segment 111 validation rules (JSON)](segment-111-validation-rules.json)
 - [Segment 111 rule catalog (JSON)](coverage/segment-111-rule-catalog.json)
@@ -67,3 +67,20 @@ passed. Two provisional items remain open pending SME resolution: `P-01`
 - [Segment 100 knowledge base](../segment-100/README.md)
 - [Segment 101 knowledge base](../segment-101/README.md)
 - [Canonical artifact contract](../../../canonical-artifact-contract.md)
+
+<!-- segment-100-parity-index -->
+## Segment 100 Parity Index
+
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-111-rule-catalog.json) (7 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+
+| Segment 100 component | Segment 111 |
+|---|---|
+| SME/TBA learning note | [Learning note](segment-111-sme-tba-learning-note.md) |
+| End-to-end flow | [Flow](segment-111-flow.md) |
+| Topic deep-dives | [field-definitions](field-definitions-sme-tba-note.md) · [repeated-section-boundary](repeated-section-boundary-sme-tba-note.md) · [variable-information-indicator](variable-information-indicator-sme-tba-note.md) · [variable-information-length](variable-information-length-sme-tba-note.md) |
+| Topic flows | [field-definitions](field-definitions-flow.md) · [repeated-section-boundary](repeated-section-boundary-flow.md) · [variable-information-indicator](variable-information-indicator-flow.md) · [variable-information-length](variable-information-length-flow.md) |
+| Final closure | [Note](final-closure-sme-tba-note.md) · [Flow](final-closure-flow.md) |
+| Business requirements | [segment-111-business-requirements.md](segment-111-business-requirements.md) |
+| Companion compatibility | [companion-segment-compatibility-sme-tba-note.md](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) |
+| Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
+| Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-111-rule-catalog.json) |

@@ -29,6 +29,37 @@ class Segment100ResponseCodeValidatorTest {
     }
 
     @Test
+    void acceptsCodeZeroForAppendixGPurchaseTransactionTypes() {
+        var validator = new Segment100ResponseCodeValidator();
+        for (String transactionType : new String[]{"0", "4", "6"}) {
+            ObjectNode artifact = response("0", transactionType);
+            ((ObjectNode) artifact.path("Financial Response")).remove("ApprovalNumber");
+            assertThat(validator.validate("CODE-0-PURCHASE-" + transactionType, artifact).errors())
+                .as("transaction type " + transactionType).isEmpty();
+        }
+    }
+
+    @Test
+    void rejectsCodeZeroForAuthorizationAndReturnTransactionTypes() {
+        var validator = new Segment100ResponseCodeValidator();
+        for (String transactionType : new String[]{"3", "5", "7", "8"}) {
+            var result = validator.validate("CODE-0-WRONG-CONTEXT-" + transactionType, response("0", transactionType));
+            assertThat(result.errors()).anyMatch(error -> error.reason().contains("incompatible with transaction type"));
+        }
+    }
+
+    @Test
+    void requiresApprovalNumberOnlyWhenLifecycleContextSaysItIsRequired() {
+        ObjectNode artifact = response("0", "0");
+        ((ObjectNode) artifact.path("Financial Response")).remove("ApprovalNumber");
+        ((ObjectNode) artifact.path("metadata")).put("requiresApprovalNumber", true);
+
+        var result = new Segment100ResponseCodeValidator().validate("CODE-0-LIFECYCLE-REFERENCE", artifact);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("Lifecycle context requires ApprovalNumber"));
+    }
+
+    @Test
     void rejectsUnknownResponseCode() {
         var result = new Segment100ResponseCodeValidator().validate("UNKNOWN", response("A", "0"));
 
@@ -57,13 +88,13 @@ class Segment100ResponseCodeValidatorTest {
     }
 
     @Test
-    void rejectsApprovedResponseWithoutApprovalNumber() {
+    void acceptsApprovedResponseWithoutConditionalApprovalNumber() {
         ObjectNode response = response("0", "0");
         ((ObjectNode) response.path("Financial Response")).remove("ApprovalNumber");
 
-        var result = new Segment100ResponseCodeValidator().validate("NO-APPROVAL", response);
+        var result = new Segment100ResponseCodeValidator().validate("CONDITIONAL-APPROVAL", response);
 
-        assertThat(result.errors()).anyMatch(error -> error.reason().contains("requires ApprovalNumber"));
+        assertThat(result.errors()).isEmpty();
     }
 
     private static ObjectNode response(String code, String transactionType) {

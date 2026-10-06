@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "artifactId": "SEG108-REJECTION-DUPLICATE-OCCURRENCE-001",
+    "purpose": "Rejection fixture: a second Loyalty Card Data Segment (SegmentType 108) is present alongside the original, violating SEG108-R-021 (Segment 108 appears exactly once per message).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12","segment":"108","rule":"segment-occurrence"}
+    ],
+    "context": {
+      "updateCode": "S",
+      "cardPresent": true,
+      "paymentTenderType": "VS",
+      "lifecycleRole": "SALE_UPDATE",
+      "messageFamily": "LOYALTY_CARD_TRANSACTION_REQUEST"
+    },
+    "expected": "REJECT",
+    "provisionalDependencies": ["P-05"]
+  },
+  "Loyalty Card Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "3",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "LC500004",
+      "PromptCode": {
+        "TransactionType": "0",
+        "CardType": "040"
+      },
+      "SequenceNumber": "700104",
+      "LocalDateTime": "2609221600",
+      "PartialApprovalIndicator": "0"
+    },
+    "Loyalty Card Data Segment": {
+      "SegmentType": "108",
+      "SegmentLength": "042",
+      "LoyaltyProgramId": "100200",
+      "LoyaltyAccountNumber": "400500600700",
+      "UpdateCode": "S",
+      "PaymentTenderType": "VS",
+      "LoyaltyInformationVersion": "1"
+    },
+    "Additional Loyalty Card Data Segment": {
+      "SegmentType": "108",
+      "SegmentLength": "042",
+      "LoyaltyProgramId": "100200",
+      "LoyaltyAccountNumber": "400500600700",
+      "UpdateCode": "S",
+      "PaymentTenderType": "VS",
+      "LoyaltyInformationVersion": "1"
+    }
+  }
+}

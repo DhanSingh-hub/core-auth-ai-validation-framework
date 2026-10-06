@@ -1,0 +1,49 @@
+{
+  "artifact" : "ATL105-ELEMENT-118-CONTEXT-MATRIX",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "element" : "118",
+  "authority" : "INDEPENDENT_TEST_SOLUTION_SOURCE_DERIVED_REVIEW",
+  "status" : "MULTIPLE_DEFINITIONS_REVIEW_REQUIRED",
+  "policy" : "Element 118 is not globally unique semantically. Segment, message family, companion fields, repetition and byte caps are required to interpret its value. Never reuse Segment 112 rules for Segment 130/131.",
+  "sourceDefinitionCount" : 2,
+  "contexts" : [ {
+    "segment" : "112",
+    "meaning" : "Additional Information",
+    "messageFamily" : "Financial Transaction Response",
+    "definitionFound" : true,
+    "repetition" : "SINGLE_TRIAD",
+    "aggregateByteCap" : 984,
+    "companionElements" : "Element 116 Indicator + Element 117 Length + Element 118 Value",
+    "serialization" : "Field Separators/triad semantics from Section 12.11",
+    "sourceRules" : [ "SEG112-R-006", "SEG112-R-008", "SEG112-R-009", "SEG112-R-010" ],
+    "businessRequirements" : [ "SEG112-R-006:AUTHORED_BR_LINKED", "SEG112-R-008:AUTHORED_BR_LINKED", "SEG112-R-009:AUTHORED_BR_LINKED", "SEG112-R-010:AUTHORED_BR_LINKED" ],
+    "status" : "SOURCE_DERIVED_REVIEW_REQUIRED"
+  }, {
+    "segment" : "130",
+    "meaning" : "EMV Additional Information",
+    "messageFamily" : "EMV Financial Transaction Request",
+    "definitionFound" : true,
+    "repetition" : "REPEATING_GROUP",
+    "aggregateByteCap" : 2000,
+    "companionElements" : "Element 191 Indicator + Element 192 Length + Element 118 Information",
+    "serialization" : "No separators within/between repetitions; one final separator; Section 12.20",
+    "sourceRules" : [ "SEG130-R-011", "SEG130-R-012", "SEG130-R-013", "SEG130-R-020", "SEG130-R-021", "SEG130-R-022" ],
+    "businessRequirements" : [ "SEG130-R-011:AUTHORED_BR_LINKED", "SEG130-R-012:AUTHORED_BR_LINKED", "SEG130-R-013:AUTHORED_BR_LINKED", "SEG130-R-020:AUTHORED_BR_LINKED", "SEG130-R-021:AUTHORED_BR_LINKED", "SEG130-R-022:AUTHORED_BR_LINKED" ],
+    "status" : "SOURCE_DERIVED_REVIEW_REQUIRED"
+  }, {
+    "segment" : "131",
+    "meaning" : "EMV Additional Information",
+    "messageFamily" : "EMV Financial Transaction Response",
+    "definitionFound" : true,
+    "repetition" : "REPEATING_GROUP",
+    "aggregateByteCap" : 2800,
+    "companionElements" : "Element 191 Indicator + Element 192 Length + Element 118 Information",
+    "serialization" : "Inverted response serialization; Section 12.21",
+    "sourceRules" : [ "SEG131-R-009", "SEG131-R-010" ],
+    "businessRequirements" : [ "SEG131-R-009:AUTHORED_BR_LINKED", "SEG131-R-010:AUTHORED_BR_LINKED" ],
+    "status" : "SOURCE_DERIVED_REVIEW_REQUIRED"
+  } ],
+  "unresolvedQuestions" : "Element 118 values must be interpreted with the segment-specific companion indicator/length and repetition rules. A raw element number or value without segment/family context is REVIEW_REQUIRED.",
+  "validityPolicy" : "Segment 112: variable value <= 984 and agrees with Element 117 and Element 116. Segment 130: repeating EMV value <= 2,000 aggregate and agrees with Element 192. Segment 131: repeating EMV value <= 2,800 aggregate and follows response serialization. These are not interchangeable."
+}

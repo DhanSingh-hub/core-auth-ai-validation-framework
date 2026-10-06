@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "artifactId": "SEG113-LIFECYCLE-VOID-WITH-TRACE-ID-001",
+    "purpose": "Segment 113 Void scenario: ECA/TeleCheck Trace ID (134) populated with the original transaction's trace ID, per the spec's Void-requires-Trace-ID business condition (cataloged only, not code-enforced per SEG113-SME-003). TransactionType is 8 (Purchase Reversal/Void); it was previously 2, which is not an Appendix G code. Whether ECA/TeleCheck voids are supported at all is open (SEG113-SME-010).",
+    "sourceAnchors": [
+      {"specification":"ATL105","version":"2026-3","section":"12.12,13.2","segment":"113","element":"134","rule":"eca-trace-id"}
+    ],
+    "context": {
+      "transactionType": "void",
+      "lifecycleRole": "VOID",
+      "messageFamily": "ECATELECHECK_SERVICE_TRANSACTION_REQUEST"
+    },
+    "expected": "ACCEPT",
+    "provisionalDependencies": ["P-03"]
+  },
+  "ECA/TeleCheck Service Transaction Request": {
+    "MessageType": "ATL105",
+    "NumSegments": "4",
+    "Standard Segment": {
+      "SegmentType": "100",
+      "SegmentLength": "070",
+      "InformationByte": "0",
+      "TerminalID": "EC500002",
+      "PromptCode": {
+        "TransactionType": "8",
+        "CardType": "046"
+      },
+      "SequenceNumber": "800102",
+      "LocalDateTime": "2609221550",
+      "PartialApprovalIndicator": "0"
+    },
+    "Check Data Segment": {
+      "SegmentType": "110",
+      "SegmentLength": "040",
+      "MICRData": "123456789012345",
+      "CheckType": "P"
+    },
+    "Variable Information Data Segment": {
+      "SegmentType": "111",
+      "SegmentLength": "020",
+      "VariableInformationSections": [
+        {"VariableInformationIndicator": "047", "VariableInformationLength": "005", "VariableInformation": "CHK01"}
+      ]
+    },
+    "ECA/TeleCheck Data Segment": {
+      "SegmentType": "113",
+      "SegmentLength": "045",
+      "EcaClerkId": "123456",
+      "EcaTraceId": "TRACE0000000000001"
+    }
+  }
+}

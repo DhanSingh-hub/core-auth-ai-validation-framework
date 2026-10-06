@@ -1,0 +1,108 @@
+{
+  "artifact" : "atl105-transaction-type-training-task",
+  "schemaVersion" : "1.0",
+  "status" : "IN_PROGRESS",
+  "transactionType" : {
+    "code" : "0",
+    "name" : "POS Purchase/Capture or Preauthorized Completion",
+    "class" : "STANDARD_FINANCIAL",
+    "sourceAnchor" : "ATL105|2026-3|Appendix G|100|78|transaction-type-0",
+    "testSolutionTraining" : "single-step purchase plus completion, reversal, and timeout lifecycle"
+  },
+  "owner" : {
+    "user" : "Shivansh Sehgal",
+    "email" : "shivansh.sehgal@fiserv.com",
+    "machine" : "CPC-shiva-XBSH1",
+    "branch" : "Develop",
+    "claimedAt" : "2026-10-05T15:08:25.3212995+05:30"
+  },
+  "gates" : [ {
+    "id" : "SOURCE_REVIEW",
+    "description" : "Verify Appendix G meaning and source anchor",
+    "status" : "COMPLETE",
+    "evidence" : [ {
+      "path" : "specifications/ATL105/docs/specs/extracted_text.txt",
+      "location" : "Appendix G, extracted source lines 27277-27284",
+      "quote" : "0 POS Purchase/Capture Point-of-sale purchase/preauthorized completion. Note: This Transaction Type code is also used to complete an AFP prepay transaction initiated from an inside POS device.",
+      "validation" : "Source wording checked directly; code 0 name/anchor verified. This completes source identification only, not business rule or lifecycle certification.",
+      "verifiedAt" : "2026-10-05T15:13:46.7042382+05:30"
+    }, {
+      "path" : "specifications/ATL105/test-output/test-json/segment-100-all-23-transaction-type-training-baseline.json",
+      "location" : "transactionTypes[code=0]",
+      "quote" : "POS Purchase/Capture or Preauthorized Completion",
+      "validation" : "Baseline matches Appendix G meaning; retained as index, not as independent training completion evidence."
+    } ],
+    "blockers" : [ ]
+  }, {
+    "id" : "BUSINESS_RULES",
+    "description" : "Derive independent Test Solution BRs and conditions",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "SCENARIOS",
+    "description" : "Derive positive, negative, boundary, and conditional scenarios as applicable",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "LIFECYCLE",
+    "description" : "Derive lifecycle/correlation scenarios or record NOT_APPLICABLE with evidence",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "TEST_CASES",
+    "description" : "Derive linked test cases with explicit expected outcomes",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "TEST_DATA_JSON",
+    "description" : "Create synthetic request Test Data JSON for the cases",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "VALIDATION",
+    "description" : "Run schema, rule, and BR->TS->TC->TD traceability validation",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  }, {
+    "id" : "HANDOFF_REVIEW",
+    "description" : "Record unresolved items, reviewer, and handoff",
+    "status" : "NOT_STARTED",
+    "evidence" : [ ],
+    "blockers" : [ ]
+  } ],
+  "openBlockers" : [ ],
+  "evidence" : [ ],
+  "workLog" : [ {
+    "timestamp" : "2026-10-05T15:08:25.3212995+05:30",
+    "user" : "Shivansh Sehgal",
+    "machine" : "CPC-shiva-XBSH1",
+    "branch" : "Develop",
+    "action" : "CLAIM_AND_SOURCE_REVIEW",
+    "outcome" : "Claimed code 0 and verified its Appendix G source meaning. No BR/scenario/test-data/validation gate has been promoted by this action.",
+    "evidence" : [ "specifications/ATL105/docs/specs/extracted_text.txt#Appendix-G-code-0", "specifications/ATL105/test-output/test-json/segment-100-all-23-transaction-type-training-baseline.json" ],
+    "blockers" : [ ],
+    "nextAction" : "Audit independent Test Solution BR/TS/TC/Test Data for code 0; do not treat AI-owned fixtures as independent Test Solution data."
+  }, {
+    "timestamp" : "2026-10-05T15:13:46.7042382+05:30",
+    "user" : "Shivansh Sehgal",
+    "machine" : "CPC-shiva-XBSH1",
+    "branch" : "Develop",
+    "action" : "SOURCE_REVIEW_VERIFIED",
+    "outcome" : "Directly checked the extracted ATL105 Appendix G code-0 row; confirmed POS Purchase/Capture, point-of-sale purchase/preauthorized completion, and the AFP-prepay note. Only the source identification gate is complete.",
+    "evidence" : [ "specifications/ATL105/docs/specs/extracted_text.txt:27277-27284", "specifications/ATL105/docs/specs/kb/appendix-code-tables.md:Appendix G" ],
+    "blockers" : [ ],
+    "nextAction" : "Audit the Test Solution-owned BR/TS/TC/Test Data and produce independent synthetic cases for code 0."
+  } ],
+  "handoff" : {
+    "nextAction" : "Audit independent Test Solution BR/TS/TC/Test Data for code 0; create source-backed gaps and synthetic fixtures as needed.",
+    "notes" : "Only SOURCE_REVIEW is complete. Do not mark the task complete until all applicable gates have evidence and review."
+  },
+  "createdAt" : "2026-10-05T09:35:55.925998800Z",
+  "updatedAt" : "2026-10-05T15:13:46.7042382+05:30"
+}

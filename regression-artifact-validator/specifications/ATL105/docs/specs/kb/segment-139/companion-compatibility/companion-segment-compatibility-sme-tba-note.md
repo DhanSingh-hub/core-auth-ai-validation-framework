@@ -1,0 +1,1 @@
+Segment 139 initiates the Moneris day-end balance/close workflow: 139 (Balance Request) → 140 (Balance Response) → 141 (Batch Close Request) → 142 (Batch Close Response). Do not treat Segment 139 as usable independently of this sequence.

@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "artifact": "segment-dl2-corrected-ai-sample-candidate",
+    "status": "CANDIDATE_NOT_APPROVED_OR_EXECUTED",
+    "sourceArtifact": "../../test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000002.json",
+    "purpose": "Correct definite DL2 AI-sample defects while preserving the original AI artifact and not guessing open response-framing or parse rules.",
+    "limitations": [
+      "Logical structured fields only; no serialized DL2 bytes.",
+      "Synthetic fixture requires approval under SEGDL2-SME-002.",
+      "Phone Load Response field-1 framing remains unresolved under SEGDL2-SME-003.",
+      "Secondary dialing retry semantics remain provisional under SEGDL2-SME-001.",
+      "Separator-free parsing and variable field boundaries remain unresolved under SEGDL2-SME-004."
+    ],
+    "corrections": [
+      "Use Phone Load Response, one of the two allowed DL2 response families.",
+      "Provide both primary and secondary dial-string blocks.",
+      "Use primary A and secondary F terminators.",
+      "Omit Access Code and Pause Indicator together instead of emitting a pause without an access code.",
+      "Include the required End-of-Data Indicator '~'.",
+      "Preserve framing and raw-wire assertions as review-required rather than guessing."
+    ]
+  },
+  "context": {
+    "merchantProfileLoadFlag": "PHON"
+  },
+  "Phone Load Request": {
+    "informationByte": "?",
+    "terminalIdentifier": "TESTCA0000001",
+    "loadType": "P"
+  },
+  "Phone Load Response": {
+    "framingStatus": "REVIEW_REQUIRED_SEGDL2_SME_003",
+    "representation": "logical structured fields; not serialized to wire bytes",
+    "dialStringDataSegment": {
+      "dataTypeIndicator": "!",
+      "dialStringType": "1",
+      "primary": {
+        "redialCount": "2",
+        "accessCode": null,
+        "pauseIndicator": null,
+        "phoneNumber": "5555550100",
+        "terminator": "A"
+      },
+      "secondary": {
+        "redialCount": "2",
+        "accessCode": null,
+        "pauseIndicator": null,
+        "phoneNumber": "5555550199",
+        "terminator": "F"
+      },
+      "endOfDataIndicator": "~"
+    }
+  }
+}

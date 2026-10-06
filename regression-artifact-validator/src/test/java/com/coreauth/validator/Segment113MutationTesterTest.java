@@ -26,7 +26,7 @@ class Segment113MutationTesterTest {
     }
 
     private JsonNode checkPurchaseOriginal() throws IOException {
-        return loadFixture("lifecycle/ecatelecheck-check-purchase-original.synthetic.json");
+        return loadFixture("lifecycle/eca-check-purchase-original.synthetic.json");
     }
 
     @Nested

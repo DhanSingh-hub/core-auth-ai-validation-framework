@@ -25,43 +25,49 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         Path aggregateFile = outputRoot.resolve("all-test-solution-br-ts-tc-td-training-package.json");
         JsonNode existing = mapper.readTree(aggregateFile.toFile());
 
-        Map<String, JsonNode> requirementsByAnchor = new LinkedHashMap<>();
+        Map<String, JsonNode> requirementsById = ruleRequirements(loadRules(mapper), mapper);
         Map<String, JsonNode> scenariosById = index(existing.path("testScenarios"));
         Map<String, JsonNode> testCasesById = index(existing.path("testCases"));
-        Map<String, JsonNode> testDataById = index(existing.path("testData"));
+        List<JsonNode> unlinkedTestDataCandidates = new ArrayList<>(
+                list(existing.path("provenance").path("unlinkedTestDataCandidates")));
+        List<JsonNode> canonicalTestData = new ArrayList<>();
+        for (JsonNode data : list(existing.path("testData"))) {
+            if (!CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(data)) {
+                unlinkedTestDataCandidates.add(CanonicalTestDataLinkPolicy.unlinkedCandidate(
+                        data, "all-test-solution-br-ts-tc-td-training-package.json", mapper));
+                continue;
+            }
+            if (data instanceof ObjectNode objectData) {
+                CanonicalTestDataLinkPolicy.requireExplicitReadiness(objectData);
+            }
+            canonicalTestData.add(data);
+        }
         List<JsonNode> scenarios = new ArrayList<>(list(existing.path("testScenarios")));
         List<JsonNode> testCases = new ArrayList<>(list(existing.path("testCases")));
-        List<JsonNode> testData = new ArrayList<>(list(existing.path("testData")));
+        List<JsonNode> testData = canonicalTestData;
         List<JsonNode> preservedRequirements = new ArrayList<>();
         int placeholderScenarios = 0;
         int placeholderTestCases = 0;
         int placeholderTestData = 0;
 
-        List<JsonNode> rules = loadRules(mapper);
-        for (JsonNode rule : rules) {
-            JsonNode anchor = rule.path("sourceAnchor");
-            String anchorKey = anchorKey(anchor);
-            ObjectNode br = objectForAnchor(requirementsByAnchor.get(anchorKey), mapper);
-            if (br == null) {
-                br = mapper.createObjectNode();
-                br.put("id", "BR-RULE-" + rule.path("ruleId").asText());
-                br.put("title", rule.path("title").asText());
-                br.put("status", "DRAFT_REVIEW_REQUIRED");
-                br.set("sourceAnchors", arrayWith(anchor, mapper));
-                br.put("testSolutionEvidence", "INDEPENDENT_RULE_CATALOG");
-                requirementsByAnchor.put(anchorKey, br);
-            }
-        }
-
-        Map<String, JsonNode> existingRequirements = indexByAnchor(existing.path("businessRequirements"));
+        int independentRuleCount = requirementsById.size();
+        Map<String, JsonNode> existingRequirements = index(existing.path("businessRequirements"));
         for (Map.Entry<String, JsonNode> entry : existingRequirements.entrySet()) {
-            requirementsByAnchor.putIfAbsent(entry.getKey(), entry.getValue());
+            requirementsById.putIfAbsent(entry.getKey(), entry.getValue());
         }
 
         Path lifecyclePackageFile = Atl105Paths.testJson().resolve("segment-100-multistep-flow-catalog.json");
         if (Files.isRegularFile(lifecyclePackageFile)) {
             JsonNode lifecyclePackage = mapper.readTree(lifecyclePackageFile.toFile());
-            preservedRequirements.addAll(list(lifecyclePackage.path("businessRequirements")));
+            for (JsonNode requirement : list(lifecyclePackage.path("businessRequirements"))) {
+                String requirementId = requirement.path("id").asText();
+                JsonNode existingRequirement = requirementsById.putIfAbsent(requirementId, requirement);
+                if (existingRequirement == null) {
+                    preservedRequirements.add(requirement);
+                } else if (!existingRequirement.equals(requirement)) {
+                    throw new IllegalStateException("Conflicting lifecycle business requirement " + requirementId);
+                }
+            }
             for (JsonNode scenario : lifecyclePackage.path("testScenarios")) {
                 scenariosById.putIfAbsent(scenario.path("id").asText(), scenario);
                 if (!containsId(scenarios, scenario.path("id").asText())) scenarios.add(scenario);
@@ -71,13 +77,19 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 if (!containsId(testCases, testCase.path("id").asText())) testCases.add(testCase);
             }
             for (JsonNode data : lifecyclePackage.path("testData")) {
-                testDataById.putIfAbsent(data.path("id").asText(), data);
+                if (!CanonicalTestDataLinkPolicy.hasCanonicalTestCaseLinks(data)) {
+                    unlinkedTestDataCandidates.add(CanonicalTestDataLinkPolicy.unlinkedCandidate(
+                            data, "segment-100-multistep-flow-catalog.json", mapper));
+                    continue;
+                }
+                if (data instanceof ObjectNode objectData) {
+                    CanonicalTestDataLinkPolicy.requireExplicitReadiness(objectData);
+                }
                 if (!containsId(testData, data.path("id").asText())) testData.add(data);
             }
         }
 
-        List<JsonNode> completeRequirements = new ArrayList<>(requirementsByAnchor.values());
-        completeRequirements.addAll(preservedRequirements);
+        List<JsonNode> completeRequirements = new ArrayList<>(requirementsById.values());
         for (JsonNode br : completeRequirements) {
             String brId = br.path("id").asText();
             List<JsonNode> linkedScenarios = scenariosForRequirement(scenarios, brId);
@@ -116,11 +128,11 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                         data.put("id", "TD-REVIEW-" + safe(testCaseId));
                         data.putArray("testCaseIds").add(testCaseId);
                         data.set("sourceAnchors", testCase.path("sourceAnchors"));
+                        data.put("readiness", "REVIEW_REQUIRED");
                         data.put("expectedValidation", "REVIEW_REQUIRED");
                         data.put("trainingStatus", "TEST_DATA_DERIVATION_REQUIRED");
                         data.putObject("payload").put("fixtureStatus", "SME_FIXTURE_REQUIRED");
                         testData.add(data);
-                        testDataById.put(data.path("id").asText(), data);
                         placeholderTestData++;
                     }
                 }
@@ -146,6 +158,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             data.put("id", "TD-REVIEW-" + safe(testCase.path("id").asText()));
             data.putArray("testCaseIds").add(testCase.path("id").asText());
             data.set("sourceAnchors", testCase.path("sourceAnchors"));
+            data.put("readiness", "REVIEW_REQUIRED");
             data.put("expectedValidation", "REVIEW_REQUIRED");
             data.put("trainingStatus", "TEST_DATA_DERIVATION_REQUIRED");
             data.putObject("payload").put("fixtureStatus", "SME_FIXTURE_REQUIRED");
@@ -167,13 +180,18 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         output.set("testCases", array(testCases, mapper));
         output.set("testData", array(testData, mapper));
         output.putArray("requirementCrosswalk");
+        ObjectNode provenance = output.putObject("provenance");
+        provenance.set("unlinkedTestDataCandidates", array(unlinkedTestDataCandidates, mapper));
         ObjectNode summary = output.putObject("summary");
-        summary.put("independentRuleDenominator", requirementsByAnchor.size());
+        summary.put("independentRuleDenominator", independentRuleCount);
         summary.put("businessRequirements", completeRequirements.size());
         summary.put("preservedLifecycleBusinessRequirements", preservedRequirements.size());
         summary.put("testScenarios", scenarios.size());
         summary.put("testCases", testCases.size());
         summary.put("testData", testData.size());
+        summary.put("unlinkedTestDataCandidates", unlinkedTestDataCandidates.size());
+        summary.put("syntheticReviewFixtureDrafts", unlinkedTestDataCandidates.stream()
+            .filter(candidate -> candidate.path("fixtureDraftCreated").asBoolean()).count());
         summary.put("placeholderScenarios", placeholderScenarios);
         summary.put("placeholderTestCases", placeholderTestCases);
         summary.put("placeholderTestData", placeholderTestData);
@@ -184,8 +202,30 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         mapper.writerWithDefaultPrettyPrinter().writeValue(outputFile.toFile(), output);
         Files.writeString(outputRoot.resolve("complete-all-test-solution-br-ts-tc-td-summary.md"), markdown(summary));
         System.out.printf("BR=%d TS=%d TC=%d TD=%d placeholders=%d/%d/%d output=%s%n",
-                requirementsByAnchor.size(), scenarios.size(), testCases.size(), testData.size(),
+                independentRuleCount, scenarios.size(), testCases.size(), testData.size(),
                 placeholderScenarios, placeholderTestCases, placeholderTestData, outputFile);
+    }
+
+    static Map<String, JsonNode> ruleRequirements(List<JsonNode> rules, ObjectMapper mapper) {
+        Map<String, JsonNode> requirements = new LinkedHashMap<>();
+        for (JsonNode rule : rules) {
+            JsonNode anchor = rule.path("sourceAnchor");
+            String ruleId = rule.path("ruleId").asText();
+            if (ruleId.isBlank() || !anchor.isObject()) {
+                throw new IllegalStateException("Catalog rule needs a ruleId and sourceAnchor: " + rule);
+            }
+            ObjectNode requirement = mapper.createObjectNode();
+            String requirementId = "BR-RULE-" + ruleId;
+            requirement.put("id", requirementId);
+            requirement.put("title", rule.path("title").asText());
+            requirement.put("status", "DRAFT_REVIEW_REQUIRED");
+            requirement.set("sourceAnchors", arrayWith(anchor, mapper));
+            requirement.put("testSolutionEvidence", "INDEPENDENT_RULE_CATALOG");
+            if (requirements.putIfAbsent(requirementId, requirement) != null) {
+                throw new IllegalStateException("Duplicate rule ID: " + ruleId);
+            }
+        }
+        return requirements;
     }
 
     private static List<JsonNode> loadRules(ObjectMapper mapper) throws Exception {
@@ -199,23 +239,9 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         return rules;
     }
 
-    private static ObjectNode objectForAnchor(JsonNode value, ObjectMapper mapper) {
-        return value != null && value.isObject() ? (ObjectNode) value : null;
-    }
-
     private static Map<String, JsonNode> index(JsonNode values) {
         Map<String, JsonNode> result = new LinkedHashMap<>();
         for (JsonNode value : list(values)) result.putIfAbsent(value.path("id").asText(), value);
-        return result;
-    }
-
-    private static Map<String, JsonNode> indexByAnchor(JsonNode values) {
-        Map<String, JsonNode> result = new LinkedHashMap<>();
-        for (JsonNode value : list(values)) {
-            JsonNode anchor = value.path("sourceAnchors").isArray()
-                    ? value.path("sourceAnchors").path(0) : value.path("sourceAnchors");
-            result.putIfAbsent(anchorKey(anchor), value);
-        }
         return result;
     }
 
@@ -259,13 +285,6 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         return result;
     }
 
-    private static String anchorKey(JsonNode anchor) {
-        if (!anchor.isObject()) return "";
-        return String.join("|", anchor.path("specification").asText(), anchor.path("version").asText(),
-                anchor.path("section").asText(), anchor.path("segment").asText(),
-                anchor.path("element").asText(), anchor.path("rule").asText());
-    }
-
     private static String safe(String value) {
         return value.replaceAll("[^A-Za-z0-9]+", "-");
     }
@@ -280,6 +299,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 + "| TS | " + summary.path("testScenarios").asInt() + " |\n"
                 + "| TC | " + summary.path("testCases").asInt() + " |\n"
                 + "| TD | " + summary.path("testData").asInt() + " |\n"
+                + "| Unlinked TD candidates (excluded from canonical chain) | " + summary.path("unlinkedTestDataCandidates").asInt() + " |\n"
+                + "| Synthetic review fixture drafts | " + summary.path("syntheticReviewFixtureDrafts").asInt() + " |\n"
                 + "| Placeholder TS | " + summary.path("placeholderScenarios").asInt() + " |\n"
                 + "| Placeholder TC | " + summary.path("placeholderTestCases").asInt() + " |\n"
                 + "| Placeholder TD | " + summary.path("placeholderTestData").asInt() + " |\n"

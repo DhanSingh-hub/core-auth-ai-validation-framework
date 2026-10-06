@@ -1,0 +1,879 @@
+{
+  "batchId": "APPI-049",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "tables": [{
+    "tableId": "049",
+    "title": "Merchant Supplementary Data",
+    "sourceEvidence": [
+      {"section": "Appendix I-39", "startLine": 29213, "endLine": 29236},
+      {"section": "Appendix I-40", "startLine": 29245, "endLine": 29302},
+      {"section": "Appendix I-41", "startLine": 29303, "endLine": 29366},
+      {"section": "Appendix I-42", "startLine": 29367, "endLine": 29423},
+      {"section": "Appendix I-43", "startLine": 29424, "endLine": 29479},
+      {"section": "Appendix I-44", "startLine": 29480, "endLine": 29540},
+      {"section": "Appendix I-45", "startLine": 29541, "endLine": 29602},
+      {"section": "Appendix I-46", "startLine": 29603, "endLine": 29668},
+      {"section": "Appendix I-47", "startLine": 29669, "endLine": 29738},
+      {"section": "Appendix I-48", "startLine": 29739, "endLine": 29809},
+      {"section": "Appendix I-49", "startLine": 29810, "endLine": 29876},
+      {"section": "Appendix I-50", "startLine": 29877, "endLine": 29943},
+      {"section": "Appendix I-51", "startLine": 29944, "endLine": 30012},
+      {"section": "Appendix I-52", "startLine": 30013, "endLine": 30035}
+    ],
+    "fields": [
+      {"path": "111.049.tableId", "type": "n", "length": {"fixedBytes": 3}, "requiredness": "Required when Table049 is present; value 049.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29217, "endLine": 29219}]},
+      {"path": "111.049.tableLength", "type": "n", "length": {"fixedBytes": 3}, "requiredness": "Required when Table049 is present; counts Table049 data bytes, maximum 500.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29220, "endLine": 29226}, {"section": "13-85", "startLine": 22151, "endLine": 22160}]},
+      {"path": "111.049.tableData", "type": "an", "length": {"maximumBytes": 500}, "requiredness": "Required within a present table; overall Table049 presence is context-dependent, not universally mandatory.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29224, "endLine": 29235}, {"section": "12.10", "startLine": 12608, "endLine": 12624}]}
+    ],
+    "nestedLayouts": [
+      {
+        "subTableId": "01", "title": "Deferred Transaction Indicator",
+        "fields": [
+          {"path": "111.049.01.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 01.", "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29249, "endLine": 29253}]},
+          {"path": "111.049.01.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29254, "endLine": 29257}]},
+          {"path": "111.049.01.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Should be present when a supported deferred transaction is resubmitted after connectivity returns.", "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29258, "endLine": 29281}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29236, "endLine": 29236}, {"section": "Appendix I-40", "startLine": 29246, "endLine": 29281}]
+      },
+      {
+        "subTableId": "02", "title": "Transaction Initiation Indicator",
+        "fields": [
+          {"path": "111.049.02.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 02.", "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29286, "endLine": 29290}]},
+          {"path": "111.049.02.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29291, "endLine": 29294}]},
+          {"path": "111.049.02.data", "type": "a", "length": {"fixedBytes": 1}, "requiredness": "Required for every subsequent Credential on File transaction.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29304, "endLine": 29319}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29282, "endLine": 29294}, {"section": "Appendix I-41", "startLine": 29304, "endLine": 29319}]
+      },
+      {
+        "subTableId": "03", "title": "WEX Product Reception Support",
+        "fields": [
+          {"path": "111.049.03.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 03.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29324, "endLine": 29328}]},
+          {"path": "111.049.03.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29329, "endLine": 29332}]},
+          {"path": "111.049.03.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Presence requirement not specified; describes WEX reception capability.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29333, "endLine": 29340}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29320, "endLine": 29340}]
+      },
+      {
+        "subTableId": "04", "title": "Business Payment Type",
+        "fields": [
+          {"path": "111.049.04.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 04.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29345, "endLine": 29349}]},
+          {"path": "111.049.04.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "2"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29350, "endLine": 29353}]},
+          {"path": "111.049.04.data", "type": "an", "length": {"fixedBytes": 2}, "requiredness": "Identifies applicable Visa or MasterCard business payment type; no universal presence mandate.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29354, "endLine": 29358}, {"section": "Appendix I-42", "startLine": 29369, "endLine": 29394}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29341, "endLine": 29358}, {"section": "Appendix I-42", "startLine": 29369, "endLine": 29394}]
+      },
+      {
+        "subTableId": "05", "title": "Highest Priced Item Product Code",
+        "fields": [
+          {"path": "111.049.05.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 05.", "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29400, "endLine": 29404}]},
+          {"path": "111.049.05.subTableLength", "type": "n", "length": {"fixedBytes": 1, "minimumValue": 1, "maximumValue": 6}, "requiredness": "Required if included; reflects actual product-code digit count.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29234, "endLine": 29235}, {"section": "Appendix I-42", "startLine": 29405, "endLine": 29408}]},
+          {"path": "111.049.05.data", "type": "n", "length": {"minimumBytes": 1, "maximumBytes": 6}, "requiredness": "Presence requirement not specified; applicable only to TeleCheck Debit (Connect Pay).", "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29409, "endLine": 29416}, {"section": "Appendix I-43", "startLine": 29425, "endLine": 29429}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29396, "endLine": 29416}, {"section": "Appendix I-43", "startLine": 29425, "endLine": 29429}]
+      },
+      {
+        "subTableId": "06", "title": "Mobile Terminal Classification",
+        "fields": [
+          {"path": "111.049.06.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 06.", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29434, "endLine": 29438}]},
+          {"path": "111.049.06.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "2"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29439, "endLine": 29442}]},
+          {"path": "111.049.06.data", "type": "an", "length": {"fixedBytes": 2}, "requiredness": "Mandatory for Amex mPOS; optional for MasterCard, Maestro, Discover, JCB and Diners mPOS; authorizer forwarding requires 111.032.01=M.", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29443, "endLine": 29470}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29430, "endLine": 29470}]
+      },
+      {
+        "subTableId": "07", "title": "Merchant Advice Code Acceptance",
+        "fields": [
+          {"path": "111.049.07.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 07.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29484, "endLine": 29488}]},
+          {"path": "111.049.07.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29489, "endLine": 29492}]},
+          {"path": "111.049.07.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Merchant should include when opting to receive Merchant Advice Code.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29493, "endLine": 29504}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29471, "endLine": 29471}, {"section": "Appendix I-44", "startLine": 29481, "endLine": 29504}]
+      },
+      {
+        "subTableId": "09", "title": "InComm OTC Transaction Code",
+        "fields": [
+          {"path": "111.049.09.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 09.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29509, "endLine": 29513}]},
+          {"path": "111.049.09.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "3"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29514, "endLine": 29517}]},
+          {"path": "111.049.09.data", "type": "n", "length": {"fixedBytes": 3}, "requiredness": "Presence requirement not specified; identifies InComm OTC operation.", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29518, "endLine": 29530}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29505, "endLine": 29530}]
+      },
+      {
+        "subTableId": "10", "title": "DAF Indicator Acceptance",
+        "fields": [
+          {"path": "111.049.10.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 10.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29544, "endLine": 29548}]},
+          {"path": "111.049.10.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29549, "endLine": 29552}]},
+          {"path": "111.049.10.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Acceptance opt-in; necessary but not sufficient for receiving a Visa DAF indicator.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29553, "endLine": 29572}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29531, "endLine": 29532}, {"section": "Appendix I-45", "startLine": 29542, "endLine": 29572}]
+      },
+      {
+        "subTableId": "11", "title": "Agreement ID Acceptance",
+        "fields": [
+          {"path": "111.049.11.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 11.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29577, "endLine": 29581}]},
+          {"path": "111.049.11.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29582, "endLine": 29585}]},
+          {"path": "111.049.11.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Acceptance opt-in; necessary but not sufficient for receiving a Visa Agreement ID.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29586, "endLine": 29593}, {"section": "Appendix I-46", "startLine": 29604, "endLine": 29614}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29573, "endLine": 29594}, {"section": "Appendix I-46", "startLine": 29604, "endLine": 29614}]
+      },
+      {
+        "subTableId": "13", "title": "Installment Payment Type",
+        "fields": [
+          {"path": "111.049.13.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 13.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29619, "endLine": 29621}]},
+          {"path": "111.049.13.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29622, "endLine": 29625}]},
+          {"path": "111.049.13.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Discover installment type; Appendix Z says it should be included for Discover MIT installment requests.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29626, "endLine": 29639}, {"section": "Appendix Z-2", "startLine": 36142, "endLine": 36143}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29615, "endLine": 29639}]
+      },
+      {
+        "subTableId": "16", "title": "Delayed Card Sale Indicator",
+        "fields": [
+          {"path": "111.049.16.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 16.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29644, "endLine": 29646}]},
+          {"path": "111.049.16.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29647, "endLine": 29650}]},
+          {"path": "111.049.16.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Presence requirement not specified; currently Discover only.", "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29651, "endLine": 29659}, {"section": "Appendix I-47", "startLine": 29670, "endLine": 29671}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29640, "endLine": 29659}, {"section": "Appendix I-47", "startLine": 29670, "endLine": 29671}]
+      },
+      {
+        "subTableId": "17", "title": "No Show Charges Indicator",
+        "fields": [
+          {"path": "111.049.17.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 17.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29676, "endLine": 29678}]},
+          {"path": "111.049.17.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29679, "endLine": 29682}]},
+          {"path": "111.049.17.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Presence requirement not specified; currently Discover only.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29683, "endLine": 29694}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29672, "endLine": 29694}]
+      },
+      {
+        "subTableId": "18", "title": "Purchase Restriction Method",
+        "fields": [
+          {"path": "111.049.18.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 18, not top-level Table018.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29699, "endLine": 29702}]},
+          {"path": "111.049.18.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29703, "endLine": 29706}]},
+          {"path": "111.049.18.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Mandatory for MasterCard Enhanced EMV Fleet MCF/MGF authorization, preauthorization and completion. Separate non-MC forwarding prohibition and Visa omission default need reconciliation.", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29707, "endLine": 29730}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29695, "endLine": 29730}, {"section": "Appendix I-48", "startLine": 29741, "endLine": 29744}]
+      },
+      {
+        "subTableId": "20", "title": "Visa Account Information Acceptance",
+        "fields": [
+          {"path": "111.049.20.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 20.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29749, "endLine": 29752}]},
+          {"path": "111.049.20.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29753, "endLine": 29756}]},
+          {"path": "111.049.20.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Visa acceptance opt-in; no universal presence mandate.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29757, "endLine": 29771}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29745, "endLine": 29771}]
+      },
+      {
+        "subTableId": "21", "title": "Non-Credit Recurring or Installment Indicator",
+        "fields": [
+          {"path": "111.049.21.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 21.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29776, "endLine": 29779}]},
+          {"path": "111.049.21.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29780, "endLine": 29783}]},
+          {"path": "111.049.21.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Presence requirement not specified; excludes Visa, MasterCard, Amex and Discover.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29784, "endLine": 29792}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29772, "endLine": 29792}]
+      },
+      {
+        "subTableId": "22", "title": "Transaction Link Support Indicator",
+        "fields": [
+          {"path": "111.049.22.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 22.", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29798, "endLine": 29801}]},
+          {"path": "111.049.22.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29811, "endLine": 29814}]},
+          {"path": "111.049.22.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to MasterCard/Maestro Transaction Link Identifier response.", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29815, "endLine": 29832}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29793, "endLine": 29801}, {"section": "Appendix I-49", "startLine": 29811, "endLine": 29832}]
+      },
+      {
+        "subTableId": "23", "title": "Authentication Data Quality Acceptance",
+        "fields": [
+          {"path": "111.049.23.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 23.", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29837, "endLine": 29840}]},
+          {"path": "111.049.23.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29841, "endLine": 29844}]},
+          {"path": "111.049.23.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Visa acceptance opt-in; necessary but not sufficient for response indicator.", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29845, "endLine": 29866}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29833, "endLine": 29866}]
+      },
+      {
+        "subTableId": "24", "title": "Token Update First Use Acceptance",
+        "fields": [
+          {"path": "111.049.24.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 24.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29880, "endLine": 29883}]},
+          {"path": "111.049.24.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29884, "endLine": 29887}]},
+          {"path": "111.049.24.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Visa acceptance opt-in; necessary but not sufficient for response indicator.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29888, "endLine": 29909}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29867, "endLine": 29868}, {"section": "Appendix I-50", "startLine": 29878, "endLine": 29909}]
+      },
+      {
+        "subTableId": "25", "title": "Merchant Tran ID Acceptance",
+        "fields": [
+          {"path": "111.049.25.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 25.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29914, "endLine": 29916}]},
+          {"path": "111.049.25.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29917, "endLine": 29920}]},
+          {"path": "111.049.25.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to receiving Merchant Tran ID in response.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29921, "endLine": 29927}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29910, "endLine": 29927}]
+      },
+      {
+        "subTableId": "26", "title": "Transaction Link Action Support",
+        "fields": [
+          {"path": "111.049.26.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 26.", "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29933, "endLine": 29935}]},
+          {"path": "111.049.26.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29945, "endLine": 29948}]},
+          {"path": "111.049.26.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to MasterCard/Maestro Transaction Link Action Indicator response.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29949, "endLine": 29962}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29928, "endLine": 29935}, {"section": "Appendix I-51", "startLine": 29945, "endLine": 29962}]
+      },
+      {
+        "subTableId": "27", "title": "Applied Special Service Data Acceptance",
+        "fields": [
+          {"path": "111.049.27.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 27.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29967, "endLine": 29969}]},
+          {"path": "111.049.27.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29970, "endLine": 29973}]},
+          {"path": "111.049.27.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to receiving Visa Applied Special Service Data.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29974, "endLine": 29981}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29963, "endLine": 29981}]
+      },
+      {
+        "subTableId": "28", "title": "Voyager Restriction Codes Acceptance",
+        "fields": [
+          {"path": "111.049.28.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 28.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29986, "endLine": 29988}]},
+          {"path": "111.049.28.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29989, "endLine": 29992}]},
+          {"path": "111.049.28.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to receiving Voyager Restriction Codes.", "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29993, "endLine": 30000}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29982, "endLine": 30000}]
+      },
+      {
+        "subTableId": "30", "title": "Visa Category Code Support",
+        "fields": [
+          {"path": "111.049.30.subTableId", "type": "n", "length": {"fixedBytes": 2}, "requiredness": "Required if included; fixed 30.", "sourceEvidence": [{"section": "Appendix I-52", "startLine": 30015, "endLine": 30017}]},
+          {"path": "111.049.30.subTableLength", "type": "n", "length": {"fixedBytes": 1, "fixedValue": "1"}, "requiredness": "Required if included.", "sourceEvidence": [{"section": "Appendix I-52", "startLine": 30018, "endLine": 30021}]},
+          {"path": "111.049.30.data", "type": "an", "length": {"fixedBytes": 1}, "requiredness": "Opt-in to Visa Category Code in response.", "sourceEvidence": [{"section": "Appendix I-52", "startLine": 30022, "endLine": 30035}]}
+        ],
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 30001, "endLine": 30004}, {"section": "Appendix I-52", "startLine": 30014, "endLine": 30035}]
+      }
+    ],
+    "rules": [
+      {
+        "id": "APPI-T049-R001",
+        "statement": "A present Merchant Supplementary Data table uses numeric identifier 049 in Element111 and a three-digit Element112 that counts its Element113 data only, not the six-byte outer table header.",
+        "applicability": {"segment": "111", "tablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-39", "segment": "111", "element": "111", "rule": "table-identifier-and-outer-length"},
+        "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29217, "endLine": 29226}, {"section": "13-85", "startLine": 22151, "endLine": 22160}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Logical table 049004071Y declares four data bytes for subtable07.", "negative": "Change only identifier 049 to 048; it no longer identifies this layout.", "boundary": "Length 004 includes 07, 1 and Y; 010 incorrectly includes the outer six bytes.", "notes": "Synthetic fragments are not production messages; identifier changes may select other valid tables rather than cause a host rejection."},
+        "dependencies": ["ATL105:12.10", "ATL105:13-83:Element111", "ATL105:13-85:Element112"]
+      },
+      {
+        "id": "APPI-T049-R002",
+        "statement": "Table049 data is variable-length alphanumeric data capped at 500 bytes; declared outer length must equal the serialized nested data byte count.",
+        "applicability": {"tablePresent": true, "scope": "Table049 data, excluding outer header"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-39", "segment": "111", "element": "112", "rule": "table-data-length-cap"},
+        "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29220, "endLine": 29235}, {"section": "13-85", "startLine": 22151, "endLine": 22160}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Two capability subtables 071Y101Y occupy eight data bytes and declare 008.", "negative": "Change only outer length 008 to 007; review length mismatch.", "boundary": "Isolated length-cap arithmetic: 499 and 500 are not over cap; 501 is over cap.", "notes": "A 500-byte arithmetic payload is not a valid semantic fixture without resolving repetition and unknown-ID policy. Empty present table is unresolved."},
+        "dependencies": ["APPI-T049-R001", "APPI-T049-Q004"]
+      },
+      {
+        "id": "APPI-T049-R003",
+        "statement": "Each nested entry has a two-digit numeric ID in 01-99, a one-digit numeric data length in 1-9, and that many alphanumeric data bytes. Table-specific lengths and types narrow this generic envelope.",
+        "applicability": {"scope": "All subtables inside 111.049"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-39", "segment": "111", "element": "113", "rule": "nested-envelope"},
+        "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29230, "endLine": 29235}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "071Y has ID07, length1 and one data byte.", "negative": "Change only length byte 1 to 0; outside generic permitted length range.", "boundary": "Generic ID endpoints 01/99 and length endpoints1/9; neither implies an undefined layout is supported.", "notes": "Do not apply Table032's three-byte subtable-length format to Table049."},
+        "dependencies": ["APPI-T049-R002", "APPI-T049-Q004"]
+      },
+      {
+        "id": "APPI-T049-R004",
+        "statement": "Segment111 carries device-originated variable information with required three-byte segment type and segment length; its length includes the segment type and separators. Separators divide type, length and the variable-information section and follow its final entry, but not table elements or repeated variable-information entries.",
+        "applicability": {"segment": "111", "tablePresent": true, "scope": "Containing segment framing"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-39", "segment": "111", "element": "113", "rule": "containing-segment-framing"},
+        "sourceEvidence": [{"section": "12.10", "startLine": 12569, "endLine": 12624}, {"section": "Appendix I-40", "startLine": 29274, "endLine": 29275}, {"section": "Appendix I-45", "startLine": 29565, "endLine": 29566}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independent separator accounting gives 19 bytes for logical 111+019+049004101Y+.", "negative": "Insert only an extra separator between 049 and 004; internal table framing conflicts with section12.10.", "boundary": "Segment maximum999 and repeated variable section maximum991; Table049's own cap remains500.", "notes": "Source deferred/CIT examples use segment length018 for the same-size structure; preserve conflict for review, not as a production fixture."},
+        "dependencies": ["ATL105:12.10", "APPI-T049-Q002"]
+      },
+      {
+        "id": "APPI-T049-R005",
+        "statement": "Deferred indicator uses ID01, length1 and an1 data restricted to Y, meaning a transaction locally approved and retained during interrupted or unavailable merchant connectivity for later submission.",
+        "applicability": {"subTableId": "01", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-40", "segment": "111", "element": "113", "rule": "deferred-indicator-layout-and-code"},
+        "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29249, "endLine": 29272}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Locally approved offline transaction carries logical 011Y.", "negative": "Change only Y to N; N is not a documented code.", "boundary": "Data length1; length2 or two-byte data does not fit.", "notes": "Y is not a claim of subsequent authorizer approval."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R006",
+        "statement": "Deferred Y should accompany restored-connectivity submission for the currently supported Visa authorizations/purchases, MasterCard authorizations/purchases and Blackhawk activations; this list does not establish support for other types.",
+        "applicability": {"subTableId": "01", "connectivity": "Restored after local approval", "supportedPairs": [{"network": "Visa", "transactions": ["Authorization", "Purchase"]}, {"network": "MasterCard", "transactions": ["Authorization", "Purchase"]}, {"network": "Blackhawk", "transactions": ["Activation"]}]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-40", "segment": "111", "element": "113", "rule": "deferred-resubmission-and-supported-types"},
+        "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29263, "endLine": 29281}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Supported Visa purchase resubmission includes01=Y.", "negative": "Omit only01 in the same deferred submission; review missing recommended indicator.", "boundary": "Switch only operation from Blackhawk Activation to Refund; support is not documented.", "notes": "Keep source 'should' distinct from an unconditional MUST."},
+        "dependencies": ["APPI-T049-R005"]
+      },
+      {
+        "id": "APPI-T049-R007",
+        "statement": "Initiation indicator uses ID02, length1 and alphabetic data M for merchant initiation (MIT) or C for cardholder initiation (CIT).",
+        "applicability": {"subTableId": "02", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-41", "segment": "111", "element": "113", "rule": "initiation-layout-and-codes"},
+        "sourceEvidence": [{"section": "Appendix I-40", "startLine": 29286, "endLine": 29294}, {"section": "Appendix I-41", "startLine": 29304, "endLine": 29313}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Logical 021M/021C represent the two respective initiators.", "negative": "Change only data M to Y; outside documented code set.", "boundary": "Exactly one alphabetic byte, not numeric1 or two-byte MC.", "notes": "Actual initiator must come from independent transaction context."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R008",
+        "statement": "All subsequent Credential on File transactions require02; merchant-initiated COF uses M and cardholder-initiated COF uses C. Table032/08 distinguishes initial I from subsequent C; its C alone does not distinguish MIT from CIT.",
+        "applicability": {"subTableId": "02", "storedCredentialStage": "Subsequent", "initiators": ["Merchant", "Cardholder"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-41", "segment": "111", "element": "113", "rule": "subsequent-cof-presence-and-initiator-match"},
+        "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29318, "endLine": 29319}, {"section": "Appendix I-26", "startLine": 28495, "endLine": 28510}, {"section": "10.13.2.4.1", "startLine": 6382, "endLine": 6389}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Subsequent MIT with032/08=C includes049/02=M; corresponding CIT includesC.", "negative": "Remove only049/02 from a subsequent MIT; required indicator missing.", "boundary": "Change only02 fromM toC while retaining known MIT context; semantic mismatch. InitialI is outside this subsequent-only presence mandate.", "notes": "COF transaction operations include authorization, completion, cancellation and reversal per032/08. Do not infer02 is prohibited on initial transactions."},
+        "dependencies": ["APPI-T049-R007", "ATL105:Appendix I-26:Table032/SubTable08", "ATL105:10.13.2.4.1", "ATL105:Appendix Z-1", "ATL105:Appendix Z-2"]
+      },
+      {
+        "id": "APPI-T049-R009",
+        "statement": "WEX reception support uses ID03, length1 and an1 data:0 means WEX product reception is not supported;4 means it is supported.",
+        "applicability": {"subTableId": "03", "context": "WEX product/fleet reception capability"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-41", "segment": "111", "element": "113", "rule": "wex-product-support-layout-and-codes"},
+        "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29320, "endLine": 29340}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "0314 matches independently known WEX reception support;0310 matches no support.", "negative": "Change only4 to1; undocumented capability code.", "boundary": "Both0 and4 are explicit codes; omission is not documented as equivalent to0.", "notes": "Do not invent support levels1-3 or mandatory presence."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R010",
+        "statement": "Business payment type uses ID04, length2 and an2 data CB for Consumer Bill Payment Service or IR for Purchase Repayment.",
+        "applicability": {"subTableId": "04", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-42", "segment": "111", "element": "113", "rule": "business-payment-layout-and-codes"},
+        "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29345, "endLine": 29358}, {"section": "Appendix I-42", "startLine": 29369, "endLine": 29372}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "042CB/042IR each occupies five nested bytes.", "negative": "Change only dataIR toII; undocumented payment type.", "boundary": "Exactly two data bytes; one or three does not match length2.", "notes": "Codes do not themselves establish program enrollment or approval."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R011",
+        "statement": "Business payment type04 currently applies only to Visa and MasterCard:CB is Visa-only and IR is MasterCard-only.",
+        "applicability": {"subTableId": "04", "allowedCodeNetworkPairs": [{"code": "CB", "network": "Visa"}, {"code": "IR", "network": "MasterCard"}]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-42", "segment": "111", "element": "113", "rule": "business-payment-network-pairing"},
+        "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29374, "endLine": 29379}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "VisaCB and MasterCardIR separately satisfy their documented applicability.", "negative": "Change only network fromMasterCard toVisa while retainingIR; wrong code/network pairing.", "boundary": "Discover is outside both pairs.", "notes": "Review unsupported applicability without fabricating a host response code."},
+        "dependencies": ["APPI-T049-R010"]
+      },
+      {
+        "id": "APPI-T049-R012",
+        "statement": "A MasterCard purchase repayment transaction must also submit the installment indicator I in Segment111 Table013.",
+        "applicability": {"network": "MasterCard", "businessPaymentType": "IR", "context": "Purchase repayment"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-42", "segment": "111", "element": "113", "rule": "purchase-repayment-installment-dependency"},
+        "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29381, "endLine": 29386}, {"section": "Appendix I-10", "startLine": 27814, "endLine": 27823}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "MasterCard049/04=IR plus013 dataI.", "negative": "Remove only013; mandatory installment dependency missing.", "boundary": "Changing only013 dataI toR also fails this repayment requirement.", "notes": "013 is top-level Special Payments Indicator, distinct from049/13. Its printed length attributes conflict with generic framing and need review."},
+        "dependencies": ["APPI-T049-R011", "ATL105:Appendix I-10:Table013", "ATL105:Appendix AB-1", "APPI-T049-Q006"]
+      },
+      {
+        "id": "APPI-T049-R013",
+        "statement": "MasterCard purchase repayment must carry Table047 merchant name in the form installment provider name, an asterisk, then merchant name; Table047 supports up to38 alphanumeric bytes.",
+        "applicability": {"network": "MasterCard", "businessPaymentType": "IR", "context": "Purchase repayment"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-42", "segment": "111", "element": "113", "rule": "purchase-repayment-merchant-descriptor"},
+        "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29387, "endLine": 29394}, {"section": "Appendix I-38", "startLine": 29141, "endLine": 29157}, {"section": "Appendix AB-1", "startLine": 36596, "endLine": 36602}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Logical provider P and retailer R use Table047 dataP*R alongsideIR.", "negative": "Remove only the asterisk fromP*R; descriptor lacks required structure.", "boundary": "Descriptor38 bytes reaches047 cap;39 exceeds it.", "notes": "Use independently supplied names, not production fixtures. AB defines third-party provider/payment-facilitator repayment of installments, including post-purchase and BNPL use cases."},
+        "dependencies": ["APPI-T049-R011", "APPI-T049-R012", "ATL105:Appendix I-38:Table047", "ATL105:Appendix AB-1"]
+      },
+      {
+        "id": "APPI-T049-R014",
+        "statement": "Product code05 uses ID05, one-digit variable data length1-6 and numeric data of up to six digits identifying the highest-priced checkout item.",
+        "applicability": {"subTableId": "05", "subTablePresent": true, "context": "Checkout at POS"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-42", "segment": "111", "element": "113", "rule": "highest-priced-product-layout"},
+        "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29234, "endLine": 29235}, {"section": "Appendix I-42", "startLine": 29400, "endLine": 29416}, {"section": "Appendix I-43", "startLine": 29425, "endLine": 29426}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independently chosen six-digit item code123456 serializes as056123456.", "negative": "Change only final digit toA; numeric data requirement fails.", "boundary": "One and six digits fit; seven exceeds05 maximum; empty data violates generic nested minimum.", "notes": "Digits are synthetic logical codes, not verified TeleCheck catalogue values."},
+        "dependencies": ["APPI-T049-R003", "APPI-T049-Q005"]
+      },
+      {
+        "id": "APPI-T049-R015",
+        "statement": "Product code05 is applicable only to TeleCheck Debit (Connect Pay), represents the highest-priced item rather than any arbitrary item, and is considered by TeleCheck authorization without guaranteeing approval.",
+        "applicability": {"subTableId": "05", "service": "TeleCheck Debit (Connect Pay)", "context": "Consumer checkout"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-43", "segment": "111", "element": "113", "rule": "telecheck-product-applicability-and-selection"},
+        "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29413, "endLine": 29416}, {"section": "Appendix I-43", "startLine": 29425, "endLine": 29429}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independent basket has itemA priced10 and itemB priced20;05 uses itemB's code in Connect Pay.", "negative": "Change only submitted code to itemA's code; highest-price selection no longer matches.", "boundary": "Equal-price tie selection is not specified; Visa is outside05 applicability.", "notes": "Catalogue validation and tie policy remain review issues, not invented rules."},
+        "dependencies": ["APPI-T049-R014", "APPI-T049-Q005"]
+      },
+      {
+        "id": "APPI-T049-R016",
+        "statement": "Mobile terminal classification06 uses ID06, length2 and an2 data AC (contact/contactless dongle with or without PIN pad), AS (such dongle plus PIN on Glass), CC (COTS contactless-only without PIN) or CS (COTS contactless-only with PIN on Glass).",
+        "applicability": {"subTableId": "06", "context": "mPOS"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-43", "segment": "111", "element": "113", "rule": "mpos-classification-layout-and-code-meanings"},
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29434, "endLine": 29461}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independently established contactless-only COTS device withoutPIN uses062CC.", "negative": "Change onlyCC toCX; code is not listed.", "boundary": "AC andAS require both contact and contactless;CC andCS are contactless-only. Data is exactly2 bytes.", "notes": "External CPoC/software PIN certification and source SCRP terminology are not validated by ATL105 alone."},
+        "dependencies": ["APPI-T049-R003", "APPI-T049-Q007"]
+      },
+      {
+        "id": "APPI-T049-R017",
+        "statement": "Classification06 is defined for Amex, Discover, JCB, MasterCard, Maestro and Diners mPOS and is sent to the authorizer only when the merchant also supplies Segment111 Table032 SubTable01=M.",
+        "applicability": {"subTableId": "06", "networks": ["Amex", "Discover", "JCB", "MasterCard", "Maestro", "Diners"], "context": "mPOS", "forwardingDependency": "111.032.01=M"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-43", "segment": "111", "element": "113", "rule": "mpos-authorizer-forwarding-gate"},
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29446, "endLine": 29449}, {"section": "Appendix I-21", "startLine": 28306, "endLine": 28334}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "MasterCard mPOS sends049/06=CC and032/01=M; forwarding precondition satisfied.", "negative": "Remove only032/01;06 must not be presumed forwarded.", "boundary": "Visa is not listed; JCB/Diners are listed for06 but not in032/01 applicability.", "notes": "Forwarding condition is distinct from presence mandate;032/01 uses length001 and describes attended, non-cardholder-activated mPOS."},
+        "dependencies": ["APPI-T049-R016", "ATL105:Appendix I-21:Table032/SubTable01", "APPI-T049-Q003"]
+      },
+      {
+        "id": "APPI-T049-R018",
+        "statement": "Amex merchants must provide06 for every mPOS transaction.",
+        "applicability": {"network": "Amex", "context": "mPOS", "subTableId": "06"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-43", "segment": "111", "element": "113", "rule": "amex-mpos-mandatory-classification"},
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29462, "endLine": 29465}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Amex mPOS with known device classification includes06.", "negative": "Omit only06 from the same Amex mPOS request; mandatory field missing.", "boundary": "Non-mPOS Amex is outside this mandate.", "notes": "Do not interpret optional status for other networks as applying toAmex."},
+        "dependencies": ["APPI-T049-R016", "APPI-T049-R017"]
+      },
+      {
+        "id": "APPI-T049-R019",
+        "statement": "Classification06 is optional for MasterCard, Maestro, Discover, JCB and Diners mPOS; Discover and Diners allow only CC/CS, while MasterCard and Maestro allow AC/AS/CC/CS.",
+        "applicability": {"subTableId": "06", "context": "mPOS", "optionalNetworks": ["MasterCard", "Maestro", "Discover", "JCB", "Diners"], "networkCodeSets": {"Discover": ["CC", "CS"], "Diners": ["CC", "CS"], "MasterCard": ["AC", "AS", "CC", "CS"], "Maestro": ["AC", "AS", "CC", "CS"]}},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-43", "segment": "111", "element": "113", "rule": "mpos-optional-networks-and-code-restrictions"},
+        "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29466, "endLine": 29470}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Discover mPOS may omit06 or includeCC/CS; MasterCard may includeAC.", "negative": "Change only Discover'sCC toAC; violates explicit network subset.", "boundary": "CS is allowed forDiscover/Diners;AS is not. General code list exists forAmex/JCB without a separate narrowed list.", "notes": "Do not invent an additional Amex/JCB-specific subset."},
+        "dependencies": ["APPI-T049-R016", "APPI-T049-R017", "APPI-T049-Q003"]
+      },
+      {
+        "id": "APPI-T049-R020",
+        "statement": "Merchant Advice Code acceptance uses ID07, length1 and an1 valueY; merchants opting to receive advice should include it.",
+        "applicability": {"subTableId": "07", "merchantIntent": "Receive Merchant Advice Code"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-44", "segment": "111", "element": "113", "rule": "merchant-advice-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29484, "endLine": 29504}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Merchant opting in sends071Y.", "negative": "Change onlyY toN; no N acceptance code is defined.", "boundary": "One data byte; omission is lack of opt-in, not an encoded N.", "notes": "Other mandatory fields may independently require Table049."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R021",
+        "statement": "Merchant Advice Code response112/030 is currently MasterCard-only and requires049/07=Y; advice is authorizer-originated, so opt-in alone does not guarantee its presence.",
+        "applicability": {"network": "MasterCard", "request": "111.049.07=Y", "response": "112.030", "source": "Authorizer"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-44", "segment": "111", "element": "113", "rule": "merchant-advice-response-opt-in"},
+        "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29496, "endLine": 29504}, {"section": "Appendix K-24", "startLine": 33876, "endLine": 33917}, {"section": "Appendix K-25", "startLine": 33928, "endLine": 33940}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known MasterCard authorizer advice with07=Y meets response gate.", "negative": "Remove only07 while retaining asserted030 response; opt-in prerequisite absent.", "boundary": "Opt-in with no authorizer advice does not establish a missing-response failure.", "notes": "Advice is not an invented ATL105 authorization response code."},
+        "dependencies": ["APPI-T049-R020", "ATL105:Appendix K-24:Table030", "ATL105:Appendix K-25:Table030"]
+      },
+      {
+        "id": "APPI-T049-R022",
+        "statement": "For received MasterCard advice, retry must not occur for03,21 or22. MasterCard may add advice values, so merchants should accept new ones; advice22 is associated with declines for unregistered purchase-repayment merchants.",
+        "applicability": {"network": "MasterCard", "response": "112.030", "noRetryAdvice": ["03", "21", "22"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-44", "segment": "111", "element": "113", "rule": "merchant-advice-no-retry-and-extensibility"},
+        "sourceEvidence": [{"section": "Appendix K-24", "startLine": 33908, "endLine": 33917}, {"section": "Appendix K-25", "startLine": 33928, "endLine": 33937}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Received documented advice03 produces no retry in logical merchant workflow.", "negative": "Change only retry decision toretry with the same advice03; violates no-retry requirement.", "boundary": "Apply no-retry to03/21/22 separately; other values do not automatically mean retry is authorized.", "notes": "External network additions require review, not invented new codes or fixed rejection of unknown advice. Registration absence does not guarantee a particular authorization outcome."},
+        "dependencies": ["APPI-T049-R021", "APPI-T049-R011", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R023",
+        "statement": "InComm OTC operation uses ID09, length3 and numeric data310 for Benefit Eligibility & Balance Lookup,910 for Item Qualification,920 for Limited Spend or200 for Limited Spend Refund.",
+        "applicability": {"subTableId": "09", "context": "InComm OTC", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-44", "segment": "111", "element": "113", "rule": "incomm-otc-layout-and-operation-codes"},
+        "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29505, "endLine": 29530}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independent refund intent uses093200; other three intents use their listed codes.", "negative": "Change only refund's200 to920; syntactically valid but wrong operation for established intent.", "boundary": "All four values are three digits;919 is not listed.", "notes": "Presence mandate and external OTC eligibility/product rules are not specified here."},
+        "dependencies": ["APPI-T049-R003", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R024",
+        "statement": "DAF acceptance uses ID10, length1 and an1 valueY and currently supports Visa transactions only.",
+        "applicability": {"subTableId": "10", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-45", "segment": "111", "element": "113", "rule": "daf-acceptance-layout-and-network"},
+        "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29544, "endLine": 29572}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa merchant opt-in uses101Y.", "negative": "Change onlyY toN; invalid documented request code.", "boundary": "Switch only network toMasterCard; outside current applicability.", "notes": "No general mandatory opt-in is specified."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R025",
+        "statement": "Visa DAF response112/031 requires both merchant049/10=Y and DAF data in the authorizer response; neither condition alone guarantees delivery.",
+        "applicability": {"network": "Visa", "response": "112.031", "requiredConditions": ["111.049.10=Y", "Authorizer returned DAF data"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-45", "segment": "111", "element": "113", "rule": "daf-response-two-input-gate"},
+        "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29568, "endLine": 29572}, {"section": "Appendix K-25", "startLine": 33943, "endLine": 33969}, {"section": "Appendix K-26", "startLine": 33982, "endLine": 33984}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known Visa authorizer DAF value plus10=Y satisfies both conditions.", "negative": "Remove only10 from that logical exchange; asserted031 lacks request prerequisite.", "boundary": "Keep10=Y but omit upstream DAF; merchant response presence is not mandated by this rule.", "notes": "External DAF eligibility and approval criteria are not encoded."},
+        "dependencies": ["APPI-T049-R024", "ATL105:Appendix K-25:Table031", "ATL105:Appendix K-26:Table031", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R026",
+        "statement": "Agreement ID acceptance uses ID11, length1 and an1 valueY and currently supports Visa only.",
+        "applicability": {"subTableId": "11", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-46", "segment": "111", "element": "113", "rule": "agreement-acceptance-layout-and-network"},
+        "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29577, "endLine": 29594}, {"section": "Appendix I-46", "startLine": 29604, "endLine": 29614}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa opt-in uses111Y as nested bytes, not a segment identifier.", "negative": "Change onlyY toN; N is not defined.", "boundary": "One-byte data; other networks are not currently supported.", "notes": "Nested ID11 must not be confused with top-level Table011."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R027",
+        "statement": "Visa Agreement ID response112/032 requires both049/11=Y and Agreement ID supplied in the authorizer response.",
+        "applicability": {"network": "Visa", "response": "112.032", "requiredConditions": ["111.049.11=Y", "Authorizer returned Agreement ID"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-46", "segment": "111", "element": "113", "rule": "agreement-response-two-input-gate"},
+        "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29610, "endLine": 29614}, {"section": "Appendix K-26", "startLine": 33985, "endLine": 34006}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known upstream Agreement ID and11=Y satisfy response gate.", "negative": "Remove only11 while keeping claimed032; prerequisite missing.", "boundary": "11=Y without upstream Agreement ID does not require032.", "notes": "Response Agreement ID is four ANS bytes, left-aligned and space-filled; request flag remains one byte."},
+        "dependencies": ["APPI-T049-R026", "ATL105:Appendix K-26:Table032"]
+      },
+      {
+        "id": "APPI-T049-R028",
+        "statement": "Discover installment type uses nested ID13, length1 and an1 data S for Merchant Installment Payment, T for Third Party Installment Payment or V for Issuer Installment Payment.",
+        "applicability": {"subTableId": "13", "network": "Discover", "context": "Installment payment"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-46", "segment": "111", "element": "113", "rule": "discover-installment-type-layout-and-codes"},
+        "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29615, "endLine": 29639}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independently classified Discover third-party installment uses131T; merchantS andissuerV separately match their contexts.", "negative": "Change onlyT toI; I belongs to other installment indicators, not this code set.", "boundary": "Exactly one data byte; MasterCard is outside current13 applicability.", "notes": "049/13 is not top-level013 Special Payments Indicator."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R029",
+        "statement": "Discover MIT installment transactions should include049/13; third-party installment descriptor Table047 must identify both provider and underlying retailer separated by an asterisk, with the underlying retailer MCC/SIC submitted in Table007 as described by stored-credential use cases.",
+        "applicability": {"network": "Discover", "initiator": "Merchant", "context": "Stored-credential installment", "descriptorCondition": "Third-party provider"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-46", "segment": "111", "element": "113", "rule": "discover-mit-installment-and-third-party-dependencies"},
+        "sourceEvidence": [{"section": "Appendix Z-2", "startLine": 36118, "endLine": 36147}, {"section": "Appendix I-38", "startLine": 29153, "endLine": 29157}, {"section": "10.13.2.4.2", "startLine": 6425, "endLine": 6434}, {"section": "Appendix I-6", "startLine": 27693, "endLine": 27698}, {"section": "Appendix I-7", "startLine": 27708, "endLine": 27711}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Discover third-party MIT installment includes13=T,02=M,047 dataP*R and007 for independently known retailerMCC.", "negative": "Remove only13; review AppendixZ's recommended installment type missing.", "boundary": "Change only descriptor toP without retailer; separate mandatory third-party descriptor condition fails.", "notes": "Do not promote source 'should include13' to MUST. Full stored-credential processing has separate dependencies outside this batch."},
+        "dependencies": ["APPI-T049-R008", "APPI-T049-R028", "ATL105:Appendix Z-2", "ATL105:Appendix I-38:Table047", "ATL105:10.13.2.4.2", "ATL105:Appendix I:Table007"]
+      },
+      {
+        "id": "APPI-T049-R030",
+        "statement": "Delayed Card Sale uses ID16, length1 and an1 data D; the field currently applies only to Discover.",
+        "applicability": {"subTableId": "16", "network": "Discover", "context": "Delayed card sale"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "delayed-card-sale-layout-code-and-network"},
+        "sourceEvidence": [{"section": "Appendix I-46", "startLine": 29640, "endLine": 29659}, {"section": "Appendix I-47", "startLine": 29670, "endLine": 29671}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Discover delayed sale uses161D.", "negative": "Change onlyD toY; not a documented16 code.", "boundary": "One-byte data; Visa context is outside current support.", "notes": "No universal presence mandate is stated; do not conflate delayed sale with deferred-connectivity01."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R031",
+        "statement": "No Show Charges uses ID17, length1 and an1 data N; the field currently applies only to Discover.",
+        "applicability": {"subTableId": "17", "network": "Discover", "context": "No show charges"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "no-show-layout-code-and-network"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29672, "endLine": 29694}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Discover no-show context uses171N.", "negative": "Change onlyN toY; not a documented17 code.", "boundary": "One-byte data; MasterCard context is outside current support.", "notes": "N here denotes no-show, not a generic false/negative flag."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R032",
+        "statement": "Purchase Restriction Method is nested049/18 with ID18, length1 and an1 data0 for neither chip nor host restrictions,1 for chip-only,2 for host-only or3 for both; it advertises terminal restriction support.",
+        "applicability": {"subTableId": "18", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "purchase-restriction-layout-and-capabilities"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29695, "endLine": 29719}, {"section": "13-83", "startLine": 22070, "endLine": 22071}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known host-only terminal uses1812; test0/1/3 against independent capabilities.", "negative": "Change only2 to4; outside code set.", "boundary": "All four values are single bytes; top-level018 is Card Acceptor Terminal Identifier Information and must not select this layout.", "notes": "Capability declaration is not a restriction decision or transaction approval."},
+        "dependencies": ["APPI-T049-R003", "ATL105:13-83:Table018"]
+      },
+      {
+        "id": "APPI-T049-R033",
+        "statement": "Restriction Method18 is described as applicable only to Visa Fleet EMV2.0 and MasterCard Enhanced Fleet EMV transactions.",
+        "applicability": {"subTableId": "18", "contexts": ["Visa Fleet EMV 2.0", "MasterCard Enhanced Fleet EMV"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "purchase-restriction-fleet-applicability"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29721, "endLine": 29723}, {"section": "Appendix K-26", "startLine": 34020, "endLine": 34025}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Classified Visa Fleet EMV2.0 lies in described applicability, subject to conflicting non-MC forwarding note.", "negative": "Change only fleet context to ordinary Visa retail; outside described scope.", "boundary": "MasterCard Enhanced Fleet EMV is distinct from ordinary MasterCard Fleet/non-EMV.", "notes": "Do not resolve contradictory Visa applicability and non-MC prohibition silently."},
+        "dependencies": ["APPI-T049-R032", "APPI-T049-Q001"]
+      },
+      {
+        "id": "APPI-T049-R034",
+        "statement": "Restriction Method18 MUST be present for all MasterCard Enhanced EMV Fleet authorization, preauthorization and completion transactions with Product ID MCF or MGF.",
+        "applicability": {"network": "MasterCard", "fleetClass": "Enhanced EMV Fleet", "productIds": ["MCF", "MGF"], "transactions": ["Authorization", "Pre-Authorization", "Completion"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "enhanced-fleet-mcf-mgf-mandatory-method"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29724, "endLine": 29726}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "MCF enhancedEMV preauthorization includes18 with independently matched support code; repeatMGF completion.", "negative": "Remove only18 from thatMCF preauthorization; mandatory field missing.", "boundary": "CoverMCF/MGF crossed with all three listed operations; cancellation/reversal are not added by this clause.", "notes": "Product ID comes from independent merchant/card context, not an invented Table049 field. Availability restriction is separate."},
+        "dependencies": ["APPI-T049-R032", "APPI-T049-R037"]
+      },
+      {
+        "id": "APPI-T049-R035",
+        "statement": "The source separately directs that Restriction Method18 should not be sent to acquirers when the transaction is not MasterCard Enhanced Fleet.",
+        "applicability": {"subTableId": "18", "destination": "Acquirer", "condition": "Not MasterCard Enhanced Fleet"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "non-enhanced-mc-acquirer-prohibition"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29727, "endLine": 29728}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Ordinary non-enhanced MasterCard acquirer-bound transaction omits18.", "negative": "Add only18 to the same ordinary transaction; contrary to source forwarding prohibition.", "boundary": "Visa Fleet EMV2.0 is non-MC yet listed applicable; classify as conflict, not automatic executable fail.", "notes": "Retain destination-specific prohibition separately from merchant request presence and Visa default."},
+        "dependencies": ["APPI-T049-R033", "APPI-T049-Q001"]
+      },
+      {
+        "id": "APPI-T049-R036",
+        "statement": "When Restriction Method18 is absent, BUYPASS defaults the value sent to Visa to no supported restrictions.",
+        "applicability": {"network": "Visa", "subTableId": "18", "condition": "18 omitted"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "visa-omission-no-restrictions-default"},
+        "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29716, "endLine": 29719}, {"section": "Appendix I-47", "startLine": 29729, "endLine": 29730}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa logical request omits18; expected BUYPASS semantic default is no restrictions supported.", "negative": "Change only expected default tohost-only; contradicts omission default.", "boundary": "Explicit18=0 and omission are distinct inputs; no equivalent MasterCard default is stated.", "notes": "Default does not waive mandatory MCF/MGF presence or authorize production deployment."},
+        "dependencies": ["APPI-T049-R032", "APPI-T049-Q001"]
+      },
+      {
+        "id": "APPI-T049-R037",
+        "statement": "MasterCard Enhanced restriction functionality was expected in First Data production no earlier than June2026; until actual enablement it is for development/certification preparation, not live production. The date is an earliest expectation, not evidence that deployment occurred.",
+        "applicability": {"network": "MasterCard", "context": "Enhanced Fleet restriction functionality", "environments": ["Development", "Certification preparation", "Production"], "earliestExpectedProductionMonth": "2026-06"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "enhanced-fleet-availability-not-approval"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29741, "endLine": 29744}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Certification-preparation design uses18 while production remains unconfirmed.", "negative": "Change only environment tolive production before enablement; violates notice.", "boundary": "May31 versusJune1 2026 distinguishes earliest possible month only; neither June nor release/current date proves enablement.", "notes": "Require authoritative release confirmation outside this extracted notice; this is not transaction approval."},
+        "dependencies": ["APPI-T049-R034", "APPI-T049-Q009"]
+      },
+      {
+        "id": "APPI-T049-R038",
+        "statement": "Host-based restriction response112/034 is eligible only for Visa Fleet EMV2.0 or MasterCard Enhanced Fleet EMV when049/18 is2 or3 and the network returned restriction data.",
+        "applicability": {"contexts": ["Visa Fleet EMV 2.0", "MasterCard Enhanced Fleet EMV"], "requestValues": ["2", "3"], "response": "112.034", "requiredCondition": "Network returned restriction value"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-47", "segment": "111", "element": "113", "rule": "host-restriction-response-gate"},
+        "sourceEvidence": [{"section": "Appendix K-26", "startLine": 34007, "endLine": 34025}, {"section": "Appendix K-27", "startLine": 34038, "endLine": 34040}, {"section": "Appendix I-47", "startLine": 29716, "endLine": 29723}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "EnhancedFleet terminal18=2 with known upstream restrictions satisfies gate.", "negative": "Change only18 from2 to1 while asserting034 returned; host reception gate no longer satisfied.", "boundary": "2 and3 support host reception;0/1 do not. No upstream restriction does not force034.", "notes": "Response carries up to32 ANS bytes; full code meanings depend on external Conexxus PSPC document, not invented here."},
+        "dependencies": ["APPI-T049-R032", "APPI-T049-R033", "ATL105:Appendix K-26:Table034", "ATL105:Appendix K-27:Table034", "APPI-T049-Q001", "APPI-T049-Q010"]
+      },
+      {
+        "id": "APPI-T049-R039",
+        "statement": "Visa account information acceptance uses ID20, length1 and an1 valueY indicating merchant acceptance of account type or account funding source information; it currently supports Visa only.",
+        "applicability": {"subTableId": "20", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "visa-account-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29745, "endLine": 29771}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa logical opt-in uses201Y.", "negative": "Change onlyY toN; undocumented flag code.", "boundary": "One data byte; MasterCard not currently supported.", "notes": "Single flag covers the two information categories, not a guarantee that both return."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R040",
+        "statement": "Visa Account Type response112/036 requires20=Y and an account-type value in the authorizer response.",
+        "applicability": {"network": "Visa", "response": "112.036", "requiredConditions": ["111.049.20=Y", "Authorizer returned Account Type"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "account-type-response-gate"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29761, "endLine": 29771}, {"section": "Appendix K-29", "startLine": 34157, "endLine": 34179}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known upstream Visa account type plus20=Y satisfies036 gate.", "negative": "Remove only20 while asserting036 delivery; prerequisite absent.", "boundary": "20=Y with only funding-source data does not require account-type036.", "notes": "Account type is separate two-digit response data; do not copy its values into the one-byte request flag."},
+        "dependencies": ["APPI-T049-R039", "ATL105:Appendix K-29:Table036"]
+      },
+      {
+        "id": "APPI-T049-R041",
+        "statement": "Visa Account Funding Source response112/037 requires20=Y and funding-source data in the authorizer response.",
+        "applicability": {"network": "Visa", "response": "112.037", "requiredConditions": ["111.049.20=Y", "Authorizer returned Account Funding Source"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "account-funding-source-response-gate"},
+        "sourceEvidence": [{"section": "Appendix K-29", "startLine": 34180, "endLine": 34187}, {"section": "Appendix K-30", "startLine": 34198, "endLine": 34210}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known upstream Visa funding source and20=Y satisfy037 gate.", "negative": "Remove only20 while asserting037 delivery; prerequisite absent.", "boundary": "20=Y with account-type data but no funding source does not force037.", "notes": "Response funding source is one-byteC/D/P; the request flag remainsY."},
+        "dependencies": ["APPI-T049-R039", "ATL105:Appendix K-30:Table037"]
+      },
+      {
+        "id": "APPI-T049-R042",
+        "statement": "Other-card recurring/installment indicator uses ID21, length1 and an1 data R for Recurring Payment or I for Installment Payment.",
+        "applicability": {"subTableId": "21", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "other-card-payment-layout-and-codes"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29772, "endLine": 29792}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known applicable recurring intent uses211R; installment uses211I.", "negative": "Change onlyR toS; S is not21's code.", "boundary": "Exactly one data byte; dataRI does not fit.", "notes": "Do not confuse049/21 with top-level021 settlement acceptance."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R043",
+        "statement": "Indicator21 excludes Visa, MasterCard, Amex and Discover; its heading identifies card types other than Credit, while its operative description enumerates excluded networks.",
+        "applicability": {"subTableId": "21", "excludedNetworks": ["Visa", "MasterCard", "Amex", "Discover"], "headingScope": "Card types other than Credit"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-48", "segment": "111", "element": "113", "rule": "other-card-payment-applicability"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29772, "endLine": 29792}, {"section": "Appendix I-10", "startLine": 27815, "endLine": 27823}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independently classified non-credit, non-excluded card context lies within both described scopes.", "negative": "Change only network toVisa;21 falls outside explicit allowed context.", "boundary": "Other-network credit cards and Maestro treatment require interpretation rather than assumption.", "notes": "Do not treat top-level013 and nested049/21 as interchangeable without source applicability."},
+        "dependencies": ["APPI-T049-R042", "ATL105:Appendix I-10:Table013", "APPI-T049-Q011"]
+      },
+      {
+        "id": "APPI-T049-R044",
+        "statement": "Transaction Link Support uses ID22, length1 and an1 valueY requesting Transaction Link Identifier in the response; Table049 currently supports this field for MasterCard and Maestro only.",
+        "applicability": {"subTableId": "22", "networks": ["MasterCard", "Maestro"], "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-49", "segment": "111", "element": "113", "rule": "transaction-link-support-layout-and-network"},
+        "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29793, "endLine": 29801}, {"section": "Appendix I-49", "startLine": 29811, "endLine": 29832}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "MasterCard orMaestro merchant uses221Y.", "negative": "Change onlyY toN; undocumented opt-in code.", "boundary": "Visa is outside049/22's stated current support; one-byte data.", "notes": "AppendixK mentions Moneris response mapping, which does not silently extend this stated Table049 applicability."},
+        "dependencies": ["APPI-T049-R003", "APPI-T049-Q012"]
+      },
+      {
+        "id": "APPI-T049-R045",
+        "statement": "Transaction Link Identifier response112/038 is included only if049/22=Y; the response layout contains22 ANS bytes and permits special characters.",
+        "applicability": {"response": "112.038", "requiredCondition": "111.049.22=Y", "networksUnderTable049": ["MasterCard", "Maestro"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-49", "segment": "111", "element": "113", "rule": "transaction-link-response-opt-in"},
+        "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29818, "endLine": 29832}, {"section": "Appendix K-30", "startLine": 34211, "endLine": 34227}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known response TLID with22=Y satisfies opt-in condition.", "negative": "Remove only22 while retaining asserted038; documented response gate fails.", "boundary": "22=Y is not independent proof of a returned TLID; response special characters must not be rejected by request's AN flag rule.", "notes": "No fabricated TLID or authorization outcome is required."},
+        "dependencies": ["APPI-T049-R044", "ATL105:Appendix K-30:Table038", "APPI-T049-Q012"]
+      },
+      {
+        "id": "APPI-T049-R046",
+        "statement": "Authentication Data Quality acceptance uses ID23, length1 and an1 valueY; it currently supports Visa transactions only.",
+        "applicability": {"subTableId": "23", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-49", "segment": "111", "element": "113", "rule": "authentication-quality-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29833, "endLine": 29866}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa opt-in uses231Y.", "negative": "Change onlyY to1; response quality code must not be used as request flag.", "boundary": "One data byte; MasterCard context is unsupported.", "notes": "No universal presence mandate is given."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R047",
+        "statement": "Visa Authentication Data Quality response112/042 requires23=Y and indicator data in the authorizer response; its values1/2 respectively report not meeting/meeting Visa Secure authentication data-quality requirements.",
+        "applicability": {"network": "Visa", "response": "112.042", "requiredConditions": ["111.049.23=Y", "Authorizer returned authentication quality indicator"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-49", "segment": "111", "element": "113", "rule": "authentication-quality-response-gate"},
+        "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29862, "endLine": 29866}, {"section": "Appendix K-32", "startLine": 34311, "endLine": 34331}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known upstream quality value2 and23=Y satisfy response gate.", "negative": "Remove only23 while asserting042 response; opt-in prerequisite missing.", "boundary": "23=Y with no upstream quality data does not require042;1 and2 are distinct outcomes, not flag codes.", "notes": "The underlying Visa Secure quality standard cannot be inferred from these result values."},
+        "dependencies": ["APPI-T049-R046", "ATL105:Appendix K-32:Table042", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R048",
+        "statement": "Token Update First Use acceptance uses ID24, length1 and an1 valueY; it currently supports Visa only.",
+        "applicability": {"subTableId": "24", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-50", "segment": "111", "element": "113", "rule": "token-first-use-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29880, "endLine": 29909}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa merchant opt-in uses241Y.", "negative": "Change onlyY toN; no N request code is listed.", "boundary": "One-byte data; Discover is outside current support.", "notes": "Opt-in does not assert that a token was updated or first-used."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R049",
+        "statement": "Token Update First Use response112/043 requires24=Y and the indicator in the authorizer response. It marks the first network-token use after underlying PAN or expiry update; it is absent for subsequent use and applies to Visa e-commerce/card-on-file and e-commerce-enabler token types.",
+        "applicability": {"network": "Visa", "response": "112.043", "tokenContexts": ["e-commerce/card-on-file", "e-commerce enabler"], "requiredConditions": ["111.049.24=Y", "Authorizer returned first-use indicator"]},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-50", "segment": "111", "element": "113", "rule": "token-first-use-response-gate-and-context"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29905, "endLine": 29909}, {"section": "Appendix K-32", "startLine": 34332, "endLine": 34355}, {"section": "Appendix K-33", "startLine": 34367, "endLine": 34370}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known eligible first-use token and upstreamY with24=Y satisfy response gate.", "negative": "Change only use-stage from first tosubsequent while asserting043 presence; contradicts source absence condition.", "boundary": "PAN and PAN-expiry updates both count;24 opt-in without upstream indicator does not force response.", "notes": "Network updater/token eligibility must be independently known; no live token/PAN fixtures."},
+        "dependencies": ["APPI-T049-R048", "ATL105:Appendix K-32:Table043", "ATL105:Appendix K-33:Table043", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R050",
+        "statement": "Merchant Tran ID acceptance uses ID25, length1 and an1 valueY to declare merchant acceptance of Merchant Tran ID in the response.",
+        "applicability": {"subTableId": "25", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-50", "segment": "111", "element": "113", "rule": "merchant-tran-id-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29910, "endLine": 29927}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Logical acceptance entry251Y.", "negative": "Change onlyY toN; not a documented value.", "boundary": "One-byte data; Table049 specifies no network-only restriction for25.", "notes": "Do not invent a Visa-only condition by analogy to neighboring subtables."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R051",
+        "statement": "BUYPASS echoes merchant-assigned Merchant Tran ID in response112/044 only if25=Y; the response maximum is95 bytes, or15 for Moneris mapping to Client Request ID7b.",
+        "applicability": {"request": "111.049.25=Y", "response": "112.044", "context": "Merchant-assigned transaction ID supplied"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-50", "segment": "111", "element": "113", "rule": "merchant-tran-id-response-echo"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29924, "endLine": 29927}, {"section": "Appendix I-54", "startLine": 30166, "endLine": 30180}, {"section": "Appendix K-33", "startLine": 34371, "endLine": 34386}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Independently supplied synthetic ID with25=Y is eligible for matching echo044.", "negative": "Remove only25 while retaining asserted044 echo; opt-in missing.", "boundary": "95-byte normal/15-byte Moneris maxima; flag without a supplied ID does not create one.", "notes": "Request Merchant Tran ID is top-level054, not nested25; external Moneris mapping validation requires its own authority."},
+        "dependencies": ["APPI-T049-R050", "ATL105:Appendix I:Table054", "ATL105:Appendix K-33:Table044", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R052",
+        "statement": "Transaction Link Action Support uses ID26, length1 and an1 valueY for requesting the MasterCard/Maestro Transaction Link Action Indicator in the response.",
+        "applicability": {"subTableId": "26", "networks": ["MasterCard", "Maestro"], "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "transaction-link-action-layout"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29928, "endLine": 29935}, {"section": "Appendix I-51", "startLine": 29945, "endLine": 29962}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "MasterCard/Maestro logical request261Y.", "negative": "Change onlyY to1; response action code is not request acceptance code.", "boundary": "One-byte data; Visa is outside the described network context.", "notes": "26 and22 request distinct response information."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R053",
+        "statement": "Transaction Link Action response112/039 can return only when049/26 is sent. Its one-byte codes1/2/3 describe respectively no customer TLID, unmatched customer TLID, or unmatched lifecycle message; the source describes corresponding TLID in112/038, whose own22=Y gate remains separate.",
+        "applicability": {"networks": ["MasterCard", "Maestro"], "response": "112.039", "requiredCondition": "111.049.26=Y"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "transaction-link-action-response-gate"},
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29952, "endLine": 29962}, {"section": "Appendix K-30", "startLine": 34211, "endLine": 34242}, {"section": "Appendix K-31", "startLine": 34254, "endLine": 34265}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "KnownMasterCard no-customer-TLID condition with26=Y and22=Y permits logical039=1 and corresponding038.", "negative": "Remove only26 while retaining asserted039; action-response prerequisite absent.", "boundary": "26 alone does not prove22 support;26=Y/22 absent needs linked-response clarification.", "notes": "Do not invent26-implies22 or force an authorizer TLID match result; lifecycle behavior is upstream input."},
+        "dependencies": ["APPI-T049-R052", "APPI-T049-R045", "ATL105:Appendix K-30:Table039", "ATL105:Appendix K-31:Table039", "APPI-T049-Q013"]
+      },
+      {
+        "id": "APPI-T049-R054",
+        "statement": "Applied Special Service acceptance uses ID27, length1 and an1 valueY to indicate merchant acceptance of Visa Applied Special Service Data in the response.",
+        "applicability": {"subTableId": "27", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "applied-special-service-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29963, "endLine": 29981}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa opt-in uses271Y.", "negative": "Change onlyY toN; undocumented acceptance code.", "boundary": "One-byte data; field purpose namesVisa, not all networks.", "notes": "Capability flag does not prove authentication/data-sharing eligibility."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R055",
+        "statement": "Applied Special Service response112/045 is included only if27=Y and identifies eligible authentication/data-sharing use with required elements supplied; ATL105 does not enumerate its numeric value meanings here.",
+        "applicability": {"network": "Visa", "response": "112.045", "requiredCondition": "111.049.27=Y"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "applied-special-service-response-opt-in"},
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29977, "endLine": 29981}, {"section": "Appendix K-33", "startLine": 34387, "endLine": 34400}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known eligible Visa service outcome with27=Y satisfies response opt-in.", "negative": "Remove only27 while retaining asserted045; gate not satisfied.", "boundary": "Response has one numeric byte; flag alone does not guarantee045 or define its result.", "notes": "Unenumerated meanings and service eligibility require review; no invented numeric status."},
+        "dependencies": ["APPI-T049-R054", "ATL105:Appendix K-33:Table045", "APPI-T049-Q014"]
+      },
+      {
+        "id": "APPI-T049-R056",
+        "statement": "Voyager Restriction Codes acceptance uses ID28, length1 and an1 valueY to indicate acceptance of restriction codes from Voyager in the response.",
+        "applicability": {"subTableId": "28", "network": "Voyager", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "voyager-restriction-acceptance-layout"},
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29982, "endLine": 30000}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Voyager opt-in uses281Y.", "negative": "Change onlyY toN; N is not a defined request flag.", "boundary": "Exactly one data byte; no merchant-side restriction code is encoded in28.", "notes": "This is distinct from Purchase Restriction Method18."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R057",
+        "statement": "Voyager Restriction Code response112/046 is included only if28=Y; AppendixK specifies one numeric byte but leaves the product restriction format unspecified.",
+        "applicability": {"network": "Voyager", "response": "112.046", "requiredCondition": "111.049.28=Y"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-51", "segment": "111", "element": "113", "rule": "voyager-restriction-response-gate"},
+        "sourceEvidence": [{"section": "Appendix I-51", "startLine": 29996, "endLine": 30000}, {"section": "Appendix K-33", "startLine": 34401, "endLine": 34414}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known upstreamVoyager restriction value with28=Y satisfies opt-in.", "negative": "Remove only28 while retaining asserted046; gate missing.", "boundary": "One response digit, not the one-byte requestY; no enumerated restriction meanings.", "notes": "No authorizer response code or restriction meaning may be invented."},
+        "dependencies": ["APPI-T049-R056", "ATL105:Appendix K-33:Table046", "APPI-T049-Q014"]
+      },
+      {
+        "id": "APPI-T049-R058",
+        "statement": "Visa Category Code Support uses ID30, length1 and an1 valueY for requesting Visa Category Code in the response.",
+        "applicability": {"subTableId": "30", "network": "Visa", "subTablePresent": true},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-52", "segment": "111", "element": "113", "rule": "visa-category-support-layout"},
+        "sourceEvidence": [{"section": "Appendix I-52", "startLine": 30014, "endLine": 30035}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Visa opt-in uses301Y.", "negative": "Change onlyY to1; result-category value is not request flag.", "boundary": "Exactly one data byte; non-Visa does not satisfy stated context.", "notes": "A support flag does not declare approval or decline."},
+        "dependencies": ["APPI-T049-R003"]
+      },
+      {
+        "id": "APPI-T049-R059",
+        "statement": "Visa Category response112/047 concerns Visa declined-response categorization and can return only for Visa with30=Y. Its one-digit values1/2/3 mean issuer never approves, issuer cannot approve now, or data-quality/payment-information revalidation, respectively.",
+        "applicability": {"network": "Visa", "context": "Declined-response category", "response": "112.047", "requiredCondition": "111.049.30=Y"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-52", "segment": "111", "element": "113", "rule": "visa-category-response-gate-and-meanings"},
+        "sourceEvidence": [{"section": "Appendix I-52", "startLine": 30025, "endLine": 30035}, {"section": "Appendix K-34", "startLine": 34426, "endLine": 34447}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Known Visa declined-category result with30=Y satisfies response gate; evaluate source-defined1/2/3 meanings separately.", "negative": "Remove only30 while retaining asserted047; support prerequisite absent.", "boundary": "30=Y on an approved exchange does not establish a required decline category; other-network context failsVisa condition.", "notes": "Category values are not authorization response codes; no specific decline-to-category mapping or retry timing is invented."},
+        "dependencies": ["APPI-T049-R058", "ATL105:Appendix K-34:Table047", "APPI-T049-Q008"]
+      },
+      {
+        "id": "APPI-T049-R060",
+        "statement": "The Merchant Tran ID echoed under25 acceptance is the merchant-assigned request Table054 identifier, not the25 flag itself. Table054 is variable ANS data up to95 bytes; for Moneris it is mandatory, capped at15 bytes, and maps to Client Request ID7b.",
+        "applicability": {"subTableId": "25", "requestIdentifier": "111.054", "responseIdentifier": "112.044", "specialContext": "Moneris"},
+        "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix I-50", "segment": "111", "element": "113", "rule": "merchant-tran-id-request-dependency"},
+        "sourceEvidence": [{"section": "Appendix I-50", "startLine": 29924, "endLine": 29927}, {"section": "Appendix I-54", "startLine": 30166, "endLine": 30180}, {"section": "Appendix K-33", "startLine": 34371, "endLine": 34386}],
+        "status": "DRAFT_REVIEW_REQUIRED", "validationMode": "REVIEW_ONLY",
+        "testDesign": {"positive": "Logical Moneris request includes a supplied15-byte054 identifier and25=Y for matching044 echo.", "negative": "Remove only054 from that Moneris request; mandatory identifier dependency missing.", "boundary": "Moneris15 fits/16 exceeds cap; general95 fits/96 exceeds cap. Omitting25 does not waive Moneris054 requirement.", "notes": "No external Moneris production fixture or identifier is invented; source mapping needs independent review."},
+        "dependencies": ["APPI-T049-R050", "APPI-T049-R051", "ATL105:Appendix I-54:Table054", "ATL105:Appendix K-33:Table044", "APPI-T049-Q008"]
+      }
+    ],
+    "notes": [
+      {"statement": "Source is ATL105 release2026-3 dated August07,2026. Line numbers reference docs/specs/extracted_text.txt. Table049 spans Appendix I-39 through I-52; page continuations have been retained as evidence, not separate tables.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29242, "endLine": 29244}, {"section": "Appendix I-40", "startLine": 29245, "endLine": 29246}, {"section": "Appendix I-51", "startLine": 30010, "endLine": 30012}, {"section": "Appendix I-52", "startLine": 30013, "endLine": 30035}]},
+      {"statement": "The defined nested IDs are01,02,03,04,05,06,07,09,10,11,13,16,17,18,20,21,22,23,24,25,26,27,28,30. Generic01-99 framing does not define missing08,12,14,15,19,29 or later layouts.", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29229, "endLine": 29236}, {"section": "Appendix I-44", "startLine": 29503, "endLine": 29506}, {"section": "Appendix I-46", "startLine": 29614, "endLine": 29640}, {"section": "Appendix I-48", "startLine": 29744, "endLine": 29746}, {"section": "Appendix I-51", "startLine": 29982, "endLine": 30004}]},
+      {"statement": "All rules are review-only source-grounded constraints for independent TS/TC/TD design, not executable authorizer behavior. Positive inputs are synthetic preconditions; negative cases mutate one target; no source statement guarantees production approval merely because a field is valid.", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29425, "endLine": 29429}, {"section": "Appendix I-45", "startLine": 29568, "endLine": 29572}, {"section": "Appendix I-48", "startLine": 29741, "endLine": 29744}]},
+      {"statement": "No general requiredness is inferred for the whole table. Presence rules, code restrictions, network applicability, forwarding gates, defaults and availability are distinct. Undefined absence defaults must not be invented for capability flags.", "sourceEvidence": [{"section": "Appendix I-41", "startLine": 29318, "endLine": 29319}, {"section": "Appendix I-43", "startLine": 29462, "endLine": 29470}, {"section": "Appendix I-47", "startLine": 29721, "endLine": 29730}]},
+      {"statement": "MasterCard purchase repayment means third-party installment-provider or payment-facilitator installment submissions, including post-purchase/BNPL arrangements. Table049/04=IR has mandatory Table013=I and Table047 provider*retailer dependencies, not an independent guarantee of enrollment or approval.", "sourceEvidence": [{"section": "Appendix AB-1", "startLine": 36596, "endLine": 36602}, {"section": "Appendix I-42", "startLine": 29381, "endLine": 29394}, {"section": "Appendix K-25", "startLine": 33931, "endLine": 33933}]},
+      {"statement": "AppendixZ gives additional COF context: recurring/installment MIT uses02=M and032/08=C; full flows include POS entry mode, recurring/installment markers, prohibited CVV2 and stored original transaction references. Those separate layouts remain dependencies rather than invented Table049 fields.", "sourceEvidence": [{"section": "Appendix Z-1", "startLine": 36077, "endLine": 36096}, {"section": "Appendix Z-2", "startLine": 36118, "endLine": 36147}, {"section": "Appendix I-26", "startLine": 28495, "endLine": 28510}]},
+      {"statement": "Request049/18 is Purchase Restriction Method and is distinct from top-level018 Card Acceptor Terminal Identifier Information. Likewise049/13 is installment type, not top-level013 payment marker, and049/21 is not settlement flag021.", "sourceEvidence": [{"section": "13-83", "startLine": 22064, "endLine": 22074}, {"section": "Appendix I-46", "startLine": 29615, "endLine": 29639}, {"section": "Appendix I-47", "startLine": 29695, "endLine": 29719}, {"section": "Appendix I-48", "startLine": 29772, "endLine": 29792}]},
+      {"statement": "Response dependencies are in Segment112 AppendixK:07->030,10->031,11->032,18->034,20->036/037,22->038,26->039,23->042,24->043,25->044,27->045,28->046,30->047. These are response information table identifiers, not ATL105 authorization response codes.", "sourceEvidence": [{"section": "12.11", "startLine": 12654, "endLine": 12677}, {"section": "Appendix K-24", "startLine": 33876, "endLine": 33887}, {"section": "Appendix K-25", "startLine": 33928, "endLine": 33929}, {"section": "Appendix K-26", "startLine": 33985, "endLine": 34025}, {"section": "Appendix K-29", "startLine": 34157, "endLine": 34187}, {"section": "Appendix K-30", "startLine": 34211, "endLine": 34242}, {"section": "Appendix K-31", "startLine": 34261, "endLine": 34265}, {"section": "Appendix K-32", "startLine": 34323, "endLine": 34355}, {"section": "Appendix K-33", "startLine": 34371, "endLine": 34414}, {"section": "Appendix K-34", "startLine": 34426, "endLine": 34447}]},
+      {"statement": "Only-if response gates establish necessary conditions, not universal response presence. Explicit network-response gates exist for10,11,18,20,23,24; other opt-in response layouts must not be strengthened into invented upstream guarantees.", "sourceEvidence": [{"section": "Appendix I-45", "startLine": 29568, "endLine": 29572}, {"section": "Appendix I-46", "startLine": 29610, "endLine": 29614}, {"section": "Appendix K-26", "startLine": 34017, "endLine": 34025}, {"section": "Appendix K-29", "startLine": 34176, "endLine": 34179}, {"section": "Appendix K-30", "startLine": 34207, "endLine": 34210}, {"section": "Appendix K-32", "startLine": 34323, "endLine": 34355}]},
+      {"statement": "External Conexxus PSPC values, CPoC/software-PIN classification, network program/quality/token rules, merchant-product catalogues and Moneris mappings require separate authority; this batch does not claim external-standard conformance.", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29451, "endLine": 29461}, {"section": "Appendix K-27", "startLine": 34038, "endLine": 34040}, {"section": "Appendix K-32", "startLine": 34313, "endLine": 34345}, {"section": "Appendix K-33", "startLine": 34371, "endLine": 34414}]}
+    ],
+    "pendingIssues": [
+      {"id": "APPI-T049-Q001", "registerId": "SEG111-SME-003", "category": "SOURCE_CONFLICT", "sourceEvidence": [{"section": "Appendix I-47", "startLine": 29721, "endLine": 29730}, {"section": "Appendix K-26", "startLine": 34017, "endLine": 34025}]},
+      {"id": "APPI-T049-Q002", "registerId": "SEG111-SME-004", "category": "SOURCE_CONFLICT", "sourceEvidence": [{"section": "12.10", "startLine": 12575, "endLine": 12624}, {"section": "Appendix I-40", "startLine": 29274, "endLine": 29275}, {"section": "Appendix I-41", "startLine": 29315, "endLine": 29316}, {"section": "Appendix I-45", "startLine": 29565, "endLine": 29566}]},
+      {"id": "APPI-T049-Q003", "registerId": "SEG111-SME-005", "category": "SOURCE_CONFLICT", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29446, "endLine": 29470}, {"section": "Appendix I-21", "startLine": 28326, "endLine": 28334}]},
+      {"id": "APPI-T049-Q004", "registerId": "SEG111-SME-006", "category": "INTERPRETATION", "sourceEvidence": [{"section": "Appendix I-39", "startLine": 29220, "endLine": 29235}, {"section": "12.10", "startLine": 12605, "endLine": 12624}]},
+      {"id": "APPI-T049-Q005", "registerId": "SEG111-SME-007", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix I-42", "startLine": 29408, "endLine": 29416}, {"section": "Appendix I-43", "startLine": 29425, "endLine": 29429}]},
+      {"id": "APPI-T049-Q006", "registerId": "SEG111-SME-008", "category": "SOURCE_CONFLICT", "sourceEvidence": [{"section": "Appendix I-9", "startLine": 27801, "endLine": 27804}, {"section": "Appendix I-10", "startLine": 27814, "endLine": 27823}, {"section": "12.10", "startLine": 12608, "endLine": 12624}, {"section": "Appendix I-42", "startLine": 29384, "endLine": 29386}]},
+      {"id": "APPI-T049-Q007", "registerId": "SEG111-SME-009", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix I-43", "startLine": 29451, "endLine": 29461}]},
+      {"id": "APPI-T049-Q008", "registerId": "SEG111-SME-010", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix I-44", "startLine": 29505, "endLine": 29530}, {"section": "Appendix K-25", "startLine": 33931, "endLine": 33937}, {"section": "Appendix K-25", "startLine": 33955, "endLine": 33969}, {"section": "Appendix K-32", "startLine": 34313, "endLine": 34355}, {"section": "Appendix K-33", "startLine": 34367, "endLine": 34386}, {"section": "Appendix K-34", "startLine": 34434, "endLine": 34447}]},
+      {"id": "APPI-T049-Q009", "registerId": "SEG111-SME-011", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29741, "endLine": 29744}]},
+      {"id": "APPI-T049-Q010", "registerId": "SEG111-SME-012", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix K-26", "startLine": 34007, "endLine": 34025}, {"section": "Appendix K-27", "startLine": 34038, "endLine": 34040}]},
+      {"id": "APPI-T049-Q011", "registerId": "SEG111-SME-013", "category": "INTERPRETATION", "sourceEvidence": [{"section": "Appendix I-48", "startLine": 29772, "endLine": 29792}, {"section": "Appendix I-10", "startLine": 27815, "endLine": 27823}]},
+      {"id": "APPI-T049-Q012", "registerId": "SEG111-SME-014", "category": "SOURCE_CONFLICT", "sourceEvidence": [{"section": "Appendix I-49", "startLine": 29831, "endLine": 29832}, {"section": "Appendix K-30", "startLine": 34211, "endLine": 34227}]},
+      {"id": "APPI-T049-Q013", "registerId": "SEG111-SME-015", "category": "INTERPRETATION", "sourceEvidence": [{"section": "Appendix K-30", "startLine": 34219, "endLine": 34242}, {"section": "Appendix K-31", "startLine": 34254, "endLine": 34265}]},
+      {"id": "APPI-T049-Q014", "registerId": "SEG111-SME-016", "category": "EXTERNAL_REFERENCE", "sourceEvidence": [{"section": "Appendix K-33", "startLine": 34387, "endLine": 34414}]}
+    ]
+  }]
+}

@@ -1,0 +1,203 @@
+{
+  "catalogId": "ATL105-SEGDL6-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "DL6",
+  "segmentName": "Store and Forward Data Segment",
+  "scope": "Segment DL6 host-originated, separator-free, self-delimited ('\\' ... '~') daily store-and-forward blocking window, sent only as Data Block No. 4 of a Table Load Response when Segment DL1 carries Card Type 173",
+  "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 17532-17585 (Section 12.47), 9180-9236 (Section 11.7.1.2 Data Block No. 4), 23956-23964 (Section 13.2 Element 166), Appendix E Card Type 173",
+  "rules": [
+    {
+      "ruleId": "SEGDL6-R-001",
+      "title": "Segment DL6 is only sent in a Table Load Response when Segment DL1 (Merchant Data Segment) includes a Card Type value of 173 in Data Element No. 14 (Card Type)",
+      "class": "applicability",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL1,DL6",
+        "element": "14",
+        "rule": "conditional-on-dl1-card-type-173"
+      },
+      "sourceEvidenceSections": [
+        "12.47",
+        "11.7.1.2"
+      ],
+      "note": "Confirms SEGDL1-R-005. DL6 without Card Type 173 in DL1, and Card Type 173 without DL6, are both errors."
+    },
+    {
+      "ruleId": "SEGDL6-R-002",
+      "title": "Segment DL6 maximum length is 9 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '\\' (field 1), End-of-Data Indicator fixed '~' (last field)",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "rule": "max-length-9-markers",
+        "element": "24,34"
+      },
+      "note": "PROVISIONAL: the four fields sum to 10 ('\\' + 4 + 4 + '~'), not 9 (SEGDL6-SME-003). Field 1's description ('software IP load data follows') and Element 34's segment list (DL1-DL5 only) are also inconsistent with DL6 (SEGDL6-SME-004)."
+    },
+    {
+      "ruleId": "SEGDL6-R-003",
+      "title": "Start Time and End Time both use Element 166 and format HHMM, defining the window during which store-and-forward processing is blocked",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "element": "166",
+        "rule": "start-end-time-shared-element-number"
+      },
+      "sourceEvidenceSections": [
+        "12.47",
+        "13.2"
+      ],
+      "note": "PROVISIONAL (SEGDL6-SME-001). Evidence for intentional reuse: Element 166 is named 'Start Time or End Time'. Evidence against completeness: its purpose and processing rules mention only custom receipt text / host discount data in Segment 118, not DL6."
+    },
+    {
+      "ruleId": "SEGDL6-R-004",
+      "title": "Segment DL6 fields are not separated by Field Separators; when a field is not populated, the next field immediately follows",
+      "class": "serialization",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.47",
+        "segment": "DL6",
+        "rule": "no-field-separator-next-field-immediately-follows"
+      },
+      "note": "Both times are Required and fixed width, so DL6 parses by position."
+    },
+    {
+      "ruleId": "SEGDL6-R-005",
+      "title": "Start Time and End Time (Element 166) are numeric, fixed length four digits HHMM, valid values 0000-2359",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL6",
+        "element": "166",
+        "rule": "start-end-time-hhmm-0000-2359"
+      }
+    },
+    {
+      "ruleId": "SEGDL6-R-006",
+      "title": "Segment DL6 is Data Block No. 4 of the Table Load Response: it follows the End-of-Load Indicator '*' that closes Data Block No. 3 and is itself followed by an End-of-Load Indicator '*'; it is sent only on a Table Load Response",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "11.7.1.2",
+        "segment": "DL6",
+        "element": "35",
+        "rule": "table-load-response-data-block-4-after-end-of-load"
+      },
+      "note": "Whether '*' appears both before and after DL6 is open under SEGDL1-SME-003."
+    },
+    {
+      "ruleId": "SEGDL6-R-007",
+      "title": "Card Type 173 'Enables Store and Forward blocking for a designated range of time each day'; the DL6 Start Time and End Time define that daily recurring window during which the device blocks store-and-forward processing",
+      "class": "lifecycle",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "Appendix E",
+        "segment": "DL6",
+        "element": "14,166",
+        "rule": "daily-store-and-forward-blocking-window"
+      },
+      "sourceEvidenceSections": [
+        "Appendix E",
+        "12.47"
+      ],
+      "note": "Window semantics across midnight, Start = End and time-zone basis are open (SEGDL6-SME-005)."
+    }
+  ],
+  "provisionalItems": [
+    {
+      "id": "P-01",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL6-R-003"
+      ],
+      "blocks": [],
+      "registerId": "SEGDL6-SME-001"
+    },
+    {
+      "id": "P-02",
+      "status": "OPEN",
+      "impacts": [
+        "AI-artifacts, test-data"
+      ],
+      "blocks": [
+        "Item 2",
+        "Item 3"
+      ],
+      "registerId": "SEGDL6-SME-002"
+    },
+    {
+      "id": "P-03",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL6-R-002"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL6-SME-003"
+    },
+    {
+      "id": "P-04",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL6-R-002"
+      ],
+      "blocks": [
+        "Item 7"
+      ],
+      "registerId": "SEGDL6-SME-004"
+    },
+    {
+      "id": "P-05",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL6-R-007"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL6-SME-005"
+    },
+    {
+      "id": "P-06",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL6-R-006"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL6-SME-006"
+    }
+  ],
+  "itemProgress": {
+    "item1_coverageClosure": "CANDIDATE_COMPLETE_REVIEW_REQUIRED",
+    "item2_artifactComparison": "CANDIDATE_COMPARISON_COMPLETE_REVIEW_REQUIRED",
+    "item3_independence": "CANDIDATE_ORACLE_SEPARATED_APPROVAL_PENDING_P02",
+    "item4_traceabilityMatrix": "CANDIDATE_TRACEABILITY_COMPLETE_REVIEW_REQUIRED",
+    "item5_mutationDefinition": "CANDIDATE_MUTATIONS_DEFINED_NOT_EXECUTED",
+    "item6_mutationExecution": "BLOCKED_BY_SME_AND_APPROVED_FIXTURES",
+    "item7_validatorEnhancement": "LOGICAL_SAMPLE_VALIDATION_ONLY_BLOCKED_BY_P03_P04",
+    "item8_consolidatedReport": "CANDIDATE_REPORT_COMPLETE_REVIEW_REQUIRED"
+  }
+}

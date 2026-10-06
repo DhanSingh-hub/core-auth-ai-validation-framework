@@ -74,7 +74,7 @@ class Segment108MutationTestRunnerTest {
         void testsLoyaltyAccountInquiryCardNotPresent() throws IOException {
             Segment108MutationTestRunner runner = new Segment108MutationTestRunner(SEG108_TEST_INPUT);
             PackageMutationResult result = runner.testPackage(
-                SEG108_TEST_INPUT.resolve(Path.of("lifecycle", "loyalty-account-inquiry-card-not-present.synthetic.json")));
+                SEG108_TEST_INPUT.resolve(Path.of("lifecycle", "loyalty-inquiry-no-card.synthetic.json")));
             assertThat(result.mutationCount()).isEqualTo(10);
             assertThat(result.metrics().detectionRate()).isGreaterThanOrEqualTo(85.0);
         }

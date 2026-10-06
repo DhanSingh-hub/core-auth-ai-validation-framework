@@ -1,5 +1,6 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,12 +21,10 @@ import java.util.List;
  */
 public final class Segment120ConsolidatedReport {
 
-    private static final Path DEFAULT_RULE_CATALOG =
-        Paths.get("docs", "specs", "kb", "segment-120", "coverage", "segment-120-rule-catalog.json");
+    private static final Path DEFAULT_RULE_CATALOG = Atl105Paths.ruleCatalog("120");
     private static final Path DEFAULT_AI_PACKAGE =
-        Paths.get("test-output", "test-json", "segment-120-item-01-baseline-package.json");
-    private static final Path DEFAULT_TEST_INPUT =
-        Paths.get("test-input", "ai-solution", "test-data", "segment-120");
+        Atl105Paths.testJson("segment-120-item-01-baseline-package.json");
+    private static final Path DEFAULT_TEST_INPUT = Atl105Paths.aiTestData("120");
     private static final Path DEFAULT_OUTPUT =
         Paths.get("SEGMENT-120-CONSOLIDATED-REPORT.txt");
 
@@ -141,7 +140,7 @@ public final class Segment120ConsolidatedReport {
         sb.append("===========================================================================\n");
         sb.append("Specification:    ATL105 2026-3, Section 12.18\n");
         sb.append("Generated:        ").append(timestamp).append('\n');
-        sb.append("Methodology:      SEGMENT-100-TRAINING-METHODOLOGY.md (8-Item Framework)\n");
+        sb.append("Methodology:      COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md (8-Item Framework)\n");
         sb.append("Note:             Segment 120 is a RESPONSE-side companion segment (Financial Transaction\n");
         sb.append("                  Response / EMV Financial Transaction Response, Data Section 3), unlike\n");
         sb.append("                  the request-side Segment 100/101/111 reports.\n\n");

@@ -1,0 +1,9 @@
+#!/bin/sh
+# main is updated only by the weekly pull request from Develop.
+while read local_ref local_sha remote_ref remote_sha; do
+    if [ "$remote_ref" = "refs/heads/main" ]; then
+        echo "Push to main rejected: main is updated only by the weekly pull request from Develop." >&2
+        exit 1
+    fi
+done
+exit 0

@@ -1,0 +1,184 @@
+{
+  "catalogId": "ATL105-SEGDL7-RULE-CATALOG-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "segment": "DL7",
+  "segmentName": "Supplemental Terminal Data Segment",
+  "scope": "Segment DL7 TLV download-data container ('^' + 3-digit Segment Length + <tag><len><data> Download Data per Appendix W), using Segment-Length-based framing rather than the DL1-DL6 Data-Type/End-of-Data marker pattern",
+  "extractionEvidence": "regression-artifact-validator/specifications/ATL105/docs/specs/extracted_text.txt lines 17587-17634 (Section 12.48), 35814-35830 (Appendix W Download Data Layout), 21313-21345 and 25160-25166 (Section 13.2 Elements 84 and 232), 20052-20083 (Element 24)",
+  "rules": [
+    {
+      "ruleId": "SEGDL7-R-001",
+      "title": "Segment DL7 is identified by the special character '^' (Data Type Indicator, Element 24) but, UNLIKE Segments DL1-DL6, does NOT use an End-of-Data Indicator; instead it uses a Segment Length Indicator (Element 84) to frame the segment, matching the pattern used by numbered segments (100-157) rather than the DL1-DL6 marker convention",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "24,84",
+        "rule": "hybrid-data-type-plus-segment-length-framing"
+      },
+      "note": "A genuinely distinctive hybrid: DL7/DL8 combine the DL-family's Data Type Indicator with the numbered-segment family's Segment Length Indicator, and drop the End-of-Data Indicator entirely."
+    },
+    {
+      "ruleId": "SEGDL7-R-002",
+      "title": "Segment Length Indicator (Element 84) for Segment DL7 is EXCLUSIVE of the Data Type Indicator's length — a distinct counting convention from most numbered segments, which INCLUDE the Segment Type's length in their Segment Length",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "84",
+        "rule": "segment-length-excludes-data-type-indicator"
+      },
+      "note": "Whether the value includes the three Segment Length digits themselves, and why the Source is 'Device' on a host download, are open (SEGDL7-SME-005)."
+    },
+    {
+      "ruleId": "SEGDL7-R-003",
+      "title": "Download Data (Element 232, max 100 characters) is required, in <tag><len><data> format, with detailed layout defined in Appendix W (Download Data Layout)",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48,AppendixW",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "download-data-tlv-appendix-w"
+      },
+      "sourceEvidenceSections": [
+        "12.48",
+        "Appendix W"
+      ],
+      "note": "PROVISIONAL (SEGDL7-SME-001, scope). Appendix W is present in the extracted 2026-3 text and is now transcribed in SEGDL7-R-004."
+    },
+    {
+      "ruleId": "SEGDL7-R-004",
+      "title": "Each Download Data entry is Table ID (n3) + Table Length (n3) + Table Data; Appendix W defines Table ID 001 Site Language (Table Length 003, ISO 639-2 language code of the terminal) and Table ID 002 Postal Code (Table Length 013, international postal code of the transmitting device)",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.48",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "appendix-w-table-001-site-language-002-postal-code"
+      },
+      "sourceEvidenceSections": [
+        "12.48",
+        "Appendix W"
+      ],
+      "note": "Appendix W lists the Table Data attribute as 'an1' for both tables, which contradicts Table Lengths 003 and 013 (SEGDL7-SME-003)."
+    },
+    {
+      "ruleId": "SEGDL7-R-005",
+      "title": "Download Data (Element 232) is alphanumeric, variable length up to 100 bytes, and holds 'all or some of the Download Data'",
+      "class": "field",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL7",
+        "element": "232",
+        "rule": "download-data-variable-up-to-100"
+      },
+      "note": "'All or some' implies Download Data may span more than one DL7; whether and how is open (SEGDL7-SME-004)."
+    },
+    {
+      "ruleId": "SEGDL7-R-006",
+      "title": "The DL7 Segment Length (Element 84) is three digits — DL7 is not one of the seven segments allowed a four-digit Segment Length — and must equal the length of the segment content after the Data Type Indicator",
+      "class": "structure",
+      "severity": "error",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "13.2",
+        "segment": "DL7",
+        "element": "84",
+        "rule": "segment-length-three-digits-matches-content"
+      },
+      "sourceEvidenceSections": [
+        "13.2",
+        "12.48"
+      ]
+    }
+  ],
+  "provisionalItems": [
+    {
+      "id": "P-01",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL7-R-003"
+      ],
+      "blocks": [
+        "Item 1",
+        "Item 4"
+      ],
+      "registerId": "SEGDL7-SME-001"
+    },
+    {
+      "id": "P-02",
+      "status": "OPEN",
+      "impacts": [
+        "AI-artifacts, test-data"
+      ],
+      "blocks": [
+        "Item 2",
+        "Item 3"
+      ],
+      "registerId": "SEGDL7-SME-002"
+    },
+    {
+      "id": "P-03",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL7-R-004"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL7-SME-003"
+    },
+    {
+      "id": "P-04",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL7-R-001",
+        "SEGDL7-R-005"
+      ],
+      "blocks": [
+        "Item 5"
+      ],
+      "registerId": "SEGDL7-SME-004"
+    },
+    {
+      "id": "P-05",
+      "status": "OPEN",
+      "impacts": [
+        "SEGDL7-R-002",
+        "SEGDL7-R-006"
+      ],
+      "blocks": [
+        "Item 5",
+        "Item 7"
+      ],
+      "registerId": "SEGDL7-SME-005"
+    }
+  ],
+  "itemProgress": {
+    "item1_coverageClosure": "CANDIDATE_COMPLETE_REVIEW_REQUIRED",
+    "item2_artifactComparison": "CANDIDATE_COMPARISON_COMPLETE_REVIEW_REQUIRED",
+    "item3_independence": "CANDIDATE_ORACLE_SEPARATED_APPROVAL_PENDING_P02",
+    "item4_traceabilityMatrix": "CANDIDATE_TRACEABILITY_COMPLETE_REVIEW_REQUIRED",
+    "item5_mutationDefinition": "CANDIDATE_MUTATIONS_DEFINED_NOT_EXECUTED",
+    "item6_mutationExecution": "BLOCKED_BY_SME_AND_APPROVED_FIXTURES",
+    "item7_validatorEnhancement": "LOGICAL_SAMPLE_VALIDATION_ONLY_BLOCKED_BY_P05",
+    "item8_consolidatedReport": "CANDIDATE_REPORT_COMPLETE_REVIEW_REQUIRED"
+  }
+}

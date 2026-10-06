@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * Validates source-confirmed Check Data Segment 110 rules.
  *
- * <p>Rules are anchored to {@code SEG110-R-001} through {@code SEG110-R-020} in
+ * <p>Rules are anchored to {@code SEG110-R-001} through {@code SEG110-R-021} in
  * {@code specifications/ATL105/docs/specs/kb/segment-110/coverage/segment-110-rule-catalog.json}.
  * Rules requiring SME decisions (the manually-entered/manually-keyed trigger, the Element 239
  * identity conflict, Extended MICR Data hosting-segment placement, and generic Financial
@@ -30,13 +32,12 @@ public final class Segment110PayloadValidator {
     private static final Pattern ALPHANUMERIC_MAX_8 = Pattern.compile("^[A-Za-z0-9]{1,8}$");
     private static final Pattern STATE_CODE = Pattern.compile("^[A-Za-z]{2}$");
 
-    private static final Set<String> VALID_STATE_CODES = Set.of(
-        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN",
-        "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH",
-        "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT",
-        "VT", "VA", "WA", "WV", "WI", "WY", "GU", "PR", "VI", "AA", "AE", "AP", "XX",
-        "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT", "NA");
     private static final Set<String> VALID_CHECK_TYPES = Set.of("P", "C");
+    private static final String REQUEST_ROOT_KEY = "ECA/TeleCheck Service Transaction Request";
+    // Segment 100 + Data Section 3 Field Nos. 4-6 (110, 111, conditional 113) per Section 11.3.1.
+    private static final Set<String> ECA_REQUEST_SEGMENT_TYPES = Set.of("100", "110", "111", "113");
+    private static final int ECA_MIN_SEGMENTS = 3;
+    private static final int ECA_MAX_SEGMENTS = 4;
 
     private final ObjectMapper objectMapper;
 
@@ -74,14 +75,14 @@ public final class Segment110PayloadValidator {
             result.addError(SOURCE, "AI JSON root must be an object");
             return;
         }
-        JsonNode request = payload.path("ECA TeleCheck Service Transaction Request");
+        JsonNode request = payload.path(REQUEST_ROOT_KEY);
         if (!request.isObject()) {
-            result.addError(SOURCE, "ECA TeleCheck Service Transaction Request object is required (SEG110-R-001)");
+            result.addError(SOURCE, REQUEST_ROOT_KEY + " object is required (SEG110-R-001)");
             return;
         }
 
-        checkRequiredPresent(request, "MessageFormatVersionIdentifier", "SEG110-R-001", result);
-        checkRequiredPresent(request, "NumberOfSegments", "SEG110-R-001", result);
+        checkRequiredPresent(request, "MessageType", "SEG110-R-001", result);
+        checkEcaComposition(request, result);
 
         JsonNode segment = request.path("Check Data Segment");
         if (!segment.isObject()) {
@@ -139,7 +140,7 @@ public final class Segment110PayloadValidator {
         if (stateCode == null || stateCode.isBlank()) {
             return;
         }
-        if (!matches(stateCode, STATE_CODE) || !VALID_STATE_CODES.contains(stateCode.toUpperCase())) {
+        if (!matches(stateCode, STATE_CODE) || !AppendixDStateCodes.isValidAlphabeticalCode(stateCode)) {
             result.addError(SOURCE, "Check Data Segment.StateCode must be a valid Appendix D state code (SEG110-R-010)");
         }
     }
@@ -154,7 +155,47 @@ public final class Segment110PayloadValidator {
     private static void checkRequiredPresent(JsonNode node, String field, String ruleId, ValidationResult result) {
         String value = text(node, field);
         if (value == null || value.isBlank()) {
-            result.addError(SOURCE, "ECA TeleCheck Service Transaction Request." + field + " is required (" + ruleId + ")");
+            result.addError(SOURCE, REQUEST_ROOT_KEY + "." + field + " is required (" + ruleId + ")");
+        }
+    }
+
+    private static void checkEcaComposition(JsonNode request, ValidationResult result) {
+        int segmentCount = 0;
+        boolean hasVariableInformation = false;
+        Iterator<Map.Entry<String, JsonNode>> fields = request.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> entry = fields.next();
+            String type = entry.getValue().isObject() ? text(entry.getValue(), "SegmentType") : null;
+            if (type == null) {
+                continue;
+            }
+            segmentCount++;
+            hasVariableInformation |= "111".equals(type);
+            if (!ECA_REQUEST_SEGMENT_TYPES.contains(type)) {
+                result.addError(SOURCE, "Segment " + type + " ('" + entry.getKey() + "') is not allowed in an " + REQUEST_ROOT_KEY
+                        + "; Data Section 3 carries only Segments 110, 111 and 113 (SEG110-R-021)");
+            }
+        }
+        if (!hasVariableInformation) {
+            result.addError(SOURCE, "Variable Information Data Segment (111) is required in Data Section 3 Field No. 5 (SEG110-R-021)");
+        }
+
+        String declared = text(request, "NumSegments");
+        if (declared == null || declared.isBlank()) {
+            result.addError(SOURCE, REQUEST_ROOT_KEY + ".NumSegments (Element 63) is required (SEG110-R-021)");
+            return;
+        }
+        if (!declared.matches(DataSection1StructureValidator.ELEMENT_63_PATTERN)) {
+            result.addError(SOURCE, REQUEST_ROOT_KEY + ".NumSegments (Element 63) must be one or two digits (SEG110-R-021)");
+            return;
+        }
+        int count = Integer.parseInt(declared);
+        if (count < ECA_MIN_SEGMENTS || count > ECA_MAX_SEGMENTS) {
+            result.addError(SOURCE, REQUEST_ROOT_KEY + ".NumSegments (Element 63) declares " + count
+                    + " but must be " + ECA_MIN_SEGMENTS + "-" + ECA_MAX_SEGMENTS + " (SEG110-R-021)");
+        } else if (count != segmentCount) {
+            result.addError(SOURCE, REQUEST_ROOT_KEY + ".NumSegments (Element 63) declares " + count
+                    + " but the message contains " + segmentCount + " segments (SEG110-R-021)");
         }
     }
 

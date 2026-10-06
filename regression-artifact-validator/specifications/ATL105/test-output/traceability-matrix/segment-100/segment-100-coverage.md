@@ -1,11 +1,11 @@
 # Segment 100 Coverage Report
 
 - Package: `ATL105-SEG100-COMPATIBILITY-001`
-- Status: **REJECTED_MISSING_COVERAGE**
+- Status: **APPROVED_WITH_REVIEW_ITEMS**
 - Covered: 31
 - Partially covered: 0
-- Review required: 24
-- Missing: 3
+- Review required: 27
+- Missing: 0
 
 | Rule | Title | Canonical anchor | Status | BR | Scenario | Test Case | Test Data |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -53,9 +53,9 @@
 | `SEG100-R-050` | Local Date and Local Time use the source-defined representation when required | `atl105|2026-3|12.1|100|49|local-date-time` | REVIEW_REQUIRED | yes | yes | yes | yes |
 | `SEG100-R-051` | EBT flows requiring EBT data include Segment 103 | `atl105|2026-3|11.1.1|103||ebt-data-required` | REVIEW_REQUIRED | yes | yes | yes | yes |
 | `SEG100-R-052` | Purchase-card flows requiring purchase-card data include Segment 104 | `atl105|2026-3|11.1.1|104||purchase-card-data-required` | REVIEW_REQUIRED | yes | yes | yes | yes |
-| `SEG100-R-053` | Variable-information flows include Segment 111 | `atl105|2026-3|11.1.1|111||variable-information-required` | MISSING | no | no | no | no |
-| `SEG100-R-054` | NFC tokenized flows include Segment 123 | `atl105|2026-3|11.1.1|123||nfc-tokenization-required` | MISSING | no | no | no | no |
-| `SEG100-R-055` | Moneris authorizer flows include Segment 135 | `atl105|2026-3|11.1.1|135||moneris-authorizer-required` | MISSING | no | no | no | no |
+| `SEG100-R-053` | Variable-information flows include Segment 111 | `atl105|2026-3|11.1.1|111||variable-information-required` | REVIEW_REQUIRED | yes | yes | yes | yes |
+| `SEG100-R-054` | NFC tokenized flows include Segment 123 | `atl105|2026-3|11.1.1|123||nfc-tokenization-required` | REVIEW_REQUIRED | yes | yes | yes | yes |
+| `SEG100-R-055` | Moneris authorizer flows include Segment 135 | `atl105|2026-3|11.1.1|135||moneris-authorizer-required` | REVIEW_REQUIRED | yes | yes | yes | yes |
 | `SEG100-R-056` | eWIC Authorization uses Prompt Code 3086 and Segment 103 | `atl105|2026-3|10.5.5|100|78|ewic-authorization` | REVIEW_REQUIRED | yes | yes | yes | yes |
 | `SEG100-R-057` | eWIC Authorization Cancellation uses Prompt Code S086 and Segment 103 | `atl105|2026-3|10.5.5|100|78|ewic-authorization-cancellation` | REVIEW_REQUIRED | yes | yes | yes | yes |
 | `SEG100-R-058` | eWIC Balance Inquiry uses Prompt Code E086 and Segment 103 | `atl105|2026-3|10.5.5|100|78|ewic-balance-inquiry` | REVIEW_REQUIRED | yes | yes | yes | yes |
