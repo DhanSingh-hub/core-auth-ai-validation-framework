@@ -9,19 +9,61 @@
     {"id":"BR-SEG100-APPB-MINIMUM-MESSAGE","title":"A POS purchase request identifies ATL105 and declares the serialized segment count in Data Section 1.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"DATA-SECTION-1","element":"55-63","rule":"pos-purchase-message-envelope"},"status":"COVERED"},
     {"id":"BR-SEG100-APPB-SEGMENT-100","title":"A POS purchase request contains Segment 100 with Segment Type 100 and encoded Segment Length.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"100","element":"84-85","rule":"pos-purchase-segment-100"},"status":"COVERED"},
     {"id":"BR-SEG100-APPB-PROMPT-CODE","title":"A POS purchase Prompt Code identifies purchase/capture transaction type 0 and the applicable card type.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"100","element":"78","rule":"pos-purchase-prompt-code"},"status":"COVERED"},
-    {"id":"BR-SEG100-APPB-AMOUNT-CONSISTENCY","title":"Segment 100 fuel, nonfuel, tax, and cash amounts represent the transaction totals and agree with product data where applicable.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"100","element":"41,58,99,17","rule":"pos-purchase-amount-consistency"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPB-AMOUNT-CONSISTENCY","title":"Segment 100 fuel, nonfuel, tax, and cash amounts represent the transaction totals and agree with product data where applicable.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B,12.3","segment":"100,102","element":"41,58,99,17,76","rule":"pos-purchase-amount-consistency"},"status":"REVIEW_REQUIRED"},
     {"id":"BR-SEG100-APPB-PRODUCT-SEGMENT","title":"A POS purchase with fuel and product detail includes Product Code Segment 102 and preserves product order and delimiters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","segment":"102","element":"84-85","rule":"pos-purchase-product-segment"},"status":"COVERED"},
-    {"id":"BR-SEG100-APPB-PRODUCT-TOTAL","title":"The sum of Product Code Segment 102 product amounts agrees with the applicable Segment 100 amounts.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"102","element":"product-amount","rule":"product-total-agrees-with-segment-100"},"status":"COVERED"}
+    {"id":"BR-SEG100-APPB-PRODUCT-TOTAL","title":"The sum of Product Code Segment 102 product amounts agrees with the applicable Segment 100 amounts.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix B,12.3","segment":"100,102","element":"41,58,99,17,76","rule":"product-total-agrees-with-segment-100"},"status":"REVIEW_REQUIRED"}
   ],
   "testScenarios": [
     {"id":"TS-SEG100-APPB-VALID-POS-PURCHASE","covers":["BR-SEG100-APPB-MINIMUM-MESSAGE","BR-SEG100-APPB-SEGMENT-100","BR-SEG100-APPB-PROMPT-CODE"],"status":"COVERED"},
-    {"id":"TS-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","covers":["BR-SEG100-APPB-AMOUNT-CONSISTENCY","BR-SEG100-APPB-PRODUCT-SEGMENT","BR-SEG100-APPB-PRODUCT-TOTAL"],"status":"COVERED"}
+    {"id":"TS-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","covers":["BR-SEG100-APPB-AMOUNT-CONSISTENCY","BR-SEG100-APPB-PRODUCT-SEGMENT","BR-SEG100-APPB-PRODUCT-TOTAL"],"status":"REVIEW_REQUIRED"}
   ],
   "testCases": [
     {"id":"TC-SEG100-APPB-VALID-POS-PURCHASE","scenarioId":"TS-SEG100-APPB-VALID-POS-PURCHASE","positive":"ATL105 POS purchase with Segment 100 and declared count 03","negative":["Wrong Segment Type","wrong Prompt Code","declared count excludes Segment 100 or 102"],"status":"COVERED"},
-    {"id":"TC-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","scenarioId":"TS-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","positive":"Fuel and nonfuel product amounts agree with Segment 100 totals","negative":["Product total mismatch","wrong product order","missing product delimiter","fuel amount mismatch"],"status":"COVERED"}
+    {"id":"TC-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","scenarioId":"TS-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY","positive":"Source Appendix B example preserves its product values and Segment 100 totals; cross-total assertion is review-required","negative":["Changed product total","wrong product order","declared segment count mismatch"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "Existing Segment 100 message-length, identity, and compatibility packages cover the underlying rules; the Appendix B example should be retained as a composite scenario fixture.",
+  "testData": [
+    {
+      "id": "TD-SEG100-APPB-SOURCE-EXAMPLE",
+      "testCaseIds": ["TC-SEG100-APPB-VALID-POS-PURCHASE", "TC-SEG100-APPB-AMOUNT-PRODUCT-CONSISTENCY"],
+      "expectedValidation": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {"specification":"ATL105","version":"2026-3","section":"Appendix B","segment":"100,102,111","element":"63,41,58,99,17,76","rule":"pos-purchase-composite-example"},
+        {"specification":"ATL105","version":"2026-3","section":"12.3","segment":"100,102","element":"41,58,99,17,76","rule":"product-amount-reconciliation"}
+      ],
+      "reviewNote": "The example product amounts total 2290, while Segment 100 fuel + nonfuel + tax + cash totals 2387. The 97 tax amount is shown separately; SEG102-SME-006 remains open.",
+      "payload": {
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "NumSegments": "03",
+          "Standard Segment": {
+            "SegmentType": "100", "SegmentLength": "078", "InformationByte": "0",
+            "TerminalID": "1234567890123",
+            "PromptCode": {"TransactionType":"0","CardType":"020"},
+            "AccountNumber": "12341234567890123456", "CardDiscretionaryBlockData": "1200",
+            "PumpLaneNumber": "01", "FuelPurchaseAmount": "500", "NonfuelAmount": "1790",
+            "TaxAmount": "97", "CashAmount": "", "SequenceNumber": "000001",
+            "ApprovalNumber": "", "LocalDateTime": "", "PartialApprovalIndicator": "1"
+          },
+          "Product Code Segment": {
+            "SegmentType": "102", "SegmentLength": "049", "ServiceLevel": "S", "NumberOfProducts": "02",
+            "products": [
+              {"productCode":"001","unitOfMeasure":"G","quantity":"34170","unitPrice":"31199","productAmount":"500"},
+              {"productCode":"411","unitOfMeasure":"U","quantity":"010","unitPrice":"2179","productAmount":"1790"}
+            ]
+          },
+          "Variable Info Segment": {
+            "SegmentType": "111", "SegmentLength": "054",
+            "AdditionalInformation": [
+              {"indicator":"004","length":"003","value":"969"},
+              {"indicator":"010","length":"030","value":"000000000000000000000000VAR001"}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "testDataStatus": "A source-derived Appendix B composite fixture is linked and checked by AppendixBExampleFixtureValidator. Segment 100 compatibility is executable; the amount/tax reconciliation remains REVIEW_REQUIRED pending SEG102-SME-006 and converter validation.",
   "exampleValuesNotUniversal": ["TerminalID 1234567890123","Card Type 020","SequenceNumber 000001","fuel amount 500","nonfuel amount 1790","tax amount 97"],
-  "remaining": ["Run the actual converter against AI-generated POS purchase JSON."]
+  "remaining": ["Resolve SEG102-SME-006 amount/tax reconciliation conflict.","Run the actual converter against AI-generated POS purchase JSON."]
 }

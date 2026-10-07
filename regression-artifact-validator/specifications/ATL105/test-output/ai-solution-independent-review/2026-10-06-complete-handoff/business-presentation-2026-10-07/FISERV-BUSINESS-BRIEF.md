@@ -121,6 +121,42 @@ As of October 7, 2026. Scope: October 5 Run1; figures are inventories unless exp
 
 **Speaker note:** Close with the specific evidence and authorization needed. Source/SME review and processor authorization are business controls, not issues to bypass for a green report.
 
+## BR Meaning and Supporting-Chain Validation
+
+We assess these in two separate steps. BR-level equivalence and complete-chain alignment are different conclusions.
+
+### 1. Compare BR Meaning
+
+Check whether AI BR(s) cover the independent Test BR's applicability and business context, triggering conditions, required behavior and outcome, and exceptions and restrictions.
+
+Both interpretations must be supported by the specification. Similar wording or shared IDs is not enough.
+
+### 2. Validate the Supporting Chain
+
+Then check whether the linked artifacts actually implement that meaning.
+
+| Artifact | Question |
+|---|---|
+| TS | Does the scenario exercise the BR's condition and behavior? |
+| TC | Does the case assert the required result? |
+| TD | Does the data activate the intended condition and preserve dependencies? |
+
+### Illustrative Lifecycle Example
+
+Suppose both BRs say: Completion must reuse the authorization's Sequence Number.
+
+AI could use 000001 for both messages; Test could use 100001 for both. Different values are acceptable because reuse within each transaction pair is preserved.
+
+If the AI case checks only that Sequence Number has six digits, its chain proves formatting, not lifecycle reuse.
+
+This is an illustrative example, not a claim of an approved lifecycle match in the assessed delivery. The actual 000001 versus 100001 comparison below establishes six-digit formatting only.
+
+### Interpret the Result
+
+- Equivalent BR statements + inadequate tests: BR-level match, incomplete test coverage.
+- Complete links + wrong business assertion: structurally complete, not semantically covered.
+- Equivalent BRs + aligned TS/TC/TD: aligned full-chain design, still not proof of successful host execution.
+
 ## Actual Artifact Comparison Appendix
 
 Examples are drawn from frozen AI artifacts and the independent Test Solution populated aggregate. No full-chain perfect match is certified.

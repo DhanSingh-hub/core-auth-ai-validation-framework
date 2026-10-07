@@ -263,6 +263,48 @@ def generate_outputs(output, facts, proof, review, html_only=False):
         box(slide, .6, top, 12.1, 6.65 - top, "\n".join(lines), 18 if item.get("rows") else 21)
         box(slide, .6, 6.95, 12.1, .4, f"FISERV / ATL105 / OCTOBER 5 RUN1 | REVIEW REQUIRED | {index + 1} / {len(content)}", 10, False, "626B6C")
         slide.notes_slide.notes_text_frame.text = item["notes"]
+    markdown.extend([
+        "## BR Meaning and Supporting-Chain Validation", "",
+        "We assess these in two separate steps. BR-level equivalence and complete-chain alignment are different conclusions.", "",
+        "### 1. Compare BR Meaning", "",
+        "Check whether AI BR(s) cover the independent Test BR's applicability and business context, triggering conditions, required behavior and outcome, and exceptions and restrictions.", "",
+        "Both interpretations must be supported by the specification. Similar wording or shared IDs is not enough.", "",
+        "### 2. Validate the Supporting Chain", "",
+        "Then check whether the linked artifacts actually implement that meaning.", "",
+        "| Artifact | Question |", "|---|---|",
+        "| TS | Does the scenario exercise the BR's condition and behavior? |",
+        "| TC | Does the case assert the required result? |",
+        "| TD | Does the data activate the intended condition and preserve dependencies? |", "",
+        "### Illustrative Lifecycle Example", "",
+        "Suppose both BRs say: Completion must reuse the authorization's Sequence Number.", "",
+        "AI could use 000001 for both messages; Test could use 100001 for both. Different values are acceptable because reuse within each transaction pair is preserved.", "",
+        "If the AI case checks only that Sequence Number has six digits, its chain proves formatting, not lifecycle reuse.", "",
+        "This is an illustrative example, not a claim of an approved lifecycle match in the assessed delivery. The actual 000001 versus 100001 comparison below establishes six-digit formatting only.", "",
+        "### Interpret the Result", "",
+        "- Equivalent BR statements + inadequate tests: BR-level match, incomplete test coverage.",
+        "- Complete links + wrong business assertion: structurally complete, not semantically covered.",
+        "- Equivalent BRs + aligned TS/TC/TD: aligned full-chain design, still not proof of successful host execution.", "",
+    ])
+    html.append('''<section id="br-meaning-and-chain"><h2>BR Meaning and Supporting-Chain Validation</h2>
+<p>We assess these in <strong>two separate steps</strong>. BR-level equivalence and complete-chain alignment are different conclusions.</p>
+<h3>1. Compare BR Meaning</h3><p>Check whether AI BR(s) cover the independent Test BR's:</p>
+<ul><li>Applicability and business context.</li><li>Triggering conditions.</li><li>Required behavior and outcome.</li><li>Exceptions and restrictions.</li></ul>
+<p>Both interpretations must be supported by the specification. Similar wording or shared IDs is not enough.</p>
+<h3>2. Validate the Supporting Chain</h3><p>Then check whether the linked artifacts actually implement that meaning:</p>
+<div class="table-wrap"><table><thead><tr><th>Artifact</th><th>Question</th></tr></thead><tbody>
+<tr><td>TS</td><td>Does the scenario exercise the BR's condition and behavior?</td></tr>
+<tr><td>TC</td><td>Does the case assert the required result?</td></tr>
+<tr><td>TD</td><td>Does the data activate the intended condition and preserve dependencies?</td></tr>
+</tbody></table></div>
+<h3>Illustrative Lifecycle Example</h3><p>Suppose both BRs say: <strong>Completion must reuse the authorization's Sequence Number.</strong></p>
+<p>AI could use <code>000001</code> for both messages; Test could use <code>100001</code> for both. Different values are acceptable because the business relationship, <strong>reuse within each transaction pair</strong>, is preserved.</p>
+<p>However, if the AI case checks only <strong>Sequence Number has six digits</strong>, its chain proves formatting, <strong>not lifecycle reuse</strong>.</p>
+<p class="scope">This is an illustrative example, not a claim of an approved lifecycle match in the assessed delivery. The actual <code>000001</code> versus <code>100001</code> comparison below establishes six-digit formatting only.</p>
+<h3>Interpret the Result</h3><ul>
+<li>Equivalent BR statements + inadequate tests: <strong>BR-level match, incomplete test coverage.</strong></li>
+<li>Complete links + wrong business assertion: <strong>structurally complete, not semantically covered.</strong></li>
+<li>Equivalent BRs + aligned TS/TC/TD: <strong>aligned full-chain design</strong>, still not proof of successful host execution.</li>
+</ul></section>''')
     markdown.extend(["## Actual Artifact Comparison Appendix", "", "Examples are drawn from frozen AI artifacts and the independent Test Solution populated aggregate. No full-chain perfect match is certified.", ""])
     html.append("<section><h2>Actual Artifact Comparison Appendix</h2>")
     for example in proof["examples"]:
@@ -349,7 +391,13 @@ def validate_outputs(review):
             if tag == "a":
                 self.targets.extend(value for key, value in attributes if key == "href")
     links = Links()
-    links.feed((output / "FISERV-BUSINESS-BRIEF.html").read_text(encoding="utf-8"))
+    brief_html = (output / "FISERV-BUSINESS-BRIEF.html").read_text(encoding="utf-8")
+    links.feed(brief_html)
+    for marker in ["br-meaning-and-chain", "1. Compare BR Meaning", "2. Validate the Supporting Chain",
+                   "reuse within each transaction pair", "not lifecycle reuse", "BR-level match, incomplete test coverage",
+                   "structurally complete, not semantically covered", "still not proof of successful host execution"]:
+        if marker not in brief_html:
+            raise ValueError("Missing BR meaning/chain distinction: " + marker)
     for target in links.targets:
         if not native(output / target).is_file():
             raise ValueError("Broken presentation/report link: " + target)

@@ -32,3 +32,5 @@ Before implementation, confirm:
 5. The report should be produced as both JSON and Markdown.
 6. The Test Team owns the approval decision; the AI output does not approve itself.
 7. Rules currently marked `PROVISIONAL` in the rule catalog (Product Code enum completeness, fuel/EV ordering classification, fuel-merchant nonfuel-data rule, Segment 143 scope) require SME/spec input before they can move to an approved state.
+
+The Appendix B example's product/tax reconciliation is separately open as `SEG102-SME-006`; its literal 100/102/111 fixture is retained with `REVIEW_REQUIRED` rather than used to choose between the example and Section 12.3.

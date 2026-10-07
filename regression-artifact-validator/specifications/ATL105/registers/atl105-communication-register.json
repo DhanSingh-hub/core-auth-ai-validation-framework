@@ -512,6 +512,29 @@
       "raisedBy": "Rishabh Kumar"
     },
     {
+      "id": "SEG102-SME-006",
+      "channel": "SME_QUERY",
+      "segments": [
+        "102"
+      ],
+      "subject": "Resolve the Appendix B product/tax reconciliation discrepancy: Appendix B's two Product Amounts total 2,290, while Segment 100 Fuel + Nonfuel + Tax + Cash totals 2,387. Section 12.3 requires the product total to equal all four fields and separately says tax-coded product totals are also reported in Element 99; Appendix B shows a 97 tax on cigarettes but no tax product entry.",
+      "context": "Appendix B-1 through B-5 gives product amounts 500 and 1,790, Segment 100 amounts 500/1,790/97/blank, and describes 6% tax. Section 12.3 requires product amounts to reconcile with Elements 41, 58, 99, and 17. The source example and rule text do not reconcile arithmetically.",
+      "impact": "SEG102-R-015/016, Appendix B amount-consistency coverage, and composite purchase certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-07",
+      "raisedBy": "Test Solution training",
+      "links": {
+        "rules": [
+          "SEG102-R-015",
+          "SEG102-R-016"
+        ],
+        "blocks": [
+          "Appendix B product/tax amount reconciliation certification"
+        ]
+      }
+    },
+    {
       "id": "SEG103-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -681,6 +704,32 @@
         ],
         "impacts": [
           "test-data"
+        ]
+      }
+    },
+    {
+      "id": "SEG103-SME-009",
+      "channel": "SME_QUERY",
+      "segments": [
+        "103"
+      ],
+      "subject": "Resolve the Appendix M TAG 50 AMOUNT TYPE contradiction: Section 13.2 lists 50 for a request TAG 50 and both worked-example strings encode 50, while Appendix M-2 and M-4 prose says the valid HIP Amount Type is 40.",
+      "context": "SEG103-SME-003 was previously settled by Test Team source interpretation, not SME decision. The conflicting literal source statements are preserved; the validator accepts only candidates 40 and 50 but emits REVIEW_REQUIRED until this query is answered.",
+      "impact": "SEG103-R-022 TAG 50 amount-type validation, Appendix M positive fixture readiness, and Segment 103 semantic certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-07",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG103-SME-003"
+      ],
+      "links": {
+        "catalogItem": "P-09",
+        "rules": [
+          "SEG103-R-022"
+        ],
+        "blocks": [
+          "TAG 50 AMOUNT TYPE semantic certification"
         ]
       }
     },

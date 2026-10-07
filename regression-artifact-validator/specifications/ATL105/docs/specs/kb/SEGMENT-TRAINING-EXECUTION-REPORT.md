@@ -9,7 +9,7 @@ Generated from [training-status.json](../../../training-status.json) and the seg
 | Substantive knowledge modules | 48 |
 | In progress | 49 |
 | Trained for independent intake | 0 |
-| Segments with explicit blockers | 45 |
+| Segments with explicit blockers | 46 |
 
 ## Gate Policy
 
@@ -21,8 +21,8 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 |---|---:|---|---|---:|---|
 | 100 | 58 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 101 | 26 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |
-| 102 | 25 | SUBSTANTIVE | IN_PROGRESS | 4 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 103 | 24 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
+| 102 | 25 | SUBSTANTIVE | IN_PROGRESS | 5 | INDEPENDENT_AI_ARTIFACT_INTAKE |
+| 103 | 24 | SUBSTANTIVE | IN_PROGRESS | 2 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 104 | 14 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 105 | 22 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 108 | 25 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |

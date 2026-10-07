@@ -8,7 +8,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 312 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 346 |
+| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 314 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 348 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 17 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 17 |
@@ -18,8 +18,8 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | Segment | Open | Reopened | Resolved | Deferred | Total | Register |
 | --- | --- | --- | --- | --- | --- | --- |
 | 101 | 10 | 0 | 0 | 0 | 10 | [segment-101](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md) |
-| 102 | 5 | 0 | 0 | 0 | 5 | [segment-102](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md) |
-| 103 | 2 | 0 | 6 | 0 | 8 | [segment-103](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md) |
+| 102 | 6 | 0 | 0 | 0 | 6 | [segment-102](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md) |
+| 103 | 3 | 0 | 6 | 0 | 9 | [segment-103](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md) |
 | 105 | 10 | 0 | 0 | 0 | 10 | [segment-105](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md) |
 | 108 | 7 | 1 | 3 | 0 | 11 | [segment-108](../../docs/specs/kb/segment-108/segment-108-sme-tba-input-register.md) |
 | 109 | 12 | 0 | 0 | 0 | 12 | [segment-109](../../docs/specs/kb/segment-109/segment-109-sme-tba-input-register.md) |

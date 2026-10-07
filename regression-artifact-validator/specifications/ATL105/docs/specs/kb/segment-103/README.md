@@ -3,7 +3,7 @@
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.4 EBT Data Segment (pages 12-15) and Elements 18, 109, 153, 154, 164 (chapter 13.2)
 **Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
-**Item Progress:** All spec-groundable provisional items (P-01 through P-06) are resolved directly from the ATL105 text — applicability matrix, full WIC Product Data and EBT Program Data layouts, eWIC Return prohibition, eWIC prompt-code enumeration, and Appendix L currency codes. Items 1, 3, 5, 6, and 7 are executable. Item 2 and the external-data replacement in Item 4 remain open only on P-07/P-08 (real AI artifacts / real test data), which are not resolvable from the specification and require external delivery.
+**Item Progress:** P-01 through P-06 retain their historical source-derived dispositions. New source comparison found an Appendix M TAG 50 AMOUNT TYPE contradiction (`SEG103-SME-009`, P-09); candidate values are review-gated pending SME/TBA. The Appendix M length and examples are executable on synthetic fixtures. Items 2 and 4 also remain open on P-07/P-08 (real AI artifacts / real test data).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
@@ -79,7 +79,7 @@ Maximum Segment 103 length is **3,334 alphanumeric characters** (Section 12.4).
 | Position | Content | Valid value |
 |---|---|---|
 | 1–2 | Account Type | Fixed `97` |
-| 3–4 | Amount Type | Fixed `52` |
+| 3–4 | Amount Type | Fixed `52` for this WIC Discount Amount; do not apply to Element 164 |
 | 5–7 | Currency Code | Appendix L valid currency code (full table transcribed into `AppendixLCurrencyCodes.java`, resolves P-06) |
 | 8–20 | Amount | 1-char sign (`0`, `C` credit, or `D` debit) + 12-digit amount |
 
@@ -92,7 +92,7 @@ A populated WIC Discount Amount value is one or more 20-byte blocks of this layo
 | Total Length | 3 digits, fixed, right-aligned/zero-padded, max value 264 | Count of all bytes in the Program Data subelement(s) that follow |
 | Program Data (1–6 occurrences) | up to 44 bytes each | `TAG` (2 chars) + `LEN` (2 digits) + detail data; `ACCOUNT TYPE` fixed `98` required when `TAG=50` |
 
-Documented `TAG` values: `50` (HIP purchase/return amount, request), `IT` (HIP Internet purchase shipping address/zip, request), `51` (HIP incentive earned/returned, response), `52` (HIP month-to-date incentive earned, response). Full positional layout (LEN, AMOUNT TYPE, CURRENCY CODE 840, AMOUNT DESCRIPTOR, DETAIL, or IT address/zip) confirmed against both Appendix M worked examples and enforced by `SEG103-R-022` (resolves P-03).
+Documented `TAG` values: `50` (HIP purchase/return amount, request), `IT` (HIP Internet purchase shipping address/zip, request), `51` (HIP incentive earned/returned, response), `52` (HIP month-to-date incentive earned, response). Positional checks cover LEN, account/currency/descriptor/detail, IT address, up-to-9-digit ZIP, and total bytes. Request TAG 50 AMOUNT TYPE is disputed between Appendix M prose (`40`) and §13.2/worked strings (`50`); `SEG103-SME-009` remains open, and that assertion is review-gated.
 
 ### 2.3 Important Serialization Rule
 

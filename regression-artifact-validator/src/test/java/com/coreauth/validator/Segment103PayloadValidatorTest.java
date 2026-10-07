@@ -216,6 +216,25 @@ class Segment103PayloadValidatorTest {
     }
 
     @Test
+    void keepsBothSourceListedTag50AmountTypesReviewRequired() {
+        for (String amountType : new String[] {"40", "50"}) {
+            ObjectNode payload = validEbtPayload();
+            ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+                .putObject("EbtProgramData");
+            ebtProgramData.put("totalLength", "024");
+            ebtProgramData.putArray("subelements").addObject()
+                .put("tag", "50").put("len", "20").put("accountType", "98")
+                .put("amountType", amountType).put("currencyCode", "840")
+                .put("amountDescriptor", "C").put("detail", "000000001234");
+
+            ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+            assertThat(result.errors()).isEmpty();
+            assertThat(result.warnings()).anyMatch(warning -> warning.contains("SEG103-SME-009"));
+        }
+    }
+
+    @Test
     void acceptsEbtProgramDataFullAppendixMLayoutForTag50() {
         // Appendix M worked example: TAG=50, LEN=20, ACCOUNT TYPE=98, AMOUNT TYPE=50,
         // CURRENCY CODE=840, DESCRIPTOR=C, DETAIL=000000001234 ($12.34).
@@ -227,6 +246,42 @@ class Segment103PayloadValidatorTest {
         subelement.put("tag", "50").put("len", "20").put("accountType", "98")
             .put("amountType", "50").put("currencyCode", "840")
             .put("amountDescriptor", "C").put("detail", "000000001234");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+        assertThat(result.warnings()).anyMatch(warning -> warning.contains("SEG103-SME-009"));
+    }
+
+    @Test
+    void rejectsAppendixMTotalLengthThatDoesNotIncludeTagLengthAndDetail() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "023");
+        ebtProgramData.putArray("subelements").addObject()
+            .put("tag", "50").put("len", "20").put("accountType", "98")
+            .put("amountType", "50").put("currencyCode", "840")
+            .put("amountDescriptor", "C").put("detail", "000000001234");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("SEG103-R-014")
+            && error.reason().contains("encoded TAG/LEN/detail character count 24"));
+    }
+
+    @Test
+    void acceptsAppendixMTwoSubelementsWithCombinedEncodedLength065() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "065");
+        ebtProgramData.putArray("subelements").addObject()
+            .put("tag", "50").put("len", "20").put("accountType", "98")
+            .put("amountType", "50").put("currencyCode", "840")
+            .put("amountDescriptor", "C").put("detail", "000000001234");
+        ebtProgramData.withArray("subelements").addObject()
+            .put("tag", "IT").put("len", "37").put("address", "A".repeat(28)).put("zip", "123456789");
 
         ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
 
@@ -277,7 +332,7 @@ class Segment103PayloadValidatorTest {
         ObjectNode subelement = ebtProgramData.putArray("subelements").addObject();
         subelement.put("tag", "IT").put("len", "37")
             .put("address", "A".repeat(28))
-            .put("zip", "Z".repeat(9));
+            .put("zip", "123456789");
 
         ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
 
@@ -299,6 +354,35 @@ class Segment103PayloadValidatorTest {
 
         assertThat(result.errors())
             .anyMatch(error -> error.reason().contains("SEG103-R-022") && error.reason().contains("address"));
+    }
+
+    @Test
+    void rejectsAppendixMTagItZipWithNonNumericCharacters() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "041");
+        ebtProgramData.putArray("subelements").addObject()
+            .put("tag", "IT").put("len", "37").put("address", "A".repeat(28)).put("zip", "12A45678");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("SEG103-R-022")
+            && error.reason().contains("at most 9 digits"));
+    }
+
+    @Test
+    void acceptsAppendixMTagItZipShorterThanItsNineDigitMaximum() {
+        ObjectNode payload = validEbtPayload();
+        ObjectNode ebtProgramData = ((ObjectNode) payload.path("Financial Request").path("EBT Data Segment"))
+            .putObject("EbtProgramData");
+        ebtProgramData.put("totalLength", "041");
+        ebtProgramData.putArray("subelements").addObject()
+            .put("tag", "IT").put("len", "37").put("address", "A".repeat(28)).put("zip", "12345678");
+
+        ValidationResult result = new Segment103PayloadValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
     }
 
     @Test

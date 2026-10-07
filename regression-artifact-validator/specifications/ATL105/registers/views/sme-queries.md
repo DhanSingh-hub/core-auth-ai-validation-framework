@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 312 open, 3 reopened, 29 resolved, 2 deferred (346 total).
+**Status:** 314 open, 3 reopened, 29 resolved, 2 deferred (348 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -30,6 +30,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | [SEG102-SME-003](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md#seg102-sme-003) | Confirm multi-fuel OTR primary-fuel-first rule (SEG102-R-024) — marked PROVISIONAL. |  | OPEN |  | 2026-09-26 |
 | [SEG102-SME-004](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md#seg102-sme-004) | Confirm Segment 143 product-order consistency rule (SEG102-R-025) — marked PROVISIONAL/review. |  | OPEN |  | 2026-09-26 |
 | [SEG102-SME-005](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md#seg102-sme-005) | Provide a dedicated Segment 102 AI/Test package, or approve synthesized fixtures. |  | OPEN |  | 2026-09-26 |
+| [SEG102-SME-006](../../docs/specs/kb/segment-102/segment-102-sme-tba-input-register.md#seg102-sme-006) | Resolve the Appendix B product/tax reconciliation discrepancy: Appendix B's two Product Amounts total 2,290, while Segment 100 Fuel + Nonfuel + Tax + Cash totals 2,387. Section 12.3 requires the product total to equal all four fields and separately says tax-coded product totals are also reported in Element 99; Appendix B shows a 97 tax on cigarettes but no tax product entry. | Appendix B-1 through B-5 gives product amounts 500 and 1,790, Segment 100 amounts 500/1,790/97/blank, and describes 6% tax. Section 12.3 requires product amounts to reconcile with Elements 41, 58, 99, and 17. The source example and rule text do not reconcile arithmetically. | OPEN | SEG102-R-015, SEG102-R-016 | 2026-10-07 |
 
 ## Segment 103 ([register](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md))
 
@@ -37,6 +38,7 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | --- | --- | --- | --- | --- | --- |
 | [SEG103-SME-007](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md#seg103-sme-007) | Location of AI-generated Segment 103 BR/TS/TC/TD packages (none supplied as of this training pass). Not resolvable from the specification text; requires the AI/producer team to deliver real artifacts. |  | OPEN | `P-07` | 2026-09-18 |
 | [SEG103-SME-008](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md#seg103-sme-008) | Availability of real Segment 103 sample JSONs, or continued approval to use synthesized .synthetic.json fixtures. Not resolvable from the specification text; requires production/test-data availability. |  | OPEN | `P-08` | 2026-09-18 |
+| [SEG103-SME-009](../../docs/specs/kb/segment-103/segment-103-sme-tba-input-register.md#seg103-sme-009) | Resolve the Appendix M TAG 50 AMOUNT TYPE contradiction: Section 13.2 lists 50 for a request TAG 50 and both worked-example strings encode 50, while Appendix M-2 and M-4 prose says the valid HIP Amount Type is 40. | SEG103-SME-003 was previously settled by Test Team source interpretation, not SME decision. The conflicting literal source statements are preserved; the validator accepts only candidates 40 and 50 but emits REVIEW_REQUIRED until this query is answered. | OPEN | `P-09`, SEG103-R-022 | 2026-10-07 |
 
 ## Segment 105 ([register](../../docs/specs/kb/segment-105/segment-105-sme-tba-input-register.md))
 
