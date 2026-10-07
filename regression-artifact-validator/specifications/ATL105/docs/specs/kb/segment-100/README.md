@@ -38,6 +38,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Appendix N Premium Gift Card Training (Track II magnetic-stripe layout)](../appendix-n/README.md)
 - [Appendix O Payment Token Terminology Training (tokenization glossary + cryptogram/entry-mode checks)](../appendix-o/README.md)
 - [Appendix Q National POS Condition Code Training (ten-digit composite code: terminal class/type, presentation, security)](../appendix-q/README.md)
+- [Appendix R EMV Chip Data Training (Elements 189/190 TLV decoding, mandatory/prohibited tags)](../appendix-r/README.md)
 - [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
