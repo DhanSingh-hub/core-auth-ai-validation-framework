@@ -50,8 +50,9 @@ any) do not appear in that assembled packet. It does not assume a specific senti
   Gift Card system."
 
 Package totals: **6 BR / 2 TS / 2 TC / 4 TD**, all `COVERED`/`EXECUTABLE` using in-repo fixtures (see
-`AppendixNPremiumGiftCardTrackValidatorTest` and
-`specifications/ATL105/test-output/test-json/appendices/appendix-n-segment-100-coverage.json`).
+[`AppendixNPremiumGiftCardTrackValidatorTest`](../../../../../../src/test/java/com/coreauth/validator/AppendixNPremiumGiftCardTrackValidatorTest.java)
+and
+[`appendix-n-segment-100-coverage.json`](../../../../test-output/test-json/appendices/appendix-n-segment-100-coverage.json)).
 
 ## Deferred Work
 
@@ -69,3 +70,5 @@ Package totals: **6 BR / 2 TS / 2 TC / 4 TD**, all `COVERED`/`EXECUTABLE` using 
 
 - ATL105 2026-3, "refer to Appendix N" cross-reference: [extracted specification](../../extracted_text.txt), line 5710.
 - ATL105 2026-3 Appendix N-1 table and serial-number note: [extracted specification](../../extracted_text.txt), lines 35040-35077.
+- [Segment 100 Appendix family training index](../segment-100/README.md) and
+  [Appendix Family Gap Closure Register](../segment-100/appendix-family-gap-closure-register.md).

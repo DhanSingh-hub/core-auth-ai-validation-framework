@@ -35,7 +35,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Appendix F Product Code Training (table classification and transaction context)](appendix-f-product-code-training.md)
 - [Appendix G Transaction Type Training (code classification and flow boundaries)](appendix-g-transaction-type-training.md)
 - [Appendix K Additional Information Training (Segment 112 Element 118 table layouts)](appendix-k-additional-information-training.md)
-- [Appendix N Premium Gift Card Training (Track II magnetic-stripe layout)](appendix-n-premium-gift-card-training.md)
+- [Appendix N Premium Gift Card Training (Track II magnetic-stripe layout)](../appendix-n/README.md)
 - [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
