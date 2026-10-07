@@ -6,21 +6,59 @@
   "applicability": "Applies only when Segment 100 transaction context uses the First Data Premium Gift Card magnetic-stripe flow.",
   "source": "docs/specs/extracted_text.txt Appendix N-1",
   "businessRequirements": [
-    {"id":"BR-SEG100-APPN-TRACK2-ACCOUNT","title":"Premium Gift Card Track II data shall contain a 16-digit Account Number using the assigned Premium Gift Card BIN structure.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-account-number"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPN-TRACK2-FORMAT","title":"Premium Gift Card Track II data shall preserve the source-defined separator, YYMM expiration, service code, PVV, discretionary data, and integrity characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-track2-layout"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPN-SERIAL-NUMBER","title":"Premium Gift Card serial-number derivation shall use the source-defined BIN, partial account, check digit, and discretionary-data components when the flow requires it.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2,12","rule":"premium-gift-serial-number-derivation"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS","title":"The Account Number field used for serial-number derivation shall decompose into a 6-byte BIN, a 9-byte Partial Account Number, and a 1-byte Visa modulo check digit, totaling the 16-digit Account Number.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-serial-component-lengths"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPN-SENTINEL-EXCLUSION","title":"The Track II Start Sentinel and End Sentinel characters shall be cut from the packet and shall not appear in the data transmitted to the host application.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-sentinel-exclusion"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPN-PVKI-UNUSED","title":"The Track II PVKI field is not currently used by the First Data Premium Gift Card system and shall not be validated as a meaningful business value.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-pvki-unused"},"status":"REVIEW_REQUIRED"}
+    {"id":"BR-SEG100-APPN-TRACK2-ACCOUNT","title":"Premium Gift Card Track II data shall contain a 16-digit Account Number using the assigned Premium Gift Card BIN structure.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-account-number"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPN-TRACK2-FORMAT","title":"Premium Gift Card Track II data shall preserve the source-defined separator, YYMM expiration, service code, PVV, discretionary data, and integrity characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-track2-layout"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPN-SERIAL-NUMBER","title":"Premium Gift Card serial-number derivation shall use the source-defined BIN, partial account, check digit, and discretionary-data components when the flow requires it.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2,12","rule":"premium-gift-serial-number-derivation"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS","title":"The Account Number field used for serial-number derivation shall decompose into a 6-byte BIN, a 9-byte Partial Account Number, and a 1-byte Visa modulo check digit, totaling the 16-digit Account Number.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"2","rule":"premium-gift-serial-component-lengths"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPN-SENTINEL-EXCLUSION","title":"The Track II Start Sentinel and End Sentinel characters shall be cut from the packet and shall not appear in the data transmitted to the host application.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-sentinel-exclusion"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPN-PVKI-UNUSED","title":"The Track II PVKI field is not currently used by the First Data Premium Gift Card system and shall not be validated as a meaningful business value.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix N","segment":"100","element":"12","rule":"premium-gift-pvki-unused"},"status":"COVERED"}
   ],
   "testScenarios": [
-    {"id":"TS-SEG100-APPN-TRACK2","covers":["BR-SEG100-APPN-TRACK2-ACCOUNT","BR-SEG100-APPN-TRACK2-FORMAT","BR-SEG100-APPN-SENTINEL-EXCLUSION","BR-SEG100-APPN-PVKI-UNUSED"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPN-SERIAL","covers":["BR-SEG100-APPN-SERIAL-NUMBER","BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS"],"status":"REVIEW_REQUIRED"}
+    {"id":"TS-SEG100-APPN-TRACK2","covers":["BR-SEG100-APPN-TRACK2-ACCOUNT","BR-SEG100-APPN-TRACK2-FORMAT","BR-SEG100-APPN-SENTINEL-EXCLUSION","BR-SEG100-APPN-PVKI-UNUSED"],"status":"COVERED"},
+    {"id":"TS-SEG100-APPN-SERIAL","covers":["BR-SEG100-APPN-SERIAL-NUMBER","BR-SEG100-APPN-SERIAL-COMPONENT-LENGTHS"],"status":"COVERED"}
   ],
   "testCases": [
-    {"id":"TC-SEG100-APPN-TRACK2","scenarioId":"TS-SEG100-APPN-TRACK2","positive":"Valid Premium Gift Card Track II structure with sentinels excluded from the transmitted packet","negative":["wrong account length","wrong separator","invalid expiration format","missing discretionary data","Start/End Sentinel present in transmitted data"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPN-SERIAL","scenarioId":"TS-SEG100-APPN-SERIAL","positive":"Serial number derives from 6-byte BIN + 9-byte partial account + 1-byte check digit","negative":["derivation mismatch","wrong BIN component length","wrong partial account length"],"status":"REVIEW_REQUIRED"}
+    {"id":"TC-SEG100-APPN-TRACK2","scenarioId":"TS-SEG100-APPN-TRACK2","positive":"Valid Premium Gift Card Track II structure with sentinels excluded from the transmitted packet","negative":["wrong account length","wrong separator","invalid expiration format","missing discretionary data","Start/End Sentinel present in transmitted data"],"status":"COVERED"},
+    {"id":"TC-SEG100-APPN-SERIAL","scenarioId":"TS-SEG100-APPN-SERIAL","positive":"Serial number derives from 6-byte BIN + 9-byte partial account + 1-byte check digit","negative":["derivation mismatch","wrong BIN component length","wrong partial account length"],"status":"COVERED"}
   ],
-  "testDataStatus": "No dedicated Premium Gift Card AI artifact or approved specialized fixture is currently available.",
-  "remaining": ["Confirm Premium Gift Card applicability and BIN values.","Obtain specialized AI-generated track-data artifacts before implementation certification."]
+  "testData": [
+    {
+      "id":"TD-SEG100-APPN-TRACK2-PASS",
+      "testCaseIds":["TC-SEG100-APPN-TRACK2"],
+      "expectedValidation":"PASS",
+      "readiness":"EXECUTABLE",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix N-1","segment":"100","element":"12","rule":"premium-gift-track2-layout"}],
+      "coversBr":"BR-SEG100-APPN-TRACK2-FORMAT",
+      "payload":{"trackRecord":{"startSentinel":"%","accountNumber":"4012881234567890","separator":"=","expirationDate":"2812","serviceCode":"101","pvki":"0","pvv":"1234","discretionaryData":"DISCR123","endSentinel":";","lrc":"1"}}
+    },
+    {
+      "id":"TD-SEG100-APPN-TRACK2-BAD-ACCOUNT",
+      "testCaseIds":["TC-SEG100-APPN-TRACK2"],
+      "expectedValidation":"FAIL",
+      "readiness":"EXECUTABLE",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix N-1","segment":"100","element":"2","rule":"premium-gift-account-number"}],
+      "coversBr":"BR-SEG100-APPN-TRACK2-ACCOUNT",
+      "payload":{"trackRecord":{"startSentinel":"%","accountNumber":"4012881234567891","separator":"=","expirationDate":"2812","serviceCode":"101","pvki":"0","pvv":"1234","discretionaryData":"DISCR123","endSentinel":";","lrc":"1"},"reviewNote":"Account Number check digit deliberately invalid (fails Visa modulo-10)."}
+    },
+    {
+      "id":"TD-SEG100-APPN-SENTINEL-LEAK",
+      "testCaseIds":["TC-SEG100-APPN-TRACK2"],
+      "expectedValidation":"FAIL",
+      "readiness":"EXECUTABLE",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix N-1","segment":"100","element":"12","rule":"premium-gift-sentinel-exclusion"}],
+      "coversBr":"BR-SEG100-APPN-SENTINEL-EXCLUSION",
+      "payload":{"trackRecord":{"startSentinel":"%","accountNumber":"4012881234567890","separator":"=","expirationDate":"2812","serviceCode":"101","pvki":"0","pvv":"1234","discretionaryData":"DI%CR123","endSentinel":";","lrc":"1"},"reviewNote":"Discretionary Data deliberately contains the literal Start Sentinel character to prove it is detected if it leaks into the transmitted packet."}
+    },
+    {
+      "id":"TD-SEG100-APPN-SERIAL-PASS",
+      "testCaseIds":["TC-SEG100-APPN-SERIAL"],
+      "expectedValidation":"PASS",
+      "readiness":"EXECUTABLE",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix N-1","segment":"100","element":"2,12","rule":"premium-gift-serial-number-derivation"}],
+      "coversBr":"BR-SEG100-APPN-SERIAL-NUMBER",
+      "payload":{"accountNumber":"4012881234567890","discretionaryData":"DISCR123","expectedSerialNumber":"123456789DISC"}
+    }
+  ],
+  "testDataStatus": "AppendixNPremiumGiftCardTrackValidator independently implements and tests all six BRs (16-digit Account Number + Visa mod-10 check digit, Track II field-width representation, BIN/Partial-Account/check-digit decomposition, serial-number derivation, Start/End Sentinel exclusion from the transmitted packet, and PVKI presence-only handling) with in-repo fixtures. No dedicated AI-generated Premium Gift Card artifact or BIN registry is available, so BIN-registry membership, Service Code table meaning, and PVV cryptographic correctness remain explicitly out of scope rather than asserted.",
+  "remaining": ["Confirm Premium Gift Card applicability and the registered BIN range with an authoritative BIN registry (not part of Appendix N).","Obtain specialized AI-generated track-data artifacts to replace the in-repo fixtures before implementation certification.","Decide whether/how to wire this validator into Segment100PayloadValidator if a modeled Track II field is ever added to the Segment 100 payload schema."]
 }
