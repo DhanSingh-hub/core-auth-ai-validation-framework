@@ -40,6 +40,7 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Appendix Q National POS Condition Code Training (ten-digit composite code: terminal class/type, presentation, security)](../appendix-q/README.md)
 - [Appendix R EMV Chip Data Training (Elements 189/190 TLV decoding, mandatory/prohibited tags)](../appendix-r/README.md)
 - [Appendix S CA Public Key File Training (record layout + real SHA-1 checksum verification)](../appendix-s/README.md)
+- [Appendix T EMV Additional Information Data Layouts Training (Elements 191/192/118, EMV Table Data + CARC)](../appendix-t/README.md)
 - [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 
