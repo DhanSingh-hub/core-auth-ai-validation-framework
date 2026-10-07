@@ -48,7 +48,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | N | [First Data Premium Gift Card Magnetic Stripe Data Layout training](appendix-n/README.md) | Track II layout for First Data Premium Gift Card; all 6 BRs independently implemented, PARTIALLY_COVERED | 35046-35090 |
 | O | [Payment Token Terminology training](appendix-o/README.md) | Tokenization glossary; all 7 BRs independently implemented, PARTIALLY_COVERED | 35089-35126 |
 | P | TransArmor VeriFone Edition: Responses to Administrative Commands | External spec reference | 35142-35157 |
-| Q | Valid National Point-of-Service Condition Codes | POS condition codes (Element 111 Table 030) | 35158-35406 |
+| Q | [Valid National Point-of-Service Condition Codes training](appendix-q/README.md) | POS condition codes (Element 111 Table 030); all 5 BRs independently implemented, PARTIALLY_COVERED | 35158-35406 |
 | R | EMV Chip Data Example | Example EMV chip data packet structure | 35407-35449 |
 | S | Valid CA Public Key File Record Layout | CA Public Key File record layout for EMV | 35450-35558 |
 | T | EMV Additional Information Data Layouts | EMV Table Data and CARC layouts | 35559-35625 |
