@@ -73,6 +73,22 @@ choose('coverage-mode','types');
 assert.equal(element('coverage-types').rows.length,data.coverage.scenarioTypes.length);
 assert.equal(data.coverage.scenarioTypes.reduce((count,row)=>count+row.scenarios,0),12679);
 assert.equal(data.coverage.executionCertified,false);
+if(data.autonomousQualification){
+  const autonomous=data.autonomousQualification;
+  assert.equal(autonomous.selectedPhysicalControls,20);
+  assert.equal(autonomous.syntheticNegativeProbes,40);
+  assert.equal(autonomous.javaGateCounts.negativeIsolation.PASS,40);
+  assert.equal(autonomous.javaGateCounts.negativeEffectiveness.PASS,0);
+  assert.equal(autonomous.executionCertified,false);
+  assert.equal(autonomous.hostExecutionPerformed,false);
+  assert.equal(autonomous.providedCatalogComparison.sameContent,true);
+  for(const [name,digest] of Object.entries(autonomous.artifactSha256))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,autonomous.runDirectory,name))).digest('hex'),digest);
+  assert.ok(element('autonomous-qualification').textContent.includes('40 / 40'));
+  if(autonomous.publicationHistory){
+    assert.equal(Object.keys(autonomous.publicationHistory.files).length,30);
+    for(const [name,digest] of Object.entries(autonomous.publicationHistory.files))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,autonomous.publicationHistory.directory,name))).digest('hex'),digest);
+  }
+}
 if(data.lateMatrix){
   document.querySelector('[data-tab="matrix-history"]').click();
   assert.equal(element('matrix-history').hidden,false);

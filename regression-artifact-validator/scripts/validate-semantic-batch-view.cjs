@@ -63,7 +63,7 @@ choose('queue-source','matrix');count('queue-count','165');
 element('queue-reset').click();
 assert.equal(element('source-predicates').rows.length,2);
 assert.equal(element('input-hashes').rows.length,5);
-assert.equal(element('report-hashes').rows.length,element('matrix-history')?5:4);
+assert.equal(element('report-hashes').rows.length,(element('matrix-history')?5:4)+(element('autonomous-qualification')?1:0));
 assert.equal(element('negative-classes').rows.length,7);
 assert.equal(element('confounders').rows.length,4);
 const data=JSON.parse(element('data').textContent);
@@ -90,6 +90,13 @@ assert.equal(data.controls.executionCertified,false);
 assert.equal(data.summary.code1ReviewMatrixConcerns,165);
 assert.ok(data.cases.every(row=>row.overallDisposition==='REVIEW_REQUIRED'));
 assert.ok(data.queue.every(row=>row.independentDisposition==='NOT_ASSESSED'));
+if(data.autonomousQualification){
+  assert.equal(data.autonomousQualification.selectedPhysicalControls,20);
+  assert.equal(data.autonomousQualification.javaGateCounts.negativeIsolation.PASS,40);
+  assert.equal(data.autonomousQualification.javaGateCounts.hostOutcome.PASS,0);
+  assert.equal(data.autonomousQualification.executionCertified,false);
+  for(const link of element('autonomous-qualification').querySelectorAll('a'))assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))));
+}
 if(data.lateMatrix){
   document.querySelector('[data-view="matrix-history"]').click();
   assert.equal(element('matrix-history').hidden,false);

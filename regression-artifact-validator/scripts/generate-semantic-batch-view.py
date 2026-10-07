@@ -35,6 +35,12 @@ def main():
     matrix_name = "late-traceability-matrix-assessment.json"
     matrix_section = ""
     matrix_tools = None
+    autonomous_section = ""
+    autonomous_name = "autonomous-qualification-assessment.json"
+    if (root / autonomous_name).is_file():
+        data["autonomousQualification"] = json.loads((root / autonomous_name).read_text(encoding="utf-8"))
+        data["reportInputHashes"][autonomous_name] = hashlib.sha256((root / autonomous_name).read_bytes()).hexdigest()
+        autonomous_section = runpy.run_path(str(Path(__file__).with_name("prepare-autonomous-cohort.py")))["report_section"](data["autonomousQualification"])
     if (root / matrix_name).is_file():
         matrix = json.loads((root / matrix_name).read_text(encoding="utf-8"))
         data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition", "reconstruction", "supplementHistory"] if key in matrix}
@@ -46,6 +52,10 @@ def main():
     style += EXTRA_STYLE
     encoded = json.dumps(data, ensure_ascii=True, separators=(",", ":")).replace("</", "<\\/")
     html = TEMPLATE.replace("__STYLE__", style).replace("__DATA__", encoded)
+    if autonomous_section:
+        html = html.replace('<section id="findings" role="tabpanel">', '<section id="findings" role="tabpanel">' + autonomous_section, 1)
+        html = html.replace("No Java validator or host/converter execution result is claimed here.",
+                            "No Java or host execution is claimed for the original 100-case bounded register. Separate autonomous cohort results are reported above.")
     if matrix_section:
         html = html.replace("</main>", '<section id="matrix-history" role="tabpanel" hidden>' + matrix_section + "</section></main>", 1)
         html = html.replace("['source','Source & provenance']", "['source','Source & provenance'],['matrix-history','Matrix & history']", 1)

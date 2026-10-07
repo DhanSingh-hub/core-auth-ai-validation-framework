@@ -236,6 +236,15 @@ def export_pdf(root, data):
         if matrix.get("supplementHistory"):
             story.append(paragraph(f"The earlier truncated-matrix-era assessment is separately preserved: {len(matrix['supplementHistory']['files'])} unchanged files under history/pre-reconciliation-20261006/. Both assessment history points retain recorded hashes."))
 
+    if data.get("autonomousQualification"):
+        autonomous = data["autonomousQualification"]
+        heading_block("Autonomous local qualification | October 6")
+        story.append(paragraph("Twenty hash-verified real financial Segment 100 controls and forty explicitly synthetic one-field probes were executed locally. All 40 scoped isolation probes passed; this covers identity/six-digit representation only, not complete BR equivalence or full-message effectiveness."))
+        table(["Java gate", "Pass", "Not assessed", "Not applicable"],
+              [[name, values["PASS"], values["NOT_ASSESSED"], values["NOT_APPLICABLE"]] for name, values in autonomous["javaGateCounts"].items()], [325, 110, 130, 130])
+        story.append(paragraph("The supplied TC catalog exactly matches the frozen catalog. Complete producer matrix/edges and authoritative execution prerequisites are still unavailable. No host request was sent. No semantic, SME or execution certification was granted."))
+        story.append(paragraph("A machine-readable evidence request is prepared locally, not transmitted because no recipient/channel was supplied. Summary: autonomous-qualification-assessment.json. Existing report history remains preserved under history/pre-autonomous-report-20261006/."))
+
     heading_block("Coverage | Overall linkage and inventory")
     coverage = data["coverage"]
     def percentage(value):
@@ -317,6 +326,11 @@ def main():
     data["coverage"] = build_coverage(root, data["run"])
     matrix_file = root / "late-traceability-matrix-assessment.json"
     matrix_section = ""
+    autonomous_section = ""
+    autonomous_file = root / "autonomous-qualification-assessment.json"
+    if autonomous_file.is_file():
+        data["autonomousQualification"] = load(autonomous_file.name)
+        autonomous_section = runpy.run_path(str(Path(__file__).with_name("prepare-autonomous-cohort.py")))["report_section"](data["autonomousQualification"])
     if matrix_file.is_file():
         matrix = load(matrix_file.name)
         data["lateMatrix"] = {key: matrix[key] for key in ["intake", "producer", "independent", "history", "issues", "comparison", "requiredFollowUp", "disposition", "reconstruction", "supplementHistory"] if key in matrix}
@@ -328,6 +342,8 @@ def main():
     if matrix_section:
         html = html.replace("<main>", '<main><section id="matrix-history" role="tabpanel" hidden>' + matrix_section + "</section>", 1)
         html = html.replace("</nav>", '<button role="tab" aria-selected="false" aria-controls="matrix-history" data-tab="matrix-history">Matrix &amp; history</button></nav>', 1)
+    if autonomous_section:
+        html = html.replace('<section id="overview" role="tabpanel">', '<section id="overview" role="tabpanel">' + autonomous_section, 1)
     target = root / "AI-ARTIFACT-FILTER-VIEW.html"
     target.write_text(html, encoding="utf-8")
     print(f"Generated {target}: {len(data['scenarios'])} scenarios, {len(failures)} failed writes")

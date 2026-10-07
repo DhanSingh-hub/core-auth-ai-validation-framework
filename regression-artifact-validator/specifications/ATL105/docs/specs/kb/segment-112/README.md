@@ -3,7 +3,7 @@
 **Specification:** BUYPASS® Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Source Section:** 12.11 Additional Information Data Segment (pages 12-30 to 12-31), Elements 115-118 (chapter 13.2, pages 424-429), Appendix K Additional Information Data Layouts (Table IDs 001-047)
 **Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
-**Item Progress:** Combined Segment 111/112 envelope flow is implemented. Appendix K selector inventory and recognition chains cover 43 assigned IDs plus reserved/unlisted boundaries; per-table Element 118 layouts remain `REVIEW_REQUIRED` except bounded representation checks for Tables 001, 003, and 004 (see [Appendix K training note](../segment-100/appendix-k-additional-information-training.md)).
+**Item Progress:** Combined Segment 111/112 envelope flow is implemented. Appendix K selector inventory and recognition chains cover 43 assigned IDs plus reserved/unlisted boundaries; bounded Element 118 representation/value-set checks cover Tables 001, 003, 004, 024–026, 028–032, and 035–047. The remaining 19 assigned layouts and full-message semantics remain `REVIEW_REQUIRED` (see [Appendix K training note](../segment-100/appendix-k-additional-information-training.md)).
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 

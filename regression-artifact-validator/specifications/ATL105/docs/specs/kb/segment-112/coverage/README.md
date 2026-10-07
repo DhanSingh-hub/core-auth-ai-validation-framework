@@ -36,7 +36,7 @@ Before implementation, confirm:
 
 - **Envelope validation:** implemented for Segment Type, Segment Length, Element 115 presence agreement, repeated Element 116/117/118 shape, and 984/990/999 limits.
 - **Appendix K selector inventory:** 44 selectors verified; 43 assigned selector recognition chains and reserved/unlisted boundary cases are present.
-- **Bounded table predicates:** Tables 001, 003 and 004 have representation-level checks; Table 004 code meaning requires network context.
-- **Still open:** 40 assigned Element 118 layouts, complete response-envelope fixtures, per-rule Segment 112 canonical chains, independent AI intake, full mutation coverage, Element 115 ownership (`SEG112-SME-003`), the §11.1.2 349 versus §12.11 999 response-context boundary (`SEG112-SME-008`), and SME/TBA certification.
+- **Bounded table predicates:** Tables 001, 003, 004, 024–026, 028–032, and 035–047 have bounded representation/value-set checks. Tables 035/038/044 only check character-count caps; Table 004 code meaning requires network context; Tables 036/037 checks do not establish Visa applicability or merchant eligibility; Tables 026/039 checks do not establish DST or lifecycle semantics; Tables 042/043/047 checks do not establish network/card applicability.
+- **Still open:** 19 assigned Element 118 layouts, complete response-envelope fixtures, per-rule Segment 112 canonical chains, independent AI intake, full mutation coverage, Element 115 ownership (`SEG112-SME-003`), the §11.1.2 349 versus §12.11 999 response-context boundary (`SEG112-SME-008`), and SME/TBA certification.
 
 The appendix selector-recognition chains do not substitute for the Segment 112 core rule package or complete message-level execution evidence.
