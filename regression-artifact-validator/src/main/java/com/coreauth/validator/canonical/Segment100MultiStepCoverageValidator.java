@@ -154,7 +154,11 @@ public final class Segment100MultiStepCoverageValidator {
         if (originalTerminal != null && followUpTerminal != null && !originalTerminal.equals(followUpTerminal)) {
             result.addError("Segment100MultiStepCoverage", flow + " follow-up must use the original TerminalID");
         }
-        if (flow.followUpCodes.contains("8") || flow.followUpCodes.contains("C")) {
+        // ATL105 13-28 (Element 5): reversal-family follow-ups (Purchase Reversal "8"/"C",
+        // Authorization Only Cancellation "S", and Void of a Merchandise Return "U") must
+        // carry the original transaction's Approval Number, identical to the original.
+        if (flow.followUpCodes.contains("8") || flow.followUpCodes.contains("C")
+                || flow.followUpCodes.contains("S") || flow.followUpCodes.contains("U")) {
             String approvalNumber = followUpSegment.path("ApprovalNumber").asText("");
             if (approvalNumber.isBlank()) {
                 result.addError("Segment100MultiStepCoverage", flow + " follow-up requires ApprovalNumber");
