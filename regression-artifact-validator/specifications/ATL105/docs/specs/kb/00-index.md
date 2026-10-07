@@ -46,7 +46,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | L | Valid Currency Codes | Currencies with ISO codes, Visa/MasterCard support (Element 20) | 34457-34890 |
 | M | Element Format Examples for EBT Program Data | Format examples for Element 164 (EBT Program Data) | 34891-35045 |
 | N | [First Data Premium Gift Card Magnetic Stripe Data Layout training](appendix-n/README.md) | Track II layout for First Data Premium Gift Card; all 6 BRs independently implemented, PARTIALLY_COVERED | 35046-35090 |
-| O | Payment Token Terminologies | Tokenization terminology | 35091-35141 |
+| O | [Payment Token Terminology training](appendix-o/README.md) | Tokenization glossary; all 7 BRs independently implemented, PARTIALLY_COVERED | 35089-35126 |
 | P | TransArmor VeriFone Edition: Responses to Administrative Commands | External spec reference | 35142-35157 |
 | Q | Valid National Point-of-Service Condition Codes | POS condition codes (Element 111 Table 030) | 35158-35406 |
 | R | EMV Chip Data Example | Example EMV chip data packet structure | 35407-35449 |
