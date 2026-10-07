@@ -49,8 +49,8 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | O | [Payment Token Terminology training](appendix-o/README.md) | Tokenization glossary; all 7 BRs independently implemented, PARTIALLY_COVERED | 35089-35126 |
 | P | TransArmor VeriFone Edition: Responses to Administrative Commands | External spec reference | 35142-35157 |
 | Q | [Valid National Point-of-Service Condition Codes training](appendix-q/README.md) | POS condition codes (Element 111 Table 030); all 5 BRs independently implemented, PARTIALLY_COVERED | 35158-35406 |
-| R | EMV Chip Data Example | Example EMV chip data packet structure | 35407-35449 |
-| S | Valid CA Public Key File Record Layout | CA Public Key File record layout for EMV | 35450-35558 |
+| R | [EMV Chip Data training](appendix-r/README.md) | Elements 189/190 EMV Chip Data (Length + TLV); all 7 BRs independently implemented, PARTIALLY_COVERED | 35407-35449 |
+| S | [CA Public Key File training](appendix-s/README.md) | CA Public Key File record layout for EMV (standalone, via Segment 132); 9 of 10 BRs independently implemented including real SHA-1 checksum verification, PARTIALLY_COVERED | 35450-35558 |
 | T | EMV Additional Information Data Layouts | EMV Table Data and CARC layouts | 35559-35625 |
 | U | Visa Digital Wallet | Visa Pass-through and Staged Digital Wallet | 35626-35662 |
 | V | Moneris Data Layout | Moneris request/response message data layout | 35663-35815 |
