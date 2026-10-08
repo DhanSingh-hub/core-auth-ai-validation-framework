@@ -58,7 +58,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | X | [Online Refund/Refund Authorization training](appendix-x/README.md) | Merchandise Return indicator in Table 32 Sub-Table 11, lifecycle carry-forward, and review-gated program/issuer context | 35841-36049 |
 | Y | [3-D Secure training](appendix-y/README.md) | ECI/brand mapping, bounded Visa CAVV/TAVV matrix, Amex SafeKey, MasterCard UCAF/DSRP + MPI; protocol, merchant availability and cryptogram authenticity remain external/review-gated | 36050-36265 |
 | Z | [Stored Credential training](appendix-z/README.md) | Initial/CIT/MIT profiles, reference/amount reuse, Discover installments/India, MasterCard categories and Visa India recurring; source conflicts/external evidence remain review-gated | 36048-36257 |
-| AA | TransArmor Processing Considerations | TransArmor PKI encryption/tokenization | 36596-36611 |
+| AA | [TransArmor Processing Considerations training](appendix-aa/README.md) | TAP/EDATA method matrix, token/expiry reuse, Key Load/refresh and PKI prefix; subsequent Key ID conflict and external cryptography/protocols review-gated | 36264-36584 |
 | AB | Purchase Repayment | Purchase repayment transaction processing | 36612-36806 |
 | AC | Valid Country Codes | Country codes list | 36807-36840 |
 | AD | Real Time Account Updater | Real Time Account Updater request data | 36841-36872 |
