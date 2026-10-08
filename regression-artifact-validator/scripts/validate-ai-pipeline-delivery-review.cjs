@@ -22,7 +22,7 @@ const testBrReviewRows=fs.readFileSync(path.join(semanticReviewDirectory,'run4-t
 const decisionRegister=JSON.parse(fs.readFileSync(path.join(semanticReviewDirectory,'run4-semantic-decision-register.json'),'utf8'));
 const baseline=JSON.parse(fs.readFileSync(path.resolve(directory,'../../../test-solution-independent-review/source-derived-requirement-inventory.json'),'utf8'));
 const baselineRuleIds=new Set(baseline.businessRequirements.map(rule=>rule.ruleId));
-const section101Directory=path.resolve(directory,'../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v2');
+const section101Directory=path.resolve(directory,'../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3');
 const section101Assessment=JSON.parse(fs.readFileSync(path.join(section101Directory,'section-10-1-coverage-assessment.json'),'utf8'));
 const section101Package=JSON.parse(fs.readFileSync(path.join(section101Directory,'section-10-1-br-ts-tc-td-draft-package.json'),'utf8'));
 assert.equal(data.summary.intakeVerification.hashesVerified,129764);
@@ -126,7 +126,7 @@ assert.ok(section101Package.testData.every(td=>td.readiness==='REVIEW_REQUIRED'&
 assert.ok(section101Package.businessRequirements.every(br=>br.sourceAnchors.every(anchor=>anchor.section.startsWith('10.1'))));
 assert.ok(renderedText.includes('Section 10.1 Independent Test Solution Draft Chains'));
 assert.ok(renderedText.includes('46 source-quoted draft BRs'));
-assert.ok([...document.querySelectorAll('a')].some(link=>link.getAttribute('href').includes('section-10-1-credit-card-processing-review-v2/section-10-1-br-ts-tc-td-draft-package.json')));
+assert.ok([...document.querySelectorAll('a')].some(link=>link.getAttribute('href').includes('section-10-1-credit-card-processing-review-v3/section-10-1-br-ts-tc-td-draft-package.json')));
 for(const link of document.querySelectorAll('a'))assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))),link.getAttribute('href'));
 assert.deepEqual(errors,[]);
 dom.window.close();

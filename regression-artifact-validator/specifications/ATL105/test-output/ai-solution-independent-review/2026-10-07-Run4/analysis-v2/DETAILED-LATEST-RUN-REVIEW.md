@@ -257,6 +257,6 @@ Element 4 is Address Line 2, character type AN, fixed width 21 bytes, carrying c
 The independent Test Solution source catalog has one BR with a primary source anchor inside Section 10.1; its existing complete-chain package also has 10 unique direct Section 10.1 rule anchors plus 3 related partial-approval chains. The additive review supplement reuses those references and adds 46 source-quoted draft BRs, each linked to one TS, TC, and TD design file.
 New draft chains: 46 BR / 46 TS / 46 TC / 46 TD design records. All remain REVIEW_REQUIRED; TDs are non-converter-ready placeholders; official 601-rule baseline unchanged; coverage credit 0; execution certification false.
 
-- [Section 10.1 draft chain package](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v2/section-10-1-br-ts-tc-td-draft-package.json)
-- [Topic-level coverage assessment and reused rules](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v2/section-10-1-coverage-assessment.json)
-- [Review instructions](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v2/README.md)
+- [Section 10.1 draft chain package](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/section-10-1-br-ts-tc-td-draft-package.json)
+- [Topic-level coverage assessment and reused rules](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/section-10-1-coverage-assessment.json)
+- [Review instructions](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/README.md)
