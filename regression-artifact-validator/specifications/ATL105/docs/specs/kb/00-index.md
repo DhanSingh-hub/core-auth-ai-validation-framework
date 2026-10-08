@@ -62,7 +62,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | AB | [Purchase Repayment training](appendix-ab/README.md) | Third-party installment definition, MasterCard IR/I/provider descriptor, opt-in advice 22 and no-retry; CB remains Visa Consumer Bill Payment | 36594-36602 |
 | AC | [Valid Country Codes training](appendix-ac/README.md) | All four pages: 254 source rows, 248 unique numeric codes; 840 ambiguity and Table 059 acquirer/merchant role conflict remain reviewed | 36609-36810 |
 | AD | [Real Time Account Updater training](appendix-ad/README.md) | Participation, Table 060 Y/I/O, Segment 155 response gates and all VAU results, original/updated credential pairing and unchanged retries | 36805-36830 |
-| AE | Visa Estimated and Incremental Authorization Transactions | Estimated/incremental authorization details | 36873-end |
+| AE | [Visa Estimated and Incremental Authorization training](appendix-ae/README.md) | Special MCC restrictions, initial/incremental indicators, series continuity, Table 063, completion, 7/14-day windows and complete-then-restart | 36839-36877 |
 
 ## Related files in this knowledge base
 
