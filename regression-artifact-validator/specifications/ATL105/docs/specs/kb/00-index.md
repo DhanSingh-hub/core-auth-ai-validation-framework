@@ -57,7 +57,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | W | [Download Data Layout training](appendix-w/README.md) | Site Language and Postal Code tables for Segment DL7; source `an1` width conflict remains review-gated | 35816-35840 |
 | X | [Online Refund/Refund Authorization training](appendix-x/README.md) | Merchandise Return indicator in Table 32 Sub-Table 11, lifecycle carry-forward, and review-gated program/issuer context | 35841-36049 |
 | Y | [3-D Secure training](appendix-y/README.md) | ECI/brand mapping, bounded Visa CAVV/TAVV matrix, Amex SafeKey, MasterCard UCAF/DSRP + MPI; protocol, merchant availability and cryptogram authenticity remain external/review-gated | 36050-36265 |
-| Z | Stored Credential | Stored credential transactions | 36266-36595 |
+| Z | [Stored Credential training](appendix-z/README.md) | Initial/CIT/MIT profiles, reference/amount reuse, Discover installments/India, MasterCard categories and Visa India recurring; source conflicts/external evidence remain review-gated | 36048-36257 |
 | AA | TransArmor Processing Considerations | TransArmor PKI encryption/tokenization | 36596-36611 |
 | AB | Purchase Repayment | Purchase repayment transaction processing | 36612-36806 |
 | AC | Valid Country Codes | Country codes list | 36807-36840 |
