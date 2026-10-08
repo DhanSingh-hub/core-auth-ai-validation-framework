@@ -72,11 +72,16 @@ assert.equal(data.semanticReview.summary.confirmedMatches,0);
 assert.equal(data.semanticReview.summary.coverageCreditIssued,false);
 assert.deepEqual(data.manualSearchFindings,manualSearchFindings);
 assert.equal(manualSearchFindings.findingStatus,'MANUAL_SEARCH_COMPLETE');
-assert.equal(manualSearchFindings.findings.length,1);
-assert.equal(manualSearchFindings.findings[0].finding,'NO_EQUIVALENT_AI_BR_FOUND');
-assert.equal(manualSearchFindings.findings[0].formalReviewStatus,'PENDING_SEMANTIC_REVIEW');
-assert.equal(manualSearchFindings.findings[0].authorizedSmeDecisionRecorded,false);
-assert.equal(manualSearchFindings.findings[0].coverageCredit,false);
+assert.deepEqual(manualSearchFindings.findings.map(item=>item.testRuleId),['SEG100-R-009','SEG100-R-010','SEG100-R-011']);
+for(const finding of manualSearchFindings.findings){
+	assert.equal(finding.finding,'NO_EQUIVALENT_AI_BR_FOUND');
+	assert.equal(finding.formalReviewStatus,'PENDING_SEMANTIC_REVIEW');
+	assert.equal(finding.authorizedSmeDecisionRecorded,false);
+	assert.equal(finding.coverageCredit,false);
+	assert.equal(finding.aiTeamFeedback.runDate,'2026-10-07');
+	assert.equal(finding.aiTeamFeedback.status,'PENDING_SHARE');
+	assert.ok(finding.aiTeamFeedback.message.length>0);
+}
 assert.equal(data.teamInterpretation.formalPairDecisionStatus,'PENDING');
 assert.equal(data.teamInterpretation.coverageCredit,false);
 assert.equal(interpretation.aiRequirementId,'REQ-SRC-ATL105-PDF-001:004');
@@ -101,7 +106,8 @@ assert.ok(renderedText.includes('All AI BR chain and Test Solution candidates'))
 assert.ok(renderedText.includes('Test BR candidates: 562 AI BRs across'));
 assert.ok(renderedText.includes('Source-backed semantic confirmation workflow'));
 assert.ok(renderedText.includes('Manual corpus search findings'));
-assert.ok(renderedText.includes('NO_EQUIVALENT_AI_BR_FOUND is a search result only'));
+assert.ok(renderedText.includes('NO_EQUIVALENT_AI_BR_FOUND is a Run4 search result for AI-team feedback, not a global absence claim'));
+assert.ok(renderedText.includes('PENDING_SHARE'));
 assert.ok(renderedText.includes('PENDING_SEMANTIC_REVIEW'));
 assert.ok([...document.querySelectorAll('a')].some(link=>link.getAttribute('href').includes('run4-manual-search-findings.json')));
 assert.ok(renderedText.includes('1,950 source-anchor candidate pairs cover 270 Test BRs'));

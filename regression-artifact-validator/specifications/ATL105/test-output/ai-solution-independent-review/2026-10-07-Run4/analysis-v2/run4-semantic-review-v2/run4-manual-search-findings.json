@@ -31,6 +31,73 @@
         "TC-009090",
         "TC-009091"
       ],
+      "aiTeamFeedback": {
+        "runDate": "2026-10-07",
+        "status": "PENDING_SHARE",
+        "message": "Run4 manual search found no equivalent BR for Segment 100 field order. The generic Communications Test order statements have no segment assignment; the Totals card-type ordering BR is a different behavior. Please add or identify an explicit BR and executable order assertion for Segment 100 fields 1-17, respecting permitted omission of trailing optional fields."
+      },
+      "formalReviewStatus": "PENDING_SEMANTIC_REVIEW",
+      "authorizedSmeDecisionRecorded": false,
+      "coverageCredit": false
+    },
+    {
+      "testRuleId": "SEG100-R-010",
+      "testRuleTitle": "TCP/IP message length uses following payload length",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "Appendix A",
+        "segment": "TCP-IP-HEADER",
+        "element": "message-length",
+        "rule": "message-length"
+      },
+      "finding": "NO_EQUIVALENT_AI_BR_FOUND",
+      "rationale": "Manual review of the Run4 approved BR catalog found no requirement for the TCP/IP header length to count the following payload, include the TPDU area, and exclude the two length bytes. The closest BRs describe variable Electronic Mail content and a maximum Financial Transaction Request size; their linked cases contain no TCP/IP header and only generic response/field-format assertions.",
+      "searchScope": "Run4 approved requirement catalog (5,153 AI BRs), focused full-catalog searches for message framing, following payload length, TPDU inclusion, and length-field exclusion, followed by review of the two closest BR chains and physical payloads.",
+      "reviewedAiRequirementIds": [
+        "REQ-SRC-ATL105-PDF-001:1540",
+        "REQ-SRC-ATL105-PDF-001:1640"
+      ],
+      "reviewedTestCaseIds": [
+        "TC-018540",
+        "TC-018580"
+      ],
+      "aiTeamFeedback": {
+        "runDate": "2026-10-07",
+        "status": "PENDING_SHARE",
+        "message": "Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length. Please add or identify a BR and test that calculate the two-byte header value from the following payload, including TPDU bytes but excluding the two-byte length field."
+      },
+      "formalReviewStatus": "PENDING_SEMANTIC_REVIEW",
+      "authorizedSmeDecisionRecorded": false,
+      "coverageCredit": false
+    },
+    {
+      "testRuleId": "SEG100-R-011",
+      "testRuleTitle": "TCP/IP message length uses network byte order",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "Appendix A",
+        "segment": "TCP-IP-HEADER",
+        "element": "message-length",
+        "rule": "network-byte-order"
+      },
+      "finding": "NO_EQUIVALENT_AI_BR_FOUND",
+      "rationale": "Manual review of the Run4 approved BR catalog found no requirement or executable assertion for Message Length byte order. The closest BRs describe variable Electronic Mail content and a maximum Financial Transaction Request size; their linked cases contain no TCP/IP header and only generic response/field-format assertions. ATL105 Appendix A is internally inconsistent: its table says network/big-endian, a following sentence says network/little-endian, while the 0x1234 example sends 0x12 before 0x34.",
+      "searchScope": "Run4 approved requirement catalog (5,153 AI BRs), focused full-catalog searches for endian, byte-order, and network-order wording, followed by review of the two closest BR chains, physical payloads, and Appendix A text.",
+      "reviewedAiRequirementIds": [
+        "REQ-SRC-ATL105-PDF-001:1540",
+        "REQ-SRC-ATL105-PDF-001:1640"
+      ],
+      "reviewedTestCaseIds": [
+        "TC-018540",
+        "TC-018580"
+      ],
+      "aiTeamFeedback": {
+        "runDate": "2026-10-07",
+        "status": "PENDING_SHARE",
+        "message": "Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length byte order. Please add or identify the explicit byte-order requirement and test. The source itself conflicts (table and example indicate big-endian; following prose says little-endian), so confirm the intended behavior with the specification owner before asserting it."
+      },
       "formalReviewStatus": "PENDING_SEMANTIC_REVIEW",
       "authorizedSmeDecisionRecorded": false,
       "coverageCredit": false

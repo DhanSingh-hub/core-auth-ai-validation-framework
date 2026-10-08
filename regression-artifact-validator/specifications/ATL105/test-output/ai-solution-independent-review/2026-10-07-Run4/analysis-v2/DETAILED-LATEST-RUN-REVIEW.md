@@ -301,10 +301,12 @@ The additive independent Test Solution supplement contains 29 debit-specific sou
 
 ## Manual corpus search findings
 
-1 manual-search finding(s) are recorded. `NO_EQUIVALENT_AI_BR_FOUND` documents a completed source-backed search only; formal status remains PENDING_SEMANTIC_REVIEW, no authorized SME decision is recorded, and no coverage credit is issued.
+3 manual-search finding(s) are recorded. `NO_EQUIVALENT_AI_BR_FOUND` documents a completed Run4 search only; it is feedback for the AI team, not a global absence claim. Formal status remains PENDING_SEMANTIC_REVIEW, no authorized SME decision is recorded, and no coverage credit is issued.
 
-| Test Solution BR | Finding | Formal status | Credit |
-|---|---|---|---|
-| SEG100-R-009 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None |
+| Test Solution BR | Finding | Formal status | Credit | AI team feedback |
+|---|---|---|---|---|
+| SEG100-R-009 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR for Segment 100 field order. The generic Communications Test order statements have no segment assignment; the Totals card-type ordering BR is a different behavior. Please add or identify an explicit BR and executable order assertion for Segment 100 fields 1-17, respecting permitted omission of trailing optional fields. |
+| SEG100-R-010 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length. Please add or identify a BR and test that calculate the two-byte header value from the following payload, including TPDU bytes but excluding the two-byte length field. |
+| SEG100-R-011 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length byte order. Please add or identify the explicit byte-order requirement and test. The source itself conflicts (table and example indicate big-endian; following prose says little-endian), so confirm the intended behavior with the specification owner before asserting it. |
 
 [Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)
