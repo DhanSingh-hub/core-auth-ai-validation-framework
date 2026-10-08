@@ -32,7 +32,7 @@ Example observation:
 }
 ```
 
-Regenerate from the Java module with `GenerateAtl105ElementReference specifications/ATL105`; validate with `Atl105ElementReferenceValidator specifications/ATL105 observation.json report.json`. Export the Excel workbook with `powershell -File scripts/export-atl105-element-reference-to-excel.ps1`. The validator reports CHECKS_PASSED only for checks backed by the available source/profile evidence.
+Regenerate from the Java module with `GenerateAtl105ElementReference specifications/ATL105`; validate with `Atl105ElementReferenceValidator specifications/ATL105 observation.json report.json`. Export the Excel workbook with `powershell -File scripts/powershell/export-atl105-element-reference-to-excel.ps1`. The validator reports CHECKS_PASSED only for checks backed by the available source/profile evidence.
 
 ## Element Summary
 

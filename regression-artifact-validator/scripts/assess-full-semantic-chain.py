@@ -313,7 +313,7 @@ def assess(review, output):
         writer = csv.DictWriter(stream, fieldnames=["ruleId", "title", "class", "severity", "canonicalAnchor", "sourceCatalog", "sourceEvidenceResolution", "semanticMeaningStatus", "smeQueryIds", "approved"])
         writer.writeheader()
         for item in independent_rules:
-            writer.writerow({key: json.dumps(item[key], ensure_ascii=True) if isinstance(item[key], (dict, list)) else item.get(key) for key in writer.fieldnames})
+            writer.writerow({key: json.dumps(item.get(key), ensure_ascii=True) if isinstance(item.get(key), (dict, list)) else item.get(key) for key in writer.fieldnames})
     with (output / "semantic-sme-query-register.csv").open("w", encoding="utf-8-sig", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=["queryId", "kind", "subjectId", "stage", "question", "status", "reviewOwner", "approvalGranted", "evidence"])
         writer.writeheader()

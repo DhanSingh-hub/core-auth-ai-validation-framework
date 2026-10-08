@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "tasks": [
+    {"name":"build","description":"Build the module without running tests","executable":"mvn.cmd","arguments":["-DskipTests","package"]},
+    {"name":"test","description":"Run all tests, or the -Tests selection","executable":"mvn.cmd","arguments":["test"]},
+    {"name":"structure","description":"Check ownership boundaries, paths and contracts","executable":"mvn.cmd","arguments":["-Dtest=RepositoryStructureTest,Atl105PathsTest,ProducerNeutralContractTest","test"]},
+    {"name":"training-ae","description":"Check Appendix AE logical training and governance","executable":"mvn.cmd","arguments":["-Dtest=VisaEstimatedIncrementalAuthorizationValidatorTest,AppendixCoverageConsistencyTest,TrainingStatusConsistencyTest","test"]},
+    {"name":"semantic-self-test","description":"Check bounded semantic assessor predicates","executable":"python.exe","script":"scripts/assess-ai-semantic-batch.py","arguments":["--self-test"]},
+    {"name":"semantic-view-check","description":"Check an existing semantic report; requires -ReviewDirectory and -JsdomModulePath","executable":"node.exe","script":"scripts/validate-semantic-batch-view.cjs","arguments":["{ReviewDirectory}","{JsdomModulePath}"]}
+  ]
+}

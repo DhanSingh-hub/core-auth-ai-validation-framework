@@ -6,8 +6,11 @@ Java validation framework and ATL105 specification pack for independently review
 
 ```text
 regression-artifact-validator/
+|-- framework.ps1                     Working-directory-safe task launcher
+|-- framework-tasks.json              Named build, test and assessment tasks
 |-- contract/                         Producer-neutral schemas and vocabulary
-|-- scripts/                          Reusable repository-level automation
+|-- scripts/                          Cohesive Python/Node assessment pipelines
+|   `-- powershell/                   PowerShell export and legacy reporting tools
 |-- src/main/java/                    Validation engine and adapters
 |-- src/test/java/                    Unit and governance tests
 |-- src/test/resources/               Test features and fixtures
@@ -16,6 +19,7 @@ regression-artifact-validator/
 |   |-- docs/specs/kb/                Source-grounded segment rule catalogs and training report
 |   |-- docs/test-validation-strategy/ Review policy and evidence gates
 |   |-- reports/                      Published stakeholder reports
+|   |   `-- legacy/module-root/       Preserved legacy module-root reports
 |   |-- schemas/                      ATL105 validation schemas
 |   |-- scripts/                      ATL105-specific pipelines
 |   |-- test-input/                   Immutable AI runs and controlled fixtures
@@ -25,6 +29,7 @@ regression-artifact-validator/
 
 See [ATL105 Artifact Storage Policy](specifications/ATL105/docs/test-validation-strategy/ARTIFACT-STORAGE-POLICY.md) for ownership and retention rules.
 See [Test Solution Framework Ownership](specifications/ATL105/docs/test-validation-strategy/TEST-SOLUTION-FRAMEWORK-OWNERSHIP.md) for generation order, module boundaries and review gates.
+See the [automation guide](scripts/README.md) for task selection, tool dependencies and script ownership. Existing module-level `test-output` presentation deliveries are retained for compatibility; new ATL105 evidence belongs under the specification pack. Do not delete historical reports or immutable AI inputs as build cleanup.
 
 ## Framework review
 
@@ -48,6 +53,18 @@ Run1 and Run2 remain evidence under independent review, not Test Solution traini
 AI and Test Solution artifacts keep producer-local IDs. Canonical source anchors and explicit, evidence-backed crosswalks provide shared identity. Heuristic or alias matches remain `REVIEW_REQUIRED`.
 
 ## Validation
+
+Preferred entry point, from this module directory:
+
+```powershell
+.\framework.ps1 -List
+.\framework.ps1 -Task structure
+.\framework.ps1 -Task test -Tests 'VisaEstimatedIncrementalAuthorizationValidatorTest'
+.\framework.ps1 -Task training-ae
+.\framework.ps1 -Task semantic-self-test -PythonPath 'C:\Program Files\Python314\python.exe'
+```
+
+From the workspace root, use `regression-artifact-validator/framework.ps1` with the same options. Tasks run inside the module and restore the caller's directory. `-DryRun` displays the command without running it. Maven, Python and Node must already be installed; the launcher does not install dependencies, rewrite producer inputs or approve evidence. Direct commands below remain supported.
 
 Run from this module directory:
 

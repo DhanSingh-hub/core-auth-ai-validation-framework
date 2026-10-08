@@ -21,11 +21,16 @@ public final class RecordSmeDecision {
     private RecordSmeDecision() { }
 
     public static void main(String[] args) throws Exception {
-        if (args.length == 2 && "--decision-json".equals(args[0])) {
+        if ((args.length == 2 || args.length == 4) && "--decision-json".equals(args[0])) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode input = mapper.readTree(Path.of(args[1]).toFile());
             String subjectType = input.path("subjectType").asText("");
-            Path registerFile = registerPath(subjectType);
+            Path requestedRegister = args.length == 4 && "--decision-register".equals(args[2])
+                    ? Path.of(args[3]) : null;
+            if (args.length == 4 && requestedRegister == null) {
+                throw new IllegalArgumentException("Expected --decision-register <path>");
+            }
+            Path registerFile = registerPath(subjectType, requestedRegister);
             ObjectNode register = (ObjectNode) mapper.readTree(registerFile.toFile());
             ObjectNode appended = record(register, input);
             mapper.writerWithDefaultPrettyPrinter().writeValue(registerFile.toFile(), register);
@@ -155,6 +160,23 @@ public final class RecordSmeDecision {
             default -> throw new IllegalArgumentException("Unsupported subject type: " + subjectType);
         };
         return Atl105Paths.testOutput().resolve(Path.of("ai-solution-independent-review", fileName));
+    }
+
+    static Path registerPath(String subjectType, Path requestedRegister) {
+        if (requestedRegister == null) return registerPath(subjectType);
+        if (!Set.of("AI_ONLY_BR", "AI_TO_TEST_CROSSWALK").contains(subjectType)) {
+            throw new IllegalArgumentException("Unsupported subject type: " + subjectType);
+        }
+        return explicitRegisterPath(Atl105Paths.testOutput(), requestedRegister);
+    }
+
+    static Path explicitRegisterPath(Path testOutputRoot, Path requestedRegister) {
+        Path testOutput = testOutputRoot.toAbsolutePath().normalize();
+        Path requested = requestedRegister.toAbsolutePath().normalize();
+        if (!requested.startsWith(testOutput)) {
+            throw new IllegalArgumentException("Explicit decision register must be beneath ATL105 test-output");
+        }
+        return requested;
     }
 
     private static boolean anchorContainsSegment(String anchorSegments, String expectedSegment) {
