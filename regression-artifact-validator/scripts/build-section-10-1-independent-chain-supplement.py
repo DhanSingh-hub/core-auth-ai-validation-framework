@@ -206,7 +206,7 @@ def build(pack_root, output_root):
 
     package = {
         "manifest": {
-            "packageId": "ATL105-SECTION-10-1-CREDIT-CARD-DRAFT-REVIEW-001",
+            "packageId": "ATL105-SECTION-10-1-CREDIT-CARD-DRAFT-REVIEW-002",
             "specification": "ATL105",
             "specificationVersion": "2026-3",
             "artifactContractVersion": "2",
@@ -222,17 +222,17 @@ def build(pack_root, output_root):
             "sourceTextSha256": sha256(source_path),
             "preexistingIndependentBaselineSha256": sha256(baseline_path),
             "preexistingCompleteChainPackageSha256": sha256(complete_path),
+            "reviewPolicy": {
+                "allStatuses": "REVIEW_REQUIRED",
+                "dataPolicy": "TD files are fixture-design placeholders, not converter-ready requests; no response/host oracle is invented.",
+                "matchPolicy": "Existing rules are references only. No AI/Test semantic crosswalk or coverage credit is asserted.",
+                "promotionGate": "Authorized Test Solution review must approve BR wording/source applicability and complete real TD/request/response oracles before execution readiness.",
+            },
         },
         "businessRequirements": new_requirements,
         "testScenarios": scenarios,
         "testCases": cases,
         "testData": test_data,
-        "reviewPolicy": {
-            "allStatuses": "REVIEW_REQUIRED",
-            "dataPolicy": "TD files are fixture-design placeholders, not converter-ready requests; no response/host oracle is invented.",
-            "matchPolicy": "Existing rules are references only. No AI/Test semantic crosswalk or coverage credit is asserted.",
-            "promotionGate": "Authorized Test Solution review must approve BR wording/source applicability and complete real TD/request/response oracles before execution readiness.",
-        },
     }
     assessment = {
         "artifact": "ATL105-SECTION-10-1-INDEPENDENT-BR-CHAIN-COVERAGE-ASSESSMENT",
