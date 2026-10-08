@@ -60,7 +60,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | Z | [Stored Credential training](appendix-z/README.md) | Initial/CIT/MIT profiles, reference/amount reuse, Discover installments/India, MasterCard categories and Visa India recurring; source conflicts/external evidence remain review-gated | 36048-36257 |
 | AA | [TransArmor Processing Considerations training](appendix-aa/README.md) | TAP/EDATA method matrix, token/expiry reuse, Key Load/refresh and PKI prefix; subsequent Key ID conflict and external cryptography/protocols review-gated | 36264-36584 |
 | AB | [Purchase Repayment training](appendix-ab/README.md) | Third-party installment definition, MasterCard IR/I/provider descriptor, opt-in advice 22 and no-retry; CB remains Visa Consumer Bill Payment | 36594-36602 |
-| AC | Valid Country Codes | Country codes list | 36807-36840 |
+| AC | [Valid Country Codes training](appendix-ac/README.md) | All four pages: 254 source rows, 248 unique numeric codes; 840 ambiguity and Table 059 acquirer/merchant role conflict remain reviewed | 36609-36810 |
 | AD | Real Time Account Updater | Real Time Account Updater request data | 36841-36872 |
 | AE | Visa Estimated and Incremental Authorization Transactions | Estimated/incremental authorization details | 36873-end |
 
