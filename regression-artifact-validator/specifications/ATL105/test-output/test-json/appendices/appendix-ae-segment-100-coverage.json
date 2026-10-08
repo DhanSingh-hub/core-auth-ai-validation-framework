@@ -1,26 +1,98 @@
 {
-  "appendix": "AE",
-  "title": "Visa Estimated and Incremental Authorization Transactions",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to Visa card-not-present Segment 100 transactions for MCC 4121/5411 (estimated/incremental) and MCC 5552 (EV incremental), and their subsequent incremental authorizations.",
-  "source": "docs/specs/extracted_text.txt Appendix AE-1",
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPAE-MCC-SCOPE","title":"Estimated and Incremental Authorization is permitted only for MCC 4121 and 5411 (card-not-present) and MCC 5552 (EV transactions).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"100","element":"78","rule":"estimated-incremental-mcc-scope"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAE-INITIAL-INDICATOR","title":"An estimated/initial authorization request for a permitted merchant shall include the estimated authorization indicator (Acquirer Trace Data Sub Table ID 09) when the final amount is unknown.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"111","element":"113","rule":"estimated-authorization-initial-indicator"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","title":"An incremental authorization request shall follow an estimated/initial authorization, must not resend the estimated-authorization indicator, and must carry the same Sequence Number, Transaction Identifier, and Terminal Transaction Number (Segment 111 Table ID 63) as the original estimated/initial request.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"111","element":"113","rule":"incremental-authorization-continuity"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAE-EXPIRATION-WINDOW","title":"An estimated authorization and its incremental authorizations expire 14 days after the initial estimated authorization for cruise/lodging/vehicle-rental merchants, or 7 days for other rental merchants, after which the merchant is subject to chargeback unless completion is initiated within that window.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE","segment":"100","element":"78","rule":"estimated-authorization-expiration-window"},"status":"REVIEW_REQUIRED"}
+  "appendix":"AE",
+  "title":"Visa Estimated and Incremental Authorization Transactions",
+  "specification":"ATL105",
+  "specificationVersion":"2026-3",
+  "source":"Appendix AE-1; Appendix I-26 sub-table 09, I-67 through I-72 Table 063; Section 10.4.5; Appendix I-36 Table 044 and K-23 Table 028 as related identifier evidence, not resolved AE wire mapping",
+  "applicability":"Logical Visa initial/incremental/completion series, special MCC restrictions and lodging/rental timing. No exhaustive merchant eligibility or full wire contract.",
+  "sourceNotes":[
+    "4121 and 5411 are CNP-only; 5552 is for EV. These are special restrictions, not an exhaustive allowlist: AE also describes cruise/lodging/vehicle rental and other rental merchants.",
+    "Permitted merchants use estimated/initial authorization when final amount is unknown. Example and sub-table 09 specify estimated indicator 1, length 001; incremental requests omit it.",
+    "Merchant resends returned approval code; BUYPASS Host identifies incremental and supplies the incremental indicator to Visa. Do not invent a separate merchant incremental flag.",
+    "Incremental follows an initial/estimated authorization and retains Sequence Number, Transaction Identifier and Table 063 Terminal Transaction Number. AE leaves Transaction Identifier segment number blank.",
+    "Related Table 044 and response Table 028 describe 15-alphanumeric transaction identifiers for COF. This oracle uses that bounded logical evidence shape without claiming they resolve AE's wire placement.",
+    "Table 063 data length 011 contains MMDD arrival or four spaces, two-digit duration or two spaces, four-digit terminal transaction number, and P preferred customer or example space-fill.",
+    "Terminal number is mandatory for lodging, incremental and EV, unique for a new series, and unchanged within the same-card series until completion. Examples cover lodging, non-T&E and EV initial/incremental/completion.",
+    "Completion sends final amount; fixture amounts are parsed nonnegative minor-unit digit strings, not a new currency/amount wire rule.",
+    "Cruise/lodging/vehicle rental approvals expire 14 days from initial; other rentals such as trailer parks/campgrounds seven days. Incrementals do not reset the clock. No generic seven-day window for all other merchants.",
+    "Longer stays/rentals require completing the first transaction THEN initiating the second on/before applicable day 14/7. Logical elapsed days allow fractional boundaries; real timezone/day-cutoff policy remains external.",
+    "Section 10.4.5: original Segment 134 Settlement Type Element 198 X requires Table 021 PINless Debit Acceptance X on associated reversals/completions/incrementals; this profile covers incremental/completion stages.",
+    "Examples are same merchant/cardholder; actual series identity, merchant permission, approvals, host-to-Visa behavior and chargebacks are not certified by synthetic fields."
   ],
-  "testScenarios": [
-    {"id":"TS-SEG100-APPAE-SCOPE","covers":["BR-SEG100-APPAE-MCC-SCOPE"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPAE-INITIAL","covers":["BR-SEG100-APPAE-INITIAL-INDICATOR"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPAE-INCREMENTAL","covers":["BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","BR-SEG100-APPAE-EXPIRATION-WINDOW"],"status":"REVIEW_REQUIRED"}
+  "businessRequirements":[
+    {"id":"BR-SEG100-APPAE-MCC-SCOPE","title":"Visa permission evidence with CNP restriction for 4121/5411 and EV restriction for 5552, without inventing an exhaustive MCC list.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1","rule":"estimated-incremental-mcc-scope"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-INITIAL-INDICATOR","title":"Unknown-final-amount initial uses estimated 1; incrementals omit sub-table 09.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1,Appendix I-26","segment":"111","subTableId":"09","rule":"estimated-authorization-initial-indicator"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","title":"Preceding initial and same series, sequence, logical transaction identifier and terminal number; wire identifier segment unresolved.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1,Appendix I-67,I-68","segment":"100,111","tableId":"063","rule":"incremental-authorization-continuity"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-HOST-INDICATOR","title":"Returned approval code reused and host supplies Visa incremental indicator.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1","rule":"incremental-host-approval-indicator"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-LODGING-DATA","title":"Table 063 11-byte layout, optional space-fill, terminal requiredness, initial uniqueness and series persistence.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-67 through I-72","segment":"111","tableId":"063","rule":"incremental-lodging-data"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-FINAL-AMOUNT","title":"Completion amount equals evidenced final amount.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1","rule":"incremental-completion-final-amount"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-EXPIRATION-WINDOW","title":"14 days for cruise/lodging/vehicle rental or seven for other rentals, measured from initial not last incremental.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1","rule":"estimated-authorization-expiration-window"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-LONG-STAY-RESTART","title":"For longer stays/rentals, complete first then initiate second on/before relevant day 14/7.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1","rule":"estimated-long-stay-restart"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-SIGNATURE-DEBIT","title":"Associated incremental/completion preserves Table 021 X after original Settlement Type X.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"10.4.5","segment":"134,111","element":"198","tableId":"021","rule":"incremental-signature-debit-acceptance"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAE-EXTERNAL-EVIDENCE","title":"Merchant permission, real series/approval/host evidence, chargeback outcomes, clock policy and missing identifier wire mapping remain external.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AE-1,Appendix I-67 through I-72","rule":"incremental-external-evidence"},"status":"REVIEW_REQUIRED"}
   ],
-  "testCases": [
-    {"id":"TC-SEG100-APPAE-SCOPE","scenarioId":"TS-SEG100-APPAE-SCOPE","positive":"Estimated/incremental flow used only for MCC 4121/5411/5552","negative":["Estimated/incremental flow used for a non-permitted MCC"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPAE-INITIAL","scenarioId":"TS-SEG100-APPAE-INITIAL","positive":"Initial request includes the estimated-authorization indicator when amount is unknown","negative":["Indicator omitted on an eligible estimated request"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPAE-INCREMENTAL","scenarioId":"TS-SEG100-APPAE-INCREMENTAL","positive":"Incremental request preserves Sequence Number/Transaction Identifier/Table ID 63 and omits the estimated indicator; completion within the 7/14-day window","negative":["Incremental request without a preceding estimated/initial authorization","Sequence Number or Terminal Transaction Number mismatch","estimated indicator resent on incremental request","completion outside the applicable expiration window"],"status":"REVIEW_REQUIRED"}
+  "testScenarios":[
+    {"id":"TS-SEG100-APPAE-INITIAL","covers":["BR-SEG100-APPAE-MCC-SCOPE","BR-SEG100-APPAE-INITIAL-INDICATOR","BR-SEG100-APPAE-LODGING-DATA","BR-SEG100-APPAE-EXTERNAL-EVIDENCE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAE-INCREMENTAL","covers":["BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","BR-SEG100-APPAE-HOST-INDICATOR","BR-SEG100-APPAE-SIGNATURE-DEBIT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAE-COMPLETION","covers":["BR-SEG100-APPAE-FINAL-AMOUNT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAE-WINDOW","covers":["BR-SEG100-APPAE-EXPIRATION-WINDOW","BR-SEG100-APPAE-LONG-STAY-RESTART"],"status":"PARTIALLY_COVERED"}
   ],
-  "testDataStatus": "No dedicated Visa Estimated/Incremental Authorization AI artifact or approved hotel/rental lifecycle fixture is currently available.",
-  "remaining": ["Obtain AI-generated estimated/initial and incremental authorization request/response sequences.","Validate the 7-day and 14-day expiration windows against actual completion timing."]
+  "testCases":[
+    {"id":"TC-SEG100-APPAE-INITIAL","scenarioId":"TS-SEG100-APPAE-INITIAL","positive":"Permitted Visa unknown-amount initial with 1; lodging and space-filled non-T&E/EV Table 063","negative":["CNP/EV contradiction","unpermitted merchant","missing/wrong indicator","bad 063/duplicate new terminal number"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAE-INCREMENTAL","scenarioId":"TS-SEG100-APPAE-INCREMENTAL","positive":"Same three identifiers, approval code, no estimated flag and supplied host Visa indicator","negative":["missing initial","mismatched identifiers/approval","estimated flag resent","host flag absent","signature-debit X not retained"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAE-COMPLETION","scenarioId":"TS-SEG100-APPAE-COMPLETION","positive":"Final amount sent","negative":["missing or mismatched final amount"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAE-WINDOW","scenarioId":"TS-SEG100-APPAE-WINDOW","positive":"Exact day 7/14, timely complete-then-restart","negative":["fractionally after deadline","clock before initial","restart before completion","only one rollover event supplied"],"status":"PARTIALLY_COVERED"}
+  ],
+  "fixtureDefaults":{
+    "brand":"VISA","mcc":"7011","category":"LODGING","stage":"INITIAL",
+    "merchantPermitted":true,"cardNotPresent":false,"evTransaction":false,
+    "finalAmountUnknown":true,"estimatedIndicator":"1","sequenceNumber":"123456",
+    "transactionIdentifier":"123456789012345","table063":"0323050058P",
+    "precedingInitialAuthorization":true,"initialSequenceNumber":"123456",
+    "initialTransactionIdentifier":"123456789012345","initialTable063":"0323050058P",
+    "approvalCode":"ABC123","originalApprovalCode":"ABC123","hostIncrementalIndicatorSent":true,
+    "finalAmount":"15000","completionAmount":"15000","elapsedDaysFromInitial":3,
+    "completedAtDays":14,"stayExceedsWindow":false,"nextInitialAtDays":14,
+    "terminalNumberUnique":true,"sameMerchantAndCardholder":true,
+    "initialSettlementType":"X","pinlessDebitAcceptance":"X"
+  },
+  "testData":[
+    {"id":"TD-SEG100-APPAE-01","coversBr":"BR-SEG100-APPAE-MCC-SCOPE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAE-MCC-SCOPE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-02","coversBr":"BR-SEG100-APPAE-MCC-SCOPE","payload":{"mcc":"4121"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-MCC-SCOPE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-03","coversBr":"BR-SEG100-APPAE-MCC-SCOPE","payload":{"mcc":"5552","evTransaction":true},"expected":{"businessRequirementId":"BR-SEG100-APPAE-MCC-SCOPE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-04","coversBr":"BR-SEG100-APPAE-MCC-SCOPE","payload":{"merchantPermitted":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-MCC-SCOPE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-05","coversBr":"BR-SEG100-APPAE-INITIAL-INDICATOR","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INITIAL-INDICATOR","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-06","coversBr":"BR-SEG100-APPAE-INITIAL-INDICATOR","payload":{"estimatedIndicator":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INITIAL-INDICATOR","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-07","coversBr":"BR-SEG100-APPAE-INITIAL-INDICATOR","payload":{"stage":"INCREMENTAL","estimatedIndicator":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INITIAL-INDICATOR","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-08","coversBr":"BR-SEG100-APPAE-INITIAL-INDICATOR","payload":{"stage":"INCREMENTAL"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INITIAL-INDICATOR","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-09","coversBr":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","payload":{"stage":"INCREMENTAL","estimatedIndicator":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-10","coversBr":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","payload":{"stage":"INCREMENTAL","precedingInitialAuthorization":false},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-11","coversBr":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","payload":{"stage":"INCREMENTAL","sequenceNumber":"123457"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-INCREMENTAL-CONTINUITY","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-12","coversBr":"BR-SEG100-APPAE-HOST-INDICATOR","payload":{"stage":"INCREMENTAL"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-HOST-INDICATOR","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-13","coversBr":"BR-SEG100-APPAE-HOST-INDICATOR","payload":{"stage":"INCREMENTAL","approvalCode":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-HOST-INDICATOR","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-14","coversBr":"BR-SEG100-APPAE-HOST-INDICATOR","payload":{"stage":"INCREMENTAL","hostIncrementalIndicatorSent":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-HOST-INDICATOR","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-15","coversBr":"BR-SEG100-APPAE-LODGING-DATA","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LODGING-DATA","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-16","coversBr":"BR-SEG100-APPAE-LODGING-DATA","payload":{"mcc":"5552","category":"OTHER","evTransaction":true,"table063":"      0058 "},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LODGING-DATA","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-17","coversBr":"BR-SEG100-APPAE-LODGING-DATA","payload":{"table063":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LODGING-DATA","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-18","coversBr":"BR-SEG100-APPAE-FINAL-AMOUNT","payload":{"stage":"COMPLETION"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-FINAL-AMOUNT","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-19","coversBr":"BR-SEG100-APPAE-FINAL-AMOUNT","payload":{"stage":"COMPLETION","completionAmount":"14000"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-FINAL-AMOUNT","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-20","coversBr":"BR-SEG100-APPAE-EXPIRATION-WINDOW","payload":{"stage":"COMPLETION","elapsedDaysFromInitial":14},"expected":{"businessRequirementId":"BR-SEG100-APPAE-EXPIRATION-WINDOW","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-21","coversBr":"BR-SEG100-APPAE-EXPIRATION-WINDOW","payload":{"stage":"COMPLETION","elapsedDaysFromInitial":14.001},"expected":{"businessRequirementId":"BR-SEG100-APPAE-EXPIRATION-WINDOW","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-22","coversBr":"BR-SEG100-APPAE-EXPIRATION-WINDOW","payload":{"stage":"COMPLETION","category":"OTHER_RENTAL","elapsedDaysFromInitial":7},"expected":{"businessRequirementId":"BR-SEG100-APPAE-EXPIRATION-WINDOW","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-23","coversBr":"BR-SEG100-APPAE-EXPIRATION-WINDOW","payload":{"stage":"COMPLETION","category":"OTHER","elapsedDaysFromInitial":8},"expected":{"businessRequirementId":"BR-SEG100-APPAE-EXPIRATION-WINDOW","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-24","coversBr":"BR-SEG100-APPAE-LONG-STAY-RESTART","payload":{"stayExceedsWindow":true},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LONG-STAY-RESTART","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-25","coversBr":"BR-SEG100-APPAE-LONG-STAY-RESTART","payload":{"stayExceedsWindow":true,"completedAtDays":14.001},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LONG-STAY-RESTART","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-26","coversBr":"BR-SEG100-APPAE-LONG-STAY-RESTART","payload":{"stayExceedsWindow":true,"completedAtDays":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-LONG-STAY-RESTART","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-27","coversBr":"BR-SEG100-APPAE-SIGNATURE-DEBIT","payload":{"stage":"INCREMENTAL"},"expected":{"businessRequirementId":"BR-SEG100-APPAE-SIGNATURE-DEBIT","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-28","coversBr":"BR-SEG100-APPAE-SIGNATURE-DEBIT","payload":{"stage":"INCREMENTAL","pinlessDebitAcceptance":null},"expected":{"businessRequirementId":"BR-SEG100-APPAE-SIGNATURE-DEBIT","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAE-29","coversBr":"BR-SEG100-APPAE-EXTERNAL-EVIDENCE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAE-EXTERNAL-EVIDENCE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"}
+  ],
+  "testDataReadinessSummary":{"total":29,"executable":29,"externalFixtureRequired":0,"reviewRequired":0,"note":"Synthetic logical evidence; executable review expectations test boundaries rather than resolved external behavior."},
+  "remaining":[
+    "Complete merchant/MCC permission and category mapping; AE special MCC notes are not a complete allowlist.",
+    "Resolve missing Transaction Identifier segment reference and actual Authorization Identification Response wire mapping.",
+    "Real approval provenance, series uniqueness/identity and BUYPASS-to-Visa incremental indicator evidence.",
+    "Timezone/calendar deadline convention, actual completed-then-restarted lifecycle and chargeback/settlement evidence.",
+    "Full Table 063/Acquirer Trace Data/Segment 100 wire messages and AI-produced artifacts."
+  ]
 }
