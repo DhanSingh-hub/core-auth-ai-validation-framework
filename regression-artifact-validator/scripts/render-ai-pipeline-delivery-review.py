@@ -201,7 +201,6 @@ def render(root):
     chain_markdown.extend(["", "[Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)"])
     markdown_text += "\n" + "\n".join(chain_markdown)
     markdown_text = markdown_text.replace("section-10-1-credit-card-processing-review-v2", "section-10-1-credit-card-processing-review-v4")
-    markdown_text = markdown_text.replace("section-10-2-debit-card-processing-review-v1", "section-10-2-debit-card-processing-review-v2")
     (root / "DETAILED-LATEST-RUN-REVIEW.md").write_text(markdown_text, encoding="utf-8")
     compact_cases = [{key: row[key] for key in ["caseId", "scenarioId", "intent", "transactionLabel", "requirementIds", "expectedResponseTiers", "hasSpecificAssertEvidence", "responseTemplateAvailable", "approvedInProducerCatalog", "verificationStatus", "physicalOutputPresent", "structuralStatus"]} for row in cases]
     data = {"summary": summary, "brCoverage": br_coverage, "teamInterpretation": team_interpretation,
@@ -241,7 +240,6 @@ def render(root):
     html = html.replace('<section><h2>Complete candidate TC register', chain_html + semantic_review_html + interpretation_html + section_10_1_html + section_10_2_html + '<section><h2>Complete candidate TC register')
     html = html.replace('<section><h2>Full matrix', f'<section><h2>Multi-leg package audit</h2><p>{len(names)} ZIP members; {manifest["multi_leg_test_case_count"]} flow cases; CRC failure: {crc_failure}; {len(unsafe)} unsafe paths; {len(missing)} missing candidate members; {len(differing)} content differences. Package integrity does not certify lifecycle or host behavior.</p><a href="multileg-package-audit.json">Package audit JSON</a></section><section><h2>Full matrix')
     html = html.replace("section-10-1-credit-card-processing-review-v2", "section-10-1-credit-card-processing-review-v4")
-    html = html.replace("section-10-2-debit-card-processing-review-v1", "section-10-2-debit-card-processing-review-v2")
     html = html.replace(">46 Section 10.1 draft chains<", f">{section_10_1_assessment['newDraftBRCount']} Section 10.1 draft chains<")
     (root / "LATEST-RUN-INDEPENDENT-REVIEW.html").write_text(html, encoding="utf-8")
     from reportlab.lib import colors
