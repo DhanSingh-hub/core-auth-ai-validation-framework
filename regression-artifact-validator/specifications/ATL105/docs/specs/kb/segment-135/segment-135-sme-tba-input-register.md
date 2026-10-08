@@ -4,12 +4,12 @@
 
 For each answer provide: `ID`, answer, source reference, approved date.
 
-**Status:** 3 open (3 total).
+**Status:** 2 open, 1 resolved (3 total).
 
 | ID | Question | Why it is needed | Test impact | Status | Resolution | Catalog |
 | --- | --- | --- | --- | --- | --- | --- |
 | <a id="seg135-sme-001"></a>SEG135-SME-001 | Does Segment 135's Segment Length Indicator include Field Separators, or only Segment Type's length as literally stated? |  |  | OPEN |  | `P-01`, SEG135-R-003 |
-| <a id="seg135-sme-002"></a>SEG135-SME-002 | Is Appendix V (Moneris Data layouts) in scope for this training pass? | Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass? |  | OPEN |  | `P-02`, SEG135-R-005 |
+| <a id="seg135-sme-002"></a>SEG135-SME-002 | Is Appendix V (Moneris Data layouts) in scope for this training pass? | Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass? |  | RESOLVED (2026-10-08) | Appendix V is in scope for this training pass at the user's direction. The Appendix V-1 through V-4 request/response layouts are transcribed in the appendix-v training module. Source conflicts and unspecified Moneris behavior remain review-gated and are not resolved by this scope decision. (Test Team (user-directed training scope)) | `P-02`, SEG135-R-005 |
 | <a id="seg135-sme-003"></a>SEG135-SME-003 | Confirm whether the existing AI Solution Team BR package (`POC-AI-ATL105-Segment-135-Business-Requirements.json`) should be canonical for Item 2. | No dedicated Segment 135 Test Team package was located (though an AI Solution Team BR package exists: POC-AI-ATL105-Segment-135-Business-Requirements.json). Confirm whether to treat it as canonical for Item 2. |  | OPEN |  | `P-03` |
 
 ## Response Format

@@ -8,7 +8,7 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 
 | Channel | View | Use it when | OPEN | REOPENED | IN_DISCUSSION | ANSWERED | RESOLVED | DEFERRED | WITHDRAWN | SUPERSEDED | Total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 314 | 3 | 0 | 0 | 29 | 2 | 0 | 0 | 348 |
+| `SME_QUERY` | [sme-queries.md](sme-queries.md) | Needs specification or business authority to answer. | 312 | 3 | 0 | 0 | 31 | 2 | 0 | 0 | 348 |
 | `TEST_TEAM` | [test-team-discussion.md](test-team-discussion.md) | The Test Team can decide it internally: process, tooling, fixtures, validator policy. | 13 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 15 |
 | `AI_DEV_DISCUSSION` | [ai-dev-discussion.md](ai-dev-discussion.md) | Needs agreement with the AI developers: formats, naming, contracts. | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | `AI_FEEDBACK` | [ai-feedback.md](ai-feedback.md) | A confirmed defect with evidence that the AI Solution Team must correct. | 17 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 17 |
@@ -38,8 +38,8 @@ Single source of truth for every SME query, Test Team discussion item, AI develo
 | 131 | 4 | 0 | 0 | 0 | 4 | [segment-131](../../docs/specs/kb/segment-131/segment-131-sme-tba-input-register.md) |
 | 132 | 6 | 0 | 0 | 0 | 6 | [segment-132](../../docs/specs/kb/segment-132/segment-132-sme-tba-input-register.md) |
 | 134 | 3 | 0 | 0 | 0 | 3 | [segment-134](../../docs/specs/kb/segment-134/segment-134-sme-tba-input-register.md) |
-| 135 | 3 | 0 | 0 | 0 | 3 | [segment-135](../../docs/specs/kb/segment-135/segment-135-sme-tba-input-register.md) |
-| 136 | 4 | 0 | 0 | 0 | 4 | [segment-136](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md) |
+| 135 | 2 | 0 | 1 | 0 | 3 | [segment-135](../../docs/specs/kb/segment-135/segment-135-sme-tba-input-register.md) |
+| 136 | 3 | 0 | 1 | 0 | 4 | [segment-136](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md) |
 | 139 | 2 | 0 | 0 | 0 | 2 | [segment-139](../../docs/specs/kb/segment-139/segment-139-sme-tba-input-register.md) |
 | 140 | 1 | 0 | 0 | 0 | 1 | [segment-140](../../docs/specs/kb/segment-140/segment-140-sme-tba-input-register.md) |
 | 141 | 1 | 0 | 0 | 0 | 1 | [segment-141](../../docs/specs/kb/segment-141/segment-141-sme-tba-input-register.md) |
