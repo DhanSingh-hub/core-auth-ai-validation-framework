@@ -5,4 +5,4 @@
 
 ## Approval Gate
 
-Confirm Source-field sourcing (`SEG136-SME-001`), separator placement (`SEG136-SME-002`), and Appendix V scope (`SEG136-SME-003`) before certifying any rule `COVERED`.
+Confirm Source-field sourcing (`SEG136-SME-001`) and separator placement (`SEG136-SME-002`) before certifying the affected Segment 136 rules. Appendix V response tables are transcribed in the [Appendix V training module](../../appendix-v/README.md); response key encoding remains review-gated.

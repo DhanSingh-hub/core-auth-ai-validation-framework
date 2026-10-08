@@ -125,7 +125,7 @@ Any alpha-numeric characters, formatted in <tag><len><data> format.
 ## Catalog Notes
 
 - `SEG136-R-002` — PROVISIONAL: same sourcing-inconsistency pattern already flagged for Segment 131 (fields sourced 'Device' despite being a response segment). Pending SME confirmation (SEG136-SME-001).
-- `SEG136-R-005` — Same Appendix V scope question as Segment 135 (SEG135-SME-002 / SEG136-SME-003).
+- `SEG136-R-005` — Appendix V response tables are transcribed in the [Appendix V training module](../appendix-v/README.md); response key encoding remains review-gated.
 
 ## SME Reasoning
 
@@ -160,7 +160,6 @@ Segment Type is fixed value 136, sourced at the Device as documented — despite
 ## Open Provisional Items
 
 - **P-01** (SEG136-R-002): Confirm whether Segment Type/Segment Length Source 'Device' is intentional for this Moneris response segment or a transcription error (mirrors the Segment 131 pattern).
-- **P-03** (SEG136-R-005): Is Appendix V (Moneris Data layouts) in scope for this training pass?
 
 ## Security and Test-Data Guidance
 

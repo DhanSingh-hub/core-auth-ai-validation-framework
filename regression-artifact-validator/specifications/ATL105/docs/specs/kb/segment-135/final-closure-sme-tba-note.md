@@ -46,7 +46,6 @@ _No `lifecycle` or `response` rules are catalogued for Segment 135. Closure is t
 Segment 135 is not closeable while these remain open:
 
 - **P-01** (SEG135-R-003): Does Segment 135's Segment Length Indicator include Field Separators in its count, or only Segment Type's length as literally stated?
-- **P-02** (SEG135-R-005): Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass?
 - **P-03** (AI-artifacts, test-data): No dedicated Segment 135 Test Team package was located (though an AI Solution Team BR package exists: POC-AI-ATL105-Segment-135-Business-Requirements.json). Confirm whether to treat it as canonical for Item 2.
 
 ## SME/TBA Review Questions

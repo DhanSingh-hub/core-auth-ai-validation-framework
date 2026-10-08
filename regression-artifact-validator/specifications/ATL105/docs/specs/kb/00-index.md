@@ -53,7 +53,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | S | [CA Public Key File training](appendix-s/README.md) | CA Public Key File record layout for EMV (standalone, via Segment 132); 9 of 10 BRs independently implemented including real SHA-1 checksum verification, PARTIALLY_COVERED | 35450-35558 |
 | T | [EMV Additional Information Data Layouts training](appendix-t/README.md) | Elements 191/192/118 EMV Table Data (001) and CARC (002) layouts; 5 of 7 BRs independently implemented, PARTIALLY_COVERED | 35559-35625 |
 | U | [Visa Digital Wallet training](appendix-u/README.md) | Wallet Method Indicator (Sub Table ID 10) format + category classification independently implemented; 6 business-process BRs PARTIALLY_COVERED | 35626-35662 |
-| V | Moneris Data Layout | Moneris request/response message data layout | 35663-35815 |
+| V | [Moneris Data Layout training](appendix-v/README.md) | Segment 135/136 Moneris request/response tables; bounded layouts implemented, cross-message/security claims review-gated | 35663-35815 |
 | W | Download Data Layout | Download data layout for Supplemental Terminal Data Segment | 35816-35840 |
 | X | Online Refund/Refund Authorization | Merchandise return processing | 35841-36049 |
 | Y | 3-D Secure | 3-D Secure authentication | 36050-36265 |

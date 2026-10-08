@@ -50,8 +50,9 @@ Requirements are derived **only** from the Segment 135 rule catalog and the ATL1
 ## Open SME items
 
 - **P-01** (SEG135-R-003): Does Segment 135's Segment Length Indicator include Field Separators in its count, or only Segment Type's length as literally stated?
-- **P-02** (SEG135-R-005): Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass?
 - **P-03** (AI-artifacts, test-data): No dedicated Segment 135 Test Team package was located (though an AI Solution Team BR package exists: POC-AI-ATL105-Segment-135-Business-Requirements.json). Confirm whether to treat it as canonical for Item 2.
+
+Appendix V is in scope and has been transcribed in the [Appendix V training module](../appendix-v/README.md). Its request Table 004/005 data-width conflicts remain review-gated.
 
 ## Implementation traceability
 

@@ -4,7 +4,7 @@
 
 Every open or reopened SME query across all segments. Resolved and deferred questions, and each segment's response instructions, are in the per-segment registers linked from the [index](index.md).
 
-**Status:** 314 open, 3 reopened, 29 resolved, 2 deferred (348 total).
+**Status:** 312 open, 3 reopened, 31 resolved, 2 deferred (348 total).
 
 ## Segment 101 ([register](../../docs/specs/kb/segment-101/segment-101-sme-tba-input-register.md))
 
@@ -358,7 +358,6 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | ID | Question | Why it is needed | Status | Blocks | Raised |
 | --- | --- | --- | --- | --- | --- |
 | [SEG135-SME-001](../../docs/specs/kb/segment-135/segment-135-sme-tba-input-register.md#seg135-sme-001) | Does Segment 135's Segment Length Indicator include Field Separators, or only Segment Type's length as literally stated? |  | OPEN | `P-01`, SEG135-R-003 | 2026-09-26 |
-| [SEG135-SME-002](../../docs/specs/kb/segment-135/segment-135-sme-tba-input-register.md#seg135-sme-002) | Is Appendix V (Moneris Data layouts) in scope for this training pass? | Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass? | OPEN | `P-02`, SEG135-R-005 | 2026-09-26 |
 | [SEG135-SME-003](../../docs/specs/kb/segment-135/segment-135-sme-tba-input-register.md#seg135-sme-003) | Confirm whether the existing AI Solution Team BR package (`POC-AI-ATL105-Segment-135-Business-Requirements.json`) should be canonical for Item 2. | No dedicated Segment 135 Test Team package was located (though an AI Solution Team BR package exists: POC-AI-ATL105-Segment-135-Business-Requirements.json). Confirm whether to treat it as canonical for Item 2. | OPEN | `P-03` | 2026-09-26 |
 
 ## Segment 136 ([register](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md))
@@ -367,7 +366,6 @@ Every open or reopened SME query across all segments. Resolved and deferred ques
 | --- | --- | --- | --- | --- | --- |
 | [SEG136-SME-001](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md#seg136-sme-001) | Confirm whether Segment Type/Length "Source: Device" is intentional for this Moneris response segment or a transcription error. | Confirm whether Segment Type/Segment Length Source 'Device' is intentional for this Moneris response segment or a transcription error (mirrors the Segment 131 pattern). | OPEN | `P-01`, SEG136-R-002 | 2026-09-26 |
 | [SEG136-SME-002](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md#seg136-sme-002) | Confirm whether Field Separators also appear between fields 1-2 and 2-3, or only a single trailing separator follows the whole segment. | Confirm whether Field Separators also appear between fields 1-2 and 2-3 in Segment 136, or only as a single trailing separator after the whole segment. | OPEN | `P-02`, SEG136-R-004 | 2026-09-26 |
-| [SEG136-SME-003](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md#seg136-sme-003) | Is Appendix V (Moneris Data layouts) in scope for this training pass? |  | OPEN | `P-03`, SEG136-R-005 | 2026-09-26 |
 | [SEG136-SME-004](../../docs/specs/kb/segment-136/segment-136-sme-tba-input-register.md#seg136-sme-004) | Provide a dedicated Segment 136 AI/Test package, or approve synthesized fixtures. | No dedicated Segment 136 AI or Test Team package was located. Provide one, or approve synthesized fixtures. | OPEN | `P-04` | 2026-09-26 |
 
 ## Segment 139 ([register](../../docs/specs/kb/segment-139/segment-139-sme-tba-input-register.md))
