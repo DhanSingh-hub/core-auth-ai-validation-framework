@@ -2,6 +2,8 @@
 
 This is an evidence packet, not a semantic approval. Every Test Solution rule remains PENDING_SEMANTIC_REVIEW and receives no coverage credit.
 
+Manual-search findings are recorded separately in `run4-manual-search-findings.json`. A `NO_EQUIVALENT_AI_BR_FOUND` finding documents the completed corpus search only; it does not record SME approval or grant coverage.
+
 Run4 AI BRs included: 5,153 (AI approval filter: none). Independent Test Solution BR denominator: 601.
 Source-anchor candidate pairs: 1,950. Independent Test BRs with candidates: 270. Independent Test BRs requiring manual corpus search: 331.
 

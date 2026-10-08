@@ -254,9 +254,57 @@ Element 4 is Address Line 2, character type AN, fixed width 21 bytes, carrying c
 
 ## Section 10.1 Independent Test Solution Draft Chains
 
-The independent Test Solution source catalog has one BR with a primary source anchor inside Section 10.1; its existing complete-chain package also has 10 unique direct Section 10.1 rule anchors plus 3 related partial-approval chains. The additive review supplement reuses those references and adds 46 source-quoted draft BRs, each linked to one TS, TC, and TD design file.
-New draft chains: 46 BR / 46 TS / 46 TC / 46 TD design records. All remain REVIEW_REQUIRED; TDs are non-converter-ready placeholders; official 601-rule baseline unchanged; coverage credit 0; execution certification false.
+The independent Test Solution source catalog has one BR with a primary source anchor inside Section 10.1; its existing complete-chain package also has 10 unique direct Section 10.1 rule anchors plus 3 related partial-approval chains. The additive review supplement reuses those references and adds 59 source-quoted draft BRs, each linked to one TS, TC, and TD design file.
+New draft chains: 59 BR / 59 TS / 59 TC / 59 TD design records. All remain REVIEW_REQUIRED; TDs are non-converter-ready placeholders; official 601-rule baseline unchanged; coverage credit 0; execution certification false.
 
-- [Section 10.1 draft chain package](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/section-10-1-br-ts-tc-td-draft-package.json)
-- [Topic-level coverage assessment and reused rules](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/section-10-1-coverage-assessment.json)
-- [Review instructions](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v3/README.md)
+- [Section 10.1 draft chain package](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/section-10-1-br-ts-tc-td-draft-package.json)
+- [Topic-level coverage assessment and reused rules](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/section-10-1-coverage-assessment.json)
+- [Review instructions](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/README.md)
+
+## Section 10.2 Debit Card Processing Draft Chains
+
+The additive independent Test Solution supplement contains 29 debit-specific source-quoted draft BRs with matching TS, TC, and TD design records, plus 42 unique references to shared Section 10.1 review drafts and 3 existing independent-baseline chains. Every parsed source heading is mapped below to a draft/reused chain or an explicit child grouping. All references remain REVIEW_REQUIRED; TDs are non-executable designs. The official 601-rule baseline remains unchanged, with no coverage credit or execution certification.
+
+| Source heading | Debit draft BR IDs | Reused Section 10.1 chains (BR / TS / TC / TD) | Existing baseline chains (BR / TS / TC / TD) | Grouped children |
+|---|---|---|---|---|
+| 10.2 | - | - | - | 10.2.1, 10.2.2, 10.2.3, 10.2.4, 10.2.5 |
+| 10.2.1 | - | - | - | 10.2.1.1, 10.2.1.2, 10.2.1.3, 10.2.1.4 |
+| 10.2.1.1 | BR-DRAFT-10-2-001 | - | - | - |
+| 10.2.1.2 | BR-DRAFT-10-2-002, BR-DRAFT-10-2-003, BR-DRAFT-10-2-004, BR-DRAFT-10-2-005 | - | - | - |
+| 10.2.1.3 | BR-DRAFT-10-2-006, BR-DRAFT-10-2-007 | - | - | - |
+| 10.2.1.4 | BR-DRAFT-10-2-008, BR-DRAFT-10-2-009 | - | - | - |
+| 10.2.2 | BR-DRAFT-10-2-010, BR-DRAFT-10-2-011 | - | - | - |
+| 10.2.2.1 | BR-DRAFT-10-2-012, BR-DRAFT-10-2-013, BR-DRAFT-10-2-014, BR-DRAFT-10-2-015, BR-DRAFT-10-2-016, BR-DRAFT-10-2-017 | PARTIAL_APPROVAL_RESPONSE: BR-DRAFT-10-1-010 / TS=SCN-DRAFT-10-1-010 / TC=TC-DRAFT-10-1-010 / TD=TD-DRAFT-10-1-010; PARTIAL_APPROVAL_CONTEXTS: BR-DRAFT-10-1-011 / TS=SCN-DRAFT-10-1-011 / TC=TC-DRAFT-10-1-011 / TD=TD-DRAFT-10-1-011; PARTIAL_REVERSAL_AMOUNT: BR-DRAFT-10-1-012 / TS=SCN-DRAFT-10-1-012 / TC=TC-DRAFT-10-1-012 / TD=TD-DRAFT-10-1-012 | SEG100-R-020: BR-RULE-SEG100-R-020 / TS=TS-REVIEW-BR-RULE-SEG100-R-020 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020; SEG100-R-039: BR-RULE-SEG100-R-039 / TS=TS-REVIEW-BR-RULE-SEG100-R-039 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-039 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-039; SEG100-R-065: BR-RULE-SEG100-R-065 / TS=TS-REVIEW-BR-RULE-SEG100-R-065 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-065 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-065 | - |
+| 10.2.2.2 | BR-DRAFT-10-2-018 | AUTH_REVERSAL_TIMELINES: BR-DRAFT-10-1-014 / TS=SCN-DRAFT-10-1-014 / TC=TC-DRAFT-10-1-014 / TD=TD-DRAFT-10-1-014; AUTH_REVERSAL_ISSUER_RELEASE: BR-DRAFT-10-1-015 / TS=SCN-DRAFT-10-1-015 / TC=TC-DRAFT-10-1-015 / TD=TD-DRAFT-10-1-015; AUTH_REVERSAL_TYPES: BR-DRAFT-10-1-017 / TS=SCN-DRAFT-10-1-017 / TC=TC-DRAFT-10-1-017 / TD=TD-DRAFT-10-1-017; AUTH_REVERSAL_MATCHING: BR-DRAFT-10-1-018 / TS=SCN-DRAFT-10-1-018 / TC=TC-DRAFT-10-1-018 / TD=TD-DRAFT-10-1-018 | - | - |
+| 10.2.3 | BR-DRAFT-10-2-019 | HEALTHCARE_SERVICE_SCOPE: BR-DRAFT-10-1-024 / TS=SCN-DRAFT-10-1-024 / TC=TC-DRAFT-10-1-024 / TD=TD-DRAFT-10-1-024 | - | 10.2.3.1, 10.2.3.2, 10.2.3.3, 10.2.3.4, 10.2.3.5 |
+| 10.2.3.1 | - | - | - | 10.2.3.1.1, 10.2.3.1.2, 10.2.3.1.3, 10.2.3.1.4 |
+| 10.2.3.1.1 | - | HEALTHCARE_BENEFIT_BIN: BR-DRAFT-10-1-025 / TS=SCN-DRAFT-10-1-025 / TC=TC-DRAFT-10-1-025 / TD=TD-DRAFT-10-1-025 | - | - |
+| 10.2.3.1.2 | - | HEALTHCARE_PARTIAL_SPLIT_TENDER: BR-DRAFT-10-1-026 / TS=SCN-DRAFT-10-1-026 / TC=TC-DRAFT-10-1-026 / TD=TD-DRAFT-10-1-026 | - | - |
+| 10.2.3.1.3 | - | HEALTHCARE_PARTIAL_SPLIT_TENDER: BR-DRAFT-10-1-026 / TS=SCN-DRAFT-10-1-026 / TC=TC-DRAFT-10-1-026 / TD=TD-DRAFT-10-1-026 | - | - |
+| 10.2.3.1.4 | - | HEALTHCARE_QHP_890: BR-DRAFT-10-1-027 / TS=SCN-DRAFT-10-1-027 / TC=TC-DRAFT-10-1-027 / TD=TD-DRAFT-10-1-027; HEALTHCARE_QHP_891: BR-DRAFT-10-1-028 / TS=SCN-DRAFT-10-1-028 / TC=TC-DRAFT-10-1-028 / TD=TD-DRAFT-10-1-028; HEALTHCARE_QHP_892: BR-DRAFT-10-1-029 / TS=SCN-DRAFT-10-1-029 / TC=TC-DRAFT-10-1-029 / TD=TD-DRAFT-10-1-029; HEALTHCARE_QHP_893: BR-DRAFT-10-1-030 / TS=SCN-DRAFT-10-1-030 / TC=TC-DRAFT-10-1-030 / TD=TD-DRAFT-10-1-030; HEALTHCARE_QHP_894: BR-DRAFT-10-1-031 / TS=SCN-DRAFT-10-1-031 / TC=TC-DRAFT-10-1-031 / TD=TD-DRAFT-10-1-031; HEALTHCARE_QHP_895: BR-DRAFT-10-1-032 / TS=SCN-DRAFT-10-1-032 / TC=TC-DRAFT-10-1-032 / TD=TD-DRAFT-10-1-032; HEALTHCARE_QHP_896: BR-DRAFT-10-1-033 / TS=SCN-DRAFT-10-1-033 / TC=TC-DRAFT-10-1-033 / TD=TD-DRAFT-10-1-033 | - | - |
+| 10.2.3.2 | BR-DRAFT-10-2-020 | HEALTHCARE_REQUEST_FIELDS: BR-DRAFT-10-1-034 / TS=SCN-DRAFT-10-1-034 / TC=TC-DRAFT-10-1-034 / TD=TD-DRAFT-10-1-034 | SEG100-R-020: BR-RULE-SEG100-R-020 / TS=TS-REVIEW-BR-RULE-SEG100-R-020 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 | - |
+| 10.2.3.3 | BR-DRAFT-10-2-021 | HEALTHCARE_RESPONSE_STANDARD: BR-DRAFT-10-1-035 / TS=SCN-DRAFT-10-1-035 / TC=TC-DRAFT-10-1-035 / TD=TD-DRAFT-10-1-035 | - | - |
+| 10.2.3.4 | BR-DRAFT-10-2-022 | HEALTHCARE_TRANSACTION_TYPES: BR-DRAFT-10-1-036 / TS=SCN-DRAFT-10-1-036 / TC=TC-DRAFT-10-1-036 / TD=TD-DRAFT-10-1-036 | - | 10.2.3.4.1, 10.2.3.4.2, 10.2.3.4.3, 10.2.3.4.4 |
+| 10.2.3.4.1 | - | HEALTHCARE_PURCHASE_TOTALS: BR-DRAFT-10-1-037 / TS=SCN-DRAFT-10-1-037 / TC=TC-DRAFT-10-1-037 / TD=TD-DRAFT-10-1-037 | - | - |
+| 10.2.3.4.2 | - | HEALTHCARE_PURCHASE_REVERSAL_TOTALS: BR-DRAFT-10-1-038 / TS=SCN-DRAFT-10-1-038 / TC=TC-DRAFT-10-1-038 / TD=TD-DRAFT-10-1-038 | - | - |
+| 10.2.3.4.3 | - | HEALTHCARE_RETURN_TOTALS: BR-DRAFT-10-1-039 / TS=SCN-DRAFT-10-1-039 / TC=TC-DRAFT-10-1-039 / TD=TD-DRAFT-10-1-039 | - | - |
+| 10.2.3.4.4 | - | HEALTHCARE_TOR_TOTALS: BR-DRAFT-10-1-040 / TS=SCN-DRAFT-10-1-040 / TC=TC-DRAFT-10-1-040 / TD=TD-DRAFT-10-1-040 | - | - |
+| 10.2.3.5 | BR-DRAFT-10-2-023 | HEALTHCARE_RECEIPT_ADDITIONS: BR-DRAFT-10-1-041 / TS=SCN-DRAFT-10-1-041 / TC=TC-DRAFT-10-1-041 / TD=TD-DRAFT-10-1-041 | - | - |
+| 10.2.4 | BR-DRAFT-10-2-024, BR-DRAFT-10-2-025 | CREDIT_RECEIPT_MERCHANT_INFO: BR-DRAFT-10-1-042 / TS=SCN-DRAFT-10-1-042 / TC=TC-DRAFT-10-1-042 / TD=TD-DRAFT-10-1-042; CREDIT_RECEIPT_TRANSACTION_TYPE: BR-DRAFT-10-1-043 / TS=SCN-DRAFT-10-1-043 / TC=TC-DRAFT-10-1-043 / TD=TD-DRAFT-10-1-043; CREDIT_RECEIPT_MASK_ACCOUNT: BR-DRAFT-10-1-044 / TS=SCN-DRAFT-10-1-044 / TC=TC-DRAFT-10-1-044 / TD=TD-DRAFT-10-1-044; CREDIT_RECEIPT_SUPPRESS_EXPIRATION: BR-DRAFT-10-1-045 / TS=SCN-DRAFT-10-1-045 / TC=TC-DRAFT-10-1-045 / TD=TD-DRAFT-10-1-045; CREDIT_RECEIPT_TRANSACTION_DATE: BR-DRAFT-10-1-046 / TS=SCN-DRAFT-10-1-046 / TC=TC-DRAFT-10-1-046 / TD=TD-DRAFT-10-1-046; CREDIT_RECEIPT_TRANSACTION_TIME: BR-DRAFT-10-1-047 / TS=SCN-DRAFT-10-1-047 / TC=TC-DRAFT-10-1-047 / TD=TD-DRAFT-10-1-047; CREDIT_RECEIPT_SEQUENCE_NUMBER: BR-DRAFT-10-1-048 / TS=SCN-DRAFT-10-1-048 / TC=TC-DRAFT-10-1-048 / TD=TD-DRAFT-10-1-048; CREDIT_RECEIPT_FUEL_PRODUCT: BR-DRAFT-10-1-049 / TS=SCN-DRAFT-10-1-049 / TC=TC-DRAFT-10-1-049 / TD=TD-DRAFT-10-1-049; CREDIT_RECEIPT_NONFUEL_PRODUCT: BR-DRAFT-10-1-050 / TS=SCN-DRAFT-10-1-050 / TC=TC-DRAFT-10-1-050 / TD=TD-DRAFT-10-1-050; CREDIT_RECEIPT_BALANCE_FIELDS: BR-DRAFT-10-1-051 / TS=SCN-DRAFT-10-1-051 / TC=TC-DRAFT-10-1-051 / TD=TD-DRAFT-10-1-051; CREDIT_RECEIPT_APPROVAL_DECLINE: BR-DRAFT-10-1-052 / TS=SCN-DRAFT-10-1-052 / TC=TC-DRAFT-10-1-052 / TD=TD-DRAFT-10-1-052; CREDIT_RECEIPT_SIGNATURE: BR-DRAFT-10-1-053 / TS=SCN-DRAFT-10-1-053 / TC=TC-DRAFT-10-1-053 / TD=TD-DRAFT-10-1-053 | - | - |
+| 10.2.5 | - | - | - | 10.2.5.1, 10.2.5.2 |
+| 10.2.5.1 | BR-DRAFT-10-2-026 | REGULATORY_CARD_DATA_DISPLAY: BR-DRAFT-10-1-054 / TS=SCN-DRAFT-10-1-054 / TC=TC-DRAFT-10-1-054 / TD=TD-DRAFT-10-1-054; REGULATORY_RESEARCH_STORAGE: BR-DRAFT-10-1-055 / TS=SCN-DRAFT-10-1-055 / TC=TC-DRAFT-10-1-055 / TD=TD-DRAFT-10-1-055; REGULATORY_CLEARING_SOURCE: BR-DRAFT-10-1-056 / TS=SCN-DRAFT-10-1-056 / TC=TC-DRAFT-10-1-056 / TD=TD-DRAFT-10-1-056 | - | - |
+| 10.2.5.2 | BR-DRAFT-10-2-027, BR-DRAFT-10-2-028, BR-DRAFT-10-2-029 | REGULATORY_CLEARING_SOURCE: BR-DRAFT-10-1-056 / TS=SCN-DRAFT-10-1-056 / TC=TC-DRAFT-10-1-056 / TD=TD-DRAFT-10-1-056; REGULATORY_IN_FLIGHT_EXCEPTION: BR-DRAFT-10-1-059 / TS=SCN-DRAFT-10-1-059 / TC=TC-DRAFT-10-1-059 / TD=TD-DRAFT-10-1-059 | - | - |
+
+- [Section 10.2 debit draft package](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-br-ts-tc-td-draft-package.json)
+- [Complete heading-to-chain assessment](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-coverage-assessment.json)
+- [Debit review gates](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/README.md)
+
+## Manual corpus search findings
+
+1 manual-search finding(s) are recorded. `NO_EQUIVALENT_AI_BR_FOUND` documents a completed source-backed search only; formal status remains PENDING_SEMANTIC_REVIEW, no authorized SME decision is recorded, and no coverage credit is issued.
+
+| Test Solution BR | Finding | Formal status | Credit |
+|---|---|---|---|
+| SEG100-R-009 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None |
+
+[Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)
