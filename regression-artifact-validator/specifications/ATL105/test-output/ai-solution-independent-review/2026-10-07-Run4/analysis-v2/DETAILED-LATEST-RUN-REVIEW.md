@@ -301,7 +301,7 @@ The additive independent Test Solution supplement contains 29 debit-specific sou
 
 ## Manual corpus search findings
 
-8 manual-search finding(s) are recorded. Findings and AI-team feedback are Run4-specific evidence, not global absence claims or formal approvals. All formal statuses remain PENDING_SEMANTIC_REVIEW; feedback remains queued for sharing, and no coverage credit is issued.
+8 manual-search finding(s) are recorded. Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations; this review uses only the Run4 crosswalk, case register, and physical-file register, with no cross-run joins by reused ID. Findings and AI-team feedback are not global absence claims or formal approvals. All formal statuses remain PENDING_SEMANTIC_REVIEW; feedback remains queued for sharing, and no coverage credit is issued.
 
 | Test Solution BR | Finding | Formal status | Credit | AI team feedback |
 |---|---|---|---|---|
