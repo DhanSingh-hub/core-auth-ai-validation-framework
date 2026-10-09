@@ -181,6 +181,16 @@ Source completeness, full messages, approval and final certification remain
 unestablished. This scoped batch follows the same framework gates without
 promoting a logical fragment to execution-ready request data.
 
+## PAR request indicator predicate
+
+`AppendixIParRequestOracle` checks only the explicit ATL105 request representation
+from Appendix I-30: Table `032`, Sub-Table `14`, fixed length `001`, value `Y`.
+An absent indicator remains `REVIEW_REQUIRED` when merchant opt-in context is
+unknown. Appendix K-24 Table `029` response formatting is checked separately by
+`AppendixKDataLayoutValidator`. Requesting PAR does not make a PAR response
+mandatory, establish authorizer support, or prove merchant eligibility; the
+MSUC-14867 simulator history is not a universal response oracle.
+
 Do not infer source completeness from the heading count. For each table record
 every field, width/type, valid codes, requiredness, nesting, transaction/card/network
 conditions, directional role, absent/present behavior, exception, effective-date
