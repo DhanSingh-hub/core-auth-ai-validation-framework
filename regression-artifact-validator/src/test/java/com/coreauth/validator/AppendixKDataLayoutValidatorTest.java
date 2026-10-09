@@ -97,6 +97,10 @@ class AppendixKDataLayoutValidatorTest {
                 .isEqualTo(AppendixKDataLayoutValidator.Status.FAIL);
         assertThat(validator.validate("029", "12345678901234567890123456789", null).status())
                 .isEqualTo(AppendixKDataLayoutValidator.Status.PASS);
+        assertThat(validator.validate("029", "A".repeat(29), null).status())
+                .isEqualTo(AppendixKDataLayoutValidator.Status.PASS);
+        assertThat(validator.validate("029", "A".repeat(28), null).status())
+                .isEqualTo(AppendixKDataLayoutValidator.Status.FAIL);
         assertThat(validator.validate("030", "A1", null).assertionScope())
                 .isEqualTo("REPRESENTATION_ONLY");
         assertThat(validator.validate("031", "?1", null).status())

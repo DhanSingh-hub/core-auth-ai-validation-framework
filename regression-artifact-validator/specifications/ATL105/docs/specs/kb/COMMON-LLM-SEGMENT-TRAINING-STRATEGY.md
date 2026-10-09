@@ -318,6 +318,13 @@ Produce a machine-readable field inventory with one row for every ordered field:
 
 Take each element's format (type, length, padding) from its Chapter 13 definition, then cross-check the §11 layout table, the §12 segment section, and the Chapter 12 segment/transaction matrix. Record any disagreement as `PROVISIONAL` (see [L7](#lessons-learned) and [L8](#lessons-learned)).
 
+For PAR, validate the request opt-in and response value as separate assertions:
+ATL105 Appendix I-30 defines Table 032/Sub-Table 14 with fixed length `001`
+and request value `Y`; Appendix K-24 defines response Table 029 as a fixed
+29-character alphanumeric value returned only when requested. Do not infer that
+every authorizer must return PAR, or that an absent response is invalid, from the
+request indicator alone.
+
 ### Phase 3: Context Matrix
 
 Record the dimensions that change segment behavior:
