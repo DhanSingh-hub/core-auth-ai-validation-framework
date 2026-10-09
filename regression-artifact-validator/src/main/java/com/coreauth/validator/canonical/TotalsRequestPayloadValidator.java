@@ -6,22 +6,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * Validates the message structure of the two Totals requests: the Totals Request (ATL105 Section 11.4.1.1,
- * Segment 105) and the Totals with Proprietary Data Load Request (Section 11.4.1.2, Segment 119).
- * Field-level Segment 105 and 119 rules are not checked here.
+ * Validates the Totals Request (ATL105 Section 11.4.1.1, Segment 105) and the Totals with
+ * Proprietary Data Load Request (Section 11.4.1.2, Segment 119): message envelope (both
+ * segments) and field-level Segment 105 rules (added during the Chapter 12 segment
+ * cross-check; see {@link #checkSegment105Fields}). Field-level Segment 119 rules are not
+ * checked here.
  */
 public final class TotalsRequestPayloadValidator {
     public static final String TOTALS_REQUEST = "Totals Request";
     public static final String TOTALS_WITH_PDL_REQUEST = "Totals with Proprietary Data Load Request";
     private static final String SOURCE = "TotalsRequestPayload";
     private static final Pattern NUMERIC_3 = Pattern.compile("^[0-9]{3}$");
+    private static final Pattern TOTALS_DATE_MMDDYY = Pattern.compile("^(0[1-9]|1[0-2])([0-2][0-9]|3[01])[0-9]{2}$");
+    private static final Set<String> TOTALS_DATE_SPECIAL_CODES = Set.of(
+            "111111", "222222", "333333", "444444", "555555", "999999");
+    private static final Pattern ALPHANUMERIC_1_22 = Pattern.compile("^[A-Za-z0-9]{1,22}$");
+    private static final Pattern SEQUENCE_NUMBER = Pattern.compile("^[0-9]{6}$");
+    private static final Pattern GRAND_TOTAL = Pattern.compile("^[0-9]{8}$");
+    private static final Pattern CARD_TYPE_TOTAL_COUNT = Pattern.compile("^[0-9]{5}$");
+    private static final Pattern CARD_TYPE_TOTAL_AMOUNT = Pattern.compile("^[0-9]{8}$");
+    /** ATL105 Chapter 13.2 Element 13: Card Label valid values. */
+    private static final List<String> CARD_LABEL_ORDER = List.of(
+            "CC", "TE", "DS", "AO", "DB", "FL", "CS", "PR", "CK", "EF", "EC",
+            "SV1", "SV2", "SV3", "SV4", "ECA", "EWIC", "EK");
+    private static final Set<String> VALID_CARD_LABELS = Set.copyOf(CARD_LABEL_ORDER);
+    private static final int MAX_CATEGORY_TOTALS = 18;
     // Section 11.4.1.2 gives Segment 119 a length of 389; Section 12.17 gives 493 (SEG119-R-038).
     private static final int SEGMENT_119_TABLE_LENGTH = 389;
 
@@ -120,8 +139,168 @@ public final class TotalsRequestPayloadValidator {
                     + root + " (" + layout.presenceRule() + ")");
         } else {
             checkSegmentLength(totalsSegment, layout, result);
+            if ("105".equals(layout.segmentType())) {
+                checkSegment105Fields(totalsSegment, result);
+            }
         }
         checkNumberOfSegments(root, message, segmentCount, layout, result);
+    }
+
+    /**
+     * Field-level Segment 105 rules (SEG105-R-001, 003-005, 008, 010-015), added during the
+     * Chapter 12 segment cross-check: previously only the message-envelope rules (018-022)
+     * were enforced. SEG105-R-006/007 (Employee Number/Password business policy),
+     * SEG105-R-009 (activity-date window, needs per-merchant history), SEG105-R-016/017
+     * (lifecycle/Segment 119 selection policy) are REVIEW_REQUIRED by the catalog's own
+     * design and are not enforced here; fabricating that business logic would be worse
+     * than leaving it open.
+     */
+    private static void checkSegment105Fields(JsonNode segment, ValidationResult result) {
+        String segmentType = text(segment, "SegmentType");
+        if (!"105".equals(segmentType)) {
+            result.addError(SOURCE, "Segment 105.SegmentType must be '105', got: " + segmentType + " (SEG105-R-001)");
+        }
+        String informationByte = text(segment, "InformationByte");
+        if (!"0".equals(informationByte) && !"1".equals(informationByte)) {
+            result.addError(SOURCE, "Segment 105.InformationByte must be 0 or 1 for a transaction request (SEG105-R-003)");
+        }
+        String terminalId = text(segment, "TerminalID");
+        if (terminalId == null || !ALPHANUMERIC_1_22.matcher(terminalId).matches()) {
+            result.addError(SOURCE, "Segment 105.TerminalID (Element 102) must be 1-22 alphanumeric characters (SEG105-R-004)");
+        }
+        String promptCode = text(segment, "PromptCode");
+        if (!"990".equals(promptCode)) {
+            result.addError(SOURCE, "Segment 105.PromptCode (Element 78) must be '990', got: " + promptCode + " (SEG105-R-005)");
+        }
+        String employeeNumber = text(segment, "EmployeeNumber");
+        if (employeeNumber != null && !employeeNumber.isBlank() && !employeeNumber.matches("^[0-9]{4}$")) {
+            result.addError(SOURCE, "Segment 105.EmployeeNumber (Element 32), if present, is 4 digits per source format; "
+                    + "authorization policy for its use remains REVIEW_REQUIRED (SEG105-R-006)");
+        }
+        String password = text(segment, "Password");
+        if (password != null && !password.isEmpty() && !password.matches(" *[0-9]{1,6}")) {
+            result.addError(SOURCE, "Segment 105.Password (Element 65), if present, is right-aligned numeric data; "
+                    + "authorization policy for its use remains REVIEW_REQUIRED (SEG105-R-007)");
+        }
+        if (password != null && password.length() > 6) {
+            result.addError(SOURCE, "Segment 105.Password exceeds 6 characters (SEG105-R-007)");
+        }
+        String totalsDate = text(segment, "TotalsDate");
+        if (totalsDate == null || !(TOTALS_DATE_SPECIAL_CODES.contains(totalsDate)
+                || validTotalsDate(totalsDate))) {
+            result.addError(SOURCE, "Segment 105.TotalsDate (Element 105) must be MMDDYY or one of "
+                    + TOTALS_DATE_SPECIAL_CODES + ", got: " + totalsDate + " (SEG105-R-008)");
+        }
+        version(segment, "HardwareVersion", "[A-Za-z0-9 ]{4}|[A-Za-z0-9 ]{8}", "SEG105-R-010", result);
+        version(segment, "SoftwareVersion", "[A-Za-z0-9 ]{8}", "SEG105-R-011", result);
+        version(segment, "FirmwareVersion", "[A-Za-z0-9 ]{8}", "SEG105-R-012", result);
+        String sequenceNumber = text(segment, "SequenceNumber");
+        if (sequenceNumber == null || !SEQUENCE_NUMBER.matcher(sequenceNumber).matches() || "000000".equals(sequenceNumber)) {
+            result.addError(SOURCE, "Segment 105.SequenceNumber (Element 86) must be 6 digits, got: "
+                    + sequenceNumber + " (SEG105-R-013)");
+        }
+        String currencyCode = text(segment, "CurrencyCode");
+        if (currencyCode != null && !currencyCode.isBlank() && !NUMERIC_3.matcher(currencyCode).matches()) {
+            result.addError(SOURCE, "Segment 105.CurrencyCode (Element 20), if present, must be 3 digits "
+                    + "(see Appendix L for value validity), got: " + currencyCode + " (SEG105-R-014)");
+        }
+        checkGrandTotalAndCategoryTotals(segment, result);
+        checkSegment105Wire(segment, result);
+        result.addWarning("REVIEW_REQUIRED: employee/password authorization, settlement activity window and lifecycle "
+                + "need independently supplied merchant history (SEG105-R-006/007/009/016/017)");
+    }
+
+    private static void checkGrandTotalAndCategoryTotals(JsonNode segment, ValidationResult result) {
+        String grandTotal = text(segment, "GrandTotal");
+        if (grandTotal == null || !GRAND_TOTAL.matcher(grandTotal).matches()) {
+            result.addError(SOURCE, "Segment 105.GrandTotal (Element 42) must be 8 digits, got: "
+                    + grandTotal + " (SEG105-R-015)");
+        }
+        JsonNode categoryTotals = segment.path("CategoryTotals");
+        if (!categoryTotals.isArray()) {
+            result.addError(SOURCE, "Segment 105.CategoryTotals must be an array of Card Label/Count/Amount entries (SEG105-R-015)");
+            return;
+        }
+        if (categoryTotals.size() > MAX_CATEGORY_TOTALS) {
+            result.addError(SOURCE, "Segment 105.CategoryTotals has " + categoryTotals.size()
+                    + " entries; Section 12.6 allows at most " + MAX_CATEGORY_TOTALS + " (SEG105-R-015)");
+        }
+        Set<String> seenLabels = new java.util.HashSet<>();
+        int previousLabel = -1;
+        for (JsonNode entry : categoryTotals) {
+            String label = text(entry, "CardLabel");
+            if (label != null && (label.length() > 4 || !label.matches("[A-Z0-9 ]{2,4}"))) {
+                result.addError(SOURCE, "Segment 105.CardLabel must fit four ASCII characters with space padding (SEG105-R-015)");
+            }
+            if (label != null) label = label.stripTrailing();
+            if (label == null || !VALID_CARD_LABELS.contains(label)) {
+                result.addError(SOURCE, "Segment 105.CategoryTotals entry has an invalid CardLabel: " + label + " (SEG105-R-015)");
+            } else if (!seenLabels.add(label)) {
+                result.addError(SOURCE, "Segment 105.CategoryTotals CardLabel " + label
+                        + " appears more than once; Section 12.6 sends each card type at most once (SEG105-R-015)");
+            }
+            if (label != null && VALID_CARD_LABELS.contains(label)) {
+                int position = CARD_LABEL_ORDER.indexOf(label);
+                if (position < previousLabel) result.addError(SOURCE, "Segment 105 card buckets are not in source order (SEG105-R-015)");
+                previousLabel = position;
+            }
+            String count = text(entry, "CardTypeTotalCount");
+            if (count == null || !CARD_TYPE_TOTAL_COUNT.matcher(count).matches() || "00000".equals(count)) {
+                result.addError(SOURCE, "Segment 105.CategoryTotals[" + label
+                        + "].CardTypeTotalCount (Element 16) must be 5 digits, got: " + count + " (SEG105-R-015)");
+            }
+
+            String amount = text(entry, "CardTypeTotalAmount");
+            if (amount == null || !CARD_TYPE_TOTAL_AMOUNT.matcher(amount).matches()) {
+                result.addError(SOURCE, "Segment 105.CategoryTotals[" + label
+                        + "].CardTypeTotalAmount (Element 15) must be 8 digits, got: " + amount + " (SEG105-R-015)");
+            }
+        }
+    }
+
+    private static boolean validTotalsDate(String value) {
+        if (!TOTALS_DATE_MMDDYY.matcher(value).matches()) return false;
+        try {
+            LocalDate.of(2000 + Integer.parseInt(value.substring(4)), Integer.parseInt(value.substring(0, 2)),
+                    Integer.parseInt(value.substring(2, 4)));
+            return true;
+        } catch (DateTimeException exception) {
+            return false;
+        }
+    }
+
+    private static void version(JsonNode segment, String field, String pattern, String ruleId, ValidationResult result) {
+        String value = text(segment, field);
+        if (value == null || value.isBlank() || !value.matches(pattern)) {
+            result.addError(SOURCE, "Segment 105." + field + " has incorrect required version width (" + ruleId + ")");
+        }
+    }
+
+    private static void checkSegment105Wire(JsonNode segment, ValidationResult result) {
+        StringBuilder encoded = new StringBuilder();
+        for (String field : List.of("SegmentType", "SegmentLength", "InformationByte", "TerminalID", "PromptCode",
+                "EmployeeNumber", "Password", "TotalsDate", "HardwareVersion", "SoftwareVersion", "FirmwareVersion",
+                "SequenceNumber", "CurrencyCode", "GrandTotal")) {
+            String value = text(segment, field);
+            if (value == null) value = "";
+            if ("Password".equals(field) && !value.isEmpty() && value.length() <= 6) value = String.format("%6s", value);
+            encoded.append(value).append('\u001c');
+        }
+        for (JsonNode bucket : segment.path("CategoryTotals")) {
+            String label = text(bucket, "CardLabel");
+            if (label != null) encoded.append(String.format("%-4s", label.stripTrailing()));
+            String count = text(bucket, "CardTypeTotalCount");
+            String amount = text(bucket, "CardTypeTotalAmount");
+            if (count != null) encoded.append(count);
+            if (amount != null) encoded.append(amount);
+        }
+        String declared = text(segment, "SegmentLength");
+        if (declared != null && NUMERIC_3.matcher(declared).matches() && Integer.parseInt(declared) != encoded.length()) {
+            result.addError(SOURCE, "Segment 105 SegmentLength does not equal encoded field/separator/bucket length (SEG105-R-002)");
+        }
+        if (segment.has("serializedSegment") && !encoded.toString().equals(text(segment, "serializedSegment"))) {
+            result.addError(SOURCE, "Segment 105 wire order, separators or padded card labels disagree with fields (SEG105-R-002)");
+        }
     }
 
     private static void checkNumberOfSegments(String root, JsonNode message, int segmentCount, Layout layout,
@@ -163,6 +342,7 @@ public final class TotalsRequestPayloadValidator {
     }
 
     private static String text(JsonNode node, String field) {
-        return node.has(field) && !node.path(field).isNull() ? node.path(field).asText() : null;
+        JsonNode value = node.get(field);
+        return value != null && value.isTextual() ? value.textValue() : null;
     }
 }

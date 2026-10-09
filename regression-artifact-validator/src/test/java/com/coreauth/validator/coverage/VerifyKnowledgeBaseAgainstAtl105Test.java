@@ -15,7 +15,7 @@ class VerifyKnowledgeBaseAgainstAtl105Test {
                 "ai-solution-independent-review/knowledge-base-atl105-verification.json").toFile());
 
         assertThat(report.path("catalogCount").asInt()).isEqualTo(49);
-        assertThat(report.path("ruleCount").asInt()).isEqualTo(601);
+        assertThat(report.path("ruleCount").asInt()).isEqualTo(604);
         assertThat(report.path("incompleteAnchors")).isEmpty();
         assertThat(report.path("duplicateAnchors")).isEmpty();
         assertThat(report.path("unsupportedVersionFiles")).isEmpty();

@@ -1554,7 +1554,7 @@
     "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
   }, {
     "id" : "BR-RULE-SEG103-R-014",
-    "title" : "EBT Program Data is bounded to 267 bytes and begins with a 3-digit Total Length subelement with maximum value 264",
+    "title" : "EBT Program Data is bounded to 267 bytes and begins with a 3-digit Total Length equal to all following TAG/LEN/detail bytes, maximum value 264",
     "status" : "DRAFT_REVIEW_REQUIRED",
     "sourceAnchors" : [ {
       "specification" : "ATL105",
@@ -1654,7 +1654,7 @@
     "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
   }, {
     "id" : "BR-RULE-SEG103-R-022",
-    "title" : "EBT Program Data subelement full positional layout: TAG+LEN+ACCOUNT TYPE(98)+AMOUNT TYPE(=TAG)+CURRENCY CODE(840)+AMOUNT DESCRIPTOR(0/C/D)+DETAIL(12-digit amount) for TAG 50/51/52; TAG+LEN+ADDRESS(28)+ZIP(9) for TAG IT",
+    "title" : "EBT Program Data subelement full positional layout: TAG+LEN+ACCOUNT TYPE(98)+AMOUNT TYPE+CURRENCY CODE(840)+AMOUNT DESCRIPTOR(0/C/D)+DETAIL(12-digit amount) for TAG 50/51/52; TAG+LEN+ADDRESS(28)+ZIP(up to 9 digits) for TAG IT",
     "status" : "DRAFT_REVIEW_REQUIRED",
     "sourceAnchors" : [ {
       "specification" : "ATL105",
@@ -4885,6 +4885,19 @@
     } ],
     "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
   }, {
+    "id" : "BR-RULE-SEG123-R-012",
+    "title" : "Optional Token Requestor ID is 11 characters; populated SafeKey Response and TAVV Result Code are one character each",
+    "status" : "DRAFT_REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "196,204,238",
+      "rule" : "optional-requestor-response-field-widths"
+    } ],
+    "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
+  }, {
     "id" : "BR-RULE-SEG123-R-001",
     "title" : "Segment Type is fixed value 123 (Element 85), Device-sourced",
     "status" : "DRAFT_REVIEW_REQUIRED",
@@ -6605,6 +6618,32 @@
     } ],
     "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
   }, {
+    "id" : "BR-RULE-SEG156-R-008",
+    "title" : "Segment Type is fixed 156 and Segment Length is three numeric digits",
+    "status" : "DRAFT_REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
+  }, {
+    "id" : "BR-RULE-SEG156-R-009",
+    "title" : "EV Charging Data is required, max 200 characters, and consists of two-digit table IDs, three-digit lengths and matching table values",
+    "status" : "DRAFT_REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "242",
+      "rule" : "ev-data-required-tlv-section-cap"
+    } ],
+    "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
+  }, {
     "id" : "BR-RULE-SEG156-R-001",
     "title" : "Segment 156 is sent only for an EV charging transaction (EV fuel code in Segment 102 Product Code Segment), and is applicable to the Visa card type only",
     "status" : "DRAFT_REVIEW_REQUIRED",
@@ -6961,6 +7000,7 @@
       "version" : "2026-3",
       "section" : "12.43",
       "segment" : "DL2",
+      "element" : "24",
       "rule" : "max-length-69-markers"
     } ],
     "testSolutionEvidence" : "INDEPENDENT_RULE_CATALOG"
@@ -41033,6 +41073,19 @@
     "status" : "REVIEW_REQUIRED",
     "trainingStatus" : "TS_DERIVATION_REQUIRED"
   }, {
+    "id" : "TS-REVIEW-BR-RULE-SEG123-R-012",
+    "requirementIds" : [ "BR-RULE-SEG123-R-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "196,204,238",
+      "rule" : "optional-requestor-response-field-widths"
+    } ],
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TS_DERIVATION_REQUIRED"
+  }, {
     "id" : "TS-REVIEW-BR-RULE-SEG123-R-001",
     "requirementIds" : [ "BR-RULE-SEG123-R-001" ],
     "sourceAnchors" : [ {
@@ -42753,6 +42806,32 @@
     "status" : "REVIEW_REQUIRED",
     "trainingStatus" : "TS_DERIVATION_REQUIRED"
   }, {
+    "id" : "TS-REVIEW-BR-RULE-SEG156-R-008",
+    "requirementIds" : [ "BR-RULE-SEG156-R-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TS_DERIVATION_REQUIRED"
+  }, {
+    "id" : "TS-REVIEW-BR-RULE-SEG156-R-009",
+    "requirementIds" : [ "BR-RULE-SEG156-R-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "242",
+      "rule" : "ev-data-required-tlv-section-cap"
+    } ],
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TS_DERIVATION_REQUIRED"
+  }, {
     "id" : "TS-REVIEW-BR-RULE-SEG156-R-001",
     "requirementIds" : [ "BR-RULE-SEG156-R-001" ],
     "sourceAnchors" : [ {
@@ -43108,6 +43187,7 @@
       "version" : "2026-3",
       "section" : "12.43",
       "segment" : "DL2",
+      "element" : "24",
       "rule" : "max-length-69-markers"
     } ],
     "status" : "REVIEW_REQUIRED",
@@ -71073,6 +71153,20 @@
     "status" : "REVIEW_REQUIRED",
     "trainingStatus" : "TC_DERIVATION_REQUIRED"
   }, {
+    "id" : "TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-012",
+    "scenarioIds" : [ "TS-REVIEW-BR-RULE-SEG123-R-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "196,204,238",
+      "rule" : "optional-requestor-response-field-widths"
+    } ],
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TC_DERIVATION_REQUIRED"
+  }, {
     "id" : "TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-001",
     "scenarioIds" : [ "TS-REVIEW-BR-RULE-SEG123-R-001" ],
     "sourceAnchors" : [ {
@@ -72930,6 +73024,34 @@
     "status" : "REVIEW_REQUIRED",
     "trainingStatus" : "TC_DERIVATION_REQUIRED"
   }, {
+    "id" : "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-008",
+    "scenarioIds" : [ "TS-REVIEW-BR-RULE-SEG156-R-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TC_DERIVATION_REQUIRED"
+  }, {
+    "id" : "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-009",
+    "scenarioIds" : [ "TS-REVIEW-BR-RULE-SEG156-R-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "242",
+      "rule" : "ev-data-required-tlv-section-cap"
+    } ],
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "status" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TC_DERIVATION_REQUIRED"
+  }, {
     "id" : "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-001",
     "scenarioIds" : [ "TS-REVIEW-BR-RULE-SEG156-R-001" ],
     "sourceAnchors" : [ {
@@ -73313,6 +73435,7 @@
       "version" : "2026-3",
       "section" : "12.43",
       "segment" : "DL2",
+      "element" : "24",
       "rule" : "max-length-69-markers"
     } ],
     "expectedOutcome" : "REVIEW_REQUIRED",
@@ -124400,6 +124523,23 @@
       "fixtureStatus" : "SME_FIXTURE_REQUIRED"
     }
   }, {
+    "id" : "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-012",
+    "testCaseIds" : [ "TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-012" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "196,204,238",
+      "rule" : "optional-requestor-response-field-widths"
+    } ],
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TEST_DATA_DERIVATION_REQUIRED",
+    "payload" : {
+      "fixtureStatus" : "SME_FIXTURE_REQUIRED"
+    }
+  }, {
     "id" : "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-001",
     "testCaseIds" : [ "TC-REVIEW-TS-REVIEW-BR-RULE-SEG123-R-001" ],
     "sourceAnchors" : [ {
@@ -126668,6 +126808,40 @@
       "fixtureStatus" : "SME_FIXTURE_REQUIRED"
     }
   }, {
+    "id" : "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-008",
+    "testCaseIds" : [ "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-008" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TEST_DATA_DERIVATION_REQUIRED",
+    "payload" : {
+      "fixtureStatus" : "SME_FIXTURE_REQUIRED"
+    }
+  }, {
+    "id" : "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-009",
+    "testCaseIds" : [ "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-009" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "242",
+      "rule" : "ev-data-required-tlv-section-cap"
+    } ],
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "trainingStatus" : "TEST_DATA_DERIVATION_REQUIRED",
+    "payload" : {
+      "fixtureStatus" : "SME_FIXTURE_REQUIRED"
+    }
+  }, {
     "id" : "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-001",
     "testCaseIds" : [ "TC-REVIEW-TS-REVIEW-BR-RULE-SEG156-R-001" ],
     "sourceAnchors" : [ {
@@ -127135,6 +127309,7 @@
       "version" : "2026-3",
       "section" : "12.43",
       "segment" : "DL2",
+      "element" : "24",
       "rule" : "max-length-69-markers"
     } ],
     "readiness" : "REVIEW_REQUIRED",
@@ -128989,17 +129164,17 @@
     } ]
   },
   "summary" : {
-    "independentRuleDenominator" : 601,
-    "businessRequirements" : 1326,
+    "independentRuleDenominator" : 604,
+    "businessRequirements" : 1329,
     "preservedLifecycleBusinessRequirements" : 0,
-    "testScenarios" : 1961,
-    "testCases" : 2043,
-    "testData" : 2057,
+    "testScenarios" : 1964,
+    "testCases" : 2046,
+    "testData" : 2060,
     "unlinkedTestDataCandidates" : 22,
     "syntheticReviewFixtureDrafts" : 18,
-    "placeholderScenarios" : 618,
-    "placeholderTestCases" : 619,
-    "placeholderTestData" : 641,
+    "placeholderScenarios" : 621,
+    "placeholderTestCases" : 622,
+    "placeholderTestData" : 644,
     "executionReady" : false,
     "reason" : "Every independent BR has a structural BR->TS->TC->TD chain; placeholders remain REVIEW_REQUIRED until independently derived, reviewed, and fixture-backed."
   }

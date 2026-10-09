@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 /** Validates the structured representation of Segment 100 serialization rules. */
 public final class Segment100SerializationValidator {
     private static final Pattern LENGTH = Pattern.compile("^[0-9]{3,4}$");
+    private static final Pattern SEGMENT_LENGTH = Pattern.compile("^[0-9]{3}$");
+    /** ATL105 Chapter 13.2 Element 84: Segment 100's Segment Length ranges 001-218. */
+    private static final int SEGMENT_100_MIN_LENGTH = 1;
+    private static final int SEGMENT_100_MAX_LENGTH = 218;
     private static final List<String> SEGMENT_100_ORDER = List.of(
             "segmentType", "segmentLength", "informationByte", "terminalIdentifier", "promptCode",
             "accountNumber", "cardDiscretionaryBlockData", "encryptedPinBlockData", "pumpLaneNumber",
@@ -62,8 +66,18 @@ public final class Segment100SerializationValidator {
                 "dataSection1.fieldSeparators", result);
         String segmentLength = segment.path("segmentLength").asText(null);
         if (segmentLength == null || !("CALCULATE_FROM_SEGMENT_CONTENT".equals(segmentLength)
-                || LENGTH.matcher(segmentLength).matches())) {
+                || SEGMENT_LENGTH.matcher(segmentLength).matches())) {
             result.addError("Segment100Serialization", id + " standardSegment.segmentLength is invalid");
+        } else if (LENGTH.matcher(segmentLength).matches()) {
+            int value = Integer.parseInt(segmentLength);
+            if (value < SEGMENT_100_MIN_LENGTH || value > SEGMENT_100_MAX_LENGTH) {
+                result.addError("Segment100Serialization", id
+                        + " standardSegment.segmentLength " + segmentLength
+                        + " is outside ATL105 Chapter 13.2 Element 84's Segment 100 range 001-218");
+            }
+        }
+        if ("CALCULATE_FROM_SEGMENT_CONTENT".equals(segmentLength)) {
+            result.addWarning("REVIEW_REQUIRED: " + id + " Segment 100 length is a generation instruction, not verified encoded-length evidence");
         }
 
         List<String> actualOrder = fieldNames(segment);
