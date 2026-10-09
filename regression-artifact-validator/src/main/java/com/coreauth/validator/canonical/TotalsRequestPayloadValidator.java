@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
  * Validates the Totals Request (ATL105 Section 11.4.1.1, Segment 105) and the Totals with
  * Proprietary Data Load Request (Section 11.4.1.2, Segment 119): message envelope (both
  * segments) and field-level Segment 105 rules (added during the Chapter 12 segment
- * cross-check; see {@link #checkSegment105Fields}). Field-level Segment 119 rules are not
- * checked here.
+ * cross-check; see {@link #checkSegment105Fields}). Legacy validation remains unchanged;
+ * the adapter/evidence overload additionally executes actual Segment 119 field/history checks.
  */
 public final class TotalsRequestPayloadValidator {
     public static final String TOTALS_REQUEST = "Totals Request";
@@ -80,6 +80,25 @@ public final class TotalsRequestPayloadValidator {
     public ValidationResult validatePayload(JsonNode payload) {
         ValidationResult result = new ValidationResult("totals-request-payload");
         validatePayload(payload, result);
+        return result;
+    }
+
+    public ValidationResult validatePayload(JsonNode payload, Segment119ActualPayloadAdapter adapter, JsonNode evidence) {
+        ValidationResult result = validatePayload(payload);
+        if (payload == null || !payload.path(TOTALS_WITH_PDL_REQUEST).isObject()) return result;
+        var children = payload.path(TOTALS_WITH_PDL_REQUEST).fields();
+        while (children.hasNext()) {
+            var child = children.next();
+            if (!child.getValue().isObject() || !"119".equals(text(child.getValue(), "SegmentType"))) continue;
+            var assessed = adapter.validate(child.getValue(), TOTALS_WITH_PDL_REQUEST, evidence);
+            for (var finding : assessed.findings()) {
+                if (finding.status() == Chapter12SegmentPayloadValidator.Status.INVALID) {
+                    result.addError(SOURCE, finding.ruleId() + ": " + finding.reason());
+                } else if (finding.status() == Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED) {
+                    result.addWarning(finding.ruleId() + ": " + finding.reason());
+                }
+            }
+        }
         return result;
     }
 

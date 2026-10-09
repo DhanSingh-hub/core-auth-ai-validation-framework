@@ -638,10 +638,89 @@ byte count. No validator was weakened to accommodate the incorrect fixture.
   duplicate/retry, settlement cutoff, authentic table versions/timestamp
   provenance and complete selection policy remain unclosed.
 - The legacy named Totals Request validator and actual AI adapter are not newly
-  wired to these field predicates. Their integration remains tracked work, not
-  an asserted successful real-AI execution.
+  wired to these field predicates in the original batch. The subsequent
+  actual-payload integration below adds opt-in execution; complete producer
+  mapping remains unclosed.
 - No full-suite run is claimed for this batch. Chapter 12 and Chapter 13 both
   remain IN_PROGRESS. No commit/push was made for this continuation.
+
+### Segment 119 actual-payload and totals-history integration
+
+The previous bounded batch was committed/pushed as `85897874`. This new batch
+is uncommitted on `Appendix-N`.
+
+- Added the [actual-payload adapter](../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ActualPayloadAdapter.java):
+  named fields and repeated `CategoryTotals` are mapped from the actual payload,
+  not metadata. A single flat bucket triple is also supported; simultaneous
+  flat and array forms are explicitly invalid. Missing/nontext fields are not
+  coerced. Unknown aliases remain review-required. Inputs remain unchanged.
+- Added the explicit adapter/evidence overload to the
+  [legacy Totals Request validator](../../../../../src/main/java/com/coreauth/validator/canonical/TotalsRequestPayloadValidator.java).
+  Its original default behavior is preserved, rather than breaking earlier
+  envelope-only fixture acceptance or silently imposing strict field validation.
+- Wired every actual Segment 119 occurrence through this adapter in
+  [semantic AI intake](../../../../../src/main/java/com/coreauth/validator/validation/Atl105AiElementIntake.java).
+  Existing semantic opt-in enables the new predicates; default intake remains
+  unchanged. Parent payload family is authoritative. Predicate outcomes,
+  including successful checks, are retained in intake findings.
+- Reused Chapter 13's processing-history validator for observed totals activity,
+  date correlation, ending/roll, reset and accumulation behavior. Explicit
+  request direction is authoritative; contradictory/malformed evidence is
+  invalid. Context/history is supplied evidence, not authenticated host proof.
+- Expanded the canonical generator with six actual-adapter probes, including
+  positive and negative timestamp, zero sequence, nontext bucket count and
+  history-selected response date checks. The target rule is recorded separately
+  from the catalog anchor and whole observation. Source/catalog chains remain
+  unapproved.
+
+**Why required:** numbered fixtures alone did not demonstrate that actual named
+payloads reached the Segment 119 rules. Flat/repeated producer shapes and
+history dates could otherwise be skipped or falsely supplied by metadata.
+
+The regenerated [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **48 BR / 48 TS / 72 TC / 72 TD records**. The
+[execution evidence](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **72 executions**, including **26 Segment 119 executions** and six
+actual-adapter observations. All Segment 119 chains retain exact existing Test
+anchor candidates. Expected/actual whole and target results match; traceability
+validates. These are bounded predicate executions, not full semantic closure.
+
+The [real AI intake report](../../../test-output/test-solution-independent-review/chapter-12-segment119-ai-intake-2026-09-29-phase1.json)
+assesses the unchanged 2026-09-29 phase-1 batch: **37 cases**, **29 invalid /
+8 review-required**, with **253 generic semantic observations**. New Segment 119
+checks execute on actual case `TC-000037` in addition to those generic observations.
+Do not interpret those 253 observations as Segment 119 execution counts.
+All **74 producer input files** were hash-verified unchanged. Findings retain
+rule IDs and sampled case IDs without copying AI values. This batch's
+`field_constraint` labels do not establish a positive/negative detection ratio.
+
+Initial focused validation passed **86 tests with zero failures/errors/skips**.
+The final flat-bucket mapping guard is tested separately after inspecting the
+actual producer shape; final validation results are recorded below.
+
+Final covering validation passed **87 tests with zero failures/errors/skips**.
+The full suite during this batch ran **2,501 tests: 2,499 passed, two known
+appendix failures, zero errors/skips**. The failures are
+AppendixCoverageConsistencyTest.allAppendixRecordsMatchTheCanonicalInventory
+(readiness `UNSPECIFIED`) and
+AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents
+(terminal-capability expectation). No new failure was found or assertion
+weakened. This full run preceded the final flat-bucket guard; its final behavior
+was validated by the 87-test gate and both reports regenerated afterward.
+
+The final actual case `TC-000037` produces **16 passed Segment 119 findings,
+7 invalid findings and 9 review findings**. Invalid candidates include actual
+use under a Financial Transaction Request rather than the dedicated totals
+family, absent N3 length, malformed terminal/prompt, eight-byte hardware instead
+of four and short Device Card Table Version. Its flat bucket is now mapped and
+assessed, not incorrectly reported missing. Overall batch case verdicts remain
+29 invalid / 8 review-required; finding counts are not whole-message pass rates.
+
+Still remaining: complete producer alias reconciliation, parent history on every
+numbered/envelope surface, independently executed Segment 119 reset/roll facets,
+sequence/retry/cutoff and table/timestamp provenance correlations. Genuine
+389/493 and delimiter numbering conflicts remain separate source boundaries.
+Neither Chapter 12 nor Chapter 13 is newly declared complete.
 
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
 No substantive chapter is newly declared fully covered by this continuation.

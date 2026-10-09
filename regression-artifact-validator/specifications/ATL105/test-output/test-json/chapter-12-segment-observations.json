@@ -6,6 +6,16 @@
   "observations": [
     {
       "id": "TD-TEST-CH12-119-FIELDS", "ruleId": "SEG119-R-008", "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {"SegmentType":"119","SegmentLength":"147","InformationByte":"0","TerminalID":"1D13500101001","PromptCode":"990","EmployeeNumber":"","Password":"","TotalsDate":"333333","HardwareVersion":"HW01","SoftwareVersion":"SW000001","FirmwareVersion":"FW000001","SequenceNumber":"000001","DeviceCardTableVersion":"00000000000000000000000000000000001","HostDiscountTimestamp":"202610091930","CurrencyCode":"840","GrandTotal":"00000100","CategoryTotals":[{"CardLabel":"CC","CardTypeTotalCount":"00001","CardTypeTotalAmount":"00000100"}]},
+      "actualEvidence": {"context":{"bucketCoverageComplete":true},"history":{"totals":{"requestDate":"333333","responseDate":"261009","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}},
+      "actualPayloadProbes": [
+        {"id":"ACTUAL-TIMESTAMP-VALID","ruleId":"SEG119-R-021","scope":"discount-timestamp","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"ACTUAL-TIMESTAMP-INVALID","ruleId":"SEG119-R-021","scope":"discount-timestamp","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"HostDiscountTimestamp":"202602291930"}},
+        {"id":"ACTUAL-SEQUENCE-ZERO","ruleId":"SEG119-R-019","scope":"sequence","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"SequenceNumber":"000000"}},
+        {"id":"ACTUAL-BUCKET-NONTEXT","ruleId":"SEG119-R-025","scope":"bucket-count-width","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"CategoryTotals":[{"CardLabel":"CC","CardTypeTotalCount":1,"CardTypeTotalAmount":"00000100"}]}},
+        {"id":"ACTUAL-HISTORY-SELECTOR","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-RESPONSE","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"ACTUAL-HISTORY-RESPONSE-INVALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-RESPONSE","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"history":{"totals":{"requestDate":"333333","responseDate":"261008","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}}}
+      ],
       "predicateProbes": [
         {"id":"DATE-VALID","ruleId":"SEG119-R-015","scope":"totals-date","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
         {"id":"DATE-INVALID","ruleId":"SEG119-R-015","scope":"totals-date","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"105":"023126"}},

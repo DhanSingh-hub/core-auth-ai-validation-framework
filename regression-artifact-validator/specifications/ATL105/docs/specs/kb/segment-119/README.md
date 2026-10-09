@@ -107,7 +107,9 @@ does not guess delimiter semantics. Both the 389/493 cap conflict and 17-19/
 Chapter 11 supplies authoritative family, direction and observed placement;
 contradictory child values are invalid and inputs are not mutated.
 The old named-payload `TotalsRequestPayloadValidator` remains unchanged;
-this continuation does not claim complete actual-AI intake or lifecycle closure.
+its new explicit adapter/evidence overload adds actual field/history checks
+while preserving the old default behavior. This continuation does not claim
+complete lifecycle closure.
 
 [Independent fixtures and predicate probes](../../../../test-output/test-json/chapter-12-segment-observations.json)
 provide 20 Segment 119 executions (two header observations plus 18 predicates).
@@ -122,6 +124,49 @@ dates/controls and source conflict reviews. The covering 51-test gate passed.
 Activity-window/lifecycle, selection/retry/cutoff and complete actual producer
 mapping remain implementation/evidence work, separate from genuine source
 conflicts and deferred approvals.
+
+### Actual named payload and observed-history integration
+
+[Segment119ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ActualPayloadAdapter.java)
+maps actual named fields and every `CategoryTotals` occurrence without copying
+metadata values. It also supports a single flat `CardLabel`/`CardTypeTotalCount`/
+`CardTypeTotalAmount` triple; supplying both array and flat bucket forms is
+invalid rather than silently selecting one. Logical short Card Labels are
+space-padded only in the derived observation, never in the input. Unknown
+actual field aliases remain explicit reviews; missing/nontext required fields
+are not replaced by metadata.
+
+Pass this adapter and an observed evidence object to
+`TotalsRequestPayloadValidator.validatePayload(payload, adapter, evidence)` to
+enable strict Segment 119 field/history validation. The one-argument overload
+retains its legacy behavior. `Atl105AiElementIntake` executes this adapter for
+every actual Segment 119 occurrence when its existing semantic mode is enabled
+(`--chapter13-semantics`); default metadata-only mode remains unchanged.
+The selected source-family root stays authoritative.
+
+Evidence `history.totals` is passed to the existing Chapter 13 processing-history
+validator. It assesses activity-date selection, request/response correlation,
+settlement ending/roll and reset/accumulation observations using explicit full
+dates, booleans and amounts. It does not authenticate those observations or
+invent a settlement calendar. See the [Chapter 13 history guide](../13-data-elements.md)
+for field shapes. Actual request direction is authoritative; contradictory or
+malformed history controls are invalid. Absent/partial history remains review.
+
+Six additional independent actual-payload probes cover valid/invalid timestamp,
+zero sequence, nontext repeated count and observed settlement-response selection
+and mismatch. The existing Chapter 12 canonical generator executes the actual
+adapter for these payloads, preserving target status separately from whole status.
+The package now contains **48 BR / 48 TS / 72 TC / 72 TD records**, including
+**26 Segment 119 executions**, all with exact unapproved existing Test candidates.
+These totals are not whole-segment or whole-chapter closure.
+
+Final focused integration validation passed **87 tests**. Full regression
+during the batch ran **2,501 tests**, with **2,499 passing and the two known
+appendix failures**, before the final flat-bucket guard; that last guard was
+covered by the focused gate. The real 37-case AI batch was rerun and all 74
+producer inputs remained hash-identical. See the
+[detailed chapter report](../chapter-coverage-gap-register.md) for measured
+Segment 119 findings, actual-AI provenance and remaining scope.
 
 - Fields 1-17 are Field Separator-delimited.
 - A Field Separator follows Field 17.

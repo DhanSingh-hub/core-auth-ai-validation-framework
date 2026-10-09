@@ -4,6 +4,7 @@ import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator;
 import com.coreauth.validator.canonical.SourceAnchor;
+import com.coreauth.validator.canonical.Segment119ActualPayloadAdapter;
 import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,9 +54,30 @@ public final class GenerateChapter12TrainingEvidence {
         report.set("existingTestPackageSha256", existingHashes);
         ArrayNode executions = report.putArray("executions");
         Chapter12SegmentPayloadValidator validator = new Chapter12SegmentPayloadValidator();
+        Segment119ActualPayloadAdapter actualAdapter = new Segment119ActualPayloadAdapter(mapper.readTree(Atl105Paths.testOutput()
+                .resolve("test-solution-independent-review").resolve("all-element-inventory.json").toFile()));
         List<JsonNode> fixtures = new ArrayList<>();
         for (JsonNode fixture : mapper.readTree(Atl105Paths.testJson("chapter-12-segment-observations.json").toFile()).path("observations")) {
             fixtures.add(fixture);
+            for (JsonNode probe : fixture.path("actualPayloadProbes")) {
+                ObjectNode expanded = mapper.createObjectNode().put("id", probe.path("id").asText())
+                        .put("ruleId", probe.path("ruleId").asText()).put("expectedStatus", probe.path("expectedStatus").asText())
+                        .put("targetScope", probe.path("scope").asText()).put("expectedTargetStatus", probe.path("expectedTargetStatus").asText());
+                expanded.put("targetRuleId", probe.path("targetRuleId").asText(probe.path("ruleId").asText()));
+                ObjectNode payload = fixture.path("payload").deepCopy();
+                ObjectNode actual = fixture.path("actualPayload").deepCopy();
+                if (probe.has("actualFields")) {
+                    var changes = probe.path("actualFields").fields();
+                    while (changes.hasNext()) {
+                        var entry = changes.next();
+                        actual.set(entry.getKey(), entry.getValue().deepCopy());
+                    }
+                }
+                payload.set("actualPayload", actual);
+                payload.set("actualEvidence", probe.has("evidence") ? probe.path("evidence").deepCopy() : fixture.path("actualEvidence").deepCopy());
+                expanded.set("payload", payload);
+                fixtures.add(expanded);
+            }
             for (JsonNode probe : fixture.path("predicateProbes")) {
                 ObjectNode expanded = mapper.createObjectNode().put("id", probe.path("id").asText())
                         .put("ruleId", probe.path("ruleId").asText()).put("expectedStatus", probe.path("expectedStatus").asText())
@@ -89,6 +111,7 @@ public final class GenerateChapter12TrainingEvidence {
             JsonNode anchor = rule.path("sourceAnchor");
             String key = canonicalKey(anchor);
             boolean predicate = fixture.has("targetScope");
+            String targetRuleId = fixture.path("targetRuleId").asText(ruleId);
             String stem = predicate ? "TEST-CH12-" + segment + "-" + fixture.path("id").asText() : "TEST-CH12-" + segment + "-HEADER";
             ObjectNode br = brs.addObject().put("id", "BR-" + stem)
                     .put("title", "Bounded " + (predicate ? fixture.path("targetScope").asText() : "header") + " observation for " + ruleId + ": " + rule.path("title").asText())
@@ -103,12 +126,13 @@ public final class GenerateChapter12TrainingEvidence {
                 String tcId = "TC-" + stem + suffix;
                 ObjectNode payload = fixture.path("payload").deepCopy();
                 if (negative) ((ObjectNode) payload.path("elements")).put("85", "999");
-                var result = validator.validate(payload);
+                var result = payload.has("actualPayload") ? actualAdapter.validate(payload.path("actualPayload"),
+                        payload.path("messageFamily").asText(), payload.path("actualEvidence")) : validator.validate(payload);
                 String expectedStatus = negative ? "INVALID" : fixture.path("expectedStatus").asText();
                 if (!expectedStatus.equals(result.status().name())) throw new IOException("Unexpected fixture outcome: " + fixture.path("id").asText()
                         + suffix + ", expected " + expectedStatus + ", got " + result);
                 if (predicate) {
-                    var targets = result.findings().stream().filter(f -> f.ruleId().equals(ruleId)
+                    var targets = result.findings().stream().filter(f -> f.ruleId().equals(targetRuleId)
                             && f.scope().equals(fixture.path("targetScope").asText())).toList();
                     if (targets.size() != 1 || !targets.getFirst().status().name().equals(fixture.path("expectedTargetStatus").asText())) {
                         throw new IOException("Unexpected predicate target for " + fixture.path("id").asText() + ": " + targets);
@@ -132,10 +156,12 @@ public final class GenerateChapter12TrainingEvidence {
                         .put("expectedStatus", expectedStatus).put("actualStatus", result.status().name());
                 if (predicate) {
                     execution.put("expectedTargetStatus", fixture.path("expectedTargetStatus").asText());
-                    execution.put("actualTargetStatus", result.findings().stream().filter(f -> f.ruleId().equals(ruleId)
+                    execution.put("targetRuleId", targetRuleId);
+                    execution.put("actualTargetStatus", result.findings().stream().filter(f -> f.ruleId().equals(targetRuleId)
                             && f.scope().equals(fixture.path("targetScope").asText())).findFirst().orElseThrow().status().name());
                 }
                 execution.set("findings", mapper.valueToTree(result.findings()));
+                execution.put("validationPath", payload.has("actualPayload") ? "ACTUAL_NAMED_SEGMENT119_WITH_OBSERVED_HISTORY" : "NUMBERED_CHAPTER12_OBSERVATION");
                 execution.set("unassessedCatalogRules", mapper.valueToTree(result.unassessedCatalogRules()));
                 execution.set("sourceAnchor", anchor.deepCopy());
                 ArrayNode candidates = execution.putArray("existingTestArtifactAnchorCandidates");

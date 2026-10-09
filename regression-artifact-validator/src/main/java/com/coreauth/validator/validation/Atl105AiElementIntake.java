@@ -36,6 +36,7 @@ public final class Atl105AiElementIntake {
     private final Atl105ElementValueValidator validator;
     private final Chapter13DataElementValidator semanticValidator;
     private final boolean chapter13Semantics;
+    private final com.coreauth.validator.canonical.Segment119ActualPayloadAdapter segment119Adapter;
     private final JsonNode crosswalk;
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, Set<String>> names = new HashMap<>();
@@ -51,6 +52,8 @@ public final class Atl105AiElementIntake {
         ObjectMapper mapper = new ObjectMapper();
         validator = new Atl105ElementValueValidator(pack);
         semanticValidator = chapter13Semantics ? new Chapter13DataElementValidator(pack) : null;
+        segment119Adapter = chapter13Semantics ? new com.coreauth.validator.canonical.Segment119ActualPayloadAdapter(
+                mapper.readTree(pack.resolve("test-output").resolve("test-solution-independent-review").resolve("all-element-inventory.json").toFile())) : null;
         this.chapter13Semantics = chapter13Semantics;
         crosswalk = mapper.readTree(pack.resolve("docs/specs/kb/elements/ai-intake-crosswalk.json").toFile());
         if (!"ATL105".equals(crosswalk.path("specification").asText()) || !"2026-3".equals(crosswalk.path("specificationVersion").asText()))
@@ -229,6 +232,17 @@ public final class Atl105AiElementIntake {
         } else if (resolved == null) intake.add(review("", "AI metadata family label is not a Section 11 message family; payload-root family used"));
         else if (!familyName.equals(resolved)) intake.add(invalid("", "Metadata message family contradicts the actual payload segment/root family"));
         final String actualFamily = familyName;
+        for (ActualSegment occurrence : occurrences) {
+            if (!"119".equals(occurrence.segment())) continue;
+            var assessed = segment119Adapter.validate(occurrence.body(), actualFamily, meta);
+            for (var finding : assessed.findings()) {
+                intake.add(new Finding("", switch (finding.status()) {
+                    case INVALID -> Status.INVALID;
+                    case CHECKS_PASSED -> Status.CHECKS_PASSED;
+                    case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+                }, finding.ruleId(), finding.reason()));
+            }
+        }
         Map<String, ObjectNode> numbered = new LinkedHashMap<>();
         Set<String> metaIdentities = new HashSet<>();
         Map<String, String> metadataMappings = new HashMap<>();

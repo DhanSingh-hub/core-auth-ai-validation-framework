@@ -19,8 +19,8 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(42);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(66);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(48);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(72);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
         assertThat(report.path("executions")).anySatisfy(execution -> {
@@ -37,8 +37,14 @@ class GenerateChapter12TrainingEvidenceTest {
         assertThat(new CanonicalTraceabilityValidator().validate(loaded).errors()).isEmpty();
         assertThat(new CanonicalTraceabilityValidator().validateForExecution(loaded).errors()).isNotEmpty();
         var validator = new Chapter12SegmentPayloadValidator();
+        var actualAdapter = new com.coreauth.validator.canonical.Segment119ActualPayloadAdapter(new ObjectMapper()
+                .readTree(com.coreauth.validator.paths.Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                        .resolve("all-element-inventory.json").toFile()));
         for (var data : loaded.getTestData()) {
-            assertThat(validator.validate(data.getPayload()).status().name()).isIn("INVALID", "REVIEW_REQUIRED", "CHECKS_PASSED");
+            var payload = data.getPayload();
+            var result = payload.has("actualPayload") ? actualAdapter.validate(payload.path("actualPayload"),
+                    payload.path("messageFamily").asText(), payload.path("actualEvidence")) : validator.validate(payload);
+            assertThat(result.status().name()).isIn("INVALID", "REVIEW_REQUIRED", "CHECKS_PASSED");
         }
         int predicates = 0;
         for (var execution : report.path("executions")) {
@@ -47,7 +53,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 assertThat(execution.path("actualTargetStatus")).isEqualTo(execution.path("expectedTargetStatus"));
             }
         }
-        assertThat(predicates).isEqualTo(18);
+        assertThat(predicates).isEqualTo(24);
         assertThat(new ObjectMapper().readTree(reportFile.toFile())).isEqualTo(report);
     }
 }
