@@ -185,6 +185,8 @@ class Chapter12SegmentPayloadValidatorTest {
         ObjectNode tax = (ObjectNode) payload.path("taxProducts").get(0).path("taxes").get(0);
         tax.put("flag", "E").put("type", "GST").put("amount", "97");
         assertThat(validator.validate(payload).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        tax.put("type", "QST");
+        assertThat(validator.validate(payload).status()).isEqualTo(Status.REVIEW_REQUIRED);
         tax.put("type", "VAT");
         assertThat(validator.validate(payload).status()).isEqualTo(Status.INVALID);
     }

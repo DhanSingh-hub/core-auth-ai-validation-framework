@@ -24,6 +24,108 @@ Extraction of data element definitions from BUYPASS ATL105 Specification Chapter
 
 ## Data Element Definitions (1-99)
 
+### Executable Chapter 13 continuation
+
+The source inventory contains **231 distinct element numbers and 232 definitions**:
+Element 118 appears twice. These counts are not semantic coverage.
+
+The current [profile catalog](elements/validation-profiles.json) contains 79
+contextual profiles. This continuation added 11 profiles and extended the existing
+financial Sequence Number profile with the source's nonzero range:
+
+| Elements | Executed representation scope | Not asserted |
+|---|---|---|
+| 86 | Financial, Totals and Electronic Mail requests: fixed N6, 000001-999999 | Uniqueness, allocation and lifecycle/request-response identity |
+| 39/43/96 | Totals Request firmware/software fixed alphanumeric width 8; hardware 4 or 8 | Device/application compatibility, authentic version values |
+| 44/78 | Totals Request single/multimessage 0/1 and fixed Prompt Code 990 | Connection behavior, other transaction-specific prompt semantics |
+| 32 | Populated Totals employee number N4; empty can be omitted | Assignment, authorization policy or whether the condition requires inclusion |
+| 105 | Totals Request MMDDYY calendar or six source-listed special codes | Response YYMMDD, activity-window eligibility, reset and settlement history |
+| 36/45 | Populated Electronic Mail Extract Date and response Initiation Date MMDDYY | Actual extraction/initiation time, host clock, merchant time zone |
+
+Leap day with year `00` remains review-required without century evidence.
+The same calendar helper is reused by the legacy Totals Request validator;
+its prior representation acceptance is preserved. Request special date codes
+are not imported into response or unrelated date profiles.
+
+Evidence:
+[independent probes](../../../test-output/test-json/chapter-13-element-probes.json),
+[12 BR / 12 TS / 110 TC / 110 TD chains](../../../test-output/test-json/chapter-13-training-package.json),
+and [actual execution and reconciliation](../../../test-output/test-json/chapter-13-training-evidence.json).
+All 12 chains retain the existing catalog anchor plus a Chapter 13 anchor.
+Existing Test BR exact-anchor candidates are required before generation; candidate
+matches and artifacts remain review-required, not auto-approved.
+
+The execution report reconciles all 231 identities and runs 440 baseline
+max-length probes across 220 extractable single definitions. Baselines check
+maximum length and numeric shape where applicable; they do not establish the
+complete alphabet, every valid value or contextual semantics.
+The 110 contextual probes yield 32 target representation checks passed, 63
+invalid targets detected and 15 explicit review findings. Whole partial
+observations are reported separately from the target-element result.
+
+Chapter 11 now delegates supplied numbered observations for Segments 100/105/109
+and Electronic Mail response elements through these profiles. A child's explicit
+version/family/segment cannot override the parent's context. This is not complete
+producer-alias/AI-intake integration or wire certification.
+
+### Expanded source-local domains and dependencies
+
+The later semantic continuation adds a complementary
+[Chapter 13 validator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13DataElementValidator.java).
+It composes the existing profiles and reuses Appendix D state codes, Appendix L
+currency codes, Appendix I/K table validators and the Appendix R chip-data oracle.
+It does not replace their source limits or claim complete eligibility coverage.
+
+The [value-domain catalog](elements/value-domains.json) holds **55 explicitly
+authored scalar domains**, including all 36 source-listed Extended Unit of Measure
+codes. Initialization verifies element-local evidence, every listed literal and
+both numeric range endpoints. Domains are not inferred from AI artifacts.
+
+Additional executed predicates cover calendar formats, request/response Totals
+dates, the source's unusual 01-24/01-60 clock ranges, explicit wire width,
+numeric password padding, masked Store Number, decimal-prefix quantities/prices,
+transport-specific mail limits, length/data correlation, net-total arithmetic,
+BIN ordering, separate print/receipt record counts, QST and true tax omission,
+original sequence/reversal-prompt correlation, observed MICR truncation/extension,
+received checksum reuse and Moneris key iteration counts. Private-use/reserved
+values, absent context, CAPK block/file ambiguity and production availability
+remain explicit review findings.
+
+Enable these additional checks through `chapter13Semantics: true` on a Chapter 11
+envelope or element-reference observation. The old default mode is preserved.
+`representation: "WIRE"` opts into source fixed widths; `"LOGICAL"` does not
+silently invent padding. Put context in `qualifiers`, repeated observations in
+`records` (`printLines`, `receiptLines`, `cardTypes`, `products`, `monerisKeys`),
+and prior observed elements in `qualifiers.originalElements`. Parent version,
+family, segment, explicit representation and shared qualifiers are authoritative
+in the envelope; conflicting child values are rejected.
+
+[Independent semantic probes](../../../test-output/test-json/chapter-13-semantic-probes.json),
+[149 BR / 149 TS / 437 TC / 437 TD chains](../../../test-output/test-json/chapter-13-domain-package.json)
+and [437 actual executions](../../../test-output/test-json/chapter-13-domain-evidence.json)
+are persisted. These comprise 368 scalar-domain/type probes plus 69 dependency
+and semantic probes, with **254 target checks passed, 174 invalid targets and
+9 explicit reviews**. Additional predicates were executed for 82 element
+identities; this is not 82 fully completed element definitions.
+
+All 231 identities are reconciled against the existing complete Test BR package.
+Nine exercised identities have no numeric-element candidate in that package:
+6, 56, 61, 100, 120, 193, 205, 212 and 243. This is an explicitly reported
+cross-check gap, not a confirmed missing implementation or an SME decision.
+Global Chapter 13 anchors intentionally have no segment identity; a synthetic
+observation does not establish that an element belongs to Segment 100.
+
+**Chapter 13 remains IN_PROGRESS; full non-SME completion has not been achieved.**
+The new evidence labels uncompleted processing reconciliation as an
+implementation gap, not an SME blocker. All successful whole observations
+remain review-required, separate from passed target predicates.
+The scalar baseline is still ambiguous or
+unextracted for 2/33/43/51/94/118/183/184/202/203/243. Some of these already have
+bounded segment/appendix checks (including the new hardware profile); they are
+not automatically missing code. Remaining source-to-predicate, applicability,
+encoding and lifecycle reconciliation must use existing oracles before adding
+new logic.
+
 | Elem # | Name | Format/Length | Allowed Values or Reference | Notes |
 |--------|------|---------------|---------------------------|-------|
 | 1 | Access Code | AN, 12 bytes max | Variable up to 12 alphanumeric; "B" for pause | Used for dial strings; PBX access codes |

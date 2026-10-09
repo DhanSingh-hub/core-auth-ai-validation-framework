@@ -3,7 +3,6 @@ package com.coreauth.validator.coverage;
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
 import com.coreauth.validator.canonical.Segment109PayloadValidator;
-import com.coreauth.validator.canonical.SourceAnchor;
 import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +51,7 @@ public final class GenerateChapter10ElectronicMailEvidence {
             JsonNode rule = rules.get(ruleId);
             if (rule == null) throw new IOException("Fixture references missing catalog rule " + ruleId);
             JsonNode anchor = rule.path("sourceAnchor");
-            String key = canonicalKey(anchor);
+            String key = CanonicalSourceAnchorIdentity.key(mapper, anchor);
             String stem = "TEST-CH10-" + ruleId;
             if (added.add(ruleId)) {
                 ObjectNode br = brs.addObject().put("id", "BR-" + stem).put("title", rule.path("title").asText())
@@ -98,7 +97,7 @@ public final class GenerateChapter10ElectronicMailEvidence {
             execution.set("sourceAnchor", anchor.deepCopy());
             var candidates = execution.putArray("existingTestArtifactAnchorCandidates");
             for (JsonNode br : existing.path("businessRequirements")) for (JsonNode candidate : br.path("sourceAnchors")) {
-                if (key.equals(canonicalKey(candidate))) {
+                if (key.equals(CanonicalSourceAnchorIdentity.key(mapper, candidate))) {
                     candidates.add(br.path("id").asText());
                 }
             }
@@ -117,11 +116,4 @@ public final class GenerateChapter10ElectronicMailEvidence {
         return report;
     }
 
-    private String canonicalKey(JsonNode anchor) throws IOException {
-        ObjectNode identity = mapper.createObjectNode();
-        for (String field : new String[]{"specification", "version", "section", "segment", "element", "rule"}) {
-            if (anchor.has(field)) identity.set(field, anchor.get(field));
-        }
-        return mapper.treeToValue(identity, SourceAnchor.class).canonicalKey();
-    }
 }

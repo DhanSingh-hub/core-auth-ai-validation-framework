@@ -27,6 +27,7 @@ public final class Atl105ElementReferenceValidator {
     private final JsonNode matrix;
     private final JsonNode templates;
     private final Atl105ElementValueValidator valueValidator;
+    private final Chapter13DataElementValidator chapter13Validator;
 
     public Atl105ElementReferenceValidator(Path pack) throws IOException {
         this.pack = pack;
@@ -34,6 +35,7 @@ public final class Atl105ElementReferenceValidator {
         matrix = mapper.readTree(pack.resolve("test-output/test-solution-independent-review/atl105-all-elements-reference.json").toFile());
         templates = mapper.readTree(pack.resolve("docs/atl105_complete_templates.json").toFile()).path("message_templates");
         valueValidator = new Atl105ElementValueValidator(pack);
+        chapter13Validator = new Chapter13DataElementValidator(pack);
     }
 
     public MatrixResult validateMatrix() {
@@ -89,7 +91,10 @@ public final class Atl105ElementReferenceValidator {
             ObjectNode segmentObservation = baseObservation(family, segment, (ObjectNode) segmentNode.path("elements"));
             segmentObservation.put("completeness", "PARTIAL");
             if (observation.has("qualifiers")) segmentObservation.set("qualifiers", observation.path("qualifiers").deepCopy());
-            Result result = valueValidator.validate(segmentObservation);
+            if (observation.has("representation")) segmentObservation.set("representation", observation.path("representation"));
+            if (segmentNode.has("records")) segmentObservation.set("records", segmentNode.path("records"));
+            Result result = observation.path("chapter13Semantics").asBoolean(false)
+                ? chapter13Validator.validate(segmentObservation) : valueValidator.validate(segmentObservation);
             findings.addAll(result.findings());
             recordContextReview(elementFields(segmentNode.path("elements")), family, segment, findings);
         }
@@ -98,7 +103,11 @@ public final class Atl105ElementReferenceValidator {
         present.forEach(segmentsPresent::add);
         message.put("completeness", observation.path("completeness").asText("COMPLETE"));
         if (observation.has("qualifiers")) message.set("qualifiers", observation.path("qualifiers").deepCopy());
-        findings.addAll(valueValidator.validate(message).findings());
+        if (observation.has("elements") && observation.path("elements").isObject() && observation.path("chapter13Semantics").asBoolean(false)) {
+            message.set("elements", observation.path("elements"));
+            if (observation.has("representation")) message.set("representation", observation.path("representation"));
+            findings.addAll(chapter13Validator.validate(message).findings());
+        } else findings.addAll(valueValidator.validate(message).findings());
         if (observation.has("transactionTypeCode")) {
             String txCode = observation.path("transactionTypeCode").asText();
             boolean known = false;

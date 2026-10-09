@@ -1,5 +1,7 @@
 package com.coreauth.validator.canonical;
 
+import com.coreauth.validator.validation.Atl105DecimalPrefix;
+
 import com.coreauth.validator.validation.ValidationResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -164,7 +166,7 @@ public final class ProductSegmentPayloadValidator {
 
     private static void decimal(JsonNode product, String field, String location, String stage, String rule, ValidationResult result) {
         String value = text(product, field);
-        if (!digits(value, 2, 9) || value.charAt(0) > '3' || value.length() - 1 < value.charAt(0) - '0') {
+        if (!Atl105DecimalPrefix.isValid(value)) {
             error(result, stage, rule, location + " " + field + " must encode 0-3 decimal places with all fractional digits");
         }
     }

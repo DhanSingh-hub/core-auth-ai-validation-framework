@@ -222,6 +222,166 @@ and `AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents`.
 They were not weakened or altered merely to obtain a green suite.
 The earlier DL7 error has been fixed.
 
+## Chapter 13 expanded domain and processing continuation
+
+This is additional uncommitted work after the first Chapter 13 profile package.
+The request is full non-SME Chapter 13 coverage. **That completion criterion is
+not yet met:** passing the additional predicates below is not evidence that every
+processing sentence, applicability condition and lifecycle requirement is closed.
+
+### Completed tasks and reasons
+
+| Task | Executed change | Why required |
+|---|---|---|
+| Source-local valid values | Added 55 explicit code/range/pattern domains; constructor verifies local evidence and numeric endpoints | Baseline type/maximum checks accepted zero counters and unlisted codes; a representation match is not a valid-value match |
+| Dates and clocks | Added full-year, MMDD, MMYY, timestamp and Totals response checks; preserved source 01-24/01-60 clock ranges separately from 0000-2359 start/end time | Conventional clock assumptions and a global six-digit date regex can contradict this source |
+| Encoding and wire distinction | Explicit WIRE fixed-width checks, ASCII byte-count limits, source-defined password padding and Store Number masking | Logical observations do not prove serialized widths; padded/masked numeric exceptions must not be falsely rejected |
+| Amount and range correlation | Executed net = grand total - fee and beginning/ending BIN ordering; reused the product decimal-prefix helper | Individually numeric values can still violate cross-field formulas |
+| Mail and companions | Transport-specific 750/150 limits and measured declared/data lengths; partial missing companions review, complete missing companions fail | Declared lengths and protocol-independent maxima are insufficient |
+| Tax | True omission for N, mandatory companions for I/E and source-listed QST; corrected the Chapter 12 Canadian tax predicate too | The previous Canadian list omitted an actual valid source code; blank fields are not omission |
+| Repeated records | Independently counted print lines, receipt lines, card types, products and Moneris key iterations | Counts for different source record families must not be substituted; each Y requires one 16-character key iteration |
+| Lifecycle observations | Original sequence and authorization-reversal prompt reuse; received checksum reuse; MICR first-50 and long ECA/TeleCheck extension | Shape alone cannot detect changed follow-on identities or lost check data |
+| Existing oracles | Composed the existing element profiles, D/L catalogs and I/K/R oracles; extracted the unchanged product decimal-prefix predicate | Avoided duplicated or contradictory independent implementations |
+| Envelope/reference integration | Explicit `chapter13Semantics: true` mode, inherited source context and contradictory-child rejection | New checks must be callable through existing observation surfaces without silently changing their legacy default behavior |
+| Evidence persistence | 149 BRs, 149 TSs, 437 TCs/TDs with actual outcomes, input hashes, source lines, existing-candidate cross-check and canonical integrity validation | Generated chains alone are not executed evidence; candidate identity is not a semantic match or approval |
+
+Implementation:
+[Chapter13DataElementValidator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13DataElementValidator.java),
+[source-local domains](elements/value-domains.json),
+[shared decimal prefix](../../../../../src/main/java/com/coreauth/validator/validation/Atl105DecimalPrefix.java),
+[evidence generator](../../../../../src/main/java/com/coreauth/validator/coverage/GenerateChapter13DomainEvidence.java).
+Evidence:
+[semantic probes](../../../test-output/test-json/chapter-13-semantic-probes.json),
+[canonical package](../../../test-output/test-json/chapter-13-domain-package.json),
+[execution and all-element reconciliation](../../../test-output/test-json/chapter-13-domain-evidence.json).
+Tests:
+[domain and dependency tests](../../../../../src/test/java/com/coreauth/validator/Chapter13DataElementValidatorTest.java),
+[persisted-evidence tests](../../../../../src/test/java/com/coreauth/validator/coverage/GenerateChapter13DomainEvidenceTest.java).
+
+The persisted additional package contains **368 scalar/domain/type executions
+and 69 semantic/dependency executions**: 254 target checks passed, 174 invalid
+targets detected and 9 explicit reviews. It executes additional predicates for
+**82 element identities**, but records **zero fully reconciled element closures**.
+The earlier 110 contextual and 440 baseline probes remain a separate package;
+these counts are not interchangeable or a percentage of complete Chapter 13.
+
+Every generated chain preserves its Chapter 13 identity; no Segment 100 identity
+is invented merely because a scalar test uses a synthetic observation. Existing
+BR references are element-identity candidates, not automatic confirmations.
+The existing canonical package has no numeric-element candidate for exercised
+elements 6/56/61/100/120/193/205/212/243. All nine gaps are explicit in the report.
+Other Test artifacts may contain their evidence; these rows need further
+cross-package reconciliation, not fabricated matches.
+
+### Validation and remaining work
+
+The expanded targeted gate passed **433 tests, zero failures/errors**.
+Editor diagnostics are clear and `git diff --check` passes.
+The first expanded full run executed **2,098 tests**, with the two known
+baseline failures plus three coupled stale-snapshot failures. Reconciliation
+against local commit `2848fe10` found 15 additional existing catalog-to-element
+references (Elements 24/34/84/85/196/204/238/242), not 15 invented rules. Refreshed
+the inventory, reference, transaction applicability, omission, chain, approval,
+dependency and limitation reports in dependency order. Updated exact snapshot
+assertions to **554 catalog element references** and **13,358 omission rows**:
+285 active template rows, 358 listed-but-unestablished rows and 12,715 rows with
+no established applicability. This remains review evidence, not prohibition.
+
+The repaired consistency gate passed **387 tests, zero failures/errors**.
+The final full run executed **2,098 tests: 2,096 passed, two pre-existing
+failures, zero errors/skips**. The remaining failures are Appendix AE's
+`TD-SEG100-APPAE-29` readiness `UNSPECIFIED` and the existing Appendix J terminal
+capability expectation. Neither unrelated test was weakened or changed.
+No dependencies were installed, no commits were made and nothing was pushed.
+
+**Non-SME implementation still required:** exhaustive source sentence/facet
+mapping for all 231 identities; remaining conditional presence and network/card
+gates; request/response field mapping in real AI intake; remaining table/composite
+layouts; actual wire delimiter/byte codecs; complete settlement/active-day/reset
+history, retry/confirmation behavior, CAPK assembly/replacement and receipt/site
+retention/action evidence. Existing validators must be reused and independently
+exercised rather than counting their filenames as closure.
+
+**Separately deferred source/SME questions:** unresolved source conflicts
+(including 169's 40-character receipt length versus 170's 20-character data cap,
+99's Amex eight-byte note versus its seven-digit range, PIN/layout conflicts and
+other already recorded discrepancies), source-unspecified century, reserved or
+private operational assignments and approval decisions. External crypto/key
+trust/merchant profiles and unavailable external layouts are separate dependency
+boundaries; they are not excuses to leave source-local implementation undone.
+
+No remaining implementation work is relabeled SME-only. Chapter 13 is still
+`IN_PROGRESS`, not complete except SME.
+
+## Chapter 13 continuation after local commit 2848fe10
+
+This separate continuation is uncommitted. It extends the existing generic element
+validator rather than creating a competing Chapter 13 oracle. Source definitions,
+matching existing rule IDs and Test BR canonical anchors were cross-checked before
+executed evidence was persisted.
+
+### Changes and reasons
+
+1. **Added 11 contextual profiles; extended one existing Sequence Number profile.**
+   - Element 86's six-digit shape formerly allowed `000000`; the source requires
+     `000001-999999`. Applied to Financial, Totals and Electronic Mail requests.
+   - Elements 39/43/96 now execute Totals firmware/hardware/software widths.
+     Hardware's 4/8 source form cannot be inferred from a single scalar maximum.
+   - Totals 44/78 now enforce 0/1 and 990 within this request context.
+   - Populated Employee Number 32 is N4, including source default 1111; empty
+     omission is distinguished from malformed non-text data.
+   - Dates 105/36/45 now receive calendar validation, not just six-digit regex
+     checks. Totals requests allow only the six source-listed special codes.
+     Response formatting and dates outside these contexts are not guessed.
+2. **Reused a shared calendar representation helper.** The legacy Totals helper was
+   extracted without changing its prior acceptance. Generic profiles explicitly
+   return review-required for year-00 leap day until century evidence exists.
+   Profile initialization rejects unsupported calendar formats and ungrounded
+   special codes instead of silently ignoring bad configuration.
+3. **Wired the profiles into Chapter 11's explicit observations.** Supplied numbered
+   child observations for 100/105/109 and Electronic Mail response top-level
+   elements now receive profile checks. Parent version/family/segment are
+   authoritative; conflicting child declarations are errors. This does not add
+   complete AI producer field mapping or serialized-message certification.
+4. **Persisted independently executed canonical evidence.**
+   [Probes](../../../test-output/test-json/chapter-13-element-probes.json),
+   [package](../../../test-output/test-json/chapter-13-training-package.json),
+   [execution report](../../../test-output/test-json/chapter-13-training-evidence.json):
+   **12 BRs, 12 TSs, 110 TCs and 110 TD records**, with 110 actual contextual
+   executions. Target outcomes: 32 checks passed, 63 invalid, 15 review-required.
+   Whole-observation status is separate; partial observations never become
+   certified messages. Exact existing Test BR anchor candidates are mandatory,
+   but no match or approval is automatically confirmed.
+5. **Reconciled all source identities.** There are **231 distinct elements and 232
+   definitions**, including the repeated 118. Ran **440 baseline probes** across
+   220 extractable single definitions; successful maximum-length/numeric-shape
+   baselines remain review-required. Eleven baseline ambiguity/unextracted rows
+   are explicitly retained: 2/33/43/51/94/118/183/184/202/203/243. A baseline gap is
+   not proof that an existing segment/appendix oracle has no implementation.
+6. **Refreshed the existing inventory and related reports.** Its command-line
+   entry point now normalizes the pack to an absolute path before finding the
+   module/legacy resources; the normal module-relative invocation previously
+   failed on a null parent path. Shared canonical identity projection preserves
+   the six contract identity fields while excluding line-location metadata.
+
+### Validation and limits
+
+- Source/profile/evidence/parent-dispatch/Totals/Chapter 10 integration batch:
+  **47 tests, zero failures/errors**.
+- Final targeted batch, including the added default inventory CLI regression:
+  **48 tests, zero failures/errors**.
+- Chapter 13 generator checks exact 231/232 source counts, 79 current profiles,
+  110 contextual probes, 440 baseline probes, persisted JSON readback and
+  canonical traceability. Execution-ready certification is explicitly rejected.
+- Full integration suite: **1,714 tests; 1,712 passed, the same two pre-existing
+  failures, zero errors/skips**. No new integration failures.
+
+The catalog denominator remains 604; no catalog rules or approvals were added.
+There are now 79 contextual profiles, not 79 fully trained elements. The 12
+executed profile chains span ten element identities and are bounded representation
+evidence. Full valid-value, conditional applicability, encoding and lifecycle
+closure still require additional source-backed work.
+
 ## Honest chapter status
 
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
@@ -241,7 +401,7 @@ No substantive chapter is newly declared fully covered by this continuation.
 | 10 Processing Requirements | 3781-7444 | New 10.11 bounded evidence plus existing partial approval, eWIC, incremental/stored-credential/EMV slices; comprehensive family processing remains |
 | 11 Message Formats | 7445-10844 | New 31-family partial dispatch; complete wire/conditional/positional and canonical-message closure remain |
 | 12 Data Segment Formats | 10845-17699 | Bounded additions above and existing validators; full rule, lifecycle, serialization and intake closure remain |
-| 13 Data Element Descriptions | 17700-25439 | Existing element inventory/profiles/generic validator; complete source-to-executable semantic reconciliation remains |
+| 13 Data Element Descriptions | 17700-25439 | 231 identities/232 definitions reconciled, 79 contextual profiles, new 110 contextual/440 baseline executions; complete source-to-executable semantic reconciliation remains |
 | 14 Support/Testing/Certification | 25440-25504 | Process/certification evidence; no claim of host/network certification |
 
 ## Remaining execution plan, SME approvals deferred

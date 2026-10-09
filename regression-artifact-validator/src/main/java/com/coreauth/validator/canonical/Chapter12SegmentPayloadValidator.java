@@ -278,8 +278,8 @@ public final class Chapter12SegmentPayloadValidator {
                     length(tax, "type", 3, 3, "SEG143-R-007", findings);
                     pattern(tax, "amount", "[0-9]{1,9}", "SEG143-R-005", findings);
                     if ("CANADA".equals(input.path("context").path("country").asText())) {
-                        pattern(tax, "type", "GST|HST|PST", "SEG143-R-007", findings);
-                    } else review(findings, "SEG143-R-007", "country-context", "GST/HST/PST closed enumeration is Canadian only");
+                        pattern(tax, "type", "GST|HST|PST|QST", "SEG143-R-007", findings);
+                    } else review(findings, "SEG143-R-007", "country-context", "GST/HST/PST/QST closed enumeration is Canadian only");
                     body.append(value(tax, "type")).append(value(tax, "amount"));
                 }
                 body.append(i + 1 == taxes.size() ? FS : '\\');

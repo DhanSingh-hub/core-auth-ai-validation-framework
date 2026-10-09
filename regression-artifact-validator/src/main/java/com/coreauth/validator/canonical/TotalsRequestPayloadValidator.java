@@ -1,13 +1,12 @@
 package com.coreauth.validator.canonical;
 
 import com.coreauth.validator.validation.ValidationResult;
+import com.coreauth.validator.validation.Atl105CalendarDate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,6 @@ public final class TotalsRequestPayloadValidator {
     public static final String TOTALS_WITH_PDL_REQUEST = "Totals with Proprietary Data Load Request";
     private static final String SOURCE = "TotalsRequestPayload";
     private static final Pattern NUMERIC_3 = Pattern.compile("^[0-9]{3}$");
-    private static final Pattern TOTALS_DATE_MMDDYY = Pattern.compile("^(0[1-9]|1[0-2])([0-2][0-9]|3[01])[0-9]{2}$");
     private static final Set<String> TOTALS_DATE_SPECIAL_CODES = Set.of(
             "111111", "222222", "333333", "444444", "555555", "999999");
     private static final Pattern ALPHANUMERIC_1_22 = Pattern.compile("^[A-Za-z0-9]{1,22}$");
@@ -259,14 +257,7 @@ public final class TotalsRequestPayloadValidator {
     }
 
     private static boolean validTotalsDate(String value) {
-        if (!TOTALS_DATE_MMDDYY.matcher(value).matches()) return false;
-        try {
-            LocalDate.of(2000 + Integer.parseInt(value.substring(4)), Integer.parseInt(value.substring(0, 2)),
-                    Integer.parseInt(value.substring(2, 4)));
-            return true;
-        } catch (DateTimeException exception) {
-            return false;
-        }
+        return Atl105CalendarDate.isValidMmddyy(value);
     }
 
     private static void version(JsonNode segment, String field, String pattern, String ruleId, ValidationResult result) {

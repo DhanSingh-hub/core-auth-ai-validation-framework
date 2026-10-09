@@ -3,6 +3,8 @@ package com.coreauth.validator.canonical;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Finding;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status;
 import com.coreauth.validator.paths.Atl105Paths;
+import com.coreauth.validator.validation.Atl105ElementValueValidator;
+import com.coreauth.validator.validation.Chapter13DataElementValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -22,6 +24,8 @@ public final class Chapter11MessageLayoutValidator {
     public record Result(Status status, List<Finding> findings) { }
     private final ObjectMapper mapper = new ObjectMapper();
     private final JsonNode templates;
+    private final Atl105ElementValueValidator elementValidator;
+    private final Chapter13DataElementValidator chapter13Validator;
 
     public Chapter11MessageLayoutValidator() throws IOException {
         JsonNode catalog = mapper.readTree(Atl105Paths.docs().resolve("atl105_complete_templates.json").toFile());
@@ -29,6 +33,8 @@ public final class Chapter11MessageLayoutValidator {
         if (!templates.isObject() || templates.size() != catalog.path("total_transaction_types").asInt()) {
             throw new IOException("Incomplete Chapter 11 template catalog");
         }
+        elementValidator = new Atl105ElementValueValidator(Atl105Paths.root());
+        chapter13Validator = new Chapter13DataElementValidator(Atl105Paths.root());
     }
 
     public Result validate(JsonNode input) throws IOException {
@@ -57,6 +63,16 @@ public final class Chapter11MessageLayoutValidator {
         boolean partial = "PARTIAL".equals(input.path("completeness").asText());
         fields(template.path("data_section_1_fields"), input.path("elements"), partial, true, anchor, findings);
         fields(template.path("fields"), input.path("elements"), partial, false, anchor, findings);
+        if ("Electronic Mail Response".equals(family)) {
+            ObjectNode observation = mapper.createObjectNode().put("specificationVersion", "2026-3")
+                    .put("messageFamily", family).put("segment", "MESSAGE");
+            observation.set("elements", input.path("elements"));
+            for (String field : List.of("chapter13Semantics", "qualifiers", "representation")) {
+                if (input.has(field)) observation.set(field, input.path(field));
+            }
+            if (partial) observation.put("completeness", "PARTIAL");
+            elementFindings(observation, findings);
+        }
         Map<String, JsonNode> allowed = new HashMap<>();
         for (JsonNode segment : template.path("segments")) allowed.put(segment.path("segment_number").asText(), segment);
         for (JsonNode extension : template.path("approved_extensions")) allowed.put(extension.path("segment_number").asText(), extension);
@@ -69,6 +85,52 @@ public final class Chapter11MessageLayoutValidator {
             }
             String id = idNode.textValue();
             present.add(id);
+            if ((Set.of("100", "105", "109").contains(id) || input.path("chapter13Semantics").asBoolean(false))
+                    && segment.has("observation")) {
+                JsonNode supplied = segment.get("observation");
+                if (!supplied.isObject() || !supplied.path("elements").isObject()) {
+                    findings.add(new Finding(anchor, "chapter13-representation", Status.INVALID,
+                            "Child element observation must be an object with numbered elements"));
+                } else {
+                    ObjectNode observation = supplied.deepCopy();
+                    for (String field : List.of("specificationVersion", "messageFamily", "segment")) {
+                        String expected = "specificationVersion".equals(field) ? "2026-3" : "messageFamily".equals(field) ? family : id;
+                        if (supplied.has(field) && (!supplied.path(field).isTextual() || !expected.equals(supplied.path(field).textValue()))) {
+                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID,
+                                    "Child observation " + field + " contradicts parent context"));
+                        }
+                        observation.put(field, expected);
+                    }
+                    if (partial) observation.put("completeness", "PARTIAL");
+                    for (String field : List.of("representation")) {
+                        if (input.has(field) && supplied.has(field) && !input.path(field).equals(supplied.path(field))) {
+                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child representation contradicts parent"));
+                        }
+                        if (input.has(field)) observation.set(field, input.path(field));
+                    }
+                    if (input.path("chapter13Semantics").asBoolean(false)) observation.put("chapter13Semantics", true);
+                    for (String field : List.of("qualifiers", "records")) {
+                        if (!observation.has(field) && input.has(field)) observation.set(field, input.path(field));
+                    }
+                    if (input.path("qualifiers").isObject() && supplied.has("qualifiers")) {
+                        if (!supplied.path("qualifiers").isObject()) {
+                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child qualifiers must be an object"));
+                        } else {
+                            ObjectNode qualifiers = observation.path("qualifiers").deepCopy();
+                            var fields = input.path("qualifiers").fields();
+                            while (fields.hasNext()) {
+                                var field = fields.next();
+                                if (qualifiers.has(field.getKey()) && !qualifiers.path(field.getKey()).equals(field.getValue())) {
+                                    findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child qualifier contradicts parent: " + field.getKey()));
+                                }
+                                qualifiers.set(field.getKey(), field.getValue());
+                            }
+                            observation.set("qualifiers", qualifiers);
+                        }
+                    }
+                    elementFindings(observation, findings);
+                }
+            }
             if ("109".equals(id) && segment.has("processingObservation")) {
                 JsonNode processing = segment.get("processingObservation");
                 var result = new Segment109PayloadValidator().validateProcessingObservation(processing);
@@ -141,6 +203,15 @@ public final class Chapter11MessageLayoutValidator {
                         + "template extraction is not complete message certification"));
         Status status = findings.stream().anyMatch(f -> f.status() == Status.INVALID) ? Status.INVALID : Status.REVIEW_REQUIRED;
         return new Result(status, List.copyOf(findings));
+    }
+
+    private void elementFindings(JsonNode observation, List<Finding> findings) {
+        var result = observation.path("chapter13Semantics").asBoolean(false)
+                ? chapter13Validator.validate(observation) : elementValidator.validate(observation);
+        for (var finding : result.findings()) {
+            findings.add(new Finding(finding.ruleId(), "chapter13-representation",
+                    Status.valueOf(finding.status().name()), finding.reason()));
+        }
     }
 
     private static void fields(JsonNode definitions, JsonNode elements, boolean partial, boolean requiredByLayout,
