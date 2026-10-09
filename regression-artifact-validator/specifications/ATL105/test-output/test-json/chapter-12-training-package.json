@@ -1,0 +1,2677 @@
+{
+  "manifest" : {
+    "packageId" : "ATL105-TEST-CHAPTER12-BOUNDED-HEADERS",
+    "specification" : "ATL105",
+    "specificationVersion" : "2026-3"
+  },
+  "businessRequirements" : [ {
+    "id" : "BR-TEST-CH12-139-HEADER",
+    "title" : "Bounded header observation for SEG139-R-002: Segment Type is fixed value 139, Segment Length is 3 digits, both sourced at the Device",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-140-HEADER",
+    "title" : "Bounded header observation for SEG140-R-002: Segment Type fixed 140, Segment Length 3 digits, both Device-sourced; fields 3 (Terminal Identifier), 5 (Moneris Terminal Identifier), 6 (Moneris Merchant ID) are Device-sourced echoes, while fields 4 (SPDH Header), 7 (Batch Number), 8-14 (Response Display, Number/Dollar totals) are Moneris-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-141-HEADER",
+    "title" : "Bounded header observation for SEG141-R-003: Segment Type fixed 141, Segment Length 3 digits, both Device-sourced; all 14 fields (Terminal Identifier, SPDH Header, Moneris Terminal/Merchant ID, Batch Number, Language Indicator, Number/Dollar totals for debits/credits/corrections) are Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-142-HEADER",
+    "title" : "Bounded header observation for SEG142-R-002: Segment Type and Segment Length are Host-sourced (contrast Segment 140's Device-sourced Segment Type/Length, and Segment 141's fully-Device-sourced request)",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-143-HEADER",
+    "title" : "Bounded header observation for SEG143-R-003: Segment Type is fixed value 143, Segment Length identifies the segment's length including Segment Type's length and Field Separators, both Device-sourced, each followed by a Field Separator",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-145-HEADER",
+    "title" : "Bounded header observation for SEG145-R-005: Segment Type is fixed value 145, Segment Length includes Segment Type's length; both Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-146-HEADER",
+    "title" : "Bounded header observation for SEG146-R-001: Segment Type fixed 146, Segment Length includes Segment Type's length; both Device-sourced (despite this being a response segment, mirroring the sourcing pattern already flagged for Segments 131/136)",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-148-HEADER",
+    "title" : "Bounded header observation for SEG148-R-002: Segment Type fixed 148, Segment Length includes Segment Type's length; both Host-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-149-HEADER",
+    "title" : "Bounded header observation for SEG149-R-003: Segment Type fixed 149, Segment Length 3 digits, Terminal Identifier (var.), Price Data (var., pipe-delimited tag:value pairs e.g. 'CASS:03.00') all Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-150-HEADER",
+    "title" : "Bounded header observation for SEG150-R-003: Segment Type fixed 150, Segment Length 3 digits, Terminal Identifier (echo), Decline Code (Element 26, 2 characters, indicates success or failure); all Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-151-HEADER",
+    "title" : "Bounded header observation for SEG151-R-004: Segment Type fixed 151, sourced at Host (despite the segment overall 'originating at the device' per the opening statement) — a sourcing inconsistency",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-152-HEADER",
+    "title" : "Bounded header observation for SEG152-R-002: Segment Type fixed 152, Segment Length 4 digits, both Host-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-155-HEADER",
+    "title" : "Bounded header observation for SEG155-R-006: Segment Type fixed 155; the field table for fields 1-2 does not list a Source (unlike every other segment trained), an editorial omission",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-123-HEADER",
+    "title" : "Bounded header observation for SEG123-R-001: Segment Type is fixed value 123 (Element 85), Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-130-HEADER",
+    "title" : "Bounded header observation for SEG130-R-002: Segment Type is fixed value 130",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-131-HEADER",
+    "title" : "Bounded header observation for SEG131-R-003: Segment Type is fixed value 131, sourced at the Host (contrast Segment 130's device-sourced Segment Type)",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-132-HEADER",
+    "title" : "Bounded header observation for SEG132-R-002: Segment Type is fixed value 132, sourced at the Device",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-134-HEADER",
+    "title" : "Bounded header observation for SEG134-R-004: Segment Type is fixed value 134, Segment Length is 4 digits",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-135-HEADER",
+    "title" : "Bounded header observation for SEG135-R-002: Segment Type is fixed value 135, sourced at the Device",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-136-HEADER",
+    "title" : "Bounded header observation for SEG136-R-002: Segment Type is fixed value 136, sourced at the Device (as documented — despite this being a Response segment, the field table lists Source: Device for both Segment Type and Segment Length)",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-153-HEADER",
+    "title" : "Bounded header observation for SEG153-R-002: Segment Type fixed 153, Segment Length 3 digits (includes Segment Type's length), both Device-sourced",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "BR-TEST-CH12-156-HEADER",
+    "title" : "Bounded header observation for SEG156-R-008: Segment Type is fixed 156 and Segment Length is three numeric digits",
+    "category" : "field",
+    "applicability" : "Chapter 12 numbered-element observation",
+    "priority" : "high",
+    "executionStatus" : "REVIEW_REQUIRED",
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ]
+  } ],
+  "testScenarios" : [ {
+    "id" : "TS-TEST-CH12-139-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-139-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-140-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-140-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-141-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-141-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-142-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-142-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-143-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-143-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-145-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-145-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-146-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-146-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-148-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-148-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-149-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-149-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-150-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-150-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-151-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-151-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-152-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-152-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-155-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-155-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-123-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-123-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-130-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-130-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-131-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-131-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-132-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-132-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-134-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-134-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-135-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-135-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-136-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-136-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-153-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-153-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TS-TEST-CH12-156-HEADER",
+    "status" : "REVIEW_REQUIRED",
+    "requirementIds" : [ "BR-TEST-CH12-156-HEADER" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ]
+  } ],
+  "testCases" : [ {
+    "id" : "TC-TEST-CH12-139-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-139-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-139-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-139-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-140-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-140-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-140-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-140-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-141-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-141-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-141-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-141-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-142-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-142-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-142-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-142-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-143-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-143-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-143-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-143-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-145-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-145-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-145-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-145-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-146-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-146-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-146-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-146-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-148-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-148-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-148-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-148-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-149-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-149-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-149-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-149-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-150-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-150-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-150-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-150-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-151-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-151-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-151-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-151-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-152-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-152-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-152-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-152-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-155-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-155-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-155-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-155-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-123-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-123-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-123-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-123-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-130-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-130-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-130-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-130-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-131-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-131-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-131-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-131-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-132-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-132-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-132-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-132-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-134-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-134-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-134-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-134-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-135-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-135-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-135-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-135-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-136-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-136-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-136-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-136-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-153-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-153-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-153-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-153-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-156-HEADER-FIELDS",
+    "expectedOutcome" : "REVIEW_REQUIRED",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-156-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "positive-structure" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ]
+  }, {
+    "id" : "TC-TEST-CH12-156-HEADER-WRONG-TYPE",
+    "expectedOutcome" : "FAIL",
+    "category" : "field",
+    "priority" : "high",
+    "status" : "REVIEW_REQUIRED",
+    "scenarioIds" : [ "TS-TEST-CH12-156-HEADER" ],
+    "tags" : [ "chapter-12", "bounded-header", "negative" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ]
+  } ],
+  "testData" : [ {
+    "id" : "TD-TEST-CH12-139-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-139-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "139",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "139",
+        "84" : "099",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "215" : "3"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-139-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-139-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.26",
+      "segment" : "139",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "139",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "099",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "215" : "3"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-140-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-140-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "140",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "140",
+        "84" : "200",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "216" : "BATCH ACCEPTED  ",
+        "217" : "0001",
+        "218" : "+000000000000000100",
+        "219" : "0000",
+        "220" : "+000000000000000000",
+        "221" : "0000",
+        "222" : "+000000000000000000"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-140-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-140-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.27",
+      "segment" : "140",
+      "element" : "85,84,102,206,207,208,214,216,217,218,219,220,221,222",
+      "rule" : "mixed-sourcing-echo-plus-totals"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "140",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "200",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "216" : "BATCH ACCEPTED  ",
+        "217" : "0001",
+        "218" : "+000000000000000100",
+        "219" : "0000",
+        "220" : "+000000000000000000",
+        "221" : "0000",
+        "222" : "+000000000000000000"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-141-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-141-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "141",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "141",
+        "84" : "200",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "215" : "3",
+        "217" : "0001",
+        "218" : "+000000000000000100",
+        "219" : "0000",
+        "220" : "+000000000000000000",
+        "221" : "0000",
+        "222" : "+000000000000000000"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-141-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-141-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.28",
+      "segment" : "141",
+      "element" : "85,84,102,206,207,208,214,215,217,218,219,220,221,222",
+      "rule" : "batch-close-request-all-device-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "141",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "200",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "215" : "3",
+        "217" : "0001",
+        "218" : "+000000000000000100",
+        "219" : "0000",
+        "220" : "+000000000000000000",
+        "221" : "0000",
+        "222" : "+000000000000000000"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-142-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-142-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "142",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "142",
+        "84" : "120",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "216" : "BATCH ACCEPTED  ",
+        "210" : "0123456789ABCDEF"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-142-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-142-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.29",
+      "segment" : "142",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "142",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "120",
+        "102" : "1D13500101001",
+        "206" : "DV12TERM1234        CLERK1202610081230MS01123000",
+        "207" : "TERM1234",
+        "208" : "MERCHANT12345",
+        "214" : "001",
+        "216" : "BATCH ACCEPTED  ",
+        "210" : "0123456789ABCDEF"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-143-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-143-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "143",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "143",
+        "84" : "015",
+        "62" : "01"
+      },
+      "taxProducts" : [ {
+        "productCode" : "001",
+        "taxes" : [ {
+          "flag" : "N"
+        } ]
+      } ],
+      "context" : {
+        "country" : "CANADA",
+        "segment102ProductCodes" : [ "001" ]
+      },
+      "serializedSegment" : "143\u001C015\u001C01001N\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-143-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-143-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.30",
+      "segment" : "143",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "143",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "015",
+        "62" : "01"
+      },
+      "taxProducts" : [ {
+        "productCode" : "001",
+        "taxes" : [ {
+          "flag" : "N"
+        } ]
+      } ],
+      "context" : {
+        "country" : "CANADA",
+        "segment102ProductCodes" : [ "001" ]
+      },
+      "serializedSegment" : "143\u001C015\u001C01001N\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-145-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-145-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "145",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "145",
+        "84" : "016"
+      },
+      "tables" : [ {
+        "id" : "004",
+        "length" : "004",
+        "value" : "TEST"
+      } ],
+      "context" : {
+        "authorizer" : "COMDATA",
+        "segmentsPresent" : [ "100", "145" ]
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-145-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-145-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.31",
+      "segment" : "145",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "145",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "016"
+      },
+      "tables" : [ {
+        "id" : "004",
+        "length" : "004",
+        "value" : "TEST"
+      } ],
+      "context" : {
+        "authorizer" : "COMDATA",
+        "segmentsPresent" : [ "100", "145" ]
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-146-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-146-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "146",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "146",
+        "84" : "014"
+      },
+      "tables" : [ {
+        "id" : "001",
+        "length" : "002",
+        "value" : "CP"
+      } ],
+      "context" : {
+        "authorizer" : "COMDATA"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-146-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-146-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.32",
+      "segment" : "146",
+      "element" : "85,84",
+      "rule" : "segment-type-length-device-sourced"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "146",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "014"
+      },
+      "tables" : [ {
+        "id" : "001",
+        "length" : "002",
+        "value" : "CP"
+      } ],
+      "context" : {
+        "authorizer" : "COMDATA"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-148-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-148-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "148",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "148",
+        "84" : "017",
+        "240" : "00=100,50 G"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-148-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-148-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.33",
+      "segment" : "148",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "148",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "017",
+        "240" : "00=100,50 G"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-149-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-149-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "149",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "149",
+        "84" : "045",
+        "102" : "1D13500101001",
+        "241" : "|CASS:03.00|CRSS:3.05|"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-149-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-149-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.34",
+      "segment" : "149",
+      "element" : "85,84,102,241",
+      "rule" : "fuel-price-update-request-fields"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "149",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "045",
+        "102" : "1D13500101001",
+        "241" : "|CASS:03.00|CRSS:3.05|"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-150-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-150-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "150",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "150",
+        "84" : "022",
+        "102" : "1D13500101001",
+        "26" : "00"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-150-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-150-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.35",
+      "segment" : "150",
+      "element" : "85,84,102,26",
+      "rule" : "fuel-price-update-response-fields"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "150",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "022",
+        "102" : "1D13500101001",
+        "26" : "00"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-151-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-151-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "151",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "151",
+        "84" : "0009"
+      },
+      "marketBasketData" : "DV",
+      "datasets" : [ {
+        "type" : "DV"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-151-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-151-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.36",
+      "segment" : "151",
+      "element" : "85",
+      "rule" : "segment-type-host-vs-device-origin-conflict"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "151",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "0009"
+      },
+      "marketBasketData" : "DV",
+      "datasets" : [ {
+        "type" : "DV"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-152-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-152-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "152",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "152",
+        "84" : "0009"
+      },
+      "marketBasketData" : "DV",
+      "datasets" : [ {
+        "type" : "DV"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-152-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-152-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.37",
+      "segment" : "152",
+      "element" : "85,84",
+      "rule" : "segment-type-length-host"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "152",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "0009"
+      },
+      "marketBasketData" : "DV",
+      "datasets" : [ {
+        "type" : "DV"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-155-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-155-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "155",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "155",
+        "84" : "013"
+      },
+      "tables" : [ {
+        "id" : "004",
+        "length" : "001",
+        "value" : "A"
+      } ],
+      "serializedSegment" : "155013004001A"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-155-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-155-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.39",
+      "segment" : "155",
+      "element" : "85,84",
+      "rule" : "missing-source-annotation"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "155",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "013"
+      },
+      "tables" : [ {
+        "id" : "004",
+        "length" : "001",
+        "value" : "A"
+      } ],
+      "serializedSegment" : "155013004001A"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-123-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-123-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "123",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "123",
+        "84" : "016",
+        "195" : "",
+        "196" : "",
+        "197" : "",
+        "202" : "",
+        "203" : "",
+        "204" : "",
+        "237" : "",
+        "238" : ""
+      },
+      "serializedSegment" : "123\u001C016\u001C\u001C\u001C\u001C\u001C\u001C\u001C\u001C\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-123-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-123-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.19",
+      "segment" : "123",
+      "element" : "85",
+      "rule" : "segment-type"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "123",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "016",
+        "195" : "",
+        "196" : "",
+        "197" : "",
+        "202" : "",
+        "203" : "",
+        "204" : "",
+        "237" : "",
+        "238" : ""
+      },
+      "serializedSegment" : "123\u001C016\u001C\u001C\u001C\u001C\u001C\u001C\u001C\u001C\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-130-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-130-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "130",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "130",
+        "84" : "0040",
+        "187" : "",
+        "188" : "",
+        "189" : "009",
+        "190" : "8407A0000000041010"
+      },
+      "tables" : [ ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-130-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-130-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.20",
+      "segment" : "130",
+      "element" : "85",
+      "rule" : "segment-130-type-fixed-value"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "130",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "0040",
+        "187" : "",
+        "188" : "",
+        "189" : "009",
+        "190" : "8407A0000000041010"
+      },
+      "tables" : [ ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-131-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-131-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "131",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "131",
+        "84" : "0060",
+        "187" : "0000000000000000000000001",
+        "189" : "009",
+        "190" : "8407A0000000041010"
+      },
+      "tables" : [ ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-131-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-131-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.21",
+      "segment" : "131",
+      "element" : "85",
+      "rule" : "segment-type-fixed-131"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "131",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "0060",
+        "187" : "0000000000000000000000001",
+        "189" : "009",
+        "190" : "8407A0000000041010"
+      },
+      "tables" : [ ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-132-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-132-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "132",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "132",
+        "84" : "077",
+        "86" : "100001",
+        "102" : "+*13500101001",
+        "48" : "K",
+        "43" : "0001",
+        "96" : "00000001",
+        "39" : "00000001",
+        "187" : "0000000000000000000000001",
+        "11" : "001"
+      },
+      "context" : {
+        "protocol" : "MULTITHREADED_DIAL"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-132-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-132-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.22",
+      "segment" : "132",
+      "element" : "85",
+      "rule" : "segment-type-fixed-132"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "132",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "077",
+        "86" : "100001",
+        "102" : "+*13500101001",
+        "48" : "K",
+        "43" : "0001",
+        "96" : "00000001",
+        "39" : "00000001",
+        "187" : "0000000000000000000000001",
+        "11" : "001"
+      },
+      "context" : {
+        "protocol" : "MULTITHREADED_DIAL"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-134-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-134-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "134",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "134",
+        "84" : "0019",
+        "198" : "D",
+        "199" : " ",
+        "200" : "STAR      "
+      },
+      "serializedSegment" : "1340019D STAR      "
+    }
+  }, {
+    "id" : "TD-TEST-CH12-134-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-134-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.23",
+      "segment" : "134",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "134",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "0019",
+        "198" : "D",
+        "199" : " ",
+        "200" : "STAR      "
+      },
+      "serializedSegment" : "1340019D STAR      "
+    }
+  }, {
+    "id" : "TD-TEST-CH12-135-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-135-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "135",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "135",
+        "84" : "016",
+        "213" : "0040013"
+      },
+      "serializedSegment" : "135\u001C016\u001C0040013\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-135-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-135-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.24",
+      "segment" : "135",
+      "element" : "85",
+      "rule" : "segment-type-fixed-135"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "135",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "016",
+        "213" : "0040013"
+      },
+      "serializedSegment" : "135\u001C016\u001C0040013\u001C"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-136-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-136-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "136",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "136",
+        "84" : "022",
+        "213" : "004010SEQ1234567"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-136-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-136-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.25",
+      "segment" : "136",
+      "element" : "85",
+      "rule" : "segment-type-fixed-136"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "136",
+      "direction" : "RESPONSE",
+      "elements" : {
+        "85" : "999",
+        "84" : "022",
+        "213" : "004010SEQ1234567"
+      }
+    }
+  }, {
+    "id" : "TD-TEST-CH12-153-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-153-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "153",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "153",
+        "84" : "063"
+      },
+      "tables" : [ {
+        "id" : "001",
+        "length" : "013",
+        "value" : "SYNTHETICTOKN"
+      }, {
+        "id" : "002",
+        "length" : "004",
+        "value" : "2610"
+      }, {
+        "id" : "003",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "004",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "005",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "006",
+        "length" : "001",
+        "value" : "Y"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-153-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-153-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.38",
+      "segment" : "153",
+      "element" : "85,84",
+      "rule" : "segment-type-length"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "153",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "063"
+      },
+      "tables" : [ {
+        "id" : "001",
+        "length" : "013",
+        "value" : "SYNTHETICTOKN"
+      }, {
+        "id" : "002",
+        "length" : "004",
+        "value" : "2610"
+      }, {
+        "id" : "003",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "004",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "005",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "006",
+        "length" : "001",
+        "value" : "Y"
+      } ]
+    }
+  }, {
+    "id" : "TD-TEST-CH12-156-HEADER-FIELDS",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "REVIEW_REQUIRED",
+    "testCaseIds" : [ "TC-TEST-CH12-156-HEADER-FIELDS" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "156",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "156",
+        "84" : "102"
+      },
+      "tables" : [ {
+        "id" : "01",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "02",
+        "length" : "006",
+        "value" : "995959"
+      }, {
+        "id" : "03",
+        "length" : "006",
+        "value" : "000000"
+      }, {
+        "id" : "04",
+        "length" : "006",
+        "value" : "000000"
+      }, {
+        "id" : "05",
+        "length" : "006",
+        "value" : "235959"
+      }, {
+        "id" : "06",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "07",
+        "length" : "003",
+        "value" : "100"
+      }, {
+        "id" : "08",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "09",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "10",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "11",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "12",
+        "length" : "003",
+        "value" : "001"
+      } ],
+      "context" : {
+        "brand" : "VISA",
+        "segment102ProductCodes" : [ "308" ]
+      },
+      "serializedSegment" : "15610201001Y020069959590300600000004006000000050062359590600110700310008001109001110001111001112003001"
+    }
+  }, {
+    "id" : "TD-TEST-CH12-156-HEADER-WRONG-TYPE",
+    "readiness" : "REVIEW_REQUIRED",
+    "expectedValidation" : "FAIL",
+    "testCaseIds" : [ "TC-TEST-CH12-156-HEADER-WRONG-TYPE" ],
+    "sourceAnchors" : [ {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "12.40",
+      "segment" : "156",
+      "element" : "85,84",
+      "rule" : "segment-type-length-width"
+    } ],
+    "payload" : {
+      "specificationVersion" : "2026-3",
+      "segment" : "156",
+      "direction" : "REQUEST",
+      "elements" : {
+        "85" : "999",
+        "84" : "102"
+      },
+      "tables" : [ {
+        "id" : "01",
+        "length" : "001",
+        "value" : "Y"
+      }, {
+        "id" : "02",
+        "length" : "006",
+        "value" : "995959"
+      }, {
+        "id" : "03",
+        "length" : "006",
+        "value" : "000000"
+      }, {
+        "id" : "04",
+        "length" : "006",
+        "value" : "000000"
+      }, {
+        "id" : "05",
+        "length" : "006",
+        "value" : "235959"
+      }, {
+        "id" : "06",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "07",
+        "length" : "003",
+        "value" : "100"
+      }, {
+        "id" : "08",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "09",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "10",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "11",
+        "length" : "001",
+        "value" : "1"
+      }, {
+        "id" : "12",
+        "length" : "003",
+        "value" : "001"
+      } ],
+      "context" : {
+        "brand" : "VISA",
+        "segment102ProductCodes" : [ "308" ]
+      },
+      "serializedSegment" : "15610201001Y020069959590300600000004006000000050062359590600110700310008001109001110001111001112003001"
+    }
+  } ]
+}

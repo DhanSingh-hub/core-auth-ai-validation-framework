@@ -157,11 +157,17 @@ public final class AppendixADAccountUpdaterOracle {
         return result("OVERRIDE", Status.PASS, "Supplied behavior records no optimization after override.");
     }
     private static Assessment responseLayout(Scenario s) {
-        if (s.responseData().isEmpty()) return na("RESPONSE-LAYOUT");
+        return assessResponseLayout(s.responseData());
+    }
+
+    public static Assessment assessResponseLayout(Map<String, String> responseData) {
+        Objects.requireNonNull(responseData, "responseData");
+        if (responseData.isEmpty()) return na("RESPONSE-LAYOUT");
         boolean review = false;
-        for (var entry : s.responseData().entrySet()) {
+        for (var entry : responseData.entrySet()) {
             String id = entry.getKey();
             String value = entry.getValue();
+            if (id == null || value == null) return result("RESPONSE-LAYOUT", Status.FAIL, "Table ID and data are required.");
             if (!id.matches("[0-9]{3}")) return result("RESPONSE-LAYOUT", Status.FAIL, "Segment 155 Table ID has three digits.");
             if (!value.matches("[A-Za-z0-9]+")) return result("RESPONSE-LAYOUT", Status.FAIL,
                     "Segment 155 logical data must be nonempty ASCII alphanumeric.");

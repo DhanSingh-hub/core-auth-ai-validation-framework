@@ -22,11 +22,12 @@
     "segment" : "100",
     "required" : true,
     "pattern" : "^[0-9]{6}$",
+    "numericRange" : { "min" : 1, "max" : 999999 },
     "existingRuleId" : "SEG100-R-019",
     "existingRuleCatalog" : "segment-100/coverage/segment-100-rule-catalog.json",
     "sourceSections" : [ "13.2", "12.1" ],
     "sourceEvidence" : "Representation: Fixed length of six digits",
-    "limitations" : "Shape only; general numeric range, sequence allocation and lifecycle correlation require additional checks."
+    "limitations" : "Chapter 13 shape and 000001-999999 range only; uniqueness, sequence allocation and lifecycle correlation are not asserted."
   }, {
     "id" : "E86-CAPK-MULTITHREADED-RANGE",
     "element" : "86",
@@ -139,6 +140,146 @@
     "sourceSections" : [ "13.2" ],
     "sourceEvidence" : "0 No Download Request.",
     "limitations" : "Chapter 13 code domain only; whether codes 8/9 can occur in this response is not verified."
+  }, {
+    "id" : "E39-TOTALS-REQUEST",
+    "element" : "39",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^[A-Za-z0-9]{8}$",
+    "existingRuleId" : "SEG105-R-012",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "Fixed length of eight alphanumeric characters",
+    "limitations" : "Representation and requiredness only, not firmware compatibility or version authenticity."
+  }, {
+    "id" : "E43-TOTALS-REQUEST",
+    "element" : "43",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^(?:[A-Za-z0-9]{4}|[A-Za-z0-9]{8})$",
+    "existingRuleId" : "SEG105-R-010",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "Fixed length of four or eight alphanumeric characters",
+    "limitations" : "Only Totals Request permits both observed widths here; device compatibility is not asserted."
+  }, {
+    "id" : "E96-TOTALS-REQUEST",
+    "element" : "96",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^[A-Za-z0-9]{8}$",
+    "existingRuleId" : "SEG105-R-011",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "Fixed length of eight alphanumeric characters",
+    "limitations" : "Representation and requiredness only, not application compatibility."
+  }, {
+    "id" : "E86-TOTALS-REQUEST",
+    "element" : "86",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^[0-9]{6}$",
+    "numericRange" : { "min" : 1, "max" : 999999 },
+    "existingRuleId" : "SEG105-R-013",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "Fixed length of six digits",
+    "limitations" : "Shape/range only; uniqueness, allocation and response correlation remain unassessed."
+  }, {
+    "id" : "E105-TOTALS-REQUEST",
+    "element" : "105",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^[0-9]{6}$",
+    "calendarDate" : "MMDDYY",
+    "dateSpecialCodes" : [ "111111", "222222", "333333", "444444", "555555", "999999" ],
+    "existingRuleId" : "SEG105-R-008",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "MMDDYY YYMMDD Identifies a request for totals for a",
+    "limitations" : "Request calendar and six special codes only; response is YYMMDD. Activity windows, reset and merchant history are not asserted. Year-00 leap day needs century evidence."
+  }, {
+    "id" : "E44-TOTALS-REQUEST",
+    "element" : "44",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^[01]$",
+    "existingRuleId" : "SEG105-R-003",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "1 Multimessage transmission",
+    "limitations" : "Section 12.6 totals scope allows single/multimessage, not Chapter 13's separate download-request question mark. Connection behavior is not asserted."
+  }, {
+    "id" : "E78-TOTALS-REQUEST",
+    "element" : "78",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : true,
+    "pattern" : "^990$",
+    "existingRuleId" : "SEG105-R-005",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "In the case of a special transaction, this is a 3-character Prompt",
+    "limitations" : "Fixed 990 comes from Section 12.6 and the existing catalog; no financial prompt composition or issuer eligibility asserted."
+  }, {
+    "id" : "E32-TOTALS-REQUEST-POPULATED",
+    "element" : "32",
+    "messageFamily" : "Totals Request",
+    "segment" : "105",
+    "required" : false,
+    "emptyMeansOmitted" : true,
+    "pattern" : "^[0-9]{4}$",
+    "existingRuleId" : "SEG105-R-006",
+    "existingRuleCatalog" : "segment-105/coverage/segment-105-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.6" ],
+    "sourceEvidence" : "Fixed length of four digits",
+    "limitations" : "Populated representation only; source default 1111 is permitted, but employee assignment and conditional authorization policy remain review-required."
+  }, {
+    "id" : "E36-EMAIL-REQUEST-POPULATED",
+    "element" : "36",
+    "messageFamily" : "Electronic Mail Request",
+    "segment" : "109",
+    "required" : false,
+    "emptyMeansOmitted" : true,
+    "pattern" : "^[0-9]{6}$",
+    "calendarDate" : "MMDDYY",
+    "existingRuleId" : "SEG109-R-016",
+    "existingRuleCatalog" : "segment-109/coverage/segment-109-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.8" ],
+    "sourceEvidence" : "Fixed length of six digits (MMDDYY)",
+    "limitations" : "Populated calendar representation only; extraction history and time/zone are not asserted. Year-00 leap day needs century evidence."
+  }, {
+    "id" : "E86-EMAIL-REQUEST",
+    "element" : "86",
+    "messageFamily" : "Electronic Mail Request",
+    "segment" : "109",
+    "required" : true,
+    "pattern" : "^[0-9]{6}$",
+    "numericRange" : { "min" : 1, "max" : 999999 },
+    "existingRuleId" : "SEG109-R-015",
+    "existingRuleCatalog" : "segment-109/coverage/segment-109-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12.8" ],
+    "sourceEvidence" : "Fixed length of six digits",
+    "limitations" : "Shape/range only; response correlation and transaction uniqueness are not asserted."
+  }, {
+    "id" : "E45-EMAIL-RESPONSE",
+    "element" : "45",
+    "messageFamily" : "Electronic Mail Response",
+    "segment" : "MESSAGE",
+    "required" : true,
+    "pattern" : "^[0-9]{6}$",
+    "calendarDate" : "MMDDYY",
+    "existingRuleId" : "SEG109-R-022",
+    "existingRuleCatalog" : "segment-109/coverage/segment-109-rule-catalog.json",
+    "sourceSections" : [ "13.2", "11.5.2" ],
+    "sourceEvidence" : "Fixed length of six digits (MMDDYY)",
+    "limitations" : "Calendar representation only; host clock/time zone, actual initiation and positional response wire are not asserted. Year-00 leap day needs century evidence."
   }, {
     "id" : "E84-SEG100-LENGTH",
     "element" : "84",
@@ -1051,6 +1192,21 @@
     "pattern" : "^[0-9]{3}$",
     "equalsObservation" : "segment",
     "limitations" : "Fixed value comes from the existing Chapter 12 catalog rule; segment is not listed in the Element 85 code table."
+  }, {
+    "id" : "E85-SEG156-TYPE",
+    "element" : "85",
+    "messageFamily" : "ANY",
+    "familyIndependentEvidence" : "Identifies the type of segment being formatted",
+    "segment" : "156",
+    "required" : true,
+    "existingRuleId" : "SEG156-R-008",
+    "existingRuleCatalog" : "segment-156/coverage/segment-156-rule-catalog.json",
+    "sourceSections" : [ "13.2", "12" ],
+    "sourceEvidence" : "Representation: Fixed length of three digits",
+    "generated" : true,
+    "pattern" : "^[0-9]{3}$",
+    "equalsObservation" : "segment",
+    "limitations" : "Fixed value comes from the existing Chapter 12 catalog rule; segment is not listed in the Element 85 code table."
   } ],
   "generationReview" : [ {
     "element" : "84",
@@ -1080,11 +1236,6 @@
   }, {
     "element" : "85",
     "segment" : "142",
-    "status" : "REVIEW_REQUIRED",
-    "reason" : "No existing 2026-3 catalog rule states the fixed Segment Type value"
-  }, {
-    "element" : "85",
-    "segment" : "156",
     "status" : "REVIEW_REQUIRED",
     "reason" : "No existing 2026-3 catalog rule states the fixed Segment Type value"
   }, {

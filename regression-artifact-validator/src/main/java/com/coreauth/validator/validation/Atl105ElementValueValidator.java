@@ -66,6 +66,27 @@ public final class Atl105ElementValueValidator {
                         .map(String::trim).anyMatch(profile.path("element").asText()::equals)) ruleExists = true;
             }
             if (!ruleExists) throw new IOException("Profile does not reuse a matching existing element rule: " + profileId);
+            if (profile.has("calendarDate")) {
+                if (!"MMDDYY".equals(profile.path("calendarDate").asText())
+                        || !inSource(definitions, "MMDDYY")) {
+                    throw new IOException("Unsupported or ungrounded calendar format: " + profileId);
+                }
+                if (profile.has("dateSpecialCodes") && !profile.path("dateSpecialCodes").isArray()) {
+                    throw new IOException("Date special codes must be an array: " + profileId);
+                }
+                Set<String> codes = new HashSet<>();
+                for (JsonNode code : profile.path("dateSpecialCodes")) {
+                    if (!code.isTextual() || !code.textValue().matches("[0-9]{6}")
+                            || !codes.add(code.textValue()) || !inSource(definitions, code.textValue())) {
+                        throw new IOException("Unverified or duplicated date special code: " + profileId);
+                    }
+                }
+            } else if (profile.has("dateSpecialCodes")) {
+                throw new IOException("Date special codes need a calendar profile: " + profileId);
+            }
+            if (profile.path("emptyMeansOmitted").asBoolean() && profile.path("required").asBoolean()) {
+                throw new IOException("Required profile cannot treat empty text as omitted: " + profileId);
+            }
             patterns.put(profileId, Pattern.compile(profile.path("pattern").asText()));
         }
     }
@@ -92,6 +113,8 @@ public final class Atl105ElementValueValidator {
             String id = profile.path("element").asText();
             JsonNode value = observation.path("elements").get(id);
             if (value == null && !profile.path("required").asBoolean()) continue;
+            if (profile.path("emptyMeansOmitted").asBoolean() && value != null
+                    && value.isTextual() && value.textValue().isEmpty()) continue;
             checked.add(id);
             findings.add(check(profile, value, observation));
         }
@@ -115,6 +138,16 @@ public final class Atl105ElementValueValidator {
         if (value == null || !value.isTextual()) return new Finding(id, Status.INVALID, ruleId, "Required element missing or not text under profile " + profileId);
         String text = value.asText();
         if (!patterns.get(profileId).matcher(text).matches()) return new Finding(id, Status.INVALID, ruleId, "Value shape violates profile " + profileId);
+        if (profile.has("calendarDate")) {
+            boolean special = false;
+            for (JsonNode code : profile.path("dateSpecialCodes")) if (text.equals(code.textValue())) special = true;
+            if (!special && !Atl105CalendarDate.isValidMmddyy(text)) {
+                return new Finding(id, Status.INVALID, ruleId, "Invalid calendar representation under profile " + profileId);
+            }
+            if (!special && Atl105CalendarDate.needsCenturyForLeapDay(text)) {
+                return new Finding(id, Status.REVIEW_REQUIRED, ruleId, "Leap day with year 00 needs century evidence under profile " + profileId);
+            }
+        }
         JsonNode range = profile.path("numericRange");
         if (!range.isMissingNode()) {
             if (!DIGITS.matcher(text).matches() || text.length() > 18)
@@ -149,10 +182,19 @@ public final class Atl105ElementValueValidator {
         if (text.isEmpty()) return new Finding(id, Status.REVIEW_REQUIRED, "", "Empty value; omission semantics require context");
         if (text.length() > constraint.path("maxLength").asInt()) return new Finding(id, Status.INVALID, "", "Exceeds maximum length of " + source);
         if ("N".equals(constraint.path("characterType").asText()) && !DIGITS.matcher(text).matches())
-            return new Finding(id, Status.INVALID, "", "Non-digit value for numeric " + source);
+            return new Finding(id, sourceDefinedNumericException(id, text) ? Status.REVIEW_REQUIRED : Status.INVALID, "",
+                sourceDefinedNumericException(id, text) ? "Source-declared padding, masking or composite exception requires contextual validation of " + source
+                    : "Non-digit value for numeric " + source);
         if ("FIXED".equals(constraint.path("lengthMode").asText()) && text.length() < constraint.path("maxLength").asInt())
             return new Finding(id, Status.REVIEW_REQUIRED, "", "Shorter than fixed length of " + source + "; padding convention requires review");
         return new Finding(id, Status.REVIEW_REQUIRED, "", "Baseline type/length of " + source + " passed; no verified contextual profile");
+    }
+
+    private static boolean sourceDefinedNumericException(String id, String value) {
+        return "65".equals(id) && value.matches(" +[0-9]+") && value.length() == 6
+            || "98".equals(id) && value.matches("\\*{1,16}")
+            || "138".equals(id) && "ERN".equals(value)
+            || "153".equals(id) && value.matches("(9752[0-9]{3}[0CD][0-9]{12}){1,2}");
     }
 
     private void membership(JsonNode observation, List<Finding> findings) {

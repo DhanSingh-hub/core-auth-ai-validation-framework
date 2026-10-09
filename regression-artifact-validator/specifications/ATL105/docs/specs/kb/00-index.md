@@ -28,6 +28,9 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | 13 | Data Element Descriptions | Detailed descriptions of data elements (13.1 alphabetical, 13.2 by number) | 17700-25439 |
 | 14 | Support, Testing, and Certification | Project management, development support, testing, certification | 25440-25504 |
 
+See the [chapter-family coverage gap register](chapter-coverage-gap-register.md) for the
+current implementation status of Chapters 1-14 and the planned execution order.
+
 ## Appendices
 
 | Appendix | Title | Purpose | Approx. Line Range |

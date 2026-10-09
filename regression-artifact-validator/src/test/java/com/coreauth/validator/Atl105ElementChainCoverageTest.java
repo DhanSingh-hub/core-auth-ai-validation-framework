@@ -53,8 +53,8 @@ class Atl105ElementChainCoverageTest {
         assertThat(coverage.path("oracleRulesWithElementAnchors").asInt()).isGreaterThan(0);
         assertThat(coverage.path("structuralCompleteRules").asInt()).isGreaterThanOrEqualTo(coverage.path("executableCompleteRules").asInt());
         assertThat(coverage.path("placeholderOrReviewRules").asInt()).isGreaterThan(0);
-        assertThat(coverage.path("oracleRulesWithElementAnchors").asInt()).isEqualTo(539);
-        assertThat(coverage.path("structuralCompleteRules").asInt()).isEqualTo(539);
+        assertThat(coverage.path("oracleRulesWithElementAnchors").asInt()).isEqualTo(554);
+        assertThat(coverage.path("structuralCompleteRules").asInt()).isEqualTo(554);
         assertThat(coverage.path("executionReady").isMissingNode()).isTrue();
         assertThat(coverage.path("status").asText()).isEqualTo("REVIEW_REQUIRED_NOT_EXECUTION_CERTIFIED");
     }

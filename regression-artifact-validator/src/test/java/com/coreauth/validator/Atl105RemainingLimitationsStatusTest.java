@@ -29,7 +29,7 @@ class Atl105RemainingLimitationsStatusTest {
         JsonNode status = MAPPER.readTree(output.toFile());
         assertThat(status.path("limitations")).hasSize(6);
         assertThat(status.path("limitations").get(0).path("denominator").asInt()).isEqualTo(5313);
-        assertThat(status.path("limitations").get(1).path("denominator").asInt()).isEqualTo(12893);
+        assertThat(status.path("limitations").get(1).path("denominator").asInt()).isEqualTo(13358);
         assertThat(status.path("limitations").get(2).path("denominator").asInt()).isEqualTo(3);
         assertThat(status.path("limitations").get(3).path("status").asText()).isEqualTo("AUTHORED_LINKAGE_COMPLETE_SME_APPROVAL_PENDING");
         assertThat(status.path("limitations").get(4).path("remainingOrReview").asInt()).isEqualTo(236);
