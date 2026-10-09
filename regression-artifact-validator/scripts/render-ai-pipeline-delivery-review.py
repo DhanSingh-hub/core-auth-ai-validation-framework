@@ -26,6 +26,143 @@ def section_10_2_reuse_text(chain, baseline=False):
             f'TC={",".join(chain["linkedTestCaseIds"])} / TD={",".join(chain["linkedTestDataIds"])}')
 
 
+def render_ai_team_feedback_report(findings_document):
+    findings = findings_document["findings"]
+    policy = findings_document.get("evidencePopulationPolicy", {})
+    lines = [
+        "# Run4 AI Team Feedback Report", "",
+        f"**Delivery:** `{findings_document['delivery']}`  ",
+        f"**Prepared:** {findings_document['reviewDate']}  ",
+        f"**Status:** {len(findings)} feedback item(s) are `PENDING_SHARE`; none have been sent by this report.", "",
+        "## Purpose", "",
+        "This report turns the Run4 manual-review findings into actionable feedback for the AI team. It distinguishes source interpretation, candidate matching, chain linkage, test-data evidence, and converter/runtime evidence so a structural `PASS` is not mistaken for semantic coverage.", "",
+        "## Evidence Boundaries", "",
+        f"- Evidence population: `{policy.get('reviewedRun', findings_document['delivery'])}` only.",
+        "- Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations. Do not join reused case or BR IDs across runs.",
+        "- A finding describes the inspected Run4 evidence; it is not a global claim that no equivalent requirement exists.",
+        "- `PENDING_SHARE` means the message is prepared for human review, not delivered to the AI team.",
+        "- Every item remains `PENDING_SEMANTIC_REVIEW`; no authorized SME decision or coverage credit is recorded.", "",
+        "## Summary", "",
+        "| Item | Finding | Review status | AI feedback | Coverage credit |",
+        "|---|---|---|---|---|",
+    ]
+    for item in findings:
+        lines.append(f"| `{item['testRuleId']}` | {item['finding']} | {item['formalReviewStatus']} | {item['aiTeamFeedback']['status']} | None |")
+    lines.extend(["", "## Detailed Feedback", ""])
+    for index, item in enumerate(findings, 1):
+        anchor = item.get("sourceAnchor", {})
+        anchor_text = " / ".join(str(anchor.get(key)) for key in ("section", "segment", "element", "rule") if anchor.get(key)) or "No source anchor attached"
+        lines.extend([
+            f"### {index}. {item['testRuleId']} - {item['testRuleTitle']}", "",
+            f"**Disposition:** `{item['finding']}`  ",
+            f"**Source anchor:** ATL105 {anchor.get('version', '2026-3')} / {anchor_text}  ",
+            f"**Review state:** `{item['formalReviewStatus']}`; authorized decision recorded: `{str(item.get('authorizedSmeDecisionRecorded', False)).lower()}`; coverage credit: `none`.", "",
+            "**What the review found**", "", item.get("rationale", "No rationale was recorded."), "",
+        ])
+        if item.get("semanticAssessment"):
+            lines.extend([f"**Semantic assessment:** `{item['semanticAssessment']}`", ""])
+        for key, label in (("aiOutputScope", "AI output scope"), ("aiOutputGapBasis", "AI output gap basis"),
+                           ("converterWireEncoding", "Converter wire encoding"), ("converterWireValidation", "Converter wire validation"),
+                           ("aiOutputLengthValueValidation", "AI output length-value validation"), ("aiOutputGap", "AI output gap")):
+            if key in item:
+                lines.append(f"**{label}:** `{item[key]}`  ")
+        if any(key in item for key in ("aiOutputScope", "aiOutputGapBasis", "converterWireEncoding", "converterWireValidation", "aiOutputLengthValueValidation", "aiOutputGap")):
+            lines.append("")
+        lines.extend(["**Evidence reviewed**", ""])
+        evidence_groups = (("AI BRs", "reviewedAiRequirementIds"), ("Scenarios", "reviewedScenarioIds"),
+                           ("Test cases", "reviewedTestCaseIds"))
+        for label, key in evidence_groups:
+            values = item.get(key, [])
+            lines.append(f"- {label}: {', '.join(f'`{value}`' for value in values) if values else 'none listed'}")
+        matrix_evidence = item.get("mappingMatrixEvidence")
+        if matrix_evidence:
+            lines.extend(["- Run-specific mapping evidence:"])
+            for key, value in matrix_evidence.items():
+                rendered = json.dumps(value, ensure_ascii=True) if isinstance(value, (dict, list)) else str(value)
+                lines.append(f"  - `{key}`: {rendered}")
+        for key, label in (("responseCodeAudit", "Response-code audit"), ("scenarioResponseCodeAudit", "Scenario response-code audit")):
+            if item.get(key):
+                lines.extend([f"- {label}:", "", "```json", json.dumps(item[key], indent=2, ensure_ascii=True), "```"])
+        lines.extend(["", "**Feedback prepared for the AI team (not sent)**", "", item["aiTeamFeedback"]["message"], "",
+                      f"Feedback status: `{item['aiTeamFeedback']['status']}`; date associated with the Run4 feedback: `{item['aiTeamFeedback']['runDate']}`.", "",
+                      "---", ""])
+    lines.extend([
+        "## How to Use This Report", "",
+        "Reviewers should validate the cited ATL105 interpretation and the Run4-only evidence before sharing any item. Candidate equivalence is not confirmation; test-chain linkage is not execution evidence; converter wire checks are distinct from AI JSON content checks. Do not promote any item or award coverage credit from this report alone.", "",
+        "**Source register:** [`run4-manual-search-findings.json`](run4-manual-search-findings.json)  ",
+        "**CSV export:** [`AI-TEAM-FEEDBACK-REPORT.csv`](AI-TEAM-FEEDBACK-REPORT.csv)  ",
+        "**Run4 review:** [`DETAILED-LATEST-RUN-REVIEW.md`](../DETAILED-LATEST-RUN-REVIEW.md)", "",
+    ])
+    return "\n".join(lines)
+
+
+def write_ai_team_feedback_csv(path, findings_document):
+    fieldnames = [
+        "delivery", "review_date", "evidence_run_id", "same_date_runs_mutually_exclusive",
+        "cross_run_identifier_joins", "evidence_population_note", "feedback_item_id",
+        "test_solution_rule_title", "finding_disposition", "semantic_assessment",
+        "formal_review_status", "authorized_sme_decision_recorded", "coverage_credit",
+        "source_specification", "source_version", "source_section", "source_segment",
+        "source_element", "source_rule", "source_anchor_json", "rationale", "search_scope",
+        "reviewed_ai_requirement_ids_json", "reviewed_scenario_ids_json", "reviewed_test_case_ids_json",
+        "mapping_matrix_evidence_json", "response_code_audit_json", "scenario_response_code_audit_json",
+        "ai_output_scope", "ai_output_gap", "ai_output_gap_basis", "converter_wire_encoding",
+        "converter_wire_validation", "ai_output_length_value_validation", "ai_feedback_run_date",
+        "ai_feedback_status", "ai_team_feedback_message", "complete_finding_record_json",
+    ]
+    policy = findings_document.get("evidencePopulationPolicy", {})
+    with Path(path).open("w", encoding="utf-8-sig", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fieldnames, extrasaction="ignore", quoting=csv.QUOTE_MINIMAL)
+        writer.writeheader()
+        for item in findings_document["findings"]:
+            anchor = item.get("sourceAnchor", {})
+            evidence_ids = {
+                "aiRequirementIds": item.get("reviewedAiRequirementIds", []),
+                "scenarioIds": item.get("reviewedScenarioIds", []),
+                "testCaseIds": item.get("reviewedTestCaseIds", []),
+            }
+            writer.writerow({
+                "delivery": findings_document.get("delivery", ""),
+                "review_date": findings_document.get("reviewDate", ""),
+                "evidence_run_id": policy.get("reviewedRun", findings_document.get("delivery", "")),
+                "same_date_runs_mutually_exclusive": policy.get("sameDateRunsAreMutuallyExclusive", False),
+                "cross_run_identifier_joins": policy.get("crossRunIdentifierJoins", True),
+                "evidence_population_note": policy.get("note", ""),
+                "feedback_item_id": item.get("testRuleId", ""),
+                "test_solution_rule_title": item.get("testRuleTitle", ""),
+                "finding_disposition": item.get("finding", ""),
+                "semantic_assessment": item.get("semanticAssessment", ""),
+                "formal_review_status": item.get("formalReviewStatus", ""),
+                "authorized_sme_decision_recorded": item.get("authorizedSmeDecisionRecorded", False),
+                "coverage_credit": item.get("coverageCredit", False),
+                "source_specification": anchor.get("specification", ""),
+                "source_version": anchor.get("version", ""),
+                "source_section": anchor.get("section", ""),
+                "source_segment": anchor.get("segment", ""),
+                "source_element": anchor.get("element", ""),
+                "source_rule": anchor.get("rule", ""),
+                "source_anchor_json": json.dumps(anchor, ensure_ascii=True, separators=(",", ":")),
+                "rationale": item.get("rationale", ""),
+                "search_scope": item.get("searchScope", ""),
+                "reviewed_ai_requirement_ids_json": json.dumps(item.get("reviewedAiRequirementIds", []), ensure_ascii=True),
+                "reviewed_scenario_ids_json": json.dumps(item.get("reviewedScenarioIds", []), ensure_ascii=True),
+                "reviewed_test_case_ids_json": json.dumps(item.get("reviewedTestCaseIds", []), ensure_ascii=True),
+                "mapping_matrix_evidence_json": json.dumps(item.get("mappingMatrixEvidence", {}), ensure_ascii=True, separators=(",", ":")),
+                "response_code_audit_json": json.dumps(item.get("responseCodeAudit", {}), ensure_ascii=True, separators=(",", ":")),
+                "scenario_response_code_audit_json": json.dumps(item.get("scenarioResponseCodeAudit", {}), ensure_ascii=True, separators=(",", ":")),
+                "ai_output_scope": item.get("aiOutputScope", ""),
+                "ai_output_gap": item.get("aiOutputGap", ""),
+                "ai_output_gap_basis": item.get("aiOutputGapBasis", ""),
+                "converter_wire_encoding": item.get("converterWireEncoding", ""),
+                "converter_wire_validation": item.get("converterWireValidation", ""),
+                "ai_output_length_value_validation": item.get("aiOutputLengthValueValidation", ""),
+                "ai_feedback_run_date": item.get("aiTeamFeedback", {}).get("runDate", ""),
+                "ai_feedback_status": item.get("aiTeamFeedback", {}).get("status", ""),
+                "ai_team_feedback_message": item.get("aiTeamFeedback", {}).get("message", ""),
+                "complete_finding_record_json": json.dumps(item, ensure_ascii=True, separators=(",", ":")),
+            })
+
+
 def render(root):
     root = native(root)
     summary = read(root / "LATEST-RUN-ANALYSIS.json")
@@ -47,6 +184,9 @@ def render(root):
     semantic_review_summary = read(semantic_review_dir / "run4-semantic-review-summary.json")
     semantic_decision_register = read(semantic_review_dir / "run4-semantic-decision-register.json")
     manual_search_findings = read(semantic_review_dir / "run4-manual-search-findings.json")
+    (semantic_review_dir / "AI-TEAM-FEEDBACK-REPORT.md").write_text(
+        render_ai_team_feedback_report(manual_search_findings), encoding="utf-8")
+    write_ai_team_feedback_csv(semantic_review_dir / "AI-TEAM-FEEDBACK-REPORT.csv", manual_search_findings)
     section_10_1_dir = test_solution_root / "section-10-1-credit-card-processing-review-v4"
     section_10_1_assessment = read(section_10_1_dir / "section-10-1-coverage-assessment.json")
     section_10_2_dir = test_solution_root / "section-10-2-debit-card-processing-review-v2"
@@ -198,7 +338,9 @@ def render(root):
     chain_markdown.extend(["", "- [Section 10.2 debit draft package](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-br-ts-tc-td-draft-package.json)", "- [Complete heading-to-chain assessment](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-coverage-assessment.json)", "- [Debit review gates](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/README.md)"])
     chain_markdown.extend(["", "## Manual corpus search findings", "", f"{len(manual_search_findings['findings'])} manual-search finding(s) are recorded. Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations; this review uses only the Run4 crosswalk, case register, and physical-file register, with no cross-run joins by reused ID. Findings and AI-team feedback are not global absence claims or formal approvals. All formal statuses remain PENDING_SEMANTIC_REVIEW; feedback remains queued for sharing, and no coverage credit is issued.", "", "| Test Solution BR | Finding | Formal status | Credit | AI team feedback |", "|---|---|---|---|---|"])
     chain_markdown.extend(f"| {item['testRuleId']} | {item['finding']} | {item['formalReviewStatus']} | None | {item['aiTeamFeedback']['status']} ({item['aiTeamFeedback']['runDate']}): {item['aiTeamFeedback']['message']} |" for item in manual_search_findings["findings"])
-    chain_markdown.extend(["", "[Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)"])
+    chain_markdown.extend(["", "[Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)",
+                           "[Detailed AI Team Feedback Report](run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.md)",
+                           "[AI Team Feedback CSV](run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.csv)"])
     markdown_text += "\n" + "\n".join(chain_markdown)
     markdown_text = markdown_text.replace("section-10-1-credit-card-processing-review-v2", "section-10-1-credit-card-processing-review-v4")
     (root / "DETAILED-LATEST-RUN-REVIEW.md").write_text(markdown_text, encoding="utf-8")
@@ -215,7 +357,9 @@ def render(root):
     manual_search_rows_html = "".join(
         f"<tr><td>{escape(item['testRuleId'])}</td><td>{escape(item['finding'])}</td><td>{escape(item['rationale'])}</td><td>{escape(item['formalReviewStatus'])}</td><td>None</td><td>{escape(item['aiTeamFeedback']['status'])} ({escape(item['aiTeamFeedback']['runDate'])}): {escape(item['aiTeamFeedback']['message'])}</td></tr>"
         for item in manual_search_findings["findings"])
-    manual_search_html = (f'<section><h2>Manual corpus search findings</h2><p>{len(manual_search_findings["findings"])} Run4-specific manual findings are recorded for AI-team feedback. Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations; this review uses only Run4 matrices/registers and never joins reused IDs across runs. Feedback is queued, not sent; formal status remains PENDING_SEMANTIC_REVIEW, no authorized SME decision is recorded, and no coverage credit is issued.</p><div class="wrap"><table><thead><tr><th>Test Solution BR</th><th>Finding</th><th>Rationale</th><th>Formal status</th><th>Coverage credit</th><th>AI team feedback</th></tr></thead><tbody>{manual_search_rows_html}</tbody></table></div><a href="run4-semantic-review-v2/run4-manual-search-findings.json">Manual-search findings JSON</a></section>')
+    manual_search_html = (f'<section><h2>Manual corpus search findings</h2><p>{len(manual_search_findings["findings"])} Run4-specific manual findings are recorded for AI-team feedback. Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations; this review uses only Run4 matrices/registers and never joins reused IDs across runs. Feedback is queued, not sent; formal status remains PENDING_SEMANTIC_REVIEW, no authorized SME decision is recorded, and no coverage credit is issued.</p><div class="wrap"><table><thead><tr><th>Test Solution BR</th><th>Finding</th><th>Rationale</th><th>Formal status</th><th>Coverage credit</th><th>AI team feedback</th></tr></thead><tbody>{manual_search_rows_html}</tbody></table></div><a href="run4-semantic-review-v2/run4-manual-search-findings.json">Manual-search findings JSON</a> | <a href="run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.md">Detailed AI Team Feedback Report</a></section>')
+    manual_search_html = manual_search_html.replace(
+        "</section>", ' | <a href="run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.csv">AI Team Feedback CSV</a></section>')
     embedded = json.dumps(data, ensure_ascii=True, separators=(",", ":")).replace("</", "<\\/")
     html = TEMPLATE.replace("__DATA__", embedded)
     html = html.replace('<section><h2>Complete candidate TC register', manual_search_html + '<section><h2>Complete candidate TC register')
@@ -254,6 +398,8 @@ def render(root):
     story.extend([table, Spacer(1, 16)])
     story.append(Paragraph(escape(f"Manual corpus search findings: {len(manual_search_findings['findings'])}; Run4-specific AI-team feedback is queued, not sent. All formal reviews remain PENDING_SEMANTIC_REVIEW, with no authorized SME decision or coverage credit."), body))
     story.append(Paragraph('<link href="run4-semantic-review-v2/run4-manual-search-findings.json" color="blue">Manual-search findings JSON</link>', body))
+    story.append(Paragraph('<link href="run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.csv" color="blue">AI Team Feedback CSV</link>', body))
+    story.append(Paragraph('<link href="run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.md" color="blue">Detailed AI Team Feedback Report</link>', body))
     story.append(Paragraph(escape(f"Independent Test Solution BR coverage: 0/{test_solution_br_count:,} confirmed Run4 matches (0.00% confirmed evidence), status NOT_ASSESSED; all rules remain unassessed. A complete source-anchor candidate crosswalk covers all {chain_summary['aiBusinessRequirementCount']:,} AI BRs: {chain_summary['aiBrsWithSourceAnchorCandidates']:,} AI BRs have candidate links to {chain_summary['uniqueTestSolutionRulesWithSourceAnchorCandidates']:,} distinct Test BRs, but candidates are not semantic confirmations. The matrix has {chain_audit['matrixRows']:,} leaves; direct BR>TS>TC>physical-TD paths reach {chain_summary['directCatalogChainCounts']['brsWithPhysicalTdViaDirectChain']:,} BRs. Zero confirmed matches do not prove no equivalent AI BRs exist. The former {direct_br_count:,}/{summary['BR']:,} ({ai_internal_linkage['directCoveragePercent']:.2f}%) is AI-internal linkage only; full semantic coverage remains NOT_CALCULABLE."), body))
     story.append(Paragraph(escape(f"Source-backed review workflow: {semantic_review_summary['candidatePairCount']:,} candidate pairs across {semantic_review_summary['independentTestRulesWithAnchorCandidates']:,} independent Test BRs; {semantic_review_summary['independentTestRulesRequiringManualAiCorpusSearch']:,} require manual corpus search. All {sum(item.get('decision') == 'PENDING' for item in semantic_decision_register['decisions']):,} Run4 pair decisions remain PENDING. No semantic confirmations or coverage credit have been granted."), body))
     story.append(Paragraph(escape("Test Team interpretation for Element 4: both BRs are correct and semantically aligned. Element 4 is Address Line 2, character type AN, fixed width 21 bytes, carrying city/state/ZIP content; the Test BR's positional detail is compatible specificity, not a contradiction. The formal pair decision remains PENDING until an authorized reviewer records it; no coverage credit is issued."), body))

@@ -74,19 +74,31 @@ public final class Atl105AiElementIntake {
         Set<String> provisional = new HashSet<>();
         List<Finding> intake = new ArrayList<>();
         List<Observed> observations = new ArrayList<>();
+        ObjectNode envelope = JsonNodeFactory.instance.objectNode();
         if (payload == null || !payload.isObject() || payload.size() != 1) {
             intake.add(review("", "AI payload must have exactly one root object"));
             return new MessageAssessment(testCase, Status.REVIEW_REQUIRED, observations, intake, scenario, negativeClass, violated, provisional);
         }
         var root = payload.fields().next();
         JsonNode family = crosswalk.path("rootFamilies").path(root.getKey());
-        if (family.isMissingNode()) {
+        boolean exactSection11Family = family.isMissingNode() && families.contains(root.getKey());
+        if (family.isMissingNode() && !exactSection11Family) {
             intake.add(review("", "AI root label has no reviewed family mapping"));
             return new MessageAssessment(testCase, Status.REVIEW_REQUIRED, observations, intake, scenario, negativeClass, violated, provisional);
         }
         Map<String, ObjectNode> segments = new LinkedHashMap<>();
         for (JsonNode field : meta.path("fields")) {
             String segment = field.path("segment").asText();
+            if ("DS1".equals(segment)) {
+                String envelopeName = field.path("element").asText();
+                String element = crosswalk.path("envelopeFields").path(envelopeName).path("element").asText("");
+                if (element.isBlank()) intake.add(review("", "Unmapped AI envelope field " + envelopeName));
+                else if (!field.path("value").isTextual()) intake.add(review(element, "Non-text AI envelope value"));
+                else if (envelope.has(element) && !envelope.path(element).equals(field.path("value")))
+                    intake.add(review(element, "Metadata and payload envelope values conflict for " + envelopeName));
+                else envelope.set(element, field.path("value"));
+                continue;
+            }
             String element = map(segment, field.path("element").asText(), field.path("specElementName").asText());
             ObjectNode elements = segments.computeIfAbsent(segment, key -> JsonNodeFactory.instance.objectNode());
             if (element != null && field.path("provisional").asBoolean()) provisional.add(segment + "|" + element);
@@ -95,16 +107,18 @@ public final class Atl105AiElementIntake {
             else if (elements.has(element)) intake.add(review(element, "Two AI fields map to one element in segment " + segment));
             else elements.set(element, field.path("value"));
         }
-        String familyName = segments.containsKey(family.path("emvSegment").asText()) ? family.path("emvFamily").asText() : family.path("family").asText();
+        String mappedFamily = exactSection11Family ? root.getKey()
+            : segments.containsKey(family.path("emvSegment").asText()) ? family.path("emvFamily").asText() : family.path("family").asText();
+        String familyName = mappedFamily;
         String declared = meta.path("messageFamily").asText("");
         String resolved = families.contains(declared) ? declared : families.contains(declared.replaceAll(" Request$", "")) ? declared.replaceAll(" Request$", "") : null;
         if (declared.endsWith("Response") && root.getKey().endsWith("Request"))
             intake.add(new Finding("", Status.INVALID, "", "AI metadata declares a response family but the payload root is a request"));
         else if (resolved == null) intake.add(review("", "AI metadata family label is not a Section 11 message family; payload-root family used"));
+        else if (!resolved.equals(mappedFamily)) intake.add(review("", "AI metadata family conflicts with the mapped payload-root family"));
         else familyName = resolved;
         final String validatedFamily = familyName;
         segments.forEach((segment, elements) -> observations.add(new Observed(segment, validator.validate(observation(validatedFamily, segment, elements)))));
-        ObjectNode envelope = JsonNodeFactory.instance.objectNode();
         int count = 0;
         var children = root.getValue().fields();
         while (children.hasNext()) {
@@ -115,10 +129,17 @@ public final class Atl105AiElementIntake {
             }
             String element = crosswalk.path("envelopeFields").path(child.getKey()).path("element").asText("");
             if (element.isBlank()) intake.add(review("", "Unmapped AI envelope field " + child.getKey()));
+            else if (envelope.has(element) && !envelope.path(element).equals(child.getValue()))
+                intake.add(review(element, "Metadata and payload envelope values conflict for " + child.getKey()));
             else envelope.set(element, child.getValue());
         }
         ObjectNode message = observation(validatedFamily, "MESSAGE", envelope);
-        message.putObject("qualifiers").put("dataSegmentCount", String.valueOf(count));
+        ObjectNode qualifiers = message.putObject("qualifiers");
+        qualifiers.put("dataSegmentCount", String.valueOf(count));
+        ObjectNode segmentOccurrences = qualifiers.putObject("segmentOccurrenceCounts");
+        Map<String, Integer> payloadSegmentOccurrences = new TreeMap<>();
+        countSegmentTypes(root.getValue(), payloadSegmentOccurrences);
+        payloadSegmentOccurrences.forEach(segmentOccurrences::put);
         if (segments.size() == count) {
             ArrayNode present = message.putArray("segmentsPresent");
             segments.keySet().forEach(present::add);
@@ -131,6 +152,17 @@ public final class Atl105AiElementIntake {
             : intake.isEmpty() && observations.stream().allMatch(item -> item.result().status() == Status.CHECKS_PASSED)
                 ? Status.CHECKS_PASSED : Status.REVIEW_REQUIRED;
         return new MessageAssessment(testCase, status, observations, intake, scenario, negativeClass, violated, provisional);
+    }
+
+    private static void countSegmentTypes(JsonNode node, Map<String, Integer> counts) {
+        if (node.isObject()) {
+            JsonNode type = node.get("SegmentType");
+            if (type != null && type.isTextual() && type.asText().matches("[0-9]{3}"))
+                counts.merge(type.asText(), 1, Integer::sum);
+            node.elements().forEachRemaining(child -> countSegmentTypes(child, counts));
+        } else if (node.isArray()) {
+            node.elements().forEachRemaining(child -> countSegmentTypes(child, counts));
+        }
     }
 
     public Map<String, Long> mappingCounts() {

@@ -62,7 +62,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |59|Number of Card Types; |N FIXED max 2|1|5|0|1|1|0|
 |61|Number of Print Lines; |N FIXED max 1|0|3|2|0|0|0|
 |62|Number of Products; |N FIXED max 2|4|14|0|1|1|0|
-|63|Number of Segments; |N VARIABLE max 2|8|38|9|8|4|5|
+|63|Number of Segments; |N VARIABLE max 2|8|38|9|8|5|5|
 |64|Odometer; |N VARIABLE max 8|1|8|0|1|1|0|
 |65|Password; |N VARIABLE max 6|5|23|4|4|2|0|
 |66|Pause Indicator; |AN FIXED max 1|2|8|0|2|2|0|
@@ -72,14 +72,14 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |75|Phone Number; |N VARIABLE max 18|2|6|0|2|2|0|
 |76|Product Amount; |N VARIABLE max 12|4|16|0|1|1|0|
 |77|Product Code; |N FIXED max 3|10|1181|0|2|4|0|
-|78|Prompt Code; |AN VARIABLE max 4|14|324|7|5|4|1|
+|78|Prompt Code; |AN VARIABLE max 4|14|326|7|5|4|1|
 |79|Pump/Lane Number; |N VARIABLE max 2|1|9|2|0|0|0|
 |80|Purchase Code; |AN VARIABLE max 16|1|3|0|1|1|0|
 |81|Quantity; |N VARIABLE max 9|2|7|0|0|1|0|
 |82|Redial Count; |N FIXED max 1|2|8|0|2|2|0|
 |83|Response Code; |AN FIXED max 1|10|44|7|4|6|0|
 |84|Segment Length; |N VARIABLE max 4|56|242|13|34|19|19|
-|85|Segment Type; |N FIXED max 3|40|171|13|19|14|39|
+|85|Segment Type; |N FIXED max 3|40|171|13|19|15|39|
 |86|Sequence Number; |N FIXED max 6|11|70|14|7|5|4|
 |87|Service Level; |A FIXED max 1|2|7|0|0|0|0|
 |88|Ship-from Postal Code; |AN FIXED max 10|1|3|0|1|0|0|
@@ -106,7 +106,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |109|Voucher ID; |N VARIABLE max 10|1|7|0|1|1|0|
 |111|Variable Information Indicator; |AN FIXED max 3|3|13|1|1|0|0|
 |112|Variable Information Length; |N FIXED max 3|3|11|1|1|1|0|
-|113|Variable Information; |AN VARIABLE max 982|2|70|1|0|0|0|
+|113|Variable Information; |AN VARIABLE max 982|2|72|1|0|0|0|
 |114|Software Load IP/URL Address; |AN FIXED max 30|2|12|0|2|0|0|
 |115|Additional Information Data Segment Flag; |N FIXED max 1|2|9|2|1|0|0|
 |116|Additional Information Indicator; |N FIXED max 3|1|67|0|1|0|0|
@@ -189,7 +189,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |195|CAVV Revised Format; |AN FIXED max 20|1|8|0|1|0|0|
 |196|Token Requestor ID; |AN FIXED max 11|1|1|0|1|0|0|
 |197|Token PAN Suffix; |AN FIXED max 4|1|4|0|1|0|0|
-|198|Settlement Type; |AN FIXED max 1|1|6|0|1|0|0|
+|198|Settlement Type; |AN FIXED max 1|1|5|0|1|0|0|
 |199|Signature Required; |AN FIXED max 1|1|5|0|1|0|0|
 |200|Receipt Card Description; |AN FIXED max 10|1|3|0|1|0|0|
 |201|Fuel Volume Data; |AN VARIABLE max 3600|1|3|0|1|1|0|

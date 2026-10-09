@@ -48,6 +48,54 @@ class Atl105AiElementIntakeTest {
             .isEqualTo(Status.REVIEW_REQUIRED);
     }
 
+    @Test
+    void exactSectionElevenRootFamilyIsAcceptedForIntake() throws Exception {
+        var assessment = new Atl105AiElementIntake(PACK).assess(meta("Electronic Mail Request", "positive"),
+            json("{\"Electronic Mail Request\":{}}"));
+        assertThat(assessment.intakeFindings().toString()).doesNotContain("root label has no reviewed family mapping");
+        assertThat(assessment.intakeFindings().toString()).doesNotContain("not a Section 11 message family");
+        assertThat(assessment.observations()).anySatisfy(observed -> assertThat(observed.segment()).isEqualTo("MESSAGE"));
+        var exactTemplateKey = new Atl105AiElementIntake(PACK).assess(meta("Financial Transaction Request", "positive"),
+            json("{\"Financial Transaction Request\":{}}"));
+        assertThat(exactTemplateKey.intakeFindings().toString())
+            .doesNotContain("root label has no reviewed family mapping", "not a Section 11 message family");
+        var conflictingFamily = new Atl105AiElementIntake(PACK).assess(meta("EMV Financial Transaction Request", "positive"),
+            json("{\"Financial Transaction Request\":{}}"));
+        assertThat(conflictingFamily.intakeFindings().toString())
+            .contains("AI metadata family conflicts with the mapped payload-root family");
+    }
+
+    @Test
+    void dataSectionOneSegmentCountIsMappedToEnvelopeElement63() throws Exception {
+        var assessment = new Atl105AiElementIntake(PACK).assess(meta("Electronic Mail Request", "positive",
+            field("DS1", "NumberofSegments", "NumberofSegments", "1"),
+            field("109", "SegmentType", "Segment Type", "109")),
+            json("{\"Electronic Mail Request\":{\"NumberofSegments\":\"1\",\"Electronic Mail Data Segment\":{\"SegmentType\":\"109\"}}}"));
+        assertThat(assessment.intakeFindings().toString())
+            .doesNotContain("Unmapped AI envelope field NumberofSegments", "Unmapped AI field DS1/NumberofSegments",
+                "Meta segment identities do not match the payload segment count", "Metadata and payload envelope values conflict");
+        var conflict = new Atl105AiElementIntake(PACK).assess(meta("Electronic Mail Request", "positive",
+            field("DS1", "NumberofSegments", "NumberofSegments", "2"),
+            field("109", "SegmentType", "Segment Type", "109")),
+            json("{\"Electronic Mail Request\":{\"NumberofSegments\":\"1\",\"Electronic Mail Data Segment\":{\"SegmentType\":\"109\"}}}"));
+        assertThat(conflict.intakeFindings().toString()).contains("Metadata and payload envelope values conflict");
+    }
+
+    @Test
+    void repeatedPayloadSegmentTypesFailTheExactOnceRule() throws Exception {
+        var assessment = new Atl105AiElementIntake(PACK).assess(meta("Financial Transaction Request", "positive",
+            field("100", "SegmentType", "Segment Type", "100")),
+            json("{\"Financial Transaction Request\":{\"First Segment\":{\"SegmentType\":\"100\"},\"Second Segment\":{\"SegmentType\":\"100\"}}}"));
+        assertThat(assessment.observations()).anySatisfy(observed -> {
+            if (!"MESSAGE".equals(observed.segment())) return;
+            assertThat(observed.result().findings()).anySatisfy(finding -> {
+                assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+                assertThat(finding.status()).isEqualTo(Status.INVALID);
+                assertThat(finding.reason()).contains("occurs 2 times");
+            });
+        });
+    }
+
     private static JsonNode meta(String family, String scenario, JsonNode... fields) {
         var meta = MAPPER.createObjectNode();
         meta.put("testCaseId", "TC-TEST");

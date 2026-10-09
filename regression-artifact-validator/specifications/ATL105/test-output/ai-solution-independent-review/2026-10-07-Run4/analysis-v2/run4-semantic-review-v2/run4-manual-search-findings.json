@@ -299,7 +299,7 @@
         "rule": "segment-101-field-order"
       },
       "finding": "NO_EQUIVALENT_AI_BR_FOUND",
-      "rationale": "ATL105 Section 12.2 lays out Segment 101 base fields 1-13 in order and Fleet Tag 1-5 at fields 14-18 for Auth Completion messages. A search of the complete 5,153-row Run4 AI BR crosswalk found no AI BR stating or asserting that Segment 101 field sequence. The closest BRs are not equivalent: :1737 addresses Field Separators, :1738 says Fleet Tags 1-5 are sent only in Auth Completion, :1739 covers valid tag codes/Host Prompt applicability, and :2229-:2233 cover individual Fleet Tag presence conditions. Their linked cases have no field-order assertion. The six :1737 cases assert separators at confidence 0.31; the :1738 and :1739 cases assert lifecycle/tag-code constraints; the per-tag presence cases test presence, not position. A structured JSON object's property order is not evidence of converter wire order. This is a Run4-specific no-equivalent finding, not a global absence claim or a confirmed AI_ONLY classification.",
+      "rationale": "ATL105 Section 12.2 lays out Segment 101 base fields 1-13 in order and Fleet Tag 1-5 at fields 14-18 for Auth Completion messages. A search of the complete 5,153-row Run4 AI BR crosswalk found no AI BR stating or asserting that Segment 101 field sequence. The closest BRs are not equivalent: :1737 addresses Field Separators, :1738 says Fleet Tags 1-5 are sent only in Auth Completion, :1739 covers valid tag codes/Host Prompt applicability, and :2229-:2233 cover individual Fleet Tag presence conditions. Their linked cases have no field-order assertion. The six :1737 cases assert separators at confidence 0.31; the :1738 and :1739 cases assert lifecycle/tag-code constraints; the per-tag presence cases test presence, not position. This review resolved the eight candidate BR rows and their 38 linked TC rows only through the Run4-specific `run4-independent-br-crosswalk-v2/run4-ai-br-chain-crosswalk.jsonl` and `case-register.json`; it did not join or substitute same-ID rows from Run1, Run2, or Run3. A structured JSON object's property order is not evidence of converter wire order. This is a Run4-specific no-equivalent finding, not a global absence claim or a confirmed AI_ONLY classification.",
       "searchScope": "Approval-independent Run4 population (all 5,153 AI BRs), explicit searches for field-order/field-sequence wording, Fleet Segment field numbers 1-13 and Fleet Tag fields 14-18, Auth Completion tag ordering, full-text review of nearest Fleet statements, and inspection of their linked scenario/case assertions and approval statuses.",
       "mappingMatrixEvidence": {
         "runId": "ATL105-2026-10-07-Run4",
@@ -333,6 +333,47 @@
         "runDate": "2026-10-07",
         "status": "PENDING_SHARE",
         "message": "Manual Run4 search found no AI BR that states the Segment 101 field order (base fields 1-13, then Fleet Tags 1-5 at fields 14-18 in Auth Completion). Nearby BRs cover separators, tag presence/applicability, or tag-code values, not order; their cases do not assert field sequence. Please add or identify an independently grounded BR and a test chain that checks the Segment 101 field order and Auth Completion tag extension. Do not use JSON property ordering as proof of serialized wire order; validate converter wire order separately if the converter is in scope."
+      },
+      "formalReviewStatus": "PENDING_SEMANTIC_REVIEW",
+      "authorizedSmeDecisionRecorded": false,
+      "coverageCredit": false
+    },
+    {
+      "testRuleId": "SEG101-R-008",
+      "testRuleTitle": "Empty non-trailing fields retain their Field Separators",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.2",
+        "segment": "101",
+        "rule": "non-trailing-empty-field-separator"
+      },
+      "finding": "CONVERTER_VALIDATION_OUTSIDE_AI_JSON_OUTPUT_SCOPE",
+      "semanticAssessment": "CANDIDATE_EQUIVALENCE_REQUIRES_AUTHORIZED_REVIEW",
+      "aiOutputScope": "STRUCTURED_JSON_MESSAGE_CONTENT_NOT_WIRE_ENCODING",
+      "aiOutputGap": false,
+      "converterWireValidation": "NOT_ASSESSED",
+      "rationale": "ATL105 Section 12.2 states that all Fleet Data Segment fields are separated by Field Separators and that the separator must still be sent when a field is not populated. Run4 AI BR :1737 repeats this rule, making it a strong semantic candidate for R-008. The AI artifacts carry structured JSON message content, not serialized bytes, so literal separators are not expected in those JSON objects; their presence/absence there is not an AI-output defect. The six directly linked Run4 cases are all unapproved. TC-008486 and TC-008488 have a specific ASSERT ('Include Field Separator between all fields; if a field is empty, still send the Field Separator') but only at confidence 0.31; the remaining cases have no specific assertion. The visible JSON request objects do not capture actual separator bytes or converter output. Therefore converter behavior remains unassessed, with no coverage credit; the AI JSON must still represent the intended Fleet field values/emptiness correctly.",
+      "searchScope": "Run4-only BR crosswalk, case register, and physical-file register for candidate :1737 and its six direct cases, plus ATL105 Section 12.2 source. Same-date Run1, Run2, and Run3 artifacts were excluded; no cross-run joins by reused case ID were made.",
+      "mappingMatrixEvidence": {
+        "runId": "ATL105-2026-10-07-Run4",
+        "artifact": "run4-independent-br-crosswalk-v2/run4-ai-br-chain-crosswalk.jsonl",
+        "caseRegisterArtifact": "case-register.json",
+        "physicalFileRegisterArtifact": "physical-file-register.json",
+        "aiRequirementId": "REQ-SRC-ATL105-PDF-001:1737",
+        "scenarioId": "SC-8677",
+        "linkedTestCaseIds": ["TC-008484", "TC-008485", "TC-008486", "TC-008487", "TC-008488", "TC-008489"],
+        "producerApprovedCases": 0,
+        "specificAssertionCases": 2,
+        "crossRunIdentifierJoins": false
+      },
+      "reviewedAiRequirementIds": ["REQ-SRC-ATL105-PDF-001:1737"],
+      "reviewedScenarioIds": ["SC-8677"],
+      "reviewedTestCaseIds": ["TC-008484", "TC-008485", "TC-008486", "TC-008487", "TC-008488", "TC-008489"],
+      "aiTeamFeedback": {
+        "runDate": "2026-10-07",
+        "status": "PENDING_SHARE",
+        "message": "Run4 BR :1737 states the Fleet separator rule, but all six linked cases are unapproved and their JSON payloads are structured content, not wire bytes. Literal Field Separator bytes are converter responsibility and should not be added to the AI JSON. Keep checking the JSON field values and empty-field representation for correctness; validate the emitted separators separately in the converter with a captured or independently derived wire expectation."
       },
       "formalReviewStatus": "PENDING_SEMANTIC_REVIEW",
       "authorizedSmeDecisionRecorded": false,

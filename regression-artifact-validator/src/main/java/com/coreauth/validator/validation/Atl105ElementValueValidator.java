@@ -219,11 +219,32 @@ public final class Atl105ElementValueValidator {
             if (!allowed.contains(segment)) findings.add(new Finding("", Status.REVIEW_REQUIRED, "", "Segment " + segment + " not listed in " + section));
             return;
         }
-        if (!observation.path("segmentsPresent").isArray()) return;
         Set<String> present = new HashSet<>();
-        observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
-        for (String missing : required) if (!present.contains(missing))
-            findings.add(new Finding("", Status.INVALID, "", "Required Segment " + missing + " absent per " + section));
+        if (observation.path("segmentsPresent").isArray())
+            observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
+        JsonNode occurrences = observation.path("qualifiers").path("segmentOccurrenceCounts");
+        if (!observation.path("segmentsPresent").isArray() && !occurrences.isObject()) return;
+        if (occurrences.isObject()) occurrences.fieldNames().forEachRemaining(present::add);
+        for (String missing : required) {
+            if ("100".equals(missing)) {
+                JsonNode exactCount = occurrences.path("100");
+                if (exactCount.canConvertToInt()) {
+                    int count = exactCount.asInt();
+                    Status status = count == 1 ? Status.CHECKS_PASSED : Status.INVALID;
+                    String reason = count == 1 ? "Segment 100 occurs exactly once in the payload"
+                        : count == 0 ? "Required Segment 100 absent per " + section
+                        : "Segment 100 occurs " + count + " times; exactly one occurrence is required per " + section;
+                    findings.add(new Finding("", status, "SEG100-R-001", reason));
+                } else if (!present.contains("100")) {
+                    findings.add(new Finding("", Status.INVALID, "SEG100-R-001", "Required Segment 100 absent per " + section));
+                } else {
+                    findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-001",
+                        "Segment 100 is present, but exact-once occurrence count is unavailable"));
+                }
+            } else if (!present.contains(missing)) {
+                findings.add(new Finding("", Status.INVALID, "", "Required Segment " + missing + " absent per " + section));
+            }
+        }
         for (String extra : present) if (!allowed.contains(extra))
             findings.add(new Finding("", Status.REVIEW_REQUIRED, "", "Segment " + extra + " not listed in " + section));
     }

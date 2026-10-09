@@ -75,6 +75,27 @@ class Atl105ElementValueValidatorTest {
     }
 
     @Test
+    void missingSegment100UsesSourceRuleIdWithoutClaimingDuplicateCoverage() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var input = message("1", "1");
+        input.putArray("segmentsPresent");
+        var result = validator.validate(input);
+        assertThat(result.findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.INVALID);
+            assertThat(finding.reason()).contains("Required Segment 100 absent");
+        });
+        var present = message("1", "1");
+        present.putArray("segmentsPresent").add("100");
+        ((ObjectNode) present.path("qualifiers")).putObject("segmentOccurrenceCounts").put("100", 1);
+        assertThat(validator.validate(present).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.CHECKS_PASSED);
+            assertThat(finding.reason()).contains("occurs exactly once");
+        });
+    }
+
+    @Test
     void partialObservationsNeverTurnMissingRequiredElementsIntoPasses() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var partial = observation("Financial Transaction Request", "100", "86", "123456");
