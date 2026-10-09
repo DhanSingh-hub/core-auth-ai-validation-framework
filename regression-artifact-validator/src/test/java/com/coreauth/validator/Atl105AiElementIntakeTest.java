@@ -96,6 +96,21 @@ class Atl105AiElementIntakeTest {
         });
     }
 
+    @Test
+    void nestedSegmentTypeValueDoesNotCountAsMessageSegmentOccurrence() throws Exception {
+        var assessment = new Atl105AiElementIntake(PACK).assess(meta("Financial Transaction Request", "positive",
+            field("100", "SegmentType", "Segment Type", "100")),
+            json("{\"Financial Transaction Request\":{\"Standard Segment\":{\"SegmentType\":\"100\"},\"Transaction Metadata\":{\"Audit\":{\"SegmentType\":\"100\"}}}}"));
+        assertThat(assessment.observations()).anySatisfy(observed -> {
+            if (!"MESSAGE".equals(observed.segment())) return;
+            assertThat(observed.result().findings()).anySatisfy(finding -> {
+                assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+                assertThat(finding.status()).isEqualTo(Status.CHECKS_PASSED);
+                assertThat(finding.reason()).contains("occurs exactly once");
+            });
+        });
+    }
+
     private static JsonNode meta(String family, String scenario, JsonNode... fields) {
         var meta = MAPPER.createObjectNode();
         meta.put("testCaseId", "TC-TEST");

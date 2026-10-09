@@ -223,7 +223,12 @@ public final class Atl105ElementValueValidator {
         if (observation.path("segmentsPresent").isArray())
             observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
         JsonNode occurrences = observation.path("qualifiers").path("segmentOccurrenceCounts");
-        if (!observation.path("segmentsPresent").isArray() && !occurrences.isObject()) return;
+        boolean hasStructureEvidence = observation.path("segmentsPresent").isArray() || occurrences.isObject();
+        if (!hasStructureEvidence) {
+            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-008",
+                "Segment 101 occurrence count is unavailable for the companion-segment duplicate check"));
+            return;
+        }
         if (occurrences.isObject()) occurrences.fieldNames().forEachRemaining(present::add);
         for (String missing : required) {
             if ("100".equals(missing)) {
@@ -245,6 +250,21 @@ public final class Atl105ElementValueValidator {
                 findings.add(new Finding("", Status.INVALID, "", "Required Segment " + missing + " absent per " + section));
             }
         }
+        JsonNode segment101Count = occurrences.path("101");
+        JsonNode untypedSegmentCount = observation.path("qualifiers").path("untypedSegmentObjectCount");
+        Status duplicateStatus;
+        String duplicateReason;
+        if (segment101Count.canConvertToInt() && segment101Count.asInt() > 1) {
+            duplicateStatus = Status.INVALID;
+            duplicateReason = "Companion Segment 101 occurs " + segment101Count.asInt() + " times; duplicates are not allowed";
+        } else if (!untypedSegmentCount.canConvertToInt() || untypedSegmentCount.asInt() > 0) {
+            duplicateStatus = Status.REVIEW_REQUIRED;
+            duplicateReason = "Segment 101 duplicate check requires a typed count for every top-level segment object";
+        } else {
+            duplicateStatus = Status.CHECKS_PASSED;
+            duplicateReason = "Companion Segment 101 occurs no more than once in the payload";
+        }
+        findings.add(new Finding("", duplicateStatus, "SEG100-R-008", duplicateReason));
         for (String extra : present) if (!allowed.contains(extra))
             findings.add(new Finding("", Status.REVIEW_REQUIRED, "", "Segment " + extra + " not listed in " + section));
     }

@@ -138,8 +138,9 @@ public final class Atl105AiElementIntake {
         qualifiers.put("dataSegmentCount", String.valueOf(count));
         ObjectNode segmentOccurrences = qualifiers.putObject("segmentOccurrenceCounts");
         Map<String, Integer> payloadSegmentOccurrences = new TreeMap<>();
-        countSegmentTypes(root.getValue(), payloadSegmentOccurrences);
+        int untypedSegmentObjects = countSegmentTypes(root.getValue(), payloadSegmentOccurrences);
         payloadSegmentOccurrences.forEach(segmentOccurrences::put);
+        qualifiers.put("untypedSegmentObjectCount", untypedSegmentObjects);
         if (segments.size() == count) {
             ArrayNode present = message.putArray("segmentsPresent");
             segments.keySet().forEach(present::add);
@@ -154,14 +155,24 @@ public final class Atl105AiElementIntake {
         return new MessageAssessment(testCase, status, observations, intake, scenario, negativeClass, violated, provisional);
     }
 
-    private static void countSegmentTypes(JsonNode node, Map<String, Integer> counts) {
-        if (node.isObject()) {
-            JsonNode type = node.get("SegmentType");
-            if (type != null && type.isTextual() && type.asText().matches("[0-9]{3}"))
-                counts.merge(type.asText(), 1, Integer::sum);
-            node.elements().forEachRemaining(child -> countSegmentTypes(child, counts));
-        } else if (node.isArray()) {
-            node.elements().forEachRemaining(child -> countSegmentTypes(child, counts));
+    private static int countSegmentTypes(JsonNode message, Map<String, Integer> counts) {
+        if (!message.isObject()) return 0;
+        int[] untyped = {0};
+        message.elements().forEachRemaining(segment -> countSegmentInstances(segment, counts, untyped));
+        return untyped[0];
+    }
+
+    private static void countSegmentInstances(JsonNode candidate, Map<String, Integer> counts, int[] untyped) {
+        if (candidate.isArray()) {
+            candidate.elements().forEachRemaining(item -> countSegmentInstances(item, counts, untyped));
+            return;
+        }
+        if (!candidate.isObject()) return;
+        JsonNode type = candidate.get("SegmentType");
+        if (type != null && type.isTextual() && type.asText().matches("[0-9]{3}")) {
+            counts.merge(type.asText(), 1, Integer::sum);
+        } else {
+            untyped[0]++;
         }
     }
 

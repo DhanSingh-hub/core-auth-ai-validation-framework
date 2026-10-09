@@ -61,6 +61,10 @@ class Atl105ElementValueValidatorTest {
     void segmentCountMustEqualSuppliedSegmentsAndRequiredSegmentsMustBePresent() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var input = message("2", "2");
+        input.putArray("segmentsPresent").add("100").add("101");
+        var inputQualifiers = (ObjectNode) input.path("qualifiers");
+        inputQualifiers.putObject("segmentOccurrenceCounts").put("100", 1).put("101", 1);
+        inputQualifiers.put("untypedSegmentObjectCount", 0);
         assertThat(validator.validate(input).status()).isEqualTo(Status.CHECKS_PASSED);
         assertThat(validator.validate(message("3", "2")).status()).isEqualTo(Status.INVALID);
         assertThat(validator.validate(message("0", "0")).status()).isEqualTo(Status.INVALID);
@@ -68,6 +72,7 @@ class Atl105ElementValueValidatorTest {
         noCount.remove("qualifiers");
         assertThat(validator.validate(noCount).status()).isEqualTo(Status.REVIEW_REQUIRED);
         input.putArray("segmentsPresent").add("101").add("102");
+        inputQualifiers.putObject("segmentOccurrenceCounts").put("101", 1).put("102", 1);
         assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
         var unlisted = message("2", "2");
         unlisted.putArray("segmentsPresent").add("100").add("130");
@@ -96,6 +101,34 @@ class Atl105ElementValueValidatorTest {
     }
 
     @Test
+    void companionSegment101DuplicateRuleUsesOccurrenceEvidence() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var input = message("2", "2");
+        input.putArray("segmentsPresent").add("100").add("101");
+        var qualifiers = (ObjectNode) input.path("qualifiers");
+        qualifiers.putObject("segmentOccurrenceCounts").put("100", 1).put("101", 1);
+        qualifiers.put("untypedSegmentObjectCount", 0);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.CHECKS_PASSED);
+        });
+
+        ((ObjectNode) qualifiers.path("segmentOccurrenceCounts")).put("101", 2);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.INVALID);
+            assertThat(finding.reason()).contains("occurs 2 times");
+        });
+
+        ((ObjectNode) qualifiers.path("segmentOccurrenceCounts")).put("101", 1);
+        qualifiers.put("untypedSegmentObjectCount", 1);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
+    }
+
+    @Test
     void partialObservationsNeverTurnMissingRequiredElementsIntoPasses() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var partial = observation("Financial Transaction Request", "100", "86", "123456");
@@ -120,7 +153,12 @@ class Atl105ElementValueValidatorTest {
     void verifiesKnownValueAndRejectsInvalidAndMissingRequiredValue() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var input = message("1", "1");
-        assertThat(validator.validate(input).status()).isEqualTo(Status.CHECKS_PASSED);
+        input.putArray("segmentsPresent").add("100");
+        ObjectNode qualifiers = (ObjectNode) input.path("qualifiers");
+        qualifiers.putObject("segmentOccurrenceCounts").put("100", 1);
+        qualifiers.put("untypedSegmentObjectCount", 0);
+        var inputResult = validator.validate(input);
+        assertThat(inputResult.status()).as("findings: %s", inputResult.findings()).isEqualTo(Status.CHECKS_PASSED);
         ((ObjectNode) input.path("elements")).put("55", "ATL999");
         assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
         ((ObjectNode) input.path("elements")).remove("55");
