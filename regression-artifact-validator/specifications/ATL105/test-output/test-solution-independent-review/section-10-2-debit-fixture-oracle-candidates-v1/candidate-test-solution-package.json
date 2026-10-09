@@ -1,0 +1,120 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SECTION-10-2-DEBIT-FIXTURE-CANDIDATES-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "artifactContractVersion": "2",
+    "strictExecutionContract": false
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-DRAFT-10-2-012",
+      "title": "Debit partial approval returns code F, approved amount, balance, and remaining-balance prompt",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 debit card context in 10.2.2.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.2.2.1",
+          "segment": "100",
+          "rule": "section-10-2-debit-partial-approval-response"
+        }
+      ]
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "SCN-DRAFT-10-2-012",
+      "requirementIds": [
+        "BR-DRAFT-10-2-012"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.2.2.1",
+          "segment": "100",
+          "rule": "section-10-2-debit-partial-approval-response"
+        }
+      ]
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-DRAFT-10-2-012",
+      "scenarioIds": [
+        "SCN-DRAFT-10-2-012"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TD-DRAFT-10-2-012.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.2",
+        "debit",
+        "draft-review-required",
+        "debit_partial_approval_response"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.2.2.1",
+          "segment": "100",
+          "rule": "section-10-2-debit-partial-approval-response"
+        }
+      ]
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-DRAFT-10-2-012",
+      "testCaseIds": [
+        "TC-DRAFT-10-2-012"
+      ],
+      "expectedValidation": "PASS_WITH_REVIEW",
+      "fileName": "test-data/TD-DRAFT-10-2-012.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.2.2.1",
+          "segment": "100",
+          "rule": "section-10-2-debit-partial-approval-response"
+        }
+      ],
+      "payload": {
+        "request": {
+          "dataSection1": {
+            "messageFormatVersionIdentifier": "ATL105",
+            "numberOfSegments": "01"
+          },
+          "dataSection2": {
+            "standardSegment": {
+              "segmentType": "100",
+              "terminalIdentifier": "TSCA000001",
+              "promptCode": "0020",
+              "sequenceNumber": "100001",
+              "partialApprovalIndicator": "1"
+            }
+          },
+          "dataSection3": []
+        },
+        "testControls": {
+          "validateCoreFields": true,
+          "validatePartialApproval": true,
+          "cardPresent": true,
+          "expectedIndicator": "1"
+        },
+        "candidateScope": "SEGMENT_100_CORE_AND_INDICATOR_ONLY_NOT_A_COMPLETE_DEBIT_REQUEST",
+        "executionAllowed": false
+      }
+    }
+  ]
+}

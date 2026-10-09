@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 17 open (17 total).
+**Status:** 18 open (18 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -25,6 +25,7 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0015](#aif-0015) | Correct the phase-1 Electronic Mail Request payload before claiming verification PASS | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0016](#aif-0016) | Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0017](#aif-0017) | Complete Segment 111 physical length evidence in the immutable TC-000016 representative chain | OPEN | AI Solution Team | 2026-10-06 |
+| [AIF-0018](#aif-0018) | Validate Authorization Only response expectations and missing Credit Visa flows across Run1–Run4 | OPEN | AI Solution Team | 2026-10-09 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -368,3 +369,26 @@ The chain REQ-SRC-ATL105-PDF-001:0821 -> SC-0018 -> TC-000016 has explicit linke
 - `specifications/ATL105/test-output/ai-solution-independent-review/appendix-i/representative-intake.json`
 - `specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000016.json`
 - `specifications/ATL105/docs/specs/extracted_text.txt section12.10 lines12599-12622`
+
+<a id="aif-0018"></a>
+## AIF-0018: Validate Authorization Only response expectations and missing Credit Visa flows across Run1–Run4
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-10-09 by Test Solution review
+- **Segments:** 100
+- **Target delivery:** Next versioned AI delivery after ATL105-2026-10-07-Run4
+
+Compared the corrected Credit Visa/BuyPass flow list (4 single-step and 10 multi-step shapes) with the 89 Run4 case-register records marked isFlow=true and their sidecar/JSON leg files. No standalone Run4 flow candidate was found for Authorization or Sale; no matching candidate was found for COF/MIT or the report-only Unclassified bucket; and no exact Authorization -> Completion -> Timeout candidate was found. Candidates do exist for Authorization -> Completion (TC-006448), Authorization -> Void (TC-006490), Sale -> Void (TC-006502), Refund -> Void (TC-006472), Authorization -> Cancellation (TC-006484), Authorization -> Partial Completion (TC-006454), Authorization -> Completion -> Void (TC-006496), and Authorization -> Completion -> Duplicate Completion (TC-006460). TC-006478 is Financial Transaction Request -> Time-out Reversal and does not establish Sale -> Timeout. The Segment 100 suite catalog reports 16 flows declared, 0 generated, 16 skipped, 1,650 single-leg cases, and 0 multi-leg cases. TC-card expected responses: all four same-date runs have 4,844 Segment 100 cards and zero expected Response Code 2/3. Scenario expected responses differ: Runs2–4 each contain 4,224 expected_response_code=2 scenarios and zero code-3 scenarios; all 4,224 are typed negative, 82 target Auth Completion (0220), and the scenario oracle authority is Level C (chatbot-sourced). The three scenario catalogs are byte-identical (SHA-256 1be41aff6746cd76cbb9e058ed91443bd717145e8cdfdaaa44f3e5d6f6c9e4f6). Run1 has no standalone scenario catalog. ATL105 defines code 2 as Approved Authorization Only, code 3 as Approved Authorization Only with AVS, and code 0 as Approved Purchase/Capture. Do not count the unvalidated negative scenario defaults as positive Authorization Only coverage or assume they match the TC expected responses. Separately, the independent Test Solution response-code package contains one BR (BR-SEG100-RC-APPROVED-AUTH) covering codes 2 and 3 together, with one TD for code 2 only; that TD has expectedValidation REVIEW, and no separate code-3 TD is present. This independent starter package is not Run4 AI coverage or execution certification. Run4 candidate flow rows have empty requirementIds and NO_BR_ATTRIBUTION; register verificationStatus PASS is not proof of business approval or executed transaction behavior.
+
+**Evidence:**
+
+- `specifications/ATL105/reports/atl105-visa-legacy/ATL105 Visa - Corrected Flow List.html`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run1/pipeline_outputs_2026-10-07/src/pipeline/reporting/output/segment-100-suite-catalog.md`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run2/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run3/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-output/test-json/atl105-response-code-family-matrix.json`
+- `specifications/ATL105/test-output/test-json/segment-100-response-code-package.json`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/case-register.csv`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/run4-semantic-review-v2/run4-manual-search-findings.json`

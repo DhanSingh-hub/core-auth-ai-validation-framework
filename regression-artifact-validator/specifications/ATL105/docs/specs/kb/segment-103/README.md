@@ -21,6 +21,7 @@
 - [Voucher Lifecycle SME/TBA Note](voucher-lifecycle-sme-tba-note.md)
 - [Voucher Lifecycle Flow](voucher-lifecycle-flow.md)
 - [WIC Product Data SME/TBA Note](wic-product-data-sme-tba-note.md)
+- [WIC UPC/PLU Execution Evidence (MCH-44658)](wic-upc-plu-execution-evidence.md)
 - [WIC Product Data Flow](wic-product-data-flow.md)
 - [EBT Program Data SME/TBA Note](ebt-program-data-sme-tba-note.md)
 - [EBT Program Data Flow](ebt-program-data-flow.md)

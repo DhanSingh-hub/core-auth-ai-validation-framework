@@ -20,3 +20,5 @@ All 27 Section 10.2 source headings are mapped in `section-10-2-coverage-assessm
 6. Do not begin execution certification or roll these draft rows into the independent baseline until these reviews complete.
 
 See `section-10-2-br-ts-tc-td-draft-package.json` and `section-10-2-coverage-assessment.json` for all rows and cross-references.
+
+Supplemental [debit fixture and source-backed oracle candidates](../section-10-2-debit-fixture-oracle-candidates-v1/README.md) include focused field-validator results and explicit host/device blockers.

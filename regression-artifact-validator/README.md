@@ -90,3 +90,14 @@ Read-only Run2 intake summary:
 ```powershell
 mvn -q org.codehaus.mojo:exec-maven-plugin:3.5.0:java '-Dexec.mainClass=com.coreauth.validator.coverage.Run2IntakeSummary' '-Dexec.args=specifications/ATL105/test-input/ai-solution/runs/2026-09-23/Run2/traceability_matrix_full.json specifications/ATL105/test-input/ai-solution/runs/2026-09-23/Run2'
 ```
+
+## Confluence source retrieval
+
+Fetch the BUYPASS Development JP page as a read-only, versioned snapshot. Set `CONFLUENCE_PAT` in the process environment; optionally override `CONFLUENCE_BASE_URL` or `CONFLUENCE_PAGE_ID`. The fetcher never writes credentials to disk, and it refuses to overwrite a snapshot for the same page version.
+
+```powershell
+$env:CONFLUENCE_PAT = '<personal-access-token>'
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.confluence.FetchConfluencePage' '-Dexec.args=specifications/ATL105/test-input/confluence'
+```
+
+Treat the resulting snapshot as source evidence for review. It does not automatically alter validation rules or pass/fail results.
