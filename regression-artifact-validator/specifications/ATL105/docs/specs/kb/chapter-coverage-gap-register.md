@@ -5,8 +5,10 @@
 This report supersedes the earlier duplicate snapshots and zero-code assertions.
 It records the autonomous chapter continuations on `Appendix-N`. Earlier batches
 were committed at the user's request: `2848fe10` and `1a76dc09`; both were later
-pushed only to `Appendix-N`. The new processing-history, contextual/composite and intake continuation is
-uncommitted, with no additional merge or push. Existing changes and independent
+pushed only to `Appendix-N`. The subsequent Chapter 13 processing-history,
+contextual/composite and intake continuation was committed locally at the user's
+request as `f18caea7`. That commit was not pushed. The new Chapter 12 continuation
+is uncommitted; no other branch was changed. Existing changes and independent
 Test Solution artifacts are retained for the user's final review.
 
 The appendix A-AE review pass is not complete-spec executable coverage. Likewise,
@@ -386,7 +388,7 @@ closure still require additional source-backed work.
 
 ## Honest chapter status
 
-### Latest uncommitted Chapter 13 processing-history and intake work
+### Chapter 13 processing-history and intake work (local commit f18caea7)
 
 This batch closes specific execution gaps, not the whole Chapter 13 gate.
 
@@ -505,11 +507,80 @@ and leaves unrelated siblings unaffected.
 No full-semantic element closure is asserted by this package. In particular,
 **Chapter 13 is not complete even with SME approvals excluded**.
 
-**Chapter 13 remains IN_PROGRESS. Chapter 12 has not been started as the next
-phase.** Remaining source-facet reconciliation, conditional/network/card gates,
+**Chapter 13 remains IN_PROGRESS.** Remaining source-facet reconciliation, conditional/network/card gates,
 composite/table layouts and physical encoding are implementation work. Genuine
 source conflicts and external trust evidence remain separate deferred boundaries.
-The required order is still Chapter 13 closure first, then Chapter 12.
+The user explicitly authorized moving to Chapter 12 with this backlog carried
+forward; Chapter 13 was not marked complete.
+
+## Chapter 12 next-phase start after local Chapter 13 commit
+
+The user requested committing the verified Chapter 13 batch on `Appendix-N`
+and starting Chapter 12. Local commit `f18caea7` contains that Chapter 13 batch;
+the following Chapter 12 changes are separate, uncommitted work.
+
+### Segment 115 bounded field, wire and contextual execution
+
+[Chapter12SegmentPayloadValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12SegmentPayloadValidator.java)
+now includes Segment 115, bringing its supported numbered-observation adapters
+from 22 to 23. New checks cover fixed type 115, N4 declared length, required
+textual Print Data, actual ASCII segment length, prescribed three-field order
+and two field separators. The selected Section 12.14 layout does not append a
+separator to Print Data. Request usage, nonfinancial response families, false
+following-data flags, original request loyalty version other than textual `2`,
+missing/empty/nontext print data and malformed context controls are rejected.
+Absent operational/request evidence remains explicitly review-required.
+
+[Chapter11MessageLayoutValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Chapter11MessageLayoutValidator.java)
+dispatches Segment 115 through that adapter. Parent message family, derived
+request/response direction and supplied Element 115 flag are authoritative;
+contradictory child values are rejected. Input immutability is tested.
+
+**Why required:** the earlier envelope only assessed Segment 115's presence.
+It did not execute print content or wire serialization, and the Chapter 12
+adapter did not support this segment.
+
+### Retained source boundaries
+
+- Section 12.14 states a 1,009-byte segment cap and Print Data length 999.
+  Chapter 13 Element 152 states 900; Section 11 Financial/EMV envelope tables
+  state 910/999. The 901-999 print-data interval is an explicit source-conflict
+  review, not an unconditional pass or rejection. Over 999 print characters
+  is invalid under every stated print-field limit.
+- The Section 12.14 no-other-segments statement conflicts with Section 11's
+  listed companions. No blanket companion exclusion is inferred.
+- Header/field observations do not establish host origination, complete
+  receipt content, all response inclusion conditions or operational printing.
+- Segment 119 source reconnaissance found inconsistent bucket numbering
+  (17-19 versus 18-20) and delimiter prose. Its validator is not yet added;
+  resolve source-supported variants explicitly before implementing wire checks.
+
+These boundaries do not make all remaining Chapter 12 work SME-only.
+
+### Cross-artifact evidence and verification
+
+The [training generator](../../../../../src/main/java/com/coreauth/validator/coverage/GenerateChapter12TrainingEvidence.java)
+now cross-checks the existing complete independent Test package as well as
+segment packages, records their SHA-256 hashes, and separates source line
+metadata from the six canonical identity fields. Empty exact-anchor results
+are explicitly labeled `NO_EXACT_ANCHOR_CANDIDATE`; no approximate match or
+approval is manufactured. Segment 115's header matches the existing
+`BR-RULE-SEG115-R-003` anchor as an unapproved candidate.
+
+The regenerated [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **23 BR / 23 TS / 46 TC / 46 TD records**. The
+[execution evidence](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **46 actual observations**, including Segment 115's independent
+positive structure (whole status `REVIEW_REQUIRED`) and wrong-type negative
+(`INVALID`). Traceability validates; approved requirements remain zero.
+This header package is not a complete per-rule Chapter 12 coverage claim.
+
+The focused gate passed **33 tests, zero failures/errors/skips**, covering
+the Chapter 12 adapter, Chapter 11 parent integration, evidence generation,
+producer-neutral contract and repository layout. Boundary tests cover print
+lengths 900/901/999/1000, trailing delimiters, missing/nontext fields, wrong
+directions/families, context controls, authoritative flags and input immutability.
+No full-suite run or real-AI Chapter 12 execution is claimed for this initial batch.
 
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
 No substantive chapter is newly declared fully covered by this continuation.
@@ -533,8 +604,9 @@ No substantive chapter is newly declared fully covered by this continuation.
 
 ## Remaining execution plan, SME approvals deferred
 
-1. Finish Chapter 13 predicate/profile reconciliation rather than treating a
-   documentation review as an executable gate.
+1. Continue Chapter 12 as explicitly requested, while retaining Chapter 13's
+   source-facet backlog as incomplete rather than treating a documentation review
+   as an executable gate.
 2. Close Chapter 12's remaining nonblocked semantics and wire surfaces, including
    115/119, product physical encoding, fleet prompts, WEX and EMV correlation.
    Convert each checked predicate to independently executed canonical evidence,

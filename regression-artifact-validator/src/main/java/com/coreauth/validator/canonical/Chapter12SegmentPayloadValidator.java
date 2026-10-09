@@ -18,7 +18,7 @@ public final class Chapter12SegmentPayloadValidator {
     public enum Status { CHECKS_PASSED, INVALID, REVIEW_REQUIRED }
     public record Finding(String ruleId, String scope, Status status, String reason) { }
     public record Result(Status status, List<Finding> findings, List<String> unassessedCatalogRules) { }
-    public static final Set<String> SEGMENTS = Set.of("123", "130", "131", "132", "134", "135", "136",
+    public static final Set<String> SEGMENTS = Set.of("115", "123", "130", "131", "132", "134", "135", "136",
             "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156");
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final char FS = '\u001c';
@@ -36,6 +36,7 @@ public final class Chapter12SegmentPayloadValidator {
         JsonNode fields = observation.path("elements");
         JsonNode catalog = MAPPER.readTree(Atl105Paths.ruleCatalog(id).toFile());
         switch (id) {
+            case "115" -> printData(observation, fields, findings);
             case "123" -> tokenization(observation, fields, findings);
             case "130", "131" -> emv(observation, fields, findings);
             case "132" -> capk(observation, fields, findings);
@@ -62,6 +63,46 @@ public final class Chapter12SegmentPayloadValidator {
                 : !unassessed.isEmpty() || findings.stream().anyMatch(f -> f.status() == Status.REVIEW_REQUIRED)
                     ? Status.REVIEW_REQUIRED : Status.CHECKS_PASSED;
         return new Result(status, List.copyOf(findings), List.copyOf(unassessed));
+    }
+
+    private static void printData(JsonNode input, JsonNode fields, List<Finding> findings) {
+        header(input, fields, 4, 1009, "003", "004", findings);
+        direction(input, "RESPONSE", "SEG115-R-001", findings);
+        String family = text(input, "messageFamily");
+        if (input.has("messageFamily") && family == null) check(findings, "SEG115-R-001", "family", false, "Message family must be text");
+        else if (family == null) review(findings, "SEG115-R-001", "family", "Financial response family not supplied");
+        else check(findings, "SEG115-R-001", "family",
+                Set.of("Financial Transaction Response", "EMV Financial Transaction Response", "Loyalty Card Transaction Response").contains(family),
+                "Print Data is scoped to a Financial Transaction Response");
+        length(fields, "152", 1, 999, "SEG115-R-008", findings);
+        String data = text(fields, "152");
+        if (data != null && data.length() > 900 && data.length() <= 999) {
+            review(findings, "SEG115-R-008", "source-length-conflict",
+                    "Chapter 13 Element 152 caps Print Data at 900; Section 12.14 gives 999. This interval is not source-certified");
+        }
+        wire(input, value(fields, "85") + FS + value(fields, "84") + FS + value(fields, "152"), "SEG115-R-006", findings);
+        if (input.has("serializedSegment")) {
+            String raw = text(input, "serializedSegment");
+            check(findings, "SEG115-R-007", "field-separators", raw != null
+                    && raw.chars().filter(c -> c == FS).count() == 2 && !raw.endsWith(String.valueOf(FS)),
+                    "Section 12.14 selected layout has separators between fields 1/2 and 2/3, none appended to Print Data");
+        } else review(findings, "SEG115-R-007", "field-separators", "No serialized segment supplied");
+        review(findings, "SEG115-R-005", "source-length-conflict",
+                "Section 12.14 cap 1009 conflicts with Financial/EMV envelope tables (910/999); complete applicability is not certified");
+        JsonNode context = input.path("context");
+        if (input.has("context") && !context.isObject()) {
+            check(findings, "SEG115-R-002", "context-shape", false, "Print Data context must be an object");
+        }
+        if (context.has("additionalInformationFlag")) {
+            check(findings, "SEG115-R-002", "inclusion-flag", "1".equals(text(context, "additionalInformationFlag")),
+                    "Present Print Data cannot use an absent/zero following-data flag");
+        } else review(findings, "SEG115-R-002", "inclusion-flag", "Original following-data flag is not observed");
+        if (context.has("requestLoyaltyVersion")) {
+            check(findings, "SEG115-R-002", "request-version", "2".equals(text(context, "requestLoyaltyVersion")),
+                    "Observed original request loyalty version must be 2");
+        } else review(findings, "SEG115-R-002", "request-version", "Original request loyalty version is not observed");
+        review(findings, "SEG115-R-010", "companion-source-conflict",
+                "Section 12.14 no-other-segments statement conflicts with Section 11 response companions; no blanket exclusion inferred");
     }
 
     private static void tokenization(JsonNode input, JsonNode fields, List<Finding> findings) {

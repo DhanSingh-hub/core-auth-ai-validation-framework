@@ -31,7 +31,8 @@ public final class GenerateChapter12TrainingEvidence {
     }
 
     public ObjectNode generate(Path packageFile, Path evidenceFile) throws IOException {
-        Map<String, List<String>> existing = existingAnchors();
+        ObjectNode existingHashes = mapper.createObjectNode();
+        Map<String, List<String>> existing = existingAnchors(existingHashes);
         ObjectNode artifactPackage = mapper.createObjectNode();
         artifactPackage.putObject("manifest").put("packageId", "ATL105-TEST-CHAPTER12-BOUNDED-HEADERS")
                 .put("specification", "ATL105").put("specificationVersion", "2026-3");
@@ -49,6 +50,7 @@ public final class GenerateChapter12TrainingEvidence {
                 + "Exact-anchor candidates are cross-check evidence, not SME approval or confirmed AI matches.");
         report.put("completeSpecCoverage", false);
         report.put("fullMessageIntakeWired", false);
+        report.set("existingTestPackageSha256", existingHashes);
         ArrayNode executions = report.putArray("executions");
         Chapter12SegmentPayloadValidator validator = new Chapter12SegmentPayloadValidator();
         for (JsonNode fixture : mapper.readTree(Atl105Paths.testJson("chapter-12-segment-observations.json").toFile()).path("observations")) {
@@ -59,7 +61,7 @@ public final class GenerateChapter12TrainingEvidence {
             for (JsonNode candidate : catalog.path("rules")) if (ruleId.equals(candidate.path("ruleId").asText())) rule = candidate;
             if (rule == null) throw new IOException("Fixture references missing source rule " + ruleId);
             JsonNode anchor = rule.path("sourceAnchor");
-            String key = mapper.treeToValue(anchor, SourceAnchor.class).canonicalKey();
+            String key = canonicalKey(anchor);
             String stem = "TEST-CH12-" + segment + "-HEADER";
             ObjectNode br = brs.addObject().put("id", "BR-" + stem)
                     .put("title", "Bounded header observation for " + ruleId + ": " + rule.path("title").asText())
@@ -96,7 +98,9 @@ public final class GenerateChapter12TrainingEvidence {
                 execution.set("unassessedCatalogRules", mapper.valueToTree(result.unassessedCatalogRules()));
                 execution.set("sourceAnchor", anchor.deepCopy());
                 ArrayNode candidates = execution.putArray("existingTestArtifactAnchorCandidates");
-                for (String candidate : existing.getOrDefault(key, List.of())) candidates.add(candidate);
+                List<String> matching = existing.getOrDefault(key, List.of());
+                for (String candidate : matching) candidates.add(candidate);
+                execution.put("existingTestAnchorCrosscheck", matching.isEmpty() ? "NO_EXACT_ANCHOR_CANDIDATE" : "EXACT_ANCHOR_CANDIDATES_UNAPPROVED");
                 execution.put("candidateMatchStatus", "REVIEW_REQUIRED");
             }
         }
@@ -113,12 +117,16 @@ public final class GenerateChapter12TrainingEvidence {
         return report;
     }
 
-    private Map<String, List<String>> existingAnchors() throws IOException {
+    private Map<String, List<String>> existingAnchors(ObjectNode hashes) throws IOException {
         Map<String, List<String>> result = new HashMap<>();
         try (var files = Files.list(Atl105Paths.testJson())) {
-            for (Path file : files.filter(p -> p.getFileName().toString().startsWith("segment-")
-                    && p.getFileName().toString().endsWith(".json")).sorted().toList()) {
+            List<Path> inputs = new ArrayList<>(files.filter(p -> p.getFileName().toString().startsWith("segment-")
+                    && p.getFileName().toString().endsWith(".json")).sorted().toList());
+            inputs.add(Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                    .resolve("complete-all-test-solution-br-ts-tc-td-package.json"));
+            for (Path file : inputs) {
                 JsonNode document = mapper.readTree(file.toFile());
+                hashes.put(file.getFileName().toString(), sha256(file));
                 for (JsonNode br : document.path("businessRequirements")) {
                     List<JsonNode> anchors = new ArrayList<>();
                     br.path("sourceAnchors").forEach(anchors::add);
@@ -126,7 +134,7 @@ public final class GenerateChapter12TrainingEvidence {
                     for (JsonNode anchor : anchors) {
                         if (!"ATL105".equals(anchor.path("specification").asText())
                                 || !"2026-3".equals(anchor.path("version").asText())) continue;
-                        String key = mapper.treeToValue(anchor, SourceAnchor.class).canonicalKey();
+                        String key = canonicalKey(anchor);
                         result.computeIfAbsent(key, ignored -> new ArrayList<>())
                                 .add(file.getFileName() + "#" + br.path("id").asText());
                     }
@@ -134,6 +142,14 @@ public final class GenerateChapter12TrainingEvidence {
             }
         }
         return result;
+    }
+
+    private String canonicalKey(JsonNode anchor) throws IOException {
+        ObjectNode identity = mapper.createObjectNode();
+        for (String field : List.of("specification", "version", "section", "segment", "element", "rule")) {
+            if (anchor.has(field)) identity.set(field, anchor.path(field));
+        }
+        return mapper.treeToValue(identity, SourceAnchor.class).canonicalKey();
     }
 
     private static void anchors(ObjectNode artifact, JsonNode anchor) {

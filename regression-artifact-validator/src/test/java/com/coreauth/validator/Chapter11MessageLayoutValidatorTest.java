@@ -20,6 +20,27 @@ class Chapter11MessageLayoutValidatorTest {
     }
 
     @Test
+    void printDataDispatchUsesParentFamilyDirectionAndInclusionFlagWithoutMutatingInput() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Response").put("completeness", "PARTIAL");
+        ((ObjectNode) input.path("elements")).put("115", "1");
+        ObjectNode observation = mapper.createObjectNode().put("specificationVersion", "2026-3").put("segment", "115");
+        observation.putObject("elements").put("85", "115").put("84", "0014").put("152", "TERMS");
+        observation.putObject("context").put("requestLoyaltyVersion", "2");
+        observation.put("serializedSegment", "115\u001c0014\u001cTERMS");
+        input.putArray("segments").addObject().put("segment", "115").put("dataSection", 2).set("observation", observation);
+        var before = input.deepCopy();
+        var result = validator.validate(input);
+        assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("SEG115-R-006")
+                && f.scope().equals("wire-declared-length") && f.status() == Status.CHECKS_PASSED);
+        assertThat(input).isEqualTo(before);
+        ((ObjectNode) input.path("elements")).put("115", "0");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.ruleId().equals("SEG115-R-002") && f.status() == Status.INVALID);
+        observation.put("messageFamily", "Financial Transaction Request").put("direction", "REQUEST");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID);
+    }
+
+    @Test
     void financialCountsAreOccurrencesNotTemplateAlternativeCount() throws Exception {
         var validator = new Chapter11MessageLayoutValidator();
         ObjectNode input = financial("Financial Transaction Request");

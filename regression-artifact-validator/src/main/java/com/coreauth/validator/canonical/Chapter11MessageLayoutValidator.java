@@ -162,7 +162,33 @@ public final class Chapter11MessageLayoutValidator {
                 if (!observation.isObject() || !id.equals(observation.path("segment").asText())) {
                     findings.add(new Finding(anchor, "segment-observation", Status.INVALID, "Child observation identity does not match " + id));
                 } else {
-                    var child = new Chapter12SegmentPayloadValidator().validate(observation);
+                    ObjectNode childInput = observation.deepCopy();
+                    if ("115".equals(id)) {
+                        if (observation.has("messageFamily") && !family.equals(text(observation, "messageFamily"))) {
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data child family contradicts parent"));
+                        }
+                        childInput.put("messageFamily", family);
+                        String direction = family.endsWith("Response") ? "RESPONSE" : "REQUEST";
+                        if (observation.has("direction") && !direction.equals(text(observation, "direction"))) {
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data child direction contradicts parent"));
+                        }
+                        childInput.put("direction", direction);
+                        if (input.path("elements").has("115")) {
+                            JsonNode suppliedContext = childInput.get("context");
+                            if (suppliedContext != null && !suppliedContext.isObject()) {
+                                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data context must be an object"));
+                            }
+                            ObjectNode context = suppliedContext != null && suppliedContext.isObject()
+                                    ? suppliedContext.deepCopy() : mapper.createObjectNode();
+                            if (context.has("additionalInformationFlag")
+                                    && !context.path("additionalInformationFlag").equals(input.path("elements").path("115"))) {
+                                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data inclusion flag contradicts parent"));
+                            }
+                            context.set("additionalInformationFlag", input.path("elements").path("115").deepCopy());
+                            childInput.set("context", context);
+                        }
+                    }
+                    var child = new Chapter12SegmentPayloadValidator().validate(childInput);
                     findings.addAll(child.findings());
                     if (!child.unassessedCatalogRules().isEmpty()) findings.add(new Finding(anchor, "child-rule-gaps", Status.REVIEW_REQUIRED,
                             "Unassessed catalog rules for " + id + ": " + child.unassessedCatalogRules()));

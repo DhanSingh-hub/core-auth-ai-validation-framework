@@ -59,6 +59,58 @@ class Chapter12SegmentPayloadValidatorTest {
     }
 
     @Test
+    void printDataMeasuresTwoSeparatorsRequiredContentAndSourceConflictInterval() throws IOException {
+        ObjectNode input = payload("115");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("wire-declared-length")
+                && f.status() == Status.CHECKS_PASSED);
+        input.put("serializedSegment", input.path("serializedSegment").asText() + "\u001c");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        for (int size : new int[]{900, 901, 999, 1000}) {
+            input = payload("115");
+            fields(input).put("152", "T".repeat(size)).put("84", String.format("%04d", size + 9));
+            input.put("serializedSegment", "115\u001c" + fields(input).path("84").asText() + "\u001c" + "T".repeat(size));
+            assertThat(validator.validate(input).status()).as("print bytes " + size)
+                    .isEqualTo(size <= 999 ? Status.REVIEW_REQUIRED : Status.INVALID);
+            if (size > 900 && size <= 999) assertThat(validator.validate(input).findings())
+                    .anyMatch(f -> f.ruleId().equals("SEG115-R-008") && f.scope().equals("source-length-conflict"));
+        }
+        input = payload("115");
+        fields(input).remove("152");
+        input.remove("serializedSegment");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        fields(input).put("152", "");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        fields(input).put("152", 123);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void printDataChecksObservedResponseAndRequestContextWithoutCoercion() throws IOException {
+        ObjectNode input = payload("115");
+        input.put("direction", "REQUEST");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.put("messageFamily", "Electronic Mail Response");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        ((ObjectNode) input.path("context")).put("additionalInformationFlag", "0");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        ((ObjectNode) input.path("context")).put("requestLoyaltyVersion", 2);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.remove("context");
+        input.remove("serializedSegment");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        input.putArray("context");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.put("messageFamily", 115);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
     void tokenizationChecksBlockWidthsSafeKeyPaddingTavvAlphabetAndDirection() throws IOException {
         ObjectNode payload = payload("123");
         payload.remove("serializedSegment");

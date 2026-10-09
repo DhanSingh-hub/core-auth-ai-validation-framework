@@ -19,10 +19,15 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(22);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(44);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(23);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(46);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
+        assertThat(report.path("executions")).anySatisfy(execution -> {
+            assertThat(execution.path("ruleId").asText()).isEqualTo("SEG115-R-003");
+            assertThat(execution.path("existingTestArtifactAnchorCandidates")).isNotEmpty();
+            assertThat(execution.path("candidateMatchStatus").asText()).isEqualTo("REVIEW_REQUIRED");
+        });
         var loaded = new CanonicalPackageLoader().load(packageFile);
         assertThat(new CanonicalTraceabilityValidator().validate(loaded).errors()).isEmpty();
         assertThat(new CanonicalTraceabilityValidator().validateForExecution(loaded).errors()).isNotEmpty();
