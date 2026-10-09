@@ -552,8 +552,8 @@ adapter did not support this segment.
 - Header/field observations do not establish host origination, complete
   receipt content, all response inclusion conditions or operational printing.
 - Segment 119 source reconnaissance found inconsistent bucket numbering
-  (17-19 versus 18-20) and delimiter prose. Its validator is not yet added;
-  resolve source-supported variants explicitly before implementing wire checks.
+  (17-19 versus 18-20) and delimiter prose. The subsequent continuation below
+  adds a selected-profile validator while preserving that conflict.
 
 These boundaries do not make all remaining Chapter 12 work SME-only.
 
@@ -581,6 +581,67 @@ producer-neutral contract and repository layout. Boundary tests cover print
 lengths 900/901/999/1000, trailing delimiters, missing/nontext fields, wrong
 directions/families, context controls, authoritative flags and input immutability.
 No full-suite run or real-AI Chapter 12 execution is claimed for this initial batch.
+
+### Segment 119 field, card-bucket and selected-wire continuation
+
+This uncommitted continuation adds
+[Segment119ObservationValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ObservationValidator.java)
+to the shared Chapter 12 adapter (now **24 supported numbered segments**).
+Source Sections 11.4.1.2/12.17 and Chapter 13's referenced definitions were
+cross-checked with the existing Segment 119 catalog and Test BRs before execution.
+
+| Implemented | Why required |
+|---|---|
+| Required 119/N3 header, 0/1 Information Byte, terminal layout/state, 990 prompt, conditional employee/password and request family/direction | The earlier Segment 119 path assessed its envelope, not its individual fields |
+| Request Totals Date/calendar/special codes; N4 hardware, N8 software/firmware, nonzero N6 sequence, N35 table version, real full-year timestamp, optional source-listed currency and N8 total | Text length alone can accept impossible dates, zero sequence, missing fields or malformed values |
+| Explicit ordered `cardBuckets`, padded N4 labels, N5 nonzero request counts, N8 amounts, no duplicate/reversed source labels | Repeated values must be assessed individually; response-only inclusion prose must not be imposed on requests |
+| Complete supplied bucket-scope total reconciliation excluding AO/SV1/SV3/SV4/HD | Including nonfinancial amounts can silently overstate Grand Total; incomplete scope cannot establish equality |
+| Measured ASCII total length and explicitly selected `TABLE_17_19` serialization | Declared lengths do not prove encoding; ambiguous source prose cannot establish one universal wire profile |
+| Authoritative Chapter 11 parent family/direction/placement with child contradiction rejection | A child could otherwise report a false family or data section independently of its actual envelope |
+| Optional per-predicate evidence probes in the existing generator | Header chains alone do not show executed date, timestamp, sequence, bucket, total or wire predicates |
+
+The [independent observations](../../../test-output/test-json/chapter-12-segment-observations.json)
+contain **18 Segment 119 predicate probes**, with **7 passed targets, 9 invalid
+targets and 2 explicit review targets**, plus positive-header and wrong-type
+observations. Whole observations remain distinct from target results.
+The refreshed [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **42 BR / 42 TS / 66 TC / 66 TD records**; the
+[execution report](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **66 actual executions**, including **20 Segment 119 executions**.
+All 20 retain exact existing Test-anchor candidates, with no approval or
+automatic AI semantic confirmation. Canonical traceability validates and all
+expected/actual whole and target results match.
+
+The focused **51-test gate passed with zero failures/errors/skips**, covering
+Segment 119, the shared Chapter 12 adapter, Chapter 11 parent dispatch, canonical
+evidence, legacy Totals Request behavior, producer contract and repository layout.
+Tests exercise missing/nontext required fields, conditional controls, calendar
+and leap-day boundaries, sequence/count zero, duplicate/reversed buckets,
+amount shape, complete/incomplete totals, retained empty-field separators,
+wrong measured length and parent-context immutability. All 19 source-listed
+labels form an independently measured **453-byte** selected-profile segment;
+declared **389/390/493/494** boundaries are explicitly tested.
+
+The independent base fixture initially declared 157 but measured 147 bytes.
+Validation caught this; the fixture declaration was corrected to its actual
+byte count. No validator was weakened to accommodate the incorrect fixture.
+
+#### Still not closed
+
+- Section 11 cap 389 versus Section 12 cap 493, and separator-note 18-20
+  versus table 17-19, remain genuine source conflicts. Selected-profile checks
+  do not certify the profile; unselected wire remains review-required.
+- The prose allows up to 20 buckets but names 19 labels. No missing label is
+  fabricated. Approved-response bucket conditions are not unconditional
+  request requirements.
+- Totals activity eligibility, sequence lifecycle, request/response history,
+  duplicate/retry, settlement cutoff, authentic table versions/timestamp
+  provenance and complete selection policy remain unclosed.
+- The legacy named Totals Request validator and actual AI adapter are not newly
+  wired to these field predicates. Their integration remains tracked work, not
+  an asserted successful real-AI execution.
+- No full-suite run is claimed for this batch. Chapter 12 and Chapter 13 both
+  remain IN_PROGRESS. No commit/push was made for this continuation.
 
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
 No substantive chapter is newly declared fully covered by this continuation.

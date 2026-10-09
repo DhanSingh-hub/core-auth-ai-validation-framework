@@ -5,6 +5,37 @@
   "scope": "Independent synthetic numbered-element observations, not host-approved messages. Missing wire and cross-message context remain review-required.",
   "observations": [
     {
+      "id": "TD-TEST-CH12-119-FIELDS", "ruleId": "SEG119-R-008", "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"DATE-VALID","ruleId":"SEG119-R-015","scope":"totals-date","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"DATE-INVALID","ruleId":"SEG119-R-015","scope":"totals-date","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"105":"023126"}},
+        {"id":"TIMESTAMP-VALID","ruleId":"SEG119-R-021","scope":"discount-timestamp","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"TIMESTAMP-INVALID","ruleId":"SEG119-R-021","scope":"discount-timestamp","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"179":"202602291930"}},
+        {"id":"SEQUENCE-VALID","ruleId":"SEG119-R-019","scope":"sequence","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"SEQUENCE-ZERO","ruleId":"SEG119-R-019","scope":"sequence","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"86":"000000"}},
+        {"id":"BUCKET-ORDER-VALID","ruleId":"SEG119-R-027","scope":"bucket-order","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"BUCKET-LABEL-INVALID","ruleId":"SEG119-R-024","scope":"bucket-label","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","cardBuckets":[{"13":"ZZ  ","16":"00001","15":"00000100"}]},
+        {"id":"BUCKET-COUNT-ZERO","ruleId":"SEG119-R-025","scope":"bucket-count-width","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","cardBuckets":[{"13":"CC  ","16":"00000","15":"00000100"}]},
+        {"id":"BUCKET-AMOUNT-INVALID","ruleId":"SEG119-R-026","scope":"bucket-amount","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","cardBuckets":[{"13":"CC  ","16":"00001","15":"-0000100"}]},
+        {"id":"TOTAL-VALID","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"TOTAL-INVALID","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"42":"00000101"}},
+        {"id":"TOTAL-EXCLUDE-NONFINANCIAL","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"cardBuckets":[{"13":"CC  ","16":"00001","15":"00000100"},{"13":"AO  ","16":"00001","15":"00000500"},{"13":"HD  ","16":"00001","15":"00000700"}]},
+        {"id":"TOTAL-INCLUDED-NONFINANCIAL","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"42":"00001300"},"cardBuckets":[{"13":"CC  ","16":"00001","15":"00000100"},{"13":"AO  ","16":"00001","15":"00000500"},{"13":"HD  ","16":"00001","15":"00000700"}]},
+        {"id":"TOTAL-PARTIAL-REVIEW","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED","context":{"bucketCoverageComplete":false}},
+        {"id":"WIRE-VALID","ruleId":"SEG119-R-009","scope":"wire-measured-length","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"WIRE-LENGTH-INVALID","ruleId":"SEG119-R-009","scope":"wire-measured-length","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"84":"158"}},
+        {"id":"WIRE-SOURCE-REVIEW","ruleId":"SEG119-R-039","scope":"source-wire-conflict","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED"}
+      ],
+      "payload": {
+        "specificationVersion": "2026-3", "segment": "119", "direction": "REQUEST",
+        "messageFamily": "Totals with Proprietary Data Load Request", "dataSection": 3, "fieldNumber": 3,
+        "elements": {"85":"119","84":"147","44":"0","102":"1D13500101001","78":"990","32":"","65":"","105":"100926","43":"HW01","96":"SW000001","39":"FW000001","86":"000001","176":"00000000000000000000000000000000001","179":"202610091930","20":"840","42":"00000100"},
+        "context": {"totalsRequired":true,"employeeNumberRequired":false,"passwordRequired":false,"bucketCoverageComplete":true,"wireProfile":"TABLE_17_19"},
+        "cardBuckets": [{"13":"CC  ","16":"00001","15":"00000100"}],
+        "serializedSegment": "119\u001c147\u001c0\u001c1D13500101001\u001c990\u001c\u001c\u001c100926\u001cHW01\u001cSW000001\u001cFW000001\u001c000001\u001c00000000000000000000000000000000001\u001c202610091930\u001c840\u001c00000100\u001cCC  0000100000100\u001c"
+      }
+    },
+    {
       "id": "TD-TEST-CH12-115-FIELDS", "ruleId": "SEG115-R-003", "expectedStatus": "REVIEW_REQUIRED",
       "payload": {
         "specificationVersion": "2026-3", "segment": "115", "direction": "RESPONSE",

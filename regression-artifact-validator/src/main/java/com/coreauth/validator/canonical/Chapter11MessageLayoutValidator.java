@@ -163,17 +163,27 @@ public final class Chapter11MessageLayoutValidator {
                     findings.add(new Finding(anchor, "segment-observation", Status.INVALID, "Child observation identity does not match " + id));
                 } else {
                     ObjectNode childInput = observation.deepCopy();
-                    if ("115".equals(id)) {
+                    if (Set.of("115", "119").contains(id)) {
                         if (observation.has("messageFamily") && !family.equals(text(observation, "messageFamily"))) {
-                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data child family contradicts parent"));
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Segment " + id + " child family contradicts parent"));
                         }
                         childInput.put("messageFamily", family);
                         String direction = family.endsWith("Response") ? "RESPONSE" : "REQUEST";
                         if (observation.has("direction") && !direction.equals(text(observation, "direction"))) {
-                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data child direction contradicts parent"));
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Segment " + id + " child direction contradicts parent"));
                         }
                         childInput.put("direction", direction);
-                        if (input.path("elements").has("115")) {
+                        if ("119".equals(id)) {
+                            for (String field : List.of("dataSection", "fieldNumber")) {
+                                if (segment.has(field)) {
+                                    if (observation.has(field) && !observation.path(field).equals(segment.path(field))) {
+                                        findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Totals child " + field + " contradicts parent placement"));
+                                    }
+                                    childInput.set(field, segment.path(field).deepCopy());
+                                }
+                            }
+                        }
+                        if ("115".equals(id) && input.path("elements").has("115")) {
                             JsonNode suppliedContext = childInput.get("context");
                             if (suppliedContext != null && !suppliedContext.isObject()) {
                                 findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data context must be an object"));

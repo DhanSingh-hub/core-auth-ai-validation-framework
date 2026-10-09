@@ -53,7 +53,33 @@ public final class GenerateChapter12TrainingEvidence {
         report.set("existingTestPackageSha256", existingHashes);
         ArrayNode executions = report.putArray("executions");
         Chapter12SegmentPayloadValidator validator = new Chapter12SegmentPayloadValidator();
+        List<JsonNode> fixtures = new ArrayList<>();
         for (JsonNode fixture : mapper.readTree(Atl105Paths.testJson("chapter-12-segment-observations.json").toFile()).path("observations")) {
+            fixtures.add(fixture);
+            for (JsonNode probe : fixture.path("predicateProbes")) {
+                ObjectNode expanded = mapper.createObjectNode().put("id", probe.path("id").asText())
+                        .put("ruleId", probe.path("ruleId").asText()).put("expectedStatus", probe.path("expectedStatus").asText())
+                        .put("targetScope", probe.path("scope").asText()).put("expectedTargetStatus", probe.path("expectedTargetStatus").asText());
+                ObjectNode payload = fixture.path("payload").deepCopy();
+                if (probe.has("elements")) {
+                    var changes = probe.path("elements").fields();
+                    while (changes.hasNext()) {
+                        var entry = changes.next();
+                        ((ObjectNode) payload.path("elements")).set(entry.getKey(), entry.getValue().deepCopy());
+                    }
+                }
+                for (String field : List.of("context", "serializedSegment", "cardBuckets")) {
+                    if (probe.has(field)) payload.set(field, probe.path(field).deepCopy());
+                }
+                if (probe.has("omitSerializedSegment")) {
+                    if (!probe.path("omitSerializedSegment").isBoolean()) throw new IOException("Probe wire-omission control must be boolean");
+                    if (probe.path("omitSerializedSegment").booleanValue()) payload.remove("serializedSegment");
+                }
+                expanded.set("payload", payload);
+                fixtures.add(expanded);
+            }
+        }
+        for (JsonNode fixture : fixtures) {
             String segment = fixture.path("payload").path("segment").asText();
             String ruleId = fixture.path("ruleId").asText();
             JsonNode catalog = mapper.readTree(Atl105Paths.ruleCatalog(segment).toFile());
@@ -62,16 +88,17 @@ public final class GenerateChapter12TrainingEvidence {
             if (rule == null) throw new IOException("Fixture references missing source rule " + ruleId);
             JsonNode anchor = rule.path("sourceAnchor");
             String key = canonicalKey(anchor);
-            String stem = "TEST-CH12-" + segment + "-HEADER";
+            boolean predicate = fixture.has("targetScope");
+            String stem = predicate ? "TEST-CH12-" + segment + "-" + fixture.path("id").asText() : "TEST-CH12-" + segment + "-HEADER";
             ObjectNode br = brs.addObject().put("id", "BR-" + stem)
-                    .put("title", "Bounded header observation for " + ruleId + ": " + rule.path("title").asText())
+                    .put("title", "Bounded " + (predicate ? fixture.path("targetScope").asText() : "header") + " observation for " + ruleId + ": " + rule.path("title").asText())
                     .put("category", "field").put("applicability", "Chapter 12 numbered-element observation")
                     .put("priority", "high").put("executionStatus", "REVIEW_REQUIRED");
             anchors(br, anchor);
             ObjectNode scenario = scenarios.addObject().put("id", "TS-" + stem).put("status", "REVIEW_REQUIRED");
             scenario.putArray("requirementIds").add("BR-" + stem);
             anchors(scenario, anchor);
-            for (boolean negative : List.of(false, true)) {
+            for (boolean negative : predicate ? List.of(false) : List.of(false, true)) {
                 String suffix = negative ? "-WRONG-TYPE" : "-FIELDS";
                 String tcId = "TC-" + stem + suffix;
                 ObjectNode payload = fixture.path("payload").deepCopy();
@@ -80,20 +107,34 @@ public final class GenerateChapter12TrainingEvidence {
                 String expectedStatus = negative ? "INVALID" : fixture.path("expectedStatus").asText();
                 if (!expectedStatus.equals(result.status().name())) throw new IOException("Unexpected fixture outcome: " + fixture.path("id").asText()
                         + suffix + ", expected " + expectedStatus + ", got " + result);
+                if (predicate) {
+                    var targets = result.findings().stream().filter(f -> f.ruleId().equals(ruleId)
+                            && f.scope().equals(fixture.path("targetScope").asText())).toList();
+                    if (targets.size() != 1 || !targets.getFirst().status().name().equals(fixture.path("expectedTargetStatus").asText())) {
+                        throw new IOException("Unexpected predicate target for " + fixture.path("id").asText() + ": " + targets);
+                    }
+                }
+                boolean invalid = "INVALID".equals(expectedStatus);
                 ObjectNode testCase = cases.addObject().put("id", tcId)
-                        .put("expectedOutcome", negative ? "FAIL" : "REVIEW_REQUIRED")
+                        .put("expectedOutcome", invalid ? "FAIL" : "REVIEW_REQUIRED")
                         .put("category", "field").put("priority", "high").put("status", "REVIEW_REQUIRED");
                 testCase.putArray("scenarioIds").add("TS-" + stem);
-                testCase.putArray("tags").add("chapter-12").add("bounded-header").add(negative ? "negative" : "positive-structure");
+                testCase.putArray("tags").add("chapter-12").add(predicate ? "bounded-predicate" : "bounded-header")
+                        .add(invalid ? "negative" : "positive-structure");
                 anchors(testCase, anchor);
                 ObjectNode td = data.addObject().put("id", "TD-" + stem + suffix).put("readiness", "REVIEW_REQUIRED")
-                        .put("expectedValidation", negative ? "FAIL" : "REVIEW_REQUIRED");
+                        .put("expectedValidation", invalid ? "FAIL" : "REVIEW_REQUIRED");
                 td.putArray("testCaseIds").add(tcId);
                 anchors(td, anchor);
                 td.set("payload", payload);
                 ObjectNode execution = executions.addObject().put("testCaseId", tcId).put("testDataId", td.path("id").asText())
-                        .put("ruleId", ruleId).put("scope", "Header/field observation, not complete catalog-rule semantics")
+                        .put("ruleId", ruleId).put("scope", predicate ? fixture.path("targetScope").asText() : "Header/field observation, not complete catalog-rule semantics")
                         .put("expectedStatus", expectedStatus).put("actualStatus", result.status().name());
+                if (predicate) {
+                    execution.put("expectedTargetStatus", fixture.path("expectedTargetStatus").asText());
+                    execution.put("actualTargetStatus", result.findings().stream().filter(f -> f.ruleId().equals(ruleId)
+                            && f.scope().equals(fixture.path("targetScope").asText())).findFirst().orElseThrow().status().name());
+                }
                 execution.set("findings", mapper.valueToTree(result.findings()));
                 execution.set("unassessedCatalogRules", mapper.valueToTree(result.unassessedCatalogRules()));
                 execution.set("sourceAnchor", anchor.deepCopy());

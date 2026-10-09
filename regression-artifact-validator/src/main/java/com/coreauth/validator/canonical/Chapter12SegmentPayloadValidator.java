@@ -18,7 +18,7 @@ public final class Chapter12SegmentPayloadValidator {
     public enum Status { CHECKS_PASSED, INVALID, REVIEW_REQUIRED }
     public record Finding(String ruleId, String scope, Status status, String reason) { }
     public record Result(Status status, List<Finding> findings, List<String> unassessedCatalogRules) { }
-    public static final Set<String> SEGMENTS = Set.of("115", "123", "130", "131", "132", "134", "135", "136",
+    public static final Set<String> SEGMENTS = Set.of("115", "119", "123", "130", "131", "132", "134", "135", "136",
             "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156");
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final char FS = '\u001c';
@@ -37,6 +37,7 @@ public final class Chapter12SegmentPayloadValidator {
         JsonNode catalog = MAPPER.readTree(Atl105Paths.ruleCatalog(id).toFile());
         switch (id) {
             case "115" -> printData(observation, fields, findings);
+            case "119" -> findings.addAll(Segment119ObservationValidator.validate(observation));
             case "123" -> tokenization(observation, fields, findings);
             case "130", "131" -> emv(observation, fields, findings);
             case "132" -> capk(observation, fields, findings);

@@ -71,6 +71,58 @@ The Section 11.4.1.2 text names "Data Segment No. 116" for this message. Its lay
 
 ## Serialization Rules
 
+### Executable Chapter 12 numbered-observation continuation
+
+The [numbered-observation validator](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ObservationValidator.java)
+is dispatched by the shared Chapter 12 adapter and Chapter 11 envelope. It
+checks required fields, source enums/widths, nonzero sequence/counts, calendar
+and timestamp validity, Appendix D terminal state and Appendix L currency,
+ordered left-aligned N4 card labels and numeric count/amount triples. Merchant
+assignment, authentic versions and original host timestamp provenance are not
+inferred from their lexical form.
+
+Use `cardBuckets` as an ordered array of objects with numbered text keys
+`13`, `16`, `15`. The Section 12.17 label list includes `HD` and contains
+19 named labels despite the prose allowing up to 20 buckets; no twentieth
+label is invented. Approved-response mandatory/optional bucket prose is not
+applied as mandatory request inclusion. Request counts use Chapter 13's
+`00001-99999` domain.
+
+Supply observed conditional policy as explicit booleans in `context`:
+`employeeNumberRequired`, `passwordRequired`, `totalsRequired`.
+Absent policy remains review-required; malformed controls are invalid.
+With `context.bucketCoverageComplete: true`, Grand Total is compared to the
+sum of supplied financial buckets, excluding `AO`, `SV1`, `SV3`, `SV4`, `HD`.
+Without complete scope, no total equality is inferred.
+
+Optional `serializedSegment` is always measured against N3 Segment Length
+as ASCII bytes. Explicit `context.wireProfile: "TABLE_17_19"` selects the
+table-derived layout: 16 prefix fields, each followed by FS, then concatenated
+four/five/eight-byte bucket triples, and a final FS. This profile is checked
+for exact order and retained empty-field separators, but its source framing
+conflict remains a separate review. Without a selected profile, the validator
+does not guess delimiter semantics. Both the 389/493 cap conflict and 17-19/
+18-20 field numbering conflict remain review-required.
+
+Chapter 11 supplies authoritative family, direction and observed placement;
+contradictory child values are invalid and inputs are not mutated.
+The old named-payload `TotalsRequestPayloadValidator` remains unchanged;
+this continuation does not claim complete actual-AI intake or lifecycle closure.
+
+[Independent fixtures and predicate probes](../../../../test-output/test-json/chapter-12-segment-observations.json)
+provide 20 Segment 119 executions (two header observations plus 18 predicates).
+[Persistent execution evidence](../../../../test-output/test-json/chapter-12-training-evidence.json)
+cross-checks exact existing Test anchors for all 20, without approval.
+[Boundary and integration tests](../../../../../../src/test/java/com/coreauth/validator/Segment119ObservationValidatorTest.java)
+also exercise all 19 listed labels in a measured 453-byte segment, cap
+boundaries, swapped/duplicated buckets, nonfinancial exclusion, malformed
+dates/controls and source conflict reviews. The covering 51-test gate passed.
+
+**Status: bounded execution added; full Segment 119 coverage remains incomplete.**
+Activity-window/lifecycle, selection/retry/cutoff and complete actual producer
+mapping remain implementation/evidence work, separate from genuine source
+conflicts and deferred approvals.
+
 - Fields 1-17 are Field Separator-delimited.
 - A Field Separator follows Field 17.
 - Empty fields in fields 1-17 retain their separators.
