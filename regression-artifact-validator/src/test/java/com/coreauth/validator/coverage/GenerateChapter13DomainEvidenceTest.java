@@ -22,7 +22,7 @@ class GenerateChapter13DomainEvidenceTest {
         assertThat(mapper.readTree(evidenceFile.toFile())).isEqualTo(report);
         assertThat(report.path("summary").path("sourceElementIdentities").asInt()).isEqualTo(231);
         assertThat(report.path("summary").path("sourceDefinitions").asInt()).isEqualTo(232);
-        assertThat(report.path("summary").path("scalarDomainExecutions").asInt()).isEqualTo(368);
+        assertThat(report.path("summary").path("scalarDomainExecutions").asInt()).isEqualTo(466);
         assertThat(report.path("summary").path("semanticExecutions").asInt()).isEqualTo(
                 mapper.readTree(Atl105Paths.testJson("chapter-13-semantic-probes.json").toFile()).path("probes").size());
         assertThat(report.path("summary").path("executions").asInt()).isEqualTo(report.path("executions").size());
@@ -40,6 +40,17 @@ class GenerateChapter13DomainEvidenceTest {
         assertThat(report.path("completeChapterCoverage").asBoolean()).isFalse();
         assertThat(report.path("executionReady").asBoolean()).isFalse();
         assertThat(report.path("summary").path("fullSemanticElementClosures").asInt()).isZero();
+        assertThat(report.path("summary").path("supplementalTestPackagesCrosschecked").asInt()).isPositive();
+        assertThat(report.path("summary").path("candidateGapsAfterSupplementalCrosscheck").asInt())
+                .isLessThanOrEqualTo(report.path("summary").path("candidateGapElements").asInt());
+        assertThat(report.path("supplementalTestPackageSha256").has("chapter-13-domain-package.json")).isFalse();
+        assertThat(report.path("supplementalTestPackageSha256").has("chapter-13-training-package.json")).isFalse();
+        for (var row : report.path("sourceElementReconciliation")) {
+            assertThat(row.path("supplementalTestBusinessRequirementCandidates").isArray()).isTrue();
+            for (var candidate : row.path("supplementalTestBusinessRequirementCandidates")) {
+                assertThat(candidate.path("matchStatus").asText()).isEqualTo("ELEMENT_ID_CANDIDATE_NOT_SEMANTIC_MATCH");
+            }
+        }
         var packageData = mapper.readValue(packageFile.toFile(), CanonicalArtifactPackage.class);
         var validator = new CanonicalTraceabilityValidator();
         assertThat(validator.validate(packageData).isValid()).isTrue();

@@ -3,9 +3,11 @@
 ## Scope and working policy
 
 This report supersedes the earlier duplicate snapshots and zero-code assertions.
-It records the autonomous chapter continuation on `Appendix-N`, with no commits,
-merges or pushes. Existing changes and independent Test Solution artifacts were
-retained. The user will review the combined changes before deciding what to commit.
+It records the autonomous chapter continuations on `Appendix-N`. Earlier batches
+were committed at the user's request: `2848fe10` and `1a76dc09`; both were later
+pushed only to `Appendix-N`. The new processing-history, contextual/composite and intake continuation is
+uncommitted, with no additional merge or push. Existing changes and independent
+Test Solution artifacts are retained for the user's final review.
 
 The appendix A-AE review pass is not complete-spec executable coverage. Likewise,
 a catalog, a Java class, a candidate match or a generated placeholder chain is not
@@ -315,7 +317,7 @@ No remaining implementation work is relabeled SME-only. Chapter 13 is still
 
 ## Chapter 13 continuation after local commit 2848fe10
 
-This separate continuation is uncommitted. It extends the existing generic element
+This earlier continuation was included in commit `1a76dc09`. It extends the existing generic element
 validator rather than creating a competing Chapter 13 oracle. Source definitions,
 matching existing rule IDs and Test BR canonical anchors were cross-checked before
 executed evidence was persisted.
@@ -384,6 +386,131 @@ closure still require additional source-backed work.
 
 ## Honest chapter status
 
+### Latest uncommitted Chapter 13 processing-history and intake work
+
+This batch closes specific execution gaps, not the whole Chapter 13 gate.
+
+| Work completed | Why the change was required |
+|---|---|
+| Source-local history/action predicates for 98/105/170/175/180/193/194 | Valid values alone did not prove masking actions, active-date eligibility, settlement ending/roll, reset boundaries, receipt retention/output, table replacement, final daily configuration or CAPK assembly/replacement |
+| Authoritative parent history on both envelope and element-reference paths | A contradictory child could otherwise bypass the observed parent context; tests verify inheritance, rejection and input immutability |
+| Opt-in actual-payload AI semantic intake | Legacy metadata values could differ from actual payload values and were not sufficient execution evidence |
+| Exact source-family roots and scoped source-name mappings | Real artifacts use more than the reviewed shorthand `Financial Request`; unknown aliases must still remain reviews |
+| Iteration-aware actual segment evaluation | Collapsing repeated segments would lose evidence; unsupported mapping is not itself a source prohibition |
+| Per-case input hashes and real-batch execution | A synthetic adapter test is not evidence that real AI payloads have been evaluated |
+
+Implementation:
+[history validator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ProcessingHistoryValidator.java),
+[AI intake](../../../../../src/main/java/com/coreauth/validator/validation/Atl105AiElementIntake.java).
+The [Chapter 13 guide](13-data-elements.md) documents accepted history fields,
+CLI opt-in and retained limits. The original constructor/default intake remains
+unchanged. Successful partial observations are not certified messages.
+
+The refreshed [canonical package](../../../test-output/test-json/chapter-13-domain-package.json)
+contains **251 BR / 251 TS / 711 TC / 711 TD chains**; the
+[execution report](../../../test-output/test-json/chapter-13-domain-evidence.json)
+contains **466 scalar + 245 semantic/context/composite/history executions**:
+372 target checks passed, 317 invalid, 22 review-required. This adds 233 probes
+and 85 predicate chains to the previous 478-execution package.
+Canonical traceability validates; execution-ready
+approval remains explicitly false.
+
+Additional predicates now exercise 129 of the 231 identities; none is newly
+declared a fully reconciled semantic closure. All 231 identities/232 definitions
+are retained in reconciliation. Existing complete Test BR artifacts are still
+cross-checked, together with 38 supplemental Test packages. The supplemental
+scan excludes all Chapter 13 outputs to prevent circular self-validation; hashes,
+skip reasons and unconfirmed candidate status are retained. Twelve exercised
+identities lack numeric-element candidates after both cross-checks:
+6/38/56/61/100/101/120/193/194/205/212/243. This is a candidate-reconciliation
+gap, not proof of missing source implementation or an SME-only blocker.
+
+[Actual AI intake report](../../../test-output/test-solution-independent-review/chapter-13-ai-semantic-intake-2026-09-29-phase1.json):
+37 cases assessed from the 2026-09-29 phase-1 batch; 32 have mapped observations,
+5 retain unsupported root-label reviews. Their actual labels are Auth Completion
+(0220), Financial Transaction (three cases) and EMV Request; direction/family is
+not guessed. The report has 37 per-case input-hash rows, 29 invalid and 8
+review-required case verdicts, and 253 observations
+(64 invalid, 189 review-required). All 74 producer files were hash-verified
+unchanged. These cases are labeled `field_constraint`; the results are not a
+measured positive/negative detection rate. Examples of defect candidates include
+non-text Prompt Code objects, metadata/payload contradictions, missing EMV
+envelope counts and malformed chip-data hex/TLV. No values were copied into the
+report and no matches were auto-confirmed.
+Report paths inside the producer input folder are explicitly rejected, including
+attempts to overwrite metadata. A regression test verifies that protection.
+
+Previous history-only focused validation: **429 tests, zero failures/errors/skips**.
+Previous history-only full regression:
+**2,126 tests; 2,124 passed, two pre-existing failures, zero errors/skips**.
+The unchanged failures are AppendixCoverageConsistencyTest (Appendix AE
+test-data readiness `UNSPECIFIED`) and
+AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents (terminal
+capability expected invalid, received pass). Neither was weakened or relabeled
+as passing. The element inventory is regenerated against the expanded package;
+these remain structural artifact references, not full semantic closures.
+
+### Latest contextual, operational and composite implementation
+
+| Work completed | Why it was required |
+|---|---|
+| 14 additional explicit scalar domains, including zero-inclusive amounts and nonzero count limits | Character type/maximum length did not enforce the source's numeric endpoints |
+| Segment/family-scoped required versions, passwords, pump, manual-check, loyalty and EMV fields | Conditional requiredness could otherwise be omitted or incorrectly applied to unrelated siblings |
+| Account/track layouts, exact echoes, retry/approval, partial approval, fee and remaining-balance correlations | Valid individual values do not prove correct combined limits or transaction use |
+| Card/response families, tokenized network gates, SafeKey and last observed interface TLVs | Overloaded codes and producer qualifiers cannot independently establish applicability; parent response family is authoritative |
+| Observed key reuse, merchant currency, print output, dial ordering, connection and cut scheduling | Declaration of an action is not evidence that its ordering/output matches supplied observations |
+| Composite decoding for 33/153/154/164, using existing Segment 103 checks | Metadata length and named fields did not prove actual nested TAG/LEN/body contents |
+| Safe root aliases and actual unique DL indicators | Genuine DL identity should not be guessed from conflicting metadata, nor discarded when independently identifiable |
+| Supplemental Test-package candidate cross-check and 245 executable semantic fixtures | New Test BR chains must be checked against existing artifacts without circular reconciliation or approval by alias |
+
+See [context implementation](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ContextValidator.java),
+[composite implementation](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13CompositeValidator.java),
+[independent dynamic fixture tests](../../../../../src/test/java/com/coreauth/validator/Chapter13SemanticProbeTest.java)
+and [boundary/control tests](../../../../../src/test/java/com/coreauth/validator/Chapter13ContextAndCompositeTest.java).
+The expanded focused integration gate passed **819 tests with no
+failures/errors/skips** before the final family/clock/EF boundary hardening.
+The subsequent full regression ran **2,483 tests: 2,481 passed, two failures,
+zero errors/skips**. Both failing tests are the known appendix baseline:
+AppendixCoverageConsistencyTest (artifact readiness `UNSPECIFIED`, including AE)
+and AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents
+(terminal-capability expectation). After the final EF-framing and missing-SafeKey
+guards, the smallest covering **273-test suite passed, with zero
+failures/errors/skips**. Persistent package/evidence and actual AI intake were
+regenerated after that gate; all 74 producer files remained unchanged. The full
+suite was not rerun after these last two guards.
+
+The WIC purchase worked example's declared `PS034` differs from its measured
+37-character body; tests use the positional tables rather than weakening the
+oracle. EF's N3 framing is not established by its eight-byte date descriptor.
+Unselected EF framing is explicitly review-required. A selected `TAG_N3` profile
+enables measured structure/calendar checks but does not certify that profile.
+Source hour 24/minute 60 similarly remains unnormalized when correlating ISO cut
+timestamps. Transformed EDATA is never subject to the plaintext stored-value PAN
+width. These are explicit boundaries, not silent success-shaped fallbacks.
+SafeKey Secure ID 25/26 also rejects omission of mandatory Element 203 from a
+complete Segment 123 observation, reports partial omission as review-required,
+and leaves unrelated siblings unaffected.
+
+### Remaining Chapter 13 exit work
+
+| Remaining work | Classification and required evidence |
+|---|---|
+| Reconcile every representation, valid-value, applicability and processing clause for all 231 identities/232 definitions | Implementation/evidence work; 129 exercised identities and 711 probes do not establish clause completeness |
+| Complete WIC response-required subelements, earliest-benefit selection, APL adjustments and settlement correlation | Implementable context/history rules; selected bitmap structure is insufficient |
+| Complete remaining conditional/card/network gates and wire/table layouts using existing appendix/segment oracles | Implementation/integration work; reuse existing rules before adding duplicates |
+| Resolve supported structured actual producer fields and unambiguous family/occurrence mapping | Intake work; retain explicit reviews for unresolved labels instead of guessed matches |
+| Reconcile the twelve existing-BR candidate gaps | Cross-artifact evidence work; do not silently approve new chains or relabel gaps SME-only |
+| Cryptographic/key authenticity, device/merchant assignment, genuine source contradictions and unsupported framing/clock conventions | External/source-boundary evidence; approvals remain deferred |
+
+No full-semantic element closure is asserted by this package. In particular,
+**Chapter 13 is not complete even with SME approvals excluded**.
+
+**Chapter 13 remains IN_PROGRESS. Chapter 12 has not been started as the next
+phase.** Remaining source-facet reconciliation, conditional/network/card gates,
+composite/table layouts and physical encoding are implementation work. Genuine
+source conflicts and external trust evidence remain separate deferred boundaries.
+The required order is still Chapter 13 closure first, then Chapter 12.
+
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
 No substantive chapter is newly declared fully covered by this continuation.
 
@@ -401,7 +528,7 @@ No substantive chapter is newly declared fully covered by this continuation.
 | 10 Processing Requirements | 3781-7444 | New 10.11 bounded evidence plus existing partial approval, eWIC, incremental/stored-credential/EMV slices; comprehensive family processing remains |
 | 11 Message Formats | 7445-10844 | New 31-family partial dispatch; complete wire/conditional/positional and canonical-message closure remain |
 | 12 Data Segment Formats | 10845-17699 | Bounded additions above and existing validators; full rule, lifecycle, serialization and intake closure remain |
-| 13 Data Element Descriptions | 17700-25439 | 231 identities/232 definitions reconciled, 79 contextual profiles, new 110 contextual/440 baseline executions; complete source-to-executable semantic reconciliation remains |
+| 13 Data Element Descriptions | 17700-25439 | 231 identities/232 definitions reconciled, 79 contextual profiles, 110 contextual/440 baseline and 711 domain/context/composite/history executions over 129 identities; 32/37 actual AI cases mapped; complete source-facet reconciliation remains |
 | 14 Support/Testing/Certification | 25440-25504 | Process/certification evidence; no claim of host/network certification |
 
 ## Remaining execution plan, SME approvals deferred

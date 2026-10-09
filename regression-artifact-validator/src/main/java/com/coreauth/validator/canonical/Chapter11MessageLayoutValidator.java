@@ -67,7 +67,7 @@ public final class Chapter11MessageLayoutValidator {
             ObjectNode observation = mapper.createObjectNode().put("specificationVersion", "2026-3")
                     .put("messageFamily", family).put("segment", "MESSAGE");
             observation.set("elements", input.path("elements"));
-            for (String field : List.of("chapter13Semantics", "qualifiers", "representation")) {
+            for (String field : List.of("chapter13Semantics", "qualifiers", "representation", "history")) {
                 if (input.has(field)) observation.set(field, input.path(field));
             }
             if (partial) observation.put("completeness", "PARTIAL");
@@ -102,14 +102,14 @@ public final class Chapter11MessageLayoutValidator {
                         observation.put(field, expected);
                     }
                     if (partial) observation.put("completeness", "PARTIAL");
-                    for (String field : List.of("representation")) {
+                    for (String field : List.of("representation", "history")) {
                         if (input.has(field) && supplied.has(field) && !input.path(field).equals(supplied.path(field))) {
-                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child representation contradicts parent"));
+                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child " + field + " contradicts parent"));
                         }
                         if (input.has(field)) observation.set(field, input.path(field));
                     }
                     if (input.path("chapter13Semantics").asBoolean(false)) observation.put("chapter13Semantics", true);
-                    for (String field : List.of("qualifiers", "records")) {
+                    for (String field : List.of("qualifiers", "records", "history")) {
                         if (!observation.has(field) && input.has(field)) observation.set(field, input.path(field));
                     }
                     if (input.path("qualifiers").isObject() && supplied.has("qualifiers")) {

@@ -99,6 +99,27 @@ public final class Segment103PayloadValidator {
         return result;
     }
 
+    public ValidationResult validateElement(String element, JsonNode value) {
+        ValidationResult result = new ValidationResult("chapter13-element-" + element);
+        var segment = objectMapper.createObjectNode();
+        if ("153".equals(element)) {
+            if (value == null || !value.isTextual() || value.textValue().isEmpty()) {
+                result.addError(SOURCE, "Element 153 requires nonempty textual discount blocks");
+            } else {
+                segment.set("WicDiscountAmount", value);
+                validateWicDiscountAmount(segment, result);
+            }
+        } else if ("164".equals(element)) {
+            if (value == null || !value.isObject() || !value.path("subelements").isArray() || !value.path("totalLength").isTextual()) {
+                result.addError(SOURCE, "Element 164 requires explicit totalLength and subelements");
+            } else {
+                segment.set("EbtProgramData", value);
+                validateEbtProgramData(segment, result);
+            }
+        } else result.addError(SOURCE, "Unsupported isolated Segment 103 element: " + element);
+        return result;
+    }
+
     private void validatePayload(JsonNode payload, ValidationResult result) {
         if (payload == null || !payload.isObject()) {
             result.addError(SOURCE, "AI JSON root must be an object");

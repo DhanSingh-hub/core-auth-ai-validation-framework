@@ -54,6 +54,30 @@ public final class GenerateChapter13DomainEvidence {
                         + "Existing Test BRs are element-identity candidates only; absent matches are explicit, never auto-confirmed.");
         report.putObject("inputSha256").put("source", hash(source)).put("domains", hash(catalog))
                 .put("semanticProbes", hash(probes)).put("existingTestPackage", hash(existing));
+        ObjectNode supplemental = extractor.extract(Files.readString(source));
+        ObjectNode supplementalHashes = report.putObject("supplementalTestPackageSha256");
+        ArrayNode skippedPackages = report.putArray("supplementalPackagesNotUsed");
+        try (var files = Files.list(Atl105Paths.testOutput().resolve("test-json"))) {
+            for (Path file : files.filter(p -> p.getFileName().toString().contains("package")
+                    && p.getFileName().toString().endsWith(".json")
+                    && !p.getFileName().toString().startsWith("chapter-13-")).sorted().toList()) {
+                JsonNode document = mapper.readTree(file.toFile());
+                boolean producerNeutralTest = "ATL105".equals(document.path("manifest").path("specification").asText())
+                        && "2026-3".equals(document.path("manifest").path("specificationVersion").asText())
+                        && document.path("businessRequirements").isArray()
+                        && !"AI_SOLUTION".equals(document.path("manifest").path("producer").asText());
+                for (JsonNode br : document.path("businessRequirements")) {
+                    if (br.path("id").asText().startsWith("BR-AI-")) producerNeutralTest = false;
+                }
+                if (!producerNeutralTest) {
+                    skippedPackages.addObject().put("file", file.getFileName().toString())
+                            .put("reason", "Not an existing versioned Test canonical BR package");
+                    continue;
+                }
+                extractor.linkRequirements(supplemental, document, "test-json/" + file.getFileName());
+                supplementalHashes.put(file.getFileName().toString(), hash(file));
+            }
+        }
         executions = report.putArray("executions");
         for (JsonNode domain : mapper.readTree(catalog.toFile()).path("domains")) {
             String element = domain.path("element").asText();
@@ -79,7 +103,7 @@ public final class GenerateChapter13DomainEvidence {
         for (JsonNode probe : semantic.path("probes")) {
             var observation = observation(probe.path("element").asText(), mapper.getNodeFactory().textNode(""));
             observation.set("elements", probe.path("elements").deepCopy());
-            for (String field : new String[]{"qualifiers", "representation", "segment", "completeness", "records"}) {
+            for (String field : new String[]{"qualifiers", "representation", "segment", "completeness", "records", "history", "messageFamily", "segmentsPresent"}) {
                 if (probe.has(field)) observation.set(field, probe.path(field).deepCopy());
             }
             Status expected;
@@ -90,18 +114,21 @@ public final class GenerateChapter13DomainEvidence {
         }
         ArrayNode rows = report.putArray("sourceElementReconciliation");
         var elements = inventory.path("elements").fields();
-        int candidateGaps = 0;
+        int candidateGaps = 0, gapsAfterSupplemental = 0;
         while (elements.hasNext()) {
             var entry = elements.next();
             var row = rows.addObject().put("element", entry.getKey()).put("sourceDefinitions", entry.getValue().path("definitions").size())
                     .put("completeSemanticCoverage", false)
                     .put("remainingProcessingCoverage", "NOT_FULLY_RECONCILED_IMPLEMENTATION_GAP_NOT_SME");
             row.set("existingTestBusinessRequirementCandidates", entry.getValue().path("existingBusinessRequirements").deepCopy());
+            JsonNode supplementalCandidates = supplemental.path("elements").path(entry.getKey()).path("existingBusinessRequirements");
+            row.set("supplementalTestBusinessRequirementCandidates", supplementalCandidates.deepCopy());
             var predicates = row.putArray("executedPredicates");
             for (String chain : chains) if (chain.startsWith("CH13-E" + entry.getKey() + "-")) predicates.add(chain);
             if (predicates.isEmpty()) row.put("status", "NO_ADDITIONAL_EXECUTED_PREDICATE_IN_THIS_PACKAGE");
             else row.put("status", "ADDITIONAL_PREDICATES_EXECUTED_FULL_PROCESSING_NOT_RECONCILED");
             if (!predicates.isEmpty() && entry.getValue().path("existingBusinessRequirements").isEmpty()) candidateGaps++;
+            if (!predicates.isEmpty() && entry.getValue().path("existingBusinessRequirements").isEmpty() && supplementalCandidates.isEmpty()) gapsAfterSupplemental++;
         }
         var parsed = mapper.treeToValue(artifacts, CanonicalArtifactPackage.class);
         var traceability = new CanonicalTraceabilityValidator().validate(parsed);
@@ -111,7 +138,9 @@ public final class GenerateChapter13DomainEvidence {
                 .put("executions", executions.size()).put("businessRequirements", artifacts.path("businessRequirements").size())
                 .put("scenarios", artifacts.path("testScenarios").size()).put("testCases", artifacts.path("testCases").size())
                 .put("testDataRecords", artifacts.path("testData").size()).put("candidateGapElements", candidateGaps)
-                .put("traceabilityValid", true).put("fullSemanticElementClosures", 0);
+                .put("traceabilityValid", true).put("fullSemanticElementClosures", 0)
+                .put("supplementalTestPackagesCrosschecked", supplementalHashes.size())
+                .put("candidateGapsAfterSupplementalCrosscheck", gapsAfterSupplemental);
         Files.createDirectories(packageFile.toAbsolutePath().getParent());
         Files.createDirectories(reportFile.toAbsolutePath().getParent());
         mapper.writerWithDefaultPrettyPrinter().writeValue(packageFile.toFile(), artifacts);

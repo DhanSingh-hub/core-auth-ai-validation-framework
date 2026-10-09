@@ -87,4 +87,20 @@ class Chapter11MessageLayoutValidatorTest {
         observation.put("segment", "153");
         assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
     }
+
+    @Test
+    void processingHistoryIsInheritedAndChildCannotOverrideIt() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Phone Load Response").put("completeness", "PARTIAL").put("chapter13Semantics", true);
+        input.putArray("segments");
+        var child = input.withArray("segments").addObject().put("segment", "DL1").put("dataSection", 2).putObject("observation");
+        child.putObject("elements").put("98", "********");
+        var actions = input.putObject("history").putObject("storeNumberActions").put("displayed", true).put("printed", false);
+        var saved = input.deepCopy();
+        assertThat(validator.validate(input).findings().toString()).contains("MASKED-ACTIONS", "INVALID");
+        assertThat(input).isEqualTo(saved);
+        actions.put("displayed", false);
+        child.putObject("history").putObject("storeNumberActions").put("displayed", true).put("printed", false);
+        assertThat(validator.validate(input).findings().toString()).contains("Child history contradicts parent");
+    }
 }
