@@ -224,11 +224,6 @@ public final class Atl105ElementValueValidator {
             observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
         JsonNode occurrences = observation.path("qualifiers").path("segmentOccurrenceCounts");
         boolean hasStructureEvidence = observation.path("segmentsPresent").isArray() || occurrences.isObject();
-        if (!hasStructureEvidence) {
-            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-008",
-                "Segment 101 occurrence count is unavailable for the companion-segment duplicate check"));
-            return;
-        }
         if (occurrences.isObject()) occurrences.fieldNames().forEachRemaining(present::add);
         for (String missing : required) {
             if ("100".equals(missing)) {
@@ -240,6 +235,9 @@ public final class Atl105ElementValueValidator {
                         : count == 0 ? "Required Segment 100 absent per " + section
                         : "Segment 100 occurs " + count + " times; exactly one occurrence is required per " + section;
                     findings.add(new Finding("", status, "SEG100-R-001", reason));
+                } else if (!hasStructureEvidence) {
+                    findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-001",
+                        "Segment 100 presence cannot be assessed without segment occurrence or presence evidence"));
                 } else if (!present.contains("100")) {
                     findings.add(new Finding("", Status.INVALID, "SEG100-R-001", "Required Segment 100 absent per " + section));
                 } else {
@@ -247,14 +245,35 @@ public final class Atl105ElementValueValidator {
                         "Segment 100 is present, but exact-once occurrence count is unavailable"));
                 }
             } else if (!present.contains(missing)) {
-                findings.add(new Finding("", Status.INVALID, "", "Required Segment " + missing + " absent per " + section));
+                findings.add(new Finding("", hasStructureEvidence ? Status.INVALID : Status.REVIEW_REQUIRED, "",
+                    (hasStructureEvidence ? "Required Segment " : "Presence of required Segment ") + missing
+                        + (hasStructureEvidence ? " absent per " : " cannot be assessed per ") + section));
             }
         }
+        JsonNode segment100Count = occurrences.path("100");
         JsonNode segment101Count = occurrences.path("101");
         JsonNode untypedSegmentCount = observation.path("qualifiers").path("untypedSegmentObjectCount");
+        if (!occurrences.isObject() || !untypedSegmentCount.canConvertToInt()) {
+            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                "Segment 101 to Segment 100 companion relationship requires occurrence counts and typed segment evidence"));
+        } else if (segment101Count.asInt(0) == 0) {
+            if (untypedSegmentCount.asInt() > 0)
+                findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                    "An untyped segment object could be Segment 101; its Segment 100 companion relationship cannot be assessed"));
+        } else if (segment100Count.asInt(0) > 0) {
+            findings.add(new Finding("", Status.CHECKS_PASSED, "SEG101-R-001", "Segment 101 is accompanied by Segment 100"));
+        } else if (untypedSegmentCount.asInt() > 0) {
+            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                "Segment 101 is present but an untyped segment object could be its Segment 100 companion"));
+        } else {
+            findings.add(new Finding("", Status.INVALID, "SEG101-R-001", "Segment 101 is present without required companion Segment 100"));
+        }
         Status duplicateStatus;
         String duplicateReason;
-        if (segment101Count.canConvertToInt() && segment101Count.asInt() > 1) {
+        if (!hasStructureEvidence) {
+            duplicateStatus = Status.REVIEW_REQUIRED;
+            duplicateReason = "Segment 101 duplicate check requires segment presence or occurrence evidence";
+        } else if (segment101Count.canConvertToInt() && segment101Count.asInt() > 1) {
             duplicateStatus = Status.INVALID;
             duplicateReason = "Companion Segment 101 occurs " + segment101Count.asInt() + " times; duplicates are not allowed";
         } else if (!untypedSegmentCount.canConvertToInt() || untypedSegmentCount.asInt() > 0) {

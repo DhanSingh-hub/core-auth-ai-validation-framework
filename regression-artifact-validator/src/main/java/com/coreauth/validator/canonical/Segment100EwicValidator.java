@@ -16,12 +16,26 @@ public final class Segment100EwicValidator {
             "COMPLETION", Set.of("0086"),
             "VOUCHER_CLEAR", Set.of("0086"),
             "REVERSAL_VOID", Set.of("8086"));
+    private static final Map<String, String> APPLICABILITY_ROLES = Map.of(
+            "AUTHORIZATION", "EWIC_AUTHORIZATION",
+            "CANCELLATION", "EWIC_AUTHORIZATION_CANCELLATION",
+            "BALANCE_INQUIRY", "EWIC_BALANCE_INQUIRY",
+            "COMPLETION", "EWIC_PURCHASE_COMPLETION",
+            "VOUCHER_CLEAR", "EWIC_VOUCHER_CLEAR",
+            "REVERSAL_VOID", "EWIC_PURCHASE_REVERSAL_VOID");
+
+    private final Segment103ApplicabilityValidator applicabilityValidator = new Segment103ApplicabilityValidator();
 
     public ValidationResult validateRequest(String id, JsonNode payload, String operation) {
         ValidationResult result = new ValidationResult(id == null ? "ewic" : id);
         JsonNode request = payload == null ? null : payload.path("Financial Request");
         if (request == null || !request.isObject()) {
             result.addError("Segment100Ewic", "Financial Request is required");
+            return result;
+        }
+        String applicabilityRole = APPLICABILITY_ROLES.get(operation);
+        if (applicabilityRole == null) {
+            result.addError("Segment100Ewic", "Unsupported eWIC operation " + operation);
             return result;
         }
         JsonNode standard = request.path("Standard Segment");
@@ -37,22 +51,29 @@ public final class Segment100EwicValidator {
         if (!"086".equals(standard.path("PromptCode").path("CardType").asText(null))) {
             result.addError("Segment100Ewic", "eWIC Card Type must be 086");
         }
-        if (!ebt.isObject() || !"103".equals(ebt.path("SegmentType").asText(null))) {
-            result.addError("Segment100Ewic", "eWIC flow requires Segment 103");
-            return result;
+        boolean ebtObjectPresent = ebt.isObject();
+        boolean segment103Present = ebtObjectPresent && "103".equals(ebt.path("SegmentType").asText(null));
+        if (ebtObjectPresent && !segment103Present) {
+            result.addError("Segment100Ewic", "EBT Data Segment type must be 103");
         }
-        String segmentLength = ebt.path("SegmentLength").asText(null);
-        if (segmentLength == null || !segmentLength.matches("^[0-9]{3,4}$")
-                || Integer.parseInt(segmentLength) < 1 || Integer.parseInt(segmentLength) > 3334) {
-            result.addError("Segment100Ewic", "Segment 103 length must be 001-3334");
+        boolean wicDataPresent = hasValue(ebt.path("WICDiscountAmount")) || hasValue(ebt.path("WICProductData"));
+        result.merge(applicabilityValidator.validate(applicabilityRole, segment103Present, false, wicDataPresent));
+        if (segment103Present) {
+            String segmentLength = ebt.path("SegmentLength").asText(null);
+            if (segmentLength == null || !segmentLength.matches("^[0-9]{3,4}$")
+                    || Integer.parseInt(segmentLength) < 1 || Integer.parseInt(segmentLength) > 3334) {
+                result.addError("Segment100Ewic", "Segment 103 length must be 001-3334");
+            }
         }
         String sequence = standard.path("SequenceNumber").asText(null);
         if (sequence == null || !sequence.matches("^[0-9]{6}$")) {
             result.addError("Segment100Ewic", "eWIC SequenceNumber must be six digits");
         }
         String count = request.path("NumSegments").asText(null);
-        if (!"02".equals(count) && !"2".equals(count)) {
-            result.addError("Segment100Ewic", "eWIC request with Segment 100 and 103 must declare NumSegments 02");
+        int actualSegmentCount = countSegmentObjects(request);
+        String paddedCount = String.format(java.util.Locale.ROOT, "%02d", actualSegmentCount);
+        if (!paddedCount.equals(count) && !Integer.toString(actualSegmentCount).equals(count)) {
+            result.addError("Segment100Ewic", "NumSegments must equal the BUYPASS segment-object count " + paddedCount);
         }
         return result;
     }
@@ -74,4 +95,21 @@ public final class Segment100EwicValidator {
     }
 
     public static ObjectMapper objectMapper() { return new ObjectMapper(); }
+
+    private static int countSegmentObjects(JsonNode request) {
+        int count = 0;
+        var fields = request.fields();
+        while (fields.hasNext()) {
+            JsonNode value = fields.next().getValue();
+            if (value.isObject() && (value.has("SegmentType") || value.has("segmentType"))) count++;
+        }
+        return count;
+    }
+
+    private static boolean hasValue(JsonNode value) {
+        if (value == null || value.isMissingNode() || value.isNull()) return false;
+        if (value.isTextual()) return !value.asText().isBlank();
+        if (value.isContainerNode()) return !value.isEmpty();
+        return true;
+    }
 }

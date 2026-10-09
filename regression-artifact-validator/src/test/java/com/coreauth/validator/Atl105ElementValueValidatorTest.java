@@ -129,6 +129,20 @@ class Atl105ElementValueValidatorTest {
     }
 
     @Test
+    void missingStructureEvidenceReviewsBothRequiredAndDuplicateRules() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var findings = validator.validate(message("1", "1")).findings();
+        assertThat(findings).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
+        assertThat(findings).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
+    }
+
+    @Test
     void partialObservationsNeverTurnMissingRequiredElementsIntoPasses() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var partial = observation("Financial Transaction Request", "100", "86", "123456");

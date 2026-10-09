@@ -21,6 +21,12 @@ Prompt Code is constructed from Transaction Type Code and Card Type, but the eWI
 - Voucher Clear submits a previously authorized offline voucher.
 - eWIC Return is not supported.
 
+## Segment 103 Request Applicability
+
+Do not infer that every eWIC request must contain Segment 103. The source-backed applicability matrix marks Authorization, Authorization Cancellation, Balance Inquiry, and Purchase Reversal/Void optional on the request side; Purchase Completion and Voucher Clear require Segment 103 with the applicable WIC data. Element 63 must count the BUYPASS-defined segments actually present, including optional companions.
+
+Prompt `0086` identifies both Purchase Completion and Voucher Clear. The lifecycle role, prior authorization/voucher context, and translator operation determine which Commerce Hub operation applies; prompt code alone does not distinguish them or establish a downstream approval result.
+
 ## TBA Artifact Pattern
 
 ```text

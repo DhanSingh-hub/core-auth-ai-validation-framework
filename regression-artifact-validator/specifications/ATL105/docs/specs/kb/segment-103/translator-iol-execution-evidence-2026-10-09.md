@@ -36,6 +36,8 @@ The ticket says PIN entry is required but PIN translation is not. It records a d
 
 ATL105 2026-3 itself lists prompt `0086` for both eWIC Purchase Completion and Voucher Clear. Preserve operation/lifecycle context when testing the mapping; prompt code alone cannot distinguish the two operations. The ticket's downstream decline is an observed result, not a universal expected response. Keep processor support and approval outcome `REVIEW_REQUIRED` until reproducible, authorized test data and a resolved response oracle exist.
 
+**ATL105 crosscheck:** Segment 103 applicability is role-specific: it is optional on eWIC Authorization, Authorization Cancellation, Balance Inquiry, and Purchase Reversal/Void requests, and required for Purchase Completion and Voucher Clear. Element 63 counts the BUYPASS-defined segments included. The ticket's request/response list mentioning "Variable Data Segment 111" remains translator-level scope; confirm whether it means a Variable Information Data Segment or another field before making it a general ATL105 requirement.
+
 The existing [eWIC prompt/lifecycle note](ewic-prompt-lifecycle-sme-tba-note.md) and [validator](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment100EwicValidator.java) already cover the source-level prompt mapping. This evidence suggests an adapter-level mapping test, not a new ATL105 prompt rule.
 
 ## Petro IOL Canada Scope
@@ -47,6 +49,19 @@ Use this as a candidate **scope matrix** for gap analysis, not as an expected-ou
 ## PIN Debit IOL Failure
 
 `MSB-10325` reports a PIN-debit IOL request in QA on 2026-06-15 receiving `INVALID TRAN 2G`; the Jira issue remains unresolved. It can seed a failure-reproduction question, but it does not identify whether the cause is transaction mapping, test configuration, authorizer support, or another integration dependency. Do not encode `2G` as the expected outcome for PIN debit generally.
+
+## Candidate Test Learning
+
+The following are training candidates, not canonical executable cases. Use synthetic identifiers and independently approved request/response oracles when materializing fixtures.
+
+| Ticket | Candidate case | Safe assertion or expected observation | Classification and gate |
+|---|---|---|---|
+| `MCH-39380` | Card-present eWIC authorization with prompt `3086`; synthetic Segment 100/103 values exercise clerk, voucher, WIC Product Data, and WIC Discount Amount mappings. | Verify each ATL105 field maps to its named Commerce Hub request field. One development authorization is reported approved; that is positive evidence for that single path only. | Positive mapping candidate; `DRAFT_REVIEW_REQUIRED` until each field has a controlled assertion and the adapter owner confirms the contract. |
+| `MCH-39388` | Voucher Clear for a previously authorized, uncaptured eWIC transaction, with lifecycle/original-authorization context and prompt `0086`. | Keep translator mapping (`0086` to Force Post) separate from downstream disposition. The ticket reports a decline even though mapping was said to be validated. | Mapping evidence may support a positive adapter assertion; the decline is an unresolved failure reproduction, not an expected response or a passing negative test. |
+| `MCH-40201` | Canadian Petro IOL scope dimensions: CAD `124`, synthetic Canadian merchant/card context, supported entry methods, origins, and transaction families. | Use the matrix to check that required regression dimensions are represented. The ticket does not provide stable executed case IDs or per-case outcomes. | Coverage-planning candidate only; no positive or negative outcome oracle is established. Treat CAD/postal values as pass-through integration context, not ATL105 validation rules. |
+| `MSB-10325` | Reproduce the reported PIN-debit IOL failure using an approved synthetic Interac case and controlled environment/configuration. | Capture the translator mapping and response; compare only after the supported transaction mapping and expected result are confirmed. `INVALID TRAN 2G` is the reported observation. | Unresolved failure reproduction; do not mark it as an expected rejection or encode `2G` as a general PIN-debit rule. |
+
+**Classification rule:** a successful run is positive evidence only for the asserted behavior and exact context. A decline, HTTP error, or translator mismatch becomes a passing negative test only when an independently approved oracle says that input must be rejected and the test asserts the intended rejection. Otherwise record it as an observed failure with `REVIEW_REQUIRED` disposition.
 
 ## Training Boundary and Next Evidence
 

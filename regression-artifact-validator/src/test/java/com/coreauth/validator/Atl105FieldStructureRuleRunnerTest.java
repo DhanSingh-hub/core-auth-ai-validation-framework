@@ -34,7 +34,8 @@ class Atl105FieldStructureRuleRunnerTest {
         assertThat(executable.keySet()).contains("SEG100-R-015", "SEG105-R-020", "SEG108-R-025", "SEG110-R-021");
         assertThat(partialStructure)
             .containsEntry("SEG100-R-001", "SECTION11_REQUIRED_SEGMENT_100_EXACT_ONCE")
-            .containsEntry("SEG100-R-008", "SECTION12_SEGMENT_101_NON_DUPLICATION");
+            .containsEntry("SEG100-R-008", "SECTION12_SEGMENT_101_NON_DUPLICATION")
+            .containsEntry("SEG101-R-001", "SECTION11_SEGMENT_101_REQUIRES_SEGMENT_100");
         assertThat(Atl105FieldStructureRuleRunner.reportStatus(Atl105ElementValueValidator.Status.CHECKS_PASSED))
             .isEqualTo("PASS");
         assertThat(Atl105FieldStructureRuleRunner.reportStatus(Atl105ElementValueValidator.Status.INVALID))

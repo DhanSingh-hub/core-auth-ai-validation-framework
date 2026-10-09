@@ -22,7 +22,8 @@ public final class Atl105FieldStructureRuleRunner {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Map<String, String> PARTIAL_STRUCTURE_EXECUTORS = Map.of(
         "SEG100-R-001", "SECTION11_REQUIRED_SEGMENT_100_EXACT_ONCE",
-        "SEG100-R-008", "SECTION12_SEGMENT_101_NON_DUPLICATION"
+        "SEG100-R-008", "SECTION12_SEGMENT_101_NON_DUPLICATION",
+        "SEG101-R-001", "SECTION11_SEGMENT_101_REQUIRES_SEGMENT_100"
     );
     private static final Map<String, String> EXECUTABLE_STATUS = Map.of(
         "CHECKS_PASSED", "PASS",

@@ -229,6 +229,7 @@ The LLM shall:
 - Separate source-confirmed behavior from derived interpretation and SME/TBA assumptions.
 - Generate request Test Data JSON only with synthetic or approved masked values.
 - Preserve lifecycle relationships between original and follow-up requests.
+- Apply companion-segment presence by source-defined lifecycle role; for eWIC, do not require Segment 103 on every request, and calculate Element 63 from the BUYPASS-defined segments actually included. Shared prompt codes still require operation/lifecycle context.
 - Avoid treating AI confidence, generated counts, or AI coverage as approval.
 - Mark unsupported or ambiguous behavior for review instead of inventing values.
 
