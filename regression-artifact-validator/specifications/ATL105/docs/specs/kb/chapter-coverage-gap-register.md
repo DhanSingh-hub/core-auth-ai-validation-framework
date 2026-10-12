@@ -792,3 +792,111 @@ No substantive chapter is newly declared fully covered by this continuation.
 These are recorded review items, not blanket reasons to stop other work.
 No approvals, confirmed producer matches, full-spec coverage or production
 certification were created by this pass.
+
+## Chapter 12 lifecycle, physical-product and contextual continuation
+
+**Branch:** Appendix-N. The previous actual Segment 119 integration was
+committed and pushed as `76c225e7`. This continuation is local and has not been
+committed or pushed. Chapter 13's unfinished source-facet work remains tracked.
+
+### Changes and why they were needed
+
+| Surface | Implemented continuation | Why the earlier evidence was insufficient |
+|---|---|---|
+| Segment 119 numbered and parent paths | Shared processing-history dispatch, authoritative parent history and request direction, explicit contradiction/type guards | Actual intake could assess history while the ordinary Chapter 12/11 path still stopped at field shape |
+| Segment 119 totals lifecycle | Explicit-date activity-window boundary, selection/correlation, `222222` end/roll, `111111` retention/last-reset period and `999999` all-observed-bucket reset executions | Generic Chapter 13 history tests did not persist Segment 119-specific canonical executions for each predicate |
+| Segment 119 sequence/current state | Matched request/response N6 sequence equality with actual Element 86; loaded N35 card-table version and current host-discount timestamp equality with actual request values | Nonzero/width/calendar checks did not prove agreement with observed transaction/device state |
+| Products 102/157 | Actual ASCII wire comparison, measured declared length, 381/370 segment/body caps, header FS/product backslash/final-FS placement, N9 quantity/price caps and observed primary/EV ordering | Named logical fields and a declared length could not establish actual wire content or encoding |
+| Product intake | Explicit array/flat mapping, observed capitalization aliases, alias/representation ambiguity guards, real Segment 100 companion reconciliation and actual Comdata-context contradiction guards | The real phase-1 producer uses flat product fields and `NumberofProducts`/`UnitofMeasure`; accepting only the Test fixture shape would validate a proxy |
+| Enhanced fleet 145/146 | Per-table source caps and printable ASCII, Money Code required Table 007, payee/cash-limit forms, source-listed settlement flag, prompt pipe/token/value framing and response edit-mask grammar | Generic TLV framing did not validate subtable caps or prompt/edit-mask content |
+| WEX 148 | Observed WEX/WEX-OTR authorizer plus Financial Transaction Response family, authoritative parent routing and contradiction/type guards | Direction and filler grammar alone could accept a wrong authorizer/family |
+| EMV 130/131 | Observed loaded CAPK checksum agreement and matched actual Segment 130 checksum echo, authoritative parent history/current checksum and malformed-evidence guards | A valid N25 checksum did not establish loaded-state or request/response agreement |
+
+The old Segment 145 header fixture's `TEST` placeholder has been replaced with
+a source-shaped prompt entry. Correct table length is measured from the
+independent fixture, not copied from source examples whose TLV arithmetic may
+conflict. The attached Segment 102 snapshots were not edited.
+
+### Persisted independent execution evidence
+
+The [observations](../../../test-output/test-json/chapter-12-segment-observations.json),
+[canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+and [execution report](../../../test-output/test-json/chapter-12-training-evidence.json)
+now contain:
+
+- **114 BR / 114 TS / 138 TC / 138 TD**, across 26 segment identities.
+- 48 original positive/negative header executions, **80 single-target predicate
+  executions**, and **10 actual named product executions**.
+- **62 Segment 119 executions**, each with exact existing-Test anchor candidates;
+  these candidates are unapproved and do not confirm an AI requirement match.
+- Ten actual product executions covering one/multiple-product measured wire,
+  wrong delimiter, wrong measured length and ambiguous flat/array form for both
+  102 and 157. Whole product execution results retain warnings and explicitly
+  do not claim full catalog-rule assessment.
+- Zero whole-status mismatches and zero target-status mismatches. Canonical
+  readback and source-continuous traceability are validated; approval count
+  remains zero.
+
+Catalog references and passed bounded predicates are not a chapter coverage
+denominator. In particular, 26 exercised identities and 138 executions do not
+reconcile every source facet of Chapter 12 or certify the complete message.
+
+### Actual AI assessment and validation
+
+The [actual AI report](../../../test-output/test-solution-independent-review/chapter-12-products119-ai-intake-2026-09-29-phase1.json)
+assesses the same 37 phase-1 metadata/payload pairs. All **74 producer files were
+SHA-256 checked before and after intake and remain unchanged**. Producer field
+values are not copied into this report.
+
+- Overall case results remain **29 INVALID / 8 REVIEW_REQUIRED**. These are
+  `field_constraint` scenarios, not asserted positive/negative labels.
+- Generic element observations remain **253: 64 INVALID / 189 REVIEW_REQUIRED**.
+  Additional product/119 intake findings are not added to that denominator.
+- Actual product dispatch assesses 19 Segment 102 occurrences and one Segment
+  157 occurrence. Missing actual lengths are explicit invalid findings; the
+  message containing both product forms is assessed for mutual exclusion.
+- The actual Segment 119 case retains 16 passed bounded findings and seven
+  invalid findings. Reviews increase from nine to **12**, explicitly exposing
+  absent sequence-correlation and loaded version/timestamp observations.
+
+The final focused Maven gate passed **97 tests**, with no failures/errors/skips.
+The final full suite ran **2,515 tests: 2,513 passing, two failures, zero errors,
+zero skips**. Both failures are the unchanged baseline appendix issues:
+`AppendixCoverageConsistencyTest.allAppendixRecordsMatchTheCanonicalInventory`
+(pre-existing `UNSPECIFIED` readiness) and
+`AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents`
+(unlisted capability expected invalid but returned PASS). No assertions were
+weakened, and those unrelated failures were not repaired as Chapter 12 work.
+The coupled all-element inventory was regenerated by the full suite.
+
+### What remains: implementation is separate from approval
+
+**Chapter 12 remains IN_PROGRESS, not complete.** The following are not all
+SME blockers:
+
+1. Reconcile every Chapter 12 source facet against its catalog/validator and
+   complete the BR-to-execution matrix beyond the bounded package. Existing
+   segment validators do not by themselves demonstrate full chapter closure.
+2. Fleet authorizer-specific prompt-token/value enumerations, nonfuel/fuel
+   product sublayouts, actual mask application (`M`/`X`, `V`/`P`, optional,
+   capture-but-do-not-resend and prior re-prompt formats) and captured/subsequent
+   message correlations remain implementable work. Grammar alone is not mask
+   execution.
+3. EMV binary serialization, chip-to-Segment-100 agreement and complete
+   transaction/load-session correlation remain implementable work. Supplied
+   checksum equality does not authenticate the matched transaction or CAPK load.
+4. Complete actual producer mapping and envelope/wire validation for the other
+   Chapter 12 families remain. Fleet/WEX/EMV contextual checks run through
+   numbered/envelope observations; direct actual intake added in this batch is
+   limited to products and the already-supported Segment 119 path.
+5. Product merchant applicability, full negative/discount/tax source-facet
+   reconciliation and any unresolved source-example interpretation remain
+   separate from the implemented wire/ordering/adjusted-amount checks.
+6. Segment 119 observed-history equality does not invent retry/duplicate,
+   merchant cutoff/timezone or proprietary-load selection policy, authenticate
+   host/device state, or resolve the published cap/framing conflicts. Those
+   policy, trust and source-owner decisions remain explicit reviews.
+
+Source conflicts listed above remain unchanged. Missing evidence is not
+treated as success, actual missing fields are not supplied from metadata,
+and no full-chapter completion or production certification is asserted.

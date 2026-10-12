@@ -19,8 +19,8 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(48);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(72);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(114);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(138);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
         assertThat(report.path("executions")).anySatisfy(execution -> {
@@ -42,6 +42,12 @@ class GenerateChapter12TrainingEvidenceTest {
                         .resolve("all-element-inventory.json").toFile()));
         for (var data : loaded.getTestData()) {
             var payload = data.getPayload();
+            if (payload.has("productPayload")) {
+                var result = new com.coreauth.validator.canonical.ProductActualPayloadAdapter().validatePayload(
+                        payload.path("productPayload"), payload.path("segment").asText());
+                assertThat(result.isValid()).isEqualTo(!"FAIL".equals(data.getExpectedValidation()));
+                continue;
+            }
             var result = payload.has("actualPayload") ? actualAdapter.validate(payload.path("actualPayload"),
                     payload.path("messageFamily").asText(), payload.path("actualEvidence")) : validator.validate(payload);
             assertThat(result.status().name()).isIn("INVALID", "REVIEW_REQUIRED", "CHECKS_PASSED");
@@ -53,7 +59,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 assertThat(execution.path("actualTargetStatus")).isEqualTo(execution.path("expectedTargetStatus"));
             }
         }
-        assertThat(predicates).isEqualTo(24);
+        assertThat(predicates).isEqualTo(80);
         assertThat(new ObjectMapper().readTree(reportFile.toFile())).isEqualTo(report);
     }
 }

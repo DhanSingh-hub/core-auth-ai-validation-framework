@@ -188,4 +188,73 @@ class Segment119ObservationValidatorTest {
         buckets.set(1, first);
         assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("bucket-order") && f.status() == Status.INVALID);
     }
+
+    @Test void parentHistoryExecutesWithoutSemanticFlagAndCannotBeOverriddenByChild() throws Exception {
+        var child = fixture();
+        child.remove("serializedSegment");
+        fields(child).put("105", "999999");
+        var parent = mapper.createObjectNode().put("specificationVersion", "2026-3")
+                .put("messageFamily", "Totals with Proprietary Data Load Request").put("completeness", "PARTIAL");
+        parent.putObject("elements").put("55", "ATL105").put("63", "01");
+        parent.putArray("segments").addObject().put("segment", "119").put("dataSection", 3).put("fieldNumber", 3).set("observation", child);
+        var totals = parent.putObject("history").putObject("totals").put("requestDate", "999999").put("responseDate", "999999");
+        totals.putObject("accumulatedTotalsBefore").put("CC", "100").put("DB", "200");
+        totals.putObject("accumulatedTotalsAfter").put("CC", "0").put("DB", "0");
+        var before = parent.deepCopy();
+        var layout = new Chapter11MessageLayoutValidator();
+        assertThat(layout.validate(parent).findings()).filteredOn(f -> f.ruleId().equals("CH13-E105-PROCESSING-ACCUMULATION"))
+                .singleElement().satisfies(f -> assertThat(f.status()).isEqualTo(Status.CHECKS_PASSED));
+        assertThat(parent).isEqualTo(before);
+        ((ObjectNode) totals.path("accumulatedTotalsAfter")).put("DB", "200");
+        child.set("history", before.path("history").deepCopy());
+        assertThat(layout.validate(parent).findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID)
+                .anyMatch(f -> f.ruleId().equals("CH13-E105-PROCESSING-ACCUMULATION") && f.status() == Status.INVALID);
+        child.remove("history");
+        parent.putArray("history");
+        assertThat(layout.validate(parent).findings()).anyMatch(f -> f.ruleId().equals("CH13-E-PROCESSING-HISTORY-INPUT") && f.status() == Status.INVALID);
+        context(child).put("loadedDeviceCardTableVersion", fields(child).path("176").asText());
+        parent.putObject("context").put("loadedDeviceCardTableVersion", "00000000000000000000000000000000002");
+        assertThat(layout.validate(parent).findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID)
+                .anyMatch(f -> f.scope().equals("loaded-card-table") && f.status() == Status.INVALID);
+        parent.putArray("context");
+        assertThat(layout.validate(parent).findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID);
+    }
+
+    @Test void contradictoryOrMalformedDirectionCannotDisableHistoryCorrelation() throws Exception {
+        for (String direction : List.of("RESPONSE", "REQUEST")) {
+            var input = fixture();
+            input.putObject("qualifiers").put("direction", direction);
+            input.putObject("history").putObject("totals").put("requestDate", "111111").put("responseDate", "111111");
+            var result = validator.validate(input);
+            assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("CH13-E105-PROCESSING-OBSERVATION-CORRELATION") && f.status() == Status.INVALID);
+            if ("RESPONSE".equals(direction)) assertThat(result.findings()).anyMatch(f -> f.scope().equals("history-controls") && f.status() == Status.INVALID);
+        }
+        var input = fixture();
+        input.putArray("qualifiers");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("history-controls") && f.status() == Status.INVALID);
+    }
+
+    @Test void sequenceAndCurrentStateCorrelationsRejectContradictionsAndWrongTypes() throws Exception {
+        var input = fixture();
+        var totals = input.putObject("history").putObject("totals").put("requestSequenceNumber", "000001").put("responseSequenceNumber", "000001");
+        target(input, "032", "sequence-correlation", Status.CHECKS_PASSED);
+        for (String sequence : List.of("000000", "1", "000002")) {
+            totals.put("responseSequenceNumber", sequence);
+            target(input, "032", "sequence-correlation", Status.INVALID);
+        }
+        totals.put("responseSequenceNumber", 1);
+        target(input, "032", "sequence-correlation", Status.INVALID);
+        totals.remove("responseSequenceNumber");
+        target(input, "032", "sequence-correlation", Status.REVIEW_REQUIRED);
+        for (var entry : Map.of("loadedDeviceCardTableVersion", "176", "hostDiscountTimestampInUse", "179").entrySet()) {
+            String rule = "176".equals(entry.getValue()) ? "020" : "021";
+            String scope = "176".equals(entry.getValue()) ? "loaded-card-table" : "loaded-discount-timestamp";
+            context(input).put(entry.getKey(), fields(input).path(entry.getValue()).asText());
+            target(input, rule, scope, Status.CHECKS_PASSED);
+            context(input).put(entry.getKey(), 1);
+            target(input, rule, scope, Status.INVALID);
+            context(input).remove(entry.getKey());
+            target(input, rule, scope, Status.REVIEW_REQUIRED);
+        }
+    }
 }

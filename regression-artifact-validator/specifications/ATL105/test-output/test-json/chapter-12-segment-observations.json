@@ -14,7 +14,21 @@
         {"id":"ACTUAL-SEQUENCE-ZERO","ruleId":"SEG119-R-019","scope":"sequence","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"SequenceNumber":"000000"}},
         {"id":"ACTUAL-BUCKET-NONTEXT","ruleId":"SEG119-R-025","scope":"bucket-count-width","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"CategoryTotals":[{"CardLabel":"CC","CardTypeTotalCount":1,"CardTypeTotalAmount":"00000100"}]}},
         {"id":"ACTUAL-HISTORY-SELECTOR","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-RESPONSE","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
-        {"id":"ACTUAL-HISTORY-RESPONSE-INVALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-RESPONSE","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"history":{"totals":{"requestDate":"333333","responseDate":"261008","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}}}
+        {"id":"ACTUAL-HISTORY-RESPONSE-INVALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-RESPONSE","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"history":{"totals":{"requestDate":"333333","responseDate":"261008","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}}},
+        {"id":"ACTUAL-ROLL-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-ROLL","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","actualFields":{"TotalsDate":"222222"},"evidence":{"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-12","endedSettlementDates":["2026-10-09"]}}}},
+        {"id":"ACTUAL-ROLL-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-ROLL","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"TotalsDate":"222222"},"evidence":{"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-09","endedSettlementDates":["2026-10-09"]}}}},
+        {"id":"ACTUAL-ACCUMULATION-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","actualFields":{"TotalsDate":"111111"},"evidence":{"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"200"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-1"}}}},
+        {"id":"ACTUAL-ACCUMULATION-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"TotalsDate":"111111"},"evidence":{"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"0"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-1"}}}},
+        {"id":"ACTUAL-RESET-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","actualFields":{"TotalsDate":"999999"},"evidence":{"history":{"totals":{"requestDate":"999999","responseDate":"999999","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"0","DB":"0"}}}}},
+        {"id":"ACTUAL-RESET-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"TotalsDate":"999999"},"evidence":{"history":{"totals":{"requestDate":"999999","responseDate":"999999","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"0","DB":"200"}}}}},
+        {"id":"ACTUAL-WINDOW-VALID","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-ACTIVITY-WINDOW","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","actualFields":{"TotalsDate":"100726"},"evidence":{"history":{"totals":{"requestDate":"100726","responseDate":"261007","requestedSettlementDate":"2026-10-07","activityHistoryComplete":true,"activityDates":["2026-10-07","2026-10-09","2026-10-08"]}}}},
+        {"id":"ACTUAL-WINDOW-TOO-OLD","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-ACTIVITY-WINDOW","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","actualFields":{"TotalsDate":"100626"},"evidence":{"history":{"totals":{"requestDate":"100626","responseDate":"261006","requestedSettlementDate":"2026-10-06","activityHistoryComplete":true,"activityDates":["2026-10-07","2026-10-09","2026-10-08"]}}}},
+        {"id":"ACTUAL-SEQUENCE-CORRELATION-VALID","ruleId":"SEG119-R-032","scope":"sequence-correlation","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","evidence":{"history":{"totals":{"requestSequenceNumber":"000001","responseSequenceNumber":"000001"}}}},
+        {"id":"ACTUAL-SEQUENCE-CORRELATION-BROKEN","ruleId":"SEG119-R-032","scope":"sequence-correlation","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"history":{"totals":{"requestSequenceNumber":"000001","responseSequenceNumber":"000002"}}}},
+        {"id":"ACTUAL-LOADED-VERSION-VALID","ruleId":"SEG119-R-020","scope":"loaded-card-table","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","evidence":{"context":{"loadedDeviceCardTableVersion":"00000000000000000000000000000000001"}}},
+        {"id":"ACTUAL-LOADED-VERSION-BROKEN","ruleId":"SEG119-R-020","scope":"loaded-card-table","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"context":{"loadedDeviceCardTableVersion":"00000000000000000000000000000000002"}}},
+        {"id":"ACTUAL-LOADED-DISCOUNT-VALID","ruleId":"SEG119-R-021","scope":"loaded-discount-timestamp","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","evidence":{"context":{"hostDiscountTimestampInUse":"202610091930"}}},
+        {"id":"ACTUAL-LOADED-DISCOUNT-BROKEN","ruleId":"SEG119-R-021","scope":"loaded-discount-timestamp","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","evidence":{"context":{"hostDiscountTimestampInUse":"202610091931"}}}
       ],
       "predicateProbes": [
         {"id":"DATE-VALID","ruleId":"SEG119-R-015","scope":"totals-date","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
@@ -34,7 +48,29 @@
         {"id":"TOTAL-PARTIAL-REVIEW","ruleId":"SEG119-R-030","scope":"grand-total-exclusion","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED","context":{"bucketCoverageComplete":false}},
         {"id":"WIRE-VALID","ruleId":"SEG119-R-009","scope":"wire-measured-length","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
         {"id":"WIRE-LENGTH-INVALID","ruleId":"SEG119-R-009","scope":"wire-measured-length","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"84":"158"}},
-        {"id":"WIRE-SOURCE-REVIEW","ruleId":"SEG119-R-039","scope":"source-wire-conflict","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED"}
+        {"id":"WIRE-SOURCE-REVIEW","ruleId":"SEG119-R-039","scope":"source-wire-conflict","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED"},
+        {"id":"HISTORY-WINDOW-VALID","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-ACTIVITY-WINDOW","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"100726"},"history":{"totals":{"requestDate":"100726","responseDate":"261007","requestedSettlementDate":"2026-10-07","activityHistoryComplete":true,"activityDates":["2026-10-07","2026-10-09","2026-10-08"]}}},
+        {"id":"HISTORY-WINDOW-TOO-OLD","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-ACTIVITY-WINDOW","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"100626"},"history":{"totals":{"requestDate":"100626","responseDate":"261006","requestedSettlementDate":"2026-10-06","activityHistoryComplete":true,"activityDates":["2026-10-07","2026-10-09","2026-10-08"]}}},
+        {"id":"HISTORY-ROLL-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-ROLL","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"222222"},"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-12","endedSettlementDates":["2026-10-09"]}}},
+        {"id":"HISTORY-ROLL-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-ROLL","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"222222"},"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-09","endedSettlementDates":["2026-10-09"]}}},
+        {"id":"HISTORY-END-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-END","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"222222"},"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-12","endedSettlementDates":["2026-10-09"]}}},
+        {"id":"HISTORY-END-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-SETTLEMENT-END","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"222222"},"history":{"totals":{"requestDate":"222222","responseDate":"261009","currentSettlementDate":"2026-10-09","nextSettlementDate":"2026-10-12","settlementDateAfter":"2026-10-12","endedSettlementDates":[]}}},
+        {"id":"HISTORY-ACCUMULATION-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"111111"},"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"200"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-1"}}},
+        {"id":"HISTORY-ACCUMULATION-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"111111"},"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"0"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-1"}}},
+        {"id":"HISTORY-PERIOD-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION-PERIOD","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"111111"},"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"200"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-1"}}},
+        {"id":"HISTORY-PERIOD-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION-PERIOD","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"111111"},"history":{"totals":{"requestDate":"111111","responseDate":"111111","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"100","DB":"200"},"lastResetEventId":"RESET-1","returnedPeriodStartEventId":"RESET-2"}}},
+        {"id":"HISTORY-RESET-VALID","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","omitSerializedSegment":true,"elements":{"105":"999999"},"history":{"totals":{"requestDate":"999999","responseDate":"999999","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"0","DB":"0"}}}},
+        {"id":"HISTORY-RESET-BROKEN","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-ACCUMULATION","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","omitSerializedSegment":true,"elements":{"105":"999999"},"history":{"totals":{"requestDate":"999999","responseDate":"999999","accumulatedTotalsBefore":{"CC":"100","DB":"200"},"accumulatedTotalsAfter":{"CC":"0","DB":"200"}}}},
+        {"id":"HISTORY-PARTIAL","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-ACTIVITY-HISTORY","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED","omitSerializedSegment":true,"elements":{"105":"333333"},"history":{"totals":{"requestDate":"333333","responseDate":"261009","activityHistoryComplete":false,"activityDates":["2026-10-09"]}}},
+        {"id":"HISTORY-MALFORMED","ruleId":"SEG119-R-032","targetRuleId":"CH13-E105-PROCESSING-HISTORY-INPUT","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","history":{"totals":[]}},
+        {"id":"HISTORY-CORRELATION-VALID","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-OBSERVATION-CORRELATION","scope":"observed-history","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","history":{"totals":{"requestDate":"100926","responseDate":"261009","requestedSettlementDate":"2026-10-09","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}},
+        {"id":"HISTORY-CORRELATION-BROKEN","ruleId":"SEG119-R-015","targetRuleId":"CH13-E105-PROCESSING-OBSERVATION-CORRELATION","scope":"observed-history","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","history":{"totals":{"requestDate":"100826","responseDate":"261008","requestedSettlementDate":"2026-10-08","activityHistoryComplete":true,"activityDates":["2026-10-09","2026-10-08","2026-10-07"]}}},
+        {"id":"SEQUENCE-CORRELATION-VALID","ruleId":"SEG119-R-032","scope":"sequence-correlation","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","history":{"totals":{"requestSequenceNumber":"000001","responseSequenceNumber":"000001"}}},
+        {"id":"SEQUENCE-CORRELATION-BROKEN","ruleId":"SEG119-R-032","scope":"sequence-correlation","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","history":{"totals":{"requestSequenceNumber":"000001","responseSequenceNumber":"000002"}}},
+        {"id":"LOADED-VERSION-VALID","ruleId":"SEG119-R-020","scope":"loaded-card-table","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","context":{"loadedDeviceCardTableVersion":"00000000000000000000000000000000001"}},
+        {"id":"LOADED-VERSION-BROKEN","ruleId":"SEG119-R-020","scope":"loaded-card-table","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","context":{"loadedDeviceCardTableVersion":"00000000000000000000000000000000002"}},
+        {"id":"LOADED-DISCOUNT-VALID","ruleId":"SEG119-R-021","scope":"loaded-discount-timestamp","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","context":{"hostDiscountTimestampInUse":"202610091930"}},
+        {"id":"LOADED-DISCOUNT-BROKEN","ruleId":"SEG119-R-021","scope":"loaded-discount-timestamp","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","context":{"hostDiscountTimestampInUse":"202610091931"}}
       ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "119", "direction": "REQUEST",
@@ -95,15 +131,31 @@
     },
     {
       "id": "TD-TEST-CH12-145-FIELDS", "ruleId": "SEG145-R-005", "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"FLEET-CAP-VALID","ruleId":"SEG145-R-006","scope":"fleet-table-cap","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"FLEET-CAP-INVALID","ruleId":"SEG145-R-006","scope":"fleet-table-cap","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","context":{"authorizer":"WEX_OTR","segmentsPresent":["100","145"]},"tables":[{"id":"007","length":"016","value":"1234567890123456"}]},
+        {"id":"MONEY-CODE-VALID","ruleId":"SEG145-R-006","scope":"money-code-check","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","context":{"authorizer":"WEX_OTR","moneyCodeTransaction":true,"segmentsPresent":["100","145"]},"tables":[{"id":"007","length":"009","value":"249567891"}]},
+        {"id":"MONEY-CODE-MISSING","ruleId":"SEG145-R-006","scope":"money-code-check","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","context":{"authorizer":"WEX_OTR","moneyCodeTransaction":true,"segmentsPresent":["100","145"]}},
+        {"id":"PAYEE-VALID","ruleId":"SEG145-R-006","scope":"payee-name","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","context":{"authorizer":"WEX_OTR","segmentsPresent":["100","145"]},"tables":[{"id":"006","length":"007","value":"SMITH,B"}]},
+        {"id":"PAYEE-INVALID","ruleId":"SEG145-R-006","scope":"payee-name","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","context":{"authorizer":"WEX_OTR","segmentsPresent":["100","145"]},"tables":[{"id":"006","length":"006","value":"SMITHB"}]},
+        {"id":"PROMPT-FRAMING-VALID","ruleId":"SEG145-R-008","scope":"prompt-framing","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"PROMPT-FRAMING-BROKEN","ruleId":"SEG145-R-008","scope":"prompt-framing","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","tables":[{"id":"004","length":"010","value":"|DRID:1100"}]}
+      ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "145", "direction": "REQUEST",
-        "elements": {"85": "145", "84": "016"},
-        "tables": [{"id": "004", "length": "004", "value": "TEST"}],
+        "elements": {"85": "145", "84": "023"},
+        "tables": [{"id": "004", "length": "011", "value": "|DRID:1100|"}],
         "context": {"authorizer": "COMDATA", "segmentsPresent": ["100", "145"]}
       }
     },
     {
       "id": "TD-TEST-CH12-146-FIELDS", "ruleId": "SEG146-R-001", "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"SETTLEMENT-FLAG-VALID","ruleId":"SEG146-R-002","scope":"settlement-flag","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED"},
+        {"id":"SETTLEMENT-FLAG-INVALID","ruleId":"SEG146-R-002","scope":"settlement-flag","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","tables":[{"id":"001","length":"002","value":"XX"}]},
+        {"id":"EDIT-MASK-VALID","ruleId":"SEG146-R-004","scope":"edit-mask-grammar","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","tables":[{"id":"004","length":"018","value":"|ODRD:N;TS;M1;X25|"}]},
+        {"id":"EDIT-MASK-INVALID","ruleId":"SEG146-R-004","scope":"edit-mask-grammar","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","tables":[{"id":"004","length":"008","value":"|DRID:Q|"}]}
+      ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "146", "direction": "RESPONSE",
         "elements": {"85": "146", "84": "014"},
@@ -113,6 +165,12 @@
     },
     {
       "id": "TD-TEST-CH12-148-FIELDS", "ruleId": "SEG148-R-002", "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"ROUTING-WEX-VALID","ruleId":"SEG148-R-001","scope":"routing","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","messageFamily":"Financial Transaction Response","context":{"authorizer":"WEX"}},
+        {"id":"ROUTING-WRONG-HOST","ruleId":"SEG148-R-001","scope":"routing","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","messageFamily":"Financial Transaction Response","context":{"authorizer":"COMDATA"}},
+        {"id":"ROUTING-WRONG-FAMILY","ruleId":"SEG148-R-001","scope":"routing","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","messageFamily":"Totals with Proprietary Data Load Response","context":{"authorizer":"WEX"}},
+        {"id":"ROUTING-MISSING","ruleId":"SEG148-R-001","scope":"routing","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"REVIEW_REQUIRED"}
+      ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "148", "direction": "RESPONSE",
         "elements": {"85": "148", "84": "017", "240": "00=100,50 G"}
@@ -171,6 +229,10 @@
       "id": "TD-TEST-CH12-130-FIELDS",
       "ruleId": "SEG130-R-002",
       "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"LOADED-CHECKSUM-VALID","ruleId":"SEG130-R-005","scope":"loaded-checksum","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","elements":{"187":"0000000000000000000000001"},"context":{"loadedCapkChecksum":"0000000000000000000000001"}},
+        {"id":"LOADED-CHECKSUM-INVALID","ruleId":"SEG130-R-005","scope":"loaded-checksum","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","elements":{"187":"0000000000000000000000001"},"context":{"loadedCapkChecksum":"0000000000000000000000002"}}
+      ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "130", "direction": "REQUEST",
         "elements": {"85": "130", "84": "0040", "187": "", "188": "", "189": "009", "190": "8407A0000000041010"},
@@ -181,6 +243,10 @@
       "id": "TD-TEST-CH12-131-FIELDS",
       "ruleId": "SEG131-R-003",
       "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {"id":"CHECKSUM-ECHO-VALID","ruleId":"SEG131-R-007","scope":"checksum-echo","expectedStatus":"REVIEW_REQUIRED","expectedTargetStatus":"CHECKS_PASSED","history":{"emv":{"request":{"segment":"130","specificationVersion":"2026-3","elements":{"187":"0000000000000000000000001"}}}}},
+        {"id":"CHECKSUM-ECHO-INVALID","ruleId":"SEG131-R-007","scope":"checksum-echo","expectedStatus":"INVALID","expectedTargetStatus":"INVALID","history":{"emv":{"request":{"segment":"130","specificationVersion":"2026-3","elements":{"187":"0000000000000000000000002"}}}}}
+      ],
       "payload": {
         "specificationVersion": "2026-3", "segment": "131", "direction": "RESPONSE",
         "elements": {"85": "131", "84": "0060", "187": "0000000000000000000000001", "189": "009", "190": "8407A0000000041010"},
@@ -267,6 +333,34 @@
         "context": {"brand": "VISA", "segment102ProductCodes": ["308"]},
         "serializedSegment": "15610201001Y020069959590300600000004006000000050062359590600110700310008001109001110001111001112003001"
       }
+    }
+  ],
+  "productExecutions": [
+    {
+      "id":"ACTUAL-102-ONE-PRODUCT","executionOnly":true,"ruleId":"SEG102-R-020","expectedStatus":"REVIEW_REQUIRED",
+      "payload":{"specificationVersion":"2026-3","segment":"102","productPayload":{
+        "Standard Segment":{"FuelPurchaseAmount":"200","NonFuelAmount":"","TaxAmount":"10","CashAmount":"","PromptCode":{"CardType":"001"}},
+        "Product Code Data Segment":{"SegmentType":"102","SegmentLength":"028","ServiceLevel":"S","NumberofProducts":"01","ProductCode":"001","UnitofMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210","SerializedSegment":"102\u001c028\u001cS01001G205\\3005\\210\u001c"}
+      }},
+      "probes":[
+        {"id":"ACTUAL-102-WIRE-BROKEN","ruleId":"SEG102-R-020","expectedStatus":"INVALID","productFields":{"SerializedSegment":"102\u001c028\u001cS01001G205\u001c3005\\210\u001c"}},
+        {"id":"ACTUAL-102-LENGTH-BROKEN","ruleId":"SEG102-R-023","expectedStatus":"INVALID","productFields":{"SegmentLength":"001"}},
+        {"id":"ACTUAL-102-AMBIGUOUS","ruleId":"SEG102-R-005","expectedStatus":"INVALID","productFields":{"Products":[{"ProductCode":"001","UnitOfMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210"}]}},
+        {"id":"ACTUAL-102-MULTIPLE-PRODUCTS","ruleId":"SEG102-R-021","expectedStatus":"REVIEW_REQUIRED","standardSegment":{"FuelPurchaseAmount":"200","NonfuelAmount":"10","TaxAmount":"10","CashAmount":"","PromptCode":{"CardType":"001"}},"productSegment":{"SegmentType":"102","SegmentLength":"042","ServiceLevel":"S","NumberOfProducts":"02","Products":[{"ProductCode":"001","UnitOfMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210"},{"ProductCode":"500","UnitOfMeasure":"U","Quantity":"01","UnitPrice":"010","ProductAmount":"10"}],"SerializedSegment":"102\u001c042\u001cS02001G205\\3005\\210\\500U01\\010\\10\u001c"}}
+      ]
+    },
+    {
+      "id":"ACTUAL-157-ONE-PRODUCT","executionOnly":true,"ruleId":"SEG157-R-008","expectedStatus":"REVIEW_REQUIRED",
+      "payload":{"specificationVersion":"2026-3","segment":"157","productPayload":{
+        "Standard Segment":{"FuelPurchaseAmount":"200","NonFuelAmount":"","TaxAmount":"10","CashAmount":"","PromptCode":{"CardType":"094"}},
+        "Adjusted Product Code Data Segment":{"SegmentType":"157","SegmentLength":"028","ServiceLevel":"S","NumberofProducts":"01","ProductCode":"001","UnitofMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210","SerializedSegment":"157\u001c028\u001cS01001G205\\3005\\210\u001c"}
+      }},
+      "probes":[
+        {"id":"ACTUAL-157-WIRE-BROKEN","ruleId":"SEG157-R-008","expectedStatus":"INVALID","productFields":{"SerializedSegment":"157\u001c028\u001cS01001G205\u001c3005\\210\u001c"}},
+        {"id":"ACTUAL-157-LENGTH-BROKEN","ruleId":"SEG157-R-009","expectedStatus":"INVALID","productFields":{"SegmentLength":"001"}},
+        {"id":"ACTUAL-157-AMBIGUOUS","ruleId":"SEG157-R-009","expectedStatus":"INVALID","productFields":{"Products":[{"ProductCode":"001","UnitOfMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210"}]}},
+        {"id":"ACTUAL-157-MULTIPLE-PRODUCTS","ruleId":"SEG157-R-008","expectedStatus":"REVIEW_REQUIRED","standardSegment":{"FuelPurchaseAmount":"200","NonfuelAmount":"10","TaxAmount":"10","CashAmount":"","PromptCode":{"CardType":"094"}},"productSegment":{"SegmentType":"157","SegmentLength":"042","ServiceLevel":"S","NumberOfProducts":"02","Products":[{"ProductCode":"001","UnitOfMeasure":"G","Quantity":"205","UnitPrice":"3005","ProductAmount":"210"},{"ProductCode":"500","UnitOfMeasure":"U","Quantity":"01","UnitPrice":"010","ProductAmount":"10"}],"SerializedSegment":"157\u001c042\u001cS02001G205\\3005\\210\\500U01\\010\\10\u001c"}}
+      ]
     }
   ]
 }

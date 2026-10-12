@@ -233,6 +233,18 @@ public final class Atl105AiElementIntake {
         else if (!familyName.equals(resolved)) intake.add(invalid("", "Metadata message family contradicts the actual payload segment/root family"));
         final String actualFamily = familyName;
         for (ActualSegment occurrence : occurrences) {
+            if (Set.of("102", "157").contains(occurrence.segment())) {
+                List<ActualSegment> standards = actual.getOrDefault("100", List.of());
+                if (standards.size() != 1) intake.add(review("", "Product reconciliation requires one unambiguous actual Segment 100 occurrence"));
+                var result = new com.coreauth.validator.canonical.ProductActualPayloadAdapter().validate(occurrence.body(),
+                        occurrence.segment(), standards.size() == 1 ? standards.getFirst().body() : null,
+                        actual.containsKey("102".equals(occurrence.segment()) ? "157" : "102"), meta.get("context"));
+                for (var finding : com.coreauth.validator.canonical.ProductActualPayloadAdapter.findings(result)) {
+                    intake.add(new Finding("", finding.status() == com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status.INVALID
+                            ? Status.INVALID : Status.REVIEW_REQUIRED, finding.ruleId(), finding.reason()));
+                }
+                continue;
+            }
             if (!"119".equals(occurrence.segment())) continue;
             var assessed = segment119Adapter.validate(occurrence.body(), actualFamily, meta);
             for (var finding : assessed.findings()) {

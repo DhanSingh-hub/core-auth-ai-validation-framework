@@ -1,6 +1,7 @@
 package com.coreauth.validator.canonical;
 
 import com.coreauth.validator.paths.Atl105Paths;
+import com.coreauth.validator.validation.Chapter13ProcessingHistoryValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,7 +38,11 @@ public final class Chapter12SegmentPayloadValidator {
         JsonNode catalog = MAPPER.readTree(Atl105Paths.ruleCatalog(id).toFile());
         switch (id) {
             case "115" -> printData(observation, fields, findings);
-            case "119" -> findings.addAll(Segment119ObservationValidator.validate(observation));
+            case "119" -> {
+                var inventory = MAPPER.readTree(Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                        .resolve("all-element-inventory.json").toFile());
+                findings.addAll(Segment119ObservationValidator.validate(observation, new Chapter13ProcessingHistoryValidator(inventory)));
+            }
             case "123" -> tokenization(observation, fields, findings);
             case "130", "131" -> emv(observation, fields, findings);
             case "132" -> capk(observation, fields, findings);
@@ -137,6 +142,12 @@ public final class Chapter12SegmentPayloadValidator {
     private static void emv(JsonNode input, JsonNode fields, List<Finding> findings) {
         boolean request = "130".equals(input.path("segment").asText());
         String prefix = request ? "SEG130-R-" : "SEG131-R-";
+        if (input.has("context")) check(findings, prefix + (request ? "005" : "007"), "context-shape",
+                input.path("context").isObject(), "EMV context must be an object");
+        if (input.has("history")) check(findings, prefix + (request ? "005" : "007"), "history-shape",
+                input.path("history").isObject(), "EMV history must be an object");
+        if (input.path("history").has("emv")) check(findings, prefix + (request ? "005" : "007"), "history-shape",
+                input.path("history").path("emv").isObject(), "EMV session history must be an object");
         header(input, fields, 4, request ? 3043 : 3834, request ? "002" : "003", request ? "003" : "004", findings);
         direction(input, request ? "REQUEST" : "RESPONSE", prefix + (request ? "014" : "002"), findings);
         if (request) {
@@ -166,9 +177,22 @@ public final class Chapter12SegmentPayloadValidator {
         }
         review(findings, prefix + (request ? "013" : "006"), "wire",
                 "Chip bytes require an actual binary serializer; JSON hex characters are not encoded chip byte count");
-        review(findings, prefix + (request ? "009" : "007"), "cross-message",
-                request ? "EMV chip/Segment 100 context agreement not proven by a standalone observation"
-                        : "Checksum echo requires the matched Segment 130 request");
+        if (request) {
+            JsonNode loaded = input.path("context").get("loadedCapkChecksum");
+            if (loaded == null || !populated(fields, "187")) review(findings, "SEG130-R-005", "loaded-checksum",
+                    "Both actual request checksum and observed checksum currently in use are required");
+            else check(findings, "SEG130-R-005", "loaded-checksum", loaded.isTextual()
+                    && loaded.textValue().matches("[0-9]{25}") && loaded.textValue().equals(text(fields, "187")),
+                    "Request checksum agrees with observed loaded checksum; provenance is not authenticated");
+            review(findings, "SEG130-R-009", "cross-message", "EMV chip/Segment 100 context agreement not proven by a standalone observation");
+        } else {
+            JsonNode matched = input.path("history").path("emv").get("request");
+            if (matched == null) review(findings, "SEG131-R-007", "checksum-echo", "Matched actual Segment 130 request observation required");
+            else check(findings, "SEG131-R-007", "checksum-echo", matched.isObject()
+                    && "130".equals(text(matched, "segment")) && "2026-3".equals(text(matched, "specificationVersion"))
+                    && value(matched.path("elements"), "187").matches("[0-9]{25}")
+                    && value(matched.path("elements"), "187").equals(text(fields, "187")), "Response echoes matched request checksum; correlation provenance remains external");
+        }
         review(findings, request ? "SEG130-R-004" : "SEG131-R-005", "source-conflict",
                 "Chapter 11 and Chapters 12/13 publish different maxima; this check uses Chapter 12, not conflict approval");
     }
@@ -346,12 +370,39 @@ public final class Chapter12SegmentPayloadValidator {
         Set<String> ids = request ? Set.of("001", "002", "004", "006", "007", "008")
                 : Set.of("001", "002", "003", "004", "005", "010");
         String authorizer = input.path("context").path("authorizer").asText();
+        if (input.has("context")) check(findings, prefix + rule, "context-shape",
+                input.path("context").isObject(), "Fleet context must be an object");
+        if (input.path("context").has("authorizer")) check(findings, prefix + rule, "authorizer-shape",
+                input.path("context").path("authorizer").isTextual(), "Observed authorizer must be text");
+        Map<String, Integer> caps = request ? Map.of("001", 20, "002", 350, "004", 200, "006", 17, "007", 15, "008", 9)
+                : Map.of("001", 20, "002", 350, "003", 350, "004", 200, "005", 70, "010", 200);
         for (var table : tables) {
             check(findings, prefix + rule, "fleet-table-id", table.indicator() != null && ids.contains(table.indicator()),
                     "Published enhanced fleet table ID");
+            if (table.indicator() != null && caps.containsKey(table.indicator())) {
+                check(findings, prefix + rule, "fleet-table-cap", table.value() != null
+                        && table.value().length() <= caps.get(table.indicator())
+                        && table.value().chars().allMatch(c -> c >= 32 && c <= 126), "Measured source-specific ASCII fleet table cap");
+            }
+            if (request && "006".equals(table.indicator())) check(findings, "SEG145-R-006", "payee-name",
+                    table.value() != null && table.value().matches("[A-Za-z ]+,[A-Za-z]"), "Payee uses Last Name,First Initial");
+            if (request && "008".equals(table.indicator())) check(findings, "SEG145-R-006", "cash-advance",
+                    table.value() != null && table.value().matches("[0-9]+\\.[0-9]+"), "Cash advance includes a decimal point");
+            if (!request && "001".equals(table.indicator()) && table.value() != null) {
+                String flag = table.value().split(",", -1)[0];
+                check(findings, "SEG146-R-002", "settlement-flag", flag.isEmpty() || Set.of("CP", "DB", "DF", "RC", "RF", "FN").contains(flag),
+                        "Present first settlement flag is one of six source-listed values; future flags are not invented");
+            }
+            if ("004".equals(table.indicator())) findings.addAll(EnhancedFleetPromptValidator.validate(table.value(), request));
             if (request && Set.of("VOYAGER_EMV", "VISA_FLEET_2", "COMDATA", "MASTERCARD_ENHANCED_FLEET_EMV").contains(authorizer)) {
                 check(findings, "SEG145-R-003", "restricted-table", "004".equals(table.indicator()), "This authorizer permits Prompt Table 004 only");
             }
+            JsonNode moneyCode = input.path("context").get("moneyCodeTransaction");
+            if (request && moneyCode != null) {
+                check(findings, "SEG145-R-006", "money-code-check", moneyCode.isBoolean()
+                        && (!moneyCode.booleanValue() || tables.stream().anyMatch(t -> "007".equals(t.indicator()))),
+                        "An observed Money Code transaction requires Check Number Table 007");
+            } else if (request) review(findings, "SEG145-R-006", "money-code-check", "Money Code applicability is not observed");
             if (!request && "COMDATA".equals(authorizer)) check(findings, "SEG146-R-003", "comdata-table",
                     !"002".equals(table.indicator()), "Nonfuel limits Table 002 is absent from Comdata responses");
         }
@@ -372,11 +423,19 @@ public final class Chapter12SegmentPayloadValidator {
         length(fields, "240", 1, 17, "SEG148-R-004", findings);
         pattern(fields, "240", "[A-Za-z0-9]{2,3}=[A-Za-z0-9]{1,5},[A-Za-z0-9]{1,5} [A-Za-z0-9]", "SEG148-R-004", findings);
         String data = text(fields, "240");
+        if (input.has("context")) check(findings, "SEG148-R-001", "context-shape", input.path("context").isObject(), "WEX context must be an object");
+        if (input.path("context").has("authorizer")) check(findings, "SEG148-R-001", "authorizer-shape",
+                input.path("context").path("authorizer").isTextual(), "Observed WEX authorizer must be text");
+        if (input.has("messageFamily")) check(findings, "SEG148-R-001", "family-shape", input.path("messageFamily").isTextual(), "Family must be text");
         if (data != null && data.indexOf('=') == 2) {
             check(findings, "SEG148-R-004", "fuel-group", Set.of("00", "01", "06", "07", "08", "10", "11", "12", "13")
                     .contains(data.substring(0, 2)), "Published two-digit fuel group");
         }
-        review(findings, "SEG148-R-001", "routing", "WEX Financial Transaction response applicability needs independent routing context");
+        JsonNode authorizer = input.path("context").get("authorizer");
+        if (authorizer == null || !input.has("messageFamily")) {
+            review(findings, "SEG148-R-001", "routing", "Both observed WEX authorizer and Financial Transaction response family are required");
+        } else check(findings, "SEG148-R-001", "routing", authorizer.isTextual() && Set.of("WEX", "WEX_OTR").contains(authorizer.textValue())
+                && "Financial Transaction Response".equals(text(input, "messageFamily")), "WEX Financial Transaction response only");
         review(findings, "SEG148-R-003", "source-conflict", "Source says max 23 but range 001-999; no invented resolution");
     }
 

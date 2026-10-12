@@ -3,7 +3,9 @@ package com.coreauth.validator.canonical;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Finding;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status;
 import com.coreauth.validator.validation.Atl105CalendarDate;
+import com.coreauth.validator.validation.Chapter13ProcessingHistoryValidator;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
@@ -21,6 +23,35 @@ final class Segment119ObservationValidator {
             "43", "96", "39", "86", "176", "179", "20", "42");
 
     private Segment119ObservationValidator() { }
+
+    static List<Finding> validate(JsonNode input, Chapter13ProcessingHistoryValidator historyValidator) {
+        List<Finding> findings = new ArrayList<>(validate(input));
+        if (input.has("qualifiers") && !input.path("qualifiers").isObject()) {
+            check(findings, "032", "history-controls", false, "History qualifiers must be an object");
+        }
+        if (input.path("qualifiers").has("direction") && !"REQUEST".equals(text(input.path("qualifiers"), "direction"))) {
+            check(findings, "032", "history-controls", false, "History direction contradicts Segment 119 request");
+        }
+        ObjectNode historyObservation = input.deepCopy();
+        historyObservation.putObject("qualifiers").put("direction", "REQUEST");
+        JsonNode totals = input.path("history").path("totals");
+        String requestSequence = text(totals, "requestSequenceNumber");
+        String responseSequence = text(totals, "responseSequenceNumber");
+        if (!totals.has("requestSequenceNumber") || !totals.has("responseSequenceNumber")) {
+            review(findings, "032", "sequence-correlation", "Actual matched request/response sequence observations are required");
+        } else check(findings, "032", "sequence-correlation", requestSequence != null && responseSequence != null
+                && requestSequence.matches("(?!000000)[0-9]{6}") && responseSequence.matches("(?!000000)[0-9]{6}")
+                && requestSequence.equals(responseSequence) && requestSequence.equals(text(input.path("elements"), "86")),
+                "Actual request sequence equals both matched history request and response; duplicate/retry policy is not inferred");
+        for (var finding : historyValidator.validate(historyObservation)) {
+            findings.add(new Finding(finding.ruleId(), "observed-history", switch (finding.status()) {
+                case CHECKS_PASSED -> Status.CHECKS_PASSED;
+                case INVALID -> Status.INVALID;
+                case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+            }, finding.reason()));
+        }
+        return List.copyOf(findings);
+    }
 
     static List<Finding> validate(JsonNode input) {
         List<Finding> findings = new ArrayList<>();
@@ -49,6 +80,8 @@ final class Segment119ObservationValidator {
         check(findings, "019", "sequence", matches(fields, "86", "[0-9]{6}") && number(fields, "86") > 0, "Sequence is N6, 000001-999999");
         check(findings, "020", "card-table-version", matches(fields, "176", "[0-9]{35}"), "Card table version is N35");
         check(findings, "021", "discount-timestamp", validTimestamp(text(fields, "179")), "Host discount timestamp encodes real CCYYMMDDHHMM");
+        observedValue(fields, context, "176", "loadedDeviceCardTableVersion", "[0-9]{35}", "020", "loaded-card-table", findings);
+        observedValue(fields, context, "179", "hostDiscountTimestampInUse", "[0-9]{12}", "021", "loaded-discount-timestamp", findings);
         if (fields.has("20") && !"".equals(text(fields, "20"))) check(findings, "022", "currency",
                 AppendixLCurrencyCodes.isValid(text(fields, "20")), "Populated optional currency is Appendix L listed");
         check(findings, "023", "grand-total", matches(fields, "42", "[0-9]{8}"), "Grand Total is N8 including zero");
@@ -69,6 +102,14 @@ final class Segment119ObservationValidator {
         review(findings, "039", "source-wire-conflict", "Separator note numbers buckets 18-20; table numbers them 17-19. Selected profile is not source-certified");
         review(findings, "028", "response-scope", "Approved-response mandatory bucket prose is not imposed on this request");
         return List.copyOf(findings);
+    }
+
+    private static void observedValue(JsonNode fields, JsonNode context, String element, String evidence, String pattern,
+                                      String rule, String scope, List<Finding> findings) {
+        String loaded = text(context, evidence);
+        if (!context.has(evidence)) review(findings, rule, scope, "Independently observed currently loaded value required; lexical form is not provenance");
+        else check(findings, rule, scope, loaded != null && loaded.matches(pattern) && loaded.equals(text(fields, element)),
+                "Actual value agrees with supplied current-state observation; authenticity is not certified");
     }
 
     private static void bucketChecks(JsonNode input, JsonNode fields, JsonNode context, List<Finding> findings) {

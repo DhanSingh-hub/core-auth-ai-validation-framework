@@ -60,7 +60,15 @@ public final class ProductSegmentPayloadValidator {
         String card = text(payload.path("Standard Segment").path("PromptCode"), "CardType");
         JsonNode comdata = payload.path("context").path("comdata");
         Boolean isComdata = null;
-        if (comdata.isBoolean()) isComdata = comdata.booleanValue();
+        if (payload.has("context") && !payload.path("context").isObject()) result.addError(stage, "Product context must be an object");
+        if (payload.path("context").has("comdata") && !comdata.isBoolean()) result.addError(stage, "Comdata context must be boolean");
+        if (comdata.isBoolean()) {
+            isComdata = comdata.booleanValue();
+            if (card != null && AppendixETableLoadCardTypeCodes.cardTypeCodes().contains(card)
+                    && isComdata != Set.of("094", "095", "096").contains(card)) {
+                error(result, stage, adjusted ? "001" : "019", "Comdata evidence contradicts actual card type");
+            }
+        }
         else if (card != null && AppendixETableLoadCardTypeCodes.cardTypeCodes().contains(card)) {
             isComdata = Set.of("094", "095", "096").contains(card);
         }
@@ -80,6 +88,7 @@ public final class ProductSegmentPayloadValidator {
         BigInteger total = BigInteger.ZERO;
         BigInteger tax = BigInteger.ZERO;
         Set<String> fuelCodes = new HashSet<>();
+        Set<String> knownNonfuelCodes = new HashSet<>();
         boolean nonfuelSeen = false;
         boolean amountsValid = true;
         int index = 0;
@@ -105,7 +114,10 @@ public final class ProductSegmentPayloadValidator {
                     boolean fuel = FUEL_ROLES.contains(classification.path("role").asText());
                     if (fuel && nonfuelSeen) error(result, stage, adjusted ? "004" : "007", location + " fuel must precede nonfuel");
                     if (fuel && !fuelCodes.add(code)) error(result, stage, adjusted ? "004" : "009", location + " repeats a fuel code");
-                    if (!fuel) nonfuelSeen = true;
+                    if (!fuel) {
+                        nonfuelSeen = true;
+                        knownNonfuelCodes.add(code);
+                    }
                     if (product.has("isFuel") && (!product.path("isFuel").isBoolean()
                             || product.path("isFuel").booleanValue() != fuel)) {
                         error(result, stage, adjusted ? "004" : "007", location + " isFuel contradicts Appendix F");
@@ -159,14 +171,55 @@ public final class ProductSegmentPayloadValidator {
                 error(result, stage, "016", "Tax product total differs from Segment 100 TaxAmount");
             }
         }
-        result.addWarning("REVIEW_REQUIRED: physical delimiter/length checks require a serialized product segment; "
-                + "primary fuel/EV/merchant applicability needs independent transaction context");
+        physical(segment, products, adjusted, stage, result);
+        JsonNode context = payload.path("context");
+        if (context.has("primaryFuelCode")) {
+            String primary = text(context, "primaryFuelCode");
+            if (primary == null || !primary.matches("[0-9]{3}")
+                    || !primary.equals(text(products.get(0), "ProductCode")) || knownNonfuelCodes.contains(primary)) {
+                error(result, stage, adjusted ? "007" : "024", "Observed primary fuel must be the first product");
+            }
+        }
+        if (context.has("evCharging")) {
+            if (!context.path("evCharging").isBoolean()) result.addError(stage, "evCharging must be boolean");
+            else if (context.path("evCharging").booleanValue()
+                    && !Set.of("308", "309", "310").contains(text(products.get(0), "ProductCode") == null ? "" : text(products.get(0), "ProductCode"))) {
+                error(result, stage, adjusted ? "007" : "008", "EV charging fuel code must be first");
+            }
+        }
+        result.addWarning("REVIEW_REQUIRED: merchant applicability and supplied primary-fuel provenance require independent context");
         return result;
+    }
+
+    private static void physical(JsonNode segment, JsonNode products, boolean adjusted, String stage, ValidationResult result) {
+        if (!segment.has("SerializedSegment")) {
+            result.addWarning("REVIEW_REQUIRED: physical delimiter/length checks require an actual SerializedSegment");
+            return;
+        }
+        char fs = '\u001c';
+        StringBuilder body = new StringBuilder();
+        for (int i = 0; i < products.size(); i++) {
+            JsonNode product = products.get(i);
+            for (String field : new String[]{"ProductCode", "UnitOfMeasure", "Quantity", "UnitPrice", "ProductAmount"}) {
+                if (text(product, field) == null) return;
+            }
+            body.append(text(product, "ProductCode")).append(text(product, "UnitOfMeasure")).append(text(product, "Quantity"))
+                    .append('\\').append(text(product, "UnitPrice")).append('\\').append(text(product, "ProductAmount"))
+                    .append(i + 1 == products.size() ? fs : '\\');
+        }
+        String expected = text(segment, "SegmentType") + fs + text(segment, "SegmentLength") + fs
+                + text(segment, "ServiceLevel") + text(segment, "NumberOfProducts") + body;
+        String actual = text(segment, "SerializedSegment"), declared = text(segment, "SegmentLength");
+        if (actual == null || !expected.equals(actual)) error(result, stage, adjusted ? "008" : "020", "Serialized product fields/order/delimiters differ from actual values");
+        if (actual == null || !actual.chars().allMatch(c -> c <= 127) || !digits(declared, 3, 3)
+                || actual.length() != Integer.parseInt(declared) || body.length() > 370) {
+            error(result, stage, adjusted ? "009" : "023", "Measured ASCII product segment length/body cap differs from declared length");
+        }
     }
 
     private static void decimal(JsonNode product, String field, String location, String stage, String rule, ValidationResult result) {
         String value = text(product, field);
-        if (!Atl105DecimalPrefix.isValid(value)) {
+        if (!Atl105DecimalPrefix.isValid(value) || value.length() > 9) {
             error(result, stage, rule, location + " " + field + " must encode 0-3 decimal places with all fractional digits");
         }
     }

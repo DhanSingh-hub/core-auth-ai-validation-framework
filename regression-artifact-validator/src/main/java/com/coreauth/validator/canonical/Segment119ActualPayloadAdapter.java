@@ -42,16 +42,15 @@ public final class Segment119ActualPayloadAdapter {
         }
         if (segment.has("SerializedSegment")) observation.set("serializedSegment", segment.path("SerializedSegment").deepCopy());
         if (evidence != null) {
-            for (String field : List.of("context", "history")) {
+            for (String field : List.of("context", "history", "qualifiers")) {
                 if (evidence.has(field)) observation.set(field, evidence.path(field).deepCopy());
             }
         }
-        var findings = new java.util.ArrayList<>(Segment119ObservationValidator.validate(observation));
+        var findings = new java.util.ArrayList<>(Segment119ObservationValidator.validate(observation, historyValidator));
         if (actualBuckets != null && (segment.has("CardLabel") || segment.has("CardTypeTotalCount") || segment.has("CardTypeTotalAmount"))) {
             findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG119-R-027", "actual-mapping",
                     Chapter12SegmentPayloadValidator.Status.INVALID, "Both flat and array bucket representations supplied; occurrence identity is ambiguous"));
         }
-        observation.putObject("qualifiers").put("direction", "REQUEST");
         if (evidence != null && !evidence.isObject()) {
             findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG119-R-032", "history-controls",
                     Chapter12SegmentPayloadValidator.Status.INVALID, "Observed evidence must be an object"));
@@ -63,23 +62,6 @@ public final class Segment119ActualPayloadAdapter {
                 findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG119-R-036", "actual-mapping",
                         Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED, "Unmapped actual Segment 119 field: " + name));
             }
-        }
-        if (evidence != null && evidence.has("qualifiers") && !evidence.path("qualifiers").isObject()) {
-            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG119-R-032", "history-controls",
-                    Chapter12SegmentPayloadValidator.Status.INVALID, "History qualifiers must be an object"));
-        }
-        if (evidence != null && evidence.path("qualifiers").has("direction")
-                && !"REQUEST".equals(evidence.path("qualifiers").path("direction").asText())) {
-            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG119-R-032", "history-controls",
-                    Chapter12SegmentPayloadValidator.Status.INVALID, "Evidence direction contradicts actual request family"));
-        }
-        for (var finding : historyValidator.validate(observation)) {
-            findings.add(new Chapter12SegmentPayloadValidator.Finding(finding.ruleId(), "observed-history",
-                    switch (finding.status()) {
-                        case INVALID -> Chapter12SegmentPayloadValidator.Status.INVALID;
-                        case CHECKS_PASSED -> Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
-                        case REVIEW_REQUIRED -> Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
-                    }, finding.reason()));
         }
         var status = findings.stream().anyMatch(f -> f.status() == Chapter12SegmentPayloadValidator.Status.INVALID)
                 ? Chapter12SegmentPayloadValidator.Status.INVALID : Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
