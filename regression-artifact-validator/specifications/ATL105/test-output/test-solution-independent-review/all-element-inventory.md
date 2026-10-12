@@ -79,7 +79,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |82|Redial Count; |N FIXED max 1|2|8|0|2|2|0|
 |83|Response Code; |AN FIXED max 1|10|45|7|4|6|0|
 |84|Segment Length; |N VARIABLE max 4|56|244|13|35|19|19|
-|85|Segment Type; |N FIXED max 3|40|173|13|20|16|39|
+|85|Segment Type; |N FIXED max 3|40|173|13|20|17|39|
 |86|Sequence Number; |N FIXED max 6|11|97|14|8|5|4|
 |87|Service Level; |A FIXED max 1|2|9|0|0|0|0|
 |88|Ship-from Postal Code; |AN FIXED max 10|1|3|0|1|0|0|
@@ -230,7 +230,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |236|BUYPASS RID Card Type; |AN FIXED max 3|2|12|0|2|0|0|
 |237|TAVV Cryptogram; |AN FIXED max 28|2|16|0|2|0|0|
 |238|TAVV Result Code; |AN FIXED max 1|1|3|0|1|0|0|
-|239|Enhanced Fleet Data; |AN VARIABLE max 999|9|39|1|6|1|0|
+|239|Enhanced Fleet Data; |AN VARIABLE max 999|9|67|1|8|2|0|
 |240|Available Product Information; |AN VARIABLE max 17|1|3|0|1|0|0|
 |241|Price Data; |AN VARIABLE max 999|1|4|0|1|0|0|
 |242|EV Charging Data; |AN VARIABLE max 200|1|1|0|1|0|0|

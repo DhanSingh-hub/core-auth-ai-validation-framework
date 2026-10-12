@@ -21,6 +21,38 @@ Segment Type/Length sourcing (provisional), 6-table catalog, Comdata Table-002 e
 
 See [SME/TBA Input Register](segment-146-sme-tba-input-register.md).
 
+## Executed Chapter 12 continuation
+
+[EnhancedFleetPromptValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/EnhancedFleetPromptValidator.java)
+now applies masks to observed captures rather than checking grammar alone.
+`history.fleet.capturedResponses` is a text-valued token map;
+`priorPromptFormats` supplies concrete formats for `?`, and
+`subsequentResponses` records sent tokens for `Z`. Missing evidence remains a
+review, malformed evidence is invalid. `O` permits omitted captures but does
+not bypass `Z`'s prohibition on subsequent sending.
+
+Execution covers A/B, N, I, TN/TS, inclusive M/X bounds, exact V, literal-position
+P, optional O and capture-without-resend Z. M/X without an observed TN/TS type
+is not marked passed. Authorizer enumerations and individual value caps are
+shared with the request path.
+
+Response sublayout checks cover decimal nonfuel/fuel limits, Appendix F fuel
+classification, fixed customer name/city/state positions, and published
+additional-response labels/caps. Complete observed `fuelProducts` entries
+use text `productCode` and `amount`, with boolean `fuelProductsComplete`;
+`nonfuelProducts` uses text `category` and `amount` with boolean
+`nonfuelProductsComplete`. Repeated products are summed before comparison
+with returned limits. An unlisted product does not acquire an invented zero
+limit or eligibility decision. Duplicate response labels remain reviewable;
+no last-value or summed-limit policy is invented.
+
+Actual TLV/array intake and authoritative parent history are wired through
+[Chapter12ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12ActualPayloadAdapter.java).
+See the [canonical execution report](../../../../test-output/test-json/chapter-12-training-evidence.json).
+Observed-history equality does not authenticate host/configuration state or
+prove complete transaction correlation. Full segment/chapter closure and
+the existing SME approvals remain open.
+
 ## Do-Not-Assume Rules
 
 1. Do not include Table 002 in a Comdata response.

@@ -150,6 +150,11 @@ public final class Chapter12SegmentPayloadValidator {
                 input.path("history").path("emv").isObject(), "EMV session history must be an object");
         header(input, fields, 4, request ? 3043 : 3834, request ? "002" : "003", request ? "003" : "004", findings);
         direction(input, request ? "REQUEST" : "RESPONSE", prefix + (request ? "014" : "002"), findings);
+        if (!input.has("messageFamily")) review(findings, prefix + (request ? "014" : "002"), "family",
+                "Observed EMV Financial Transaction family required");
+        else check(findings, prefix + (request ? "014" : "002"), "family",
+                (request ? "EMV Financial Transaction Request" : "EMV Financial Transaction Response").equals(text(input, "messageFamily")),
+                "EMV data appears only in the corresponding EMV Financial Transaction family");
         if (request) {
             if (populated(fields, "187")) pattern(fields, "187", "[0-9]{25}", "SEG130-R-005", findings);
             review(findings, "SEG130-R-005", "requiredness-conflict",
@@ -175,8 +180,7 @@ public final class Chapter12SegmentPayloadValidator {
             if (!request && triads.isEmpty()) review(findings, "SEG131-R-009", "empty-additional-information",
                     "Response table marks the section required; omission requires source/context reconciliation");
         }
-        review(findings, prefix + (request ? "013" : "006"), "wire",
-                "Chip bytes require an actual binary serializer; JSON hex characters are not encoded chip byte count");
+        findings.addAll(EmvSegmentWireValidator.validate(input, triads));
         if (request) {
             JsonNode loaded = input.path("context").get("loadedCapkChecksum");
             if (loaded == null || !populated(fields, "187")) review(findings, "SEG130-R-005", "loaded-checksum",
@@ -357,7 +361,7 @@ public final class Chapter12SegmentPayloadValidator {
         review(findings, "SEG143-R-002", "tax-value-policy", "Format-only validation; tax applicability/rates are not independently approved");
     }
 
-    private static void enhancedFleet(JsonNode input, JsonNode fields, List<Finding> findings) {
+    private static void enhancedFleet(JsonNode input, JsonNode fields, List<Finding> findings) throws IOException {
         boolean request = "145".equals(input.path("segment").asText());
         String prefix = request ? "SEG145-R-" : "SEG146-R-";
         String rule = request ? "006" : "002";
@@ -370,6 +374,9 @@ public final class Chapter12SegmentPayloadValidator {
         Set<String> ids = request ? Set.of("001", "002", "004", "006", "007", "008")
                 : Set.of("001", "002", "003", "004", "005", "010");
         String authorizer = input.path("context").path("authorizer").asText();
+        if (input.has("history")) check(findings, prefix + rule, "history-shape", input.path("history").isObject(), "Fleet history must be an object");
+        if (input.path("history").has("fleet")) check(findings, prefix + rule, "history-shape",
+                input.path("history").path("fleet").isObject(), "Fleet prompt history must be an object");
         if (input.has("context")) check(findings, prefix + rule, "context-shape",
                 input.path("context").isObject(), "Fleet context must be an object");
         if (input.path("context").has("authorizer")) check(findings, prefix + rule, "authorizer-shape",
@@ -377,6 +384,7 @@ public final class Chapter12SegmentPayloadValidator {
         Map<String, Integer> caps = request ? Map.of("001", 20, "002", 350, "004", 200, "006", 17, "007", 15, "008", 9)
                 : Map.of("001", 20, "002", 350, "003", 350, "004", 200, "005", 70, "010", 200);
         for (var table : tables) {
+            findings.addAll(EnhancedFleetTableValidator.validate(table, request, authorizer, input.path("history").path("fleet")));
             check(findings, prefix + rule, "fleet-table-id", table.indicator() != null && ids.contains(table.indicator()),
                     "Published enhanced fleet table ID");
             if (table.indicator() != null && caps.containsKey(table.indicator())) {
@@ -393,25 +401,26 @@ public final class Chapter12SegmentPayloadValidator {
                 check(findings, "SEG146-R-002", "settlement-flag", flag.isEmpty() || Set.of("CP", "DB", "DF", "RC", "RF", "FN").contains(flag),
                         "Present first settlement flag is one of six source-listed values; future flags are not invented");
             }
-            if ("004".equals(table.indicator())) findings.addAll(EnhancedFleetPromptValidator.validate(table.value(), request));
+            if ("004".equals(table.indicator())) findings.addAll(EnhancedFleetPromptValidator.validate(table.value(), request,
+                    authorizer, input.path("history").path("fleet")));
             if (request && Set.of("VOYAGER_EMV", "VISA_FLEET_2", "COMDATA", "MASTERCARD_ENHANCED_FLEET_EMV").contains(authorizer)) {
                 check(findings, "SEG145-R-003", "restricted-table", "004".equals(table.indicator()), "This authorizer permits Prompt Table 004 only");
             }
-            JsonNode moneyCode = input.path("context").get("moneyCodeTransaction");
-            if (request && moneyCode != null) {
-                check(findings, "SEG145-R-006", "money-code-check", moneyCode.isBoolean()
-                        && (!moneyCode.booleanValue() || tables.stream().anyMatch(t -> "007".equals(t.indicator()))),
-                        "An observed Money Code transaction requires Check Number Table 007");
-            } else if (request) review(findings, "SEG145-R-006", "money-code-check", "Money Code applicability is not observed");
             if (!request && "COMDATA".equals(authorizer)) check(findings, "SEG146-R-003", "comdata-table",
                     !"002".equals(table.indicator()), "Nonfuel limits Table 002 is absent from Comdata responses");
         }
+        JsonNode moneyCode = input.path("context").get("moneyCodeTransaction");
+        if (request && moneyCode != null) {
+            check(findings, "SEG145-R-006", "money-code-check", moneyCode.isBoolean()
+                    && (!moneyCode.booleanValue() || tables.stream().anyMatch(t -> "007".equals(t.indicator()))),
+                    "An observed Money Code transaction requires Check Number Table 007");
+        } else if (request) review(findings, "SEG145-R-006", "money-code-check", "Money Code applicability is not observed");
         if (request && input.path("context").path("segmentsPresent").isArray()) {
             boolean fleet = false;
             for (JsonNode id : input.path("context").path("segmentsPresent")) if ("101".equals(id.asText())) fleet = true;
             check(findings, "SEG145-R-002", "companion-exclusion", !fleet, "Do not combine 101 and 145");
         } else if (request) review(findings, "SEG145-R-002", "companion-context", "Segment presence list required");
-        review(findings, prefix + rule, "table-semantics", "Authorizer-specific token/edit-mask/product sublayouts remain unassessed; framing is not full table validation");
+        review(findings, prefix + rule, "table-semantics", "Dynamic Card Table mapping, completeness and host-authenticated product-limit correlation require independent configuration/history");
         if (authorizer.isBlank()) review(findings, prefix + (request ? "003" : "003"), "authorizer-context", "Authorizer needed for table restrictions");
         if (request) review(findings, "SEG145-R-004", "production-availability", "Expected June 2026 availability is not proof of production enablement");
         review(findings, prefix + (request ? "005" : "001"), "wire", "Source does not fully specify outer separator placement");

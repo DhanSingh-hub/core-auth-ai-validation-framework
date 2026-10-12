@@ -180,7 +180,7 @@ public final class Chapter11MessageLayoutValidator {
                             default -> List.of();
                         };
                         inheritContext(input, childInput, contextKeys, anchor, findings);
-                        if (Set.of("119", "130", "131").contains(id) && input.has("history")) {
+                        if (Set.of("119", "130", "131", "145", "146").contains(id) && input.has("history")) {
                             if (observation.has("history") && !input.path("history").equals(observation.path("history"))) {
                                 findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Child history contradicts parent history"));
                             }

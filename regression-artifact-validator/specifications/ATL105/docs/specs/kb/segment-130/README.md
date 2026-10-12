@@ -139,6 +139,30 @@ See [segment-130-ai-vs-test-requirement-comparison.md](segment-130-ai-vs-test-re
 
 ## 7. Do-Not-Assume Rules
 
+### Executed binary-wire continuation
+
+[EmvSegmentWireValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/EmvSegmentWireValidator.java)
+compares actual `serializedSegmentHex` bytes with ordered ASCII headers,
+decoded packed chip bytes and actual additional-information triples. Empty
+optional fields retain their separators. Repeated triples have no inserted
+separator; the final separator is measured. A chip byte equal to FS is chip
+content, not a structural delimiter. N4 length is checked against the byte
+count, not the length of a hexadecimal string.
+
+[Chapter12ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12ActualPayloadAdapter.java)
+maps actual named EMV fields and `SerializedSegmentHex`. The additional
+information may be an actual array or a single actual indicator/length/value
+triple; supplying both is invalid. Text `SerializedSegment` is explicitly
+reviewed, not silently treated as packed binary. Metadata never supplies
+missing actual fields/wire. The observed EMV Financial Transaction Request
+family is checked separately from direction.
+
+Positive/negative byte-layout and measured-length executions are persisted
+in the [Chapter 12 report](../../../../test-output/test-json/chapter-12-training-evidence.json).
+These checks do not prove chip-to-Segment-100 semantic agreement,
+transaction/load-session provenance, key authenticity or cryptographic
+validity. Published length/requiredness/placement conflicts remain reviews.
+
 1. **Do not** reject Segment 103 (EBT) as a Segment 130 companion — it **is** permitted. The Section 11.8.1 prose bullet list is an abbreviated summary; the table beneath it and the Chapter 12 matrix both include 103. *(This corrects an error in the prior revision of this KB.)*
 2. Do not treat a missing Segment 130 as automatically invalid — Reversals/TORs waive EMV data (`SEG130-R-017`) and fallback/MSR entry modes exclude it (`SEG130-R-019`). These need distinct diagnostics.
 3. Do not attempt to synthesize CA Public Key File authenticity or cryptogram (9F26) verification — both are `EXTERNAL_FIXTURE_REQUIRED`.

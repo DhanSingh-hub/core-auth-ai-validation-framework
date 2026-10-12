@@ -6,6 +6,7 @@ import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator;
 import com.coreauth.validator.canonical.SourceAnchor;
 import com.coreauth.validator.canonical.Segment119ActualPayloadAdapter;
 import com.coreauth.validator.canonical.ProductActualPayloadAdapter;
+import com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter;
 import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,8 @@ import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 /** Persists independently executed canonical chains; never counts an entire segment as trained. */
 public final class GenerateChapter12TrainingEvidence {
@@ -93,7 +96,7 @@ public final class GenerateChapter12TrainingEvidence {
                         ((ObjectNode) payload.path("elements")).set(entry.getKey(), entry.getValue().deepCopy());
                     }
                 }
-                for (String field : List.of("context", "serializedSegment", "cardBuckets", "history", "qualifiers", "tables", "messageFamily")) {
+                for (String field : List.of("context", "serializedSegment", "serializedSegmentHex", "cardBuckets", "history", "qualifiers", "tables", "messageFamily")) {
                     if (probe.has(field)) payload.set(field, probe.path(field).deepCopy());
                 }
                 if (probe.has("omitSerializedSegment")) {
@@ -163,8 +166,12 @@ public final class GenerateChapter12TrainingEvidence {
                     result = new Chapter12SegmentPayloadValidator.Result(assessed.isValid()
                             ? Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED : Chapter12SegmentPayloadValidator.Status.INVALID,
                             ProductActualPayloadAdapter.findings(assessed), List.copyOf(unassessed));
-                } else result = payload.has("actualPayload") ? actualAdapter.validate(payload.path("actualPayload"),
-                        payload.path("messageFamily").asText(), payload.path("actualEvidence")) : validator.validate(payload);
+                } else if (payload.has("actualPayload")) {
+                    result = "119".equals(segment) ? actualAdapter.validate(payload.path("actualPayload"),
+                            payload.path("messageFamily").asText(), payload.path("actualEvidence"))
+                            : new Chapter12ActualPayloadAdapter().validate(payload.path("actualPayload"), segment,
+                            payload.path("messageFamily").asText(), payload.path("actualEvidence"));
+                } else result = validator.validate(payload);
                 String expectedStatus = negative ? "INVALID" : fixture.path("expectedStatus").asText();
                 if (!expectedStatus.equals(result.status().name())) throw new IOException("Unexpected fixture outcome: " + fixture.path("id").asText()
                         + suffix + ", expected " + expectedStatus + ", got " + result);
@@ -199,7 +206,8 @@ public final class GenerateChapter12TrainingEvidence {
                 }
                 execution.set("findings", mapper.valueToTree(result.findings()));
                 execution.put("validationPath", payload.has("productPayload") ? "ACTUAL_NAMED_PRODUCT_EXECUTION" :
-                        payload.has("actualPayload") ? "ACTUAL_NAMED_SEGMENT119_WITH_OBSERVED_HISTORY" : "NUMBERED_CHAPTER12_OBSERVATION");
+                        payload.has("actualPayload") ? "119".equals(segment) ? "ACTUAL_NAMED_SEGMENT119_WITH_OBSERVED_HISTORY"
+                                : "ACTUAL_NAMED_CHAPTER12_OBSERVATION" : "NUMBERED_CHAPTER12_OBSERVATION");
                 execution.set("unassessedCatalogRules", mapper.valueToTree(result.unassessedCatalogRules()));
                 execution.set("sourceAnchor", anchor.deepCopy());
                 ArrayNode candidates = execution.putArray("existingTestArtifactAnchorCandidates");
@@ -215,11 +223,75 @@ public final class GenerateChapter12TrainingEvidence {
         report.putObject("summary").put("businessRequirements", brs.size()).put("scenarios", scenarios.size())
                 .put("testCases", cases.size()).put("testDataRecords", data.size()).put("executedObservations", executions.size())
                 .put("traceabilityValid", true).put("approvedRequirements", 0);
+        report.set("sourceSectionReconciliation", sourceSectionReconciliation(executions));
         Files.createDirectories(packageFile.toAbsolutePath().getParent());
         Files.createDirectories(evidenceFile.toAbsolutePath().getParent());
         mapper.writerWithDefaultPrettyPrinter().writeValue(packageFile.toFile(), artifactPackage);
         mapper.writerWithDefaultPrettyPrinter().writeValue(evidenceFile.toFile(), report);
         return report;
+    }
+
+    private ObjectNode sourceSectionReconciliation(ArrayNode executions) throws IOException {
+        var heading = Pattern.compile("^12\\.([0-9]+)\\s+.*");
+        List<String> source = Files.readAllLines(Atl105Paths.docs().resolve(Path.of("specs", "extracted_text.txt")));
+        Map<String, Integer> starts = new LinkedHashMap<>();
+        int chapterEnd = -1;
+        for (int i = 0; i < source.size(); i++) {
+            String line = source.get(i).trim();
+            if (starts.isEmpty() && !line.equals("12.1 Standard Message Data Segment")) continue;
+            if (line.equals("13. Data Element Descriptions") && !starts.isEmpty()) { chapterEnd = i; break; }
+            var match = heading.matcher(line);
+            if (match.matches() && (match.group(1).equals("1") || !starts.isEmpty())) {
+                String section = "12." + match.group(1);
+                if (starts.put(section, i + 1) != null) throw new IOException("Ambiguous Chapter 12 source heading " + section);
+            }
+        }
+        if (starts.size() != 49 || chapterEnd < 0) throw new IOException("Chapter 12 source boundaries do not reconcile to 49 sections");
+        int expectedSection = 1;
+        for (String section : starts.keySet()) {
+            if (!section.equals("12." + expectedSection++)) throw new IOException("Chapter 12 source sections are missing or out of order: " + section);
+        }
+        List<JsonNode> rules = new ArrayList<>();
+        Path kb = Atl105Paths.docs().resolve(Path.of("specs", "kb"));
+        try (var directories = Files.list(kb)) {
+            for (Path directory : directories.filter(Files::isDirectory)
+                    .filter(p -> p.getFileName().toString().startsWith("segment-")).sorted().toList()) {
+                String segment = directory.getFileName().toString().substring("segment-".length());
+                Path catalog = Atl105Paths.ruleCatalog(segment);
+                if (Files.isRegularFile(catalog)) mapper.readTree(catalog.toFile()).path("rules").forEach(rules::add);
+            }
+        }
+        ObjectNode reconciliation = mapper.createObjectNode().put("status", "IN_PROGRESS").put("sourceSections", starts.size())
+                .put("policy", "Source-section and catalog reconciliation only, not a complete source-facet denominator. "
+                        + "Bounded executions are not full-rule completion. NO_EXECUTION_IN_THIS_PACKAGE does not imply absence of other segment tests.");
+        ArrayNode sections = reconciliation.putArray("sections");
+        List<String> identities = List.copyOf(starts.keySet());
+        for (int i = 0; i < identities.size(); i++) {
+            String section = identities.get(i);
+            ObjectNode record = sections.addObject().put("section", section).put("status", "SOURCE_FACETS_NOT_CLOSED");
+            record.putObject("sourceEvidence").put("startLine", starts.get(section))
+                    .put("endLine", i + 1 < identities.size() ? starts.get(identities.get(i + 1)) - 1 : chapterEnd);
+            ArrayNode catalogRules = record.putArray("catalogRules");
+            var sectionReference = Pattern.compile("(^|[^0-9.])" + Pattern.quote(section) + "(\\.|[^0-9.]|$)");
+            for (JsonNode rule : rules) {
+                if (!sectionReference.matcher(rule.path("sourceAnchor").path("section").asText()).find()) continue;
+                ObjectNode entry = catalogRules.addObject().put("ruleId", rule.path("ruleId").asText());
+                entry.set("sourceAnchor", rule.path("sourceAnchor").deepCopy());
+                ArrayNode checks = entry.putArray("executions");
+                for (JsonNode execution : executions) if (rule.path("ruleId").asText().equals(execution.path("ruleId").asText())) {
+                    ObjectNode check = checks.addObject().put("testCaseId", execution.path("testCaseId").asText())
+                            .put("scope", execution.path("scope").asText()).put("status", execution.path("actualStatus").asText());
+                    if (execution.has("targetRuleId")) {
+                        check.set("targetRuleId", execution.path("targetRuleId"));
+                        check.set("targetStatus", execution.path("actualTargetStatus"));
+                    }
+                }
+                entry.put("status", checks.isEmpty() ? "NO_EXECUTION_IN_THIS_PACKAGE" : "BOUNDED_EXECUTION_ONLY");
+            }
+            record.put("catalogRuleCount", catalogRules.size());
+            record.put("catalogReconciled", !catalogRules.isEmpty());
+        }
+        return reconciliation;
     }
 
     private Map<String, List<String>> existingAnchors(ObjectNode hashes) throws IOException {

@@ -86,7 +86,13 @@ public final class Atl105AiElementIntake {
     }
 
     public MessageAssessment assess(JsonNode meta, JsonNode payload) {
-        if (chapter13Semantics) return assessSemantic(meta, payload);
+        if (chapter13Semantics) {
+            try {
+                return assessSemantic(meta, payload);
+            } catch (IOException exception) {
+                throw new java.io.UncheckedIOException("Source/catalog read failed during actual Chapter12 intake", exception);
+            }
+        }
         String testCase = meta.path("testCaseId").asText("");
         String scenario = meta.path("scenarioType").asText("");
         String negativeClass = meta.path("negativeClass").asText("");
@@ -158,7 +164,7 @@ public final class Atl105AiElementIntake {
         return Map.copyOf(mappingCounts);
     }
 
-    private MessageAssessment assessSemantic(JsonNode meta, JsonNode payload) {
+    private MessageAssessment assessSemantic(JsonNode meta, JsonNode payload) throws IOException {
         if (meta == null || !meta.isObject()) {
             return new MessageAssessment("", Status.INVALID, List.of(), List.of(invalid("", "AI metadata must be an object")),
                     "", "", "", Set.of());
@@ -233,6 +239,16 @@ public final class Atl105AiElementIntake {
         else if (!familyName.equals(resolved)) intake.add(invalid("", "Metadata message family contradicts the actual payload segment/root family"));
         final String actualFamily = familyName;
         for (ActualSegment occurrence : occurrences) {
+            if (com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter.SEGMENTS.contains(occurrence.segment())) {
+                var assessed = new com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter().validate(
+                        occurrence.body(), occurrence.segment(), actualFamily, meta);
+                for (var finding : assessed.findings()) intake.add(new Finding("", switch (finding.status()) {
+                    case CHECKS_PASSED -> Status.CHECKS_PASSED;
+                    case INVALID -> Status.INVALID;
+                    case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+                }, finding.ruleId(), finding.reason()));
+                continue;
+            }
             if (Set.of("102", "157").contains(occurrence.segment())) {
                 List<ActualSegment> standards = actual.getOrDefault("100", List.of());
                 if (standards.size() != 1) intake.add(review("", "Product reconciliation requires one unambiguous actual Segment 100 occurrence"));
