@@ -1,6 +1,7 @@
 package com.coreauth.validator.canonical;
 
 import com.coreauth.validator.paths.Atl105Paths;
+import com.coreauth.validator.validation.Chapter13ProcessingHistoryValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,7 +19,7 @@ public final class Chapter12SegmentPayloadValidator {
     public enum Status { CHECKS_PASSED, INVALID, REVIEW_REQUIRED }
     public record Finding(String ruleId, String scope, Status status, String reason) { }
     public record Result(Status status, List<Finding> findings, List<String> unassessedCatalogRules) { }
-    public static final Set<String> SEGMENTS = Set.of("123", "130", "131", "132", "134", "135", "136",
+    public static final Set<String> SEGMENTS = Set.of("115", "119", "123", "130", "131", "132", "134", "135", "136",
             "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156");
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final char FS = '\u001c';
@@ -36,6 +37,12 @@ public final class Chapter12SegmentPayloadValidator {
         JsonNode fields = observation.path("elements");
         JsonNode catalog = MAPPER.readTree(Atl105Paths.ruleCatalog(id).toFile());
         switch (id) {
+            case "115" -> printData(observation, fields, findings);
+            case "119" -> {
+                var inventory = MAPPER.readTree(Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                        .resolve("all-element-inventory.json").toFile());
+                findings.addAll(Segment119ObservationValidator.validate(observation, new Chapter13ProcessingHistoryValidator(inventory)));
+            }
             case "123" -> tokenization(observation, fields, findings);
             case "130", "131" -> emv(observation, fields, findings);
             case "132" -> capk(observation, fields, findings);
@@ -62,6 +69,46 @@ public final class Chapter12SegmentPayloadValidator {
                 : !unassessed.isEmpty() || findings.stream().anyMatch(f -> f.status() == Status.REVIEW_REQUIRED)
                     ? Status.REVIEW_REQUIRED : Status.CHECKS_PASSED;
         return new Result(status, List.copyOf(findings), List.copyOf(unassessed));
+    }
+
+    private static void printData(JsonNode input, JsonNode fields, List<Finding> findings) {
+        header(input, fields, 4, 1009, "003", "004", findings);
+        direction(input, "RESPONSE", "SEG115-R-001", findings);
+        String family = text(input, "messageFamily");
+        if (input.has("messageFamily") && family == null) check(findings, "SEG115-R-001", "family", false, "Message family must be text");
+        else if (family == null) review(findings, "SEG115-R-001", "family", "Financial response family not supplied");
+        else check(findings, "SEG115-R-001", "family",
+                Set.of("Financial Transaction Response", "EMV Financial Transaction Response", "Loyalty Card Transaction Response").contains(family),
+                "Print Data is scoped to a Financial Transaction Response");
+        length(fields, "152", 1, 999, "SEG115-R-008", findings);
+        String data = text(fields, "152");
+        if (data != null && data.length() > 900 && data.length() <= 999) {
+            review(findings, "SEG115-R-008", "source-length-conflict",
+                    "Chapter 13 Element 152 caps Print Data at 900; Section 12.14 gives 999. This interval is not source-certified");
+        }
+        wire(input, value(fields, "85") + FS + value(fields, "84") + FS + value(fields, "152"), "SEG115-R-006", findings);
+        if (input.has("serializedSegment")) {
+            String raw = text(input, "serializedSegment");
+            check(findings, "SEG115-R-007", "field-separators", raw != null
+                    && raw.chars().filter(c -> c == FS).count() == 2 && !raw.endsWith(String.valueOf(FS)),
+                    "Section 12.14 selected layout has separators between fields 1/2 and 2/3, none appended to Print Data");
+        } else review(findings, "SEG115-R-007", "field-separators", "No serialized segment supplied");
+        review(findings, "SEG115-R-005", "source-length-conflict",
+                "Section 12.14 cap 1009 conflicts with Financial/EMV envelope tables (910/999); complete applicability is not certified");
+        JsonNode context = input.path("context");
+        if (input.has("context") && !context.isObject()) {
+            check(findings, "SEG115-R-002", "context-shape", false, "Print Data context must be an object");
+        }
+        if (context.has("additionalInformationFlag")) {
+            check(findings, "SEG115-R-002", "inclusion-flag", "1".equals(text(context, "additionalInformationFlag")),
+                    "Present Print Data cannot use an absent/zero following-data flag");
+        } else review(findings, "SEG115-R-002", "inclusion-flag", "Original following-data flag is not observed");
+        if (context.has("requestLoyaltyVersion")) {
+            check(findings, "SEG115-R-002", "request-version", "2".equals(text(context, "requestLoyaltyVersion")),
+                    "Observed original request loyalty version must be 2");
+        } else review(findings, "SEG115-R-002", "request-version", "Original request loyalty version is not observed");
+        review(findings, "SEG115-R-010", "companion-source-conflict",
+                "Section 12.14 no-other-segments statement conflicts with Section 11 response companions; no blanket exclusion inferred");
     }
 
     private static void tokenization(JsonNode input, JsonNode fields, List<Finding> findings) {
@@ -95,8 +142,19 @@ public final class Chapter12SegmentPayloadValidator {
     private static void emv(JsonNode input, JsonNode fields, List<Finding> findings) {
         boolean request = "130".equals(input.path("segment").asText());
         String prefix = request ? "SEG130-R-" : "SEG131-R-";
+        if (input.has("context")) check(findings, prefix + (request ? "005" : "007"), "context-shape",
+                input.path("context").isObject(), "EMV context must be an object");
+        if (input.has("history")) check(findings, prefix + (request ? "005" : "007"), "history-shape",
+                input.path("history").isObject(), "EMV history must be an object");
+        if (input.path("history").has("emv")) check(findings, prefix + (request ? "005" : "007"), "history-shape",
+                input.path("history").path("emv").isObject(), "EMV session history must be an object");
         header(input, fields, 4, request ? 3043 : 3834, request ? "002" : "003", request ? "003" : "004", findings);
         direction(input, request ? "REQUEST" : "RESPONSE", prefix + (request ? "014" : "002"), findings);
+        if (!input.has("messageFamily")) review(findings, prefix + (request ? "014" : "002"), "family",
+                "Observed EMV Financial Transaction family required");
+        else check(findings, prefix + (request ? "014" : "002"), "family",
+                (request ? "EMV Financial Transaction Request" : "EMV Financial Transaction Response").equals(text(input, "messageFamily")),
+                "EMV data appears only in the corresponding EMV Financial Transaction family");
         if (request) {
             if (populated(fields, "187")) pattern(fields, "187", "[0-9]{25}", "SEG130-R-005", findings);
             review(findings, "SEG130-R-005", "requiredness-conflict",
@@ -122,11 +180,23 @@ public final class Chapter12SegmentPayloadValidator {
             if (!request && triads.isEmpty()) review(findings, "SEG131-R-009", "empty-additional-information",
                     "Response table marks the section required; omission requires source/context reconciliation");
         }
-        review(findings, prefix + (request ? "013" : "006"), "wire",
-                "Chip bytes require an actual binary serializer; JSON hex characters are not encoded chip byte count");
-        review(findings, prefix + (request ? "009" : "007"), "cross-message",
-                request ? "EMV chip/Segment 100 context agreement not proven by a standalone observation"
-                        : "Checksum echo requires the matched Segment 130 request");
+        findings.addAll(EmvSegmentWireValidator.validate(input, triads));
+        if (request) {
+            JsonNode loaded = input.path("context").get("loadedCapkChecksum");
+            if (loaded == null || !populated(fields, "187")) review(findings, "SEG130-R-005", "loaded-checksum",
+                    "Both actual request checksum and observed checksum currently in use are required");
+            else check(findings, "SEG130-R-005", "loaded-checksum", loaded.isTextual()
+                    && loaded.textValue().matches("[0-9]{25}") && loaded.textValue().equals(text(fields, "187")),
+                    "Request checksum agrees with observed loaded checksum; provenance is not authenticated");
+            review(findings, "SEG130-R-009", "cross-message", "EMV chip/Segment 100 context agreement not proven by a standalone observation");
+        } else {
+            JsonNode matched = input.path("history").path("emv").get("request");
+            if (matched == null) review(findings, "SEG131-R-007", "checksum-echo", "Matched actual Segment 130 request observation required");
+            else check(findings, "SEG131-R-007", "checksum-echo", matched.isObject()
+                    && "130".equals(text(matched, "segment")) && "2026-3".equals(text(matched, "specificationVersion"))
+                    && value(matched.path("elements"), "187").matches("[0-9]{25}")
+                    && value(matched.path("elements"), "187").equals(text(fields, "187")), "Response echoes matched request checksum; correlation provenance remains external");
+        }
         review(findings, request ? "SEG130-R-004" : "SEG131-R-005", "source-conflict",
                 "Chapter 11 and Chapters 12/13 publish different maxima; this check uses Chapter 12, not conflict approval");
     }
@@ -291,7 +361,7 @@ public final class Chapter12SegmentPayloadValidator {
         review(findings, "SEG143-R-002", "tax-value-policy", "Format-only validation; tax applicability/rates are not independently approved");
     }
 
-    private static void enhancedFleet(JsonNode input, JsonNode fields, List<Finding> findings) {
+    private static void enhancedFleet(JsonNode input, JsonNode fields, List<Finding> findings) throws IOException {
         boolean request = "145".equals(input.path("segment").asText());
         String prefix = request ? "SEG145-R-" : "SEG146-R-";
         String rule = request ? "006" : "002";
@@ -304,21 +374,53 @@ public final class Chapter12SegmentPayloadValidator {
         Set<String> ids = request ? Set.of("001", "002", "004", "006", "007", "008")
                 : Set.of("001", "002", "003", "004", "005", "010");
         String authorizer = input.path("context").path("authorizer").asText();
+        if (input.has("history")) check(findings, prefix + rule, "history-shape", input.path("history").isObject(), "Fleet history must be an object");
+        if (input.path("history").has("fleet")) check(findings, prefix + rule, "history-shape",
+                input.path("history").path("fleet").isObject(), "Fleet prompt history must be an object");
+        if (input.has("context")) check(findings, prefix + rule, "context-shape",
+                input.path("context").isObject(), "Fleet context must be an object");
+        if (input.path("context").has("authorizer")) check(findings, prefix + rule, "authorizer-shape",
+                input.path("context").path("authorizer").isTextual(), "Observed authorizer must be text");
+        Map<String, Integer> caps = request ? Map.of("001", 20, "002", 350, "004", 200, "006", 17, "007", 15, "008", 9)
+                : Map.of("001", 20, "002", 350, "003", 350, "004", 200, "005", 70, "010", 200);
         for (var table : tables) {
+            findings.addAll(EnhancedFleetTableValidator.validate(table, request, authorizer, input.path("history").path("fleet")));
             check(findings, prefix + rule, "fleet-table-id", table.indicator() != null && ids.contains(table.indicator()),
                     "Published enhanced fleet table ID");
+            if (table.indicator() != null && caps.containsKey(table.indicator())) {
+                check(findings, prefix + rule, "fleet-table-cap", table.value() != null
+                        && table.value().length() <= caps.get(table.indicator())
+                        && table.value().chars().allMatch(c -> c >= 32 && c <= 126), "Measured source-specific ASCII fleet table cap");
+            }
+            if (request && "006".equals(table.indicator())) check(findings, "SEG145-R-006", "payee-name",
+                    table.value() != null && table.value().matches("[A-Za-z ]+,[A-Za-z]"), "Payee uses Last Name,First Initial");
+            if (request && "008".equals(table.indicator())) check(findings, "SEG145-R-006", "cash-advance",
+                    table.value() != null && table.value().matches("[0-9]+\\.[0-9]+"), "Cash advance includes a decimal point");
+            if (!request && "001".equals(table.indicator()) && table.value() != null) {
+                String flag = table.value().split(",", -1)[0];
+                check(findings, "SEG146-R-002", "settlement-flag", flag.isEmpty() || Set.of("CP", "DB", "DF", "RC", "RF", "FN").contains(flag),
+                        "Present first settlement flag is one of six source-listed values; future flags are not invented");
+            }
+            if ("004".equals(table.indicator())) findings.addAll(EnhancedFleetPromptValidator.validate(table.value(), request,
+                    authorizer, input.path("history").path("fleet")));
             if (request && Set.of("VOYAGER_EMV", "VISA_FLEET_2", "COMDATA", "MASTERCARD_ENHANCED_FLEET_EMV").contains(authorizer)) {
                 check(findings, "SEG145-R-003", "restricted-table", "004".equals(table.indicator()), "This authorizer permits Prompt Table 004 only");
             }
             if (!request && "COMDATA".equals(authorizer)) check(findings, "SEG146-R-003", "comdata-table",
                     !"002".equals(table.indicator()), "Nonfuel limits Table 002 is absent from Comdata responses");
         }
+        JsonNode moneyCode = input.path("context").get("moneyCodeTransaction");
+        if (request && moneyCode != null) {
+            check(findings, "SEG145-R-006", "money-code-check", moneyCode.isBoolean()
+                    && (!moneyCode.booleanValue() || tables.stream().anyMatch(t -> "007".equals(t.indicator()))),
+                    "An observed Money Code transaction requires Check Number Table 007");
+        } else if (request) review(findings, "SEG145-R-006", "money-code-check", "Money Code applicability is not observed");
         if (request && input.path("context").path("segmentsPresent").isArray()) {
             boolean fleet = false;
             for (JsonNode id : input.path("context").path("segmentsPresent")) if ("101".equals(id.asText())) fleet = true;
             check(findings, "SEG145-R-002", "companion-exclusion", !fleet, "Do not combine 101 and 145");
         } else if (request) review(findings, "SEG145-R-002", "companion-context", "Segment presence list required");
-        review(findings, prefix + rule, "table-semantics", "Authorizer-specific token/edit-mask/product sublayouts remain unassessed; framing is not full table validation");
+        review(findings, prefix + rule, "table-semantics", "Dynamic Card Table mapping, completeness and host-authenticated product-limit correlation require independent configuration/history");
         if (authorizer.isBlank()) review(findings, prefix + (request ? "003" : "003"), "authorizer-context", "Authorizer needed for table restrictions");
         if (request) review(findings, "SEG145-R-004", "production-availability", "Expected June 2026 availability is not proof of production enablement");
         review(findings, prefix + (request ? "005" : "001"), "wire", "Source does not fully specify outer separator placement");
@@ -330,11 +432,19 @@ public final class Chapter12SegmentPayloadValidator {
         length(fields, "240", 1, 17, "SEG148-R-004", findings);
         pattern(fields, "240", "[A-Za-z0-9]{2,3}=[A-Za-z0-9]{1,5},[A-Za-z0-9]{1,5} [A-Za-z0-9]", "SEG148-R-004", findings);
         String data = text(fields, "240");
+        if (input.has("context")) check(findings, "SEG148-R-001", "context-shape", input.path("context").isObject(), "WEX context must be an object");
+        if (input.path("context").has("authorizer")) check(findings, "SEG148-R-001", "authorizer-shape",
+                input.path("context").path("authorizer").isTextual(), "Observed WEX authorizer must be text");
+        if (input.has("messageFamily")) check(findings, "SEG148-R-001", "family-shape", input.path("messageFamily").isTextual(), "Family must be text");
         if (data != null && data.indexOf('=') == 2) {
             check(findings, "SEG148-R-004", "fuel-group", Set.of("00", "01", "06", "07", "08", "10", "11", "12", "13")
                     .contains(data.substring(0, 2)), "Published two-digit fuel group");
         }
-        review(findings, "SEG148-R-001", "routing", "WEX Financial Transaction response applicability needs independent routing context");
+        JsonNode authorizer = input.path("context").get("authorizer");
+        if (authorizer == null || !input.has("messageFamily")) {
+            review(findings, "SEG148-R-001", "routing", "Both observed WEX authorizer and Financial Transaction response family are required");
+        } else check(findings, "SEG148-R-001", "routing", authorizer.isTextual() && Set.of("WEX", "WEX_OTR").contains(authorizer.textValue())
+                && "Financial Transaction Response".equals(text(input, "messageFamily")), "WEX Financial Transaction response only");
         review(findings, "SEG148-R-003", "source-conflict", "Source says max 23 but range 001-999; no invented resolution");
     }
 

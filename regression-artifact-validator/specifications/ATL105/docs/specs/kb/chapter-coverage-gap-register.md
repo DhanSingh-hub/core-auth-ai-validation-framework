@@ -3,9 +3,13 @@
 ## Scope and working policy
 
 This report supersedes the earlier duplicate snapshots and zero-code assertions.
-It records the autonomous chapter continuation on `Appendix-N`, with no commits,
-merges or pushes. Existing changes and independent Test Solution artifacts were
-retained. The user will review the combined changes before deciding what to commit.
+It records the autonomous chapter continuations on `Appendix-N`. Earlier batches
+were committed at the user's request: `2848fe10` and `1a76dc09`; both were later
+pushed only to `Appendix-N`. The subsequent Chapter 13 processing-history,
+contextual/composite and intake continuation was committed locally at the user's
+request as `f18caea7`. That commit was not pushed. The new Chapter 12 continuation
+is uncommitted; no other branch was changed. Existing changes and independent
+Test Solution artifacts are retained for the user's final review.
 
 The appendix A-AE review pass is not complete-spec executable coverage. Likewise,
 a catalog, a Java class, a candidate match or a generated placeholder chain is not
@@ -315,7 +319,7 @@ No remaining implementation work is relabeled SME-only. Chapter 13 is still
 
 ## Chapter 13 continuation after local commit 2848fe10
 
-This separate continuation is uncommitted. It extends the existing generic element
+This earlier continuation was included in commit `1a76dc09`. It extends the existing generic element
 validator rather than creating a competing Chapter 13 oracle. Source definitions,
 matching existing rule IDs and Test BR canonical anchors were cross-checked before
 executed evidence was persisted.
@@ -384,6 +388,340 @@ closure still require additional source-backed work.
 
 ## Honest chapter status
 
+### Chapter 13 processing-history and intake work (local commit f18caea7)
+
+This batch closes specific execution gaps, not the whole Chapter 13 gate.
+
+| Work completed | Why the change was required |
+|---|---|
+| Source-local history/action predicates for 98/105/170/175/180/193/194 | Valid values alone did not prove masking actions, active-date eligibility, settlement ending/roll, reset boundaries, receipt retention/output, table replacement, final daily configuration or CAPK assembly/replacement |
+| Authoritative parent history on both envelope and element-reference paths | A contradictory child could otherwise bypass the observed parent context; tests verify inheritance, rejection and input immutability |
+| Opt-in actual-payload AI semantic intake | Legacy metadata values could differ from actual payload values and were not sufficient execution evidence |
+| Exact source-family roots and scoped source-name mappings | Real artifacts use more than the reviewed shorthand `Financial Request`; unknown aliases must still remain reviews |
+| Iteration-aware actual segment evaluation | Collapsing repeated segments would lose evidence; unsupported mapping is not itself a source prohibition |
+| Per-case input hashes and real-batch execution | A synthetic adapter test is not evidence that real AI payloads have been evaluated |
+
+Implementation:
+[history validator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ProcessingHistoryValidator.java),
+[AI intake](../../../../../src/main/java/com/coreauth/validator/validation/Atl105AiElementIntake.java).
+The [Chapter 13 guide](13-data-elements.md) documents accepted history fields,
+CLI opt-in and retained limits. The original constructor/default intake remains
+unchanged. Successful partial observations are not certified messages.
+
+The refreshed [canonical package](../../../test-output/test-json/chapter-13-domain-package.json)
+contains **251 BR / 251 TS / 711 TC / 711 TD chains**; the
+[execution report](../../../test-output/test-json/chapter-13-domain-evidence.json)
+contains **466 scalar + 245 semantic/context/composite/history executions**:
+372 target checks passed, 317 invalid, 22 review-required. This adds 233 probes
+and 85 predicate chains to the previous 478-execution package.
+Canonical traceability validates; execution-ready
+approval remains explicitly false.
+
+Additional predicates now exercise 129 of the 231 identities; none is newly
+declared a fully reconciled semantic closure. All 231 identities/232 definitions
+are retained in reconciliation. Existing complete Test BR artifacts are still
+cross-checked, together with 38 supplemental Test packages. The supplemental
+scan excludes all Chapter 13 outputs to prevent circular self-validation; hashes,
+skip reasons and unconfirmed candidate status are retained. Twelve exercised
+identities lack numeric-element candidates after both cross-checks:
+6/38/56/61/100/101/120/193/194/205/212/243. This is a candidate-reconciliation
+gap, not proof of missing source implementation or an SME-only blocker.
+
+[Actual AI intake report](../../../test-output/test-solution-independent-review/chapter-13-ai-semantic-intake-2026-09-29-phase1.json):
+37 cases assessed from the 2026-09-29 phase-1 batch; 32 have mapped observations,
+5 retain unsupported root-label reviews. Their actual labels are Auth Completion
+(0220), Financial Transaction (three cases) and EMV Request; direction/family is
+not guessed. The report has 37 per-case input-hash rows, 29 invalid and 8
+review-required case verdicts, and 253 observations
+(64 invalid, 189 review-required). All 74 producer files were hash-verified
+unchanged. These cases are labeled `field_constraint`; the results are not a
+measured positive/negative detection rate. Examples of defect candidates include
+non-text Prompt Code objects, metadata/payload contradictions, missing EMV
+envelope counts and malformed chip-data hex/TLV. No values were copied into the
+report and no matches were auto-confirmed.
+Report paths inside the producer input folder are explicitly rejected, including
+attempts to overwrite metadata. A regression test verifies that protection.
+
+Previous history-only focused validation: **429 tests, zero failures/errors/skips**.
+Previous history-only full regression:
+**2,126 tests; 2,124 passed, two pre-existing failures, zero errors/skips**.
+The unchanged failures are AppendixCoverageConsistencyTest (Appendix AE
+test-data readiness `UNSPECIFIED`) and
+AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents (terminal
+capability expected invalid, received pass). Neither was weakened or relabeled
+as passing. The element inventory is regenerated against the expanded package;
+these remain structural artifact references, not full semantic closures.
+
+### Latest contextual, operational and composite implementation
+
+| Work completed | Why it was required |
+|---|---|
+| 14 additional explicit scalar domains, including zero-inclusive amounts and nonzero count limits | Character type/maximum length did not enforce the source's numeric endpoints |
+| Segment/family-scoped required versions, passwords, pump, manual-check, loyalty and EMV fields | Conditional requiredness could otherwise be omitted or incorrectly applied to unrelated siblings |
+| Account/track layouts, exact echoes, retry/approval, partial approval, fee and remaining-balance correlations | Valid individual values do not prove correct combined limits or transaction use |
+| Card/response families, tokenized network gates, SafeKey and last observed interface TLVs | Overloaded codes and producer qualifiers cannot independently establish applicability; parent response family is authoritative |
+| Observed key reuse, merchant currency, print output, dial ordering, connection and cut scheduling | Declaration of an action is not evidence that its ordering/output matches supplied observations |
+| Composite decoding for 33/153/154/164, using existing Segment 103 checks | Metadata length and named fields did not prove actual nested TAG/LEN/body contents |
+| Safe root aliases and actual unique DL indicators | Genuine DL identity should not be guessed from conflicting metadata, nor discarded when independently identifiable |
+| Supplemental Test-package candidate cross-check and 245 executable semantic fixtures | New Test BR chains must be checked against existing artifacts without circular reconciliation or approval by alias |
+
+See [context implementation](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ContextValidator.java),
+[composite implementation](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13CompositeValidator.java),
+[independent dynamic fixture tests](../../../../../src/test/java/com/coreauth/validator/Chapter13SemanticProbeTest.java)
+and [boundary/control tests](../../../../../src/test/java/com/coreauth/validator/Chapter13ContextAndCompositeTest.java).
+The expanded focused integration gate passed **819 tests with no
+failures/errors/skips** before the final family/clock/EF boundary hardening.
+The subsequent full regression ran **2,483 tests: 2,481 passed, two failures,
+zero errors/skips**. Both failing tests are the known appendix baseline:
+AppendixCoverageConsistencyTest (artifact readiness `UNSPECIFIED`, including AE)
+and AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents
+(terminal-capability expectation). After the final EF-framing and missing-SafeKey
+guards, the smallest covering **273-test suite passed, with zero
+failures/errors/skips**. Persistent package/evidence and actual AI intake were
+regenerated after that gate; all 74 producer files remained unchanged. The full
+suite was not rerun after these last two guards.
+
+The WIC purchase worked example's declared `PS034` differs from its measured
+37-character body; tests use the positional tables rather than weakening the
+oracle. EF's N3 framing is not established by its eight-byte date descriptor.
+Unselected EF framing is explicitly review-required. A selected `TAG_N3` profile
+enables measured structure/calendar checks but does not certify that profile.
+Source hour 24/minute 60 similarly remains unnormalized when correlating ISO cut
+timestamps. Transformed EDATA is never subject to the plaintext stored-value PAN
+width. These are explicit boundaries, not silent success-shaped fallbacks.
+SafeKey Secure ID 25/26 also rejects omission of mandatory Element 203 from a
+complete Segment 123 observation, reports partial omission as review-required,
+and leaves unrelated siblings unaffected.
+
+### Remaining Chapter 13 exit work
+
+| Remaining work | Classification and required evidence |
+|---|---|
+| Reconcile every representation, valid-value, applicability and processing clause for all 231 identities/232 definitions | Implementation/evidence work; 129 exercised identities and 711 probes do not establish clause completeness |
+| Complete WIC response-required subelements, earliest-benefit selection, APL adjustments and settlement correlation | Implementable context/history rules; selected bitmap structure is insufficient |
+| Complete remaining conditional/card/network gates and wire/table layouts using existing appendix/segment oracles | Implementation/integration work; reuse existing rules before adding duplicates |
+| Resolve supported structured actual producer fields and unambiguous family/occurrence mapping | Intake work; retain explicit reviews for unresolved labels instead of guessed matches |
+| Reconcile the twelve existing-BR candidate gaps | Cross-artifact evidence work; do not silently approve new chains or relabel gaps SME-only |
+| Cryptographic/key authenticity, device/merchant assignment, genuine source contradictions and unsupported framing/clock conventions | External/source-boundary evidence; approvals remain deferred |
+
+No full-semantic element closure is asserted by this package. In particular,
+**Chapter 13 is not complete even with SME approvals excluded**.
+
+**Chapter 13 remains IN_PROGRESS.** Remaining source-facet reconciliation, conditional/network/card gates,
+composite/table layouts and physical encoding are implementation work. Genuine
+source conflicts and external trust evidence remain separate deferred boundaries.
+The user explicitly authorized moving to Chapter 12 with this backlog carried
+forward; Chapter 13 was not marked complete.
+
+## Chapter 12 next-phase start after local Chapter 13 commit
+
+The user requested committing the verified Chapter 13 batch on `Appendix-N`
+and starting Chapter 12. Local commit `f18caea7` contains that Chapter 13 batch;
+the following Chapter 12 changes are separate, uncommitted work.
+
+### Segment 115 bounded field, wire and contextual execution
+
+[Chapter12SegmentPayloadValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12SegmentPayloadValidator.java)
+now includes Segment 115, bringing its supported numbered-observation adapters
+from 22 to 23. New checks cover fixed type 115, N4 declared length, required
+textual Print Data, actual ASCII segment length, prescribed three-field order
+and two field separators. The selected Section 12.14 layout does not append a
+separator to Print Data. Request usage, nonfinancial response families, false
+following-data flags, original request loyalty version other than textual `2`,
+missing/empty/nontext print data and malformed context controls are rejected.
+Absent operational/request evidence remains explicitly review-required.
+
+[Chapter11MessageLayoutValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Chapter11MessageLayoutValidator.java)
+dispatches Segment 115 through that adapter. Parent message family, derived
+request/response direction and supplied Element 115 flag are authoritative;
+contradictory child values are rejected. Input immutability is tested.
+
+**Why required:** the earlier envelope only assessed Segment 115's presence.
+It did not execute print content or wire serialization, and the Chapter 12
+adapter did not support this segment.
+
+### Retained source boundaries
+
+- Section 12.14 states a 1,009-byte segment cap and Print Data length 999.
+  Chapter 13 Element 152 states 900; Section 11 Financial/EMV envelope tables
+  state 910/999. The 901-999 print-data interval is an explicit source-conflict
+  review, not an unconditional pass or rejection. Over 999 print characters
+  is invalid under every stated print-field limit.
+- The Section 12.14 no-other-segments statement conflicts with Section 11's
+  listed companions. No blanket companion exclusion is inferred.
+- Header/field observations do not establish host origination, complete
+  receipt content, all response inclusion conditions or operational printing.
+- Segment 119 source reconnaissance found inconsistent bucket numbering
+  (17-19 versus 18-20) and delimiter prose. The subsequent continuation below
+  adds a selected-profile validator while preserving that conflict.
+
+These boundaries do not make all remaining Chapter 12 work SME-only.
+
+### Cross-artifact evidence and verification
+
+The [training generator](../../../../../src/main/java/com/coreauth/validator/coverage/GenerateChapter12TrainingEvidence.java)
+now cross-checks the existing complete independent Test package as well as
+segment packages, records their SHA-256 hashes, and separates source line
+metadata from the six canonical identity fields. Empty exact-anchor results
+are explicitly labeled `NO_EXACT_ANCHOR_CANDIDATE`; no approximate match or
+approval is manufactured. Segment 115's header matches the existing
+`BR-RULE-SEG115-R-003` anchor as an unapproved candidate.
+
+The regenerated [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **23 BR / 23 TS / 46 TC / 46 TD records**. The
+[execution evidence](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **46 actual observations**, including Segment 115's independent
+positive structure (whole status `REVIEW_REQUIRED`) and wrong-type negative
+(`INVALID`). Traceability validates; approved requirements remain zero.
+This header package is not a complete per-rule Chapter 12 coverage claim.
+
+The focused gate passed **33 tests, zero failures/errors/skips**, covering
+the Chapter 12 adapter, Chapter 11 parent integration, evidence generation,
+producer-neutral contract and repository layout. Boundary tests cover print
+lengths 900/901/999/1000, trailing delimiters, missing/nontext fields, wrong
+directions/families, context controls, authoritative flags and input immutability.
+No full-suite run or real-AI Chapter 12 execution is claimed for this initial batch.
+
+### Segment 119 field, card-bucket and selected-wire continuation
+
+This uncommitted continuation adds
+[Segment119ObservationValidator](../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ObservationValidator.java)
+to the shared Chapter 12 adapter (now **24 supported numbered segments**).
+Source Sections 11.4.1.2/12.17 and Chapter 13's referenced definitions were
+cross-checked with the existing Segment 119 catalog and Test BRs before execution.
+
+| Implemented | Why required |
+|---|---|
+| Required 119/N3 header, 0/1 Information Byte, terminal layout/state, 990 prompt, conditional employee/password and request family/direction | The earlier Segment 119 path assessed its envelope, not its individual fields |
+| Request Totals Date/calendar/special codes; N4 hardware, N8 software/firmware, nonzero N6 sequence, N35 table version, real full-year timestamp, optional source-listed currency and N8 total | Text length alone can accept impossible dates, zero sequence, missing fields or malformed values |
+| Explicit ordered `cardBuckets`, padded N4 labels, N5 nonzero request counts, N8 amounts, no duplicate/reversed source labels | Repeated values must be assessed individually; response-only inclusion prose must not be imposed on requests |
+| Complete supplied bucket-scope total reconciliation excluding AO/SV1/SV3/SV4/HD | Including nonfinancial amounts can silently overstate Grand Total; incomplete scope cannot establish equality |
+| Measured ASCII total length and explicitly selected `TABLE_17_19` serialization | Declared lengths do not prove encoding; ambiguous source prose cannot establish one universal wire profile |
+| Authoritative Chapter 11 parent family/direction/placement with child contradiction rejection | A child could otherwise report a false family or data section independently of its actual envelope |
+| Optional per-predicate evidence probes in the existing generator | Header chains alone do not show executed date, timestamp, sequence, bucket, total or wire predicates |
+
+The [independent observations](../../../test-output/test-json/chapter-12-segment-observations.json)
+contain **18 Segment 119 predicate probes**, with **7 passed targets, 9 invalid
+targets and 2 explicit review targets**, plus positive-header and wrong-type
+observations. Whole observations remain distinct from target results.
+The refreshed [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **42 BR / 42 TS / 66 TC / 66 TD records**; the
+[execution report](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **66 actual executions**, including **20 Segment 119 executions**.
+All 20 retain exact existing Test-anchor candidates, with no approval or
+automatic AI semantic confirmation. Canonical traceability validates and all
+expected/actual whole and target results match.
+
+The focused **51-test gate passed with zero failures/errors/skips**, covering
+Segment 119, the shared Chapter 12 adapter, Chapter 11 parent dispatch, canonical
+evidence, legacy Totals Request behavior, producer contract and repository layout.
+Tests exercise missing/nontext required fields, conditional controls, calendar
+and leap-day boundaries, sequence/count zero, duplicate/reversed buckets,
+amount shape, complete/incomplete totals, retained empty-field separators,
+wrong measured length and parent-context immutability. All 19 source-listed
+labels form an independently measured **453-byte** selected-profile segment;
+declared **389/390/493/494** boundaries are explicitly tested.
+
+The independent base fixture initially declared 157 but measured 147 bytes.
+Validation caught this; the fixture declaration was corrected to its actual
+byte count. No validator was weakened to accommodate the incorrect fixture.
+
+#### Still not closed
+
+- Section 11 cap 389 versus Section 12 cap 493, and separator-note 18-20
+  versus table 17-19, remain genuine source conflicts. Selected-profile checks
+  do not certify the profile; unselected wire remains review-required.
+- The prose allows up to 20 buckets but names 19 labels. No missing label is
+  fabricated. Approved-response bucket conditions are not unconditional
+  request requirements.
+- Totals activity eligibility, sequence lifecycle, request/response history,
+  duplicate/retry, settlement cutoff, authentic table versions/timestamp
+  provenance and complete selection policy remain unclosed.
+- The legacy named Totals Request validator and actual AI adapter are not newly
+  wired to these field predicates in the original batch. The subsequent
+  actual-payload integration below adds opt-in execution; complete producer
+  mapping remains unclosed.
+- No full-suite run is claimed for this batch. Chapter 12 and Chapter 13 both
+  remain IN_PROGRESS. No commit/push was made for this continuation.
+
+### Segment 119 actual-payload and totals-history integration
+
+The previous bounded batch was committed/pushed as `85897874`. This new batch
+is uncommitted on `Appendix-N`.
+
+- Added the [actual-payload adapter](../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ActualPayloadAdapter.java):
+  named fields and repeated `CategoryTotals` are mapped from the actual payload,
+  not metadata. A single flat bucket triple is also supported; simultaneous
+  flat and array forms are explicitly invalid. Missing/nontext fields are not
+  coerced. Unknown aliases remain review-required. Inputs remain unchanged.
+- Added the explicit adapter/evidence overload to the
+  [legacy Totals Request validator](../../../../../src/main/java/com/coreauth/validator/canonical/TotalsRequestPayloadValidator.java).
+  Its original default behavior is preserved, rather than breaking earlier
+  envelope-only fixture acceptance or silently imposing strict field validation.
+- Wired every actual Segment 119 occurrence through this adapter in
+  [semantic AI intake](../../../../../src/main/java/com/coreauth/validator/validation/Atl105AiElementIntake.java).
+  Existing semantic opt-in enables the new predicates; default intake remains
+  unchanged. Parent payload family is authoritative. Predicate outcomes,
+  including successful checks, are retained in intake findings.
+- Reused Chapter 13's processing-history validator for observed totals activity,
+  date correlation, ending/roll, reset and accumulation behavior. Explicit
+  request direction is authoritative; contradictory/malformed evidence is
+  invalid. Context/history is supplied evidence, not authenticated host proof.
+- Expanded the canonical generator with six actual-adapter probes, including
+  positive and negative timestamp, zero sequence, nontext bucket count and
+  history-selected response date checks. The target rule is recorded separately
+  from the catalog anchor and whole observation. Source/catalog chains remain
+  unapproved.
+
+**Why required:** numbered fixtures alone did not demonstrate that actual named
+payloads reached the Segment 119 rules. Flat/repeated producer shapes and
+history dates could otherwise be skipped or falsely supplied by metadata.
+
+The regenerated [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+contains **48 BR / 48 TS / 72 TC / 72 TD records**. The
+[execution evidence](../../../test-output/test-json/chapter-12-training-evidence.json)
+contains **72 executions**, including **26 Segment 119 executions** and six
+actual-adapter observations. All Segment 119 chains retain exact existing Test
+anchor candidates. Expected/actual whole and target results match; traceability
+validates. These are bounded predicate executions, not full semantic closure.
+
+The [real AI intake report](../../../test-output/test-solution-independent-review/chapter-12-segment119-ai-intake-2026-09-29-phase1.json)
+assesses the unchanged 2026-09-29 phase-1 batch: **37 cases**, **29 invalid /
+8 review-required**, with **253 generic semantic observations**. New Segment 119
+checks execute on actual case `TC-000037` in addition to those generic observations.
+Do not interpret those 253 observations as Segment 119 execution counts.
+All **74 producer input files** were hash-verified unchanged. Findings retain
+rule IDs and sampled case IDs without copying AI values. This batch's
+`field_constraint` labels do not establish a positive/negative detection ratio.
+
+Initial focused validation passed **86 tests with zero failures/errors/skips**.
+The final flat-bucket mapping guard is tested separately after inspecting the
+actual producer shape; final validation results are recorded below.
+
+Final covering validation passed **87 tests with zero failures/errors/skips**.
+The full suite during this batch ran **2,501 tests: 2,499 passed, two known
+appendix failures, zero errors/skips**. The failures are
+AppendixCoverageConsistencyTest.allAppendixRecordsMatchTheCanonicalInventory
+(readiness `UNSPECIFIED`) and
+AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents
+(terminal-capability expectation). No new failure was found or assertion
+weakened. This full run preceded the final flat-bucket guard; its final behavior
+was validated by the 87-test gate and both reports regenerated afterward.
+
+The final actual case `TC-000037` produces **16 passed Segment 119 findings,
+7 invalid findings and 9 review findings**. Invalid candidates include actual
+use under a Financial Transaction Request rather than the dedicated totals
+family, absent N3 length, malformed terminal/prompt, eight-byte hardware instead
+of four and short Device Card Table Version. Its flat bucket is now mapped and
+assessed, not incorrectly reported missing. Overall batch case verdicts remain
+29 invalid / 8 review-required; finding counts are not whole-message pass rates.
+
+Still remaining: complete producer alias reconciliation, parent history on every
+numbered/envelope surface, independently executed Segment 119 reset/roll facets,
+sequence/retry/cutoff and table/timestamp provenance correlations. Genuine
+389/493 and delimiter numbering conflicts remain separate source boundaries.
+Neither Chapter 12 nor Chapter 13 is newly declared complete.
+
 Source line ranges refer to [extracted text](../extracted_text.txt), not Java code.
 No substantive chapter is newly declared fully covered by this continuation.
 
@@ -401,13 +739,14 @@ No substantive chapter is newly declared fully covered by this continuation.
 | 10 Processing Requirements | 3781-7444 | New 10.11 bounded evidence plus existing partial approval, eWIC, incremental/stored-credential/EMV slices; comprehensive family processing remains |
 | 11 Message Formats | 7445-10844 | New 31-family partial dispatch; complete wire/conditional/positional and canonical-message closure remain |
 | 12 Data Segment Formats | 10845-17699 | Bounded additions above and existing validators; full rule, lifecycle, serialization and intake closure remain |
-| 13 Data Element Descriptions | 17700-25439 | 231 identities/232 definitions reconciled, 79 contextual profiles, new 110 contextual/440 baseline executions; complete source-to-executable semantic reconciliation remains |
+| 13 Data Element Descriptions | 17700-25439 | 231 identities/232 definitions reconciled, 79 contextual profiles, 110 contextual/440 baseline and 711 domain/context/composite/history executions over 129 identities; 32/37 actual AI cases mapped; complete source-facet reconciliation remains |
 | 14 Support/Testing/Certification | 25440-25504 | Process/certification evidence; no claim of host/network certification |
 
 ## Remaining execution plan, SME approvals deferred
 
-1. Finish Chapter 13 predicate/profile reconciliation rather than treating a
-   documentation review as an executable gate.
+1. Continue Chapter 12 as explicitly requested, while retaining Chapter 13's
+   source-facet backlog as incomplete rather than treating a documentation review
+   as an executable gate.
 2. Close Chapter 12's remaining nonblocked semantics and wire surfaces, including
    115/119, product physical encoding, fleet prompts, WEX and EMV correlation.
    Convert each checked predicate to independently executed canonical evidence,
@@ -453,3 +792,208 @@ No substantive chapter is newly declared fully covered by this continuation.
 These are recorded review items, not blanket reasons to stop other work.
 No approvals, confirmed producer matches, full-spec coverage or production
 certification were created by this pass.
+
+## Chapter 12 lifecycle, physical-product and contextual continuation
+
+**Branch:** Appendix-N. The previous actual Segment 119 integration was
+committed and pushed as `76c225e7`. The lifecycle/product/context batch below
+was subsequently committed and pushed as `f8777e27` on Appendix-N at the user's
+request. The newer fleet-mask/EMV-wire batch recorded next remains local.
+Chapter 13's unfinished source-facet work remains tracked.
+
+### Changes and why they were needed
+
+| Surface | Implemented continuation | Why the earlier evidence was insufficient |
+|---|---|---|
+| Segment 119 numbered and parent paths | Shared processing-history dispatch, authoritative parent history and request direction, explicit contradiction/type guards | Actual intake could assess history while the ordinary Chapter 12/11 path still stopped at field shape |
+| Segment 119 totals lifecycle | Explicit-date activity-window boundary, selection/correlation, `222222` end/roll, `111111` retention/last-reset period and `999999` all-observed-bucket reset executions | Generic Chapter 13 history tests did not persist Segment 119-specific canonical executions for each predicate |
+| Segment 119 sequence/current state | Matched request/response N6 sequence equality with actual Element 86; loaded N35 card-table version and current host-discount timestamp equality with actual request values | Nonzero/width/calendar checks did not prove agreement with observed transaction/device state |
+| Products 102/157 | Actual ASCII wire comparison, measured declared length, 381/370 segment/body caps, header FS/product backslash/final-FS placement, N9 quantity/price caps and observed primary/EV ordering | Named logical fields and a declared length could not establish actual wire content or encoding |
+| Product intake | Explicit array/flat mapping, observed capitalization aliases, alias/representation ambiguity guards, real Segment 100 companion reconciliation and actual Comdata-context contradiction guards | The real phase-1 producer uses flat product fields and `NumberofProducts`/`UnitofMeasure`; accepting only the Test fixture shape would validate a proxy |
+| Enhanced fleet 145/146 | Per-table source caps and printable ASCII, Money Code required Table 007, payee/cash-limit forms, source-listed settlement flag, prompt pipe/token/value framing and response edit-mask grammar | Generic TLV framing did not validate subtable caps or prompt/edit-mask content |
+| WEX 148 | Observed WEX/WEX-OTR authorizer plus Financial Transaction Response family, authoritative parent routing and contradiction/type guards | Direction and filler grammar alone could accept a wrong authorizer/family |
+| EMV 130/131 | Observed loaded CAPK checksum agreement and matched actual Segment 130 checksum echo, authoritative parent history/current checksum and malformed-evidence guards | A valid N25 checksum did not establish loaded-state or request/response agreement |
+
+The old Segment 145 header fixture's `TEST` placeholder has been replaced with
+a source-shaped prompt entry. Correct table length is measured from the
+independent fixture, not copied from source examples whose TLV arithmetic may
+conflict. The attached Segment 102 snapshots were not edited.
+
+### Persisted independent execution evidence at publication
+
+The [observations](../../../test-output/test-json/chapter-12-segment-observations.json),
+[canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+and [execution report](../../../test-output/test-json/chapter-12-training-evidence.json)
+contained at `f8777e27`:
+
+- **114 BR / 114 TS / 138 TC / 138 TD**, across 26 segment identities.
+- 48 original positive/negative header executions, **80 single-target predicate
+  executions**, and **10 actual named product executions**.
+- **62 Segment 119 executions**, each with exact existing-Test anchor candidates;
+  these candidates are unapproved and do not confirm an AI requirement match.
+- Ten actual product executions covering one/multiple-product measured wire,
+  wrong delimiter, wrong measured length and ambiguous flat/array form for both
+  102 and 157. Whole product execution results retain warnings and explicitly
+  do not claim full catalog-rule assessment.
+- Zero whole-status mismatches and zero target-status mismatches. Canonical
+  readback and source-continuous traceability are validated; approval count
+  remains zero.
+
+Catalog references and passed bounded predicates are not a chapter coverage
+denominator. In particular, 26 exercised identities and 138 executions do not
+reconcile every source facet of Chapter 12 or certify the complete message.
+
+### Actual AI assessment and validation
+
+The [actual AI report](../../../test-output/test-solution-independent-review/chapter-12-products119-ai-intake-2026-09-29-phase1.json)
+assesses the same 37 phase-1 metadata/payload pairs. All **74 producer files were
+SHA-256 checked before and after intake and remain unchanged**. Producer field
+values are not copied into this report.
+
+- Overall case results remain **29 INVALID / 8 REVIEW_REQUIRED**. These are
+  `field_constraint` scenarios, not asserted positive/negative labels.
+- Generic element observations remain **253: 64 INVALID / 189 REVIEW_REQUIRED**.
+  Additional product/119 intake findings are not added to that denominator.
+- Actual product dispatch assesses 19 Segment 102 occurrences and one Segment
+  157 occurrence. Missing actual lengths are explicit invalid findings; the
+  message containing both product forms is assessed for mutual exclusion.
+- The actual Segment 119 case retains 16 passed bounded findings and seven
+  invalid findings. Reviews increase from nine to **12**, explicitly exposing
+  absent sequence-correlation and loaded version/timestamp observations.
+
+The final focused Maven gate passed **97 tests**, with no failures/errors/skips.
+The final full suite ran **2,515 tests: 2,513 passing, two failures, zero errors,
+zero skips**. Both failures are the unchanged baseline appendix issues:
+`AppendixCoverageConsistencyTest.allAppendixRecordsMatchTheCanonicalInventory`
+(pre-existing `UNSPECIFIED` readiness) and
+`AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents`
+(unlisted capability expected invalid but returned PASS). No assertions were
+weakened, and those unrelated failures were not repaired as Chapter 12 work.
+The coupled all-element inventory was regenerated by the full suite.
+
+### What remains: implementation is separate from approval
+
+This is the backlog recorded at `f8777e27`. The next continuation section
+supersedes the implemented portions of items 2-4; it does not mark the entire
+chapter or all source facets closed.
+
+**Chapter 12 remains IN_PROGRESS, not complete.** The following are not all
+SME blockers:
+
+1. Reconcile every Chapter 12 source facet against its catalog/validator and
+   complete the BR-to-execution matrix beyond the bounded package. Existing
+   segment validators do not by themselves demonstrate full chapter closure.
+2. Fleet authorizer-specific prompt-token/value enumerations, nonfuel/fuel
+   product sublayouts, actual mask application (`M`/`X`, `V`/`P`, optional,
+   capture-but-do-not-resend and prior re-prompt formats) and captured/subsequent
+   message correlations remain implementable work. Grammar alone is not mask
+   execution.
+3. EMV binary serialization, chip-to-Segment-100 agreement and complete
+   transaction/load-session correlation remain implementable work. Supplied
+   checksum equality does not authenticate the matched transaction or CAPK load.
+4. Complete actual producer mapping and envelope/wire validation for the other
+   Chapter 12 families remain. Fleet/WEX/EMV contextual checks run through
+   numbered/envelope observations; direct actual intake added in this batch is
+   limited to products and the already-supported Segment 119 path.
+5. Product merchant applicability, full negative/discount/tax source-facet
+   reconciliation and any unresolved source-example interpretation remain
+   separate from the implemented wire/ordering/adjusted-amount checks.
+6. Segment 119 observed-history equality does not invent retry/duplicate,
+   merchant cutoff/timezone or proprietary-load selection policy, authenticate
+   host/device state, or resolve the published cap/framing conflicts. Those
+   policy, trust and source-owner decisions remain explicit reviews.
+
+Source conflicts listed above remain unchanged. Missing evidence is not
+treated as success, actual missing fields are not supplied from metadata,
+and no full-chapter completion or production certification is asserted.
+
+## Chapter 12 fleet-mask, product-correlation and EMV binary continuation
+
+**Branch:** Appendix-N. The preceding batch is published as `f8777e27`.
+This new continuation remains local, uncommitted and unpushed.
+
+### Implemented and persisted
+
+| Surface | Executed behavior | Boundary retained |
+|---|---|---|
+| Fleet prompts | Source-local authorizer tokens/caps, Voyager future tags DF32-DF6F, Visa shared-field restriction, captured-value mask execution, optional omission, prior re-prompt formats and capture-without-resend | Generic WEX does not establish WEX OTR; cap20/cap25 conflict and host/configuration provenance remain reviews |
+| Fleet mask history | A/B, N, I, TN/TS, inclusive M/X bounds, exact V and literal-position P applied to actual request values or observed response captures; Z checked even when O omits a capture | Missing TN/TS does not pass a bound; missing history is review, malformed evidence is invalid |
+| Fleet products | Decimal/quantity caps, source category labels, complete category aggregation with default MERC, observed per-product/category purchase sums versus returned limits | Partial purchase history cannot certify totals/limits; unknown eligibility and duplicate-response resolution are not invented |
+| Fleet response sublayouts | Customer fixed positions, additional-response labels/caps and Appendix F fuel-code classification | These checks are not host authenticity or complete settlement-lifecycle proof |
+| EMV binary wire | Actual hex-byte wire, packed chip bytes, ordered headers/triples, request separators including empty optional fields and final FS, response concatenation and measured N4 byte length | No chip-to-Segment-100 formula, kernel/cryptographic proof or source-conflict approval is invented |
+| Actual Chapter 12 intake | Explicit named-field mapping for 115/130/131/145/146/148, raw fleet TLV decoding, array/scalar ambiguity rejection and actual-family checking | Metadata supplies context/history only, never missing actual fields or wire; other families still need complete intake work |
+| Chapter 11 integration | Parent fleet history inherited without mutation; contradictory child history rejected and the authoritative parent values executed | This is coupled Chapter 12 integration, not closure of the separate complete-message backlog |
+
+The earlier `EDIT-MASK-VALID` fixture now explicitly observes WEX OTR rather
+than Comdata for ODRD. Expected assertions were preserved; the independent
+positive fixture was corrected to the source-listed authorizer.
+
+### Persistent evidence and actual AI run
+
+The [canonical package](../../../test-output/test-json/chapter-12-training-package.json)
+and [execution report](../../../test-output/test-json/chapter-12-training-evidence.json)
+now contain **158 BR / 158 TS / 182 TC / 182 TD**. There are
+**124 target-predicate executions**, 48 original paired header observations
+and ten actual product executions. Of the 182 executions:
+
+- 140 use numbered Chapter 12 observations.
+- 20 use the actual Segment 119/history path.
+- Twelve use the new actual Chapter 12 named-field path, a positive/negative
+  pair for each of 115, 130, 131, 145, 146 and 148.
+- Ten use the actual product path.
+
+There are zero whole-status mismatches and zero target-status mismatches.
+All canonical chains retain source anchors and existing-Test anchor candidate
+cross-checks. Approved requirements remain zero; a bounded passed predicate is
+not full-rule completion or a confirmed AI semantic match.
+
+The new `sourceSectionReconciliation` covers the exact ordered source sections
+**12.1 through 12.49**, with source line evidence and catalog-rule/execution
+links. Table-of-contents entries are excluded. Every section has catalog
+links, but every section explicitly retains `SOURCE_FACETS_NOT_CLOSED`.
+The ledger is a reconciliation aid, not a complete source-facet denominator;
+`NO_EXECUTION_IN_THIS_PACKAGE` does not assert absence of other existing
+segment tests.
+
+The [new actual AI report](../../../test-output/test-solution-independent-review/chapter-12-actual-ai-intake-2026-09-29-phase1.json)
+reassesses 37 phase-1 pairs. All 74 producer input files were SHA-256 checked
+before/after and remain unchanged. Overall results remain **29 INVALID /
+8 REVIEW_REQUIRED**, and generic element observations remain **64 INVALID /
+189 REVIEW_REQUIRED** out of 253. New EMV helper findings are kept outside
+that generic-element denominator. No producer field values are copied into
+the report. The actual run contains 14 Segment 130 occurrences and one
+Segment 131 occurrence, but no 145/146/148 occurrences; new fleet/WEX behavior
+is executed against independent canonical fixtures, not claimed as real-run
+coverage.
+
+### Verification and remaining implementation
+
+The focused gate passed **72 tests**, zero failures/errors/skips, including
+canonical readback, every supported actual occurrence, malformed/ambiguous
+input, wire byte counts, captured masks, limits and parent-history nonmutation.
+The full suite ran **2,531 tests: 2,529 passing, two failures, zero errors/skips**.
+The two failures remain the baseline appendix readiness consistency and
+Appendix J terminal-capability cases documented above; unrelated assertions
+were not weakened. The full suite also regenerated the coupled all-element
+inventory.
+
+**Chapter 12 is still IN_PROGRESS.** This batch closes the bounded mask,
+subtable and binary-wire implementation gaps described here, not the entire
+chapter. Work still required includes:
+
+1. Reconcile and execute the remaining source facets across all 49 sections,
+   beyond the current bounded canonical package. Catalog links are not proof
+   that every field, dependency, applicability and lifecycle facet is covered.
+2. Complete actual producer mapping and full envelope/wire execution for the
+   remaining Chapter 12 families.
+3. Establish source-supported EMV chip-to-Segment-100 checks and complete
+   transaction/CAPK-load session correlation; authenticity and cryptographic
+   certification stay external.
+4. Complete fleet Dynamic Card Table mapping provenance and full
+   captured/subsequent transaction correlation, plus remaining product
+   applicability/discount/tax and Segment 119 history-policy facets.
+5. Resolve genuine published-source contradictions separately from
+   implementable work and obtain the outstanding SME approvals.
+
+The queued dedicated Chapter 11, Chapter 10, flow, PIN, network/end-of-day and
+reference-chapter completion work has not been advanced ahead of Chapter 12.

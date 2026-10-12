@@ -59,6 +59,58 @@ class Chapter12SegmentPayloadValidatorTest {
     }
 
     @Test
+    void printDataMeasuresTwoSeparatorsRequiredContentAndSourceConflictInterval() throws IOException {
+        ObjectNode input = payload("115");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("wire-declared-length")
+                && f.status() == Status.CHECKS_PASSED);
+        input.put("serializedSegment", input.path("serializedSegment").asText() + "\u001c");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        for (int size : new int[]{900, 901, 999, 1000}) {
+            input = payload("115");
+            fields(input).put("152", "T".repeat(size)).put("84", String.format("%04d", size + 9));
+            input.put("serializedSegment", "115\u001c" + fields(input).path("84").asText() + "\u001c" + "T".repeat(size));
+            assertThat(validator.validate(input).status()).as("print bytes " + size)
+                    .isEqualTo(size <= 999 ? Status.REVIEW_REQUIRED : Status.INVALID);
+            if (size > 900 && size <= 999) assertThat(validator.validate(input).findings())
+                    .anyMatch(f -> f.ruleId().equals("SEG115-R-008") && f.scope().equals("source-length-conflict"));
+        }
+        input = payload("115");
+        fields(input).remove("152");
+        input.remove("serializedSegment");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        fields(input).put("152", "");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        fields(input).put("152", 123);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void printDataChecksObservedResponseAndRequestContextWithoutCoercion() throws IOException {
+        ObjectNode input = payload("115");
+        input.put("direction", "REQUEST");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.put("messageFamily", "Electronic Mail Response");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        ((ObjectNode) input.path("context")).put("additionalInformationFlag", "0");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        ((ObjectNode) input.path("context")).put("requestLoyaltyVersion", 2);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.remove("context");
+        input.remove("serializedSegment");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        input.putArray("context");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input = payload("115");
+        input.put("messageFamily", 115);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
     void tokenizationChecksBlockWidthsSafeKeyPaddingTavvAlphabetAndDirection() throws IOException {
         ObjectNode payload = payload("123");
         payload.remove("serializedSegment");
@@ -216,6 +268,79 @@ class Chapter12SegmentPayloadValidatorTest {
         assertThat(validator.validate(payload).status()).isEqualTo(Status.INVALID);
         fields(payload).put("240", "00=100,50 G");
         assertThat(validator.validate(payload).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        payload.put("messageFamily", "Financial Transaction Response").putObject("context").put("authorizer", "WEX_OTR");
+        assertThat(validator.validate(payload).findings()).filteredOn(f -> f.scope().equals("routing"))
+                .singleElement().satisfies(f -> assertThat(f.status()).isEqualTo(Status.CHECKS_PASSED));
+    }
+
+    @Test
+    void fleetMasksCheckEveryPublishedGrammarFamilyAndRejectMalformedEntries() throws IOException {
+        for (String mask : java.util.List.of("?", "A", "B", "N", "I", "O", "Z", "TN", "TS", "M123", "X456", "V1100", "PUN####", "P@#*", "N;TS;M1;X25")) {
+            var input = payload("146");
+            String value = "|DRID:" + mask + "|";
+            var tables = input.putArray("tables");
+            tables.addObject().put("id", "004").put("length", String.format(java.util.Locale.ROOT, "%03d", value.length())).put("value", value);
+            var original = input.deepCopy();
+            assertThat(validator.validate(input).findings()).filteredOn(f -> f.scope().equals("edit-mask-grammar"))
+                    .singleElement().satisfies(f -> assertThat(f.status()).as(mask).isEqualTo(Status.CHECKS_PASSED));
+            assertThat(input).isEqualTo(original);
+        }
+        for (String value : java.util.List.of("|DRID:Q|", "|DRID:N;|", "|DRID:TX|", "|DRID:P!|", "|DRID:M|", "|DRID:V|",
+                "|DRID:P|", "|TOOLONG:N|", "|DRID:|", "|:N|", "|DRID:N||", "DRID:N|")) {
+            var input = payload("146");
+            input.putArray("tables").addObject().put("id", "004").put("length", String.format(java.util.Locale.ROOT, "%03d", value.length())).put("value", value);
+            assertThat(validator.validate(input).status()).as(value).isEqualTo(Status.INVALID);
+        }
+    }
+
+    @Test
+    void emvChecksumRequiresActualMatchedRequestAndWellTypedEvidence() throws IOException {
+        var response = payload("131");
+        var request = payload("130");
+        fields(request).put("187", fields(response).path("187").asText());
+        response.putObject("history").putObject("emv").set("request", request);
+        assertThat(validator.validate(response).findings()).filteredOn(f -> f.scope().equals("checksum-echo"))
+                .singleElement().satisfies(f -> assertThat(f.status()).isEqualTo(Status.CHECKS_PASSED));
+        request.put("segment", "132");
+        assertThat(validator.validate(response).status()).isEqualTo(Status.INVALID);
+        response.putArray("history");
+        assertThat(validator.validate(response).status()).isEqualTo(Status.INVALID);
+        response.putObject("history").putArray("emv");
+        assertThat(validator.validate(response).status()).isEqualTo(Status.INVALID);
+        request = payload("130");
+        fields(request).put("187", fields(payload("131")).path("187").asText());
+        request.putObject("context").put("loadedCapkChecksum", 1);
+        assertThat(validator.validate(request).status()).isEqualTo(Status.INVALID);
+        request.putArray("context");
+        assertThat(validator.validate(request).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void routedChildrenCannotReplaceAuthoritativeParentContextOrHistory() throws IOException {
+        for (String id : java.util.List.of("148", "131")) {
+            var child = payload(id);
+            var parent = mapper.createObjectNode().put("specificationVersion", "2026-3")
+                    .put("messageFamily", "Financial Transaction Response").put("completeness", "PARTIAL");
+            parent.putObject("elements").put("55", "ATL105").put("63", "01");
+            parent.putArray("segments").addObject().put("segment", id).put("dataSection", 3).put("fieldNumber", 4).set("observation", child);
+            String target;
+            if ("148".equals(id)) {
+                child.putObject("context").put("authorizer", "WEX");
+                parent.putObject("context").put("authorizer", "COMDATA");
+                target = "SEG148-R-001";
+            } else {
+                var request = payload("130");
+                fields(request).put("187", "0000000000000000000000002");
+                parent.putObject("history").putObject("emv").set("request", request);
+                child.putObject("history").putObject("emv").set("request", payload("130"));
+                target = "SEG131-R-007";
+            }
+            var original = parent.deepCopy();
+            var result = new com.coreauth.validator.canonical.Chapter11MessageLayoutValidator().validate(parent);
+            assertThat(result.findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID)
+                    .anyMatch(f -> f.ruleId().equals(target) && f.status() == Status.INVALID);
+            assertThat(parent).isEqualTo(original);
+        }
     }
 
     @Test

@@ -17,6 +17,29 @@ Comdata-exclusive, mutually exclusive with Segment 102, repeating per-product st
 
 Comdata-exclusivity (decline rule), Segment 102 mutual exclusion (decline rule), product-code cap (decline rule), fuel-first/max-10 structure, cross-segment amount reconciliation, no separate tax/discount/coupon codes, multi-fuel support, dual-delimiter scheme, field layout with error-prone decimal encoding.
 
+## Executable Chapter 12 continuation
+
+The shared [product validator](../../../../../../src/main/java/com/coreauth/validator/canonical/ProductSegmentPayloadValidator.java)
+and [actual payload adapter](../../../../../../src/main/java/com/coreauth/validator/canonical/ProductActualPayloadAdapter.java)
+now assess Segment 157 through semantic AI intake as well as direct calls.
+The adapter handles actual array/flat product fields and capitalization aliases
+without replacing missing data. Contradictory aliases, dual representations,
+Comdata context and the actual card identity are checked explicitly.
+
+Optional actual `SerializedSegment` is compared against the named fields using
+the source dual-delimiter layout, with ASCII byte measurement and declared
+length/body caps. Quantity/Unit Price are capped at nine characters while
+preserving decimal-prefix encoding. Observed primary-fuel context is checked
+against first position and source classification, not trusted as a replacement
+for Appendix F.
+
+Five Segment 157 executions are persisted in the
+[Chapter 12 canonical evidence](../../../../test-output/test-json/chapter-12-training-evidence.json):
+one/multiple-product wires, wrong delimiter, wrong length and ambiguous product
+representations. Existing adjusted amount reconciliation, code exclusions and
+102/157 mutual exclusion remain active. These are executed source-anchored
+chains, not SME approval, full message certification or full chapter closure.
+
 ## Do-Not-Assume Rules
 
 1. Do not combine Segment 157 with Segment 102.

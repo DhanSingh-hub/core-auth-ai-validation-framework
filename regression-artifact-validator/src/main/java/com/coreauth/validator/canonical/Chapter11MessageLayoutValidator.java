@@ -67,7 +67,7 @@ public final class Chapter11MessageLayoutValidator {
             ObjectNode observation = mapper.createObjectNode().put("specificationVersion", "2026-3")
                     .put("messageFamily", family).put("segment", "MESSAGE");
             observation.set("elements", input.path("elements"));
-            for (String field : List.of("chapter13Semantics", "qualifiers", "representation")) {
+            for (String field : List.of("chapter13Semantics", "qualifiers", "representation", "history")) {
                 if (input.has(field)) observation.set(field, input.path(field));
             }
             if (partial) observation.put("completeness", "PARTIAL");
@@ -102,14 +102,14 @@ public final class Chapter11MessageLayoutValidator {
                         observation.put(field, expected);
                     }
                     if (partial) observation.put("completeness", "PARTIAL");
-                    for (String field : List.of("representation")) {
+                    for (String field : List.of("representation", "history")) {
                         if (input.has(field) && supplied.has(field) && !input.path(field).equals(supplied.path(field))) {
-                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child representation contradicts parent"));
+                            findings.add(new Finding(anchor, "chapter13-context", Status.INVALID, "Child " + field + " contradicts parent"));
                         }
                         if (input.has(field)) observation.set(field, input.path(field));
                     }
                     if (input.path("chapter13Semantics").asBoolean(false)) observation.put("chapter13Semantics", true);
-                    for (String field : List.of("qualifiers", "records")) {
+                    for (String field : List.of("qualifiers", "records", "history")) {
                         if (!observation.has(field) && input.has(field)) observation.set(field, input.path(field));
                     }
                     if (input.path("qualifiers").isObject() && supplied.has("qualifiers")) {
@@ -162,7 +162,56 @@ public final class Chapter11MessageLayoutValidator {
                 if (!observation.isObject() || !id.equals(observation.path("segment").asText())) {
                     findings.add(new Finding(anchor, "segment-observation", Status.INVALID, "Child observation identity does not match " + id));
                 } else {
-                    var child = new Chapter12SegmentPayloadValidator().validate(observation);
+                    ObjectNode childInput = observation.deepCopy();
+                    if (Set.of("115", "119", "130", "131", "145", "146", "148").contains(id)) {
+                        if (observation.has("messageFamily") && !family.equals(text(observation, "messageFamily"))) {
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Segment " + id + " child family contradicts parent"));
+                        }
+                        childInput.put("messageFamily", family);
+                        String direction = family.endsWith("Response") ? "RESPONSE" : "REQUEST";
+                        if (observation.has("direction") && !direction.equals(text(observation, "direction"))) {
+                            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Segment " + id + " child direction contradicts parent"));
+                        }
+                        childInput.put("direction", direction);
+                        List<String> contextKeys = switch (id) {
+                            case "145", "146", "148" -> List.of("authorizer");
+                            case "130" -> List.of("loadedCapkChecksum");
+                            case "119" -> List.of("loadedDeviceCardTableVersion", "hostDiscountTimestampInUse");
+                            default -> List.of();
+                        };
+                        inheritContext(input, childInput, contextKeys, anchor, findings);
+                        if (Set.of("119", "130", "131", "145", "146").contains(id) && input.has("history")) {
+                            if (observation.has("history") && !input.path("history").equals(observation.path("history"))) {
+                                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Child history contradicts parent history"));
+                            }
+                            childInput.set("history", input.path("history").deepCopy());
+                        }
+                        if ("119".equals(id)) {
+                            for (String field : List.of("dataSection", "fieldNumber")) {
+                                if (segment.has(field)) {
+                                    if (observation.has(field) && !observation.path(field).equals(segment.path(field))) {
+                                        findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Totals child " + field + " contradicts parent placement"));
+                                    }
+                                    childInput.set(field, segment.path(field).deepCopy());
+                                }
+                            }
+                        }
+                        if ("115".equals(id) && input.path("elements").has("115")) {
+                            JsonNode suppliedContext = childInput.get("context");
+                            if (suppliedContext != null && !suppliedContext.isObject()) {
+                                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data context must be an object"));
+                            }
+                            ObjectNode context = suppliedContext != null && suppliedContext.isObject()
+                                    ? suppliedContext.deepCopy() : mapper.createObjectNode();
+                            if (context.has("additionalInformationFlag")
+                                    && !context.path("additionalInformationFlag").equals(input.path("elements").path("115"))) {
+                                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Print Data inclusion flag contradicts parent"));
+                            }
+                            context.set("additionalInformationFlag", input.path("elements").path("115").deepCopy());
+                            childInput.set("context", context);
+                        }
+                    }
+                    var child = new Chapter12SegmentPayloadValidator().validate(childInput);
                     findings.addAll(child.findings());
                     if (!child.unassessedCatalogRules().isEmpty()) findings.add(new Finding(anchor, "child-rule-gaps", Status.REVIEW_REQUIRED,
                             "Unassessed catalog rules for " + id + ": " + child.unassessedCatalogRules()));
@@ -240,6 +289,28 @@ public final class Chapter11MessageLayoutValidator {
                     }
                 }
             }
+        }
+    }
+
+    private void inheritContext(JsonNode parent, ObjectNode child, List<String> keys, String anchor, List<Finding> findings) {
+        if (keys.isEmpty() || !parent.has("context")) return;
+        JsonNode authoritative = parent.path("context");
+        if (!authoritative.isObject()) {
+            findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Parent evidence context must be an object"));
+            return;
+        }
+        for (String key : keys) {
+            if (!authoritative.has(key)) continue;
+            JsonNode supplied = child.path("context");
+            if (child.has("context") && !supplied.isObject()) {
+                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Child evidence context must be an object"));
+            }
+            ObjectNode context = supplied.isObject() ? supplied.deepCopy() : mapper.createObjectNode();
+            if (context.has(key) && !context.path(key).equals(authoritative.path(key))) {
+                findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Child " + key + " contradicts parent"));
+            }
+            context.set(key, authoritative.path(key).deepCopy());
+            child.set("context", context);
         }
     }
 

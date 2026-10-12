@@ -76,7 +76,7 @@ It composes the existing profiles and reuses Appendix D state codes, Appendix L
 currency codes, Appendix I/K table validators and the Appendix R chip-data oracle.
 It does not replace their source limits or claim complete eligibility coverage.
 
-The [value-domain catalog](elements/value-domains.json) holds **55 explicitly
+The [value-domain catalog](elements/value-domains.json) holds **69 explicitly
 authored scalar domains**, including all 36 source-listed Extended Unit of Measure
 codes. Initialization verifies element-local evidence, every listed literal and
 both numeric range endpoints. Domains are not inferred from AI artifacts.
@@ -101,19 +101,135 @@ family, segment, explicit representation and shared qualifiers are authoritative
 in the envelope; conflicting child values are rejected.
 
 [Independent semantic probes](../../../test-output/test-json/chapter-13-semantic-probes.json),
-[149 BR / 149 TS / 437 TC / 437 TD chains](../../../test-output/test-json/chapter-13-domain-package.json)
-and [437 actual executions](../../../test-output/test-json/chapter-13-domain-evidence.json)
-are persisted. These comprise 368 scalar-domain/type probes plus 69 dependency
-and semantic probes, with **254 target checks passed, 174 invalid targets and
-9 explicit reviews**. Additional predicates were executed for 82 element
-identities; this is not 82 fully completed element definitions.
+[251 BR / 251 TS / 711 TC / 711 TD chains](../../../test-output/test-json/chapter-13-domain-package.json)
+and [711 actual executions](../../../test-output/test-json/chapter-13-domain-evidence.json)
+are persisted. These comprise 466 scalar-domain/type probes plus 245 dependency,
+semantic, contextual, composite and processing-history probes, with **372 target
+checks passed, 317 invalid targets and 22 explicit reviews**. Additional predicates
+were executed for 129 element identities; this is not 129 fully completed definitions.
 
 All 231 identities are reconciled against the existing complete Test BR package.
-Nine exercised identities have no numeric-element candidate in that package:
-6, 56, 61, 100, 120, 193, 205, 212 and 243. This is an explicitly reported
+Twelve exercised identities have no numeric-element candidate in that package:
+6, 38, 56, 61, 100, 101, 120, 193, 194, 205, 212 and 243. The generator also
+cross-checks 38 versioned ATL105 Test packages directly under `test-output/test-json`;
+these do not resolve the twelve candidate gaps. Supplemental package hashes and
+skip reasons are retained. All `chapter-13-*` packages are excluded from this
+supplemental scan to prevent circular self-validation. Candidates remain
+`ELEMENT_ID_CANDIDATE_NOT_SEMANTIC_MATCH`. This is an explicitly reported
 cross-check gap, not a confirmed missing implementation or an SME decision.
 Global Chapter 13 anchors intentionally have no segment identity; a synthetic
 observation does not establish that an element belongs to Segment 100.
+
+### Observed history and actual AI intake continuation
+
+[Chapter13ProcessingHistoryValidator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ProcessingHistoryValidator.java)
+adds independently measured action/history predicates, rather than treating a
+valid scalar as proof of correct processing. Initialization verifies the relevant
+element-local source statements. Supply `history` as an object with these sections:
+
+| Section | Observation fields | Executed scope |
+|---|---|---|
+| `totals` | `requestDate`, `responseDate`; complete full-year `activityDates` with `activityHistoryComplete`; `requestedSettlementDate` when requesting a literal date | Request/response correlation, actual active-date rank and third-most-recent lower bound; fewer than three dates stays review-required |
+| `totals` settlement | `currentSettlementDate`, `nextSettlementDate`, `settlementDateAfter`, `endedSettlementDates` | Code 222222 ends the observed current settlement date and rolls to the explicitly supplied next date; no invented calendar/weekend policy |
+| `totals` accumulation | `accumulatedTotalsBefore`, `accumulatedTotalsAfter`, `lastResetEventId`, `returnedPeriodStartEventId` | 999999 zeroes observed accumulations; 111111 preserves them and starts the returned period at the last observed reset |
+| `capk` | Boolean `approved`, `transferComplete`; ordered `blocks` with textual `length`/`data`; `assembledFile`, `storedFileAfter`; declined `responseData`/`displayedError` | Measured ASCII N3 block lengths, ordered assembly capped at 9999, whole-file replacement and unchanged decline display |
+| `receipt` | Ordered `receivedLines`, `retainedLines`, `printedLines` | Source-170 bounded receipt lines retained and subsequently printed in the same order; source-169 length conflict remains separate |
+| `cardTable` | `receivedData`, `storedDataAfter` | Received table data replaces retained device data |
+| `siteConfiguration` | Boolean `businessDayComplete`; ordered `changes`, `sentData` arrays | Complete day: only final change sent, or no send if no change |
+| `storeNumberActions` | Boolean `displayed`, `printed`, with masked Element 98 | Neither display nor print the masked value |
+
+The [41 additional processing probes](../../../test-output/test-json/chapter-13-semantic-probes.json)
+extend the previous 437-execution package by 17 predicate chains. Missing evidence,
+partial transfer/day histories and unavailable byte encoding remain explicit
+reviews; malformed controls and contradictions are invalid. Histories are supplied
+observations, not proof of host authenticity or cryptographic trust.
+
+Both Chapter 11 and the element-reference validator inherit parent history and
+reject explicit contradictory child history. Validation does not modify inputs.
+
+[Atl105AiElementIntake](../../../../../src/main/java/com/coreauth/validator/validation/Atl105AiElementIntake.java)
+has opt-in actual-payload validation; the existing constructor/default CLI retain
+legacy metadata mode. Use the four-argument CLI:
+
+```text
+Atl105AiElementIntake <ATL105-pack> <qe-shaped-run-folder> <report.json> --chapter13-semantics
+```
+
+Actual root names must be exact extracted Section 11 family names or existing
+reviewed crosswalk aliases. Segment identities come from actual textual
+`SegmentType`, or a unique source Data Type Indicator, not metadata. Indicators
+`#`, `!`, `:`, `@`, `$`, `\`, `^` and `%` identify DL1-DL8 respectively;
+overloaded `&`/`K` are not guessed. Reviewed aliases also cover Software Load
+Phone Response, Date & Time Load Response and ECA/TeleCheck Service Transaction
+Request. Aliases establish candidate intake mappings, never confirmed matches.
+Every mapped repeated occurrence is evaluated
+separately. Repeated metadata needs an unambiguous matching occurrence name; its
+value is never compared against an arbitrary first occurrence. Only source-known
+envelope identities 55/63 and source/catalog-grounded segment fields are mapped.
+Non-text values are not coerced, and metadata-only values are not executed.
+Mapping uncertainty remains review-required, not invented source prohibitions.
+The CLI rejects report paths inside the producer input folder to prevent
+accidental input overwrite; report provenance includes the pack-relative run path.
+
+The [actual AI batch report](../../../test-output/test-solution-independent-review/chapter-13-ai-semantic-intake-2026-09-29-phase1.json)
+assesses the 2026-09-29 phase-1 single-leg batch: **37 cases**, with source-mapped
+observations for **32** and unsupported root labels for **5**. Case verdicts are
+29 invalid and 8 review-required; the 253 executed observations contain 64
+invalid and 189 review-required results. These are artifact-defect candidates,
+not full-message certification or a negative-test detection ratio: the batch
+labels its scenarios `field_constraint`, not positive/negative. The report
+persists per-case input SHA-256 and does not copy AI values. All 74 input files
+were verified unchanged after execution.
+
+### Contextual, operational and composite continuation
+
+[Chapter13ContextValidator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13ContextValidator.java)
+adds source-local predicates for address/terminal layouts, card and response-code
+families, load indicators, versions/passwords, account/track splitting and
+retention, manual check/loyalty/fuel/EBT conditions, partial approval, retry and
+reversal echoes, print output, remaining-balance display, cash-back fees, sequence
+reuse, loaded Key ID, following Segment 112, card sequence and last-interface TLVs,
+tokenized network gates, SafeKey, Moneris/table layouts, dial ordering, connection,
+key-update scheduling, merchant currency and observed automatic cut scheduling.
+Requiredness is scoped to the correct family and segment, not leaked across
+sibling observations. SafeKey Secure ID 25/26 requires Element 203 in Segment
+123: complete omission is invalid, partial omission requires review, and the
+condition does not leak into unrelated siblings.
+A recognized parent response family overrides contradictory
+qualifiers. Source hour 24/minute 60 is not normalized into an invented ISO time;
+that scheduling correlation remains review-required. Transformed EDATA is never
+rejected by applying the unencrypted stored-value PAN width.
+
+[Chapter13CompositeValidator](../../../../../src/main/java/com/coreauth/validator/validation/Chapter13CompositeValidator.java)
+measures the 33 PIN/KSN shape, 153 discount blocks, 154 WIC N4 totals/EA/PS
+layouts and 164 Program TAG/LEN/details. It reuses the isolated
+`Segment103PayloadValidator.validateElement` entry point instead of fabricating
+sibling payload fields. All five published PS bitmaps, item indicator/padding,
+declared data length, reserved actions and supplied CVB quantity/price context
+are exercised. Program record count, measured lengths, IT address/ZIP and
+request/response tags are checked.
+
+The published WIC purchase worked example declares `PS034` but displays a
+37-character body. Fixtures use the positional tables; the validator is not
+weakened to fit that contradictory example. EF's descriptor establishes an
+eight-byte date, not unambiguous N3 framing. EF decoding requires the explicit
+selected `qualifiers.wicEncodingProfile: "TAG_N3"`; its framing remains a separate
+review even when the selected layout/date checks pass. Unselected EF framing
+is review-required, not automatically invalid. Cryptographic validity is not
+inferred from PIN/KSN, TLV or key-table structure.
+
+The changes were necessary because width/enum checks alone cannot validate
+conditional usage, processing actions or nested byte lengths. Independent
+[245 semantic probes](../../../test-output/test-json/chapter-13-semantic-probes.json)
+and [boundary/control tests](../../../../../src/test/java/com/coreauth/validator/Chapter13ContextAndCompositeTest.java)
+verify the new behavior and retain whole-observation non-certification.
+
+Verification: the expanded 819-test integration gate passed. The subsequent full
+regression ran 2,483 tests, with 2,481 passing and the two known appendix failures.
+After the final EF-framing and missing-SafeKey guards, the smallest covering
+273-test suite passed with no failures/errors/skips, and both persistent evidence
+and the real AI report were regenerated. The full suite was not rerun after
+those final two guards.
 
 **Chapter 13 remains IN_PROGRESS; full non-SME completion has not been achieved.**
 The new evidence labels uncompleted processing reconciliation as an

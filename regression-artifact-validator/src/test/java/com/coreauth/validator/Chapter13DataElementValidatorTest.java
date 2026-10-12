@@ -34,7 +34,7 @@ class Chapter13DataElementValidatorTest {
         List<DynamicTest> tests = new ArrayList<>();
         var catalog = MAPPER.readTree(Atl105Paths.root().resolve("docs").resolve("specs").resolve("kb")
                 .resolve("elements").resolve("value-domains.json").toFile()).path("domains");
-        assertThat(catalog).hasSize(55);
+        assertThat(catalog).hasSize(69);
         for (var domain : catalog) {
             String id = domain.path("element").asText();
             String rule = "CH13-E" + id + "-DOMAIN";

@@ -93,6 +93,12 @@ public final class Atl105ElementReferenceValidator {
             if (observation.has("qualifiers")) segmentObservation.set("qualifiers", observation.path("qualifiers").deepCopy());
             if (observation.has("representation")) segmentObservation.set("representation", observation.path("representation"));
             if (segmentNode.has("records")) segmentObservation.set("records", segmentNode.path("records"));
+            if (observation.has("history")) {
+                if (segmentNode.has("history") && !observation.path("history").equals(segmentNode.path("history"))) {
+                    findings.add(new Finding("", Status.INVALID, "CH13-HISTORY-CONTEXT", "Child history contradicts parent"));
+                }
+                segmentObservation.set("history", observation.path("history"));
+            } else if (segmentNode.has("history")) segmentObservation.set("history", segmentNode.path("history"));
             Result result = observation.path("chapter13Semantics").asBoolean(false)
                 ? chapter13Validator.validate(segmentObservation) : valueValidator.validate(segmentObservation);
             findings.addAll(result.findings());
@@ -106,6 +112,7 @@ public final class Atl105ElementReferenceValidator {
         if (observation.has("elements") && observation.path("elements").isObject() && observation.path("chapter13Semantics").asBoolean(false)) {
             message.set("elements", observation.path("elements"));
             if (observation.has("representation")) message.set("representation", observation.path("representation"));
+            if (observation.has("history")) message.set("history", observation.path("history"));
             findings.addAll(chapter13Validator.validate(message).findings());
         } else findings.addAll(valueValidator.validate(message).findings());
         if (observation.has("transactionTypeCode")) {

@@ -29,6 +29,9 @@ import java.util.regex.Pattern;
 public final class Chapter13DataElementValidator {
     private final Atl105ElementValueValidator profiles;
     private final JsonNode inventory;
+    private final Chapter13ProcessingHistoryValidator processing;
+    private final Chapter13ContextValidator contextual;
+    private final Chapter13CompositeValidator composite;
     private final Map<String, JsonNode> domains = new HashMap<>();
     private final Map<String, Pattern> patterns = new HashMap<>();
     private static final Set<String> MMDDYY = Set.of("21", "36", "45", "92");
@@ -39,6 +42,9 @@ public final class Chapter13DataElementValidator {
     public Chapter13DataElementValidator(Path pack) throws IOException {
         profiles = new Atl105ElementValueValidator(pack);
         inventory = new Atl105ElementInventory().extract(Files.readString(pack.resolve("docs").resolve("specs").resolve("extracted_text.txt")));
+        processing = new Chapter13ProcessingHistoryValidator(inventory);
+        contextual = new Chapter13ContextValidator(inventory);
+        composite = new Chapter13CompositeValidator(inventory);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode document = mapper.readTree(pack.resolve("docs").resolve("specs").resolve("kb").resolve("elements")
                 .resolve("value-domains.json").toFile());
@@ -92,6 +98,19 @@ public final class Chapter13DataElementValidator {
                     "Explicit 2026-3 version, family, segment and text-valued numbered elements are required")));
         }
         List<Finding> findings = new ArrayList<>(profiles.validate(observation).findings());
+        for (String field : List.of("qualifiers", "records", "history")) {
+            if (observation.has(field) && !observation.path(field).isObject()) {
+                finding(findings, "", "INPUT-" + field.toUpperCase(java.util.Locale.ROOT), Status.INVALID, field + " must be an object");
+            }
+        }
+        if (observation.has("representation") && (!observation.path("representation").isTextual()
+                || !Set.of("WIRE", "LOGICAL").contains(observation.path("representation").textValue()))) {
+            finding(findings, "", "INPUT-REPRESENTATION", Status.INVALID, "Representation must be WIRE or LOGICAL when supplied");
+        }
+        if (observation.has("completeness") && (!observation.path("completeness").isTextual()
+                || !Set.of("PARTIAL", "COMPLETE").contains(observation.path("completeness").textValue()))) {
+            finding(findings, "", "INPUT-COMPLETENESS", Status.INVALID, "Completeness must be PARTIAL or COMPLETE when supplied");
+        }
         JsonNode elements = observation.path("elements");
         JsonNode context = observation.path("qualifiers");
         var fields = elements.fields();
@@ -132,6 +151,9 @@ public final class Chapter13DataElementValidator {
         tax(elements, "229", "230", "231", context, observation, findings);
         dependencies(elements, context, observation, findings);
         records(elements, observation, findings);
+        findings.addAll(processing.validate(observation));
+        findings.addAll(contextual.validate(observation));
+        findings.addAll(composite.validate(observation));
         finding(findings, "", "SCOPE", Status.REVIEW_REQUIRED,
                 "Executed domains/representation/dependencies are not complete Chapter 13 processing, eligibility, history or wire certification");
         Status status = findings.stream().anyMatch(f -> f.status() == Status.INVALID) ? Status.INVALID : Status.REVIEW_REQUIRED;

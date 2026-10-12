@@ -26,7 +26,7 @@ class GenerateChapter13TrainingEvidenceTest {
         assertThat(report.path("summary").path("executedBaselineProbes").asInt()).isEqualTo(440);
         assertThat(report.path("summary").path("sourceElementIdentities").asInt()).isEqualTo(231);
         assertThat(report.path("summary").path("sourceDefinitions").asInt()).isEqualTo(232);
-        assertThat(report.path("summary").path("contextualProfiles").asInt()).isEqualTo(79);
+        assertThat(report.path("summary").path("contextualProfiles").asInt()).isEqualTo(80);
         assertThat(report.path("sourceElementReconciliation"))
                 .hasSize(report.path("summary").path("sourceElementIdentities").asInt());
         for (var execution : report.path("executions")) {
