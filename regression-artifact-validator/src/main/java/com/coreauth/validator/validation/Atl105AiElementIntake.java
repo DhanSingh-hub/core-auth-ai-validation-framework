@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -30,9 +31,27 @@ import java.util.regex.Pattern;
 public final class Atl105AiElementIntake {
     public record Observed(String segment, Result result) { }
     private record ActualSegment(String name, String segment, JsonNode body) { }
+    private record IntakeFormatProfile(String id, String metadataSuffix, String siblingPayloadSuffix,
+                                       Map<String, List<String>> metadataPaths,
+                                       Map<String, List<String>> fieldPaths,
+                                       List<String> payloadReferencePaths,
+                                       List<String> inlinePayloadPaths,
+                                       List<String> payloadRootPaths) { }
+    private record IntakeInput(Path metadataFile, Path payloadFile, JsonNode metadata, JsonNode payload,
+                               String payloadReference, String formatProfileId, String inputError) { }
+    public record AssessedRunMessage(String testCaseId, String formatProfileId, String metadataPath,
+                                     String payloadPath, String metadataSha256, String payloadSha256,
+                                     String scenarioType, String negativeClass, String violatedElement,
+                                     String assessmentStatus, int observationCount,
+                                     Map<String, Long> observationsByStatus, int intakeFindingCount,
+                                     long invalidFindingCount, long reviewRequiredFindingCount,
+                                     List<RuleFindingSummary> ruleFindings, String negativeTargetDisposition,
+                                     String inputError) { }
+    public record RuleFindingSummary(String segment, String element, String ruleId, String status, long findingCount) { }
     public record MessageAssessment(String testCaseId, Status status, List<Observed> observations, List<Finding> intakeFindings,
                                     String scenarioType, String negativeClass, String violatedElement, Set<String> provisional) { }
     private static final Pattern SEGMENT_CATALOG = Pattern.compile("kb/segment-([0-9A-Z]+)/");
+    private final Path pack;
     private final Atl105ElementValueValidator validator;
     private final Chapter13DataElementValidator semanticValidator;
     private final boolean chapter13Semantics;
@@ -50,6 +69,7 @@ public final class Atl105AiElementIntake {
 
     public Atl105AiElementIntake(Path pack, boolean chapter13Semantics) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+        this.pack = pack.toAbsolutePath().normalize();
         validator = new Atl105ElementValueValidator(pack);
         semanticValidator = chapter13Semantics ? new Chapter13DataElementValidator(pack) : null;
         segment119Adapter = chapter13Semantics ? new com.coreauth.validator.canonical.Segment119ActualPayloadAdapter(
@@ -206,6 +226,71 @@ public final class Atl105AiElementIntake {
     public Map<String, Long> mappingCounts() {
         return Map.copyOf(mappingCounts);
     }
+
+    public List<AssessedRunMessage> assessRun(Path run) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        Path runRoot = run.toRealPath();
+        List<AssessedRunMessage> results = new ArrayList<>();
+        for (IntakeInput input : discoverInputs(pack, runRoot, mapper)) {
+            MessageAssessment assessment = assess(input.metadata(), input.payload());
+            if (!input.inputError().isBlank()) {
+                List<Finding> intakeFindings = new ArrayList<>(assessment.intakeFindings());
+                intakeFindings.add(new Finding("", Status.INVALID, "AI-JSON-PARSE", input.inputError()));
+                assessment = new MessageAssessment(assessment.testCaseId(), Status.INVALID, assessment.observations(),
+                        List.copyOf(intakeFindings), assessment.scenarioType(), assessment.negativeClass(),
+                        assessment.violatedElement(), assessment.provisional());
+            }
+            String payloadPath = input.payloadFile() != null
+                    ? runRoot.relativize(input.payloadFile()).toString().replace('\\', '/')
+                    : input.payload() != null ? "INLINE_METADATA"
+                    : input.payloadReference() == null ? "MISSING" : input.payloadReference();
+            String payloadHash = input.payloadFile() != null ? sha256(Files.readAllBytes(input.payloadFile()))
+                    : input.payload() != null ? sha256(mapper.writeValueAsBytes(input.payload())) : "";
+                Map<String, Long> observationCounts = new TreeMap<>();
+                for (Observed observed : assessment.observations()) {
+                observationCounts.merge(observed.result().status().name(), 1L, Long::sum);
+                }
+                long invalidFindings = assessment.intakeFindings().stream().filter(finding -> finding.status() == Status.INVALID).count();
+                long reviewFindings = assessment.intakeFindings().stream().filter(finding -> finding.status() == Status.REVIEW_REQUIRED).count();
+                Map<String, Long> ruleFindingCounts = new TreeMap<>();
+                Map<String, RuleFindingSummary> ruleFindingDimensions = new TreeMap<>();
+                for (Observed observed : assessment.observations()) {
+                    for (Finding finding : observed.result().findings()) {
+                        String key = String.join("|", observed.segment(), finding.element(), finding.ruleId(), finding.status().name());
+                        ruleFindingCounts.merge(key, 1L, Long::sum);
+                        ruleFindingDimensions.putIfAbsent(key, new RuleFindingSummary(observed.segment(), finding.element(),
+                                finding.ruleId(), finding.status().name(), 0));
+                    }
+                }
+                List<RuleFindingSummary> ruleFindings = ruleFindingCounts.entrySet().stream().map(entry -> {
+                    RuleFindingSummary dimension = ruleFindingDimensions.get(entry.getKey());
+                    return new RuleFindingSummary(dimension.segment(), dimension.element(), dimension.ruleId(),
+                            dimension.status(), entry.getValue());
+                }).toList();
+                String targetDisposition = negativeTargetDisposition(assessment);
+            results.add(new AssessedRunMessage(assessment.testCaseId(), input.formatProfileId(),
+                    runRoot.relativize(input.metadataFile()).toString().replace('\\', '/'), payloadPath,
+                        sha256(Files.readAllBytes(input.metadataFile())), payloadHash, assessment.scenarioType(),
+                        assessment.negativeClass(), assessment.violatedElement(), assessment.status().name(),
+                    assessment.observations().size(), Map.copyOf(observationCounts), assessment.intakeFindings().size(),
+                        invalidFindings, reviewFindings, List.copyOf(ruleFindings), targetDisposition, input.inputError()));
+        }
+        return List.copyOf(results);
+    }
+
+        private static String negativeTargetDisposition(MessageAssessment assessment) {
+            if (!"negative".equals(assessment.scenarioType())) return "NOT_NEGATIVE";
+            if (assessment.violatedElement().isBlank()) return "TARGET_UNRESOLVED";
+            boolean targetChecked = false;
+            for (Observed observed : assessment.observations()) {
+                for (Finding finding : observed.result().findings()) {
+                    if (!assessment.violatedElement().equals(finding.element())) continue;
+                    if (finding.status() == Status.INVALID) return "TARGET_DETECTED";
+                    if (finding.status() == Status.CHECKS_PASSED) targetChecked = true;
+                }
+            }
+            return targetChecked ? "TARGET_NOT_DETECTED" : "TARGET_NOT_ASSESSED";
+        }
 
     private MessageAssessment assessSemantic(JsonNode meta, JsonNode payload) throws IOException {
         if (meta == null || !meta.isObject()) {
@@ -430,6 +515,213 @@ public final class Atl105AiElementIntake {
         return name.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
     }
 
+    private static String sha256(byte[] bytes) throws Exception {
+        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
+    }
+
+    private static List<IntakeFormatProfile> loadFormatProfiles(Path pack, ObjectMapper mapper) throws IOException {
+        Path profileFile = pack.resolve("docs/specs/kb/elements/ai-intake-format-profiles.json");
+        JsonNode document = mapper.readTree(profileFile.toFile());
+        if (!"ATL105-AI-INTAKE-FORMAT-PROFILES".equals(document.path("artifact").asText())
+                || document.path("schemaVersion").asInt(-1) != 1
+            || !"ATL105".equals(document.path("specification").asText())
+                || !"2026-3".equals(document.path("specificationVersion").asText())
+                || !document.path("profiles").isArray()) {
+            throw new IOException("Unsupported AI intake format-profile contract");
+        }
+        List<IntakeFormatProfile> profiles = new ArrayList<>();
+        Set<String> metadataSuffixes = new HashSet<>();
+        for (JsonNode profile : document.path("profiles")) {
+            String id = profile.path("id").asText("");
+            Map<String, List<String>> metadataPaths = pathMap(profile.path("metadataPaths"));
+            Map<String, List<String>> fieldPaths = pathMap(profile.path("fieldPaths"));
+            List<String> payloadReferencePaths = textValues(profile.path("payloadReferencePaths"));
+            List<String> inlinePayloadPaths = textValues(profile.path("inlinePayloadPaths"));
+            List<String> payloadRootPaths = textValues(profile.path("payloadRootPaths"));
+            if (id.isBlank() || payloadReferencePaths.isEmpty() || payloadRootPaths.isEmpty()
+                    || metadataPaths.isEmpty() || fieldPaths.isEmpty() || !profile.path("filenamePatterns").isArray()) {
+                throw new IOException("Invalid AI intake format profile");
+            }
+            for (JsonNode pattern : profile.path("filenamePatterns")) {
+                String metadataSuffix = pattern.path("metadataSuffix").asText("");
+                String payloadSuffix = pattern.path("siblingPayloadSuffix").asText("");
+                if (metadataSuffix.isBlank() || payloadSuffix.isBlank() || !metadataSuffixes.add(metadataSuffix)) {
+                    throw new IOException("Invalid or duplicate AI intake metadata suffix: " + metadataSuffix);
+                }
+                profiles.add(new IntakeFormatProfile(id, metadataSuffix, payloadSuffix, metadataPaths, fieldPaths,
+                    payloadReferencePaths, inlinePayloadPaths, payloadRootPaths));
+            }
+        }
+        if (profiles.isEmpty()) throw new IOException("AI intake format-profile contract has no profiles");
+        return List.copyOf(profiles);
+    }
+
+    private static List<String> textValues(JsonNode values) {
+        List<String> result = new ArrayList<>();
+        if (values.isArray()) {
+            for (JsonNode value : values) if (value.isTextual() && !value.asText().isBlank()) result.add(value.asText());
+        }
+        return List.copyOf(result);
+    }
+
+    private static Map<String, List<String>> pathMap(JsonNode values) {
+        Map<String, List<String>> result = new LinkedHashMap<>();
+        if (values.isObject()) {
+            values.fields().forEachRemaining(entry -> {
+                List<String> paths = textValues(entry.getValue());
+                if (!paths.isEmpty()) result.put(entry.getKey(), paths);
+            });
+        }
+        return Map.copyOf(result);
+    }
+
+    private static List<IntakeInput> discoverInputs(Path pack, Path run, ObjectMapper mapper) throws IOException {
+        Path runRoot = run.toRealPath();
+        List<IntakeFormatProfile> profiles = loadFormatProfiles(pack, mapper);
+        try (var files = Files.walk(runRoot)) {
+            List<Path> metadataFiles = files.filter(path -> Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS))
+                    .filter(path -> profiles.stream().anyMatch(profile -> path.getFileName().toString().endsWith(profile.metadataSuffix())))
+                    .sorted().toList();
+            if (metadataFiles.isEmpty()) {
+                throw new IOException("No AI metadata files matched the configured intake profiles; add a profile for this delivery format");
+            }
+            List<IntakeInput> inputs = new ArrayList<>(metadataFiles.size());
+            for (Path metadataFile : metadataFiles) {
+                List<IntakeFormatProfile> suffixMatches = profiles.stream()
+                        .filter(profile -> metadataFile.getFileName().toString().endsWith(profile.metadataSuffix())).toList();
+                int longestSuffix = suffixMatches.stream().mapToInt(profile -> profile.metadataSuffix().length()).max().orElse(0);
+                List<IntakeFormatProfile> matches = suffixMatches.stream()
+                    .filter(profile -> profile.metadataSuffix().length() == longestSuffix).toList();
+                if (matches.size() != 1) throw new IOException("Ambiguous AI intake format profile for " + metadataFile);
+                IntakeFormatProfile profile = matches.getFirst();
+                String inputError = "";
+                JsonNode metadata;
+                try {
+                    metadata = mapper.readTree(metadataFile.toFile());
+                } catch (IOException exception) {
+                    metadata = JsonNodeFactory.instance.objectNode().put("testCaseId", metadataId(metadataFile, profile));
+                    inputError = "AI metadata JSON is malformed";
+                }
+                if (!metadata.isObject()) {
+                    metadata = JsonNodeFactory.instance.objectNode().put("testCaseId", metadataId(metadataFile, profile));
+                    inputError = "AI metadata JSON root must be an object";
+                }
+                metadata = normalizeMetadata(metadata, profile, mapper);
+                JsonNode inlinePayload = firstObject(metadata, profile.inlinePayloadPaths());
+                String payloadReference = declaredPayloadReference(metadata, profile.payloadReferencePaths());
+                Path payloadFile = inlinePayload != null ? null : payloadReference == null
+                        ? siblingPayload(metadataFile, runRoot, profile)
+                        : resolvePayloadReference(payloadReference, metadataFile, runRoot);
+                JsonNode payload = inlinePayload == null ? null : selectPayloadRoot(inlinePayload, profile.payloadRootPaths());
+                if (payloadFile != null) {
+                    try {
+                        payload = selectPayloadRoot(mapper.readTree(payloadFile.toFile()), profile.payloadRootPaths());
+                    } catch (IOException exception) {
+                        inputError = inputError.isBlank() ? "AI payload JSON is malformed"
+                                : inputError + "; AI payload JSON is malformed";
+                        payload = null;
+                    }
+                }
+                inputs.add(new IntakeInput(metadataFile, payloadFile, metadata, payload, payloadReference, profile.id(), inputError));
+            }
+            return inputs;
+        }
+    }
+
+    private static ObjectNode normalizeMetadata(JsonNode source, IntakeFormatProfile profile, ObjectMapper mapper) {
+        ObjectNode normalized = source.deepCopy();
+        profile.metadataPaths().forEach((canonical, paths) -> {
+            if (normalized.has(canonical) && !normalized.path(canonical).isNull()) return;
+            JsonNode value = firstValue(source, paths);
+            if (!value.isMissingNode() && !value.isNull()) normalized.set(canonical, value.deepCopy());
+        });
+        JsonNode fields = normalized.path("fields");
+        if (fields.isArray()) {
+            ArrayNode normalizedFields = mapper.createArrayNode();
+            fields.forEach(field -> normalizedFields.add(normalizeField(field, profile.fieldPaths())));
+            normalized.set("fields", normalizedFields);
+        }
+        return normalized;
+    }
+
+    private static ObjectNode normalizeField(JsonNode source, Map<String, List<String>> paths) {
+        if (!source.isObject()) return JsonNodeFactory.instance.objectNode();
+        ObjectNode normalized = source.deepCopy();
+        paths.forEach((canonical, candidates) -> {
+            if (normalized.has(canonical) && !normalized.path(canonical).isNull()) return;
+            JsonNode value = firstValue(source, candidates);
+            if (!value.isMissingNode() && !value.isNull()) normalized.set(canonical, value.deepCopy());
+        });
+        return normalized;
+    }
+
+    private static JsonNode firstValue(JsonNode source, List<String> paths) {
+        for (String path : paths) {
+            JsonNode candidate = source.at(path);
+            if (!candidate.isMissingNode() && !candidate.isNull()) return candidate;
+        }
+        return JsonNodeFactory.instance.missingNode();
+    }
+
+    private static JsonNode firstObject(JsonNode source, List<String> paths) {
+        for (String path : paths) {
+            JsonNode candidate = source.at(path);
+            if (candidate.isObject()) return candidate;
+        }
+        return null;
+    }
+
+    private static JsonNode selectPayloadRoot(JsonNode source, List<String> paths) {
+        for (String path : paths) {
+            JsonNode candidate = path.isEmpty() ? source : source.at(path);
+            if (candidate.isObject()) return candidate.deepCopy();
+        }
+        return source == null ? null : source.deepCopy();
+    }
+
+    private static String declaredPayloadReference(JsonNode metadata, List<String> paths) {
+        JsonNode candidate = firstValue(metadata, paths);
+        if (candidate.isTextual() && !candidate.asText().isBlank()) return candidate.asText();
+        if (candidate.isObject()) {
+            for (String key : List.of("file", "path", "href")) {
+                JsonNode value = candidate.path(key);
+                if (value.isTextual() && !value.asText().isBlank()) return value.asText();
+            }
+        }
+        return null;
+    }
+
+    private static Path siblingPayload(Path metadataFile, Path runRoot, IntakeFormatProfile profile) throws IOException {
+        String fileName = metadataFile.getFileName().toString();
+        Path candidate = metadataFile.resolveSibling(fileName.substring(0, fileName.length() - profile.metadataSuffix().length())
+                + profile.siblingPayloadSuffix());
+        return confinedRegularFile(candidate, runRoot);
+    }
+
+    private static String metadataId(Path metadataFile, IntakeFormatProfile profile) {
+        String fileName = metadataFile.getFileName().toString();
+        String id = fileName.substring(0, fileName.length() - profile.metadataSuffix().length());
+        return id.isBlank() ? fileName : id;
+    }
+
+    private static Path resolvePayloadReference(String reference, Path metadataFile, Path runRoot) throws IOException {
+        Path relative = Path.of(reference);
+        if (relative.isAbsolute()) return null;
+        for (Path part : relative) if ("..".equals(part.toString())) return null;
+        Path fromRunRoot = confinedRegularFile(runRoot.resolve(relative).normalize(), runRoot);
+        if (fromRunRoot != null) return fromRunRoot;
+        return confinedRegularFile(metadataFile.getParent().resolve(relative).normalize(), runRoot);
+    }
+
+    private static Path confinedRegularFile(Path candidate, Path runRoot) throws IOException {
+        Path normalized = candidate.toAbsolutePath().normalize();
+        Path realRoot = runRoot.toRealPath();
+        if (!normalized.startsWith(runRoot.toAbsolutePath().normalize())
+                || !Files.isRegularFile(normalized, LinkOption.NOFOLLOW_LINKS)) return null;
+        Path realFile = normalized.toRealPath();
+        return realFile.startsWith(realRoot) ? realFile : null;
+    }
+
     public static void main(String[] args) throws Exception {
         if (args.length < 2 || args.length > 4 || args.length == 4 && !"--chapter13-semantics".equals(args[3]))
             throw new IllegalArgumentException("Usage: Atl105AiElementIntake <ATL105-pack> <qe-shaped-run-folder> [report.json] [--chapter13-semantics]");
@@ -446,19 +738,31 @@ public final class Atl105AiElementIntake {
         Map<String, Long> observations = new TreeMap<>();
         Map<String, ObjectNode> findings = new TreeMap<>();
         ArrayNode executions = JsonNodeFactory.instance.arrayNode();
-        List<Path> metas;
-        try (var files = Files.list(run)) {
-            metas = files.filter(path -> path.getFileName().toString().endsWith(".meta.json")).sorted().toList();
-        }
-        for (Path metaFile : metas) {
-            Path payloadFile = metaFile.resolveSibling(metaFile.getFileName().toString().replace(".meta.json", ".json"));
-            JsonNode payload = Files.isRegularFile(payloadFile) ? mapper.readTree(payloadFile.toFile()) : null;
-            MessageAssessment assessment = intake.assess(mapper.readTree(metaFile.toFile()), payload);
+        Path runRoot = run.toRealPath();
+        List<IntakeInput> inputs = discoverInputs(pack, runRoot, mapper);
+        for (IntakeInput input : inputs) {
+            Path metadataFile = input.metadataFile();
+            Path payloadFile = input.payloadFile();
+            JsonNode payload = input.payload();
+            MessageAssessment assessment = intake.assess(input.metadata(), payload);
+            if (!input.inputError().isBlank()) {
+                List<Finding> intakeFindings = new ArrayList<>(assessment.intakeFindings());
+                intakeFindings.add(new Finding("", Status.INVALID, "AI-JSON-PARSE", input.inputError()));
+                assessment = new MessageAssessment(assessment.testCaseId(), Status.INVALID, assessment.observations(),
+                        List.copyOf(intakeFindings), assessment.scenarioType(), assessment.negativeClass(),
+                        assessment.violatedElement(), assessment.provisional());
+            }
             ObjectNode execution = executions.addObject().put("testCaseId", assessment.testCaseId())
-                    .put("metadataFile", metaFile.getFileName().toString()).put("payloadFile", payloadFile.getFileName().toString())
+                    .put("formatProfileId", input.formatProfileId())
+                    .put("metadataFile", runRoot.relativize(metadataFile).toString().replace('\\', '/'))
+                    .put("payloadFile", payloadFile != null ? runRoot.relativize(payloadFile).toString().replace('\\', '/')
+                        : payload != null ? "INLINE_METADATA"
+                        : input.payloadReference() == null ? "MISSING" : input.payloadReference())
                     .put("status", assessment.status().name()).put("observations", assessment.observations().size());
-            execution.put("metadataSha256", HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(metaFile))));
-            if (payload != null) execution.put("payloadSha256", HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(payloadFile))));
+            if (!input.inputError().isBlank()) execution.put("inputError", input.inputError());
+            execution.put("metadataSha256", sha256(Files.readAllBytes(metadataFile)));
+            if (payloadFile != null) execution.put("payloadSha256", sha256(Files.readAllBytes(payloadFile)));
+            else if (payload != null) execution.put("payloadSha256", sha256(mapper.writeValueAsBytes(payload)));
             else execution.putNull("payloadSha256");
             String kind = "negative".equals(assessment.scenarioType()) ? "negative" : "nonNegative";
             messages.computeIfAbsent(assessment.scenarioType().isBlank() ? "unspecified" : assessment.scenarioType(), key -> new TreeMap<>())
@@ -486,9 +790,15 @@ public final class Atl105AiElementIntake {
         report.put("artifact", "ATL105-AI-RUN-ELEMENT-VALIDATION");
         report.put("specificationVersion", "2026-3");
         report.put("runFolder", run.getFileName().toString());
-        Path packRoot = pack.toAbsolutePath().normalize(), runRoot = run.toAbsolutePath().normalize();
-        if (runRoot.startsWith(packRoot)) report.put("runRelativeToPack", packRoot.relativize(runRoot).toString().replace('\\', '/'));
-        report.put("messagesAssessed", metas.size());
+        Path packRoot = pack.toAbsolutePath().normalize(), normalizedRunRoot = run.toAbsolutePath().normalize();
+        if (normalizedRunRoot.startsWith(packRoot)) report.put("runRelativeToPack", packRoot.relativize(normalizedRunRoot).toString().replace('\\', '/'));
+        report.put("messagesAssessed", inputs.size());
+        Path formatProfilesFile = pack.resolve("docs/specs/kb/elements/ai-intake-format-profiles.json");
+        report.put("intakeFormatProfileSchemaVersion", 1);
+        report.put("intakeFormatProfilesSha256", sha256(Files.readAllBytes(formatProfilesFile)));
+        Map<String, Long> profileCounts = new TreeMap<>();
+        inputs.forEach(input -> profileCounts.merge(input.formatProfileId(), 1L, Long::sum));
+        report.set("intakeFormatProfileCounts", mapper.valueToTree(profileCounts));
         report.put("chapter13Semantics", args.length == 4);
         report.put("policy", "Read-only. AI values are not copied into this report. REVIEW_REQUIRED is not a pass; CHECKS_PASSED is not business approval. INVALID on AI negative scenarios is expected detection; INVALID on other scenarios is an AI artifact defect candidate.");
         report.set("messagesByScenarioTypeAndStatus", mapper.valueToTree(messages));
@@ -500,7 +810,7 @@ public final class Atl105AiElementIntake {
         findings.values().stream().sorted((left, right) -> Long.compare(right.path("count").asLong(), left.path("count").asLong())).forEach(list::add);
         Files.createDirectories(output.toAbsolutePath().getParent());
         mapper.writerWithDefaultPrettyPrinter().writeValue(output.toFile(), report);
-        System.out.println("messages=" + metas.size() + " observations=" + observations + " negatives=" + negatives + " mapping=" + new TreeMap<>(intake.mappingCounts()));
+        System.out.println("messages=" + inputs.size() + " observations=" + observations + " negatives=" + negatives + " mapping=" + new TreeMap<>(intake.mappingCounts()));
     }
 
     private static void record(Map<String, ObjectNode> findings, String scope, Finding finding, String testCase, String kind, boolean provisional) {

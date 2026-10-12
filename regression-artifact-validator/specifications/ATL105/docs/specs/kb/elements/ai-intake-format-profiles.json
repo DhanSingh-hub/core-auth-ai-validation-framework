@@ -1,0 +1,88 @@
+{
+  "artifact": "ATL105-AI-INTAKE-FORMAT-PROFILES",
+  "schemaVersion": 1,
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "policy": "Profiles map delivery JSON structure and metadata aliases into the intake envelope only. They do not map ATL105 meaning; semantic aliases and values remain governed by the independent intake crosswalk and source validators.",
+  "profiles": [
+    {
+      "id": "qe-meta-sibling-v1",
+      "filenamePatterns": [
+        { "metadataSuffix": ".meta.json", "siblingPayloadSuffix": ".json" }
+      ],
+      "metadataPaths": {
+        "testCaseId": ["/testCaseId", "/test_case_id", "/caseId", "/case_id", "/id"],
+        "messageFamily": ["/messageFamily", "/message_family", "/targetTransaction", "/target_transaction"],
+        "scenarioType": ["/scenarioType", "/scenario_type", "/type"],
+        "negativeClass": ["/negativeClass", "/negative_class"],
+        "violatedElementName": ["/violatedElementName", "/violated_element_name"],
+        "specificationVersion": ["/specificationVersion", "/specification_version"],
+        "fields": ["/fields", "/metadata/fields", "/testFields", "/test_fields"],
+        "context": ["/context", "/transactionContext", "/transaction_context"],
+        "history": ["/history", "/transactionHistory", "/transaction_history"],
+        "qualifiers": ["/qualifiers"],
+        "records": ["/records"],
+        "representation": ["/representation"]
+      },
+      "fieldPaths": {
+        "segment": ["/segment", "/segmentId", "/segment_id"],
+        "element": ["/element", "/elementName", "/element_name", "/aiElementName", "/ai_element_name"],
+        "specElementName": ["/specElementName", "/spec_element_name", "/specName", "/spec_name"],
+        "value": ["/value", "/actualValue", "/actual_value", "/fieldValue", "/field_value"],
+        "segmentFriendlyName": ["/segmentFriendlyName", "/segment_friendly_name"],
+        "provisional": ["/provisional"]
+      },
+      "payloadReferencePaths": [
+        "/payloadFile", "/payload_file", "/testDataFile", "/test_data_file",
+        "/requestFile", "/request_file", "/inputFile", "/input_file", "/dataFile", "/data_file",
+        "/artifacts/payload/path", "/testData/file", "/test_data/file"
+      ],
+      "inlinePayloadPaths": [
+        "/payload", "/actualPayload", "/actual_payload", "/request", "/testData", "/test_data", "/inputs/payload"
+      ],
+      "payloadRootPaths": [
+        "/payload", "/actualPayload", "/actual_payload", "/request", "/requestBody", "/request_body", "/body", "/data", ""
+      ]
+    },
+    {
+      "id": "alternate-json-metadata-v1",
+      "filenamePatterns": [
+        { "metadataSuffix": ".metadata.json", "siblingPayloadSuffix": ".json" },
+        { "metadataSuffix": "metadata.json", "siblingPayloadSuffix": "payload.json" }
+      ],
+      "metadataPaths": {
+        "testCaseId": ["/testCaseId", "/test_case_id", "/caseId", "/case_id", "/id"],
+        "messageFamily": ["/messageFamily", "/message_family", "/targetTransaction", "/target_transaction"],
+        "scenarioType": ["/scenarioType", "/scenario_type", "/type"],
+        "negativeClass": ["/negativeClass", "/negative_class"],
+        "violatedElementName": ["/violatedElementName", "/violated_element_name"],
+        "specificationVersion": ["/specificationVersion", "/specification_version"],
+        "fields": ["/fields", "/metadata/fields", "/testFields", "/test_fields"],
+        "context": ["/context", "/transactionContext", "/transaction_context"],
+        "history": ["/history", "/transactionHistory", "/transaction_history"],
+        "qualifiers": ["/qualifiers"],
+        "records": ["/records"],
+        "representation": ["/representation"]
+      },
+      "fieldPaths": {
+        "segment": ["/segment", "/segmentId", "/segment_id"],
+        "element": ["/element", "/elementName", "/element_name", "/aiElementName", "/ai_element_name"],
+        "specElementName": ["/specElementName", "/spec_element_name", "/specName", "/spec_name"],
+        "value": ["/value", "/actualValue", "/actual_value", "/fieldValue", "/field_value"],
+        "segmentFriendlyName": ["/segmentFriendlyName", "/segment_friendly_name"],
+        "provisional": ["/provisional"]
+      },
+      "payloadReferencePaths": [
+        "/payloadFile", "/payload_file", "/testDataFile", "/test_data_file",
+        "/requestFile", "/request_file", "/inputFile", "/input_file", "/dataFile", "/data_file",
+        "/artifacts/payload/path", "/testData/file", "/test_data/file"
+      ],
+      "inlinePayloadPaths": [
+        "/payload", "/actualPayload", "/actual_payload", "/request", "/testData", "/test_data", "/inputs/payload"
+      ],
+      "payloadRootPaths": [
+        "/payload", "/actualPayload", "/actual_payload", "/request", "/requestBody", "/request_body", "/body", "/data", ""
+      ]
+    }
+  ]
+}

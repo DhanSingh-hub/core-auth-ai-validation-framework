@@ -310,6 +310,8 @@ def run1_anchor_candidate(requirement: dict, index: dict) -> dict:
     elif len(elements) > 1 or len(segments) > 1:
         status = "REVIEW_REQUIRED_AMBIGUOUS_OR_COMPOSITE_CANDIDATE"
         candidates = rule_candidates(index, segments, elements)
+        if not candidates:
+            status = "NO_EXACT_SOURCE_ANCHOR_CANDIDATE_REVIEW_REQUIRED"
     else:
         candidates = rule_candidates(index, segments, elements)
         if not candidates:
@@ -354,6 +356,10 @@ def self_test() -> None:
         "source_rule_id": "55", "related_entity_ids": ["ENT-SEG-100", "ENT-SEG-101", "ENT-ELEM-55"]
     }, index)
     assert ambiguous["sourceAnchorCandidateStatus"] == "REVIEW_REQUIRED_AMBIGUOUS_OR_COMPOSITE_CANDIDATE"
+    unresolved = run1_anchor_candidate({
+        "source_rule_id": "999", "related_entity_ids": ["ENT-SEG-100", "ENT-SEG-101", "ENT-ELEM-999"]
+    }, index)
+    assert unresolved["sourceAnchorCandidateStatus"] == "NO_EXACT_SOURCE_ANCHOR_CANDIDATE_REVIEW_REQUIRED"
     scenario = {"id": "SC-1", "fingerprint": "fp", "requirement_ids": ["BR-1"]}
     assert scenario_key(scenario) == scenario_key(dict(scenario))
     print("PASS: legacy anchors remain review-required; ambiguous anchors are not promoted")
@@ -629,6 +635,68 @@ def build(runs_root: Path, analysis_dir: Path, test_solution_dir: Path,
         })
     br_rows.extend(suite_br_rows)
 
+    unique_ai_ids = set(run1_by_id) | set(shared_by_id)
+    ai_br_rows = [row for row in br_rows if row.get("recordType") == "AI_BUSINESS_REQUIREMENT"]
+    test_solution_rule_ids = {
+        str(item.get("ruleId")) for item in baseline.get("businessRequirements", []) if item.get("ruleId")
+    }
+    coverage_by_cohort = {}
+    candidate_rule_details = {}
+    for cohort_id in sorted({row["cohortId"] for row in ai_br_rows}):
+        cohort_rows = [row for row in ai_br_rows if row["cohortId"] == cohort_id]
+        candidate_ai_rows = [row for row in cohort_rows if row.get("candidateTestSolutionRules")]
+        cohort_rule_ids = set()
+        for row in cohort_rows:
+            row_rule_ids = {
+                str(candidate.get("ruleId")) for candidate in row.get("candidateTestSolutionRules", [])
+                if candidate.get("ruleId")
+            }
+            cohort_rule_ids.update(row_rule_ids)
+            for rule_id in row_rule_ids:
+                detail = candidate_rule_details.setdefault(rule_id, {"candidateAiBrCount": 0, "sourceCohorts": set()})
+                detail["candidateAiBrCount"] += 1
+                detail["sourceCohorts"].add(cohort_id)
+        if not cohort_rule_ids <= test_solution_rule_ids:
+            raise ValueError(f"Candidate IDs are outside the independent Test Solution baseline: {cohort_rule_ids - test_solution_rule_ids}")
+        ai_denominator = len(cohort_rows)
+        test_denominator = int(baseline["ruleCount"])
+        coverage_by_cohort[cohort_id] = {
+            "aiBrWithAtLeastOneTestBrCandidate": len(candidate_ai_rows),
+            "aiBrDenominator": ai_denominator,
+            "aiBrCandidateCoveragePercent": round(100 * len(candidate_ai_rows) / ai_denominator, 2),
+            "testBrWithAtLeastOneAiCandidate": len(cohort_rule_ids),
+            "testBrDenominator": test_denominator,
+            "testBrCandidateReachPercent": round(100 * len(cohort_rule_ids) / test_denominator, 2),
+        }
+
+    candidate_ai_br_count = sum(value["aiBrWithAtLeastOneTestBrCandidate"] for value in coverage_by_cohort.values())
+    candidate_test_rule_ids = set(candidate_rule_details)
+    source_anchor_coverage = {
+        "assessmentStatus": "ASSESSED_SOURCE_ANCHOR_CANDIDATE_COVERAGE",
+        "method": "Counts an AI BR when its exact source-anchor lookup yields at least one rule in the independent Test Solution baseline. This is candidate reach, not semantic equivalence or execution coverage.",
+        "smeApprovalRequiredForCalculation": False,
+        "aiBrCoverage": {
+            "numeratorAiBrsWithAtLeastOneTestBrCandidate": candidate_ai_br_count,
+            "denominatorUniqueAiBrs": len(unique_ai_ids),
+            "percent": round(100 * candidate_ai_br_count / len(unique_ai_ids), 2),
+        },
+        "testSolutionBrReach": {
+            "numeratorTestBrsWithAtLeastOneAiCandidate": len(candidate_test_rule_ids),
+            "denominatorIndependentTestBrs": int(baseline["ruleCount"]),
+            "percent": round(100 * len(candidate_test_rule_ids) / int(baseline["ruleCount"]), 2),
+        },
+        "byAiCatalog": coverage_by_cohort,
+        "candidateTestBrDetails": [
+            {
+                "testSolutionRuleId": rule_id,
+                "candidateAiBrCount": detail["candidateAiBrCount"],
+                "sourceCohorts": sorted(detail["sourceCohorts"]),
+            }
+            for rule_id, detail in sorted(candidate_rule_details.items())
+        ],
+        "semanticEquivalence": {"confirmedMatches": 0, "status": "NOT_ASSESSED"},
+    }
+
     run1_count = len(run1_requirements)
     shared_count = len(shared_requirements)
     unique_ai_ids = set(run1_by_id) | set(shared_by_id)
@@ -639,8 +707,8 @@ def build(runs_root: Path, analysis_dir: Path, test_solution_dir: Path,
         "artifact": "ATL105-COMBINED-RUN1-RUN4-AI-BR-SCENARIO-TEST-CASE-CROSSWALK",
         "createdBy": Path(__file__).name,
         "sourceRuns": list(RUNS),
-        "status": "CANDIDATE_CROSSWALK_GENERATED_SEMANTIC_MATCHES_NOT_ASSESSED",
-        "policy": "Deduplicate only byte-identical Run2–Run4 canonical catalogs. Preserve Run1's distinct legacy BR catalog and scenario-reference mismatch. Exact or related-entity source anchors are candidates only; no semantic matches are confirmed.",
+        "status": "SOURCE_ANCHOR_COVERAGE_ASSESSED_SEMANTIC_EQUIVALENCE_NOT_ASSESSED",
+        "policy": "Deduplicate only byte-identical Run2–Run4 canonical catalogs. Preserve Run1's distinct legacy BR catalog and scenario-reference mismatch. Source-anchor candidate coverage is measurable without SME approval; candidates are not semantic confirmations.",
         "primaryAiBusinessRequirements": {
             "Run1LegacyCatalog": run1_count,
             "Run2Run4UniqueCatalog": shared_count,
@@ -704,8 +772,8 @@ def build(runs_root: Path, analysis_dir: Path, test_solution_dir: Path,
         "run2Run4MatchDispositionCounts": run4_summary.get("matchDispositionCounts"),
         "run2Run4AiBrAnchorCandidates": run4_summary.get("aiBrsWithSourceAnchorCandidates"),
         "run2Run4DistinctCandidateTestSolutionRules": run4_summary.get("uniqueTestSolutionRulesWithSourceAnchorCandidates"),
-        "combinedCandidateAiBrRows": sum(run1_statuses[k] for k in run1_statuses if k.startswith("REVIEW_REQUIRED"))
-            + int(run4_summary.get("aiBrsWithSourceAnchorCandidates", 0)),
+        "combinedCandidateAiBrRows": candidate_ai_br_count,
+        "sourceAnchorCoverageAssessment": source_anchor_coverage,
         "confirmedSemanticMatches": 0,
         "confirmedMatchStatus": "NOT_ASSESSED",
         "run2Run4MatrixAndChainAudit": run4_summary.get("matrixAndChainAudit"),
@@ -729,7 +797,7 @@ def build(runs_root: Path, analysis_dir: Path, test_solution_dir: Path,
             "Run2–Run4 canonical BR/scenario/test-case/matrix inputs are byte-identical; they are counted as one content cohort with three source-run provenances.",
             "Run1 related-entity anchors are candidate-generation evidence only and remain REVIEW_REQUIRED.",
             "Scenario-to-case links are AI-internal structural links; no independent Test Solution scenario baseline was supplied.",
-            "No AI-to-Test Solution semantic equivalence or BR coverage is confirmed by this crosswalk.",
+            "Source-anchor candidate coverage is assessed separately; no AI-to-Test Solution semantic equivalence or execution/final test approval is asserted.",
         ],
     }
 
@@ -741,6 +809,8 @@ def build(runs_root: Path, analysis_dir: Path, test_solution_dir: Path,
         dedup_details_path, output_dir / "combined-unique-physical-artifact-content.jsonl.gz", unique_content_count)
     (output_dir / "combined-crosswalk-summary.json").write_text(
         json.dumps(crosswalk_summary, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    (output_dir / "ai-br-source-anchor-coverage-assessment.json").write_text(
+        json.dumps(source_anchor_coverage, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
     return crosswalk_summary
 
 
@@ -769,6 +839,8 @@ def main() -> None:
         "outputDirectory": str(args.output_dir),
         "combinedUniqueAiBrIds": summary["primaryAiBusinessRequirements"]["combinedUniqueIds"],
         "uniqueScenarioRows": summary["uniqueMainScenarioCount"],
+        "aiBrSourceAnchorCoveragePercent": summary["sourceAnchorCoverageAssessment"]["aiBrCoverage"]["percent"],
+        "testSolutionBrCandidateReachPercent": summary["sourceAnchorCoverageAssessment"]["testSolutionBrReach"]["percent"],
         "confirmedSemanticMatches": summary["confirmedSemanticMatches"],
         "confirmedMatchStatus": summary["confirmedMatchStatus"],
     }, indent=2))

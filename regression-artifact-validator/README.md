@@ -78,6 +78,57 @@ Focused governance checks:
 mvn '-Dtest=ProducerNeutralContractTest,RepositoryStructureTest,Atl105PathsTest' test
 ```
 
+## Unified AI validation
+
+The unified runner emits one canonical envelope per test case, joining profile-driven intake evidence, source hashes, structural defect candidates and response-code-family checks. It supports the catalog arrays documented in the runner and records the selected catalog paths and input hashes. Add a versioned input profile when a new metadata/payload layout appears; unsupported layouts are not guessed.
+
+Run the complete Run4 assessment from this module directory:
+
+```powershell
+$run = 'specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/test_generation/candidates/qe_shaped_test_data'
+$scenarios = 'specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json'
+$cases = 'specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/test_generation/candidates/test_case_candidates.json'
+$supplementalFlowCatalog = 'specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run1/pipeline_outputs_2026-10-07/src/pipeline/reporting/output/segment-100-suite-catalog.json'
+$report = 'specifications/ATL105/test-output/ai-unified-run4-compact-v4.json'
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.canonical.AiUnifiedValidationRunner' "-Dexec.args=specifications/ATL105 $run $scenarios $cases $report --chapter13-semantics --supplemental-flow-catalog $supplementalFlowCatalog"
+```
+
+The compact JSON summary references `run4-unified-compact-v4-cases.jsonl.gz`, a gzip JSONL sidecar containing one case envelope per test case. Each envelope includes source hashes, exercised rule findings and declared-negative target disposition. The summary groups coverage by source rule, negative-target dispositions and stable `OG-…` oracle-gap IDs with bounded case samples. Negative-target detection is diagnostic only; it is not isolated mutation-effectiveness certification. Supplemental suite catalogs can be passed with `--supplemental-flow-catalog` to audit declared flow IDs separately.
+
+`AI_DEFECT` reports automated structural/declaration defect candidates; `DISAGREE` means a response-family rejection or mismatch against an approved case outcome; `AGREE` is reserved for complete expected-outcome agreement and is not inferred from code-family permission; `ORACLE_GAP` means the required independent outcome oracle is unavailable or conflicting. None of these results is business or execution certification.
+
+### Case-level outcome adjudication
+
+Prepare a pending register from an existing summary and its hash-verified case-envelope sidecar (use a new output path on subsequent preparations):
+
+```powershell
+$pack = 'specifications/ATL105'
+$register = "$pack/test-output/run4-case-outcome-oracles-2026-10-12-v1.json"
+mvn -q exec:java '-Dexec.mainClass=com.coreauth.validator.canonical.AiCaseOutcomeOracleRegister' "-Dexec.args=--prepare $pack $report $register"
+```
+
+Preparation includes every `ORACLE_GAP` case with its scenario and physical input hashes. Expected outcomes remain null, all entries remain `PENDING`, and no AI-declared value is copied into an independent oracle. Draft Section 10.2 device-state vectors are not Run4 host outcome approvals.
+
+An authorized reviewer supplies a decision JSON containing `testCaseId`, `previousRegisterSha256`, `status` (`APPROVED`, `REJECTED`, or `PENDING`), `reviewer`, `reviewedAt` (ISO-8601 instant), and `rationale`. Approval also requires:
+
+- `completeness: "COMPLETE_CASE_OUTCOME"` and `independenceAttestation: "I_REVIEWED_SOURCE_INDEPENDENTLY_OF_AI_OUTPUT"`.
+- `expectedResponse`: the independently authored complete response assertion object, with a one-character `response_code`. Use the case's canonical field names; field `{ "value": ... }` wrappers are compared by value, not producer confidence/flags. Every asserted field must match, with no extra fields.
+- `evidence`: non-empty rows with `type` (`ATL105_SPECIFICATION`, `INDEPENDENT_EXECUTION`, or `AUTHORIZED_REVIEW_RECORD`), `sourcePath`, `sha256`, and `locator`. Relative paths resolve under the ATL105 pack. Evidence files must exist, hash-match, and be outside the current producer input and both catalogs. Keep runtime evidence masked; a source quote alone does not establish a host outcome without case-state/lifecycle context.
+
+Record a review into a **new** register version, retaining the previous version and each case's review history:
+
+```powershell
+$reviewed = "$pack/test-output/run4-case-outcome-oracles-2026-10-12-v2.json"
+$decision = "$pack/test-output/reviewer-case-outcome-decision.json"
+mvn -q exec:java '-Dexec.mainClass=com.coreauth.validator.canonical.AiCaseOutcomeOracleRegister' "-Dexec.args=--record $pack $run $scenarios $cases $register $decision --new-register $reviewed"
+```
+
+The decision's prior-register hash prevents applying a review to a different snapshot. Reviewer identity/authorization and completeness are explicit attestations, not automatically authenticated or inferred by the tool. Only a reviewer can adjudicate applicability and host preconditions; agents must not invent approvals.
+
+Pass `--case-outcome-oracle-register <reviewed-register.json>` to the unified runner, using a new report path. Input-catalog hashes, scenario ID, payload/metadata bindings and independent evidence are checked. Approved outcomes produce `MATCH`/`MISMATCH`; pending, rejected, stale bindings and family-oracle conflicts never grant agreement. Structural/declaration defects retain precedence. Missing AI expected assertions remain mismatches/defects, not silently filled from the independent oracle. An expected-response match does not certify field presence, wire conversion, lifecycle execution, host results, or semantic BR coverage.
+
+Full Run4 verification completed with [the case-oracle v5 report](specifications/ATL105/test-output/ai-unified-run4-case-oracles-v5.json) and its hash-verified gzip case sidecar: 21,531 unique cases, unchanged verdicts (1,022 `AI_DEFECT`, 1,346 `DISAGREE`, 19,163 `ORACLE_GAP`). The [v1 oracle register](specifications/ATL105/test-output/run4-case-outcome-oracles-2026-10-12-v1.json) contains 19,163 pending entries, all reported as `REVIEW_REQUIRED`; the other 2,368 cases have `NOT_PROVIDED`. Zero case outcomes are approved. The 34 focused runner/comparator/intake/defect tests pass; independent sidecar/count/register-hash checks pass. Authorized outcome review remains open.
+
 After changing a segment catalog or training decision, regenerate and check the training report:
 
 ```powershell

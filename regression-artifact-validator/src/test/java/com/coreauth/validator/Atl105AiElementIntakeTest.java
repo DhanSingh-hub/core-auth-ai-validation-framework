@@ -4,6 +4,7 @@ import com.coreauth.validator.validation.Atl105AiElementIntake;
 import com.coreauth.validator.validation.Atl105ElementValueValidator.Status;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -250,6 +251,9 @@ class Atl105AiElementIntakeTest {
         Atl105AiElementIntake.main(new String[]{PACK.toString(), inputDirectory.toString(), reportFile.toString(), "--chapter13-semantics"});
         var report = MAPPER.readTree(reportFile.toFile());
         assertThat(report.path("chapter13Semantics").asBoolean()).isTrue();
+        assertThat(report.path("intakeFormatProfileSchemaVersion").asInt()).isEqualTo(1);
+        assertThat(report.path("intakeFormatProfilesSha256").asText()).hasSize(64);
+        assertThat(report.path("intakeFormatProfileCounts").path("qe-meta-sibling-v1").asInt()).isEqualTo(1);
         assertThat(report.path("executions")).hasSize(1);
         var execution = report.path("executions").get(0);
         assertThat(execution.path("status").asText()).isEqualTo("INVALID");
@@ -261,6 +265,116 @@ class Atl105AiElementIntakeTest {
                 metadataFile.toString(), "--chapter13-semantics"})).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("outside the producer input folder");
         assertThat(Files.readAllBytes(metadataFile)).isEqualTo(metadataBefore);
+    }
+
+    @Test
+    void cliDiscoversNestedMetadataAndSupportsDeclaredInlineAndConfinedPayloads() throws Exception {
+        Path inputDirectory = Files.createDirectory(directory.resolve("variant-inputs"));
+        Path payloadDirectory = Files.createDirectories(inputDirectory.resolve("delivery/data"));
+        Path metadataDirectory = Files.createDirectories(inputDirectory.resolve("delivery/index"));
+        Path declaredPayload = payloadDirectory.resolve("request-body.json");
+        JsonNode request = json("{\"Financial Transaction Request\":{\"NumberofSegments\":\"1\","
+                + "\"Standard\":{\"SegmentType\":\"100\",\"SequenceNumber\":\"000000\"}}}");
+        MAPPER.writeValue(declaredPayload.toFile(), request);
+
+        ObjectNode declaredMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        declaredMetadata.put("testCaseId", "TC-DECLARED");
+        declaredMetadata.put("test_data_file", "delivery/data/request-body.json");
+        Path declaredMetadataFile = metadataDirectory.resolve("TC-DECLARED.meta.json");
+        MAPPER.writeValue(declaredMetadataFile.toFile(), declaredMetadata);
+
+        ObjectNode inlineMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        inlineMetadata.put("testCaseId", "TC-INLINE");
+        inlineMetadata.set("payload", request.deepCopy());
+        Path inlineMetadataFile = metadataDirectory.resolve("TC-INLINE.meta.json");
+        MAPPER.writeValue(inlineMetadataFile.toFile(), inlineMetadata);
+
+        Path alternateDirectory = Files.createDirectories(inputDirectory.resolve("alternate-format"));
+        ObjectNode alternateMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        alternateMetadata.put("testCaseId", "TC-SUFFIX");
+        MAPPER.writeValue(alternateDirectory.resolve("metadata.json").toFile(), alternateMetadata);
+        MAPPER.writeValue(alternateDirectory.resolve("payload.json").toFile(), request);
+        ObjectNode dottedMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        dottedMetadata.put("testCaseId", "TC-DOTTED");
+        MAPPER.writeValue(alternateDirectory.resolve("case.metadata.json").toFile(), dottedMetadata);
+        MAPPER.writeValue(alternateDirectory.resolve("case.json").toFile(), request);
+
+        ObjectNode aliasedMetadata = (ObjectNode) json("""
+            {"case_id":"TC-ALIASED","message_family":"Financial Transaction Request",
+             "scenario_type":"negative","test_fields":[
+               {"segment_id":"100","element_name":"SequenceNumber",
+                "spec_element_name":"Sequence Number","value":"000000"}],
+             "payload_file":"delivery/data/wrapped-request.json"}
+            """);
+        Path aliasedMetadataFile = metadataDirectory.resolve("TC-ALIASED.meta.json");
+        MAPPER.writeValue(aliasedMetadataFile.toFile(), aliasedMetadata);
+        MAPPER.writeValue(payloadDirectory.resolve("wrapped-request.json").toFile(),
+            json("{\"request_body\":{\"Financial Transaction Request\":{\"NumberofSegments\":\"1\","
+                + "\"Standard\":{\"SegmentType\":\"100\",\"SequenceNumber\":\"000000\"}}}}"));
+
+        Path externalPayload = directory.resolve("external-request.json");
+        MAPPER.writeValue(externalPayload.toFile(), request);
+        ObjectNode escapedMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        escapedMetadata.put("testCaseId", "TC-ESCAPE");
+        escapedMetadata.put("payload_file", "../../external-request.json");
+        Path escapedMetadataFile = metadataDirectory.resolve("TC-ESCAPE.meta.json");
+        MAPPER.writeValue(escapedMetadataFile.toFile(), escapedMetadata);
+
+        Path malformedPayload = payloadDirectory.resolve("malformed.json");
+        Files.writeString(malformedPayload, "{ malformed");
+        ObjectNode malformedMetadata = (ObjectNode) meta("Financial Transaction Request", "negative");
+        malformedMetadata.put("testCaseId", "TC-MALFORMED");
+        malformedMetadata.put("payload_file", "delivery/data/malformed.json");
+        MAPPER.writeValue(metadataDirectory.resolve("TC-MALFORMED.meta.json").toFile(), malformedMetadata);
+        byte[] externalBytes = Files.readAllBytes(externalPayload);
+
+        Path reportFile = directory.resolve("variant-report.json");
+        Atl105AiElementIntake.main(new String[]{PACK.toString(), inputDirectory.toString(), reportFile.toString(),
+                "--chapter13-semantics"});
+        JsonNode executions = MAPPER.readTree(reportFile.toFile()).path("executions");
+        assertThat(executions).hasSize(7);
+        JsonNode declared = executionFor(executions, "TC-DECLARED");
+        assertThat(declared.path("metadataFile").asText()).isEqualTo("delivery/index/TC-DECLARED.meta.json");
+        assertThat(declared.path("payloadFile").asText()).isEqualTo("delivery/data/request-body.json");
+        assertThat(declared.path("formatProfileId").asText()).isEqualTo("qe-meta-sibling-v1");
+        assertThat(declared.path("payloadSha256").asText()).isNotBlank();
+        JsonNode inline = executionFor(executions, "TC-INLINE");
+        assertThat(inline.path("payloadFile").asText()).isEqualTo("INLINE_METADATA");
+        assertThat(inline.path("payloadSha256").asText()).isNotBlank();
+        JsonNode escaped = executionFor(executions, "TC-ESCAPE");
+        assertThat(escaped.path("payloadFile").asText()).isEqualTo("../../external-request.json");
+        assertThat(escaped.path("payloadSha256").isNull()).isTrue();
+        JsonNode alternate = executionFor(executions, "TC-SUFFIX");
+        assertThat(alternate.path("formatProfileId").asText()).isEqualTo("alternate-json-metadata-v1");
+        assertThat(alternate.path("payloadFile").asText()).isEqualTo("alternate-format/payload.json");
+        assertThat(alternate.path("payloadSha256").asText()).isNotBlank();
+        JsonNode dotted = executionFor(executions, "TC-DOTTED");
+        assertThat(dotted.path("formatProfileId").asText()).isEqualTo("alternate-json-metadata-v1");
+        assertThat(dotted.path("payloadFile").asText()).isEqualTo("alternate-format/case.json");
+        JsonNode aliased = executionFor(executions, "TC-ALIASED");
+        assertThat(aliased.path("formatProfileId").asText()).isEqualTo("qe-meta-sibling-v1");
+        assertThat(aliased.path("payloadFile").asText()).isEqualTo("delivery/data/wrapped-request.json");
+        assertThat(aliased.path("status").asText()).isEqualTo("INVALID");
+        JsonNode malformed = executionFor(executions, "TC-MALFORMED");
+        assertThat(malformed.path("status").asText()).isEqualTo("INVALID");
+        assertThat(malformed.path("inputError").asText()).contains("payload JSON is malformed");
+        assertThat(Files.readAllBytes(externalPayload)).isEqualTo(externalBytes);
+        assertThat(Files.exists(declaredMetadataFile)).isTrue();
+        assertThat(Files.exists(inlineMetadataFile)).isTrue();
+        assertThat(Files.exists(escapedMetadataFile)).isTrue();
+
+        Path unsupportedDirectory = Files.createDirectory(directory.resolve("unsupported-format"));
+        assertThatThrownBy(() -> Atl105AiElementIntake.main(new String[]{PACK.toString(),
+            unsupportedDirectory.toString(), directory.resolve("unsupported-report.json").toString(),
+            "--chapter13-semantics"})).isInstanceOf(java.io.IOException.class)
+            .hasMessageContaining("add a profile for this delivery format");
+    }
+
+    private static JsonNode executionFor(JsonNode executions, String testCaseId) {
+        for (JsonNode execution : executions) {
+            if (testCaseId.equals(execution.path("testCaseId").asText())) return execution;
+        }
+        throw new AssertionError("No execution found for " + testCaseId);
     }
 
     private static JsonNode meta(String family, String scenario, JsonNode... fields) {

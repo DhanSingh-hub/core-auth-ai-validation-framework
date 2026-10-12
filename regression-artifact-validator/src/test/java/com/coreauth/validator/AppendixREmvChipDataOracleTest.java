@@ -126,6 +126,15 @@ class AppendixREmvChipDataOracleTest {
     }
 
     @Test
+    void rejectsOverflowingLongFormLengthWithoutThrowing() {
+        AppendixREmvChipDataOracle.TlvDecodeResult decode = oracle.decode("9F0684FFFFFFFF");
+
+        assertThat(decode.wellFormed()).isFalse();
+        assertThat(decode.reason()).contains("exceeds the remaining EMV data");
+        assertThat(oracle.assessTlvFormat(decode).status()).isEqualTo(Status.FAIL);
+    }
+
+    @Test
     void cascadingChecksFailWhenTlvStructureIsInvalid() {
         AppendixREmvChipDataOracle.TlvDecodeResult decode = oracle.decode("ZZ");
 

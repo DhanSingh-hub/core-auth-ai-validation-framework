@@ -132,7 +132,7 @@ public final class AppendixREmvChipDataOracle {
                         "Length field missing after tag " + tagHex + " at byte offset " + tagStart + ".");
             }
             int firstLenByte = data[index] & 0xFF;
-            int length;
+            long length;
             if ((firstLenByte & 0x80) != 0) {
                 int numLengthBytes = firstLenByte & 0x7F;
                 index += 1;
@@ -143,24 +143,31 @@ public final class AppendixREmvChipDataOracle {
                 }
                 length = 0;
                 for (int i = 0; i < numLengthBytes; i++) {
-                    length = (length << 8) | (data[index + i] & 0xFF);
+                    int lengthByte = data[index + i] & 0xFF;
+                    if (length > (data.length - (long) lengthByte) / 256L) {
+                        return new TlvDecodeResult(false, entries,
+                                "Long-form length exceeds the remaining EMV data for tag " + tagHex
+                                        + " at byte offset " + tagStart + ".");
+                    }
+                    length = length * 256L + lengthByte;
                 }
                 index += numLengthBytes;
             } else {
                 length = firstLenByte;
                 index += 1;
             }
-            if (index + length > data.length) {
+            if (length > data.length - (long) index) {
                 return new TlvDecodeResult(false, entries,
                         "Value field for tag " + tagHex + " declares length " + length
                                 + " but only " + (data.length - index) + " byte(s) remain.");
             }
+            int valueLength = (int) length;
             StringBuilder valueHex = new StringBuilder();
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < valueLength; i++) {
                 valueHex.append(String.format("%02X", data[index + i] & 0xFF));
             }
-            entries.add(new TlvEntry(tagHex.toString(), length, valueHex.toString()));
-            index += length;
+            entries.add(new TlvEntry(tagHex.toString(), valueLength, valueHex.toString()));
+            index += valueLength;
         }
         return new TlvDecodeResult(true, entries,
                 "Fully decoded " + entries.size() + " TLV entr" + (entries.size() == 1 ? "y" : "ies")
