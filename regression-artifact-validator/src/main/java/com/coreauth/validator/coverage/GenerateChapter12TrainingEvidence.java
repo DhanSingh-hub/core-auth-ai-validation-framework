@@ -96,7 +96,7 @@ public final class GenerateChapter12TrainingEvidence {
                         ((ObjectNode) payload.path("elements")).set(entry.getKey(), entry.getValue().deepCopy());
                     }
                 }
-                for (String field : List.of("context", "serializedSegment", "serializedSegmentHex", "cardBuckets", "history", "qualifiers", "tables", "messageFamily")) {
+                for (String field : List.of("context", "serializedSegment", "serializedSegmentHex", "cardBuckets", "history", "qualifiers", "tables", "messageFamily", "direction", "floorLimitGroups", "encodedTableData", "marketBasketData", "taxProducts")) {
                     if (probe.has(field)) payload.set(field, probe.path(field).deepCopy());
                 }
                 if (probe.has("omitSerializedSegment")) {
@@ -136,6 +136,12 @@ public final class GenerateChapter12TrainingEvidence {
             JsonNode catalog = mapper.readTree(Atl105Paths.ruleCatalog(segment).toFile());
             JsonNode rule = null;
             for (JsonNode candidate : catalog.path("rules")) if (ruleId.equals(candidate.path("ruleId").asText())) rule = candidate;
+            if (rule == null && "131".equals(segment) && ruleId.startsWith("SEG130-R-")) {
+                // SEG130-R-023 documents Segment 131's inverted (no-separator) wire contrast inside
+                // Segment 130's own catalog file; its finding only fires on Segment 131 payloads.
+                JsonNode pairedCatalog = mapper.readTree(Atl105Paths.ruleCatalog("130").toFile());
+                for (JsonNode candidate : pairedCatalog.path("rules")) if (ruleId.equals(candidate.path("ruleId").asText())) rule = candidate;
+            }
             if (rule == null) throw new IOException("Fixture references missing source rule " + ruleId);
             JsonNode anchor = rule.path("sourceAnchor");
             String key = canonicalKey(anchor);
@@ -157,7 +163,10 @@ public final class GenerateChapter12TrainingEvidence {
                 String suffix = negative ? "-WRONG-TYPE" : "-FIELDS";
                 String tcId = "TC-" + stem + suffix;
                 ObjectNode payload = fixture.path("payload").deepCopy();
-                if (negative) ((ObjectNode) payload.path("elements")).put("85", "999");
+                if (negative) {
+                    if ("DL8".equals(segment)) ((ObjectNode) payload.path("elements")).put("24", "&");
+                    else ((ObjectNode) payload.path("elements")).put("85", "999");
+                }
                 Chapter12SegmentPayloadValidator.Result result;
                 if (payload.has("productPayload")) {
                     var assessed = new ProductActualPayloadAdapter().validatePayload(payload.path("productPayload"), segment);

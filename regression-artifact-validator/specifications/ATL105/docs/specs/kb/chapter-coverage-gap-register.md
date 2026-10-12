@@ -997,3 +997,85 @@ chapter. Work still required includes:
 
 The queued dedicated Chapter 11, Chapter 10, flow, PIN, network/end-of-day and
 reference-chapter completion work has not been advanced ahead of Chapter 12.
+
+## Chapter 12 section-ledger reconciliation continuation (12.4, 12.15, 12.26-12.29, 12.33-12.35, 12.37-12.38, 12.49)
+
+**Branch:** Appendix-N. Remains local, uncommitted and unpushed. This
+continuation targets the per-section `sourceSectionReconciliation` ledger
+introduced above (`chapter-12-training-evidence.json`), which previously left
+every one of the 49 sections at `SOURCE_FACETS_NOT_CLOSED` even where the
+underlying Java validator already executed the correct catalog rule. The
+ledger links a catalog rule to "executed" status **only** when a fixture's
+`predicateProbes` entry declares that exact `ruleId`+`scope`; it does not scan
+emitted `Finding` objects. This batch closed that evidence gap for 12 sections
+and, in two segments, found and fixed genuine validator bugs the ledger
+exposed.
+
+### Segment 103 (12.4, EBT Data Segment), Segment 116 (12.15, TransArmor Load
+Data Segment), Segment DL8 (12.49, EMV Terminal Floor Limits Data Segment)
+
+Reconciled to full `BOUNDED_EXECUTION_ONLY` against their catalogs; documented
+architectural/external-document gaps left as explicit reviews, not invented.
+See `Chapter12SegmentPayloadValidator.java` and the corresponding fixtures for
+details; no further narrative is duplicated here beyond this run's totals.
+
+### Segments 139-153 batch (12.26-12.29, 12.33-12.35, 12.37-12.38)
+
+Nine sections previously showed `NO_EXECUTION_IN_THIS_PACKAGE` for one or more
+catalog rules purely because no fixture declared that ruleId, even though most
+of the underlying checks already executed correctly:
+
+| Section | Segment | Finding |
+|---|---|---|
+| 12.26 | 139 (Moneris Batch) | **Genuine bug fixed:** the wire/serialization Finding reused ruleId `SEG139-R-002` (header type/length) instead of its own distinct catalog rule `SEG139-R-004` (separator-behavior-undocumented). Now emitted with the correct ruleId. |
+| 12.27 | 140 | Evidence-linking gap only; `predicateProbes` added. |
+| 12.28 | 141 | Evidence-linking gap only; `predicateProbes` added. |
+| 12.29 | 142 | Evidence-linking gap only; `predicateProbes` added. |
+| 12.33 | 148 | Evidence-linking gap only; `predicateProbes` added for the remaining unlinked rules. |
+| 12.34 | 149 | Evidence-linking gap only; `predicateProbes` added. |
+| 12.35 | 150 | Evidence-linking gap only; `predicateProbes` added. |
+| 12.37 | 152 (Market Basket) | **Genuine gap fixed:** catalog rule `SEG152-R-001` (trailing Field Separator) had **no corresponding Finding anywhere in the code**. Added a `review(...)` call in the response branch of `marketBasket()` so the rule is now actually checked, not merely catalog-referenced. |
+| 12.38 | 153 | Evidence-linking gap only; required adding `encodedTableData` to the generator's predicateProbes override whitelist so the `encodedTables()` Finding (TLV structure rule) became observable by a fixture at all. |
+
+Implementation: `Chapter12SegmentPayloadValidator.java` (`monerisBatch()`,
+`marketBasket()`); `GenerateChapter12TrainingEvidence.java` (predicateProbes
+whitelist). Fixtures:
+`chapter-12-segment-observations.json` (26 new `predicateProbes` entries
+across the nine TD-TEST-CH12-139/140/141/142/148/149/150/152/153-FIELDS
+fixtures, split between positive/negative/boundary cases per rule).
+
+All nine sections now show 100% `BOUNDED_EXECUTION_ONLY` for every catalog
+rule anchored to them (counts: 139 4/4, 140 3/3, 141 3/3, 142 3/3, 148 4/4,
+149 3/3, 150 3/3, 152 3/3, 153 3/3). This is bounded-fixture execution, not a
+claim that every Chapter 12 source facet for these segments is closed; each
+section retains `SOURCE_FACETS_NOT_CLOSED` status in the ledger pending full
+facet reconciliation (field representation, valid values, conditional
+triggers, dependencies, placement, wire and lifecycle clauses beyond the
+rule-catalog level).
+
+### Evidence totals after this continuation
+
+`chapter-12-training-evidence.json` / `chapter-12-training-package.json`:
+businessRequirements 198→**222**, scenarios **222**, testCases/testDataRecords
+**249**, executedObservations **249**, predicates 161→**185**. (Prior
+checkpoint before this continuation, after Segment 103/116/DL8: 198/225/161.)
+
+The focused Chapter 12 gate passed with zero failures/errors after updating
+the three hardcoded summary-count assertions in
+`GenerateChapter12TrainingEvidenceTest.java` (198→222, 225→249, 161→185) to
+match the regenerated evidence. The full suite ran **2,535 tests**, with
+exactly the two unchanged baseline failures
+(`AppendixCoverageConsistencyTest.allAppendixRecordsMatchTheCanonicalInventory`,
+`AppendixJPosEntryModeOracleTest.rejectsMalformedAndUnlistedComponents`) and no
+newly introduced failures; a transient `Atl105ElementTransactionApplicabilityTest`
+file-lock error (environmental, OneDrive-related) reproduced as a pass when
+rerun in isolation. No previously-passing assertion was weakened.
+
+**Chapter 12 remains IN_PROGRESS.** 12 of 49 sections are now reconciled in
+the ledger (12.4, 12.15, 12.26-12.29, 12.33-12.35, 12.37-12.38, 12.49); 37
+sections remain, including the unranked bulk of 12.1-12.13, 12.16-12.25,
+12.30-12.32, 12.36, 12.39-12.48. Segment 151 (12.36) was inspected but
+deliberately deferred: its own `SEG151-R-003` catalog rule (field separator
+between fields) was suspected to have a similar missing-Finding gap, but
+confirming and fixing it was out of this batch's scope and is flagged as the
+next candidate.
