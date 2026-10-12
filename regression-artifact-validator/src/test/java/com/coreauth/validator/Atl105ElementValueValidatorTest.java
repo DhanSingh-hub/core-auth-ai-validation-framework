@@ -58,6 +58,31 @@ class Atl105ElementValueValidatorTest {
     }
 
     @Test
+    void optionalSegment101OdometerChecksOnlySuppliedNumericValues() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var valid = observation("Financial Transaction Request", "101", "64", "12345678");
+        ((ObjectNode) valid.path("elements")).put("84", "061").put("85", "101");
+        assertThat(validator.validate(valid).findings())
+            .anySatisfy(finding -> assertThat(finding.ruleId()).isEqualTo("SEG101-R-009"));
+        assertThat(validator.validate(valid).status()).isEqualTo(Status.CHECKS_PASSED);
+
+        for (String value : new String[]{"123456789", "12A"}) {
+            var invalid = observation("Financial Transaction Request", "101", "64", value);
+            ((ObjectNode) invalid.path("elements")).put("84", "061").put("85", "101");
+            assertThat(validator.validate(invalid).findings())
+                .anySatisfy(finding -> {
+                    assertThat(finding.ruleId()).isEqualTo("SEG101-R-009");
+                    assertThat(finding.status()).isEqualTo(Status.INVALID);
+                });
+        }
+
+        var omitted = observation("Financial Transaction Request", "101", "55", "ATL105");
+        ((ObjectNode) omitted.path("elements")).put("84", "061").put("85", "101");
+        assertThat(validator.validate(omitted).findings())
+            .noneSatisfy(finding -> assertThat(finding.ruleId()).isEqualTo("SEG101-R-009"));
+    }
+
+    @Test
     void segmentCountMustEqualSuppliedSegmentsAndRequiredSegmentsMustBePresent() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var input = message("2", "2");
