@@ -19,8 +19,8 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(158);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(182);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(405);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(432);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
         var reconciliation = report.path("sourceSectionReconciliation");
@@ -84,7 +84,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 assertThat(execution.path("actualTargetStatus")).isEqualTo(execution.path("expectedTargetStatus"));
             }
         }
-        assertThat(predicates).isEqualTo(124);
+        assertThat(predicates).isEqualTo(368);
         assertThat(actualChapter12Executions).isEqualTo(12);
         assertThat(actualChapter12Segments).containsExactlyInAnyOrder("115", "130", "131", "145", "146", "148");
         assertThat(new ObjectMapper().readTree(reportFile.toFile())).isEqualTo(report);

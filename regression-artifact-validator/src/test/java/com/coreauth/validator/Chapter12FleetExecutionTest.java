@@ -147,6 +147,23 @@ class Chapter12FleetExecutionTest {
         assertThat(validator.validate(observation("146", "005", "A".repeat(41), "COMDATA")).status()).isEqualTo(Status.INVALID);
     }
 
+    @Test void segment146Rule003FlagsTable002AsAbsentFromComdataResponsesButAllowsItForOtherAuthorizers() throws Exception {
+        // SEG146-R-003: Table 002 (Non-Fuel Product Limits) is explicitly documented as NOT
+        // present in Comdata response messages.
+        var comdataNonfuelTable = observation("146", "002", "001", "COMDATA");
+        assertThat(validator.validate(comdataNonfuelTable).findings())
+                .filteredOn(f -> f.ruleId().equals("SEG146-R-003"))
+                .singleElement().satisfies(f -> assertThat(f.status()).isEqualTo(Status.INVALID));
+        var comdataOtherTable = observation("146", "001", "CP", "COMDATA");
+        assertThat(validator.validate(comdataOtherTable).findings())
+                .filteredOn(f -> f.ruleId().equals("SEG146-R-003"))
+                .singleElement().satisfies(f -> assertThat(f.status()).isEqualTo(Status.CHECKS_PASSED));
+        // Table 002 is only documented absent for Comdata; other authorizers are unaffected.
+        var otherAuthorizerNonfuelTable = observation("146", "002", "001", "WEX_OTR");
+        assertThat(validator.validate(otherAuthorizerNonfuelTable).findings())
+                .noneMatch(f -> f.ruleId().equals("SEG146-R-003"));
+    }
+
     @Test void reconcilesGroupedCategoriesAndMERCWithCompleteEvidenceAndExecutesProductLimits() throws Exception {
         var input = observation("145", "002", "|SCLE:3,30.00|MERC:1,5.00|", "WEX_OTR");
         var history = input.putObject("history").putObject("fleet").put("nonfuelProductsComplete", true);
