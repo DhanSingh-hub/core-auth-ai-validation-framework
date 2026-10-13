@@ -302,7 +302,32 @@ class SemanticEvidenceValidatorTest {
         contract.putObject("capture").put("artifact", fileName).put("sha256", hash(bytes))
                 .put("converter", "IndependentFixtureConverter").put("version", "1.0.0")
                 .put("caseId", caseId).put("requestSha256", canonicalHash(request));
+        bindFramingSources(contract);
         refreshManifestHash(contract);
+    }
+
+    private void bindFramingSources(ObjectNode contract) throws Exception {
+        var rules = java.util.List.of(
+                "ENCODING|Wire encoding is US-ASCII.",
+                "FIELD_SEPARATOR|Wire fields are separated by byte 1c.",
+                "SEGMENT_IDENTITY|Each segment begins with its three-digit identity field.",
+                "SEGMENT_LENGTH|Segment length counts serialized bytes including separators.",
+                "FIELD_ORDER|Fields are serialized in the order declared by the manifest.",
+                "TRANSPORT_LENGTH|The two-byte big-endian transport length counts the body including the TPDU.",
+                "TPDU|The TPDU is five bytes and precedes the message sections.",
+                "SECTION1|Section 1 contains nine ordered fields with ATL105 first and segment count last.",
+                "SEGMENT_ORDER|Physical segments are serialized in declared manifest order.");
+        Path sourceFile = root.resolve("wire-source.txt");
+        Files.writeString(sourceFile, String.join("\n", rules.stream().map(rule -> rule.substring(rule.indexOf('|') + 1)).toList()) + "\n");
+        byte[] sourceBytes = Files.readAllBytes(sourceFile);
+        String sourceHash = hash(sourceBytes);
+        var quotes = contract.putArray("sourceQuotes");
+        for (int index = 0; index < rules.size(); index++) {
+            String[] parts = rules.get(index).split("\\|", 2);
+            ObjectNode quote = quotes.addObject().put("rule", parts[0]).putObject("source");
+            quote.put("file", "wire-source.txt").put("sha256", sourceHash).put("quote", parts[1])
+                    .put("startLine", index + 1).put("endLine", index + 1);
+        }
     }
 
     private void refreshManifestHash(ObjectNode contract) throws Exception {

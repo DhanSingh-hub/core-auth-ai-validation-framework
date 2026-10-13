@@ -243,8 +243,9 @@ public final class SemanticEvidenceValidator {
         if (!request.isObject() || expectedCaseId == null || expectedCaseId.isBlank()
                 || !text(capture, "caseId") || !expectedCaseId.equals(capture.path("caseId").asText())
                 || !text(capture, "converter") || !text(capture, "version") || !text(capture, "artifact")
-                || !text(capture, "sha256") || !text(capture, "requestSha256") || !sourceBound(contract.path("source"))) {
-            return result("NOT_ASSESSED", "Independent converter capture, registered case/request binding and source-bound framing contract required; observation.wireHex is not evidence");
+                || !text(capture, "sha256") || !text(capture, "requestSha256")
+                || !framingSourcesBound(contract, contract.path("scope").asText())) {
+            return result("NOT_ASSESSED", "Independent converter capture, registered case/request binding and hash-verified source quotes for the framing rules are required; observation.wireHex is not evidence");
         }
         String expectedManifestHash = digest(canonical(manifestWithoutHash(contract)).toString().getBytes(StandardCharsets.UTF_8));
         if (!expectedManifestHash.equalsIgnoreCase(contract.path("manifestSha256").asText())) {
@@ -403,6 +404,22 @@ public final class SemanticEvidenceValidator {
             return first >= 1 && last >= first && last <= lines.size()
                     && String.join("\n", lines.subList(first - 1, last)).contains(source.path("quote").asText());
         } catch (Exception exception) { return false; }
+    }
+
+    private boolean framingSourcesBound(JsonNode contract, String scope) {
+        Set<String> required = new HashSet<>(List.of("ENCODING", "FIELD_SEPARATOR", "SEGMENT_IDENTITY", "SEGMENT_LENGTH", "FIELD_ORDER"));
+        if ("FULL_MESSAGE".equals(scope)) required.addAll(List.of("TRANSPORT_LENGTH", "TPDU", "SECTION1", "SEGMENT_ORDER"));
+        JsonNode quotes = contract.path("sourceQuotes");
+        if (!quotes.isArray()) return false;
+        Set<String> covered = new HashSet<>();
+        Set<String> supported = Set.of("ENCODING", "FIELD_SEPARATOR", "SEGMENT_IDENTITY", "SEGMENT_LENGTH", "FIELD_ORDER",
+                "TRANSPORT_LENGTH", "TPDU", "SECTION1", "SEGMENT_ORDER");
+        for (JsonNode quote : quotes) {
+            String rule = quote.path("rule").asText();
+            if (!supported.contains(rule) || !sourceBound(quote.path("source"))) return false;
+            covered.add(rule);
+        }
+        return covered.containsAll(required);
     }
 
     private JsonNode canonical(JsonNode node) {
