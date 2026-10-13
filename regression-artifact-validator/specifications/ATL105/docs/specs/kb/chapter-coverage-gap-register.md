@@ -3628,3 +3628,40 @@ PROVISIONAL P-01 base-cap condition. `git diff --check` passes.
 
 Remaining: ~60 12.2 `RECONCILIATION_REQUIRED` candidates, sections 12.3–12.49,
 and the UserId all-zero source check.
+
+## Chapter 12.2 final reconciliation
+
+Section 12.2 (Fleet Data Segment 101, source 11395-11549) is now a finalized
+reconciliation section alongside 12.1 (`finalReconciliationSections`
+= ["12.1", "12.2"]). Its 62 reviewed clauses are 60 BOUNDED_EXECUTED, 1
+SOURCE_CONFLICT (WHOLE-CAP) and 1 EXTERNAL_EVIDENCE (DRIVER-CLEARTEXT); zero
+RECONCILIATION_REQUIRED, zero `sameObligationAs` aliases.
+
+Normalization (adjudications, no retained-original clauses left in 12.2):
+- 101-TYPE-VALUE: explicit literal-101 clause (Element85 definition referenced).
+- 101-ROW-ATTRIBUTES: explicit REQUIRED-84, WIDTH-84, WIDTH-64/158/159/160/161/162/163
+  (Chapter 11 element definitions referenced) and USERID-NONZERO (source 23761).
+- 101-145-EXCLUSIVE: predicates on observed Segment101+Segment145 companion.
+- Fleet host-prompt dictionary (DLS..VHT, 16 codes): explicit
+  `SEM-12.2-<CODE>-CHARACTERS` / `-WIDTH` clauses with MAX/CHAR/OVER predicates.
+
+Implementation (actual-observation path only):
+`Segment101PayloadValidator.validateActualRowFields` (R-004 literal type, R-005
+required/three-digit length, Element64/158-163 representation, R-018 UserId
+not all-zero) and `validateActualExclusion` (R-003), wired from
+`Chapter12LegacyActualPayloadAdapter`. Missing observations stay
+REVIEW_REQUIRED; non-text values are INVALID; no metadata fill. Producer inputs
+unchanged. 85 new `LEGACY101-*` source-local probes.
+
+Measured counts: business requirements 1356 (+85), executed observations 1384
+(+85), target predicates 1240 (+85), verified chain links 359, unique reused
+canonical cases 286, BOUNDED_EXECUTED 97, RECONCILIATION_REQUIRED 1847 (-60),
+reviewed independent clauses 1978, distinct obligations 1962, deduplicated
+finalized scope 99 obligations (12.1 + 12.2). SOURCE_CONFLICT 13 and
+EXTERNAL_EVIDENCE 7 unchanged.
+
+Gate: full suite green apart from the two unchanged baseline failures
+(`AppendixCoverageConsistencyTest`, `AppendixJPosEntryModeOracleTest`).
+
+Remaining: sections 12.3-12.49 (1847 RECONCILIATION_REQUIRED clauses);
+whole-chapter atomic denominator still not certified.

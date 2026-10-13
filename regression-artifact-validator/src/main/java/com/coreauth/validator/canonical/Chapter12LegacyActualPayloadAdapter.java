@@ -120,6 +120,8 @@ public final class Chapter12LegacyActualPayloadAdapter {
             findings.addAll(fleet.validateActualNumericFields(selected));
             findings.addAll(fleet.validateActualTagGrammar(selected));
             findings.addAll(fleet.validateActualPlacement(selected));
+            findings.addAll(fleet.validateActualRowFields(selected));
+            findings.addAll(fleet.validateActualExclusion(normalized.has(NAMES.get("145"))));
         }
         if ("101".equals(segment) && request) findings.addAll(new Segment101PayloadValidator().validateActualPresence(
                 occurrences > 0, normalized.has(NAMES.get("145")), evidence));

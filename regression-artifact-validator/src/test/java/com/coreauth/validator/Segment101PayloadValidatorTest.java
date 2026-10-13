@@ -292,6 +292,54 @@ class Segment101PayloadValidatorTest {
         return payload;
     }
 
+    @Test
+    void actualRowFieldsBoundTypeLengthAndElementRepresentations() {
+        ObjectNode row = MAPPER.createObjectNode();
+        row.put("SegmentType", "101").put("SegmentLength", "061").put("Odometer", "12345678")
+            .put("LicenseNumber", "ABCDE12345").put("JobId", "").put("DepartmentNumber", "DEPT0000001")
+            .put("CustomerData", "CUST#1").put("UserId", "000000000000").put("VehicleIdNumber", "VIN123456");
+        var byScope = new java.util.HashMap<String, String>();
+        new Segment101PayloadValidator().validateActualRowFields(row)
+            .forEach(f -> byScope.put(f.scope(), f.status().name()));
+
+        assertThat(byScope).containsEntry("actual-fleet-type", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-required-84", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-length-width", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-64", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-158", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-159", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-160", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-161", "INVALID")
+            .containsEntry("actual-fleet-element-162", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-element-163", "INVALID")
+            .containsEntry("actual-fleet-userid-nonzero", "INVALID");
+    }
+
+    @Test
+    void actualRowFieldsKeepMissingObservationsAsReview() {
+        ObjectNode row = MAPPER.createObjectNode();
+        row.put("SegmentLength", "61");
+        var byScope = new java.util.HashMap<String, String>();
+        new Segment101PayloadValidator().validateActualRowFields(row)
+            .forEach(f -> byScope.put(f.scope(), f.status().name()));
+
+        assertThat(byScope).containsEntry("actual-fleet-type", "REVIEW_REQUIRED")
+            .containsEntry("actual-fleet-required-84", "CHECKS_PASSED")
+            .containsEntry("actual-fleet-length-width", "INVALID")
+            .containsEntry("actual-fleet-element-64", "REVIEW_REQUIRED")
+            .containsEntry("actual-fleet-element-162", "REVIEW_REQUIRED")
+            .containsEntry("actual-fleet-userid-nonzero", "REVIEW_REQUIRED");
+    }
+
+    @Test
+    void actualExclusionRejectsObservedEnhancedCompanion() {
+        Segment101PayloadValidator validator = new Segment101PayloadValidator();
+        assertThat(validator.validateActualExclusion(true)).singleElement()
+            .satisfies(f -> assertThat(f.status().name()).isEqualTo("INVALID"));
+        assertThat(validator.validateActualExclusion(false)).singleElement()
+            .satisfies(f -> assertThat(f.status().name()).isEqualTo("CHECKS_PASSED"));
+    }
+
     private static ObjectNode validCompletionPayload() {
         ObjectNode payload = validAuthPayload();
         ((ObjectNode) payload.path("Financial Request").path("Standard Segment").path("PromptCode"))

@@ -63,7 +63,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |61|Number of Print Lines; |N FIXED max 1|0|3|2|0|0|0|
 |62|Number of Products; |N FIXED max 2|4|19|0|1|1|0|
 |63|Number of Segments; |N VARIABLE max 2|8|38|9|8|4|5|
-|64|Odometer; |N VARIABLE max 8|1|8|0|1|1|0|
+|64|Odometer; |N VARIABLE max 8|1|12|0|1|1|0|
 |65|Password; |N VARIABLE max 6|5|24|4|4|2|0|
 |66|Pause Indicator; |AN FIXED max 1|2|8|0|2|2|0|
 |72|PC Duty Amount; |N VARIABLE max 7|1|3|0|1|1|0|
@@ -78,8 +78,8 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |81|Quantity; |N VARIABLE max 9|2|9|0|0|1|0|
 |82|Redial Count; |N FIXED max 1|2|8|0|2|2|0|
 |83|Response Code; |AN FIXED max 1|10|54|7|4|6|0|
-|84|Segment Length; |N VARIABLE max 4|56|370|13|36|25|19|
-|85|Segment Type; |N FIXED max 3|40|391|13|20|20|39|
+|84|Segment Length; |N VARIABLE max 4|56|375|13|36|25|19|
+|85|Segment Type; |N FIXED max 3|40|393|13|20|20|39|
 |86|Sequence Number; |N FIXED max 6|11|118|14|8|5|4|
 |87|Service Level; |A FIXED max 1|2|9|0|0|0|0|
 |88|Ship-from Postal Code; |AN FIXED max 10|1|3|0|1|0|0|
@@ -151,12 +151,12 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |155|Key ID; |AN FIXED max 11|1|4|0|1|1|0|
 |156|Key Data Length; |N VARIABLE max 3|1|5|0|1|1|0|
 |157|Key Data; |AN VARIABLE max 999|1|4|0|1|1|0|
-|158|License #; |AN VARIABLE max 10|1|3|0|1|0|0|
-|159|Job ID; |AN VARIABLE max 12|1|3|0|1|0|0|
-|160|Department #; |AN VARIABLE max 12|1|3|0|1|0|0|
-|161|Customer Data; |AN VARIABLE max 12|1|3|0|1|0|0|
-|162|User ID; |AN VARIABLE max 12|1|6|0|1|1|0|
-|163|Vehicle ID#; |AN VARIABLE max 8|1|3|0|1|0|0|
+|158|License #; |AN VARIABLE max 10|1|7|0|1|0|0|
+|159|Job ID; |AN VARIABLE max 12|1|7|0|1|0|0|
+|160|Department #; |AN VARIABLE max 12|1|7|0|1|0|0|
+|161|Customer Data; |AN VARIABLE max 12|1|7|0|1|0|0|
+|162|User ID; |AN VARIABLE max 12|1|11|0|1|1|0|
+|163|Vehicle ID#; |AN VARIABLE max 8|1|7|0|1|0|0|
 |164|EBT Program Data; |AN VARIABLE max 267|5|38|0|5|4|0|
 |165|Start Date or End Date; |N FIXED max 8|2|34|0|2|2|0|
 |166|Start Time or End Time; |N FIXED max 4|5|57|0|5|2|0|

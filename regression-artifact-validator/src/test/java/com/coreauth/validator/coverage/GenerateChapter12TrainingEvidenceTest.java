@@ -19,8 +19,8 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(1271);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(1299);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(1356);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(1384);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
         assertThat(report.path("sourceLocalProbesSha256").asText()).hasSize(64);
@@ -165,23 +165,27 @@ class GenerateChapter12TrainingEvidenceTest {
         assertThat(semanticSummary.path("remainingNonStructuralRecords").asInt()).isZero();
         assertThat(semanticSummary.path("reviewedStructuralRecords").asInt()).isEqualTo(977);
         assertThat(semanticSummary.path("remainingStructuralRecordsNeedingSemanticReview").asInt()).isZero();
-        assertThat(semanticSummary.path("reviewedIndependentClauses").asInt()).isEqualTo(1994);
+        assertThat(semanticSummary.path("reviewedIndependentClauses").asInt()).isEqualTo(1978);
         assertThat(semanticSummary.path("explicitRepeatedObligationAliases").asInt()).isEqualTo(16);
-        assertThat(semanticSummary.path("reviewedDistinctObligationsInPartialScope").asInt()).isEqualTo(1978);
-        assertThat(semanticSummary.path("verifiedExecutedChainLinks").asInt()).isEqualTo(253);
-        assertThat(semanticSummary.path("uniqueReusedCanonicalCases").asInt()).isEqualTo(201);
-        assertThat(semantic.path("reviewedClauseStatusCounts").path("RECONCILIATION_REQUIRED").asInt()).isEqualTo(1907);
+        assertThat(semanticSummary.path("reviewedDistinctObligationsInPartialScope").asInt()).isEqualTo(1962);
+        assertThat(semanticSummary.path("verifiedExecutedChainLinks").asInt()).isEqualTo(359);
+        assertThat(semanticSummary.path("uniqueReusedCanonicalCases").asInt()).isEqualTo(286);
+        assertThat(semantic.path("reviewedClauseStatusCounts").path("RECONCILIATION_REQUIRED").asInt()).isEqualTo(1847);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTION").asInt()).isEqualTo(14);
-        assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTED").asInt()).isEqualTo(53);
+        assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTED").asInt()).isEqualTo(97);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_EXECUTION_EVIDENCE").asInt()).isZero();
         assertThat(semantic.path("reviewedClauseStatusCounts").path("SOURCE_CONFLICT").asInt()).isEqualTo(13);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("EXTERNAL_EVIDENCE").asInt()).isEqualTo(7);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_IMPLEMENTATION").asInt()).isZero();
         assertThat(semantic.path("reviewedClauses")).filteredOn(c -> "12.1".equals(c.path("section").asText()))
                 .allSatisfy(c -> assertThat(c.path("implementationStatus").asText()).isEqualTo("BOUNDED_EXECUTED"));
-        assertThat(semantic.path("deduplicatedReconciledScope").path("sections")).hasSize(1);
+        assertThat(semantic.path("deduplicatedReconciledScope").path("sections")).hasSize(2);
         assertThat(semantic.path("deduplicatedReconciledScope").path("sections").get(0).asText()).isEqualTo("12.1");
-        assertThat(semantic.path("deduplicatedReconciledScope").path("distinctObligations").asInt()).isEqualTo(37);
+        assertThat(semantic.path("deduplicatedReconciledScope").path("sections").get(1).asText()).isEqualTo("12.2");
+        assertThat(semantic.path("deduplicatedReconciledScope").path("distinctObligations").asInt()).isEqualTo(99);
+        assertThat(semantic.path("reviewedClauses")).filteredOn(c -> "12.2".equals(c.path("section").asText()))
+                .extracting(c -> c.path("implementationStatus").asText())
+                .containsOnly("BOUNDED_EXECUTED", "SOURCE_CONFLICT", "EXTERNAL_EVIDENCE");
         assertThat(semantic.path("deduplicatedReconciledScope").path("wholeChapterDenominator").asBoolean()).isFalse();
         for (String id : java.util.List.of("153-PRIMARY-COLUMNS", "157-DECIMAL-EXAMPLES",
                 "134-PURPOSES")) {
@@ -238,7 +242,7 @@ class GenerateChapter12TrainingEvidenceTest {
             assertThat(clause.path("implementationStatus").asText()).isIn(
                     "RECONCILIATION_REQUIRED", "BOUNDED_EXECUTION", "BOUNDED_EXECUTED",
                     "OPEN_IMPLEMENTATION", "OPEN_EXECUTION_EVIDENCE", "SOURCE_CONFLICT", "EXTERNAL_EVIDENCE");
-            if ("12.1".equals(clause.path("section").asText())) {
+            if (java.util.Set.of("12.1", "12.2").contains(clause.path("section").asText())) {
                 assertThat(clause.path("implementationStatus").asText()).isNotEqualTo("RECONCILIATION_REQUIRED");
                 assertThat(clause.has("sameObligationAs")).isFalse();
                 assertThat(clause.path("implementationReview").path("analysis").asText()).isNotBlank();
@@ -300,7 +304,7 @@ class GenerateChapter12TrainingEvidenceTest {
             assertThat(remaining.path("nonStructuralSourceRecordReviewComplete").asBoolean()).isTrue();
             assertThat(remaining.path("allSourceRecordReviewComplete").asBoolean()).isTrue();
             assertThat(remaining.path("sectionAtomicDenominatorEstablished").asBoolean())
-                    .isEqualTo("12.1".equals(remaining.path("section").asText()));
+                    .isEqualTo(java.util.Set.of("12.1", "12.2").contains(remaining.path("section").asText()));
         }
         assertThat(allSource.path("sections")).anySatisfy(section -> {
             assertThat(section.path("section").asText()).isEqualTo("12.4");
@@ -355,7 +359,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 allSource, atomic.path("clauses"), source, wrongPredicateExecutions, decisions))
                 .isInstanceOf(java.io.IOException.class).hasMessageContaining("Predicate finding missing/ambiguous");
         com.fasterxml.jackson.databind.node.ObjectNode prematureSection = decisions.deepCopy();
-        ((com.fasterxml.jackson.databind.node.ArrayNode) prematureSection.path("finalReconciliationSections")).add("12.2");
+        ((com.fasterxml.jackson.databind.node.ArrayNode) prematureSection.path("finalReconciliationSections")).add("12.4");
         org.assertj.core.api.Assertions.assertThatThrownBy(() -> Chapter12AtomicClauseReconciliation.semanticAdjudication(
                 allSource, atomic.path("clauses"), source, report.path("executions"), prematureSection))
                 .isInstanceOf(java.io.IOException.class).hasMessageContaining("Final section still has unresolved");
@@ -474,7 +478,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 assertThat(execution.path("actualTargetStatus")).isEqualTo(execution.path("expectedTargetStatus"));
             }
         }
-        assertThat(predicates).isEqualTo(1155);
+        assertThat(predicates).isEqualTo(1240);
         assertThat(actualChapter12Executions).isEqualTo(375);
         assertThat(actualChapter12Segments).containsExactlyInAnyOrder("103", "115", "116", "123", "130", "131", "132", "134", "135", "136",
                 "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156",

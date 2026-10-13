@@ -402,4 +402,56 @@ public final class Segment101PayloadValidator {
         String v = node.path(field).asText(null);
         return v != null && !v.isBlank();
     }
+
+    /**
+     * Observed base-row findings for the identified actual Segment101: literal type, required three-digit
+     * length and the referenced Element64/158-163 representations. Missing observations stay review.
+     */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualRowFields(JsonNode segment) {
+        var pass = Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
+        var review = Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
+        var invalid = Chapter12SegmentPayloadValidator.Status.INVALID;
+        java.util.List<Chapter12SegmentPayloadValidator.Finding> findings = new java.util.ArrayList<>();
+        JsonNode type = segment.get("SegmentType");
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-004", "actual-fleet-type",
+            type == null ? review : type.isTextual() && "101".equals(type.textValue()) ? pass : invalid,
+            "Source11422-11426: required SegmentType is literal101; three-character width is entailed"));
+        JsonNode length = segment.get("SegmentLength");
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-005", "actual-fleet-required-84",
+            length == null ? review : length.isTextual() && !length.textValue().isBlank() ? pass : invalid,
+            "Source11428: SegmentLength entry is R; missing observation is not filled"));
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-005", "actual-fleet-length-width",
+            length == null ? review : length.isTextual() && SEGMENT_LENGTH_PATTERN.matcher(length.textValue()).matches() ? pass : invalid,
+            "Source11428-11432: SegmentLength has source-listed Len.3 digits"));
+        String[][] fields = {
+            {"Odometer", "SEG101-R-009", "64", "^[0-9]{1,8}$", "20859-20862"},
+            {"LicenseNumber", "SEG101-R-014", "158", "^[A-Za-z0-9]{1,10}$", "23676-23679"},
+            {"JobId", "SEG101-R-015", "159", "^[A-Za-z0-9]{1,12}$", "23702-23705"},
+            {"DepartmentNumber", "SEG101-R-016", "160", "^[A-Za-z0-9]{1,12}$", "23715-23718"},
+            {"CustomerData", "SEG101-R-017", "161", "^[A-Za-z0-9]{1,12}$", "23727-23730"},
+            {"UserId", "SEG101-R-018", "162", "^[A-Za-z0-9]{1,12}$", "23751-23754"},
+            {"VehicleIdNumber", "SEG101-R-019", "163", "^[A-Za-z0-9]{1,8}$", "23763-23766"}
+        };
+        for (String[] field : fields) {
+            JsonNode value = segment.get(field[0]);
+            var status = value == null ? review : !value.isTextual() ? invalid
+                : value.textValue().isEmpty() || value.textValue().matches(field[3]) ? pass : invalid;
+            findings.add(new Chapter12SegmentPayloadValidator.Finding(field[1], "actual-fleet-element-" + field[2], status,
+                "Source" + field[4] + ": populated " + field[0] + "/Element" + field[2] + " matches " + field[3]
+                    + "; explicit blank is unpopulated, missing observation is not filled"));
+        }
+        JsonNode user = segment.get("UserId");
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-018", "actual-fleet-userid-nonzero",
+            user == null ? review : !user.isTextual() ? invalid
+                : !user.textValue().isEmpty() && user.textValue().chars().allMatch(ch -> ch == '0') ? invalid : pass,
+            "Source23761: valid User ID excludes zero"));
+        return findings;
+    }
+
+    /** Source11403-11404 companion exclusion evaluated on the observed message identities. */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualExclusion(boolean enhancedObserved) {
+        return java.util.List.of(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-003", "actual-fleet-exclusive",
+            enhancedObserved ? Chapter12SegmentPayloadValidator.Status.INVALID : Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED,
+            "Source11403-11404: observed Segment101 and Segment145 are not sent together"));
+    }
 }
