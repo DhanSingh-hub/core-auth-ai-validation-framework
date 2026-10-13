@@ -28,7 +28,7 @@ it does not prove that a human interpretation of the quoted prose is correct.
 | `negativeIsolation` | Actual `controlPayload`, `mutantPayload` | `negativeIsolation.source`, `targetPointer`, `targetRule`, nonempty `controlScope` array of `{pointer, rule}` | Exactly one JSON-pointer change; all declared control predicates pass; mutant fails the target and no unrelated declared predicate. Supported predicates: `SEG100_TYPE`, `SEQUENCE_SIX_DIGITS`, `REQUIRED`, `BLOCK_MAX_51`. No universal Element 12 enum is invented. |
 | `negativeEffectiveness` | Above plus `controlCanonicalPayload`, `canonicalPayload`, `controlRequest`, `request`, `controlResponse`, `response` | `negativeIsolation.fullControl` with `scopeComplete`, `source`, `compatibility`, `wireValidation`, `hostOutcome`; mutant contracts at evidence root | Requires matching physical request identities, complete declared valid positive control, independently captured full-message wire for both legs, positive ACCEPT and negative REJECT authoritative oracles, and no unrelated mutant compatibility/wire failure. Scoped preservation alone cannot pass this gate. |
 | `compatibility` | `canonicalPayload.request` with Section 1/count, `dataSection2.standardSegment`, `dataSection3` array | `compatibility.source`, `messageCategory: STANDARD_FINANCIAL_REQUEST`, explicit `requiredSegments`, `allowedSegments`, optional `expectedOrder` | Source-profile companion allowlist/requirements, Segment 100 cardinality, physical count including Section 3, duplicate and declared-order checks. Producer `testControls` cannot override the independent profile. Other message categories remain unassessed. |
-| `wireValidation` | `canonicalPayload.request` (or the positive control's canonical request) | `capture`, `manifestSha256`, explicit scope/manifest, line-bounded `sourceQuotes` | `SEGMENT_100` checks captured bytes, resolved 3-digit length including separators, field order and values. This is bounded, not full-message validation. `FULL_MESSAGE` covers every captured byte against the independent manifest: UINT16 big-endian transport body length, five-byte TPDU, nine Section 1 fields (ATL105 first/count last), segment identities/length widths/resolved byte lengths, order, fields and separators. |
+| `wireValidation` | `canonicalPayload.request` (or the positive control's canonical request) | `capture`, `independentReproduction`, `manifestSha256`, explicit scope/manifest, line-bounded `sourceQuotes` | Two separately identified converter implementations must produce byte-identical captures for the same request and case. `SEGMENT_100` checks captured bytes, resolved 3-digit length including separators, field order and values. This is bounded, not full-message validation. `FULL_MESSAGE` covers every captured byte against the independent manifest: UINT16 big-endian transport body length, five-byte TPDU, nine Section 1 fields (ATL105 first/count last), segment identities/length widths/resolved byte lengths, order, fields and separators. |
 | `hostOutcome` | Actual `request`, nonempty observed `response` | `hostOutcome.source`, `expectedResponse`, canonical `requestSha256`, `responseSha256`, `responseFamily`, `oracleKind`, `environment`, `stateFixtureSha256` | Exact response comparison tied to this request/response. Allowed oracle kinds: `SOURCE_DEFINED_DETERMINISTIC`, `INDEPENDENT_HOST_REFERENCE`. Family-membership conflicts remain unassessed for source adjudication, never automatic acceptance. |
 
 BR operators are `required`, `fixed`, `maxLength`, `range`, `enum`, `equals`,
@@ -38,14 +38,24 @@ producer is responsible for complete source interpretation; structured equality
 does not independently establish prose entailment or full rule-catalog coverage.
 
 Wire evidence never comes from AI-authored `observation.wireHex` or
-`controlWireHex`. Each `wireValidation.capture` identifies a raw byte artifact
-relative to the trusted root and carries its SHA-256, converter name/version,
-register `caseId`, and canonical `requestSha256`. The validator verifies the
-artifact bytes, exact register case, and request hash before comparison. A hex
-dump may be used as the artifact only if decoded losslessly to the exact bytes;
-a `.bin` file is the simplest representation. Capture production and its
-converter/version must be independently recorded: the validator cannot prove
-the truth of a supplied producer attestation.
+`controlWireHex`. Both `wireValidation.capture` and
+`wireValidation.independentReproduction` identify raw byte artifacts relative
+to the trusted root and carry their SHA-256, converter name/version,
+`converterSha256`, register `caseId`, and canonical `requestSha256`. The two
+converter artifact hashes must differ. The validator verifies both artifact
+hashes, exact register case, request bindings, and byte-for-byte output equality
+before comparison with the framing manifest. `converterSha256` should hash the
+immutable executable or container image actually used. A hex dump may be used
+as the wire artifact only if decoded losslessly to the exact bytes; a `.bin`
+file is the simplest representation.
+
+This establishes reproducibility between two declared implementations, not
+proof that either implementation actually executed or that their identities
+are genuine. The validator does not execute converters or authenticate
+attestations. For execution provenance, retain signed CI/build attestations
+that bind the converter image digest, invocation, canonical request hash, case
+ID, and output artifact hash; verify signatures against an independently
+managed trust root before treating the attestation as authenticated evidence.
 
 The framing manifest is the `wireValidation` object excluding
 `manifestSha256`; that digest is SHA-256 over compact UTF-8 JSON with
@@ -63,8 +73,9 @@ Full wire contracts use `encoding: US-ASCII`, `fieldSeparatorHex: 1c`,
 including explicit segment type and resolved length). Bounded Segment 100
 contracts instead use `orderedFields`. Segment field values may be strings
 (US-ASCII) or `{ "hex": "..." }` for raw binary field bytes; the validator
-decodes the hex before byte comparison and length calculation. Segment identity
-and declared length remain textual headers. Actual encoded bytes, including
+decodes the hex before byte comparison and length calculation in both
+`SEGMENT_100` and `FULL_MESSAGE`. Segment identity and declared length remain
+textual headers. Actual encoded bytes, including
 every 1C separator, determine segment and transport lengths; hex character
 counts are never used. `SEGMENT_100` certifies only that bounded segment check,
 not the 2-byte transport header, TPDU, Section 1, or complete message. Only

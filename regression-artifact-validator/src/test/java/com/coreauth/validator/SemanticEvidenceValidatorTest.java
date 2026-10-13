@@ -114,10 +114,17 @@ class SemanticEvidenceValidatorTest {
         assertThat(result.path("wireValidation").path("status").asText()).isEqualTo("PASS");
         assertThat(result.path("wireValidation").path("actualByteCount").asInt()).isEqualTo(bytes.length);
         assertThat(result.path("wireValidation").path("converterVersion").asText()).isEqualTo("1.0.0");
+        assertThat(result.path("wireValidation").path("reproductionSha256").asText()).isEqualTo(hash(bytes));
         assertThat(validator.assess(observation, evidence, "different-case").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
         byte[] changedBytes = wire.replace("010", "009").getBytes(StandardCharsets.US_ASCII);
         bindCapture(gate, "TC-wire", request, changedBytes);
         assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        bindCapture(gate, "TC-wire", request, bytes);
+        bindReproduction(gate, "TC-wire", request, changedBytes);
+        assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        ((ObjectNode) gate.path("independentReproduction")).put("converterSha256", gate.path("capture").path("converterSha256").asText());
+        refreshManifestHash(gate);
+        assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
         gate.remove("capture");
         observation.put("wireHex", "CALCULATE_FROM_SEGMENT_CONTENT");
         assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
@@ -201,6 +208,29 @@ class SemanticEvidenceValidatorTest {
         gate.put("transportLengthConvention", "UNKNOWN");
         refreshManifestHash(gate);
         assertThat(validator.assess(observation, evidence, "TC-full-wire").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
+    }
+
+    @Test
+    void fullMessageWireDecodesBinaryFieldsAndCountsTheirBytes() throws Exception {
+        String body = "600000000041544c3130351c" + "301c".repeat(7) + "30311c3130301c3031311c00ff1c";
+        byte[] bodyBytes = HexFormat.of().parseHex(body);
+        String wireHex = String.format("%04x", bodyBytes.length) + body;
+        byte[] wireBytes = HexFormat.of().parseHex(wireHex);
+        var request = mapper.createObjectNode().put("requestId", "TC-full-binary");
+        var observation = mapper.createObjectNode().put("wireHex", "not-evidence");
+        observation.putObject("canonicalPayload").set("request", request);
+        var evidence = mapper.createObjectNode();
+        var gate = evidence.putObject("wireValidation").put("scope", "FULL_MESSAGE").put("encoding", "US-ASCII").put("fieldSeparatorHex", "1c")
+                .put("tpduHex", "6000000000").put("transportLengthConvention", "UINT16_BE_BODY_INCLUDING_TPDU");
+        gate.set("source", source());
+        var section1 = gate.putArray("section1Fields").add("ATL105");
+        for (int index = 0; index < 7; index++) section1.add("0");
+        section1.add("01");
+        gate.putArray("segments").addObject().putArray("fields").add("100").add("011").addObject().put("hex", "00ff");
+        bindCapture(gate, "TC-full-binary", request, wireBytes);
+        var result = new SemanticEvidenceValidator(root).assess(observation, evidence, "TC-full-binary");
+        assertThat(result.path("wireValidation").path("status").asText()).isEqualTo("PASS");
+        assertThat(result.path("wireValidation").path("actualByteCount").asInt()).isEqualTo(wireBytes.length);
     }
 
     @Test
@@ -297,13 +327,24 @@ class SemanticEvidenceValidatorTest {
     }
 
     private void bindCapture(ObjectNode contract, String caseId, JsonNode request, byte[] bytes) throws Exception {
-        String fileName = "converter-capture-" + hash(bytes) + ".bin";
-        Files.write(root.resolve(fileName), bytes);
-        contract.putObject("capture").put("artifact", fileName).put("sha256", hash(bytes))
-                .put("converter", "IndependentFixtureConverter").put("version", "1.0.0")
-                .put("caseId", caseId).put("requestSha256", canonicalHash(request));
+        bindReproduction(contract, caseId, request, bytes);
+        bindArtifact(contract, "capture", caseId, request, bytes, "ReferenceConverter", "1.0.0", "reference-implementation");
         bindFramingSources(contract);
         refreshManifestHash(contract);
+    }
+
+    private void bindReproduction(ObjectNode contract, String caseId, JsonNode request, byte[] bytes) throws Exception {
+        bindArtifact(contract, "independentReproduction", caseId, request, bytes, "IndependentConverter", "2.0.0", "independent-implementation");
+        refreshManifestHash(contract);
+    }
+
+    private void bindArtifact(ObjectNode contract, String property, String caseId, JsonNode request, byte[] bytes,
+            String converter, String version, String implementation) throws Exception {
+        String fileName = property + "-" + hash(bytes) + ".bin";
+        Files.write(root.resolve(fileName), bytes);
+        contract.putObject(property).put("artifact", fileName).put("sha256", hash(bytes))
+                .put("converter", converter).put("version", version).put("converterSha256", hash(implementation.getBytes(StandardCharsets.UTF_8)))
+                .put("caseId", caseId).put("requestSha256", canonicalHash(request));
     }
 
     private void bindFramingSources(ObjectNode contract) throws Exception {

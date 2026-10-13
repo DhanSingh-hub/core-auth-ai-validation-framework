@@ -240,35 +240,28 @@ public final class SemanticEvidenceValidator {
 
     private ObjectNode wire(JsonNode request, JsonNode contract, String expectedCaseId) {
         JsonNode capture = contract.path("capture");
+        JsonNode reproduction = contract.path("independentReproduction");
         if (!request.isObject() || expectedCaseId == null || expectedCaseId.isBlank()
-                || !text(capture, "caseId") || !expectedCaseId.equals(capture.path("caseId").asText())
-                || !text(capture, "converter") || !text(capture, "version") || !text(capture, "artifact")
-                || !text(capture, "sha256") || !text(capture, "requestSha256")
+                || !captureMetadataBound(capture, expectedCaseId) || !captureMetadataBound(reproduction, expectedCaseId)
+                || capture.path("converterSha256").asText().equalsIgnoreCase(reproduction.path("converterSha256").asText())
                 || !framingSourcesBound(contract, contract.path("scope").asText())) {
-            return result("NOT_ASSESSED", "Independent converter capture, registered case/request binding and hash-verified source quotes for the framing rules are required; observation.wireHex is not evidence");
+            return result("NOT_ASSESSED", "Two independently identified converter captures, registered case/request bindings and hash-verified framing source quotes are required; observation.wireHex is not evidence");
         }
         String expectedManifestHash = digest(canonical(manifestWithoutHash(contract)).toString().getBytes(StandardCharsets.UTF_8));
         if (!expectedManifestHash.equalsIgnoreCase(contract.path("manifestSha256").asText())) {
             return result("FAIL", "Framing manifest hash does not match its contents");
         }
         String requestHash = digest(canonical(request).toString().getBytes(StandardCharsets.UTF_8));
-        if (!requestHash.equalsIgnoreCase(capture.path("requestSha256").asText())) {
-            return result("FAIL", "Converter capture is not bound to this canonical request");
+        if (!requestHash.equalsIgnoreCase(capture.path("requestSha256").asText())
+                || !requestHash.equalsIgnoreCase(reproduction.path("requestSha256").asText())) {
+            return result("FAIL", "Converter capture/reproduction is not bound to this canonical request");
         }
-        byte[] bytes;
-        try {
-            Path artifact = trustedRoot.resolve(capture.path("artifact").asText()).normalize();
-            if (!artifact.startsWith(trustedRoot) || !Files.isRegularFile(artifact)
-                    || !artifact.toRealPath().startsWith(trustedRoot.toRealPath())) {
-                return result("NOT_ASSESSED", "Captured converter artifact is unavailable or outside the trusted root");
-            }
-            bytes = Files.readAllBytes(artifact);
-        } catch (Exception exception) {
-            return result("NOT_ASSESSED", "Captured converter artifact cannot be read from the trusted root");
-        }
-        if (!digest(bytes).equalsIgnoreCase(capture.path("sha256").asText())) {
-            return result("FAIL", "Captured converter artifact SHA-256 does not match");
-        }
+        CaptureRead captured = readCapture(capture, "Primary converter capture");
+        if (captured.bytes() == null) return result(captured.status(), captured.reason());
+        CaptureRead reproduced = readCapture(reproduction, "Independent converter reproduction");
+        if (reproduced.bytes() == null) return result(reproduced.status(), reproduced.reason());
+        byte[] bytes = captured.bytes();
+        if (!java.util.Arrays.equals(bytes, reproduced.bytes())) return result("FAIL", "Independent converter reproduction produced different request bytes");
         String scope = contract.path("scope").asText();
         ObjectNode assessed;
         if ("FULL_MESSAGE".equals(scope)) assessed = fullWire(bytes, contract);
@@ -276,10 +269,42 @@ public final class SemanticEvidenceValidator {
         else return result("NOT_ASSESSED", "Explicit supported wire scope required");
         if ("PASS".equals(assessed.path("status").asText())) {
             assessed.put("caseId", expectedCaseId).put("converter", capture.path("converter").asText())
-                    .put("converterVersion", capture.path("version").asText()).put("captureSha256", digest(bytes))
-                    .put("manifestSha256", expectedManifestHash).put("actualByteCount", bytes.length);
+                    .put("converterVersion", capture.path("version").asText()).put("converterSha256", capture.path("converterSha256").asText())
+                    .put("captureSha256", digest(bytes)).put("reproductionConverter", reproduction.path("converter").asText())
+                    .put("reproductionVersion", reproduction.path("version").asText())
+                    .put("reproductionConverterSha256", reproduction.path("converterSha256").asText())
+                    .put("reproductionSha256", digest(reproduced.bytes())).put("manifestSha256", expectedManifestHash)
+                    .put("actualByteCount", bytes.length);
         }
         return assessed;
+    }
+
+    private boolean captureMetadataBound(JsonNode capture, String expectedCaseId) {
+        return text(capture, "caseId") && expectedCaseId.equals(capture.path("caseId").asText())
+                && text(capture, "converter") && text(capture, "version") && text(capture, "artifact")
+                && sha256Text(capture, "sha256") && sha256Text(capture, "requestSha256")
+                && sha256Text(capture, "converterSha256");
+    }
+
+    private boolean sha256Text(JsonNode node, String key) {
+        return text(node, key) && node.path(key).asText().matches("[0-9a-fA-F]{64}");
+    }
+
+    private CaptureRead readCapture(JsonNode capture, String label) {
+        try {
+            Path artifact = trustedRoot.resolve(capture.path("artifact").asText()).normalize();
+            if (!artifact.startsWith(trustedRoot) || !Files.isRegularFile(artifact)
+                    || !artifact.toRealPath().startsWith(trustedRoot.toRealPath())) {
+                return new CaptureRead(null, "NOT_ASSESSED", label + " is unavailable or outside the trusted root");
+            }
+            byte[] bytes = Files.readAllBytes(artifact);
+            if (!digest(bytes).equalsIgnoreCase(capture.path("sha256").asText())) {
+                return new CaptureRead(null, "FAIL", label + " SHA-256 does not match");
+            }
+            return new CaptureRead(bytes, "PASS", "");
+        } catch (Exception exception) {
+            return new CaptureRead(null, "NOT_ASSESSED", label + " cannot be read from the trusted root");
+        }
     }
 
     private ObjectNode segment100Wire(byte[] bytes, JsonNode contract) {
@@ -325,8 +350,8 @@ public final class SemanticEvidenceValidator {
         }
         for (JsonNode segment : contract.path("segments")) {
             JsonNode fields = segment.path("fields");
-            if (!strings(fields) || fields.size() < 3 || !fields.get(0).asText().matches("[0-9]{3}")
-                    || !fields.get(1).asText().matches("[0-9]{3,4}")) return result("NOT_ASSESSED", "Explicit segment type, resolved length and ordered values required");
+                if (!fields.isArray() || fields.size() < 3 || !fields.get(0).isTextual() || !fields.get(0).asText().matches("[0-9]{3}")
+                    || !fields.get(1).isTextual() || !fields.get(1).asText().matches("[0-9]{3,4}")) return result("NOT_ASSESSED", "Explicit segment type, resolved length and ordered values required");
                 int digits = Set.of("103", "114", "115", "118", "120", "130", "131").contains(fields.get(0).asText()) ? 4 : 3;
                 if (fields.get(1).asText().length() != digits) return result("NOT_ASSESSED", "Independent segment manifest uses unsupported source length width");
             byte[] encoded = encodeFields(fields, true);
@@ -483,4 +508,6 @@ public final class SemanticEvidenceValidator {
     private ObjectNode result(String status, String reason) {
         return mapper.createObjectNode().put("status", status).put("reason", reason);
     }
+
+    private record CaptureRead(byte[] bytes, String status, String reason) { }
 }
