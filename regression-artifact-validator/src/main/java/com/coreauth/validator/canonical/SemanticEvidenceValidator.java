@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -26,13 +27,17 @@ public final class SemanticEvidenceValidator {
     }
 
     public ObjectNode assess(JsonNode observation, JsonNode evidence) {
+        return assess(observation, evidence, null);
+    }
+
+    public ObjectNode assess(JsonNode observation, JsonNode evidence, String caseId) {
         if (observation == null) observation = mapper.createObjectNode();
         if (evidence == null) evidence = mapper.createObjectNode();
         ObjectNode output = mapper.createObjectNode();
         output.set("brEquivalence", equivalence(observation.path("brClaims"), evidence.path("brEquivalence")));
         output.set("negativeIsolation", isolation(observation.path("controlPayload"), observation.path("mutantPayload"), evidence.path("negativeIsolation")));
         output.set("compatibility", compatibility(observation.path("canonicalPayload"), evidence.path("compatibility")));
-        output.set("wireValidation", wire(observation.path("wireHex"), evidence.path("wireValidation")));
+        output.set("wireValidation", wire(observation.path("canonicalPayload").path("request"), evidence.path("wireValidation"), caseId));
         output.set("hostOutcome", outcome(observation.path("request"), observation.path("response"), evidence.path("hostOutcome")));
         output.set("negativeEffectiveness", effectiveness(observation, evidence, output));
         output.put("allTechnicalGatesPassed", output.properties().stream().allMatch(entry -> "PASS".equals(entry.getValue().path("status").asText())));
@@ -143,7 +148,7 @@ public final class SemanticEvidenceValidator {
         ObjectNode control = mapper.createObjectNode();
         control.set("coreFields", controlCore(observation.path("controlCanonicalPayload")));
         control.set("compatibility", compatibility(observation.path("controlCanonicalPayload"), proof.path("compatibility")));
-        control.set("wireValidation", wire(observation.path("controlWireHex"), proof.path("wireValidation")));
+        control.set("wireValidation", wire(observation.path("controlCanonicalPayload").path("request"), proof.path("wireValidation"), caseId));
         control.set("hostOutcome", outcome(observation.path("controlRequest"), observation.path("controlResponse"), proof.path("hostOutcome")));
         for (JsonNode gate : control) {
             if (!"PASS".equals(gate.path("status").asText())) {
@@ -233,33 +238,66 @@ public final class SemanticEvidenceValidator {
         return result(validation.isValid() ? "PASS" : "FAIL", validation.isValid() ? "Source-bound companions, cardinality, count and declared order checked" : validation.errors().toString());
     }
 
-    private ObjectNode wire(JsonNode wireHex, JsonNode contract) {
-        if (!wireHex.isTextual() || wireHex.asText().isBlank() || !sourceBound(contract.path("source"))) return result("NOT_ASSESSED", "Actual wire bytes and source-bound framing contract required");
-        if ("FULL_MESSAGE".equals(contract.path("scope").asText())) return fullWire(wireHex.asText(), contract);
-        if (!"SEGMENT_100".equals(contract.path("scope").asText())) return result("NOT_ASSESSED", "Explicit supported wire scope required");
-        if (!"US-ASCII".equals(contract.path("encoding").asText()) || !"1c".equalsIgnoreCase(contract.path("fieldSeparatorHex").asText())) {
-            return result("NOT_ASSESSED", "Only explicit ASCII/1C field framing is supported");
+    private ObjectNode wire(JsonNode request, JsonNode contract, String expectedCaseId) {
+        JsonNode capture = contract.path("capture");
+        if (!request.isObject() || expectedCaseId == null || expectedCaseId.isBlank()
+                || !text(capture, "caseId") || !expectedCaseId.equals(capture.path("caseId").asText())
+                || !text(capture, "converter") || !text(capture, "version") || !text(capture, "artifact")
+                || !text(capture, "sha256") || !text(capture, "requestSha256") || !sourceBound(contract.path("source"))) {
+            return result("NOT_ASSESSED", "Independent converter capture, registered case/request binding and source-bound framing contract required; observation.wireHex is not evidence");
+        }
+        String expectedManifestHash = digest(canonical(manifestWithoutHash(contract)).toString().getBytes(StandardCharsets.UTF_8));
+        if (!expectedManifestHash.equalsIgnoreCase(contract.path("manifestSha256").asText())) {
+            return result("FAIL", "Framing manifest hash does not match its contents");
+        }
+        String requestHash = digest(canonical(request).toString().getBytes(StandardCharsets.UTF_8));
+        if (!requestHash.equalsIgnoreCase(capture.path("requestSha256").asText())) {
+            return result("FAIL", "Converter capture is not bound to this canonical request");
         }
         byte[] bytes;
-        try { bytes = HexFormat.of().parseHex(wireHex.asText()); }
-        catch (IllegalArgumentException exception) { return result("FAIL", "Wire hexadecimal is malformed"); }
-        for (byte value : bytes) if (value < 0) return result("NOT_ASSESSED", "Non-ASCII wire encoding is unsupported");
-        String wire = new String(bytes, StandardCharsets.US_ASCII);
-        String[] fields = wire.split("\u001c", -1);
-        if (fields.length < 3 || !"100".equals(fields[0]) || !fields[1].matches("[0-9]{3}")) return result("FAIL", "Wire Segment 100 identity/length framing invalid");
-        if (Integer.parseInt(fields[1]) != bytes.length) return result("FAIL", "Declared segment length does not equal actual bytes including separators");
-        if (!contract.path("orderedFields").isArray() || contract.path("orderedFields").size() != fields.length - 1 || !fields[fields.length - 1].isEmpty()) {
-            return result("NOT_ASSESSED", "Explicit field manifest and terminal field separator required");
-        }
-        for (int index = 0; index < contract.path("orderedFields").size(); index++) {
-            if (!contract.path("orderedFields").get(index).isTextual() || !fields[index].equals(contract.path("orderedFields").get(index).asText())) {
-                return result("FAIL", "Wire field sequence/value differs from bound field manifest");
+        try {
+            Path artifact = trustedRoot.resolve(capture.path("artifact").asText()).normalize();
+            if (!artifact.startsWith(trustedRoot) || !Files.isRegularFile(artifact)
+                    || !artifact.toRealPath().startsWith(trustedRoot.toRealPath())) {
+                return result("NOT_ASSESSED", "Captured converter artifact is unavailable or outside the trusted root");
             }
+            bytes = Files.readAllBytes(artifact);
+        } catch (Exception exception) {
+            return result("NOT_ASSESSED", "Captured converter artifact cannot be read from the trusted root");
         }
-        return result("PASS", "Actual ASCII segment bytes, declared length, separators and field manifest agree; full-message framing is not certified");
+        if (!digest(bytes).equalsIgnoreCase(capture.path("sha256").asText())) {
+            return result("FAIL", "Captured converter artifact SHA-256 does not match");
+        }
+        String scope = contract.path("scope").asText();
+        ObjectNode assessed;
+        if ("FULL_MESSAGE".equals(scope)) assessed = fullWire(bytes, contract);
+        else if ("SEGMENT_100".equals(scope)) assessed = segment100Wire(bytes, contract);
+        else return result("NOT_ASSESSED", "Explicit supported wire scope required");
+        if ("PASS".equals(assessed.path("status").asText())) {
+            assessed.put("caseId", expectedCaseId).put("converter", capture.path("converter").asText())
+                    .put("converterVersion", capture.path("version").asText()).put("captureSha256", digest(bytes))
+                    .put("manifestSha256", expectedManifestHash).put("actualByteCount", bytes.length);
+        }
+        return assessed;
     }
 
-    private ObjectNode fullWire(String wireHex, JsonNode contract) {
+    private ObjectNode segment100Wire(byte[] bytes, JsonNode contract) {
+        if (!"US-ASCII".equals(contract.path("encoding").asText()) || !"1c".equalsIgnoreCase(contract.path("fieldSeparatorHex").asText())) {
+            return result("NOT_ASSESSED", "Only explicit ASCII/1C Segment 100 field framing is supported");
+        }
+        JsonNode fields = contract.path("orderedFields");
+        if (!fields.isArray() || fields.size() < 3 || !fields.get(0).isTextual() || !"100".equals(fields.get(0).asText())
+                || !fields.get(1).isTextual() || !fields.get(1).asText().matches("[0-9]{3}")) {
+            return result("NOT_ASSESSED", "Explicit ordered Segment 100 fields and a three-digit resolved length are required");
+        }
+        byte[] expected = encodeFields(fields, true);
+        if (expected == null) return result("NOT_ASSESSED", "Unsupported Segment 100 field encoding in manifest");
+        if (Integer.parseInt(fields.get(1).asText()) != expected.length) return result("FAIL", "Declared Segment 100 length differs from encoded byte count including separators");
+        if (!java.util.Arrays.equals(bytes, expected)) return result("FAIL", "Captured bytes differ from ordered Segment 100 field values, binary bytes or separators");
+        return result("PASS", "Captured Segment 100 bytes, byte length, field order and separators match the source-backed manifest; no full-message claim is made");
+    }
+
+    private ObjectNode fullWire(byte[] bytes, JsonNode contract) {
         if (!"US-ASCII".equals(contract.path("encoding").asText()) || !"1c".equalsIgnoreCase(contract.path("fieldSeparatorHex").asText())
                 || !"UINT16_BE_BODY_INCLUDING_TPDU".equals(contract.path("transportLengthConvention").asText())
                 || !contract.path("tpduHex").asText().matches("60[0-9a-fA-F]{8}")
@@ -267,9 +305,8 @@ public final class SemanticEvidenceValidator {
                 || !contract.path("segments").isArray() || contract.path("segments").isEmpty()) {
             return result("NOT_ASSESSED", "Complete supported transport, TPDU, Section 1 and segment manifest required");
         }
-        byte[] bytes;
         byte[] tpdu;
-        try { bytes = HexFormat.of().parseHex(wireHex); tpdu = HexFormat.of().parseHex(contract.path("tpduHex").asText()); }
+        try { tpdu = HexFormat.of().parseHex(contract.path("tpduHex").asText()); }
         catch (IllegalArgumentException exception) { return result("FAIL", "Full-message wire/TPDU hexadecimal is malformed"); }
         if (bytes.length < 7 || bytes.length > 65537) return result("FAIL", "Full-message transport size invalid");
         int length = Byte.toUnsignedInt(bytes[0]) * 256 + Byte.toUnsignedInt(bytes[1]);
@@ -279,10 +316,11 @@ public final class SemanticEvidenceValidator {
                 || Integer.parseInt(section1.get(section1.size() - 1).asText()) != contract.path("segments").size()) {
             return result("NOT_ASSESSED", "Independent Section 1 manifest must bind ATL105 and physical segment count");
         }
-        StringBuilder body = new StringBuilder();
+        ByteArrayOutputStream body = new ByteArrayOutputStream();
         for (JsonNode field : section1) {
             if (!printable(field.asText())) return result("NOT_ASSESSED", "Unsupported Section 1 field encoding");
-            body.append(field.asText()).append('\u001c');
+            body.writeBytes(field.asText().getBytes(StandardCharsets.US_ASCII));
+            body.write(0x1c);
         }
         for (JsonNode segment : contract.path("segments")) {
             JsonNode fields = segment.path("fields");
@@ -290,19 +328,41 @@ public final class SemanticEvidenceValidator {
                     || !fields.get(1).asText().matches("[0-9]{3,4}")) return result("NOT_ASSESSED", "Explicit segment type, resolved length and ordered values required");
                 int digits = Set.of("103", "114", "115", "118", "120", "130", "131").contains(fields.get(0).asText()) ? 4 : 3;
                 if (fields.get(1).asText().length() != digits) return result("NOT_ASSESSED", "Independent segment manifest uses unsupported source length width");
-            StringBuilder encoded = new StringBuilder();
-            for (JsonNode field : fields) {
-                if (!printable(field.asText())) return result("NOT_ASSESSED", "Unsupported segment field encoding");
-                encoded.append(field.asText()).append('\u001c');
-            }
-            if (Integer.parseInt(fields.get(1).asText()) != encoded.length()) return result("NOT_ASSESSED", "Independent segment manifest has incorrect byte length");
-            body.append(encoded);
+            byte[] encoded = encodeFields(fields, true);
+            if (encoded == null) return result("NOT_ASSESSED", "Unsupported segment field encoding");
+            if (Integer.parseInt(fields.get(1).asText()) != encoded.length) return result("NOT_ASSESSED", "Independent segment manifest has incorrect byte length");
+            body.writeBytes(encoded);
         }
-        byte[] expected = body.toString().getBytes(StandardCharsets.US_ASCII);
+        byte[] expected = body.toByteArray();
         if (expected.length + tpdu.length != length) return result("FAIL", "Wire body size differs from independent complete manifest");
         for (int index = 0; index < tpdu.length; index++) if (bytes[index + 2] != tpdu[index]) return result("FAIL", "TPDU protocol/address differs from bound profile");
         for (int index = 0; index < expected.length; index++) if (bytes[index + 7] != expected[index]) return result("FAIL", "Section/segment values, order, separators or lengths differ from complete manifest");
         return result("PASS", "All captured message bytes covered: transport length, TPDU, Section 1/count, segment lengths, order and separators match independent manifest");
+    }
+
+    private byte[] encodeFields(JsonNode fields, boolean allowBinary) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        for (int index = 0; index < fields.size(); index++) {
+            JsonNode field = fields.get(index);
+            byte[] value;
+            if (field.isTextual()) {
+                String text = field.asText();
+                if (!printable(text)) return null;
+                value = text.getBytes(StandardCharsets.US_ASCII);
+            } else if (allowBinary && index >= 2 && field.isObject() && field.size() == 1 && text(field, "hex")) {
+                try { value = HexFormat.of().parseHex(field.path("hex").asText()); }
+                catch (IllegalArgumentException exception) { return null; }
+            } else return null;
+            output.writeBytes(value);
+            output.write(0x1c);
+        }
+        return output.toByteArray();
+    }
+
+    private ObjectNode manifestWithoutHash(JsonNode contract) {
+        ObjectNode manifest = ((ObjectNode) contract).deepCopy();
+        manifest.remove("manifestSha256");
+        return manifest;
     }
 
     private ObjectNode outcome(JsonNode request, JsonNode response, JsonNode contract) {
