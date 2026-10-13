@@ -1,0 +1,85 @@
+{
+  "artifact": "ATL105-APPENDIX-AF-2026-4-TRAINING-RULE-CATALOG",
+  "appendix": "AF",
+  "specification": "ATL105",
+  "specificationVersion": "2026-4",
+  "status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+  "sourceDocument": "BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-4.pdf",
+  "sourceDocumentSha256": "568c04d3081cac6c5cc545adee9c6f8f3a34334e788fdf5ee0260ffef57c77af",
+  "sourcePdfPage": 730,
+  "sourcePrintedPage": "AF-1",
+  "sourceSection": "Appendix AF",
+  "sourceQuotesFile": "docs/specs/kb/appendix-af-source-quotes.txt",
+  "executionCertified": false,
+  "countsExcludedFromSegmentCatalogSummary": true,
+  "representation": "LOGICAL_LIFECYCLE_OBSERVATIONS_NOT_WIRE_PAYLOADS",
+  "rules": [
+    {
+      "ruleId": "AF-NETWORK-APPLICABILITY",
+      "requirement": "Incremental Auth is mandatory for Discover without an MCC restriction; it is strongly recommended for Visa, Mastercard, and American Express alongside applicable existing lodging and EV fields.",
+      "sourceQuotes": [
+        "This functionality is mandatory for Discover and is not limited by MCC.",
+        "For Visa, Mastercard, and American Express, the use of this functionality is strongly recommended in addition to populating the Estimated and Incremental Authorization fields for the applicable lodging and EV transactions."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TRANSACTION-TYPES",
+      "requirement": "The supported Incremental Auth types are Original Auth (Estimated Auth), Incremental Auth, Partial Reversal (IA Reversal), and Incremental Auth Completion (IA Completion).",
+      "sourceQuotes": [
+        "The Incremental Auth (IA) product supports four transaction types:",
+        "Original Auth (aka Estimated Auth)",
+        "Incremental Auth",
+        "Partial Reversal (aka IA Reversal)",
+        "Incremental Auth Completion (aka IA Completion)"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TABLE82-PRESENCE",
+      "requirement": "All IA transaction types should contain Incremental Auth Data in Segment 111 Table 82; this is mandatory for Discover.",
+      "sourceQuotes": [
+        "All IA transaction types should contain Incremental Auth Data (Variable Information segment 111 Table 82). This is mandatory for Discover."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TRANSACTION-ID-UNIQUENESS",
+      "requirement": "The Transaction ID in Incremental Auth Data must be unique per terminal among open Incremental Auth purchases.",
+      "sourceQuotes": [
+        "Incremental Auth Data contains the Transaction ID which must be unique (per terminal) to any open Incremental Auth purchase."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-ORIGINAL-PREDECESSOR",
+      "requirement": "Incremental Auth, IA Reversal, and IA Completion are subsequent transactions and must be preceded by an Original Auth.",
+      "sourceQuotes": [
+        "Incremental Auths, IA Reversals, and IA Completions are all subsequent transactions, and must be preceded by an Original Auth."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-APPROVAL-CODE",
+      "requirement": "Subsequent IA transactions must carry the Approval Code (DE 39) received on the approved Original Auth.",
+      "sourceQuotes": [
+        "Subsequent IA transactions must contain the Approval Code (DE 39) that was received on the approved Original Auth."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-COMPLETION-CLOSED",
+      "requirement": "After IA Completion, the IA is closed and no more subsequent transactions will be approved for that Terminal Transaction ID.",
+      "sourceQuotes": [
+        "Once an IA Completion is received, the IA is closed, and no more subsequent transactions will be approved for that Terminal Transaction ID."
+      ],
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "unresolved": [
+    "Exact Table 82 field layout and byte-level representation require Appendix I Table 82 layout validation.",
+    "The complete open-purchase state needed to assess per-terminal Transaction ID uniqueness is an external fixture requirement.",
+    "The source uses should/strongly recommended language except for Discover mandatory presence; do not upgrade recommendations into universal hard failures.",
+    "Approval and completion acceptance are logical source checks only; processor outcomes and host-state behavior are not certified."
+  ]
+}

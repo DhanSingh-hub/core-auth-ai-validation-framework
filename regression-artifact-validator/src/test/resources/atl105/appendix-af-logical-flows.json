@@ -1,0 +1,36 @@
+{
+  "artifact": "ATL105-APPENDIX-AF-2026-4-LOGICAL-FLOWS",
+  "specificationVersion": "2026-4",
+  "producer": "TEST_SOLUTION",
+  "status": "REVIEW_REQUIRED",
+  "scope": "LOGICAL_PREDICATES_NOT_WIRE_OR_HOST_EXECUTION",
+  "executionCertified": false,
+  "baseFlow": {
+    "specificationVersion": "2026-4",
+    "network": "Discover",
+    "mcc": "9999",
+    "terminalId": "TERM-A",
+    "openIncrementalAuthorizationHistoryComplete": true,
+    "openIncrementalAuthTransactions": [],
+    "steps": [
+      {"role":"ORIGINAL_AUTH","approved":true,"approvalCodeDE39":"APPR01","table82Present":true,"incrementalAuthData":{"transactionId":"IA-001"}},
+      {"role":"INCREMENTAL_AUTH","approvalCodeDE39":"APPR01","table82Present":true,"incrementalAuthData":{"transactionId":"IA-001"}},
+      {"role":"PARTIAL_REVERSAL","approvalCodeDE39":"APPR01","table82Present":true,"incrementalAuthData":{"transactionId":"IA-001"}},
+      {"role":"INCREMENTAL_AUTH_COMPLETION","approvalCodeDE39":"APPR01","table82Present":true,"incrementalAuthData":{"transactionId":"IA-001"}}
+    ]
+  },
+  "cases": [
+    {"id":"AF-TD-001","objective":"Valid Discover lifecycle covers all four source-listed IA types without imposing an MCC allowlist.","requirement":"AF-TRANSACTION-TYPES","expectedRule":"NONE","changes":[]},
+    {"id":"AF-TD-002","objective":"Discover Original Auth missing Table 82.","requirement":"AF-TABLE82-PRESENCE","expectedRule":"AF-TABLE82-PRESENCE","changes":[{"op":"set","pointer":"/steps/0/table82Present","value":false}]},
+    {"id":"AF-TD-003","objective":"Discover Incremental Auth missing Table 82.","requirement":"AF-TABLE82-PRESENCE","expectedRule":"AF-TABLE82-PRESENCE","changes":[{"op":"set","pointer":"/steps/1/table82Present","value":false}]},
+    {"id":"AF-TD-004","objective":"Discover Partial Reversal missing Table 82.","requirement":"AF-TABLE82-PRESENCE","expectedRule":"AF-TABLE82-PRESENCE","changes":[{"op":"set","pointer":"/steps/2/table82Present","value":false}]},
+    {"id":"AF-TD-005","objective":"Discover IA Completion missing Table 82.","requirement":"AF-TABLE82-PRESENCE","expectedRule":"AF-TABLE82-PRESENCE","changes":[{"op":"set","pointer":"/steps/3/table82Present","value":false}]},
+    {"id":"AF-TD-006","objective":"Reject an Original Auth Transaction ID already open on the same terminal.","requirement":"AF-TRANSACTION-ID-UNIQUENESS","expectedRule":"AF-TRANSACTION-ID-UNIQUENESS","changes":[{"op":"append","pointer":"/openIncrementalAuthTransactions","value":{"terminalId":"TERM-A","transactionId":"IA-001"}}]},
+    {"id":"AF-TD-007","objective":"Reject subsequent IA activity when no Original Auth precedes it.","requirement":"AF-ORIGINAL-PREDECESSOR","expectedRule":"AF-ORIGINAL-PREDECESSOR","changes":[{"op":"set","pointer":"/steps/0/role","value":"INCREMENTAL_AUTH"},{"op":"set","pointer":"/steps/1/role","value":"PARTIAL_REVERSAL"}]},
+    {"id":"AF-TD-008","objective":"Reject a subsequent transaction whose DE 39 differs from the approved Original Auth.","requirement":"AF-APPROVAL-CODE","expectedRule":"AF-APPROVAL-CODE","changes":[{"op":"set","pointer":"/steps/1/approvalCodeDE39","value":"WRONG1"}]},
+    {"id":"AF-TD-009","objective":"Reject subsequent activity when the Original Auth was not approved.","requirement":"AF-APPROVAL-CODE","expectedRule":"AF-APPROVAL-CODE","changes":[{"op":"set","pointer":"/steps/0/approved","value":false}]},
+    {"id":"AF-TD-010","objective":"Reject a further subsequent transaction after IA Completion closes the purchase.","requirement":"AF-COMPLETION-CLOSED","expectedRule":"AF-COMPLETION-CLOSED","changes":[{"op":"append","pointer":"/steps","value":{"role":"INCREMENTAL_AUTH","approvalCodeDE39":"APPR01","table82Present":true,"incrementalAuthData":{"transactionId":"IA-001"}}}]},
+    {"id":"AF-TD-011","objective":"For Visa, missing Table 82 raises recommendation evidence but not a Discover-mandatory failure.","requirement":"AF-NETWORK-APPLICABILITY","expectedRule":"NONE","expectedWarning":"AF-TABLE82-RECOMMENDATION","changes":[{"op":"set","pointer":"/network","value":"Visa"},{"op":"set","pointer":"/steps/0/table82Present","value":false}]},
+    {"id":"AF-TD-012","objective":"The same Transaction ID is not a collision when it belongs to a different terminal.","requirement":"AF-TRANSACTION-ID-UNIQUENESS","expectedRule":"NONE","changes":[{"op":"append","pointer":"/openIncrementalAuthTransactions","value":{"terminalId":"TERM-B","transactionId":"IA-001"}}]}
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "artifact": "ATL105-APPENDIX-AF-2026-4-TEST-MODEL",
+  "appendix": "AF",
+  "title": "Estimated and Incremental Authorization Transactions",
+  "specification": "ATL105",
+  "specificationVersion": "2026-4",
+  "status": "REVIEW_REQUIRED",
+  "sourceDocument": "BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-4.pdf",
+  "sourceDocumentSha256": "568c04d3081cac6c5cc545adee9c6f8f3a34334e788fdf5ee0260ffef57c77af",
+  "sourcePdfPage": 730,
+  "sourcePrintedPage": "AF-1",
+  "sourceSection": "Appendix AF",
+  "ruleCatalog": "docs/specs/kb/appendix-af-rule-catalog.json",
+  "executionCertified": false,
+  "businessRequirements": [
+    {"id":"BR-SEG100-APPAF-NETWORK","title":"Discover IA is mandatory without an MCC restriction; Visa, Mastercard and American Express use is strongly recommended alongside applicable lodging/EV fields.","sourceRuleId":"AF-NETWORK-APPLICABILITY","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"100","rule":"af-network-applicability"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAF-TYPES","title":"IA transaction types are Original Auth, Incremental Auth, Partial Reversal and Incremental Auth Completion.","sourceRuleId":"AF-TRANSACTION-TYPES","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"100","rule":"af-transaction-types"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG111-APPAF-TABLE82","title":"All IA transaction types should contain Segment 111 Table 82; presence is mandatory for Discover.","sourceRuleId":"AF-TABLE82-PRESENCE","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"111","element":"113","rule":"af-table-82-presence"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG111-APPAF-TRANSACTION-ID","title":"Table 82 Transaction ID is unique per terminal among open IA purchases.","sourceRuleId":"AF-TRANSACTION-ID-UNIQUENESS","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"111","element":"113","rule":"af-transaction-id-uniqueness"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAF-ORIGINAL","title":"Incremental Auth, IA Reversal and IA Completion must follow an Original Auth.","sourceRuleId":"AF-ORIGINAL-PREDECESSOR","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"100","rule":"af-original-predecessor"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAF-APPROVAL","title":"Subsequent IA transactions contain the Approval Code (DE 39) returned on the approved Original Auth.","sourceRuleId":"AF-APPROVAL-CODE","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"100","element":"39","rule":"af-approval-code-carry-forward"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPAF-COMPLETION","title":"IA Completion closes the purchase; no later subsequent transaction is approved for its Terminal Transaction ID.","sourceRuleId":"AF-COMPLETION-CLOSED","sourceAnchor":{"specification":"ATL105","version":"2026-4","section":"Appendix AF","segment":"100","rule":"af-completion-closes-terminal-transaction-id"},"status":"REVIEW_REQUIRED"}
+  ],
+  "testScenarios": [
+    {"id":"TS-SEG100-APPAF-APPLICABILITY","covers":["BR-SEG100-APPAF-NETWORK","BR-SEG100-APPAF-TYPES"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAF-DATA","covers":["BR-SEG111-APPAF-TABLE82","BR-SEG111-APPAF-TRANSACTION-ID"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAF-LIFECYCLE","covers":["BR-SEG100-APPAF-ORIGINAL","BR-SEG100-APPAF-APPROVAL"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPAF-COMPLETION","covers":["BR-SEG100-APPAF-COMPLETION"],"status":"REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id":"TC-SEG100-APPAF-APPLICABILITY","scenarioId":"TS-SEG100-APPAF-APPLICABILITY","objective":"Exercise supported IA roles and network-specific Table 82 policy.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-001","AF-TD-010","AF-TD-011","AF-TD-012"]},
+    {"id":"TC-SEG100-APPAF-DATA","scenarioId":"TS-SEG100-APPAF-DATA","objective":"Exercise Discover Table 82 presence and terminal-scoped Transaction ID uniqueness.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-002","AF-TD-003","AF-TD-004","AF-TD-005","AF-TD-006"]},
+    {"id":"TC-SEG100-APPAF-LIFECYCLE","scenarioId":"TS-SEG100-APPAF-LIFECYCLE","objective":"Exercise Original Auth predecessor and approval-code carry-forward.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-007","AF-TD-008","AF-TD-009"]},
+    {"id":"TC-SEG100-APPAF-COMPLETION","scenarioId":"TS-SEG100-APPAF-COMPLETION","objective":"Ensure subsequent activity is rejected after completion closes the IA.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-010"]}
+  ],
+  "testData": [
+    {"id":"AF-TD-001","testCaseIds":["TC-SEG100-APPAF-APPLICABILITY"],"coversBr":"BR-SEG100-APPAF-TYPES","fixtureCaseId":"AF-TD-001","expectedRule":"NONE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-002","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TABLE82","fixtureCaseId":"AF-TD-002","expectedRule":"AF-TABLE82-PRESENCE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-003","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TABLE82","fixtureCaseId":"AF-TD-003","expectedRule":"AF-TABLE82-PRESENCE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-004","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TABLE82","fixtureCaseId":"AF-TD-004","expectedRule":"AF-TABLE82-PRESENCE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-005","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TABLE82","fixtureCaseId":"AF-TD-005","expectedRule":"AF-TABLE82-PRESENCE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-006","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TRANSACTION-ID","fixtureCaseId":"AF-TD-006","expectedRule":"AF-TRANSACTION-ID-UNIQUENESS","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-007","testCaseIds":["TC-SEG100-APPAF-LIFECYCLE"],"coversBr":"BR-SEG100-APPAF-ORIGINAL","fixtureCaseId":"AF-TD-007","expectedRule":"AF-ORIGINAL-PREDECESSOR","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-008","testCaseIds":["TC-SEG100-APPAF-LIFECYCLE"],"coversBr":"BR-SEG100-APPAF-APPROVAL","fixtureCaseId":"AF-TD-008","expectedRule":"AF-APPROVAL-CODE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-009","testCaseIds":["TC-SEG100-APPAF-LIFECYCLE"],"coversBr":"BR-SEG100-APPAF-APPROVAL","fixtureCaseId":"AF-TD-009","expectedRule":"AF-APPROVAL-CODE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-010","testCaseIds":["TC-SEG100-APPAF-COMPLETION","TC-SEG100-APPAF-APPLICABILITY"],"coversBr":"BR-SEG100-APPAF-COMPLETION","fixtureCaseId":"AF-TD-010","expectedRule":"AF-COMPLETION-CLOSED","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-011","testCaseIds":["TC-SEG100-APPAF-APPLICABILITY"],"coversBr":"BR-SEG100-APPAF-NETWORK","fixtureCaseId":"AF-TD-011","expectedRule":"NONE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-012","testCaseIds":["TC-SEG100-APPAF-APPLICABILITY"],"coversBr":"BR-SEG100-APPAF-NETWORK","fixtureCaseId":"AF-TD-012","expectedRule":"NONE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"}
+  ],
+  "logicalTrainingEvidence": {
+    "sourceRuleCatalog": "docs/specs/kb/appendix-af-rule-catalog.json",
+    "trainingNote": "docs/specs/kb/appendix-af-estimated-incremental-training.md",
+    "validator": "AppendixAFIncrementalAuthorizationValidator",
+    "fixtureFile": "src/test/resources/atl105/appendix-af-logical-flows.json",
+    "logicalFixtureCount": 12,
+    "scope": "LOGICAL_PREDICATES_ONLY_NOT_CANONICAL_HOST_OR_WIRE_EXECUTION",
+    "executionCertified": false
+  },
+  "testDataReadinessSummary": {"executable": 0,"reviewRequired": 12},
+  "testDataStatus": "Source-derived logical cases only; no physical request/response, independent open-state fixture, SME decision, or host execution is certified."
+}

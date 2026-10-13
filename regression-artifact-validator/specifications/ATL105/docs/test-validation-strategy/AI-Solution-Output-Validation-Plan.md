@@ -2,6 +2,7 @@
 
 **Platform:** Core Auth Regression Test Solution  
 **Current specification pack:** ATL105 2026-3  
+**Release overlay:** ATL105 2026-4 Appendix AF is modeled separately as review-required; it does not imply full 2026-4 support.  
 **Primary source inspected:** `core-auth-test-generation-platform/src/pipeline`  
 **Purpose:** Define how Test Validation independently validates the AI Solution generation workflow and every outcome artifact
 
@@ -24,6 +25,8 @@
 **eWIC Segment 103 applicability crosscheck:** The eWIC intake validator follows the source-derived `Segment103ApplicabilityValidator` matrix. Authorization, Authorization Cancellation, Balance Inquiry, and Purchase Reversal/Void may omit Segment 103 on the request; Purchase Completion and Voucher Clear require it and the applicable WIC data. Element 63 is checked against BUYPASS segment objects actually included. Operation-catalog completeness in AI intake is separate from per-message Segment 103 presence. These checks do not establish Commerce Hub field mapping, support, or host outcome.
 
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
+
+**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, Segment 111 Table 82 presence, open Transaction ID uniqueness, Original Auth predecessor, approval-code carry-forward, and completion closure. Discover missing Table 82 is a failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only. The overlay is pinned to the 2026-4 PDF hash and remains `REVIEW_REQUIRED`; it does not validate Appendix I Table 82 wire layout, processor outcomes, complete open-state history, or the full 2026-4 release.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
 

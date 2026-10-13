@@ -39,6 +39,14 @@ measures the referenced Appendix B Segment 100 example (078 declared versus
 82 ASCII bytes), retaining `SEG111-SME-121`. It is source-dependency evidence,
 not full-message execution. New candidates use Section 12.1 calculated lengths;
 offline validation never establishes host acceptance.
+`AppendixAFIncrementalAuthorizationValidatorTest` adds the separately pinned
+ATL105 2026-4 Appendix AF overlay: source-quote checks, release-specific
+BR/TS/TC/TD links, twelve logical lifecycle cases, Table 82 network policy,
+open-ID collision, predecessor, approval-code and post-completion checks.
+These remain review-only and do not change the 2026-3 denominator or establish
+physical serialization, independent open-state completeness, SME approval or
+host behavior.
+| `AIV-015` | Keep specification-release overlays source-hash-pinned, anchor-versioned, separately counted, and explicitly review-gated; never promote a partial new-release overlay into full-pack support. | Release-specific source catalog, canonical test model, training-status overlay and bounded logical validator | `AppendixAFIncrementalAuthorizationValidatorTest` checks the pinned PDF hash, exact source quotes, 2026-4 anchors, artifact links, replay outcomes and review-only readiness | Initial 2026-4 AF coverage is a seven-rule logical overlay; remaining 2026-4 changes and physical Table 82 layout are not included. |
 `GenerateAppendixIScopedTrainingTest` adds AIV-005/AIV-006/AIV-011 evidence:
 11 independently evaluated scoped logical examples, 22 physical review-only TD
 records with canonical links, specific mutation-target detection, literal source
