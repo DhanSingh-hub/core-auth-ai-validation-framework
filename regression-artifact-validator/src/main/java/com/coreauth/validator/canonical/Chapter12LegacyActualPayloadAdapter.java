@@ -114,9 +114,15 @@ public final class Chapter12LegacyActualPayloadAdapter {
             voidTrace(selected, normalized.path("Standard Segment"), findings);
         }
         if ("101".equals(segment) && request && selected != null && selected.isObject()) {
-            findings.addAll(new Segment101PayloadValidator().validateActualTagContext(selected, normalized,
+            var fleet = new Segment101PayloadValidator();
+            findings.addAll(fleet.validateActualTagContext(selected, normalized,
                     normalized.path("Standard Segment"), evidence));
+            findings.addAll(fleet.validateActualNumericFields(selected));
+            findings.addAll(fleet.validateActualTagGrammar(selected));
+            findings.addAll(fleet.validateActualPlacement(selected));
         }
+        if ("101".equals(segment) && request) findings.addAll(new Segment101PayloadValidator().validateActualPresence(
+                occurrences > 0, normalized.has(NAMES.get("145")), evidence));
         if ("112".equals(segment)) {
             alias(normalized, "AdditionalInformationFlag", "additionalInformationDataSegmentFlag", findings);
         }

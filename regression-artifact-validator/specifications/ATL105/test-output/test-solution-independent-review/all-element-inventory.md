@@ -31,7 +31,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |28|Dial String Type; |N FIXED max 1|2|8|0|2|2|0|
 |29|Direct Marketing Invoice Number; |AN VARIABLE max 10|1|3|0|1|1|0|
 |30|Download Indicator; |N FIXED max 1|2|11|4|1|2|2|
-|31|Driver/Identification Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|31|Driver/Identification Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |32|Employee Number; |N FIXED max 4|3|12|3|2|0|1|
 |33|Encrypted PIN Block Data; |REVIEW|1|18|2|0|0|0|
 |34|End-of-Data Indicator; |A FIXED max 1|5|33|0|5|2|0|
@@ -40,14 +40,14 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |37|Extract Time; |N FIXED max 4|1|4|1|1|0|0|
 |38|Fee Amount; |N FIXED max 8|0|2|1|0|0|0|
 |39|Firmware Version; |AN FIXED max 8|3|14|5|2|0|1|
-|40|Fleet Employee Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|40|Fleet Employee Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |41|Fuel Purchase Amount; |N VARIABLE max 8|3|21|2|1|1|0|
 |42|Grand Total; |N FIXED max 8|2|8|3|0|0|0|
 |43|Hardware Version; |REVIEW|3|15|5|2|1|1|
 |44|Information Byte; |AN FIXED max 1|5|24|12|3|2|1|
 |45|Initiation Date; |N FIXED max 6|2|8|3|1|2|1|
 |46|Initiation Time; |N FIXED max 4|2|7|3|1|2|0|
-|47|Job Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|47|Job Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |48|Load Type; |A FIXED max 1|1|8|6|1|0|0|
 |49|Local Date and Local Time; |N FIXED max 10|1|6|2|0|0|0|
 |50|Local Time; |N FIXED max 4|1|4|1|1|0|0|
@@ -102,7 +102,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |105|Totals Date; |N FIXED max 6|3|33|4|2|1|1|
 |106|Unit of Measure; |A FIXED max 1|2|9|0|0|0|0|
 |107|Unit Price; |N VARIABLE max 9|2|9|0|0|1|0|
-|108|Vehicle Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|108|Vehicle Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |109|Voucher ID; |N VARIABLE max 10|1|10|0|1|1|0|
 |111|Variable Information Indicator; |AN FIXED max 3|3|13|1|1|1|0|
 |112|Variable Information Length; |N FIXED max 3|3|11|1|1|2|0|

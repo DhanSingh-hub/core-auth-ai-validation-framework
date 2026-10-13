@@ -42,7 +42,7 @@ public final class Segment101PayloadValidator {
                     || terminal != null && !terminal.isTextual()) supported = invalid;
             else if (!support.has("supported") || !support.has("TerminalIdentifier") || terminal == null) supported = review;
             else if (!support.path("supported").isBoolean() || !support.path("TerminalIdentifier").isTextual()
-                    || !terminal.isTextual() || !terminal.textValue().matches("[A-Za-z0-9]{1,22}")
+                    || !terminal.isTextual() || terminal.textValue().isBlank()
                     || !terminal.equals(support.path("TerminalIdentifier")) || !support.path("supported").booleanValue()) supported = invalid;
         }
         return java.util.List.of(
@@ -52,12 +52,113 @@ public final class Segment101PayloadValidator {
                         "Source11517-11519: populated tags require independently supplied Host Prompts support bound to actual Standard terminal; configuration authenticity remains external"));
     }
 
+    /** Source-local numeric Elements 108/47/31/40 on the observed Fleet fields; absent observations stay review. */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualNumericFields(JsonNode segment) {
+        java.util.List<Chapter12SegmentPayloadValidator.Finding> findings = new java.util.ArrayList<>();
+        String[][] fields = {
+            {"VehicleNumber", "SEG101-R-010", "108", "21991"},
+            {"JobNumber", "SEG101-R-011", "47", "20475"},
+            {"DriverIdentificationNumber", "SEG101-R-012", "31", "20208"},
+            {"FleetEmployeeNumber", "SEG101-R-013", "40", "20362"}
+        };
+        for (String[] field : fields) {
+            JsonNode value = segment.get(field[0]);
+            var status = value == null ? Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED
+                : !value.isTextual() ? Chapter12SegmentPayloadValidator.Status.INVALID
+                : value.textValue().isEmpty() || NUMERIC_MAX_10.matcher(value.textValue()).matches()
+                    ? Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED : Chapter12SegmentPayloadValidator.Status.INVALID;
+            findings.add(new Chapter12SegmentPayloadValidator.Finding(field[1], "actual-fleet-numeric", status,
+                "Source" + field[3] + ": populated " + field[0] + "/Element" + field[2]
+                    + " is Character Type N, variable up to 10 digits; missing observation is not filled"));
+        }
+        return findings;
+    }
+
+    /** Aggregated Tag/Data grammar findings over observed FleetTag1-5 slots; emitted only when a slot is observed. */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualTagGrammar(JsonNode segment) {
+        var pass = Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
+        var review = Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
+        var invalid = Chapter12SegmentPayloadValidator.Status.INVALID;
+        boolean observed = false;
+        int populated = 0;
+        int coded = 0;
+        int typed = 0;
+        boolean codeInvalid = false;
+        boolean capInvalid = false;
+        boolean dataInvalid = false;
+        for (int index = 1; index <= 5; index++) {
+            JsonNode slot = segment.get("FleetTag" + index);
+            if (slot == null) continue;
+            observed = true;
+            if (!slot.isTextual()) {
+                codeInvalid = true;
+                continue;
+            }
+            String value = slot.textValue();
+            if (value.isEmpty()) continue;
+            populated++;
+            if (value.length() < 3) {
+                codeInvalid = true;
+                continue;
+            }
+            coded++;
+            String code = value.substring(0, 3);
+            String data = value.substring(3);
+            if (data.length() > 31) capInvalid = true;
+            Pattern pattern = VALID_FLEET_TAG_CODES.contains(code) ? FLEET_TAG_DATA_PATTERNS.get(code) : null;
+            if (pattern != null) {
+                typed++;
+                if (!pattern.matcher(data).matches()) dataInvalid = true;
+            }
+        }
+        if (!observed) return java.util.List.of();
+        return java.util.List.of(
+            new Chapter12SegmentPayloadValidator.Finding("SEG101-R-022", "actual-fleet-tag-code",
+                codeInvalid ? invalid : populated > 0 ? pass : review,
+                "Source11495-11512: each populated Fleet Tag begins with a fixed three-byte Tag code"),
+            new Chapter12SegmentPayloadValidator.Finding("SEG101-R-022", "actual-fleet-tag-data-cap",
+                capInvalid ? invalid : coded > 0 ? pass : review,
+                "Source11496-11512: Fleet Tag data after the three-byte code is at most 31 bytes; 34 is the entailed maximum, not padding"),
+            new Chapter12SegmentPayloadValidator.Finding("SEG101-R-024", "actual-fleet-tag-data",
+                dataInvalid ? invalid : typed > 0 ? pass : review,
+                "Source11517-11549: listed tag data matches its dictionary character type and maximum length"));
+    }
+
+    /** Observed Fleet envelope placement: any field number in Data Section 3. */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualPlacement(JsonNode segment) {
+        JsonNode section = segment.get("DataSection");
+        JsonNode field = segment.get("FieldNumber");
+        var status = section == null ? Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED
+            : !section.isTextual() || !section.textValue().matches("[0-9]{1,2}") || Integer.parseInt(section.textValue()) != 3
+                || field != null && (!field.isTextual() || !field.textValue().matches("0*[1-9][0-9]{0,2}"))
+                ? Chapter12SegmentPayloadValidator.Status.INVALID : Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
+        return java.util.List.of(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-001", "actual-fleet-placement", status,
+            "Source11398-11400: observed Segment101 occupies any field in Data Section 3; missing placement is not filled"));
+    }
+
+    /**
+     * Fleet-card request presence with the 101/145 companion note. Applicability comes only from the
+     * independently supplied evidence.context.fleetCardTransaction boolean.
+     */
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualPresence(
+            boolean fleetObserved, boolean enhancedObserved, JsonNode evidence) {
+        JsonNode applicability = evidence == null ? null : evidence.path("context").get("fleetCardTransaction");
+        var status = applicability != null && !applicability.isBoolean() ? Chapter12SegmentPayloadValidator.Status.INVALID
+            : fleetObserved ? Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED
+            : applicability == null ? Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED
+            : !applicability.booleanValue() || enhancedObserved ? Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED
+            : Chapter12SegmentPayloadValidator.Status.INVALID;
+        return java.util.List.of(new Chapter12SegmentPayloadValidator.Finding("SEG101-R-002", "actual-fleet-presence", status,
+            "Source11402-11404: fleet card requests include the Fleet segment; observed Segment145 is the permitted alternative"));
+    }
+
     private static final String SOURCE = "Segment101Payload";
 
     private static final Pattern SEGMENT_LENGTH_PATTERN = Pattern.compile("^[0-9]{3}$");
     private static final Pattern NUMERIC_MAX_8 = Pattern.compile("^[0-9]{1,8}$");
     private static final Pattern ALNUM_MAX_8 = Pattern.compile("^[A-Za-z0-9]{1,8}$");
     private static final Pattern ALNUM_MAX_10 = Pattern.compile("^[A-Za-z0-9]{1,10}$");
+    private static final Pattern NUMERIC_MAX_10 = Pattern.compile("^[0-9]{1,10}$");
     private static final Pattern ALNUM_MAX_12 = Pattern.compile("^[A-Za-z0-9]{1,12}$");
 
     private static final int BASE_MAX_SEGMENT_LENGTH = 61;
@@ -75,7 +176,7 @@ public final class Segment101PayloadValidator {
         Map.entry("TRP", Pattern.compile("^[A-Za-z0-9]{1,15}$")),
         Map.entry("UNT", Pattern.compile("^[A-Za-z0-9]{1,31}$")),
         Map.entry("TLH", Pattern.compile("^[0-9]{1,6}$")),
-        Map.entry("DOB", Pattern.compile("^[0-9]{8}$")),
+        Map.entry("DOB", Pattern.compile("^[0-9]{1,8}$")),
         Map.entry("ZIP", Pattern.compile("^[A-Za-z0-9]{1,9}$")),
         Map.entry("END", Pattern.compile("^[A-Za-z0-9]{1,31}$")),
         Map.entry("MID", Pattern.compile("^[A-Za-z0-9]{1,31}$")),
@@ -196,10 +297,10 @@ public final class Segment101PayloadValidator {
         // Base fields (fields 3-13): conditional, but when present must match type/length rules.
         // Rule anchors SEG101-R-009 through SEG101-R-019.
         checkOptionalPattern(segment, "Odometer", NUMERIC_MAX_8, "numeric max 8 digits", "SEG101-R-009", result);
-        checkOptionalPattern(segment, "VehicleNumber", ALNUM_MAX_10, "alphanumeric max 10", "SEG101-R-010", result);
-        checkOptionalPattern(segment, "JobNumber", ALNUM_MAX_10, "alphanumeric max 10", "SEG101-R-011", result);
-        checkOptionalPattern(segment, "DriverIdentificationNumber", ALNUM_MAX_10, "alphanumeric max 10", "SEG101-R-012", result);
-        checkOptionalPattern(segment, "FleetEmployeeNumber", ALNUM_MAX_10, "alphanumeric max 10", "SEG101-R-013", result);
+        checkOptionalPattern(segment, "VehicleNumber", NUMERIC_MAX_10, "numeric max 10 digits", "SEG101-R-010", result);
+        checkOptionalPattern(segment, "JobNumber", NUMERIC_MAX_10, "numeric max 10 digits", "SEG101-R-011", result);
+        checkOptionalPattern(segment, "DriverIdentificationNumber", NUMERIC_MAX_10, "numeric max 10 digits", "SEG101-R-012", result);
+        checkOptionalPattern(segment, "FleetEmployeeNumber", NUMERIC_MAX_10, "numeric max 10 digits", "SEG101-R-013", result);
         checkOptionalPattern(segment, "LicenseNumber", ALNUM_MAX_10, "alphanumeric max 10", "SEG101-R-014", result);
         checkOptionalPattern(segment, "JobId", ALNUM_MAX_12, "alphanumeric max 12", "SEG101-R-015", result);
         checkOptionalPattern(segment, "DepartmentNumber", ALNUM_MAX_12, "alphanumeric max 12", "SEG101-R-016", result);

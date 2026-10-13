@@ -19,8 +19,8 @@ class GenerateChapter12TrainingEvidenceTest {
         var report = new GenerateChapter12TrainingEvidence().generate(packageFile, reportFile);
         assertThat(report.path("completeSpecCoverage").asBoolean()).isFalse();
         assertThat(report.path("fullMessageIntakeWired").asBoolean()).isFalse();
-        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(1240);
-        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(1268);
+        assertThat(report.path("summary").path("businessRequirements").asInt()).isEqualTo(1271);
+        assertThat(report.path("summary").path("executedObservations").asInt()).isEqualTo(1299);
         assertThat(report.path("summary").path("approvedRequirements").asInt()).isZero();
         assertThat(report.path("sourceSha256").asText()).hasSize(64);
         assertThat(report.path("sourceLocalProbesSha256").asText()).hasSize(64);
@@ -168,15 +168,15 @@ class GenerateChapter12TrainingEvidenceTest {
         assertThat(semanticSummary.path("reviewedIndependentClauses").asInt()).isEqualTo(1994);
         assertThat(semanticSummary.path("explicitRepeatedObligationAliases").asInt()).isEqualTo(16);
         assertThat(semanticSummary.path("reviewedDistinctObligationsInPartialScope").asInt()).isEqualTo(1978);
-        assertThat(semanticSummary.path("verifiedExecutedChainLinks").asInt()).isEqualTo(216);
-        assertThat(semanticSummary.path("uniqueReusedCanonicalCases").asInt()).isEqualTo(166);
+        assertThat(semanticSummary.path("verifiedExecutedChainLinks").asInt()).isEqualTo(253);
+        assertThat(semanticSummary.path("uniqueReusedCanonicalCases").asInt()).isEqualTo(201);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("RECONCILIATION_REQUIRED").asInt()).isEqualTo(1907);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTION").asInt()).isEqualTo(14);
-        assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTED").asInt()).isEqualTo(42);
-        assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_EXECUTION_EVIDENCE").asInt()).isEqualTo(3);
+        assertThat(semantic.path("reviewedClauseStatusCounts").path("BOUNDED_EXECUTED").asInt()).isEqualTo(53);
+        assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_EXECUTION_EVIDENCE").asInt()).isZero();
         assertThat(semantic.path("reviewedClauseStatusCounts").path("SOURCE_CONFLICT").asInt()).isEqualTo(13);
         assertThat(semantic.path("reviewedClauseStatusCounts").path("EXTERNAL_EVIDENCE").asInt()).isEqualTo(7);
-        assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_IMPLEMENTATION").asInt()).isEqualTo(8);
+        assertThat(semantic.path("reviewedClauseStatusCounts").path("OPEN_IMPLEMENTATION").asInt()).isZero();
         assertThat(semantic.path("reviewedClauses")).filteredOn(c -> "12.1".equals(c.path("section").asText()))
                 .allSatisfy(c -> assertThat(c.path("implementationStatus").asText()).isEqualTo("BOUNDED_EXECUTED"));
         assertThat(semantic.path("deduplicatedReconciledScope").path("sections")).hasSize(1);
@@ -474,7 +474,7 @@ class GenerateChapter12TrainingEvidenceTest {
                 assertThat(execution.path("actualTargetStatus")).isEqualTo(execution.path("expectedTargetStatus"));
             }
         }
-        assertThat(predicates).isEqualTo(1124);
+        assertThat(predicates).isEqualTo(1155);
         assertThat(actualChapter12Executions).isEqualTo(375);
         assertThat(actualChapter12Segments).containsExactlyInAnyOrder("103", "115", "116", "123", "130", "131", "132", "134", "135", "136",
                 "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156",

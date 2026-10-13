@@ -3586,3 +3586,45 @@ not recategorized as external. The complete source-accounted inventory, reusable
 code reviews and exact next groups are persistent for the next retained-context
 continuation. Continued unattended execution through sleep/session shutdown is
 not guaranteed.
+
+## Checkpoint — Chapter 12.2 Fleet confirmed-gap closure
+
+Scope: the eight `OPEN_IMPLEMENTATION` and three `OPEN_EXECUTION_EVIDENCE` 12.2
+(Fleet Data Segment 101) clauses recorded in the previous checkpoint. All eleven
+are now `BOUNDED_EXECUTED` with exact-one-finding execution predicates:
+
+| Clause | Former status | Closure |
+|---|---|---|
+| SEM-12.2-VEHICLE-NUMERIC / JOB-NUMERIC / DRIVER-NUMERIC / EMPLOYEE-NUMERIC | OPEN_IMPLEMENTATION | Referenced Elements 108/47/31/40 are Character Type N (max 10). Validator now numeric; actual path `actual-fleet-numeric` (VALID/ALPHA/MISSING probes per field) |
+| SEM-12.2-TAG-CODE-WIDTH / TAG-DATA-CAP | OPEN_IMPLEMENTATION | Actual tag grammar `actual-fleet-tag-code` and `actual-fleet-tag-data-cap` (31/32 boundary, blank → REVIEW) |
+| SEM-12.2-DOB-CHARACTER-TYPE / DOB-MAX-WIDTH | OPEN_IMPLEMENTATION | DOB pattern `^[0-9]{1,8}$` (was over-permissive); 7/8/9/non-digit/blank probes |
+| SEM-12.2-HOST-PROMPTS | OPEN_IMPLEMENTATION | Removed non-source `[A-Za-z0-9]{1,22}` terminal grammar that rejected valid device-type terminals |
+| SEM-12.2-PLACEMENT | OPEN_EXECUTION_EVIDENCE | `actual-fleet-placement` (DataSection 3, positive FieldNumber; missing → REVIEW) |
+| SEM-12.2-FLEET-PRESENCE | OPEN_EXECUTION_EVIDENCE | `actual-fleet-presence` via new `101-presence` code review; missing `fleetCardTransaction` → REVIEW, never filled |
+
+KB authoring error corrected: `segment-101-validation-rules.json` typed Elements
+108/47/31/40 as AN; source Chapter 11 element definitions are N. Rule-catalog
+titles R-010..R-013 changed from "alphanumeric" to "numeric" (R-014 License stays
+alphanumeric).
+
+Producer-input boundary: the hash-pinned producer synthetics under
+`test-input/ai-solution/test-data/segment-101/lifecycle/` (VH0018, DRV00042,
+EMP01997) were **not** edited. They now truthfully produce SEG101-R-010/012/013
+violations; unit tests assert only those source-numeric errors. The `LEGACY-101`
+legacy-actual prototype in `chapter-12-source-local-probes.json` is now an authored
+copy of that message with same-width digit identifiers (`derivation` recorded),
+so SegmentLength 041 is unchanged.
+
+Measured counts: business requirements 1271 (+31), executed observations 1299
+(+31), target predicates 1155 (+31), verified chain links 253, unique reused
+canonical cases 201, BOUNDED_EXECUTED 53 (+11), OPEN_IMPLEMENTATION 0,
+OPEN_EXECUTION_EVIDENCE 0; RECONCILIATION_REQUIRED 1907, SOURCE_CONFLICT 13,
+EXTERNAL_EVIDENCE 7 unchanged.
+
+Gate: full suite 4046 tests; only the two unchanged baseline failures
+(`AppendixCoverageConsistencyTest`, `AppendixJPosEntryModeOracleTest`) after
+narrowing one new test whose completion payload carries the pre-existing
+PROVISIONAL P-01 base-cap condition. `git diff --check` passes.
+
+Remaining: ~60 12.2 `RECONCILIATION_REQUIRED` candidates, sections 12.3–12.49,
+and the UserId all-zero source check.
