@@ -79,9 +79,17 @@ class AppendixAFIncrementalAuthorizationValidatorTest {
     @Test
     void replaysAllPersistedCasesAgainstTheLogicalValidator() throws Exception {
         JsonNode fixture = mapper.readTree(Path.of("src/test/resources/atl105/appendix-af-logical-flows.json").toFile());
+        JsonNode model = read("test-output/test-json/appendices/appendix-af-segment-100-coverage.json");
         assertThat(fixture.path("specificationVersion").asText()).isEqualTo("2026-4");
         assertThat(fixture.path("executionCertified").asBoolean()).isFalse();
+        assertThat(model.path("testData")).hasSize(fixture.path("cases").size());
         for (JsonNode testCase : fixture.path("cases")) {
+            JsonNode testData = null;
+            for (JsonNode candidate : model.path("testData")) {
+                if (testCase.path("id").asText().equals(candidate.path("fixtureCaseId").asText())) testData = candidate;
+            }
+            assertThat(testData).as(testCase.path("id").asText()).isNotNull();
+            assertThat(testData.path("expectedRule").asText()).isEqualTo(testCase.path("expectedRule").asText());
             ObjectNode flow = fixture.path("baseFlow").deepCopy();
             for (JsonNode change : testCase.path("changes")) apply(flow, change);
             ValidationResult result = validator.validate(flow);
