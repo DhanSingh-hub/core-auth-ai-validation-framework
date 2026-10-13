@@ -245,7 +245,8 @@ public final class Chapter13ContextValidator {
         if (has(e, "86") && q.has("priorIndependentSequences") && !FOLLOW_ON.contains(flow == null ? "" : flow)) {
             JsonNode sequences = q.path("priorIndependentSequences");
             boolean valid = sequences.isArray();
-            for (JsonNode sequence : sequences) if (!sequence.isTextual() || sequence.textValue().equals(text(e, "86"))) valid = false;
+            for (JsonNode sequence : sequences) if (!sequence.isTextual() || !sequence.textValue().matches("[0-9]{6}")
+                    || sequence.textValue().equals(text(e, "86"))) valid = false;
             check(findings, "86", "SEQUENCE-UNIQUENESS", valid, "New independent transaction must not reuse any supplied prior independent sequence");
         }
         if (has(e, "155") && q.has("loadedKeyId")) check(findings, "155", "KEY-ID-REUSE",

@@ -87,6 +87,9 @@ public final class ProductSegmentPayloadValidator {
         }
         BigInteger total = BigInteger.ZERO;
         BigInteger tax = BigInteger.ZERO;
+        BigInteger discounts = BigInteger.ZERO;
+        boolean discountProductsPresent = false;
+        boolean taxProductsPresent = false;
         Set<String> fuelCodes = new HashSet<>();
         Set<String> knownNonfuelCodes = new HashSet<>();
         boolean nonfuelSeen = false;
@@ -130,6 +133,13 @@ public final class ProductSegmentPayloadValidator {
                         || classification.path("description").asText().startsWith("Tax "))) {
                     error(result, stage, "006", location + " separate tax/discount/coupon codes are forbidden");
                 }
+                if (!adjusted && Set.of("941", "991").contains(code)) {
+                    String timing = text(payload.path("context"), "paymentTiming");
+                    if (timing == null && !payload.path("context").has("paymentTiming"))
+                        result.addWarning("REVIEW_REQUIRED: SEG102-R-010 observed PREPAY/POSTPAY timing required for host discount Product Code " + code);
+                    else if (!("941".equals(code) ? "POSTPAY" : "PREPAY").equals(timing))
+                        error(result, stage, "010", location + " host discount code 941 is post-pay; administrative code 991 is pre-pay (Section 12.16.4)");
+                }
             }
             String unit = text(product, "UnitOfMeasure");
             if (unit == null || !UNITS.contains(unit)) error(result, stage, adjusted ? "009" : "011", location + " invalid UnitOfMeasure");
@@ -142,7 +152,14 @@ public final class ProductSegmentPayloadValidator {
             } else {
                 BigInteger number = new BigInteger(amount);
                 total = total.add(number);
-                if ("950".equals(code) || "951".equals(code)) tax = tax.add(number);
+                if (!adjusted && code != null && code.matches("90[0-9]")) {
+                    discountProductsPresent = true;
+                    discounts = discounts.add(number);
+                }
+                if (Set.of("950", "951", "952", "953", "954", "962", "963", "964", "966", "967", "968", "969", "970").contains(code)) {
+                    taxProductsPresent = true;
+                    tax = tax.add(number);
+                } else if ("965".equals(code)) result.addWarning("REVIEW_REQUIRED: Appendix F labels 965 as SWT Rate, not a tax dollar amount; no amount summation is inferred");
             }
         }
         JsonNode standard = payload.path("Standard Segment");
@@ -166,9 +183,11 @@ public final class ProductSegmentPayloadValidator {
                 else result.addWarning("REVIEW_REQUIRED: SEG102-R-015 total mismatch " + total + " vs " + expected
                         + "; source-example conflict SEG102-SME-006 prevents an unconditional rejection");
             }
-            if (!adjusted && tax.signum() > 0 && digits(text(standard, "TaxAmount"), 1, 12)
-                    && !tax.equals(new BigInteger(text(standard, "TaxAmount")))) {
-                error(result, stage, "016", "Tax product total differs from Segment 100 TaxAmount");
+            if (!adjusted && taxProductsPresent) {
+                String observedTax = text(standard, "TaxAmount");
+                if (observedTax == null) result.addWarning("REVIEW_REQUIRED: SEG102-R-016 tax product reconciliation requires actual Segment 100 TaxAmount");
+                else if (!digits(observedTax, 1, 12) || !tax.equals(new BigInteger(observedTax)))
+                    error(result, stage, "016", "Tax product total differs from populated Segment 100 TaxAmount, including zero tax products");
             }
         }
         physical(segment, products, adjusted, stage, result);
@@ -187,8 +206,133 @@ public final class ProductSegmentPayloadValidator {
                 error(result, stage, adjusted ? "007" : "008", "EV charging fuel code must be first");
             }
         }
-        result.addWarning("REVIEW_REQUIRED: merchant applicability and supplied primary-fuel provenance require independent context");
+        merchantProducts(payload.path("context"), products, adjusted, stage, result);
+        if (!adjusted && discountProductsPresent && amountsValid) discountAllocation(payload.path("context"), discounts, stage, result);
+        result.addWarning("REVIEW_REQUIRED: supplied merchant and primary-fuel provenance is not authenticated");
         return result;
+    }
+
+    private static void discountAllocation(JsonNode context, BigInteger discounts, String stage, ValidationResult result) {
+        JsonNode allocation = context.get("discountAllocation");
+        if (allocation == null) {
+            result.addWarning("REVIEW_REQUIRED: SEG102-R-026 Appendix F nonfuel-first discount/coupon allocation needs observed pre-discount amounts and allocation");
+            return;
+        }
+        if (!allocation.isObject()) { error(result, stage, "026", "Observed discount allocation must be an object"); return; }
+        for (String field : new String[]{"nonfuelBeforeDiscount", "fuelBeforeDiscount", "appliedToNonfuel", "appliedToFuel"}) {
+            if (!allocation.has(field)) {
+                result.addWarning("REVIEW_REQUIRED: SEG102-R-026 missing observed discount allocation field " + field);
+                return;
+            }
+            if (!digits(text(allocation, field), 1, 12)) { error(result, stage, "026", "Observed allocation amounts must be unsigned integer text"); return; }
+        }
+        BigInteger nonfuel = new BigInteger(text(allocation, "nonfuelBeforeDiscount")), fuel = new BigInteger(text(allocation, "fuelBeforeDiscount"));
+        BigInteger toNonfuel = new BigInteger(text(allocation, "appliedToNonfuel")), toFuel = new BigInteger(text(allocation, "appliedToFuel"));
+        if (!toNonfuel.add(toFuel).equals(discounts) || toNonfuel.compareTo(nonfuel) > 0 || toFuel.compareTo(fuel) > 0)
+            error(result, stage, "026", "Observed allocation must account for actual900-909 discount/coupon amounts without exceeding observed purchase amounts");
+        if (toFuel.signum() > 0 && toNonfuel.compareTo(nonfuel) < 0)
+            error(result, stage, "026", "Appendix F27164: discounts/coupons apply first to nonfuel before any fuel allocation");
+        result.addWarning("REVIEW_REQUIRED: SEG102-R-026 allocation checks supplied current observations only; no universal negative-code or aggregate-conflict formula is inferred");
+    }
+
+    public static java.util.List<Chapter12SegmentPayloadValidator.Finding> observedStandardTotals(
+            JsonNode elements, JsonNode components) {
+        var findings = new java.util.ArrayList<Chapter12SegmentPayloadValidator.Finding>();
+        var categories = java.util.Map.of("41", "fuel", "58", "nonfuel", "99", "tax", "17", "cash");
+        for (var category : categories.entrySet()) {
+            var status = Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
+            String reason = "12.1 lines11322-11337: separately emitted net/category total needs complete matched observed components; aggregate product equality is not proof";
+            if (components != null) {
+                JsonNode observedCategory = components.get(category.getValue());
+                boolean malformed = !components.isObject() || components.has("complete") && !components.path("complete").isBoolean()
+                        || components.has("terminalIdentifier") && !components.path("terminalIdentifier").isTextual()
+                        || components.has("sequenceNumber") && !components.path("sequenceNumber").isTextual()
+                        || observedCategory != null && !observedCategory.isObject();
+                if (observedCategory != null && observedCategory.isObject()) {
+                    for (String list : java.util.List.of("amounts", "discounts")) {
+                        JsonNode entries = observedCategory.get(list);
+                        if (entries != null) {
+                            if (!entries.isArray()) malformed = true;
+                            else for (JsonNode entry : entries)
+                                if (!entry.isTextual() || !entry.textValue().matches("[0-9]{1,12}")) malformed = true;
+                        }
+                    }
+                    if (!java.util.Set.of("41", "58").contains(category.getKey()) && observedCategory.has("discounts")) malformed = true;
+                }
+                if (malformed) {
+                    status = Chapter12SegmentPayloadValidator.Status.INVALID;
+                    reason = "Observed component inventory, binding and supplied monetary lists must retain explicit typed source representations, even when completeness evidence is missing";
+                } else if (components.path("complete").isBoolean() && components.path("complete").booleanValue()) {
+                    JsonNode values = components.get(category.getValue());
+                    if (!components.has("terminalIdentifier") || !components.has("sequenceNumber") || values == null
+                            || !elements.has("102") || !elements.has("86")) {
+                        reason = "Matched complete component inventory lacks terminal, sequence or category evidence";
+                    } else if (!components.path("terminalIdentifier").isTextual() || !components.path("sequenceNumber").isTextual()
+                            || !components.path("terminalIdentifier").equals(elements.path("102"))
+                            || !components.path("sequenceNumber").equals(elements.path("86")) || !values.isObject()) {
+                        status = Chapter12SegmentPayloadValidator.Status.INVALID;
+                        reason = "Observed category inventory is malformed or contradicts actual terminal/sequence; no matching values are supplied by metadata";
+                    } else if (values.has("amounts") && !values.path("amounts").isArray()
+                            || values.has("discounts") && !values.path("discounts").isArray()) {
+                        status = Chapter12SegmentPayloadValidator.Status.INVALID;
+                        reason = "Observed category amounts and applicable deductions must be arrays";
+                    } else if (!values.has("amounts") || !elements.has(category.getKey())
+                            || java.util.Set.of("41", "58").contains(category.getKey()) && !values.has("discounts")) {
+                        reason = "Observed total requires actual amount field, all category entries and explicit applicable fuel/nonfuel deduction list";
+                    } else {
+                        BigInteger total = BigInteger.ZERO;
+                        boolean valid = true;
+                        for (JsonNode amount : values.path("amounts")) {
+                            if (!amount.isTextual() || !amount.textValue().matches("[0-9]{1,12}")) valid = false;
+                            else total = total.add(new BigInteger(amount.textValue()));
+                        }
+                        if (java.util.Set.of("41", "58").contains(category.getKey())) {
+                            for (JsonNode discount : values.path("discounts")) {
+                                if (!discount.isTextual() || !discount.textValue().matches("[0-9]{1,12}")) valid = false;
+                                else total = total.subtract(new BigInteger(discount.textValue()));
+                            }
+                        } else if (values.has("discounts")) valid = false;
+                        JsonNode emitted = elements.path(category.getKey());
+                        valid &= emitted.isTextual() && emitted.textValue().matches("[0-9]{1,8}");
+                        status = valid && total.signum() >= 0 && total.equals(new BigInteger(emitted.textValue()))
+                                ? Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED : Chapter12SegmentPayloadValidator.Status.INVALID;
+                        reason = "Bounded observed " + category.getValue() + " total compared independently"
+                                + "; fuel/nonfuel deduct only observed applicable coupons/discounts. Category assignment, completeness and authenticity remain unverified; no tax rate, allocation, rounding or aggregate-conflict interpretation is inferred";
+                    }
+                }
+            }
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG100-R-015", "standard-total-" + category.getValue(), status, reason));
+        }
+        return java.util.List.copyOf(findings);
+    }
+
+    private static void merchantProducts(JsonNode context, JsonNode products, boolean adjusted, String stage, ValidationResult result) {
+        String rule = adjusted ? "007" : "017";
+        if (!context.has("fuelMerchant")) {
+            result.addWarning("REVIEW_REQUIRED: merchant applicability requires observed fuelMerchant evidence");
+            return;
+        }
+        if (!context.path("fuelMerchant").isBoolean()) {
+            error(result, stage, rule, "fuelMerchant evidence must be boolean");
+            return;
+        }
+        if (!context.path("fuelMerchant").booleanValue()) return;
+        JsonNode purchased = context.get("purchasedProductCodes"), complete = context.get("purchasedProductsComplete");
+        if (complete != null && !complete.isBoolean() || purchased != null && !purchased.isArray()) {
+            error(result, stage, rule, "Purchased product codes must be an array and completeness must be boolean");
+            return;
+        }
+        if (purchased == null || complete == null || !complete.booleanValue()) {
+            result.addWarning("REVIEW_REQUIRED: complete observed purchased-product inventory required; no fuel/nonfuel purchase is inferred");
+            return;
+        }
+        Set<String> reported = new HashSet<>();
+        for (JsonNode product : products) if (product.path("ProductCode").isTextual()) reported.add(product.path("ProductCode").textValue());
+        for (JsonNode code : purchased) {
+            if (!code.isTextual() || !code.textValue().matches("[0-9]{3}")) error(result, stage, rule, "Observed purchased code must be N3 text");
+            else if (!reported.contains(code.textValue())) error(result, stage, rule,
+                    "Fuel merchant omitted an applicable observed purchased fuel/nonfuel product code");
+        }
     }
 
     private static void physical(JsonNode segment, JsonNode products, boolean adjusted, String stage, ValidationResult result) {

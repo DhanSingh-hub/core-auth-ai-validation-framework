@@ -80,7 +80,64 @@ final class EnhancedFleetPromptValidator {
                 entries.keySet().stream().filter(Set.of("GEN", "VHI", "DRI")::contains).count() <= 1,
                 "Issuer prompts at most one Generic ID, Vehicle ID or Driver ID");
         execute(entries, request, authorizer, history, findings);
+        matchedPrompts(entries, request, history, findings);
         return List.copyOf(findings);
+    }
+
+    private static void matchedPrompts(Map<String, String> entries, boolean request, JsonNode history, List<Finding> findings) {
+        String rule = request ? "SEG145-R-008" : "SEG146-R-004";
+        JsonNode exchange = history == null ? com.fasterxml.jackson.databind.node.MissingNode.getInstance()
+                : history.path("transactionExchange");
+        JsonNode response = exchange.path("response");
+        JsonNode raw = response.get("promptTable");
+        Status matched = Chapter12ObservedSessionValidator.combine(
+                Chapter12ObservedSessionValidator.identity(exchange.get("request"), response, List.of("86", "102")),
+                Chapter12ObservedSessionValidator.identity(exchange.get("capture"), response, List.of("86", "102")),
+                Chapter12ObservedSessionValidator.identity(exchange.get("subsequent"), response, List.of("102")));
+        if (!exchange.isMissingNode() && !exchange.isObject()) matched = Status.INVALID;
+        for (String phase : List.of("request", "response", "capture", "subsequent"))
+            if (exchange.has(phase) && !exchange.path(phase).isObject()) matched = Status.INVALID;
+        Status framing = raw == null ? Status.REVIEW_REQUIRED : Status.INVALID;
+        Map<String, String> observed = null;
+        if (raw != null && raw.isTextual() && raw.textValue().length() >= 6) {
+            String wire = raw.textValue();
+            String value = wire.substring(6);
+            var triad = new IndicatorLengthValueSectionValidator.Triad(wire.substring(0, 3), wire.substring(3, 6), value);
+            if ("004".equals(triad.indicator()) && value.chars().allMatch(c -> c >= 32 && c <= 126)
+                    && IndicatorLengthValueSectionValidator.validate(List.of(triad), 1, 200, 206).valid()) {
+                observed = promptEntries(value);
+                framing = observed == null ? Status.INVALID : Status.CHECKS_PASSED;
+            }
+        }
+        Map<String, String> declared = request && history != null ? textMap(history.get("promptFormats")) : entries;
+        Status format = observed == null ? framing : declared == null ? Status.REVIEW_REQUIRED
+                : observed.equals(declared) ? Status.CHECKS_PASSED : Status.INVALID;
+        findings.add(new Finding(rule, "matched-prompt-formats", Chapter12ObservedSessionValidator.combine(matched, framing, format),
+                "Source15363-15380/15782-15804: effective formats bind to measured captured Host Table004, not an unrelated authored mask map; outer segment framing and capture authenticity remain separate"));
+        if (request) {
+            JsonNode sent = exchange.path("subsequent").get("promptResponses");
+            Map<String, String> sentMap = textMap(sent);
+            findings.add(new Finding(rule, "sent-prompt-observation", Chapter12ObservedSessionValidator.combine(matched,
+                    sent == null ? Status.REVIEW_REQUIRED : sentMap == null || !sentMap.equals(entries) ? Status.INVALID : Status.CHECKS_PASSED),
+                    "Actual145 parsed Table004 is the observed subsequent prompt map; metadata cannot replace transmitted token/value bytes"));
+        }
+        findings.add(new Finding(rule, "prompt-event-order", Chapter12ObservedSessionValidator.combine(matched,
+                Chapter12ObservedSessionValidator.observedOrder(exchange.path("request").path("sentAt"), response.path("receivedAt")),
+                Chapter12ObservedSessionValidator.observedOrder(response.path("receivedAt"), exchange.path("capture").path("capturedAt")),
+                Chapter12ObservedSessionValidator.observedOrder(exchange.path("capture").path("capturedAt"), exchange.path("subsequent").path("sentAt"))),
+                "Source15840 Z capture/subsequent and response-requested prompt execution: observed request, format response, capture, later send must establish event order; equal capture precision is unresolved"));
+    }
+
+    private static Map<String, String> promptEntries(String value) {
+        if (!value.startsWith("|") || !value.endsWith("|") || value.length() < 3) return null;
+        Map<String, String> entries = new LinkedHashMap<>();
+        for (String entry : value.substring(1, value.length() - 1).split("\\|", -1)) {
+            int colon = entry.indexOf(':');
+            if (colon < 1 || colon > 4 || !entry.substring(0, colon).matches("[A-Za-z0-9]+")
+                    || entry.substring(colon + 1).isEmpty() || entry.length() - colon - 1 > 20) return null;
+            if (entries.putIfAbsent(entry.substring(0, colon), entry.substring(colon + 1)) != null) return null;
+        }
+        return entries;
     }
 
     private static int tokenCap(String authorizer, String token) {
@@ -150,8 +207,23 @@ final class EnhancedFleetPromptValidator {
                 if (subsequent == null) review(findings, rule, "capture-without-resend", "Observed subsequent prompt responses required for Z");
                 else check(findings, rule, "capture-without-resend", textMap(subsequent) != null && !subsequent.has(token),
                         "Z prompt is captured but absent from subsequent sent responses");
+                if (request) check(findings, rule, "actual-capture-without-resend", !entries.containsKey(token),
+                        "Z token is absent from actual current Table004, irrespective of metadata omission claims");
             }
             String actual = captured.get(token);
+            if (request && masks.contains("Z")) {
+                JsonNode stored = history.get("capturedResponses");
+                Map<String, String> priorCapture = textMap(stored);
+                if (stored == null) {
+                    review(findings, rule, "prompt-execution", "Z requires independently observed capture; missing actual send is not a missing capture");
+                    continue;
+                }
+                if (priorCapture == null) {
+                    check(findings, rule, "prompt-history", false, "Z captured responses must be a textual map");
+                    continue;
+                }
+                actual = priorCapture.get(token);
+            }
             if (actual == null || actual.isEmpty()) {
                 check(findings, rule, "prompt-requiredness", masks.contains("O"), "Only an optional response may be omitted");
                 continue;

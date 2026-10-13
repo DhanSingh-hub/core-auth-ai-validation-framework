@@ -37,6 +37,9 @@ public final class Atl105AiElementIntake {
     private final Chapter13DataElementValidator semanticValidator;
     private final boolean chapter13Semantics;
     private final com.coreauth.validator.canonical.Segment119ActualPayloadAdapter segment119Adapter;
+    private final com.coreauth.validator.canonical.Chapter11MessageLayoutValidator actualLayoutValidator;
+    private final com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter chapter12ActualAdapter;
+    private final com.coreauth.validator.canonical.Chapter12LegacyActualPayloadAdapter chapter12LegacyAdapter;
     private final JsonNode crosswalk;
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, Set<String>> names = new HashMap<>();
@@ -52,8 +55,11 @@ public final class Atl105AiElementIntake {
         ObjectMapper mapper = new ObjectMapper();
         validator = new Atl105ElementValueValidator(pack);
         semanticValidator = chapter13Semantics ? new Chapter13DataElementValidator(pack) : null;
+        chapter12ActualAdapter = chapter13Semantics ? new com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter(semanticValidator) : null;
+        chapter12LegacyAdapter = chapter13Semantics ? new com.coreauth.validator.canonical.Chapter12LegacyActualPayloadAdapter(semanticValidator) : null;
         segment119Adapter = chapter13Semantics ? new com.coreauth.validator.canonical.Segment119ActualPayloadAdapter(
                 mapper.readTree(pack.resolve("test-output").resolve("test-solution-independent-review").resolve("all-element-inventory.json").toFile())) : null;
+        actualLayoutValidator = chapter13Semantics ? new com.coreauth.validator.canonical.Chapter11MessageLayoutValidator(pack) : null;
         this.chapter13Semantics = chapter13Semantics;
         crosswalk = mapper.readTree(pack.resolve("docs/specs/kb/elements/ai-intake-crosswalk.json").toFile());
         if (!"ATL105".equals(crosswalk.path("specification").asText()) || !"2026-3".equals(crosswalk.path("specificationVersion").asText()))
@@ -252,7 +258,9 @@ public final class Atl105AiElementIntake {
                     }
                 }
                 if (type == null || !type.isTextual() || !type.textValue().matches("[0-9]{3}|DL[1-8]")) {
-                    intake.add(review("", "Actual AI segment has no explicit textual source identity: " + child.getKey()));
+                    intake.add(type == null
+                            ? review("", "Actual AI segment has no explicit textual source identity: " + child.getKey())
+                            : invalid("", "Actual AI segment has malformed observed source identity: " + child.getKey()));
                 } else {
                     ActualSegment occurrence = new ActualSegment(child.getKey(), type.textValue(), child.getValue());
                     actual.computeIfAbsent(type.textValue(), key -> new ArrayList<>()).add(occurrence);
@@ -282,9 +290,36 @@ public final class Atl105AiElementIntake {
         else if (!familyName.equals(resolved)) intake.add(invalid("", "Metadata message family contradicts the actual payload segment/root family"));
         final String actualFamily = familyName;
         for (ActualSegment occurrence : occurrences) {
+            if (com.coreauth.validator.canonical.Chapter12LegacyActualPayloadAdapter.SEGMENTS.contains(occurrence.segment())) {
+                var assessed = chapter12LegacyAdapter.validate(
+                        root.getValue(), occurrence.segment(), actualFamily, meta);
+                for (var finding : assessed.findings()) intake.add(new Finding("", switch (finding.status()) {
+                    case CHECKS_PASSED -> Status.CHECKS_PASSED;
+                    case INVALID -> Status.INVALID;
+                    case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+                }, finding.ruleId(), finding.reason()));
+                continue;
+            }
             if (com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter.SEGMENTS.contains(occurrence.segment())) {
-                var assessed = new com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter().validate(
-                        occurrence.body(), occurrence.segment(), actualFamily, meta);
+                List<ActualSegment> standards = actual.getOrDefault("100", List.of());
+                List<ActualSegment> products = actual.getOrDefault("102", List.of());
+                ObjectNode actualEvidence = meta.isObject() ? meta.deepCopy() : JsonNodeFactory.instance.objectNode();
+                if ("DL1".equals(occurrence.segment())) {
+                    ObjectNode context = actualEvidence.path("context").isObject() ? actualEvidence.path("context").deepCopy() : JsonNodeFactory.instance.objectNode();
+                    var ids = JsonNodeFactory.instance.arrayNode();
+                    occurrences.forEach(segment -> ids.add(segment.segment()));
+                    if (context.has("segmentsPresent") && !context.path("segmentsPresent").equals(ids))
+                        intake.add(invalid("", "Metadata block inventory contradicts observed response blocks"));
+                    context.set("segmentsPresent", ids);
+                    context.put("segmentInventoryComplete", occurrences.size() == count);
+                    actualEvidence.set("context", context);
+                }
+                List<ActualSegment> merchants = actual.getOrDefault("DL1", List.of());
+                var assessed = chapter12ActualAdapter.validate(
+                        occurrence.body(), occurrence.segment(), actualFamily, actualEvidence,
+                        standards.size() == 1 ? standards.getFirst().body() : null,
+                        products.size() == 1 ? products.getFirst().body() : null,
+                        merchants.size() == 1 ? merchants.getFirst().body() : null);
                 for (var finding : assessed.findings()) intake.add(new Finding("", switch (finding.status()) {
                     case CHECKS_PASSED -> Status.CHECKS_PASSED;
                     case INVALID -> Status.INVALID;
@@ -298,9 +333,13 @@ public final class Atl105AiElementIntake {
                 var result = new com.coreauth.validator.canonical.ProductActualPayloadAdapter().validate(occurrence.body(),
                         occurrence.segment(), standards.size() == 1 ? standards.getFirst().body() : null,
                         actual.containsKey("102".equals(occurrence.segment()) ? "157" : "102"), meta.get("context"));
-                for (var finding : com.coreauth.validator.canonical.ProductActualPayloadAdapter.findings(result)) {
-                    intake.add(new Finding("", finding.status() == com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status.INVALID
-                            ? Status.INVALID : Status.REVIEW_REQUIRED, finding.ruleId(), finding.reason()));
+                for (var finding : com.coreauth.validator.canonical.ProductActualPayloadAdapter.observedFindings(result, occurrence.segment(),
+                        occurrence.body(), standards.size() == 1 ? standards.getFirst().body() : null, meta.get("context"))) {
+                    intake.add(new Finding("", switch (finding.status()) {
+                        case INVALID -> Status.INVALID;
+                        case CHECKS_PASSED -> Status.CHECKS_PASSED;
+                        case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+                    }, finding.ruleId(), finding.reason()));
                 }
                 continue;
             }
@@ -383,6 +422,17 @@ public final class Atl105AiElementIntake {
             occurrences.forEach(occurrence -> present.add(occurrence.segment()));
         } else intake.add(review("", "Actual segment identity mapping is incomplete; no complete-envelope verdict"));
         observations.add(new Observed("MESSAGE", semanticValidator.validate(message)));
+        ObjectNode layout = JsonNodeFactory.instance.objectNode().put("specificationVersion", "2026-3")
+                .put("messageFamily", actualFamily).put("completeness", "PARTIAL");
+        layout.set("elements", envelope.deepCopy());
+        var layoutSegments = layout.putArray("segments");
+        occurrences.forEach(occurrence -> layoutSegments.addObject().put("segment", occurrence.segment()));
+        var layoutResult = actualLayoutValidator.validate(layout);
+        for (var finding : layoutResult.findings()) intake.add(new Finding("", switch (finding.status()) {
+            case CHECKS_PASSED -> Status.CHECKS_PASSED;
+            case INVALID -> Status.INVALID;
+            case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
+        }, finding.ruleId(), finding.reason()));
         Status status = observations.stream().anyMatch(item -> item.result().status() == Status.INVALID)
                 || intake.stream().anyMatch(item -> item.status() == Status.INVALID) ? Status.INVALID : Status.REVIEW_REQUIRED;
         intake.add(review("", "Actual payload was evaluated independently; aliases/metadata/history claims do not confirm producer matches or host authenticity"));

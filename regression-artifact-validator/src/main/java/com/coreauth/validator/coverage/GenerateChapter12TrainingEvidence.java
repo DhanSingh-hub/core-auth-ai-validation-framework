@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
@@ -62,6 +63,13 @@ public final class GenerateChapter12TrainingEvidence {
                 .resolve("test-solution-independent-review").resolve("all-element-inventory.json").toFile()));
         List<JsonNode> fixtures = new ArrayList<>();
         JsonNode observations = mapper.readTree(Atl105Paths.testJson("chapter-12-segment-observations.json").toFile());
+        Path extensionFile = Atl105Paths.testJson("chapter-12-source-local-probes.json");
+        JsonNode extension = mapper.readTree(extensionFile.toFile());
+        report.put("sourceLocalProbesSha256", sha256(extensionFile));
+        ObjectNode legacyHashes = report.putObject("legacySyntheticSourceSha256");
+        for (JsonNode profile : extension.path("legacyActualProfiles"))
+            if (profile.has("sourceFile")) legacyHashes.put(profile.path("sourceFile").asText(), sha256(Atl105Paths.root().resolve(profile.path("sourceFile").asText())));
+        fixtures.addAll(Chapter12SourceLocalFixtures.expand(observations, extension));
         for (JsonNode fixture : observations.path("observations")) {
             fixtures.add(fixture);
             for (JsonNode probe : fixture.path("actualPayloadProbes")) {
@@ -96,7 +104,7 @@ public final class GenerateChapter12TrainingEvidence {
                         ((ObjectNode) payload.path("elements")).set(entry.getKey(), entry.getValue().deepCopy());
                     }
                 }
-                for (String field : List.of("context", "serializedSegment", "serializedSegmentHex", "cardBuckets", "history", "qualifiers", "tables", "messageFamily")) {
+                for (String field : List.of("context", "serializedSegment", "serializedSegmentHex", "cardBuckets", "history", "qualifiers", "tables", "messageFamily", "direction", "floorLimitGroups", "encodedTableData", "marketBasketData", "taxProducts")) {
                     if (probe.has(field)) payload.set(field, probe.path(field).deepCopy());
                 }
                 if (probe.has("omitSerializedSegment")) {
@@ -136,6 +144,12 @@ public final class GenerateChapter12TrainingEvidence {
             JsonNode catalog = mapper.readTree(Atl105Paths.ruleCatalog(segment).toFile());
             JsonNode rule = null;
             for (JsonNode candidate : catalog.path("rules")) if (ruleId.equals(candidate.path("ruleId").asText())) rule = candidate;
+            if (rule == null && "131".equals(segment) && ruleId.startsWith("SEG130-R-")) {
+                // SEG130-R-023 documents Segment 131's inverted (no-separator) wire contrast inside
+                // Segment 130's own catalog file; its finding only fires on Segment 131 payloads.
+                JsonNode pairedCatalog = mapper.readTree(Atl105Paths.ruleCatalog("130").toFile());
+                for (JsonNode candidate : pairedCatalog.path("rules")) if (ruleId.equals(candidate.path("ruleId").asText())) rule = candidate;
+            }
             if (rule == null) throw new IOException("Fixture references missing source rule " + ruleId);
             JsonNode anchor = rule.path("sourceAnchor");
             String key = canonicalKey(anchor);
@@ -157,20 +171,34 @@ public final class GenerateChapter12TrainingEvidence {
                 String suffix = negative ? "-WRONG-TYPE" : "-FIELDS";
                 String tcId = "TC-" + stem + suffix;
                 ObjectNode payload = fixture.path("payload").deepCopy();
-                if (negative) ((ObjectNode) payload.path("elements")).put("85", "999");
+                if (negative) {
+                    if (Set.of("DL1", "DL8").contains(segment)) ((ObjectNode) payload.path("elements")).put("24", "&");
+                    else ((ObjectNode) payload.path("elements")).put("85", "999");
+                }
                 Chapter12SegmentPayloadValidator.Result result;
-                if (payload.has("productPayload")) {
+                if (payload.has("envelopeObservation")) {
+                    var assessed = new com.coreauth.validator.canonical.Chapter11MessageLayoutValidator().validate(payload.path("envelopeObservation"));
+                    List<String> unassessed = new ArrayList<>();
+                    for (JsonNode catalogRule : catalog.path("rules")) unassessed.add(catalogRule.path("ruleId").asText());
+                    result = new Chapter12SegmentPayloadValidator.Result(assessed.status(), assessed.findings(), List.copyOf(unassessed));
+                } else if (payload.has("actualMessage")) {
+                    result = new com.coreauth.validator.canonical.Chapter12LegacyActualPayloadAdapter().validate(payload.path("actualMessage"), segment,
+                            payload.path("messageFamily").asText(), payload.path("actualEvidence"));
+                } else if (payload.has("productPayload")) {
                     var assessed = new ProductActualPayloadAdapter().validatePayload(payload.path("productPayload"), segment);
                     List<String> unassessed = new ArrayList<>();
                     for (JsonNode catalogRule : catalog.path("rules")) unassessed.add(catalogRule.path("ruleId").asText());
                     result = new Chapter12SegmentPayloadValidator.Result(assessed.isValid()
                             ? Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED : Chapter12SegmentPayloadValidator.Status.INVALID,
-                            ProductActualPayloadAdapter.findings(assessed), List.copyOf(unassessed));
+                            ProductActualPayloadAdapter.observedFindings(assessed, segment,
+                                    payload.path("productPayload").path("102".equals(segment) ? "Product Code Data Segment" : "Adjusted Product Code Data Segment"),
+                                    payload.path("productPayload").get("Standard Segment"), payload.path("productPayload").get("context")), List.copyOf(unassessed));
                 } else if (payload.has("actualPayload")) {
                     result = "119".equals(segment) ? actualAdapter.validate(payload.path("actualPayload"),
                             payload.path("messageFamily").asText(), payload.path("actualEvidence"))
                             : new Chapter12ActualPayloadAdapter().validate(payload.path("actualPayload"), segment,
-                            payload.path("messageFamily").asText(), payload.path("actualEvidence"));
+                            payload.path("messageFamily").asText(), payload.path("actualEvidence"),
+                            payload.get("actualStandard"), payload.get("actualProducts"), payload.get("actualMerchant"));
                 } else result = validator.validate(payload);
                 String expectedStatus = negative ? "INVALID" : fixture.path("expectedStatus").asText();
                 if (!expectedStatus.equals(result.status().name())) throw new IOException("Unexpected fixture outcome: " + fixture.path("id").asText()
@@ -196,6 +224,8 @@ public final class GenerateChapter12TrainingEvidence {
                 anchors(td, anchor);
                 td.set("payload", payload);
                 ObjectNode execution = executions.addObject().put("testCaseId", tcId).put("testDataId", td.path("id").asText())
+                        .put("observedSegment", segment)
+                        .put("businessRequirementId", "BR-" + stem).put("scenarioId", "TS-" + stem)
                         .put("ruleId", ruleId).put("scope", executionOnly ? scope : predicate ? fixture.path("targetScope").asText() : "Header/field observation, not complete catalog-rule semantics")
                         .put("expectedStatus", expectedStatus).put("actualStatus", result.status().name());
                 if (predicate) {
@@ -205,7 +235,8 @@ public final class GenerateChapter12TrainingEvidence {
                             && f.scope().equals(fixture.path("targetScope").asText())).findFirst().orElseThrow().status().name());
                 }
                 execution.set("findings", mapper.valueToTree(result.findings()));
-                execution.put("validationPath", payload.has("productPayload") ? "ACTUAL_NAMED_PRODUCT_EXECUTION" :
+                execution.put("validationPath", payload.has("envelopeObservation") ? "SOURCE_TEMPLATE_OBSERVED_ENVELOPE_PRESENCE" :
+                        payload.has("actualMessage") ? "ACTUAL_LEGACY_NAMED_FAMILY_EXECUTION" : payload.has("productPayload") ? "ACTUAL_NAMED_PRODUCT_EXECUTION" :
                         payload.has("actualPayload") ? "119".equals(segment) ? "ACTUAL_NAMED_SEGMENT119_WITH_OBSERVED_HISTORY"
                                 : "ACTUAL_NAMED_CHAPTER12_OBSERVATION" : "NUMBERED_CHAPTER12_OBSERVATION");
                 execution.set("unassessedCatalogRules", mapper.valueToTree(result.unassessedCatalogRules()));
@@ -224,6 +255,9 @@ public final class GenerateChapter12TrainingEvidence {
                 .put("testCases", cases.size()).put("testDataRecords", data.size()).put("executedObservations", executions.size())
                 .put("traceabilityValid", true).put("approvedRequirements", 0);
         report.set("sourceSectionReconciliation", sourceSectionReconciliation(executions));
+        report.set("sourceFacetReconciliation", Chapter12SourceFacetLedger.build(report.path("sourceSectionReconciliation"),
+                executions, extension));
+        report.set("atomicSourceClauseReconciliation", Chapter12AtomicClauseReconciliation.build(executions, report.path("sourceFacetReconciliation")));
         Files.createDirectories(packageFile.toAbsolutePath().getParent());
         Files.createDirectories(evidenceFile.toAbsolutePath().getParent());
         mapper.writerWithDefaultPrettyPrinter().writeValue(packageFile.toFile(), artifactPackage);

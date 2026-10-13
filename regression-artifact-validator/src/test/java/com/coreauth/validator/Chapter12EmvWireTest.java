@@ -19,18 +19,23 @@ class Chapter12EmvWireTest {
     private ObjectNode input(String id) {
         var input = mapper.createObjectNode().put("specificationVersion", "2026-3").put("segment", id)
                 .put("direction", "130".equals(id) ? "REQUEST" : "RESPONSE");
-        input.putObject("elements").put("85", id).put("84", "130".equals(id) ? "0035" : "0053")
+        input.putObject("elements").put("85", id).put("84", "130".equals(id) ? "0038" : "0056")
                 .put("187", "130".equals(id) ? "" : "0000000000000000000000001").put("188", "")
                 .put("189", "009").put("190", "8407A0000000041010");
-        input.putArray("tables").addObject().put("id", "001").put("length", "003").put("value", "ABC");
-        String prefix = "130".equals(id) ? "130\u001c0035\u001c\u001c\u001c009\u001c"
-                : "13100530000000000000000000000001009";
+        // Table value must be the source-documented 'EMVYES'/'EMVNOT' (length 6) so this test's
+        // chip-data/binary-wire fixture does not also trip the (separately tested) Appendix T
+        // Table 001 content check (SEG130-R-020); the +3 bytes versus the prior "ABC" placeholder
+        // are folded into the declared Segment Length above.
+        input.putArray("tables").addObject().put("id", "001").put("length", "006").put("value", "EMVYES");
+        String prefix = "130".equals(id) ? "130\u001c0038\u001c\u001c\u001c009\u001c"
+                : "13100560000000000000000000000001009";
         String raw = HexFormat.of().formatHex(prefix.getBytes(StandardCharsets.US_ASCII)) + "8407A0000000041010"
-                + HexFormat.of().formatHex(("130".equals(id) ? "\u001c001003ABC\u001c" : "001003ABC").getBytes(StandardCharsets.US_ASCII));
-        assertThat(raw.length() / 2).isEqualTo("130".equals(id) ? 35 : 53);
+                + HexFormat.of().formatHex(("130".equals(id) ? "\u001c001006EMVYES\u001c" : "001006EMVYES").getBytes(StandardCharsets.US_ASCII));
+        assertThat(raw.length() / 2).isEqualTo("130".equals(id) ? 38 : 56);
         input.put("serializedSegmentHex", raw);
         return input;
     }
+
 
     private void target(ObjectNode input, String scope, Status expected) throws Exception {
         assertThat(validator.validate(input).findings()).filteredOn(f -> f.scope().equals(scope))
@@ -63,7 +68,7 @@ class Chapter12EmvWireTest {
         input = input("131");
         input.put("serializedSegmentHex", input.path("serializedSegmentHex").asText() + "1c");
         target(input, "binary-wire", Status.INVALID);
-        ((ObjectNode) input.path("elements")).put("84", "0054");
+        ((ObjectNode) input.path("elements")).put("84", "0057");
         target(input, "binary-length", Status.CHECKS_PASSED);
         target(input, "binary-wire", Status.INVALID);
     }

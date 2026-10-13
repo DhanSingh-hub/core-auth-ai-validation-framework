@@ -28,13 +28,17 @@ public final class Chapter11MessageLayoutValidator {
     private final Chapter13DataElementValidator chapter13Validator;
 
     public Chapter11MessageLayoutValidator() throws IOException {
-        JsonNode catalog = mapper.readTree(Atl105Paths.docs().resolve("atl105_complete_templates.json").toFile());
+        this(Atl105Paths.root());
+    }
+
+    public Chapter11MessageLayoutValidator(Path pack) throws IOException {
+        JsonNode catalog = mapper.readTree(pack.resolve("docs").resolve("atl105_complete_templates.json").toFile());
         templates = catalog.path("message_templates");
         if (!templates.isObject() || templates.size() != catalog.path("total_transaction_types").asInt()) {
             throw new IOException("Incomplete Chapter 11 template catalog");
         }
-        elementValidator = new Atl105ElementValueValidator(Atl105Paths.root());
-        chapter13Validator = new Chapter13DataElementValidator(Atl105Paths.root());
+        elementValidator = new Atl105ElementValueValidator(pack);
+        chapter13Validator = new Chapter13DataElementValidator(pack);
     }
 
     public Result validate(JsonNode input) throws IOException {
@@ -157,13 +161,15 @@ public final class Chapter11MessageLayoutValidator {
                             "Unexpected data section for " + id + ("131".equals(id) ? "; known Chapters 11/12 placement conflict" : "")));
                 }
             }
+            if ("100".equals(id) && Set.of("Financial Transaction Request", "EMV Financial Transaction Request").contains(family))
+                findings.addAll(standardRequestPlacement(segment.get("dataSection"), segment.get("fieldNumber")));
             if (segment.has("observation") && Chapter12SegmentPayloadValidator.SEGMENTS.contains(id)) {
                 JsonNode observation = segment.get("observation");
                 if (!observation.isObject() || !id.equals(observation.path("segment").asText())) {
                     findings.add(new Finding(anchor, "segment-observation", Status.INVALID, "Child observation identity does not match " + id));
                 } else {
                     ObjectNode childInput = observation.deepCopy();
-                    if (Set.of("115", "119", "130", "131", "145", "146", "148").contains(id)) {
+                    if (Chapter12SegmentPayloadValidator.SEGMENTS.contains(id)) {
                         if (observation.has("messageFamily") && !family.equals(text(observation, "messageFamily"))) {
                             findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Segment " + id + " child family contradicts parent"));
                         }
@@ -174,13 +180,19 @@ public final class Chapter11MessageLayoutValidator {
                         }
                         childInput.put("direction", direction);
                         List<String> contextKeys = switch (id) {
-                            case "145", "146", "148" -> List.of("authorizer");
-                            case "130" -> List.of("loadedCapkChecksum");
+                            case "145", "146" -> List.of("authorizer", "transactionElements");
+                            case "148" -> List.of("authorizer");
+                            case "130" -> List.of("loadedCapkChecksum", "transactionElements");
+                            case "131" -> List.of("transactionElements");
+                            case "132" -> List.of("protocol");
+                            case "134" -> List.of("signatureDebitAvailable");
+                            case "143" -> List.of("country", "segment102ProductCodes");
+                            case "156" -> List.of("brand", "segment102ProductCodes");
                             case "119" -> List.of("loadedDeviceCardTableVersion", "hostDiscountTimestampInUse");
                             default -> List.of();
                         };
                         inheritContext(input, childInput, contextKeys, anchor, findings);
-                        if (Set.of("119", "130", "131", "145", "146").contains(id) && input.has("history")) {
+                        if (Set.of("119", "130", "131", "132", "145", "146").contains(id) && input.has("history")) {
                             if (observation.has("history") && !input.path("history").equals(observation.path("history"))) {
                                 findings.add(new Finding(anchor, "segment-context", Status.INVALID, "Child history contradicts parent history"));
                             }
@@ -223,6 +235,9 @@ public final class Chapter11MessageLayoutValidator {
             if (Set.of("R", "PRESENT").contains(entry.getValue().path("presence_in_message").asText()) && !present.contains(entry.getKey())) {
                 findings.add(new Finding(anchor, "required-segment", partial ? Status.REVIEW_REQUIRED : Status.INVALID,
                         "Required Segment " + entry.getKey() + " absent"));
+            } else if (Set.of("R", "PRESENT").contains(entry.getValue().path("presence_in_message").asText())) {
+                findings.add(new Finding(anchor, "required-segment", Status.CHECKS_PASSED,
+                        "Required Segment " + entry.getKey() + " is observed; presence does not certify its fields or wire"));
             }
         }
         if (template.path("data_section_1_fields").isArray() && template.path("data_section_1_fields").size() > 0) {
@@ -261,6 +276,20 @@ public final class Chapter11MessageLayoutValidator {
             findings.add(new Finding(finding.ruleId(), "chapter13-representation",
                     Status.valueOf(finding.status().name()), finding.reason()));
         }
+
+    }
+
+    public static List<Finding> standardRequestPlacement(JsonNode dataSection, JsonNode fieldNumber) {
+        List<Finding> findings = new ArrayList<>();
+        for (var entry : Map.of("data-section", 2, "field-number", 3).entrySet()) {
+            JsonNode value = "data-section".equals(entry.getKey()) ? dataSection : fieldNumber;
+            Status status = value == null ? Status.REVIEW_REQUIRED
+                    : value.isIntegralNumber() && value.canConvertToInt() && value.intValue() == entry.getValue()
+                    ? Status.CHECKS_PASSED : Status.INVALID;
+            findings.add(new Finding("SEG100-R-015", "standard-placement-" + entry.getKey(), status,
+                    "Source12.1 lines11211-11214: actual Standard request is DataSection2 Field3; missing placement is not inferred from metadata"));
+        }
+        return List.copyOf(findings);
     }
 
     private static void fields(JsonNode definitions, JsonNode elements, boolean partial, boolean requiredByLayout,
