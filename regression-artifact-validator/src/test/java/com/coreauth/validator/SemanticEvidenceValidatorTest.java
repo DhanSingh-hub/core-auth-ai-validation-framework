@@ -99,18 +99,43 @@ class SemanticEvidenceValidatorTest {
     }
 
     @Test
-    void actualWireLengthAndValuesAreCheckedInsteadOfCalculationPlaceholders() throws Exception {
+    void converterCaptureAndManifestAreRequiredAndWireBytesAreCompared() throws Exception {
         String wire = "100\u001c010\u001c0\u001c";
-        var observation = mapper.createObjectNode().put("wireHex", HexFormat.of().formatHex(wire.getBytes(StandardCharsets.US_ASCII)));
+        byte[] bytes = wire.getBytes(StandardCharsets.US_ASCII);
+        var observation = mapper.createObjectNode().put("wireHex", HexFormat.of().formatHex(bytes));
+        var request = mapper.createObjectNode().put("requestId", "TC-wire");
+        observation.putObject("canonicalPayload").set("request", request);
         var evidence = mapper.createObjectNode();
         var gate = evidence.putObject("wireValidation").put("scope", "SEGMENT_100").put("encoding", "US-ASCII").put("fieldSeparatorHex", "1c"); gate.set("source", source());
         gate.putArray("orderedFields").add("100").add("010").add("0");
+        bindCapture(gate, "TC-wire", request, bytes);
         var validator = new SemanticEvidenceValidator(root);
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("PASS");
-        observation.put("wireHex", HexFormat.of().formatHex(wire.replace("010", "009").getBytes(StandardCharsets.US_ASCII)));
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        var result = validator.assess(observation, evidence, "TC-wire");
+        assertThat(result.path("wireValidation").path("status").asText()).isEqualTo("PASS");
+        assertThat(result.path("wireValidation").path("actualByteCount").asInt()).isEqualTo(bytes.length);
+        assertThat(result.path("wireValidation").path("converterVersion").asText()).isEqualTo("1.0.0");
+        assertThat(validator.assess(observation, evidence, "different-case").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
+        byte[] changedBytes = wire.replace("010", "009").getBytes(StandardCharsets.US_ASCII);
+        bindCapture(gate, "TC-wire", request, changedBytes);
+        assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        gate.remove("capture");
         observation.put("wireHex", "CALCULATE_FROM_SEGMENT_CONTENT");
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        assertThat(validator.assess(observation, evidence, "TC-wire").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
+    }
+
+    @Test
+    void binarySegmentFieldUsesDecodedBytesForDeclaredLength() throws Exception {
+        byte[] bytes = HexFormat.of().parseHex("3130301c3031311c00ff1c");
+        var request = mapper.createObjectNode().put("requestId", "TC-binary");
+        var observation = mapper.createObjectNode().put("wireHex", "ignored");
+        observation.putObject("canonicalPayload").set("request", request);
+        var evidence = mapper.createObjectNode();
+        var gate = evidence.putObject("wireValidation").put("scope", "SEGMENT_100").put("encoding", "US-ASCII").put("fieldSeparatorHex", "1c");
+        gate.set("source", source());
+        gate.putArray("orderedFields").add("100").add("011").addObject().put("hex", "00ff");
+        bindCapture(gate, "TC-binary", request, bytes);
+        assertThat(new SemanticEvidenceValidator(root).assess(observation, evidence, "TC-binary")
+                .path("wireValidation").path("status").asText()).isEqualTo("PASS");
     }
 
     @Test
@@ -153,6 +178,8 @@ class SemanticEvidenceValidatorTest {
     void fullMessageWireCoversTransportTpduCountAndEveryBodyByte() throws Exception {
         String body = "600000000041544c3130351c" + "301c".repeat(7) + "30311c3130301c3031301c301c";
         var observation = mapper.createObjectNode().put("wireHex", "0027" + body);
+        var request = mapper.createObjectNode().put("requestId", "TC-full-wire");
+        observation.putObject("canonicalPayload").set("request", request);
         var evidence = mapper.createObjectNode();
         var gate = evidence.putObject("wireValidation").put("scope", "FULL_MESSAGE").put("encoding", "US-ASCII").put("fieldSeparatorHex", "1c")
                 .put("tpduHex", "6000000000").put("transportLengthConvention", "UINT16_BE_BODY_INCLUDING_TPDU");
@@ -161,15 +188,19 @@ class SemanticEvidenceValidatorTest {
         for (int index = 0; index < 7; index++) fields.add("0");
         fields.add("01");
         gate.putArray("segments").addObject().putArray("fields").add("100").add("010").add("0");
+        bindCapture(gate, "TC-full-wire", request, HexFormat.of().parseHex("0027" + body));
         var validator = new SemanticEvidenceValidator(root);
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("PASS");
-        assertThat(validator.assess(observation, evidence).path("fullMessageWireAssessed").asBoolean()).isTrue();
+        assertThat(validator.assess(observation, evidence, "TC-full-wire").path("wireValidation").path("status").asText()).isEqualTo("PASS");
+        assertThat(validator.assess(observation, evidence, "TC-full-wire").path("fullMessageWireAssessed").asBoolean()).isTrue();
         observation.put("wireHex", "0026" + body);
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        bindCapture(gate, "TC-full-wire", request, HexFormat.of().parseHex("0026" + body));
+        assertThat(validator.assess(observation, evidence, "TC-full-wire").path("wireValidation").path("status").asText()).isEqualTo("FAIL");
         observation.put("wireHex", "0027" + body.substring(0, body.length() - 4) + "311c");
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("FAIL");
+        bindCapture(gate, "TC-full-wire", request, HexFormat.of().parseHex("0027" + body.substring(0, body.length() - 4) + "311c"));
+        assertThat(validator.assess(observation, evidence, "TC-full-wire").path("wireValidation").path("status").asText()).isEqualTo("FAIL");
         gate.put("transportLengthConvention", "UNKNOWN");
-        assertThat(validator.assess(observation, evidence).path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
+        refreshManifestHash(gate);
+        assertThat(validator.assess(observation, evidence, "TC-full-wire").path("wireValidation").path("status").asText()).isEqualTo("NOT_ASSESSED");
     }
 
     @Test
@@ -243,25 +274,40 @@ class SemanticEvidenceValidatorTest {
             wire.putArray("segments").addObject().putArray("fields").add("100").add(segmentLength).add("0").add(sequence);
             String body = "ATL105\u001c" + "0\u001c".repeat(7) + "01\u001c100\u001c" + segmentLength + "\u001c0\u001c" + sequence + "\u001c";
             String hex = String.format("%04x", body.length() + 5) + "6000000000" + HexFormat.of().formatHex(body.getBytes(StandardCharsets.US_ASCII));
-            observation.put(positive ? "controlWireHex" : "wireHex", hex);
+                observation.put(positive ? "controlWireHex" : "wireHex", hex);
+                JsonNode request = observation.path(positive ? "controlRequest" : "request");
+                bindCapture(wire, "TC-negative", request, HexFormat.of().parseHex(hex));
             var oracle = contracts.putObject("hostOutcome").put("oracleKind", "INDEPENDENT_HOST_REFERENCE").put("environment", "isolated-regression-fixture")
                     .put("stateFixtureSha256", hash("fixture".getBytes(StandardCharsets.UTF_8))).put("responseFamily", "financial")
                     .put("expectedDisposition", positive ? "ACCEPT" : "REJECT"); oracle.set("source", source());
-            JsonNode request = observation.path(positive ? "controlRequest" : "request");
             JsonNode response = observation.path(positive ? "controlResponse" : "response");
             oracle.set("expectedResponse", response.deepCopy());
             oracle.put("requestSha256", canonicalHash(request)); oracle.put("responseSha256", canonicalHash(response));
         }
         var validator = new SemanticEvidenceValidator(root);
-        assertThat(validator.assess(observation, evidence).path("negativeEffectiveness").path("status").asText()).isEqualTo("PASS");
+        assertThat(validator.assess(observation, evidence, "TC-negative").path("negativeEffectiveness").path("status").asText()).isEqualTo("PASS");
         ((ObjectNode) control.path("dataSection2").path("standardSegment")).remove("terminalIdentifier");
         ((ObjectNode) mutant.path("dataSection2").path("standardSegment")).remove("terminalIdentifier");
-        assertThat(validator.assess(observation, evidence).path("negativeEffectiveness").path("status").asText()).isEqualTo("FAIL");
+        assertThat(validator.assess(observation, evidence, "TC-negative").path("negativeEffectiveness").path("status").asText()).isEqualTo("FAIL");
     }
 
     private String canonicalHash(JsonNode value) throws Exception {
         JsonNode sorted = sort(value);
         return hash(sorted.toString().getBytes(StandardCharsets.UTF_8));
+    }
+
+    private void bindCapture(ObjectNode contract, String caseId, JsonNode request, byte[] bytes) throws Exception {
+        String fileName = "converter-capture-" + hash(bytes) + ".bin";
+        Files.write(root.resolve(fileName), bytes);
+        contract.putObject("capture").put("artifact", fileName).put("sha256", hash(bytes))
+                .put("converter", "IndependentFixtureConverter").put("version", "1.0.0")
+                .put("caseId", caseId).put("requestSha256", canonicalHash(request));
+        refreshManifestHash(contract);
+    }
+
+    private void refreshManifestHash(ObjectNode contract) throws Exception {
+        contract.remove("manifestSha256");
+        contract.put("manifestSha256", canonicalHash(contract));
     }
 
     private JsonNode sort(JsonNode value) {

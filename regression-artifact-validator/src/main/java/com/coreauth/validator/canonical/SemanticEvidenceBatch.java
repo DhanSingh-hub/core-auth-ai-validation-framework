@@ -49,7 +49,7 @@ public final class SemanticEvidenceBatch {
             String id = row.path("caseId").asText();
             if (!row.path("caseId").isTextual() || id.isBlank() || !seen.add(id)) throw new IllegalArgumentException("Missing or duplicate register case ID");
             JsonNode item = supplied.getOrDefault(id, mapper.createObjectNode());
-            ObjectNode assessed = validator.assess(item.path("observation"), item.path("evidence"));
+            ObjectNode assessed = validator.assess(item.path("observation"), item.path("evidence"), id);
             if (!"negative".equalsIgnoreCase(row.path("intent").asText())) {
                 for (String gate : List.of("negativeIsolation", "negativeEffectiveness")) {
                     assessed.set(gate, mapper.createObjectNode().put("status", "NOT_APPLICABLE").put("reason", "Register declares no intended negative mutation"));
