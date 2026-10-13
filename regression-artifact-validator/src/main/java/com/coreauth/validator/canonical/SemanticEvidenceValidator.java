@@ -39,7 +39,7 @@ public final class SemanticEvidenceValidator {
         output.set("compatibility", compatibility(observation.path("canonicalPayload"), evidence.path("compatibility")));
         output.set("wireValidation", wire(observation.path("canonicalPayload").path("request"), evidence.path("wireValidation"), caseId));
         output.set("hostOutcome", outcome(observation.path("request"), observation.path("response"), evidence.path("hostOutcome")));
-        output.set("negativeEffectiveness", effectiveness(observation, evidence, output));
+        output.set("negativeEffectiveness", effectiveness(observation, evidence, output, caseId));
         output.put("allTechnicalGatesPassed", output.properties().stream().allMatch(entry -> "PASS".equals(entry.getValue().path("status").asText())));
         output.put("executionCertified", false);
         output.put("semanticApproval", "NOT_GRANTED_BY_TECHNICAL_EVIDENCE_CHECKS");
@@ -129,7 +129,7 @@ public final class SemanticEvidenceValidator {
         return result("PASS", "Exactly one intended violation detected within declared predicate scope; not full-message or host effectiveness");
     }
 
-    private ObjectNode effectiveness(JsonNode observation, JsonNode evidence, JsonNode assessed) {
+    private ObjectNode effectiveness(JsonNode observation, JsonNode evidence, JsonNode assessed, String caseId) {
         if (!"PASS".equals(assessed.path("negativeIsolation").path("status").asText())) {
             return result("NOT_ASSESSED", "An isolated intended source violation must first be demonstrated");
         }
