@@ -83,6 +83,12 @@ public final class TotalsRequestPayloadValidator {
         return result;
     }
 
+    public ValidationResult validateActualPayload(JsonNode payload) {
+        ValidationResult result = new ValidationResult("totals-request-actual-payload");
+        validatePayload(payload, result, true);
+        return result;
+    }
+
     public ValidationResult validatePayload(JsonNode payload, Segment119ActualPayloadAdapter adapter, JsonNode evidence) {
         ValidationResult result = validatePayload(payload);
         if (payload == null || !payload.path(TOTALS_WITH_PDL_REQUEST).isObject()) return result;
@@ -103,6 +109,10 @@ public final class TotalsRequestPayloadValidator {
     }
 
     private void validatePayload(JsonNode payload, ValidationResult result) {
+        validatePayload(payload, result, false);
+    }
+
+    private void validatePayload(JsonNode payload, ValidationResult result, boolean actual) {
         if (payload == null || !payload.isObject()) {
             result.addError(SOURCE, "AI JSON root must be an object");
             return;
@@ -120,10 +130,10 @@ public final class TotalsRequestPayloadValidator {
             return;
         }
         String root = roots.get(0);
-        validateMessage(root, payload.path(root), LAYOUTS.get(root), result);
+        validateMessage(root, payload.path(root), LAYOUTS.get(root), result, actual);
     }
 
-    private static void validateMessage(String root, JsonNode message, Layout layout, ValidationResult result) {
+    private static void validateMessage(String root, JsonNode message, Layout layout, ValidationResult result, boolean actual) {
         String messageType = text(message, "MessageType");
         if (messageType == null || messageType.isBlank()) {
             result.addError(SOURCE, root + ".MessageType (Element 55) is required in Data Section 1 (" + layout.noSection2Rule() + ")");
@@ -157,7 +167,7 @@ public final class TotalsRequestPayloadValidator {
         } else {
             checkSegmentLength(totalsSegment, layout, result);
             if ("105".equals(layout.segmentType())) {
-                checkSegment105Fields(totalsSegment, result);
+                checkSegment105Fields(totalsSegment, result, actual);
             }
         }
         checkNumberOfSegments(root, message, segmentCount, layout, result);
@@ -172,7 +182,7 @@ public final class TotalsRequestPayloadValidator {
      * design and are not enforced here; fabricating that business logic would be worse
      * than leaving it open.
      */
-    private static void checkSegment105Fields(JsonNode segment, ValidationResult result) {
+    private static void checkSegment105Fields(JsonNode segment, ValidationResult result, boolean actual) {
         String segmentType = text(segment, "SegmentType");
         if (!"105".equals(segmentType)) {
             result.addError(SOURCE, "Segment 105.SegmentType must be '105', got: " + segmentType + " (SEG105-R-001)");
@@ -222,7 +232,7 @@ public final class TotalsRequestPayloadValidator {
                     + "(see Appendix L for value validity), got: " + currencyCode + " (SEG105-R-014)");
         }
         checkGrandTotalAndCategoryTotals(segment, result);
-        checkSegment105Wire(segment, result);
+        if (!actual) checkSegment105Wire(segment, result);
         result.addWarning("REVIEW_REQUIRED: employee/password authorization, settlement activity window and lifecycle "
                 + "need independently supplied merchant history (SEG105-R-006/007/009/016/017)");
     }
@@ -287,30 +297,112 @@ public final class TotalsRequestPayloadValidator {
     }
 
     private static void checkSegment105Wire(JsonNode segment, ValidationResult result) {
+        String encoded = encodeSegment105(segment, false);
+        String declared = text(segment, "SegmentLength");
+        if (declared != null && NUMERIC_3.matcher(declared).matches() && Integer.parseInt(declared) != encoded.length()) {
+            result.addError(SOURCE, "Segment 105 SegmentLength does not equal encoded field/separator/bucket length (SEG105-R-002)");
+        }
+        if (segment.has("serializedSegment") && !encoded.equals(text(segment, "serializedSegment"))) {
+            result.addError(SOURCE, "Segment 105 wire order, separators or padded card labels disagree with fields (SEG105-R-002)");
+        }
+    }
+
+    public List<Chapter12SegmentPayloadValidator.Finding> validateActualWire(JsonNode segment) {
+        var findings = new ArrayList<Chapter12SegmentPayloadValidator.Finding>();
+        var review = Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
+        var invalid = Chapter12SegmentPayloadValidator.Status.INVALID;
+        var pass = Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
+        JsonNode raw = segment.get("SerializedSegment");
+        if (raw == null) {
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", review,
+                    "Source11930-11932: observed raw105 required; field execution is not physical wire"));
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire-length", review, "Missing independently observed wire"));
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-021", "actual-legacy-wire-cap", review, "Missing independently observed wire"));
+            return List.copyOf(findings);
+        }
+        if (!raw.isTextual()) {
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", invalid, "Actual wire must be text"));
+            return List.copyOf(findings);
+        }
+        String wire = raw.textValue();
+        boolean ascii = wire.chars().allMatch(c -> c <= 127);
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-021", "actual-legacy-wire-cap",
+                ascii && wire.length() >= 1 && wire.length() <= 409 ? pass : invalid, "Measured actual ASCII105 wire cap is409"));
+        String length = segment.path("SegmentLength").isTextual() ? segment.path("SegmentLength").textValue() : null;
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire-length",
+                length == null ? segment.has("SegmentLength") ? invalid : review : ascii && length.matches("[0-9]{3}") && Integer.parseInt(length) == wire.length() ? pass : invalid,
+                "Actual N3 must equal measured source header/FS/bucket bytes"));
+        for (String field : List.of("SegmentType", "SegmentLength", "InformationByte", "TerminalID", "PromptCode",
+                "EmployeeNumber", "Password", "TotalsDate", "HardwareVersion", "SoftwareVersion", "FirmwareVersion",
+                "SequenceNumber", "CurrencyCode", "GrandTotal")) {
+            JsonNode value = segment.get(field);
+            if (value == null) {
+                findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", review,
+                        "Missing actual " + field + "; not synthesized as an empty separator value"));
+                return List.copyOf(findings);
+            }
+            if (!value.isTextual() || value.textValue().indexOf('\u001c') >= 0) {
+                findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", invalid,
+                        "Actual105 field must be text without embeddedFS: " + field));
+                return List.copyOf(findings);
+            }
+            if ("Password".equals(field) && !value.textValue().isEmpty() && value.textValue().length() != 6) {
+                findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", invalid,
+                        "Source six-byte right-aligned Password must be observed with its padding; not synthesized"));
+                return List.copyOf(findings);
+            }
+        }
+        JsonNode buckets = segment.get("CategoryTotals");
+        if (buckets == null) {
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", review,
+                    "Observed bucket array required; no unobserved empty category list is inferred"));
+            return List.copyOf(findings);
+        }
+        if (!buckets.isArray()) {
+            findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", invalid, "Actual bucket evidence must be an array"));
+            return List.copyOf(findings);
+        }
+        for (JsonNode bucket : buckets) {
+            for (String field : List.of("CardLabel", "CardTypeTotalCount", "CardTypeTotalAmount")) {
+                JsonNode value = bucket.get(field);
+                if (value == null) {
+                    findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", review,
+                            "Missing observed bucket " + field));
+                    return List.copyOf(findings);
+                }
+                int width = "CardLabel".equals(field) ? 4 : "CardTypeTotalCount".equals(field) ? 5 : 8;
+                if (!value.isTextual() || value.textValue().length() != width || value.textValue().indexOf('\u001c') >= 0) {
+                    findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire", invalid,
+                            "Actual fixed-width bucket bytes must be supplied explicitly; no padding is manufactured: " + field));
+                    return List.copyOf(findings);
+                }
+            }
+        }
+        findings.add(new Chapter12SegmentPayloadValidator.Finding("SEG105-R-002", "actual-legacy-wire",
+                ascii && encodeSegment105(segment, true).equals(wire) ? pass : invalid,
+                "Source11930-11932: fields1-14 each retainFS, followed by contiguous observed fixed-width bucket triples with no inter-bucketFS"));
+        return List.copyOf(findings);
+    }
+
+    private static String encodeSegment105(JsonNode segment, boolean actual) {
         StringBuilder encoded = new StringBuilder();
         for (String field : List.of("SegmentType", "SegmentLength", "InformationByte", "TerminalID", "PromptCode",
                 "EmployeeNumber", "Password", "TotalsDate", "HardwareVersion", "SoftwareVersion", "FirmwareVersion",
                 "SequenceNumber", "CurrencyCode", "GrandTotal")) {
             String value = text(segment, field);
             if (value == null) value = "";
-            if ("Password".equals(field) && !value.isEmpty() && value.length() <= 6) value = String.format("%6s", value);
+            if (!actual && "Password".equals(field) && !value.isEmpty() && value.length() <= 6) value = String.format("%6s", value);
             encoded.append(value).append('\u001c');
         }
         for (JsonNode bucket : segment.path("CategoryTotals")) {
             String label = text(bucket, "CardLabel");
-            if (label != null) encoded.append(String.format("%-4s", label.stripTrailing()));
+            if (label != null) encoded.append(actual ? label : String.format("%-4s", label.stripTrailing()));
             String count = text(bucket, "CardTypeTotalCount");
             String amount = text(bucket, "CardTypeTotalAmount");
             if (count != null) encoded.append(count);
             if (amount != null) encoded.append(amount);
         }
-        String declared = text(segment, "SegmentLength");
-        if (declared != null && NUMERIC_3.matcher(declared).matches() && Integer.parseInt(declared) != encoded.length()) {
-            result.addError(SOURCE, "Segment 105 SegmentLength does not equal encoded field/separator/bucket length (SEG105-R-002)");
-        }
-        if (segment.has("serializedSegment") && !encoded.toString().equals(text(segment, "serializedSegment"))) {
-            result.addError(SOURCE, "Segment 105 wire order, separators or padded card labels disagree with fields (SEG105-R-002)");
-        }
+        return encoded.toString();
     }
 
     private static void checkNumberOfSegments(String root, JsonNode message, int segmentCount, Layout layout,

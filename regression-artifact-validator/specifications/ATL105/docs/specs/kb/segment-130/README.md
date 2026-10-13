@@ -7,6 +7,21 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed CAPK event ordering
+
+The existing observed-session oracle now supplements checksum/device/exchange
+binding with `capk-load-event-order`. Source 10752–10757 and 24321–24325 require
+the received checksum for subsequent EMV requests. Supplied load request
+sentAt, response receivedAt and current context.transactionObservedAt must
+establish that order. Offset-bearing timestamps compare instants, not local
+clock strings; equal captured instants remain review rather than fabricated
+order. Actual Standard sequence/device authority is preserved even when metadata
+offers replacement identities. Ten canonical/intake probes cover normal,
+adjacent/equal, reversed, malformed and missing observations in
+`Chapter12CapkEventOrderIntegrationTest`. This does not certify latest trusted
+CAPK state, complete block transport or cryptographic/kernel authenticity.
+See the current [gap register](../chapter-coverage-gap-register.md).
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)

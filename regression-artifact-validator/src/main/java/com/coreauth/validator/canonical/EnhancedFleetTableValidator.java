@@ -91,9 +91,47 @@ final class EnhancedFleetTableValidator {
             return;
         }
         Map<String, BigDecimal> amounts = new java.util.LinkedHashMap<>(), quantities = new java.util.LinkedHashMap<>();
+        JsonNode cardTable = history.get("dynamicCardTable");
+        boolean mapped = !"003".equals(id) && cardTable != null;
+        if (mapped && (!cardTable.isObject() || !cardTable.path("productsComplete").isBoolean()
+                || !categoryMap(cardTable.path("products")))) {
+            check(findings, rule, "dynamic-card-table", false, "Observed PRODUCTS projection must be a numeric-code/category map with boolean completeness");
+            return;
+        }
+        if (!"003".equals(id)) {
+            if (!mapped) findings.add(new Finding(rule, "dynamic-card-table", Status.REVIEW_REQUIRED,
+                    "Category declarations alone do not establish the Dynamic Card Table PRODUCTS mapping"));
+            else {
+                JsonNode received = cardTable.get("receivedProducts"), stored = cardTable.get("storedProducts");
+                if (received == null || stored == null) findings.add(new Finding(rule, "dynamic-card-table-provenance", Status.REVIEW_REQUIRED,
+                        "Received and stored PRODUCTS projections required to correlate observed mapping provenance"));
+                else check(findings, rule, "dynamic-card-table-provenance", categoryMap(received) && categoryMap(stored)
+                        && received.equals(stored) && stored.equals(cardTable.path("products")),
+                        "Observed mapping equals received and stored PRODUCTS projections; map equality does not authenticate configuration or raw-table decoding");
+            }
+        }
         for (JsonNode product : products) {
             JsonNode code = product.get("003".equals(id) ? "productCode" : "category");
             String label = code == null && !"003".equals(id) ? "MERC" : code != null && code.isTextual() ? code.textValue() : "";
+            if (mapped) {
+                String productCode = text(product, "productCode");
+                if (productCode == null || !productCode.matches("[0-9]{3}")) {
+                    check(findings, rule, "dynamic-card-table", false, "Actual purchased product code required for PRODUCTS lookup");
+                    return;
+                }
+                JsonNode category = cardTable.path("products").get(productCode);
+                if (category == null && !cardTable.path("productsComplete").booleanValue()) {
+                    findings.add(new Finding(rule, "dynamic-card-table", Status.REVIEW_REQUIRED,
+                            "Incomplete PRODUCTS evidence cannot prove absence or select default MERC"));
+                    return;
+                }
+                label = category == null ? "MERC" : category.textValue();
+                if (product.has("category") && !label.equals(text(product, "category"))) {
+                    check(findings, rule, "dynamic-card-table", false, "Observed purchase category contradicts source-local PRODUCTS lookup/default MERC");
+                    return;
+                }
+                check(findings, rule, "dynamic-card-table", true, "Category derived from observed PRODUCTS mapping; default MERC only with complete absence evidence");
+            }
             String amount = text(product, "amount"), quantity = text(product, "quantity");
             if (!product.isObject() || !label.matches("003".equals(id) ? "[0-9]{3}" : "[A-Z0-9]{1,4}")
                     || amount == null || !amount.matches("[0-9]{1,9}(?:\\.[0-9]{1,9})?")
@@ -130,6 +168,17 @@ final class EnhancedFleetTableValidator {
         else check(findings, rule, "fleet-product-correlation", valid,
                 request ? "All products sharing a mapped category are summed; unmapped categories use MERC"
                         : "Observed sums within each returned category/product limit; unlisted-product eligibility is not invented");
+    }
+
+    private static boolean categoryMap(JsonNode node) {
+        if (!node.isObject()) return false;
+        var entries = node.fields();
+        while (entries.hasNext()) {
+            var entry = entries.next();
+            if (!entry.getKey().matches("[0-9]{3}") || !entry.getValue().isTextual()
+                    || !entry.getValue().textValue().matches("[A-Z0-9]{1,4}")) return false;
+        }
+        return true;
     }
 
     private static String text(JsonNode node, String key) {

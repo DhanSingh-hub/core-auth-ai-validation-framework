@@ -50,6 +50,18 @@ class Chapter12SegmentPayloadValidatorTest {
             // (Section 12.49 field table); its own type/length/boundary checks are asserted in
             // dl8FloorLimitsValidatesFramingPerRidGroupsAndTheSpecialFlagGateWithoutInventingPlacement().
             if ("DL8".equals(id)) continue;
+            if ("DL1".equals(id)) {
+                ObjectNode merchant = payload(id);
+                fields(merchant).put("24", "&");
+                assertThat(validator.validate(merchant).status()).isEqualTo(Status.INVALID);
+                merchant = payload(id);
+                fields(merchant).put("59", "00");
+                assertThat(validator.validate(merchant).status()).isEqualTo(Status.INVALID);
+                merchant = payload(id);
+                fields(merchant).put("24", 1);
+                assertThat(validator.validate(merchant).status()).isEqualTo(Status.INVALID);
+                continue;
+            }
             ObjectNode payload = payload(id);
             fields(payload).put("85", "999");
             assertThat(validator.validate(payload).status()).as(id + " type").isEqualTo(Status.INVALID);

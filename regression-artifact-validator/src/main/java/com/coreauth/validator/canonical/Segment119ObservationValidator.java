@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,137 @@ final class Segment119ObservationValidator {
                 case REVIEW_REQUIRED -> Status.REVIEW_REQUIRED;
             }, finding.reason()));
         }
+        discountLoadHistory(input, findings);
+        cutoffHistory(input, findings);
+        distinctTotalsTransactions(input, findings);
         return List.copyOf(findings);
+    }
+
+    private static void cutoffHistory(JsonNode input, List<Finding> findings) {
+        JsonNode cutoff = input.path("history").path("totals").get("cutoff");
+        boolean readCut = "222222".equals(text(input.path("elements"), "105"));
+        if (cutoff == null) {
+            if (readCut) review(findings, "032", "variable-cut-merchant", "Source9.3.2.2 permits222222 only for variable-cut merchants; observed merchant policy required");
+            return;
+        }
+        if (!cutoff.isObject() || cutoff.has("variableCutMerchant") && !cutoff.path("variableCutMerchant").isBoolean()
+                || cutoff.has("readAndCutRequested") && !cutoff.path("readAndCutRequested").isBoolean()) {
+            check(findings, "032", "cutoff-history", false, "Observed cutoff object and boolean controls required");
+            return;
+        }
+        if (readCut) {
+            if (!cutoff.has("variableCutMerchant")) review(findings, "032", "variable-cut-merchant", "Observed variable-cut flag required, not inferred from222222");
+            else check(findings, "032", "variable-cut-merchant", cutoff.path("variableCutMerchant").booleanValue(),
+                    "Source3717-3721:222222 only usable by variable-cut merchants");
+        }
+        OffsetDateTime scheduled = observedOffsetTime(cutoff, "scheduledCut", findings);
+        OffsetDateTime closed = observedOffsetTime(cutoff, "observedClose", findings);
+        if (scheduled != null && closed != null) {
+            if (!cutoff.has("readAndCutRequested") || !cutoff.has("variableCutMerchant"))
+                review(findings, "032", "observed-cutoff", "Matched read/cut request and merchant policy required");
+            else if (cutoff.path("readAndCutRequested").booleanValue()) {
+                check(findings, "032", "observed-cutoff", readCut && cutoff.path("variableCutMerchant").booleanValue()
+                        && closed.toInstant().isBefore(scheduled.toInstant()),
+                        "Source3717-3740: observed variable-merchant read/cut closes before designated cut; offsets are observed, not guessed");
+            } else if (cutoff.path("variableCutMerchant").booleanValue())
+                check(findings, "032", "observed-cutoff", !readCut && closed.toInstant().equals(scheduled.toInstant()),
+                        "Source3736-3740: absent read/cut request, variable merchant automatically closes at designated cut");
+            else review(findings, "032", "observed-cutoff", "This source clause specifies variable-cut merchant behavior; no other merchant policy is inferred");
+        }
+        JsonNode transactions = cutoff.get("transactions");
+        if (transactions == null) {
+            review(findings, "032", "post-close-assignment", "Observed transaction times/business-date assignments required");
+            return;
+        }
+        if (!transactions.isArray()) {
+            check(findings, "032", "post-close-assignment", false, "Observed transaction records must be an array");
+            return;
+        }
+        String next = text(cutoff, "nextBusinessDate");
+        if (!cutoff.has("nextBusinessDate")) {
+            review(findings, "032", "post-close-assignment", "Observed next business date required; next calendar day is not assumed");
+            return;
+        }
+        if (next == null || !next.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}")) {
+            check(findings, "032", "post-close-assignment", false, "Observed next business date must be ISO calendar date text");
+            return;
+        }
+        try { java.time.LocalDate.parse(next); }
+        catch (DateTimeException exception) { check(findings, "032", "post-close-assignment", false, "Observed next business date malformed"); return; }
+        if (closed == null) return;
+        for (JsonNode transaction : transactions) {
+            if (!transaction.isObject()) {
+                check(findings, "032", "post-close-assignment", false, "Observed transaction must be an object");
+                continue;
+            }
+            OffsetDateTime time = observedOffsetTime(transaction, "performedAt", findings);
+            if (time == null) continue;
+            if (!time.toInstant().isAfter(closed.toInstant()))
+                review(findings, "032", "post-close-assignment", "Source says after close; equality or earlier transaction assignment is not inferred by this predicate");
+            else if (!transaction.has("assignedBusinessDate"))
+                review(findings, "032", "post-close-assignment", "Actual post-close business-date assignment required");
+            else check(findings, "032", "post-close-assignment", next.equals(text(transaction, "assignedBusinessDate")),
+                    "Source3738-3740: transactions after close are included in observed next business day's totals");
+        }
+    }
+
+    private static void distinctTotalsTransactions(JsonNode input, List<Finding> findings) {
+        JsonNode transactions = input.path("history").path("totals").get("distinctTransactions");
+        if (transactions == null) {
+            review(findings, "019", "distinct-transaction-sequences", "Source21458-21469 uniqueness requires observed distinct transaction cohort; no retry/duplicate host disposition is inferred");
+            return;
+        }
+        if (!transactions.isArray() || transactions.isEmpty()) {
+            check(findings, "019", "distinct-transaction-sequences", false, "Observed distinct totals transaction cohort must be a nonempty array");
+            return;
+        }
+        Set<String> seen = new java.util.HashSet<>();
+        boolean valid = true;
+        for (JsonNode transaction : transactions) {
+            String sequence = text(transaction.path("elements"), "86");
+            valid &= transaction.isObject() && "119".equals(text(transaction.path("elements"), "85"))
+                    && sequence != null && sequence.matches("(?!000000)[0-9]{6}");
+            if (sequence != null) valid &= seen.add(sequence);
+        }
+        check(findings, "019", "distinct-transaction-sequences", valid,
+                "Source86: each declared distinct transaction has unique observed sequence; retry attempts of one transaction are not a distinct cohort");
+    }
+
+    private static OffsetDateTime observedOffsetTime(JsonNode record, String field, List<Finding> findings) {
+        if (!record.has(field)) { review(findings, "032", "cutoff-time-" + field, "Observed offset timestamp required; source provides no default timezone"); return null; }
+        String value = text(record, field);
+        if (value != null) try { return OffsetDateTime.parse(value); } catch (DateTimeException exception) { }
+        check(findings, "032", "cutoff-time-" + field, false, "Observed timestamp must be valid ISO8601 text with an explicit offset");
+        return null;
+    }
+
+    private static void discountLoadHistory(JsonNode input, List<Finding> findings) {
+        JsonNode load = input.path("history").get("proprietaryLoad");
+        if (load == null) {
+            review(findings, "021", "discount-load-history", "Observed successful load and stored timestamp required; current metadata equality is not load evidence");
+            return;
+        }
+        if (!load.isObject() || load.has("loadSuccessful") && !load.path("loadSuccessful").isBoolean()
+                || load.has("currentStateComplete") && !load.path("currentStateComplete").isBoolean()) {
+            check(findings, "021", "discount-load-history", false, "Observed proprietary-load history and boolean controls required");
+            return;
+        }
+        for (String field : List.of("receivedTimestamp", "storedTimestampAfter", "currentTimestamp")) {
+            if (load.has(field) && !validTimestamp(text(load, field)))
+                check(findings, "021", "discount-history-" + field, false, "Observed discount timestamp must be real CCYYMMDDHHMM text");
+        }
+        if (!load.path("loadSuccessful").isBoolean() || !load.path("loadSuccessful").booleanValue())
+            review(findings, "021", "discount-load-history", "Source179 states new timestamp after successful load; no failed-load update policy is inferred");
+        else if (!load.has("receivedTimestamp") || !load.has("storedTimestampAfter"))
+            review(findings, "021", "discount-load-history", "Successful response and actually stored timestamp are both required");
+        else check(findings, "021", "discount-load-history", validTimestamp(text(load, "receivedTimestamp"))
+                && validTimestamp(text(load, "storedTimestampAfter")) && load.path("receivedTimestamp").equals(load.path("storedTimestampAfter")),
+                "Element179 successful load response timestamp is used by device after load (source24179-24190)");
+        if (!load.path("currentStateComplete").isBoolean() || !load.path("currentStateComplete").booleanValue() || !load.has("currentTimestamp"))
+            review(findings, "021", "discount-current-history", "Current observed device timestamp/completeness required; prior successful load is not assumed latest");
+        else check(findings, "021", "discount-current-history", validTimestamp(text(load, "currentTimestamp"))
+                && load.path("currentTimestamp").equals(input.path("elements").path("179")),
+                "Segment119 reports current device host discount timestamp; no cutoff/timezone/retry formula is inferred");
     }
 
     static List<Finding> validate(JsonNode input) {

@@ -200,6 +200,45 @@ public final class Chapter13ProcessingHistoryValidator {
     }
 
     private static void capk(JsonNode capk, List<Finding> findings) {
+        capk(capk, findings, false);
+    }
+
+    public static List<Finding> validateObservedCapk(JsonNode history) {
+        List<Finding> findings = new ArrayList<>();
+        if (history != null && history.isObject()) {
+            boolean malformed = false;
+            for (String field : List.of("approved", "transferComplete"))
+                if (history.has(field) && !history.path(field).isBoolean()) malformed = true;
+            for (String field : List.of("assembledFile", "storedFileBefore", "storedFileAfter", "responseData", "displayedError"))
+                if (history.has(field) && !history.path(field).isTextual()) malformed = true;
+            if (history.has("blocks")) {
+                if (!history.path("blocks").isArray()) malformed = true;
+                else for (JsonNode block : history.path("blocks")) {
+                    if (!block.isObject()) malformed = true;
+                    else {
+                        for (String field : List.of("data", "length"))
+                            if (block.has(field) && !block.path(field).isTextual()) malformed = true;
+                        String data = text(block, "data"), length = text(block, "length");
+                        if (length != null && !length.matches("[0-9]{3,4}")) malformed = true;
+                        else if (length != null && data != null && data.chars().allMatch(c -> c <= 127)
+                                && Integer.parseInt(length) != data.length()) malformed = true;
+                    }
+                }
+            }
+            if (malformed) add(findings, "194", "OBSERVATION-SHAPE", Status.INVALID,
+                    "Malformed observed CAPK values remain invalid alongside missing approval/completeness");
+        }
+        if (history == null || history.isMissingNode()) {
+            review(findings, "194", "LOAD-INPUT", "Captured CAPK history required");
+        } else if (history.isObject() && !history.has("approved")) {
+            review(findings, "194", "LOAD-INPUT", "Observed approval missing; no successful load inferred");
+            if (history.has("blocks") && !history.path("blocks").isArray())
+                add(findings, "194", "BLOCKS", Status.INVALID, "Observed blocks must be an array");
+        } else capk(history, findings, true);
+        return List.copyOf(findings);
+    }
+
+    private static void capk(JsonNode capk, List<Finding> findings, boolean actual) {
         if (!capk.isObject() || !capk.path("approved").isBoolean()) {
             add(findings, "194", "LOAD-INPUT", Status.INVALID, "CAPK load requires explicit boolean approval and an object history");
             return;
@@ -223,18 +262,31 @@ public final class Chapter13ProcessingHistoryValidator {
         StringBuilder joined = new StringBuilder();
         boolean valid = true;
         boolean encodingKnown = true;
+        boolean sourceWidthConflict = false;
+        boolean missingBlockEvidence = false;
         for (JsonNode block : capk.path("blocks")) {
             String data = text(block, "data"), length = text(block, "length");
-            if (data == null || length == null || !length.matches("[0-9]{3}")) {
+            if (actual && (data == null || length == null)) {
+                missingBlockEvidence = true;
+                if (block.has("data") && !block.path("data").isTextual() || block.has("length") && !block.path("length").isTextual())
+                    valid = false;
+                continue;
+            }
+            if (data == null || length == null || !length.matches(actual ? "[0-9]{3,4}" : "[0-9]{3}")) {
                 valid = false;
                 continue;
             }
             if (data.chars().anyMatch(c -> c > 127)) encodingKnown = false;
-            else if (data.length() != Integer.parseInt(length) || data.length() > 999) valid = false;
+            else if (data.length() != Integer.parseInt(length) || data.length() > (actual && length.length() == 4 ? 9999 : 999)) valid = false;
+            if (actual && length.length() == 4) sourceWidthConflict = true;
             joined.append(data);
         }
         if (!valid) {
             add(findings, "193", "BLOCK-LENGTHS", Status.INVALID, "Each observed CAPK block must have numeric N3 byte length matching its data, capped at 999");
+            return;
+        }
+        if (missingBlockEvidence) {
+            review(findings, "193", "BLOCK-LENGTHS", "Missing observed CAPK data/length; no empty block inferred");
             return;
         }
         if (!encodingKnown) {
@@ -242,6 +294,8 @@ public final class Chapter13ProcessingHistoryValidator {
             return;
         }
         add(findings, "193", "BLOCK-LENGTHS", Status.CHECKS_PASSED, "Measured ASCII block lengths agree");
+        if (sourceWidthConflict)
+            review(findings, "193", "BLOCK-LENGTH-SOURCE-CONFLICT", "11.9 response usesN4/9999 while Element193 usesN3/999; representation is unresolved, not malformed solely forN4");
         String assembled = text(capk, "assembledFile");
         String stored = text(capk, "storedFileAfter");
         if (assembled == null) review(findings, "194", "FILE-ASSEMBLY", "Observed assembled file required");
@@ -251,6 +305,19 @@ public final class Chapter13ProcessingHistoryValidator {
         else check(findings, "194", "FILE-REPLACEMENT", joined.length() <= 9999 && stored.equals(joined.toString()),
                 "Approved complete load replaces the entire old file, not an append or merge");
         review(findings, "194", "KEY-TRUST", "Structural replacement does not establish public-key authenticity, completeness or current validity");
+    }
+
+    public static List<Finding> validateObservedReceipt(JsonNode history) {
+        List<Finding> findings = new ArrayList<>();
+        if (history == null || history.isMissingNode()) {
+            review(findings, "170", "RETENTION", "Captured receipt retention/printing evidence required");
+            return List.copyOf(findings);
+        }
+        if (history.isObject()) for (String field : List.of("receivedLines", "retainedLines", "printedLines"))
+            if (history.has(field) && !retentionValue(history.path(field), true))
+                add(findings, "170", "OBSERVATION-SHAPE", Status.INVALID, "Malformed observed receipt lines");
+        retainedData(history, "170", "retainedLines", "receivedLines", "printedLines", findings);
+        return List.copyOf(findings);
     }
 
     private static void retainedData(JsonNode history, String element, String storedField, String receivedField, String printedField, List<Finding> findings) {
@@ -272,6 +339,31 @@ public final class Chapter13ProcessingHistoryValidator {
                         "Subsequent receipt text must use the retained source lines, preserving their order");
             }
         }
+    }
+
+    public static List<Finding> validateObservedSiteConfiguration(JsonNode history) {
+        List<Finding> findings = new ArrayList<>();
+        if (history == null || history.isMissingNode()) {
+            review(findings, "180", "FINAL-CHANGE", "Captured site business-day history required");
+            return List.copyOf(findings);
+        }
+        if (!history.isObject()) {
+            add(findings, "180", "FINAL-CHANGE", Status.INVALID, "Observed site history must be an object");
+            return List.copyOf(findings);
+        }
+        boolean missing = false;
+        for (String field : List.of("changes", "sentData", "businessDayComplete")) {
+            JsonNode value = history.get(field);
+            if (value == null) missing = true;
+            else if ("businessDayComplete".equals(field) ? !value.isBoolean() : !value.isArray()) {
+                add(findings, "180", "FINAL-CHANGE", Status.INVALID, "Malformed observed site field: " + field);
+            } else if (!"businessDayComplete".equals(field))
+                for (JsonNode item : value) if (!retentionValue(item, false))
+                    add(findings, "180", "FINAL-CHANGE", Status.INVALID, "Observed configuration must be source-bounded ASCII text");
+        }
+        if (missing) review(findings, "180", "FINAL-CHANGE", "Missing observed changes, sent-data or business-day completeness; no empty array inferred");
+        else if (findings.isEmpty()) siteConfiguration(history, findings);
+        return List.copyOf(findings);
     }
 
     private static void siteConfiguration(JsonNode history, List<Finding> findings) {

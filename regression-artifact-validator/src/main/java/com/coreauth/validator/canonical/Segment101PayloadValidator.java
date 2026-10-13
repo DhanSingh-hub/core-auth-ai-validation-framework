@@ -22,6 +22,36 @@ import java.util.regex.Pattern;
  * will tighten once SME input arrives.
  */
 public final class Segment101PayloadValidator {
+    public java.util.List<Chapter12SegmentPayloadValidator.Finding> validateActualTagContext(
+            JsonNode segment, JsonNode request, JsonNode standard, JsonNode evidence) {
+        var pass = Chapter12SegmentPayloadValidator.Status.CHECKS_PASSED;
+        var review = Chapter12SegmentPayloadValidator.Status.REVIEW_REQUIRED;
+        var invalid = Chapter12SegmentPayloadValidator.Status.INVALID;
+        boolean present = hasAnyFleetTag(segment);
+        JsonNode function = request.get("MessageType");
+        var completion = !present ? pass : function == null ? review
+                : function.isTextual() && "0220".equals(function.textValue()) ? pass : invalid;
+        JsonNode support = evidence.path("context").path("hostPrompts");
+        JsonNode terminal = standard.get("TerminalIdentifier");
+        var supported = pass;
+        if (present) {
+            if (support.isMissingNode()) supported = review;
+            else if (!support.isObject()) supported = invalid;
+            else if (support.has("supported") && !support.path("supported").isBoolean()
+                    || support.has("TerminalIdentifier") && !support.path("TerminalIdentifier").isTextual()
+                    || terminal != null && !terminal.isTextual()) supported = invalid;
+            else if (!support.has("supported") || !support.has("TerminalIdentifier") || terminal == null) supported = review;
+            else if (!support.path("supported").isBoolean() || !support.path("TerminalIdentifier").isTextual()
+                    || !terminal.isTextual() || !terminal.textValue().matches("[A-Za-z0-9]{1,22}")
+                    || !terminal.equals(support.path("TerminalIdentifier")) || !support.path("supported").booleanValue()) supported = invalid;
+        }
+        return java.util.List.of(
+                new Chapter12SegmentPayloadValidator.Finding("SEG101-R-020", "actual-fleet-tag-completion", completion,
+                        "Source11494-11519: populated tags only in observed Auth Completion0220; PromptCodeS alone does not prove actual message function"),
+                new Chapter12SegmentPayloadValidator.Finding("SEG101-R-021", "actual-fleet-host-prompts", supported,
+                        "Source11517-11519: populated tags require independently supplied Host Prompts support bound to actual Standard terminal; configuration authenticity remains external"));
+    }
+
     private static final String SOURCE = "Segment101Payload";
 
     private static final Pattern SEGMENT_LENGTH_PATTERN = Pattern.compile("^[0-9]{3}$");
