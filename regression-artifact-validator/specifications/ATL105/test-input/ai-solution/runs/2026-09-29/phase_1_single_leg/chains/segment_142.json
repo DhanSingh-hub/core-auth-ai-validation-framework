@@ -1,0 +1,71 @@
+{
+  "segment_number": "142",
+  "segment_name": "Moneris Batch Close Segment Format (Response)",
+  "requirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:0839",
+    "statement": "In Moneris Batch Close Segment Format (Response) (Data Segment No. 142), field 3 (Terminal Identifier) is required and must be present.",
+    "source_rule_id": "ENT-FIELD-142-3",
+    "source_page": 281,
+    "derivation_method": "field_constraint",
+    "confidence_score": 0.95,
+    "related_entity_ids": [
+      "ENT-ELEM-102",
+      "ENT-SEG-142"
+    ],
+    "category": "Field",
+    "requirement_type": "Field Validation",
+    "flags": [],
+    "roc": "R",
+    "segment_number": "142",
+    "condition_trigger": "Moneris Batch Close Segment Format (Response) (Data Segment No. 142) is present in the request",
+    "expected_behavior": "is required and must be present",
+    "evidence_ref": {
+      "source_id": "SRC-ATL105-PDF-001",
+      "entity_id": "ENT-FIELD-142-3",
+      "page": 281
+    },
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "segment_ids": [
+      "ENT-SEG-142"
+    ],
+    "segment_assignment_method": "declared",
+    "segment_attribution": "unique",
+    "confidence_pct": 95,
+    "confidence_band": "HIGH",
+    "confidence_factors": [
+      "prior_confidence_score=0.95"
+    ]
+  },
+  "gap": {
+    "segment_number": "142",
+    "segment_name": "Moneris Batch Close Segment Format (Response)",
+    "field_count": 9,
+    "field_no": "3",
+    "field_name": "Terminal Identifier",
+    "roc": "R",
+    "requirement_id": "REQ-SRC-ATL105-PDF-001:0839",
+    "scenario_id": "SC-0036",
+    "resolver_flags": [
+      "RELATED_ENTITY_FALLBACK: no scenario parameters (business-rule scenario); resolved via related_entity_ids union, not a discriminating match",
+      "TRUNCATED_FALLBACK_TRANSACTIONS: 14 matched, kept first 6 (max_fallback_transactions_per_scenario)"
+    ],
+    "resolved_transaction_types": [
+      "CA Public Key File Load Request",
+      "ECA/TeleCheck Service Transaction Request",
+      "EMV Financial Transaction Request",
+      "Electronic Mail Request",
+      "FSA/HRA Transaction Request",
+      "Financial Transaction"
+    ],
+    "status": "GAP_RESOLVER_FALLBACK_UNRELIABLE",
+    "gap_reason": "Every transaction TransactionResolver proposed was reached only via the ubiquitous-element union fallback, and NONE of them actually list segment 142 in their own message_templates segment list — composing against any of them would mislabel a different segment's fields as this segment's example, so no test case is produced.",
+    "candidate_transactions_rejected_as_spurious": [
+      "CA Public Key File Load Request",
+      "ECA/TeleCheck Service Transaction Request",
+      "EMV Financial Transaction Request",
+      "Electronic Mail Request",
+      "FSA/HRA Transaction Request",
+      "Financial Transaction"
+    ]
+  }
+}

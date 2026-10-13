@@ -1,0 +1,70 @@
+{
+  "segment_number": "DL7",
+  "segment_name": "Supplemental Terminal Data Segment",
+  "requirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:0810",
+    "statement": "In Supplemental Terminal Data Segment (Data Segment No. DL7), field 1 (Data Type Indicator) is required and must be present.",
+    "source_rule_id": "ENT-FIELD-DL7-1",
+    "source_page": 332,
+    "derivation_method": "field_constraint",
+    "confidence_score": 0.95,
+    "related_entity_ids": [
+      "ENT-ELEM-24",
+      "ENT-SEG-DL7"
+    ],
+    "category": "Field",
+    "requirement_type": "Field Validation",
+    "flags": [],
+    "roc": "R",
+    "segment_number": "DL7",
+    "condition_trigger": "Supplemental Terminal Data Segment (Data Segment No. DL7) is present in the request",
+    "expected_behavior": "is required and must be present",
+    "evidence_ref": {
+      "source_id": "SRC-ATL105-PDF-001",
+      "entity_id": "ENT-FIELD-DL7-1",
+      "page": 332
+    },
+    "scope_name": "phase_1_single_leg (one representative structural requirement per segment)",
+    "segment_ids": [
+      "ENT-SEG-DL7"
+    ],
+    "segment_assignment_method": "declared",
+    "segment_attribution": "unique",
+    "confidence_pct": 95,
+    "confidence_band": "HIGH",
+    "confidence_factors": [
+      "prior_confidence_score=0.95"
+    ]
+  },
+  "gap": {
+    "segment_number": "DL7",
+    "segment_name": "Supplemental Terminal Data Segment",
+    "field_count": 3,
+    "field_no": "1",
+    "field_name": "Data Type Indicator",
+    "roc": "R",
+    "requirement_id": "REQ-SRC-ATL105-PDF-001:0810",
+    "scenario_id": "SC-0007",
+    "resolver_flags": [
+      "RELATED_ENTITY_FALLBACK: no scenario parameters (business-rule scenario); resolved via related_entity_ids union, not a discriminating match"
+    ],
+    "resolved_transaction_types": [
+      "Date & Time Load Response",
+      "Phone Load Response",
+      "Software Load Phone Response",
+      "Software Load Response",
+      "Table Load Response",
+      "TransArmor Key Load"
+    ],
+    "status": "GAP_RESOLVER_FALLBACK_UNRELIABLE",
+    "gap_reason": "Every transaction TransactionResolver proposed was reached only via the ubiquitous-element union fallback, and NONE of them actually list segment DL7 in their own message_templates segment list — composing against any of them would mislabel a different segment's fields as this segment's example, so no test case is produced.",
+    "candidate_transactions_rejected_as_spurious": [
+      "Date & Time Load Response",
+      "Phone Load Response",
+      "Software Load Phone Response",
+      "Software Load Response",
+      "Table Load Response",
+      "TransArmor Key Load"
+    ]
+  }
+}
