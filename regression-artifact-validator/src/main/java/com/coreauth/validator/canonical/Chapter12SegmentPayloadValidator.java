@@ -20,9 +20,259 @@ public final class Chapter12SegmentPayloadValidator {
     public record Finding(String ruleId, String scope, Status status, String reason) { }
     public record Result(Status status, List<Finding> findings, List<String> unassessedCatalogRules) { }
     public static final Set<String> SEGMENTS = Set.of("103", "115", "116", "119", "123", "130", "131", "132", "134", "135", "136",
-            "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156", "DL8");
+            "139", "140", "141", "142", "143", "145", "146", "148", "149", "150", "151", "152", "153", "155", "156", "DL1", "DL8");
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final char FS = '\u001c';
+
+    public Result validateDownload(JsonNode input, com.coreauth.validator.validation.Chapter13DataElementValidator oracle) {
+        if (input == null || !input.isObject() || !input.path("elements").isObject())
+            return new Result(Status.INVALID, List.of(new Finding("CH12-ACTUAL-INPUT", "download-input", Status.INVALID, "Observed download object and numbered fields required")), List.of());
+        String id = input.path("segment").asText();
+        List<Finding> findings = new ArrayList<>();
+        JsonNode fields = input.path("elements"), context = input.path("context");
+        if (input.has("context") && !context.isObject()) check(findings, "CH12-ACTUAL-EVIDENCE", "download-context", false, "Context must be an object");
+        String marker = Map.of("DL2", "!", "DL3", ":", "DL4", "@", "DL5", "$", "DL6", "\\", "DL7", "^").get(id);
+        if (marker == null) throw new IllegalArgumentException("Unsupported download block " + id);
+        String rule = "SEG" + id + "-R-";
+        check(findings, rule + ("DL4".equals(id) || "DL5".equals(id) || "DL6".equals(id) ? "002" : "001"),
+                "download-marker", marker.equals(text(fields, "24")), "Source download marker, not numbered SegmentType");
+        elementOracle(input, oracle, findings, "download-element");
+        List<String> order = switch (id) {
+            case "DL2" -> List.of("24", "28");
+            case "DL3" -> List.of("24", "25", "21", "22", "23", "65", "34");
+            case "DL4" -> List.of("24", "57", "95", "91", "92", "93", "94", "34");
+            case "DL5" -> List.of("24", "57", "95", "114", "92", "93", "94", "34");
+            case "DL6" -> List.of("24", "startTime", "endTime", "34");
+            case "DL7" -> List.of("24", "84", "232");
+            default -> throw new IllegalArgumentException(id);
+        };
+        StringBuilder expected = new StringBuilder();
+        boolean complete = true;
+        for (String field : order) {
+            if ("DL2".equals(id) && "28".equals(field)) {
+                complete &= requiredDownload(fields, field, rule + "002", findings);
+                check(findings, rule + "002", "dial-type", "1".equals(text(fields, field)), "Transaction dial type1");
+            } else complete &= requiredDownload(fields, field, rule + ("DL3".equals(id) ? "002" : "003"), findings);
+            if (text(fields, field) != null) expected.append(text(fields, field));
+        }
+        if ("DL2".equals(id)) {
+            for (String name : List.of("primary", "secondary")) {
+                JsonNode dial = input.path("dialStrings").path(name);
+                if (!dial.isObject()) {
+                    review(findings, rule + ("primary".equals(name) ? "002" : "003"), "dial-" + name, "Observed primary/secondary dial fields required");
+                    complete = false;
+                    continue;
+                }
+                if (context.has(name) && !context.path(name).isObject())
+                    check(findings, rule + "005", "access-context-" + name, false, "Observed per-number access context must be an object");
+                com.fasterxml.jackson.databind.node.ObjectNode dialObservation = input.deepCopy();
+                dialObservation.set("elements", dial.deepCopy());
+                dialObservation.remove("context");
+                if (context.path(name).isObject()) dialObservation.set("context", context.path(name).deepCopy());
+                elementOracle(dialObservation, oracle, findings, "dial-element-" + name);
+                for (String field : List.of("82", "1", "66", "75", "27")) {
+                    if (!Set.of("1", "66").contains(field)) complete &= requiredDownload(dial, field, rule + "002", findings);
+                    if (text(dial, field) != null) expected.append(text(dial, field));
+                }
+                check(findings, rule + ("primary".equals(name) ? "002" : "003"), "dial-terminator-" + name,
+                        ("primary".equals(name) ? "A" : "F").equals(text(dial, "27")), "Source primaryA / secondaryF terminators");
+                if (!context.path(name).has("accessCodeNeeded")) review(findings, rule + "005", "access-context-" + name, "Observed need for conditional access/pause required");
+                else if (context.path(name).path("accessCodeNeeded").isBoolean() && context.path(name).path("accessCodeNeeded").booleanValue())
+                    complete &= requiredDownload(dial, "1", rule + "005", findings);
+            }
+            complete &= requiredDownload(fields, "34", rule + "001", findings);
+            expected.append(value(fields, "34"));
+            JsonNode history = context.path("dialHistory");
+            if (context.has("dialHistory")) {
+                if (text(input.path("dialStrings").path("primary"), "75") == null || text(input.path("dialStrings").path("secondary"), "75") == null)
+                    review(findings, rule + "003", "dial-history-binding", "Missing actual phone identity cannot be supplied by history");
+                else check(findings, rule + "003", "dial-history-binding", history.isObject()
+                        && java.util.Objects.equals(text(history, "primary"), text(input.path("dialStrings").path("primary"), "75"))
+                        && java.util.Objects.equals(text(history, "secondary"), text(input.path("dialStrings").path("secondary"), "75")),
+                        "Dial history must bind to actual observed phone fields; allowed attempts are not inferred from missing protocol");
+            } else review(findings, rule + "003", "dial-history-binding", "Matched observed dialing history required");
+        }
+        if ("DL6".equals(id)) {
+            for (String time : List.of("startTime", "endTime")) {
+                var observation = input.deepCopy();
+                var timeFields = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode();
+                if (fields.has(time)) timeFields.set("166", fields.path(time).deepCopy());
+                ((com.fasterxml.jackson.databind.node.ObjectNode) observation).set("elements", timeFields);
+                elementOracle(observation, oracle, findings, "store-forward-" + time);
+            }
+            storeForwardHistory(input, fields, findings);
+            JsonNode cards = context.get("merchantCardTypes");
+            if (cards == null) review(findings, rule + "001", "merchant-card173", "One actual DL1 card inventory required");
+            else {
+                boolean valid = cards.isArray(), present = false;
+                for (JsonNode card : cards) { valid &= card.isTextual(); present |= card.isTextual() && "173".equals(card.textValue()); }
+                check(findings, rule + "001", "merchant-card173", valid && present, "DL6 is only sent with actual merchant Card Type173");
+            }
+        }
+        if ("DL3".equals(id)) downloadedClock(input, fields, findings);
+        if (!"DL7".equals(id)) check(findings, rule + ("DL4".equals(id) || "DL5".equals(id) || "DL6".equals(id) ? "002" : "001"),
+                "download-end", "~".equals(text(fields, "34")), "Observed download ends with~");
+        String wireRule = rule + ("DL7".equals(id) ? "002" : "004");
+        if (!input.has("serializedSegment") || !complete) review(findings, wireRule, "download-wire", "Complete actual fields and observed raw wire required; no absent field or padding manufactured");
+        else {
+            String raw = text(input, "serializedSegment");
+            check(findings, wireRule, "download-wire", raw != null && expected.toString().equals(raw), "Source fields concatenate in table order, with no Field Separators");
+            int cap = Map.of("DL2", 69, "DL3", 23, "DL4", 52, "DL5", 64, "DL6", 9, "DL7", 104).get(id);
+            if ("DL6".equals(id) && raw != null && raw.length() == 10)
+                review(findings, rule + "002", "download-cap", "12.47 cap9 conflicts with required1+4+4+1=10; no chosen interpretation");
+            else check(findings, rule + ("DL4".equals(id) || "DL5".equals(id) || "DL6".equals(id) ? "002" : "001"),
+                    "download-cap", raw != null && raw.length() <= cap, "Measured source block cap");
+            if ("DL7".equals(id)) review(findings, rule + "002", "download-length-convention",
+                    "Exclusive DataType length wording and AppendixW framing do not resolve own N3 contribution; no formula selected");
+        }
+        if ("DL7".equals(id)) {
+            if (fields.has("84")) pattern(fields, "84", "[0-9]{3}", rule + "006", findings);
+            String data = text(fields, "232");
+            if (data != null) for (var assessment : new AppendixWDownloadDataOracle().assessDownloadData(data))
+                findings.add(new Finding(assessment.businessRequirementId(), assessment.assertionScope(),
+                        assessment.status() == AppendixWDownloadDataOracle.Status.PASS ? Status.CHECKS_PASSED
+                                : assessment.status() == AppendixWDownloadDataOracle.Status.FAIL ? Status.INVALID : Status.REVIEW_REQUIRED, assessment.reason()));
+        }
+        Set<String> families = switch (id) {
+            case "DL2" -> Set.of("Table Load Response", "Phone Load Response");
+            case "DL3" -> Set.of("Table Load Response", "Date and Time Load Response");
+            case "DL4", "DL5" -> Set.of("Software Load Response");
+            default -> Set.of("Table Load Response");
+        };
+        check(findings, rule + ("DL6".equals(id) ? "001" : "DL7".equals(id) ? "001" : "DL2".equals(id) ? "008" : "DL3".equals(id) ? "007" : "006"),
+                "download-family", families.contains(input.path("messageFamily").asText()), "Source response family");
+        if (Set.of("DL4", "DL5").contains(id)) {
+            if (!context.has("vendorOwnApplication")) review(findings, rule + "001", "application-owner", "Observed application ownership required");
+            else check(findings, rule + "001", "application-owner", context.path("vendorOwnApplication").isBoolean()
+                    && !context.path("vendorOwnApplication").booleanValue(), "Vendors supporting own applications do not use this block");
+            softwareDownloadHistory(input, fields, findings);
+        }
+        review(findings, rule + "001", "download-boundary", "Observed block checks do not authenticate host/current configuration or entire response transport");
+        return new Result(findings.stream().anyMatch(f -> f.status() == Status.INVALID) ? Status.INVALID : Status.REVIEW_REQUIRED, List.copyOf(findings), List.of());
+    }
+
+    private static void downloadedClock(JsonNode input, JsonNode fields, List<Finding> findings) {
+        JsonNode clock = input.path("context").get("currentClock");
+        String rule = "SEGDL3-R-002", scope = "downloaded-clock";
+        if (clock == null) { review(findings, rule, scope, "Observed host instant and merchant zone required for CurrentDate/Time/DayOfWeek; no timezone inferred"); return; }
+        if (!clock.isObject()) { check(findings, rule, scope, false, "Clock evidence must be an object"); return; }
+        if (!clock.has("hostAt") || !clock.has("merchantZone") || text(fields, "21") == null || text(fields, "22") == null || text(fields, "25") == null) {
+            review(findings, rule, scope, "Missing actual clock fields or independently supplied host instant/merchant zone");
+            return;
+        }
+        if (!clock.path("hostAt").isTextual() || !clock.path("merchantZone").isTextual()) {
+            check(findings, rule, scope, false, "Clock instant and zone must be observed text"); return;
+        }
+        boolean matches;
+        try {
+            var local = java.time.OffsetDateTime.parse(clock.path("hostAt").textValue()).toInstant()
+                    .atZone(java.time.ZoneId.of(clock.path("merchantZone").textValue()));
+            if (text(fields, "22").startsWith("24") || text(fields, "22").endsWith("60")) {
+                review(findings, rule, scope, "Source01-24/01-60 endpoint convention cannot be converted to ISO local time without clarification"); return;
+            }
+            matches = text(fields, "21").equals(local.format(java.time.format.DateTimeFormatter.ofPattern("MMddyy")))
+                    && text(fields, "22").equals(local.format(java.time.format.DateTimeFormatter.ofPattern("HHmm")))
+                    && text(fields, "25").equals(Integer.toString(local.getDayOfWeek().getValue() % 7));
+        } catch (java.time.DateTimeException exception) { matches = false; }
+        check(findings, rule, scope, matches, "Elements21/22/25,19992-20108: current host clock adjusted for observed merchant zone/DST and day/date; zone assignment/clock authenticity external");
+    }
+
+    private static void softwareDownloadHistory(JsonNode input, JsonNode fields, List<Finding> findings) {
+        String id = input.path("segment").asText(), rule = "SEG" + id + "-R-007";
+        JsonNode history = input.path("history").get("softwareLoad");
+        if (history == null) { review(findings, rule, "software-load-history", "Observed matching software-load session required"); return; }
+        if (!history.isObject()) { check(findings, rule, "software-load-history", false, "Software-load history must be an object"); return; }
+        JsonNode stored = history.get("storedElements");
+        if (stored == null) review(findings, rule, "software-stored-data", "Observed stored state required; never assumed from received block");
+        else {
+            boolean same = stored.isObject();
+            for (String field : List.of("57", "95", "DL4".equals(id) ? "91" : "114", "92", "93"))
+                same &= fields.path(field).isTextual() && stored.path(field).isTextual() && fields.path(field).equals(stored.path(field));
+            check(findings, rule, "software-stored-data", same, "10.10 step5: observed stored version/record/endpoint/date/time match actual load fields");
+        }
+        JsonNode attempts = history.get("attempts");
+        if (attempts == null) { review(findings, rule, "software-attempts", "Observed application-load attempt cohort required"); return; }
+        if (!attempts.isArray() || attempts.isEmpty()) { check(findings, rule, "software-attempts", false, "Attempts must be a nonempty observed array"); return; }
+        check(findings, "DL4".equals(id) ? "SEGDL4-R-008" : rule, "software-attempt-limit", attempts.size() <= 3, "10.10: maximum three automated full-load attempts");
+        String endpoint = text(fields, "DL4".equals(id) ? "91" : "114");
+        boolean succeeded = false;
+        for (int index = 0; index < attempts.size(); index++) {
+            JsonNode attempt = attempts.get(index);
+            String scope = "software-attempt-" + index;
+            if (!attempt.isObject()) { check(findings, rule, scope, false, "Observed attempt must be an object"); continue; }
+            if (!attempt.has("succeeded") || !attempt.has("endpoint") || !attempt.has("fullApplication"))
+                review(findings, rule, scope, "Observed success, actual endpoint and full-application flag required");
+            else check(findings, rule, scope, attempt.path("succeeded").isBoolean() && attempt.path("fullApplication").isBoolean()
+                    && attempt.path("fullApplication").booleanValue() && endpoint != null && endpoint.equals(text(attempt, "endpoint")),
+                    "10.10 step6: request full application at the actually loaded endpoint");
+            if (index == 0) {
+                if (!attempt.has("requestedAt")) review(findings, rule, "software-scheduled-attempt", "Observed first request time required");
+                else {
+                    String at = text(attempt, "requestedAt");
+                    boolean match = false;
+                    try {
+                        if (at != null) {
+                            var observed = java.time.OffsetDateTime.parse(at);
+                            match = java.util.Objects.equals(text(fields, "92"), observed.format(java.time.format.DateTimeFormatter.ofPattern("MMddyy")))
+                                    && java.util.Objects.equals(text(fields, "93"), observed.format(java.time.format.DateTimeFormatter.ofPattern("HHmm")));
+                        }
+                    } catch (java.time.DateTimeException exception) { match = false; }
+                    check(findings, rule, "software-scheduled-attempt", match, "Observed local offset-qualified request date/time match supplied schedule; no timezone inferred");
+                }
+            }
+            if (attempt.path("succeeded").isBoolean() && !attempt.path("succeeded").booleanValue()) {
+                if (!attempt.has("declinePrinted")) review(findings, "DL4".equals(id) ? "SEGDL4-R-008" : rule, scope + "-decline", "Observed printed decline required after unsuccessful request");
+                else check(findings, "DL4".equals(id) ? "SEGDL4-R-008" : rule, scope + "-decline",
+                        attempt.path("declinePrinted").isBoolean() && attempt.path("declinePrinted").booleanValue(), "10.10: unsuccessful request prints decline");
+            }
+            succeeded |= attempt.path("succeeded").isBoolean() && attempt.path("succeeded").booleanValue();
+        }
+        if (succeeded) {
+            if (!history.has("tableLoadRequestedAfterCompletion")) review(findings, rule, "software-followup-table-load", "Observed subsequent Table Load request required");
+            else check(findings, rule, "software-followup-table-load", history.path("tableLoadRequestedAfterCompletion").isBoolean()
+                    && history.path("tableLoadRequestedAfterCompletion").booleanValue(), "10.10 step7: completed application load followed by Table Load request");
+        }
+        review(findings, rule, "software-session-boundary", "Supplied cohort does not prove exhaustive attempts, profile bit authenticity or all transport event order");
+    }
+
+    private static boolean requiredDownload(JsonNode fields, String field, String rule, List<Finding> findings) {
+        if (!fields.has(field)) { review(findings, rule, "download-required-" + field, "Required actual field missing; no metadata fill"); return false; }
+        boolean valid = fields.path(field).isTextual() && !fields.path(field).textValue().isEmpty();
+        check(findings, rule, "download-required-" + field, valid, "Required field is observed nonempty text");
+        return valid;
+    }
+
+    private static void elementOracle(JsonNode input, com.coreauth.validator.validation.Chapter13DataElementValidator oracle,
+            List<Finding> findings, String scope) {
+        var observation = input.deepCopy();
+        var object = (com.fasterxml.jackson.databind.node.ObjectNode) observation;
+        object.put("completeness", "PARTIAL");
+        if (input.path("context").isObject()) object.set("qualifiers", input.path("context").deepCopy());
+        for (var finding : oracle.validate(observation).findings())
+            findings.add(new Finding(finding.ruleId(), scope, Status.valueOf(finding.status().name()), finding.reason()));
+    }
+
+    private static void storeForwardHistory(JsonNode input, JsonNode fields, List<Finding> findings) {
+        JsonNode observations = input.path("context").get("storeForwardObservations");
+        String rule = "SEGDL6-R-007";
+        if (observations == null) { review(findings, rule, "store-forward-window", "Observed local-clock blocked/unblocked events required"); return; }
+        if (!observations.isArray() || observations.isEmpty()) { check(findings, rule, "store-forward-window", false, "Observed events must be a nonempty array"); return; }
+        String start = text(fields, "startTime"), end = text(fields, "endTime");
+        if (start == null || end == null || !start.matches("[0-9]{4}") || !end.matches("[0-9]{4}")
+                || start.compareTo(end) >= 0) { review(findings, rule, "store-forward-window", "Missing fields, across-midnight or equal endpoints need source-owner convention; no window formula invented"); return; }
+        for (int i = 0; i < observations.size(); i++) {
+            JsonNode event = observations.get(i);
+            String local = text(event, "localTime");
+            String scope = "store-forward-event-" + i;
+            if (local == null || !event.has("blocked")) { review(findings, rule, scope, "Observed local HHMM and blocking flag required"); continue; }
+            if (!local.matches("(?:[01][0-9]|2[0-3])[0-5][0-9]") || !event.path("blocked").isBoolean()) {
+                check(findings, rule, scope, false, "Observed local HHMM and boolean blocking required"); continue;
+            }
+            if (local.equals(start) || local.equals(end)) review(findings, rule, scope, "Exact window endpoint inclusion is unspecified");
+            else check(findings, rule, scope, event.path("blocked").booleanValue() == (local.compareTo(start) > 0 && local.compareTo(end) < 0),
+                    "Appendix E173 and12.47: observed processing blocked within the supplied same-day daily interval; no timezone inferred");
+        }
+    }
 
     public Result validate(JsonNode observation) throws IOException {
         List<Finding> findings = new ArrayList<>();
@@ -60,6 +310,7 @@ public final class Chapter12SegmentPayloadValidator {
             case "153" -> networkTokens(observation, fields, findings);
             case "156" -> ev(observation, fields, findings);
             case "DL8" -> emvFloorLimits(observation, fields, findings);
+            case "DL1" -> merchantData(observation, fields, findings);
             default -> throw new IllegalStateException("Unsupported segment " + id);
         }
         Set<String> referenced = new LinkedHashSet<>();
@@ -298,6 +549,7 @@ public final class Chapter12SegmentPayloadValidator {
                         "Element 188 EMV Card Sequence Number is 000-099 right-aligned/zero-padded when EMV Tag 5F34 is supplied, "
                                 + "or exactly three spaces when the card does not supply EMV Tag 5F34");
             }
+            cardSequenceFromChip(fields, findings);
         } else pattern(fields, "187", "[0-9]{25}", "SEG131-R-007", findings);
         AppendixREmvChipDataOracle oracle = new AppendixREmvChipDataOracle();
         for (var assessment : oracle.assess(text(fields, "189"), text(fields, "190"),
@@ -403,9 +655,36 @@ public final class Chapter12SegmentPayloadValidator {
         }
         review(findings, request ? "SEG130-R-004" : "SEG131-R-005", "source-conflict",
                 "Chapter 11 and Chapters 12/13 publish different maxima; this check uses Chapter 12, not conflict approval");
+        findings.addAll(Chapter12ObservedSessionValidator.emv(input));
     }
 
-    private static void capk(JsonNode input, JsonNode fields, List<Finding> findings) {
+    private static void cardSequenceFromChip(JsonNode fields, List<Finding> findings) {
+        String chip = text(fields, "190"), sequence = text(fields, "188");
+        var decoded = new AppendixREmvChipDataOracle().decode(chip);
+        if (!decoded.wellFormed()) {
+            review(findings, "SEG130-R-006", "chip-card-sequence", "Malformed chip data cannot establish the card sequence; TLV findings assess the observed defect");
+            return;
+        }
+        var sequences = decoded.entries().stream().filter(e -> e.tag().equals("5F34")).toList();
+        if (sequences.size() > 1) {
+            review(findings, "SEG130-R-006", "chip-card-sequence", "Repeated card sequence tags require matched last-interface evidence; no first-value choice is inferred");
+            return;
+        }
+        if (sequence == null || sequence.isEmpty()) {
+            review(findings, "SEG130-R-006", "chip-card-sequence", "Observed Element 188 is required to compare with supplied chip data");
+            return;
+        }
+        if (sequences.isEmpty()) check(findings, "SEG130-R-006", "chip-card-sequence", sequence.equals("   "),
+                "Element 188 is exactly three spaces when supplied chip data has no Tag 5F34 (Element 188 source definition)");
+        else {
+            var tag = sequences.getFirst();
+            check(findings, "SEG130-R-006", "chip-card-sequence", tag.length() == 1
+                    && tag.valueHex().matches("[0-9]{2}") && sequence.equals("0" + tag.valueHex()),
+                    "Element 188 is the chip-supplied 000-099 sequence, right aligned and zero padded; this does not assert amount/currency formulas");
+        }
+    }
+
+    private static void capk(JsonNode input, JsonNode fields, List<Finding> findings) throws IOException {
         header(input, fields, 3, 77, "002", "003", findings);
         String length84 = text(fields, "84");
         check(findings, "SEG132-R-004", "length-cap-77",
@@ -425,6 +704,13 @@ public final class Chapter12SegmentPayloadValidator {
         pattern(fields, "11", "[0-9]{3}", "SEG132-R-010", findings);
         review(findings, "SEG132-R-001", "placement", "Companion/placement conflict remains open");
         review(findings, "SEG132-R-011", "wire", "Source does not unambiguously describe all remaining separators");
+        if (input.has("history") && !input.path("history").isObject()) {
+            check(findings, "SEG132-R-009", "capk-history-shape", false, "Observed CAPK history must be an object");
+        } else if (input.path("history").has("capk")) {
+            for (var finding : Chapter13ProcessingHistoryValidator.validateObservedCapk(input.path("history").path("capk")))
+                findings.add(new Finding(finding.ruleId(), "capk-processing-history", Status.valueOf(finding.status().name()), finding.reason()));
+            findings.addAll(Chapter12LoadLifecycleValidator.capk(input));
+        } else review(findings, "SEG132-R-009", "capk-processing-history", "Observed load transfer/file history required; request field shape does not prove replacement");
     }
 
     private static void attributes(JsonNode input, JsonNode fields, List<Finding> findings) {
@@ -517,6 +803,58 @@ public final class Chapter12SegmentPayloadValidator {
                 "This observation checks field values, not all separators, padding or batch-close encoding");
     }
 
+    private static void merchantData(JsonNode input, JsonNode fields, List<Finding> findings) throws IOException {
+        com.fasterxml.jackson.databind.node.ObjectNode merchantObservation = input.deepCopy();
+        merchantObservation.put("completeness", "PARTIAL");
+        for (var finding : new com.coreauth.validator.validation.Chapter13DataElementValidator(Atl105Paths.root()).validate(merchantObservation).findings())
+            findings.add(new Finding(finding.ruleId(), "merchant-element", Status.valueOf(finding.status().name()), finding.reason()));
+        check(findings, "SEGDL1-R-002", "markers", "#".equals(text(fields, "24")) && "~".equals(text(fields, "34")),
+                "Merchant block uses # and ~, not numbered SegmentType/SegmentLength fields");
+        for (var field : Map.of("53", 24, "98", 16, "3", 24, "4", 21, "54", 13).entrySet())
+            length(fields, field.getKey(), 1, field.getValue(), "SEGDL1-R-003", findings);
+        pattern(fields, "59", "0[1-9]|[1-9][0-9]", "SEGDL1-R-004", findings);
+        JsonNode cards = input.path("cardTypes");
+        if (!cards.isArray()) {
+            check(findings, "SEGDL1-R-004", "card-types", false, "Observed repeated Card Types array required");
+            return;
+        }
+        check(findings, "SEGDL1-R-004", "count", text(fields, "59") != null && text(fields, "59").matches("0[1-9]|[1-9][0-9]")
+                && Integer.parseInt(text(fields, "59")) == cards.size(), "01-99 count equals observed repetitions");
+        StringBuilder wire = new StringBuilder(value(fields, "24"));
+        for (String field : List.of("53", "98", "3", "4", "54", "59")) wire.append(value(fields, field));
+        boolean storeForward = false;
+        for (JsonNode card : cards) {
+            check(findings, "SEGDL1-R-009", "card-type", card.isTextual()
+                    && AppendixETableLoadCardTypeCodes.supportedCodes().contains(card.textValue()), "Appendix E table-load code, not Prompt Code");
+            if (card.isTextual()) wire.append(card.textValue());
+            storeForward |= "173".equals(card.asText());
+        }
+        wire.append(value(fields, "34"));
+        if (input.has("serializedSegment")) {
+            String observed = text(input, "serializedSegment");
+            check(findings, "SEGDL1-R-006", "merchant-wire", observed != null && observed.equals(wire.toString())
+                    && observed.chars().allMatch(c -> c >= 32 && c <= 126), "Observed fields concatenate without Field Separators or manufactured padding");
+            check(findings, "SEGDL1-R-001", "merchant-wire-cap", observed != null && observed.length() <= 399, "Observed merchant block <=399 characters");
+        } else review(findings, "SEGDL1-R-006", "merchant-wire", "Actual merchant block required; supplied field declarations do not prove wire");
+        review(findings, "SEGDL1-R-003", "padding", "Fixed/up-to source field padding remains unresolved; no arbitrary padding is introduced");
+        if (input.has("messageFamily")) check(findings, "SEGDL1-R-007", "family", "Table Load Response".equals(text(input, "messageFamily")), "Merchant block is host Table Load Response only");
+        else review(findings, "SEGDL1-R-007", "family", "Observed Table Load Response family required");
+        JsonNode context = input.path("context");
+        if (storeForward) {
+            if (!context.path("segmentsPresent").isArray() || !context.path("segmentInventoryComplete").isBoolean()
+                    || !context.path("segmentInventoryComplete").booleanValue())
+                review(findings, "SEGDL1-R-005", "store-forward-companion", "Complete observed response block inventory required for173");
+            else {
+                boolean dl6 = false;
+                for (JsonNode segment : context.path("segmentsPresent")) dl6 |= segment.isTextual() && "DL6".equals(segment.textValue());
+                check(findings, "SEGDL1-R-005", "store-forward-companion", dl6, "Observed173 requires Store and Forward blockDL6");
+            }
+        }
+        if (!context.has("merchantLoadFlag")) review(findings, "SEGDL1-R-008", "merchant-load-flag", "Observed merchant-profile load flag required");
+        else check(findings, "SEGDL1-R-008", "merchant-load-flag", "TABL".equals(text(context, "merchantLoadFlag")), "Merchant block requires TABL load flag");
+        review(findings, "SEGDL1-R-012", "block-wire", "Individual block equality does not prove entire response block order/transport delimiters");
+    }
+
     private static void taxProducts(JsonNode input, JsonNode fields, List<Finding> findings) {
         header(input, fields, 3, 999, "003", "003", findings);
         JsonNode products = input.path("taxProducts");
@@ -537,12 +875,21 @@ public final class Chapter12SegmentPayloadValidator {
             check(findings, "SEG143-R-001", "companion-order", same, "Every tax product has corresponding same-order Segment 102 product");
         }
         StringBuilder body = new StringBuilder();
+        boolean actualAuthority = input.path("actualFieldAuthority").asBoolean(false);
+        boolean taxBodyKnown = true;
+        Status taxCount = Status.CHECKS_PASSED;
         for (JsonNode product : products) {
             pattern(product, "productCode", "[0-9]{3}", "SEG143-R-005", findings);
             body.append(value(product, "productCode"));
             JsonNode taxes = product.path("taxes");
+            if (actualAuthority && taxes.isMissingNode()) {
+                taxCount = Chapter12ObservedSessionValidator.combine(taxCount, Status.REVIEW_REQUIRED);
+                taxBodyKnown = false;
+                continue;
+            }
             if (!taxes.isArray() || taxes.isEmpty() || taxes.size() > 3) {
-                check(findings, "SEG143-R-005", "tax-count", false, "1-3 flag entries; no-tax product uses a single N");
+                taxCount = Status.INVALID;
+                taxBodyKnown = false;
                 continue;
             }
             for (int i = 0; i < taxes.size(); i++) {
@@ -557,23 +904,32 @@ public final class Chapter12SegmentPayloadValidator {
                     pattern(tax, "amount", "[0-9]{1,9}", "SEG143-R-005", findings);
                     if ("CANADA".equals(input.path("context").path("country").asText())) {
                         String type = text(tax, "type");
-                        check(findings, "SEG143-R-007", "tax-type-enumeration", type != null && type.matches("GST|HST|PST|QST"),
-                                "Tax Type is one of GST/HST/PST/QST for Canadian transactions");
+                        if ("QST".equals(type)) review(findings, "SEG143-R-007", "tax-type-enumeration",
+                                "Source conflict:12.30 lists GST/HST/PST; Elements224/227/230 also list QST (25026-25137)");
+                        else check(findings, "SEG143-R-007", "tax-type-enumeration", type != null && type.matches("GST|HST|PST"),
+                                "Tax Type is one of GST/HST/PST for Canadian transactions");
                     } else review(findings, "SEG143-R-007", "country-context", "GST/HST/PST/QST closed enumeration is Canadian only");
                     body.append(value(tax, "type")).append(value(tax, "amount"));
                 }
                 body.append(i + 1 == taxes.size() ? FS : '\\');
             }
         }
+        findings.add(new Finding("SEG143-R-005", "tax-count", taxCount,
+                "Source14942-14947: at most three tax flag entries per observed product; no-tax usesN; absent actual tax list is missing evidence, not an empty observed list"));
         check(findings, "SEG143-R-005", "tax-section-cap", body.length() <= 360, "Repeated tax data cap 360");
         String expectedWire = value(fields, "85") + FS + value(fields, "84") + FS + value(fields, "62") + body;
-        wire(input, expectedWire, "SEG143-R-008", findings);
+        if (actualAuthority && !taxBodyKnown && input.has("serializedSegment") && !input.path("serializedSegment").isTextual())
+            check(findings, "SEG143-R-008", "wire", false, "Observed serialized tax segment must be textual even when a logical tax list is missing");
+        else if (actualAuthority && !taxBodyKnown) review(findings, "SEG143-R-008", "wire", "Incomplete observed tax body cannot establish expected physical separators");
+        else wire(input, expectedWire, "SEG143-R-008", findings);
         boolean earlyTermination = false;
         for (JsonNode product : products) {
             JsonNode taxes = product.path("taxes");
             if (taxes.isArray() && taxes.size() >= 1 && taxes.size() < 3) earlyTermination = true;
         }
-        if (earlyTermination && !input.has("serializedSegment")) {
+        if (actualAuthority && !taxBodyKnown) {
+            review(findings, "SEG143-R-009", "early-termination-separator", "Incomplete actual tax body cannot establish continuation/termination separators");
+        } else if (earlyTermination && !input.has("serializedSegment")) {
             review(findings, "SEG143-R-009", "early-termination-separator",
                     "Serialized segment absent; early-termination delimiter choice cannot be confirmed from field data alone");
         } else if (earlyTermination) {
@@ -590,6 +946,7 @@ public final class Chapter12SegmentPayloadValidator {
     }
 
     private static void enhancedFleet(JsonNode input, JsonNode fields, List<Finding> findings) throws IOException {
+        findings.addAll(Chapter12ObservedSessionValidator.fleet(input));
         boolean request = "145".equals(input.path("segment").asText());
         String prefix = request ? "SEG145-R-" : "SEG146-R-";
         String rule = request ? "006" : "002";
@@ -609,6 +966,7 @@ public final class Chapter12SegmentPayloadValidator {
                 input.path("context").isObject(), "Fleet context must be an object");
         if (input.path("context").has("authorizer")) check(findings, prefix + rule, "authorizer-shape",
                 input.path("context").path("authorizer").isTextual(), "Observed authorizer must be text");
+        findings.addAll(Chapter12ObservedSessionValidator.fleetPurchases(input));
         Map<String, Integer> caps = request ? Map.of("001", 20, "002", 350, "004", 200, "006", 17, "007", 15, "008", 9)
                 : Map.of("001", 20, "002", 350, "003", 350, "004", 200, "005", 70, "010", 200);
         for (var table : tables) {

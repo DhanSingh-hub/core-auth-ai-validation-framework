@@ -184,6 +184,12 @@ public final class Chapter13DataElementValidator {
         if (definitions.size() != 1) return;
         JsonNode constraint = definitions.get(0).path("constraints");
         if (!"EXTRACTED".equals(constraint.path("extractionStatus").asText()) || Set.of("65", "100", "138", "153", "190", "226").contains(id)) return;
+        if (observation.path("wireCapacityChecks").isBoolean() && observation.path("wireCapacityChecks").booleanValue()
+                && "VARIABLE".equals(constraint.path("lengthMode").asText())) {
+            finding(findings, id, "WIRE-CAPACITY", value.length() <= constraint.path("maxLength").asInt()
+                    ? Status.CHECKS_PASSED : Status.INVALID,
+                    "Measured populated ASCII wire field must not exceed its extracted source capacity; no padding or omission rule is inferred");
+        }
         if (constraint.path("representation").asText().contains("up to")) return;
         if ("FIXED".equals(constraint.path("lengthMode").asText())) {
             finding(findings, id, "WIRE-WIDTH", value.length() == constraint.path("maxLength").asInt() ? Status.CHECKS_PASSED : Status.INVALID,

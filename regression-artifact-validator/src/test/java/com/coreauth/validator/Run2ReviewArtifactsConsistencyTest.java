@@ -79,8 +79,8 @@ class Run2ReviewArtifactsConsistencyTest {
         JsonNode queue = mapper.readTree(root.resolve(Path.of("run2-sme-review-queue",
                 "run2-sme-review-queue.json")).toFile());
         assertThat(queue.path("items").size()).isEqualTo(queue.path("summary").path("totalOpenItems").asInt())
-                .isEqualTo(263);
+                .isEqualTo(264);
         assertThat(Files.readAllLines(root.resolve(Path.of("run2-sme-review-queue",
-                "run2-sme-review-queue.csv")))).hasSize(264);
+                "run2-sme-review-queue.csv")))).hasSize(265);
     }
 }

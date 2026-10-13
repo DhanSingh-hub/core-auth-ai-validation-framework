@@ -51,6 +51,22 @@ production enablement, complete lifecycle correlation and outer wire placement
 are not certified. These changes do not resolve the open SME approvals or
 establish complete segment/chapter coverage.
 
+## Matched actual prompt and purchase observations
+
+Source15363–15380/15782–15804 now binds effective prompt masks to measured
+captured Host Table004, and actual145 Table004 entries to observed subsequent
+sent responses. Three independently captured chronological edges are checked;
+equal precision remains review. Z uses captured values and must be absent
+from actual sent tokens even when metadata claims omission.
+
+Source15280–15303/15716–15753 category/limit execution now binds its purchased
+inventory and completeness flag to `history.fleet.purchaseObservation` and
+actual current86/102. Existing PRODUCTS/default-MERC/sum/limit helpers remain
+the oracle. Projection equality is not raw table decoding or authentication.
+Canonical positive/negative/boundary/missing probes execute in
+`Chapter12FleetDiscountLoadIntegrationTest`; complete outer wire and full
+merchant/configuration/application provenance remain unfinished.
+
 ## Do-Not-Assume Rules
 
 1. Do not combine Segment 145 with Segment 101 — explicitly prohibited.

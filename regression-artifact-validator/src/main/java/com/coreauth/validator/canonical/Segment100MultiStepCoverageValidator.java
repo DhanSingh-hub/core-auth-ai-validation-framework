@@ -129,6 +129,43 @@ public final class Segment100MultiStepCoverageValidator {
 
         JsonNode originalSegment = segment(original);
         JsonNode followUpSegment = segment(followUp);
+        validateObservedPair(flow, originalId, originalSegment, followUpId, followUpSegment, result);
+    }
+
+    public ValidationResult validateObservedPair(Flow flow, JsonNode originalElements, JsonNode followUpElements) {
+        ValidationResult result = new ValidationResult("observed-standard-lifecycle");
+        if (flow == null || originalElements == null || !originalElements.isObject()
+                || followUpElements == null || !followUpElements.isObject()) {
+            result.addError("Segment100MultiStepCoverage", "Explicit flow and both observed numbered Standard element sets are required");
+            return result;
+        }
+        for (JsonNode elements : java.util.List.of(originalElements, followUpElements)) {
+            for (String id : java.util.List.of("78", "86", "102"))
+                if (!elements.path(id).isTextual() || elements.path(id).textValue().isEmpty())
+                    result.addError("Segment100MultiStepCoverage", "Observed lifecycle " + id + " must be nonempty text");
+            if (!elements.path("78").isTextual() || !elements.path("78").textValue().matches("[A-Za-z0-9]{4}"))
+                result.addError("Segment100MultiStepCoverage", "Observed financial PromptCode must contain four characters");
+            if (elements.has("5") && !elements.path("5").isTextual())
+                result.addError("Segment100MultiStepCoverage", "Observed original approval cannot be coerced");
+        }
+        if (!result.isValid()) return result;
+        validateObservedPair(flow, "observed original", observedSegment(originalElements),
+                "observed follow-up", observedSegment(followUpElements), result);
+        return result;
+    }
+
+    private JsonNode observedSegment(JsonNode elements) {
+        var segment = objectMapper.createObjectNode();
+        for (var field : java.util.Map.of("86", "SequenceNumber", "102", "TerminalID", "5", "ApprovalNumber").entrySet())
+            if (elements.has(field.getKey())) segment.set(field.getValue(), elements.get(field.getKey()).deepCopy());
+        JsonNode prompt = elements.get("78");
+        if (prompt != null && prompt.isTextual() && prompt.textValue().matches("[A-Za-z0-9]{4}"))
+            segment.putObject("PromptCode").put("TransactionType", prompt.textValue().substring(0, 1));
+        return segment;
+    }
+
+    private static void validateObservedPair(Flow flow, String originalId, JsonNode originalSegment, String followUpId,
+                                            JsonNode followUpSegment, ValidationResult result) {
         String originalCode = transactionCode(originalSegment);
         String followUpCode = transactionCode(followUpSegment);
         if (!flow.originalCodes.contains(originalCode)) {
