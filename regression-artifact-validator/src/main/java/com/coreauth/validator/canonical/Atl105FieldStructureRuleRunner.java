@@ -72,8 +72,9 @@ public final class Atl105FieldStructureRuleRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 4) throw new IllegalArgumentException(
-            "Usage: Atl105FieldStructureRuleRunner <ATL105-pack> <run-id> <qe-shaped-test-data-dir> <report.json>");
+        boolean recursiveInputScan = args.length == 5 && "--recursive".equals(args[4]);
+        if (args.length != 4 && !recursiveInputScan) throw new IllegalArgumentException(
+            "Usage: Atl105FieldStructureRuleRunner <ATL105-pack> <run-id> <qe-shaped-test-data-dir> <report.json> [--recursive]");
         Path pack = Path.of(args[0]);
         String runId = args[1];
         Path runDirectory = Path.of(args[2]);
@@ -101,12 +102,15 @@ public final class Atl105FieldStructureRuleRunner {
         Map<String, Long> unmappedFindingCounts = new TreeMap<>();
         ArrayNode unmappedSamples = MAPPER.createArrayNode();
         int messageCount = 0;
-        List<Path> metadataFiles;
-        try (var files = Files.list(runDirectory)) {
-            metadataFiles = files.filter(path -> path.getFileName().toString().endsWith(".meta.json")).sorted().toList();
-        }
+        List<Path> metadataFiles = listMetadataFiles(runDirectory, recursiveInputScan);
+        List<Path> payloadFiles = listPayloadFiles(runDirectory, recursiveInputScan);
+        java.util.Set<Path> metadataSet = new java.util.HashSet<>(metadataFiles);
+        List<Path> payloadsWithoutMetadata = payloadFiles.stream()
+            .filter(path -> !metadataSet.contains(metadataPath(path))).toList();
+        List<Path> metadataWithoutPayload = metadataFiles.stream()
+            .filter(path -> !Files.isRegularFile(payloadPath(path))).toList();
         for (Path metaFile : metadataFiles) {
-            Path payloadFile = metaFile.resolveSibling(metaFile.getFileName().toString().replace(".meta.json", ".json"));
+            Path payloadFile = payloadPath(metaFile);
             byte[] metadataBytes = Files.readAllBytes(metaFile);
             byte[] payloadBytes = Files.isRegularFile(payloadFile) ? Files.readAllBytes(payloadFile) : null;
             String metadataHash = digest(metadataBytes);
@@ -116,8 +120,10 @@ public final class Atl105FieldStructureRuleRunner {
             JsonNode meta = MAPPER.readTree(metadataBytes);
             JsonNode payload = payloadBytes == null ? null : MAPPER.readTree(payloadBytes);
             Atl105AiElementIntake.MessageAssessment assessment = intake.assess(meta, payload);
+            String messageId = recursiveInputScan
+                ? relativePath(runDirectory, metaFile) : metaFile.getFileName().toString();
             ObjectNode input = inputMessages.addObject();
-            input.put("messageId", metaFile.getFileName().toString());
+            input.put("messageId", messageId);
             input.put("testCaseId", assessment.testCaseId());
             input.put("scenarioId", meta.path("scenarioId").asText(""));
             input.put("metadataPath", metaFile.toRealPath().toString());
@@ -153,7 +159,7 @@ public final class Atl105FieldStructureRuleRunner {
                     if ("FAIL".equals(outcome)) failureDispositionCounts.merge(failureDisposition, 1L, Long::sum);
                     ObjectNode row = evaluations.addObject();
                     row.put("runId", runId);
-                    row.put("messageId", metaFile.getFileName().toString());
+                    row.put("messageId", messageId);
                     row.put("testCaseId", assessment.testCaseId());
                     row.put("scenarioType", assessment.scenarioType());
                     row.put("negativeClass", assessment.negativeClass());
@@ -196,11 +202,17 @@ public final class Atl105FieldStructureRuleRunner {
             coverageByClass.computeIfAbsent(entry.getValue().path("class").asText(), ignored -> new TreeMap<>()).merge(state, 1L, Long::sum);
         }
 
-        List<Path> finalMetadataFiles;
-        try (var files = Files.list(runDirectory)) {
-            finalMetadataFiles = files.filter(path -> path.getFileName().toString().endsWith(".meta.json")).sorted().toList();
-        }
+        List<Path> finalMetadataFiles = listMetadataFiles(runDirectory, recursiveInputScan);
         if (!metadataFiles.equals(finalMetadataFiles)) throw new IOException("Metadata file population changed during validation");
+        List<Path> finalPayloadFiles = listPayloadFiles(runDirectory, recursiveInputScan);
+        if (!payloadFiles.equals(finalPayloadFiles)) throw new IOException("Payload file population changed during validation");
+        ArrayNode unpairedPayloads = MAPPER.createArrayNode();
+        for (Path payloadFile : payloadsWithoutMetadata) {
+            byte[] bytes = Files.readAllBytes(payloadFile);
+            String hash = digest(bytes);
+            physicalHashes.put(payloadFile, hash);
+            unpairedPayloads.addObject().put("relativePath", relativePath(runDirectory, payloadFile)).put("sha256", hash);
+        }
         for (Map.Entry<Path, String> input : physicalHashes.entrySet()) {
             String current = Files.isRegularFile(input.getKey()) ? sha256(input.getKey()) : "";
             if (!input.getValue().equals(current)) throw new IOException("Physical input changed during validation: " + input.getKey());
@@ -217,6 +229,12 @@ public final class Atl105FieldStructureRuleRunner {
         report.put("negativeScenarioPolicy", "A profile FAIL on a negative scenario whose element matches the declared violated element is an expected negative-target detection candidate; other negative FAILs require review.");
         report.put("messagesAssessed", messageCount);
         report.put("inputDirectory", runDirectory.toRealPath().toString());
+        report.put("inputScanMode", recursiveInputScan ? "RECURSIVE_QE_SHAPED_TEST_DATA" : "SINGLE_DIRECTORY");
+        report.put("metadataSidecarFilesDiscovered", metadataFiles.size());
+        report.put("payloadFilesDiscovered", payloadFiles.size());
+        report.put("metadataWithoutPayloadCount", metadataWithoutPayload.size());
+        report.put("payloadFilesWithoutMetadataCount", payloadsWithoutMetadata.size());
+        report.set("payloadFilesWithoutMetadata", unpairedPayloads);
         report.put("inputStabilityVerified", true);
         report.put("provenanceVersion", 1);
         report.put("observationSource", "AI_METADATA_FIELDS_WITH_PHYSICAL_ENVELOPE_AND_STRUCTURE_CHECKS");
@@ -244,6 +262,44 @@ public final class Atl105FieldStructureRuleRunner {
             + " executableProfileRules=" + executable.size() + " partialStructureRules=" + partialExecutors.size()
             + " evaluations=" + evaluations.size()
             + " coverage=" + coverageByClass + " outcomes=" + outcomesByClass);
+    }
+
+    private static List<Path> listMetadataFiles(Path root, boolean recursive) throws IOException {
+        try (var files = recursive ? Files.walk(root) : Files.list(root)) {
+            return files.filter(Files::isRegularFile)
+                .filter(path -> path.getFileName() != null)
+                .filter(path -> path.getFileName().toString().endsWith(".meta.json"))
+                .filter(path -> !recursive || path.getParent() != null && path.getParent().getFileName() != null
+                    && "qe_shaped_test_data".equals(path.getParent().getFileName().toString()))
+                .sorted().toList();
+        }
+    }
+
+    private static List<Path> listPayloadFiles(Path root, boolean recursive) throws IOException {
+        try (var files = recursive ? Files.walk(root) : Files.list(root)) {
+            return files.filter(Files::isRegularFile)
+                .filter(path -> path.getFileName() != null)
+                .filter(path -> path.getFileName().toString().endsWith(".json"))
+                .filter(path -> !path.getFileName().toString().endsWith(".meta.json"))
+                .filter(path -> !"traceability.json".equals(path.getFileName().toString()))
+                .filter(path -> !recursive || path.getParent() != null && path.getParent().getFileName() != null
+                    && "qe_shaped_test_data".equals(path.getParent().getFileName().toString()))
+                .sorted().toList();
+        }
+    }
+
+    private static Path payloadPath(Path metadata) {
+        String fileName = metadata.getFileName().toString();
+        return metadata.resolveSibling(fileName.substring(0, fileName.length() - ".meta.json".length()) + ".json");
+    }
+
+    private static Path metadataPath(Path payload) {
+        String fileName = payload.getFileName().toString();
+        return payload.resolveSibling(fileName.substring(0, fileName.length() - ".json".length()) + ".meta.json");
+    }
+
+    private static String relativePath(Path root, Path path) {
+        return root.relativize(path).toString().replace('\\', '/');
     }
 
     private static Map<String, Long> classCounts(Map<String, JsonNode> rules) {

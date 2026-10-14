@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.HexFormat;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -71,6 +72,48 @@ class Atl105FieldStructureRuleRunnerTest {
         assertThatThrownBy(() -> Atl105FieldStructureRuleRunner.main(arguments))
             .isInstanceOf(java.io.IOException.class).hasMessageContaining("Refusing to overwrite");
     }
+
+        @Test
+        void recursiveScanCoversMultipleDataRootsAndReportsUnpairedPayloads(@TempDir Path temporary) throws Exception {
+        Path delivery = temporary.resolve("delivery");
+        Path first = Files.createDirectories(delivery.resolve("test_generation/test_generation/candidates/qe_shaped_test_data"));
+        Path second = Files.createDirectories(delivery.resolve("test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data"));
+        String payload = "{\"Financial Request\":{\"MessageType\":\"ATL105\",\"NumSegments\":\"0\"}}";
+        for (Path root : List.of(first, second)) {
+            Files.writeString(root.resolve("TC-1.meta.json"), "{\"testCaseId\":\"TC-1\",\"scenarioId\":\"SC-1\",\"fields\":[]}");
+            Files.writeString(root.resolve("TC-1.json"), payload);
+        }
+        Path unpaired = second.resolve("TC-2.json");
+        Files.writeString(unpaired, payload);
+        Path output = temporary.resolve("recursive-report.json");
+
+        Atl105FieldStructureRuleRunner.main(new String[]{PACK.toString(), "recursive-fixture",
+            delivery.toString(), output.toString(), "--recursive"});
+
+        var report = MAPPER.readTree(output.toFile());
+        assertThat(report.path("inputScanMode").asText()).isEqualTo("RECURSIVE_QE_SHAPED_TEST_DATA");
+        assertThat(report.path("inputStabilityVerified").asBoolean()).isTrue();
+        assertThat(report.path("metadataSidecarFilesDiscovered").asInt()).isEqualTo(2);
+        assertThat(report.path("payloadFilesDiscovered").asInt()).isEqualTo(3);
+        assertThat(report.path("metadataWithoutPayloadCount").asInt()).isZero();
+        assertThat(report.path("payloadFilesWithoutMetadataCount").asInt()).isEqualTo(1);
+        assertThat(report.path("payloadFilesWithoutMetadata").get(0).path("relativePath").asText())
+            .isEqualTo("test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-2.json");
+        assertThat(report.path("inputMessages").get(0).path("messageId").asText())
+            .contains("/qe_shaped_test_data/TC-1.meta.json");
+        assertThat(report.path("inputMessages").get(1).path("messageId").asText())
+            .contains("/qe_shaped_test_data/TC-1.meta.json");
+        assertThat(report.path("inputMessages").get(0).path("messageId").asText())
+            .isNotEqualTo(report.path("inputMessages").get(1).path("messageId").asText());
+        assertThat(report.path("evaluations").get(0).path("messageId").asText())
+            .isEqualTo(report.path("inputMessages").get(0).path("messageId").asText());
+        assertThat(report.path("evaluations").get(3).path("messageId").asText())
+            .isEqualTo(report.path("inputMessages").get(1).path("messageId").asText());
+            for (var evaluation : report.path("evaluations")) {
+                assertThat(evaluation.path("messageId").asText())
+                    .isIn(report.path("inputMessages").findValuesAsText("messageId"));
+            }
+        }
 
     private static String hash(Path path) throws Exception {
         return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path)));

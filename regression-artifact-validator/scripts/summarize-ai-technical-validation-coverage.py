@@ -2,6 +2,7 @@
 
 import argparse
 import collections
+import gzip
 import hashlib
 import json
 import tempfile
@@ -27,7 +28,7 @@ def read_json(path):
 
 
 def array_rows(path, key):
-    with Path(path).open("rb") as stream:
+    with open_report(path) as stream:
         yield from ijson.items(stream, key + ".item", use_float=True)
 
 
@@ -38,15 +39,30 @@ def jsonl(path):
                 yield json.loads(line)
 
 
+def open_report(path):
+    path = Path(path)
+    return gzip.open(path, "rb") if path.suffix == ".gz" else path.open("rb")
+
+
 def write_rows(path, rows):
     with path.open("w", encoding="utf-8", newline="\n") as stream:
         for row in rows:
             stream.write(json.dumps(row, sort_keys=True, ensure_ascii=True) + "\n")
 
 
+def write_output_manifest(output):
+    manifest_path = output / "manifest.json"
+    artifacts = {path.name: sha256(path) for path in sorted(output.iterdir())
+                 if path.is_file() and path != manifest_path}
+    manifest = {"algorithm": "SHA-256", "manifestExcludedFromItsOwnArtifacts": True,
+                "artifacts": artifacts}
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return manifest
+
+
 def header(path):
     scalars = {}
-    with Path(path).open("rb") as stream:
+    with open_report(path) as stream:
         for prefix, event, value in ijson.parse(stream, use_float=True):
             if prefix in {"inputMessages", "ruleCoverage", "evaluations"} and event == "start_array":
                 break
@@ -61,6 +77,24 @@ def measured(numerator, denominator, meaning):
     return {"numerator": numerator, "denominator": denominator,
             "percent": round(100 * numerator / denominator, 2) if denominator else None,
             "meaning": meaning}
+
+
+def field_runner_input_population(report_header, inputs):
+    paired_payloads = sum(bool(row.get("payloadPresent", row.get("payloadSha256"))) for row in inputs)
+    metadata_count = int(report_header.get("metadataSidecarFilesDiscovered", len(inputs)))
+    metadata_without_payload = int(report_header.get("metadataWithoutPayloadCount", len(inputs) - paired_payloads))
+    unpaired_payloads = int(report_header.get("payloadFilesWithoutMetadataCount", 0))
+    payload_count = int(report_header.get("payloadFilesDiscovered", paired_payloads + unpaired_payloads))
+    if metadata_count != len(inputs):
+        raise ValueError("Runner metadata-sidecar count differs from input-message rows")
+    if metadata_without_payload != len(inputs) - paired_payloads:
+        raise ValueError("Runner metadata/payload pairing counts do not reconcile")
+    if payload_count != paired_payloads + unpaired_payloads:
+        raise ValueError("Runner payload population does not reconcile to paired and unpaired payloads")
+    return {"scanMode": report_header.get("inputScanMode", "SINGLE_DIRECTORY"),
+            "metadataSidecarFiles": metadata_count, "payloadFiles": payload_count,
+            "pairedMessages": paired_payloads, "metadataWithoutPayload": metadata_without_payload,
+            "payloadWithoutMetadata": unpaired_payloads}
 
 
 def aggregate(baseline, bindings, inputs, evaluations, br_rows, physical_rows, conflicts):
@@ -194,6 +228,7 @@ def run(report_path, baseline_path, delivery_path, output):
         return path
     ledger_paths = {name: verified_ledger(name) for name in ("br-assessment.jsonl", "tc-physical-assessment.jsonl", "content-conflicts.jsonl")}
     inputs = list(array_rows(report_path, "inputMessages"))
+    runner_population = field_runner_input_population(report_header, inputs)
     input_paths = [report_path, baseline_path, delivery_path, inventory_path, *ledger_paths.values(), Path(__file__)]
     hashes = {str(path.resolve()): sha256(path) for path in input_paths}
     for message in inputs:
@@ -219,6 +254,7 @@ def run(report_path, baseline_path, delivery_path, output):
         jsonl(ledger_paths["br-assessment.jsonl"]), jsonl(ledger_paths["tc-physical-assessment.jsonl"]), jsonl(ledger_paths["content-conflicts.jsonl"]))
     summary.update({"artifact": "ATL105-OFFLINE-TECHNICAL-VALIDATION-COVERAGE", "runId": report_header["runId"],
                     "specificationVersion": baseline["specificationVersion"], "observationSource": report_header["observationSource"],
+                    "fieldRunnerInputPopulation": runner_population,
                     "inputSha256": hashes, "deliveryFileInventorySha256": delivery["fileInventorySha256"],
                     "limitations": ["Field values are metadata-derived; physical envelope/structure checks are bounded. No direct-field or wire certification.",
                                     "Candidate input directory only; other artifact tiers/directories are not executed by this runner.",
@@ -233,6 +269,9 @@ def run(report_path, baseline_path, delivery_path, output):
     write_rows(output / "ai-br-candidate-rule-observations.jsonl", ai_links)
     (output / "summarizer-implementation.py").write_bytes(Path(__file__).read_bytes())
     text = "# Offline Technical Validation Coverage\n\nOnly bounded predicates are counted; source matching and host execution remain unassessed.\n\n"
+    text += ("Field-runner input population: {metadataSidecarFiles} metadata sidecars, {payloadFiles} payload files, "
+             "{pairedMessages} paired messages, {metadataWithoutPayload} metadata without payload, "
+             "and {payloadWithoutMetadata} payloads without metadata ({scanMode}).\n\n").format(**runner_population)
     text += "| Measure | Numerator | Denominator | Percent |\n|---|---:|---:|---:|\n"
     for name, metric in summary["measures"].items():
         text += f"| {name} | {metric.get('numerator', 'N/A')} | {metric.get('denominator', 'N/A')} | {metric.get('percent') if metric.get('percent') is not None else metric['status']} |\n"
@@ -240,13 +279,26 @@ def run(report_path, baseline_path, delivery_path, output):
     (output / "REPORT.md").write_text(text, encoding="utf-8")
     summary["outputSha256"] = {path.name: sha256(path) for path in output.iterdir() if path.is_file()}
     (output / "technical-validation-coverage.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    write_output_manifest(output)
     return summary
 
 
 def self_test():
+    population = field_runner_input_population({
+        "inputScanMode": "RECURSIVE_QE_SHAPED_TEST_DATA", "metadataSidecarFilesDiscovered": 2,
+        "payloadFilesDiscovered": 3, "metadataWithoutPayloadCount": 0, "payloadFilesWithoutMetadataCount": 1,
+    }, [{"payloadPresent": True}, {"payloadPresent": True}])
+    assert population["pairedMessages"] == 2 and population["payloadWithoutMetadata"] == 1
+    assert population["payloadFiles"] == 3
+    try:
+        field_runner_input_population({"metadataSidecarFilesDiscovered": 2}, [{"payloadPresent": True}])
+        raise AssertionError("mismatched recursive input population should fail")
+    except ValueError:
+        pass
     baseline = {"authority": "INDEPENDENT_TEST_SOLUTION", "aiArtifactsIncluded": False, "ruleCount": 3,
                 "businessRequirements": [{"ruleId": "R1"}, {"ruleId": "R2"}, {"ruleId": "R3"}]}
-    bindings = [{"ruleId": "R1", "executionStatus": "PROFILE_BACKED_LIMITED_EXECUTION", "evaluatedCaseCount": 2},
+    bindings = [{"ruleId": "R1", "executionStatus": "PROFILE_BACKED_LIMITED_EXECUTION", "evaluatedCaseCount": 2,
+                 "profileIds": ["PROFILE-A", "PROFILE-B"]},
                 {"ruleId": "R2", "executionStatus": "PARTIAL_EXECUTOR_REVIEW_REQUIRED_FOR_UNCHECKED_BRANCHES", "evaluatedCaseCount": 1}]
     inputs = [{"messageId": "M1", "testCaseId": "TC1", "payloadRelativePath": "data/TC1.json"},
               {"messageId": "M2", "testCaseId": "TC2", "payloadRelativePath": "data/TC2.json"}]
@@ -255,15 +307,25 @@ def self_test():
                    {"messageId": "M2", "testCaseId": "TC2", "ruleId": "R2", "status": "REVIEW_REQUIRED"}]
     brs = [{"id": "BR1", "eligibleForStructuralMetrics": True, "testBrCandidates": ["R1"], "physicalCompleteCaseIds": ["TC1"]}]
     routes = [{"id": "TC1", "status": "COMPLETE_PHYSICAL_DECLARATIONS", "paths": ["data/TC1.json"]}]
-    summary, _, links = aggregate(baseline, bindings, inputs, evaluations, brs, routes, [])
+    summary, rule_rows, links = aggregate(baseline, bindings, inputs, evaluations, brs, routes, [])
     assert summary["measures"]["limitedOrPartialExecutorBoundCoverage"]["numerator"] == 2
     assert summary["measures"]["decisivePredicateRuleCoverage"]["numerator"] == 1
     assert summary["measures"]["caseAnyDecisivePredicateCoverage"]["numerator"] == 1
+    assert rule_rows[0]["profileIds"] == ["PROFILE-A", "PROFILE-B"]
     assert len(links) == 1 and summary["measures"]["semanticConfirmedCoverage"]["percent"] is None
+    assert summary["measures"]["hostExecutionCoverage"]["percent"] is None
     blocked, _, links = aggregate(baseline, bindings, inputs, evaluations, brs, routes, [{"kind": "TC", "id": "TC1"}])
     assert not links and blocked["measures"]["aiBrLinkedCandidatePredicateCoverage"]["numerator"] == 0
     wrong_routes = [{"id": "TC1", "status": "COMPLETE_PHYSICAL_DECLARATIONS", "paths": ["other/TC1.json"]}]
     assert not aggregate(baseline, bindings, inputs, evaluations, brs, wrong_routes, [])[2]
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        output = Path(temporary_directory)
+        (output / "technical-validation-coverage.json").write_text("{}", encoding="utf-8")
+        (output / "REPORT.md").write_text("report", encoding="utf-8")
+        manifest = write_output_manifest(output)
+        assert manifest["artifacts"] == {"REPORT.md": sha256(output / "REPORT.md"),
+                                         "technical-validation-coverage.json": sha256(output / "technical-validation-coverage.json")}
+        assert "manifest.json" not in manifest["artifacts"]
     print("PASS: bound/decisive/review-only counts, exact physical routes and conflict exclusions remain separate")
 
 
