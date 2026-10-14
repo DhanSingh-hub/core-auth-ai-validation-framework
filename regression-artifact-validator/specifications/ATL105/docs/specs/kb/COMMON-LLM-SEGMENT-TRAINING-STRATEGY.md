@@ -569,6 +569,10 @@ For each delivery, confirmed Test Solution BR coverage uses `distinct independen
 
 The candidate-discovery population includes **all** AI BR records, regardless of AI producer or SME approval state; approval is not a discovery filter. For a complete delivery, trace each AI BR through BR -> TS -> TC -> TD using the source catalogs and full matrix, validate every hop and physical TD separately, and retain proposed/matrix-only edges as unresolved. Exact shared source-anchor candidates (for ATL105, normalized segment + explicit numeric element source ID) may identify Test Solution rules for review, but are not confirmed business-equivalent matches. Preserve one row per AI BR, including incomplete/unmatchable anchors; only delivery-bound, evidence-reviewed dispositions can contribute to confirmed independent BR coverage.
 
+### Automated Technical Observation
+
+Use `scripts/summarize-ai-technical-validation-coverage.py` only with a stable byte-bound runner report, the AI-excluded independent Test BR baseline, and the hash-verified delivery-wide physical-chain ledgers. The report keeps separate denominators for limited/partial executor bindings, decisive rule outcomes, runner-scope decisive outcomes, cases with any decisive predicate, and AI BRs with a linked candidate-rule observation. A case with one observed predicate is not a case pass; a candidate rule observation is not semantic confirmation. Profile values are metadata-derived and physical checks are bounded. Treat `FAIL` as an observed predicate outcome, not automatically an AI defect; a failure may be an intended negative target. Semantic-confirmed coverage requires authorized source/business review, and host-executed coverage requires host evidence; leave both `NOT_ASSESSED` / `NOT_EXECUTED` rather than inferring them from offline results. The output `manifest.json` binds the report and ledgers by SHA-256 and excludes only itself.
+
 ## Segment-Specific Training Addendum
 
 Each segment addendum should contain only behavior that is different or additional for that segment:

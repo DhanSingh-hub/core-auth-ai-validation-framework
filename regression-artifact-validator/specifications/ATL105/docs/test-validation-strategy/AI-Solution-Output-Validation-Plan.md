@@ -48,6 +48,27 @@ unassessed. Input populations/hashes must remain stable through publication; the
 hash-bound summary and row-level conflict, chain-gap, candidate-pair and anchor
 queues are the review evidence, not a certification by themselves.
 
+**Bounded technical validation coverage (2026-10-14, AIV-017):**
+`scripts/summarize-ai-technical-validation-coverage.py` joins the stable,
+byte-bound field/structure runner report to the AI-excluded 601-rule baseline
+and the hash-verified delivery-wide chain ledgers. It publishes one row per
+independent Test BR, one row per observed AI-BR/candidate-rule/payload relation,
+explicit metric denominators and a sidecar SHA-256 manifest. The current Run1
+report `Run1-2026-10-14-full-delivery-debug-v3` recursively processes both
+QE-shaped candidate directories: 39,479 metadata messages and paired payloads,
+plus one unpaired payload recorded but not evaluated. It contains 362,963
+evaluation rows across 21,227 distinct case IDs; 58/601 rules have a limited or
+partial executor binding, 41/601 have at least one decisive PASS or FAIL
+predicate result, 14,396/21,227 cases have any decisive result, and 208/6,880
+AI BRs have a candidate rule observed on a clean direct physical chain. The
+runner covers a 326-rule field/structure slice; 275 rules are outside its scope.
+These counts do not certify complete BR validators or complete-case passes.
+Values are metadata-derived with bounded physical envelope/structure checks;
+intended negative-target failures remain possible. Source interpretation,
+authorized semantic decisions, remaining rule execution and host execution are
+distinct gates; semantic-confirmed and host-executed percentages remain null,
+`NOT_ASSESSED` and `NOT_EXECUTED`.
+
 Appendix I training uses a source-only, hash-pinned table inventory and independent
 field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
 selected logical representations in Tables 001-009, not the complete segment wire
