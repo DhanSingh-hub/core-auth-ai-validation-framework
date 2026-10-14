@@ -216,6 +216,16 @@ Synthetic appendix fixture drafts may be generated from source-defined structura
 
 ## Common LLM Training Rules
 
+Delivery-wide coverage includes approved and candidate occurrences, retains
+producer status without granting acceptance, and blocks conflicting IDs from
+structural metrics. `audit-ai-delivery-coverage.py` supplies inventory, explicit
+declared-path/metadata checks, full-baseline ledgers and typed-anchor review
+queues. Do not fabricate element numbers for process/lifecycle/response rules.
+Missing quotes, unresolved mappings and pair decisions remain unassessed or
+pending authorized review. Recheck input hashes before publication. Physical
+completeness, semantic coverage and execution remain distinct. Auxiliary files
+are inventoried, not automatically format- or semantic-validated.
+
 The LLM shall:
 
 - Emit the declared producer/schema/contract version, generator version, specification version, and run ID. Do not silently change JSON/workbook shape between runs; publish a versioned schema/adapter contract for any breaking format change.
@@ -412,6 +422,8 @@ source anchor -> BR -> TS -> TC -> physical TD -> mapping to Test Solution rule
 For every link, verify identity and cardinality: all BR IDs referenced by each TS; all TS IDs referenced by each TC; all TC IDs resolved to physical TD files; and every mapping resolved against an independently owned rule. Check request/response roles, message family, transaction context, segment set/order, Element 63 where applicable, version continuity, and source-anchor identity. Record orphan, duplicate, fan-out, many-to-many, and missing links rather than silently repairing them.
 
 Open physical payloads. Validate their root/envelope, fields, segment composition, values, lengths, encoding, and conditional/lifecycle rules. Run the relevant Test Solution validator when one exists. A producer `PASS` does not substitute for executing the independent validator.
+
+For a complete delivery, run the delivery-wide structural audit in addition to segment-level checks. Preserve every approved and candidate catalog occurrence; reconcile file hashes, unique IDs, content conflicts, declared TD paths, payload/metadata identity, and the independent Test BR ledger. Keep candidate reach and complete physical-route reach as structural-only metrics. Semantic-confirmed coverage remains `NOT_ASSESSED` until authorized source review; executed-validation coverage remains `NOT_ASSESSED` until execution evidence exists. Producer `APPROVED` labels never establish SME approval. Inventory/hash auxiliary archives unless a supported parser validates their contents. Retain the audit summary and row-level conflict, chain-gap, candidate-pair, and anchor-review ledgers with the delivery's input hashes.
 
 Before SME approval, the Run2 segment evidence writer reports technical validation separately from certification. A complete technical assessment is `PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED`, with `executionCertified: false` and SME approval `NOT_ESTABLISHED_BY_THIS_REPORT`; a failed assessment remains `REVIEW_REQUIRED`. Payload compliance requires a segment-owned validator, at least one linked physical payload containing that segment, a recorded validation outcome for every applicable file, and no invalid or unreadable linked files. An empty batch or a linked file for another segment must not pass. These technical checks do not establish business equivalence or remove the SME sign-off gate.
 

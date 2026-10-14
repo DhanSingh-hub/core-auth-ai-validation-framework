@@ -9,12 +9,12 @@ import java.util.Set;
 public final class AppendixAFIncrementalAuthorizationValidator {
     private static final String SOURCE = "AppendixAF";
     private static final Set<String> NETWORKS = Set.of("DISCOVER", "VISA", "MASTERCARD", "AMERICAN EXPRESS");
-    private static final Set<String> ROLES = Set.of("ORIGINAL_AUTH", "INCREMENTAL_AUTH", "PARTIAL_REVERSAL", "INCREMENTAL_AUTH_COMPLETION");
-    private static final Set<String> SUBSEQUENT_ROLES = Set.of("INCREMENTAL_AUTH", "PARTIAL_REVERSAL", "INCREMENTAL_AUTH_COMPLETION");
+    private static final Set<String> ROLES = Set.of("ORIGINAL_AUTH", "INCREMENTAL_AUTH", "IA_REVERSAL", "INCREMENTAL_AUTH_COMPLETION");
 
     public ValidationResult validate(JsonNode flow) {
         ValidationResult result = new ValidationResult("atl105-appendix-af-incremental-authorization");
         result.addWarning("Appendix AF logical observations only; source approval, physical wire, processor behavior and host outcomes are not certified.");
+        result.addWarning("Appendix AF says Transaction ID; Appendix I calls the Table 82 field Terminal Transaction Number. This field-name mapping remains REVIEW_REQUIRED.");
         if (!flow.isObject() || !"2026-4".equals(flow.path("specificationVersion").asText())) {
             result.addWarning("AF-CONTEXT: ATL105 2026-4 context is required; other releases are not assessed by this overlay.");
             return result;
@@ -46,15 +46,16 @@ public final class AppendixAFIncrementalAuthorizationValidator {
                     continue;
                 }
                 original = step;
-                checkTransactionIdUniqueness(flow, step, terminalId, network, result);
+                checkTerminalNumberUniqueness(flow, step, terminalId, result);
                 continue;
             }
 
             if (original == null) {
-                error(result, "AF-ORIGINAL-PREDECESSOR", "Incremental Auth, Partial Reversal and Incremental Auth Completion must follow an Original Auth.");
+                error(result, "AF-ORIGINAL-PREDECESSOR", "Incremental Auth, IA Reversal and Incremental Auth Completion must follow an Original Auth.");
             } else {
                 if (completed) error(result, "AF-COMPLETION-CLOSED", "No subsequent transaction is permitted for this Terminal Transaction ID after completion.");
                 checkApprovalCode(original, step, result);
+                checkTransactionNumberContinuity(original, step, result);
             }
             if ("INCREMENTAL_AUTH_COMPLETION".equals(role)) completed = true;
         }
@@ -75,17 +76,19 @@ public final class AppendixAFIncrementalAuthorizationValidator {
             else result.addWarning("AF-TABLE82-RECOMMENDATION: Table 82 is recommended for this network; the source does not state the Discover mandatory rule for it.");
             return;
         }
-        JsonNode data = step.path("incrementalAuthData");
-        if (!data.isObject() || !data.path("transactionId").isTextual() || data.path("transactionId").asText().isBlank()) {
-            if (discover) error(result, "AF-TABLE82-PRESENCE", "Discover Table 82 must contain a nonblank Transaction ID.");
-            else result.addWarning("AF-TABLE82-RECOMMENDATION: Table 82 is present but its Transaction ID is unavailable.");
+        JsonNode data = step.path("table82");
+        boolean layoutValid = data.isObject() && "82".equals(data.path("tableId").asText())
+                && "004".equals(data.path("tableLength").asText())
+                && data.path("terminalTransactionNumber").isTextual()
+                && data.path("terminalTransactionNumber").asText().matches("[0-9]{4}");
+        if (!layoutValid) {
+            error(result, "AF-TABLE82-LAYOUT", "Appendix I Table 82 uses fixed Table ID 82, fixed Table Length 004, and an N4 Terminal Transaction Number.");
         }
     }
 
-    private static void checkTransactionIdUniqueness(JsonNode flow, JsonNode original, String terminalId,
-            String network, ValidationResult result) {
-        JsonNode transactionId = original.path("incrementalAuthData").path("transactionId");
-        if (!transactionId.isTextual() || transactionId.asText().isBlank()) return;
+    private static void checkTerminalNumberUniqueness(JsonNode flow, JsonNode original, String terminalId, ValidationResult result) {
+        JsonNode terminalNumber = original.path("table82").path("terminalTransactionNumber");
+        if (!terminalNumber.isTextual() || !terminalNumber.asText().matches("[0-9]{4}")) return;
         JsonNode open = flow.path("openIncrementalAuthTransactions");
         if (terminalId.isBlank() || !open.isArray() || !flow.path("openIncrementalAuthorizationHistoryComplete").asBoolean(false)) {
             result.addWarning("AF-TRANSACTION-ID-UNIQUENESS: Complete open-purchase history and terminal identity are required to assess uniqueness.");
@@ -93,10 +96,20 @@ public final class AppendixAFIncrementalAuthorizationValidator {
         }
         for (JsonNode entry : open) {
             if (terminalId.equals(entry.path("terminalId").asText())
-                    && transactionId.asText().equals(entry.path("transactionId").asText())) {
-                error(result, "AF-TRANSACTION-ID-UNIQUENESS", "Transaction ID must be unique per terminal among open Incremental Auth purchases.");
+                    && terminalNumber.asText().equals(entry.path("terminalTransactionNumber").asText())) {
+                error(result, "AF-TRANSACTION-ID-UNIQUENESS", "Terminal Transaction Number duplicates an open IA series on the same terminal; the AF Transaction ID field mapping remains under review.");
                 return;
             }
+        }
+    }
+
+    private static void checkTransactionNumberContinuity(JsonNode original, JsonNode subsequent, ValidationResult result) {
+        JsonNode originalNumber = original.path("table82").path("terminalTransactionNumber");
+        JsonNode subsequentNumber = subsequent.path("table82").path("terminalTransactionNumber");
+        if (originalNumber.isTextual() && originalNumber.asText().matches("[0-9]{4}")
+                && subsequentNumber.isTextual() && subsequentNumber.asText().matches("[0-9]{4}")
+                && !originalNumber.asText().equals(subsequentNumber.asText())) {
+            result.addWarning("AF-TABLE82-CONTINUITY: Appendix I says the Terminal Transaction Number should remain the same through the IA series; confirm applicability before promotion.");
         }
     }
 

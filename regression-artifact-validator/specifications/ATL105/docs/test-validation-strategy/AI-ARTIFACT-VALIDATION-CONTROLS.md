@@ -41,12 +41,12 @@ not full-message execution. New candidates use Section 12.1 calculated lengths;
 offline validation never establishes host acceptance.
 `AppendixAFIncrementalAuthorizationValidatorTest` adds the separately pinned
 ATL105 2026-4 Appendix AF overlay: source-quote checks, release-specific
-BR/TS/TC/TD links, twelve logical lifecycle cases, Table 82 network policy,
-open-ID collision, predecessor, approval-code and post-completion checks.
+BR/TS/TC/TD links, eighteen logical lifecycle cases, Table 82 network policy and
+layout, IA_REVERSAL disambiguation, terminal-number collision/continuity,
+predecessor, approval-code and post-completion checks.
 These remain review-only and do not change the 2026-3 denominator or establish
 physical serialization, independent open-state completeness, SME approval or
 host behavior.
-| `AIV-015` | Keep specification-release overlays source-hash-pinned, anchor-versioned, separately counted, and explicitly review-gated; never promote a partial new-release overlay into full-pack support. | Release-specific source catalog, canonical test model, training-status overlay and bounded logical validator | `AppendixAFIncrementalAuthorizationValidatorTest` checks the pinned PDF hash, exact source quotes, 2026-4 anchors, artifact links, replay outcomes and review-only readiness | Initial 2026-4 AF coverage is a seven-rule logical overlay; remaining 2026-4 changes and physical Table 82 layout are not included. |
 `GenerateAppendixIScopedTrainingTest` adds AIV-005/AIV-006/AIV-011 evidence:
 11 independently evaluated scoped logical examples, 22 physical review-only TD
 records with canonical links, specific mutation-target detection, literal source
@@ -73,10 +73,23 @@ semantic equivalence, approved fixtures, AI coverage, or execution certification
 | `AIV-012` | Verify validator effectiveness using positive, negative, boundary, conflict, context, and mutation tests; detect wrong rules and wrong locations, not only malformed JSON. | Source-anchored segment/domain validators, mutation testers, and risk-based independent review | Segment mutation and validator tests (for example `Segment100MutationTesterTest` and segment payload-validator tests); report surviving mutations and untested rules | Validator regression evidence is separate from validation of a particular AI delivery. A green suite does not prove untested semantics or compensate for absent source/SME evidence. |
 | `AIV-013` | Verify report provenance, summary arithmetic, and decision consistency against source rows and validation evidence. | JSON report writers plus deterministic report-consistency checks | `AiCoverageAssessmentServiceTest`, `Run2ReviewArtifactsConsistencyTest`, `scripts/validate-ai-pipeline-delivery-review.cjs` | Run4 regression checks assert 5,153 unique AI BR rows, approval-independent inclusion, source-match disposition totals, full matrix leaf/chain counts, 601-rule denominator, zero confirmed matches, `NOT_ASSESSED`, and separation from AI-internal linkage. |
 | `AIV-014` | For any scoped taxonomy such as the 16 Section 5 payment-network leaves, trace each leaf to AI BR/TS candidates using source evidence. Do not infer leaf coverage from related card types, field-value lists, or keyword hits. | Leaf-specific Test Solution baseline + canonical crosswalk and per-leaf coverage rows | `Segment100PaymentNetworkOracleTest` validates the Test Solution allowlist; add mapping/coverage tests when an AI adapter and crosswalk exist | October 5 has 0/16 explicit leaf BR IDs, source-rule keys, or `networkType` values. Related behavior is not a confirmed leaf mapping. |
+| `AIV-015` | Keep specification-release overlays source-hash-pinned, anchor-versioned, separately counted, and explicitly review-gated; never promote a partial new-release overlay into full-pack support. | Release-specific source catalog, canonical test model, training-status overlay and bounded logical validator | `AppendixAFIncrementalAuthorizationValidatorTest` checks the pinned PDF hash, exact source quotes, 2026-4 anchors, artifact links, replay outcomes and review-only readiness | The current 2026-4 AF overlay has nine draft rules and 18 logical cases; field-name mapping, physical wire, processor behavior, and SME approval remain review-required. |
+| `AIV-016` | Reconcile every approved and candidate catalog occurrence and physical artifact for a complete delivery; detect duplicate/conflicting IDs, invalid/orphan links, unsafe/missing TD paths, mismatched metadata, and gaps against the full independent Test BR baseline. Preserve producer states without treating them as approval. | `scripts/audit-ai-delivery-coverage.py`; immutable file inventory, occurrence/conflict ledgers, physical-TD assessment, independent Test BR ledger and hash-bound report | `python.exe scripts/audit-ai-delivery-coverage.py --self-test`; delivery `VERIFICATION.md` independently recounts output hashes, catalog occurrences, conflicts, route counts, pair-review rows and anchor queues | Physical completeness is a declared-route/file-integrity result, not payload semantics. Candidate reach is structural only; semantic and executed coverage stay `NOT_ASSESSED`/null until authorized decisions and execution evidence exist. Auxiliary formats remain unassessed unless parsed. |
 
 **eWIC request-presence evidence for `AIV-010` / `AIV-012`:** `Segment100EwicValidatorTest` and `Segment100EwicArtifactIntakeValidatorTest` verify that source-optional eWIC request roles can omit Segment 103 with a matching Element 63 count, while Purchase Completion and Voucher Clear still require it and WIC data. Tests also cover additional included segment objects in the count. This is ATL105 request-shape/applicability validation; Commerce Hub mapping and response outcomes remain external and review-gated.
 
 ## Validation-Control Coverage Method
+
+Delivery-wide regression evidence for AIV-001/002/003/005/006/010/011/013:
+`audit-ai-delivery-coverage.py --self-test` checks all-tier occurrence retention,
+conflicting IDs, duplicate keys, orphan links, explicit declaration paths,
+metadata identity mismatch, traversal refusal and null semantic coverage.
+Real-delivery ledgers hash supplied files and baseline inputs and recheck
+stability before publication. Typed-proposal tests keep MESSAGE separate from
+RESPONSE and CROSS_SEGMENT separate from CROSS_FIELD; neither producer category
+grants a semantic anchor. Pending pair-review queues do not grant SME equivalence.
+Physical JSON/file checks are bounded; matrix,
+archive and auxiliary format validation remains explicitly unassessed.
 
 For `AIV-009`, `AIV-010`, `AIV-012` and `AIV-013`, Java
 `SemanticEvidenceValidator` adds complete declared structured-claim comparison,

@@ -26,11 +26,27 @@
 
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
 
-**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, Segment 111 Table 82 presence, open Transaction ID uniqueness, Original Auth predecessor, approval-code carry-forward, and completion closure. Discover missing Table 82 is a failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only. The overlay is pinned to the 2026-4 PDF hash and remains `REVIEW_REQUIRED`; it does not validate Appendix I Table 82 wire layout, processor outcomes, complete open-state history, or the full 2026-4 release.
+**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, the Appendix I fixed Table 82 layout, terminal-number series rules, Original Auth predecessor, approval-code carry-forward, and completion closure. `IA_REVERSAL` is distinct from the legacy partial-approval reversal rule. The AF Transaction ID to Appendix I Terminal Transaction Number mapping remains `REVIEW_REQUIRED`. Discover missing Table 82 is a failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only. The overlay is pinned to the 2026-4 PDF hash and does not certify physical wire, complete open-state history, processor outcomes, or the full 2026-4 release.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
 
 ## 1. Understanding of the AI Architecture
+
+**Delivery-wide assessment (2026-10-14, AIV-016):** `audit-ai-delivery-coverage.py`
+includes approved and candidate catalog occurrences, retaining row hashes and
+producer status while blocking conflicting IDs from structural counts. It hashes
+all supplied files and validates explicit catalog-relative TD paths and metadata
+identities. Proposed element/cross-field/process/lifecycle/response/transport
+and message/security/amount/dependency/account-card/cross-segment types derive
+from explicit producer metadata. MESSAGE is not assumed to mean RESPONSE, nor
+CROSS_SEGMENT to mean CROSS_FIELD. Literal quote matches do not adjudicate
+business meaning. All Test
+BRs appear in the baseline ledger; all pair decisions remain pending authorized
+source review. Candidate reach, physical-chain candidate reach, semantic-confirmed
+coverage and executed validation are separate. Auxiliary format validation is
+unassessed. Input populations/hashes must remain stable through publication; the
+hash-bound summary and row-level conflict, chain-gap, candidate-pair and anchor
+queues are the review evidence, not a certification by themselves.
 
 Appendix I training uses a source-only, hash-pinned table inventory and independent
 field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks

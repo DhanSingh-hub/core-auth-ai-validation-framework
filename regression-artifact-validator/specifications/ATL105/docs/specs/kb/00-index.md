@@ -66,6 +66,7 @@ current implementation status of Chapters 1-14 and the planned execution order.
 | AC | [Valid Country Codes training](appendix-ac/README.md) | All four pages: 254 source rows, 248 unique numeric codes; 840 ambiguity and Table 059 acquirer/merchant role conflict remain reviewed | 36609-36810 |
 | AD | [Real Time Account Updater training](appendix-ad/README.md) | Participation, Table 060 Y/I/O, Segment 155 response gates and all VAU results, original/updated credential pairing and unchanged retries | 36805-36830 |
 | AE | [Visa Estimated and Incremental Authorization training](appendix-ae/README.md) | Special MCC restrictions, initial/incremental indicators, series continuity, Table 063, completion, 7/14-day windows and complete-then-restart | 36839-36877 |
+| AF | [Estimated and Incremental Authorization training](appendix-af-estimated-incremental-training.md) | 2026-4 release overlay: four IA roles, Discover Table 82 mandate, Appendix I fixed Table 82 layout, Terminal Transaction Number series rules; field-name mapping and execution remain review-gated | PDF 636-637, 730 |
 
 ## Related files in this knowledge base
 

@@ -8,7 +8,7 @@ Use `../framework.ps1 -List` for common tasks. `framework-tasks.json` in the mod
 |---|---|---|
 | Intake and provenance | `analyze-oct05-handoff.py`, `assess-late-traceability-matrix.py`, `detect-ai-run-duplicates.py`, `build-ai-run1-4-combined-crosswalk.py`, `audit-ai-br-chain-maximum-coverage.py`, `verify-ai-run-intake.py` | Preserve producer data; identify byte-identical content; and build provenance-preserving BR/scenario/TC indexes and per-BR chain-coverage audits. |
 | AI BR validation groups | `group-ai-br-validation-results.py` | Attribute current Run4 bounded rule outcomes to every BR chain and group by chain completeness and Test BR candidate presence. |
-| AI BR inventory | `export-ai-br-test-model-inventory.py` | Export all unique AI BRs, separating BRs with no exact Test BR anchor candidate from candidate links requiring review. |
+| AI BR inventory | `export-ai-br-test-model-inventory.py`, `export-ai-test-br-crosswalk.py` | Export AI BR inventories and exact source-anchor candidate links to the independent Test BR baseline; candidates remain review-required. |
 | Targeted cohort seed | `prepare-targeted-ai-br-generation-cohort.py` | Package ATL105 source excerpts and an evaluation-only map for uncovered Test BR anchors; does not generate requirements or grant coverage credit. |
 | Semantic assessment | `assess-ai-semantic-batch.py`, `assess-full-semantic-chain.py`, `audit-ai-test-data-and-br-feedback.py` | Read source and frozen inputs; report supported checks and missing evidence. |
 | Mitigation and finalization | `implement-semantic-mitigation.py`, `finalize-semantic-chain-assessment.py` | Create derived outputs; preserve original inputs and historical states. |
@@ -31,6 +31,7 @@ From the module root:
 .\framework.ps1 -Task semantic-view-check -ReviewDirectory 'specifications/ATL105/test-output/ai-solution-independent-review/2026-10-06-complete-handoff' -JsdomModulePath 'C:\path\to\node_modules\jsdom'
 python.exe .\scripts\detect-ai-run-duplicates.py .\specifications\ATL105\test-input\ai-solution\runs\2026-10-07 .\specifications\ATL105\test-output\ai-run-deduplication-2026-10-07-v2.json
 python.exe .\scripts\detect-ai-run-duplicates.py --self-test
+python.exe .\scripts\export-ai-test-br-crosswalk.py --ai-requirements .\specifications\ATL105\test-input\ai-solution\runs\2026-10-10\Run1\step5_requirements\approved\requirement_catalog.json --test-solution-directory .\specifications\ATL105\test-output\test-solution-independent-review --output-directory .\specifications\ATL105\test-output\ai-solution-independent-review\2026-10-14-ai-test-br-crosswalk-v1
 python.exe .\scripts\build-ai-run1-4-combined-crosswalk.py --runs-root .\specifications\ATL105\test-input\ai-solution\runs\2026-10-07 --analysis-dir .\specifications\ATL105\test-output\ai-solution-independent-review\2026-10-07-Run4\analysis-v2 --test-solution-dir .\specifications\ATL105\test-output\test-solution-independent-review --dedup-report .\specifications\ATL105\test-output\ai-solution-independent-review\ai-run-deduplication-2026-10-12.json --output-dir .\specifications\ATL105\test-output\ai-solution-independent-review\combined-runs-2026-10-12-crosswalk-v4
 python.exe .\scripts\audit-ai-br-chain-maximum-coverage.py --combined-crosswalk .\specifications\ATL105\test-output\ai-solution-independent-review\combined-runs-2026-10-12-crosswalk-v4\combined-ai-br-test-solution-crosswalk.jsonl --run4-crosswalk .\specifications\ATL105\test-output\ai-solution-independent-review\2026-10-07-Run4\analysis-v2\run4-independent-br-crosswalk-v2\run4-ai-br-chain-crosswalk.jsonl --run1-requirements .\specifications\ATL105\test-input\ai-solution\runs\2026-10-07\Run1\pipeline_outputs_2026-10-07\sample_req_vision\requirements.json --run1-suite .\specifications\ATL105\test-input\ai-solution\runs\2026-10-07\Run1\pipeline_outputs_2026-10-07\src\pipeline\reporting\output\segment-100-suite-catalog.json --test-solution-dir .\specifications\ATL105\test-output\test-solution-independent-review --output-dir .\specifications\ATL105\test-output\ai-solution-independent-review\2026-10-12-ai-br-chain-maximum-coverage-v3
 mvn.cmd -q exec:java "-Dexec.mainClass=com.coreauth.validator.canonical.Atl105FieldStructureRuleRunner" "-Dexec.args=specifications/ATL105 Run4-2026-10-07 specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/test_generation/candidates/qe_shaped_test_data specifications/ATL105/test-output/Run4-field-structure-execution-v11.json"
@@ -49,6 +50,38 @@ The targeted cohort seed is intentionally separate from the blind AI coverage me
 Review-directory and jsdom paths are resolved from the caller's directory before the launcher changes working directory. Python defaults to `python.exe`; use `-PythonPath` when a particular interpreter is required. Failures propagate as task errors, and the caller's directory is restored. Task launch does not install packages or grant approval.
 
 ## Retention
+
+`audit-ai-delivery-coverage.py` provides the delivery-wide ledger. Run with
+`--run-root`, `--test-solution-directory`, `--source-text` and a new
+`--output-directory`; run `--self-test` for synthetic regressions. Requires the
+installed `ijson` package. The source text must correspond to the independent
+baseline release; producer source identity is not silently relabeled.
+
+Both approved and candidate catalog tiers are included. Every occurrence retains
+its source file, row hash and producer state. Conflicting row content under one
+ID, missing IDs and within-catalog duplicate IDs block structural credit. All
+physical files are inventoried/hashed, and explicit TC declarations resolve
+relative to their catalog with metadata TC/scenario identity checks. No guessed
+filename or basename-only fallback supplies a complete route.
+
+Proposed ELEMENT/CROSS_FIELD/PROCESS/LIFECYCLE/RESPONSE/TRANSPORT and
+MESSAGE/SECURITY/AMOUNT/DEPENDENCY/ACCOUNT_CARD/CROSS_SEGMENT types are derived
+only from explicit producer entity IDs, category and requirement-type metadata.
+They remain unassessed/review-required; MESSAGE is not automatically RESPONSE,
+CROSS_SEGMENT is not CROSS_FIELD, and quotes are checked only when supplied.
+No fabricated element number supplies candidate coverage. Pair review
+queues remain pending authorized decisions. Candidate reach, physical-chain
+candidate reach, semantic confirmation and execution are separate measures;
+the latter two stay null without qualified evidence. Auxiliary matrices, archives
+and other formats receive explicit unassessed validation dispositions.
+
+The shared candidate matcher is captured as `crosswalk-implementation.py` in
+each output directory and that exact snapshot is executed/hash-verified; edits
+to the working exporter cannot silently change the matching policy mid-run.
+The complete file population and hashes are checked again before publication.
+A changing delivery/analyzer aborts; preserve the partial directory and use a
+new output directory for the corrected replay. Outputs include full-baseline
+Test BR rows, anchor/pair queues, incomplete TC declarations and chain-gap rows.
 
 Keep immutable intake under `specifications/ATL105/test-input`; place independent outputs under the pack's `test-output` and published views under `reports`. Preserve prior report snapshots and their recorded hashes. Python caches and Maven build outputs are ignored, not evidence.
 

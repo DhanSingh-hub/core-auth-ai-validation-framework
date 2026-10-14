@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#153d38">
+  <title>AI-to-Test BR Coverage | Latest Test BR Baseline</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172b2a;
+      --muted: #526462;
+      --line: #d9e2df;
+      --paper: #f5f8f6;
+      --white: #fff;
+      --pine: #153d38;
+      --teal: #16816e;
+      --lime: #d6ee78;
+      --blue: #4c91b5;
+      --gold: #e4b54d;
+      --coral: #cf684e;
+      --red: #9c4437;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Aptos, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.55 var(--sans); }
+    a { color: #075f57; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+    .masthead { color: var(--white); background: var(--pine); border-bottom: 7px solid var(--lime); }
+    .masthead-inner { padding: 24px 0 35px; }
+    .topline { display: flex; justify-content: space-between; gap: 16px; color: #d5e4df; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .topline p { margin: 0; }
+    .eyebrow { color: var(--lime); }
+    .title-row { margin-top: 28px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 820px; margin-bottom: 11px; font: 400 42px/1.12 var(--serif); }
+    .dek { max-width: 780px; margin-bottom: 27px; color: #d9e7e2; font-size: 18px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(250px, .85fr) 1.15fr; gap: 42px; align-items: end; }
+    .lead { display: flex; align-items: baseline; gap: 12px; }
+    .lead strong { color: var(--lime); font: 400 70px/.95 var(--serif); letter-spacing: 0; }
+    .lead span { max-width: 130px; color: #e5efec; font-size: 14px; line-height: 1.25; }
+    .scale-labels { display: flex; justify-content: space-between; margin-bottom: 8px; color: #d5e4df; font-size: 12px; }
+    .scale { position: relative; height: 11px; background: #48635e; border-radius: 2px; }
+    .fill { display: block; width: 57.52%; height: 100%; background: var(--lime); border-radius: 2px; }
+    .target { position: absolute; top: -6px; left: 90%; width: 2px; height: 23px; background: var(--white); }
+    .scale-note { margin: 8px 0 0; color: #d5e4df; font-size: 12px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 9px 22px; margin-top: 24px; color: #d5e4df; font-size: 12px; }
+    .meta strong { color: var(--white); }
+    .print-button { padding: 8px 12px; color: var(--white); background: transparent; border: 1px solid #9bb5ad; border-radius: 3px; font: 600 13px var(--sans); cursor: pointer; }
+    .print-button:hover { color: var(--pine); background: var(--lime); border-color: var(--lime); }
+    main { background: var(--white); }
+    .section { padding: 38px 0; border-bottom: 1px solid var(--line); }
+    .kicker { margin-bottom: 8px; color: var(--teal); font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    h2 { margin-bottom: 13px; font: 400 29px/1.15 var(--serif); }
+    h3 { margin-bottom: 8px; font-size: 17px; line-height: 1.3; }
+    .intro { max-width: 850px; color: var(--muted); }
+    .caveat { margin: 22px 0 0; padding: 17px 20px; color: #4c421f; background: #fff8e8; border-left: 4px solid var(--gold); font-size: 14px; }
+    .caveat strong { color: #684b0c; }
+    .status-note { margin-top: 22px; padding: 17px 20px; background: #f2f8f4; border-left: 4px solid var(--teal); color: #3f5551; }
+    .status-note strong { display: block; margin-bottom: 4px; color: var(--pine); }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 23px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .metric { min-height: 112px; padding: 17px 18px 16px 0; }
+    .metric + .metric { padding-left: 18px; border-left: 1px solid var(--line); }
+    .metric-value { display: block; margin-bottom: 4px; color: var(--pine); font: 400 29px/1.08 var(--serif); }
+    .metric-label { display: block; color: var(--muted); font-size: 13px; }
+    .metric small { color: #758582; font-size: 11px; }
+    .table-wrap { width: 100%; overflow-x: auto; margin-top: 21px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 10px 11px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: #36504b; background: #f1f5f3; font-size: 11px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; }
+    td { font-size: 13px; }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .draft { color: #75530b; font-weight: 700; }
+    .gap { color: var(--red); font-weight: 800; }
+    .target-band { display: grid; grid-template-columns: 1fr 1fr; margin-top: 21px; color: var(--white); background: var(--pine); }
+    .target-item { padding: 22px 24px; }
+    .target-item + .target-item { border-left: 1px solid #58736e; }
+    .target-value { display: block; color: var(--lime); font: 400 38px/1.1 var(--serif); }
+    .target-label { display: block; margin: 5px 0 8px; color: #e4efec; font-weight: 700; }
+    .target-item p { margin: 0; color: #cfddd8; font-size: 13px; }
+    .steps { margin-top: 15px; border-top: 1px solid var(--line); }
+    .step { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 17px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+    .step-num { color: var(--teal); font: 400 27px/1 var(--serif); }
+    .step h3 { margin: 0 0 6px; }
+    .step p { max-width: 930px; margin: 0; color: var(--muted); font-size: 14px; }
+    .step p + p { margin-top: 7px; }
+    .evidence-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; }
+    .evidence-list { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+    .evidence-list li { margin-bottom: 8px; overflow-wrap: anywhere; }
+    .links { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .decision { padding: 22px 24px; background: #eaf3ef; border-left: 5px solid var(--teal); }
+    .decision h2 { margin-bottom: 7px; color: var(--pine); font-size: 23px; }
+    .decision p { margin: 0; color: #36504b; }
+    footer { padding: 21px 0 28px; color: #6a7a76; font-size: 11px; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 14px; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 32px, 620px); }
+      .hero-grid, .evidence-grid { grid-template-columns: 1fr; gap: 21px; }
+      h1 { font-size: 34px; }
+      .dek { font-size: 16px; }
+      .lead strong { font-size: 60px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 100px; padding: 15px 12px 14px 0; }
+      .metric + .metric { padding-left: 12px; }
+      .metric:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+      .metric:nth-child(4) { border-top: 1px solid var(--line); }
+      .target-band { grid-template-columns: 1fr; }
+      .target-item + .target-item { border-top: 1px solid #58736e; border-left: 0; }
+      .section { padding: 29px 0; }
+      h2 { font-size: 26px; }
+      th, td { padding: 8px; }
+      footer .wrap { flex-direction: column; }
+    }
+    @media (max-width: 430px) {
+      .topline { font-size: 10px; }
+      .lead { align-items: flex-start; flex-direction: column; gap: 3px; }
+      .lead span { max-width: none; }
+      .metric-value { font-size: 25px; }
+      .step { grid-template-columns: 31px minmax(0,1fr); gap: 11px; }
+    }
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      body { background: var(--white); font-size: 10pt; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .wrap { width: 100%; }
+      .masthead-inner { padding: 13px 0 18px; }
+      .title-row { margin-top: 16px; }
+      h1 { font-size: 29px; }
+      .dek { margin-bottom: 15px; font-size: 13px; }
+      .lead strong { font-size: 51px; }
+      .section { padding: 21px 0; break-inside: avoid; }
+      h2 { font-size: 22px; }
+      .print-button { display: none; }
+      .table-wrap { overflow: visible; }
+      tr, .step, .target-band, .decision, .caveat, .status-note { break-inside: avoid; }
+      a { color: inherit; }
+      footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <div class="topline"><p class="eyebrow">Fiserv Business Review</p><p>14 October 2026</p></div>
+      <div class="title-row">
+        <h1>AI requirements against the latest Test BR catalog</h1>
+        <p class="dek">Coverage reach, new draft rules, segment priorities, and practical next steps for improving requirement quality.</p>
+      </div>
+      <div class="hero-grid">
+        <div class="lead"><strong>57.52%</strong><span>candidate reach across 605 catalogued Test BRs</span></div>
+        <div>
+          <div class="scale-labels"><span>348 of 605 catalogued rules</span><span>90% target</span></div>
+          <div class="scale" role="img" aria-label="57.52 percent candidate reach, with a 90 percent planning target"><span class="fill"></span><i class="target"></i></div>
+          <p class="scale-note">Target is a planning threshold, not a validation status.</p>
+        </div>
+      </div>
+      <div class="meta">
+        <span><strong>601</strong> source-derived rules</span>
+        <span><strong>4</strong> draft additions</span>
+        <span><strong>50.91%</strong> complete-chain reach</span>
+        <span><strong>NOT_ASSESSED</strong> semantic status</span>
+        <button class="print-button" type="button" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Executive summary</p>
+        <h2>A strong structural foundation with a clear review path</h2>
+        <p class="intro">The current AI delivery produces source-anchor candidates for 348 of the 605 catalogued Test BRs. The crosswalk provides 1,208 reviewable candidate pairs, giving business reviewers a concrete, searchable starting point.</p>
+        <div class="metrics">
+          <div class="metric"><span class="metric-value">348 / 605</span><span class="metric-label">Candidate Test BR reach</span><small>57.52% catalogued-rule view</small></div>
+          <div class="metric"><span class="metric-value">308 / 605</span><span class="metric-label">Candidate BRs with complete direct chain</span><small>50.91% with payload/metadata present</small></div>
+          <div class="metric"><span class="metric-value">4 / 4</span><span class="metric-label">New draft Test BRs with AI candidates</span><small>Source-anchor links identified</small></div>
+          <div class="metric"><span class="metric-value">99.87%</span><span class="metric-label">Payload and metadata presence</span><small>21,227 of 21,254 test cases</small></div>
+        </div>
+        <div class="status-note"><strong>What the evidence supports</strong>These are structural source-anchor and file/metadata checks. Semantic equivalence, business approval, test adequacy, and successful execution remain `NOT_ASSESSED`; candidate links are a review starting point, not a correctness claim.</div>
+        <div class="caveat"><strong>Fair comparison:</strong> on the prior 601 source-derived rules, candidate reach is <b>344/601 (57.24%)</b>, with <b>304/601 (50.58%)</b> complete-chain reach. The 605-rule view adds four draft rules, all with candidates; the 0.28-point difference is not evidence of improved AI quality.</div>
+        <p class="intro">The earlier 55.24% report used a different AI catalog hash (`3cb913...d2fe8`). The current source and local intake hash to `6b4096...b6b4a`; the earlier input is unavailable for a controlled rerun.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">The denominator update</p>
+        <h2>All four new catalogued rules already have AI candidates</h2>
+        <p class="intro">The latest catalog adds four source-anchored rules, and each has at least one AI source-anchor candidate. This gives reviewers a direct starting point for examining the new scope. All four remain <span class="draft">DRAFT_REVIEW_REQUIRED</span>, so they are not yet approved rules.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>New Test BR</th><th>Source scope</th><th>Status</th><th>AI candidate</th></tr></thead>
+          <tbody>
+            <tr><td>SEG102-R-026</td><td>Segment 102, Element 76</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
+            <tr><td>SEG123-R-012</td><td>Segment 123, Elements 196/204/238</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
+            <tr><td>SEG156-R-008</td><td>Segment 156, Elements 85/84</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
+            <tr><td>SEG156-R-009</td><td>Segment 156, Element 242</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
+          </tbody>
+        </table></div>
+        <p class="intro">The package derives 605 unique `BR-RULE-*` IDs from the training catalog. Its 1,330 BR rows also contain review and placeholder material, so the governed 605-ID denominator is used instead of the raw row count. Keep the 601-rule view visible until the additions complete independent review.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Candidate disposition</p>
+        <h2>The candidate map identifies focused enrichment opportunities</h2>
+        <div class="table-wrap"><table>
+          <thead><tr><th>AI BR disposition</th><th class="num">Count</th><th class="num">Share</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>No numeric element anchor</td><td class="num">2,728</td><td class="num">39.65%</td><td>Use a source-backed rule-type/domain anchor when an element does not apply.</td></tr>
+            <tr><td>Segment unresolved</td><td class="num">3,332</td><td class="num">48.43%</td><td>Resolve segment/message-family context from source evidence.</td></tr>
+            <tr><td>No exact Test BR candidate</td><td class="num">42</td><td class="num">0.61%</td><td>Review new scope, anchor mismatch, or independent baseline gap.</td></tr>
+            <tr><td>Ambiguous/composite candidates</td><td class="num">455</td><td class="num">6.61%</td><td>Atomize independent obligations where appropriate; review each pair.</td></tr>
+            <tr><td>Legacy entity-anchor candidates</td><td class="num">323</td><td class="num">4.70%</td><td>Reconcile legacy IDs to current segment/element anchors.</td></tr>
+          </tbody>
+        </table></div>
+        <p class="intro">The 6,060 AI BRs without a numeric element anchor or resolved segment form the largest opportunity to improve findability. For process, response, and lifecycle requirements, use a suitable domain anchor rather than forcing an element number. Better traceability supports review; it does not replace it.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Segment achievements</p>
+        <h2>Candidate reach is already established across key segments</h2>
+        <p class="intro">The current candidate map reaches 348 catalogued Test BRs across 49 segments. These high-contribution segments show where source-anchor alignment is already working and provide a foundation for expanding validation into adjacent requirements.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Segment</th><th class="num">Catalogued Test BRs</th><th class="num">Candidate-linked</th><th class="num">Reach</th></tr></thead>
+          <tbody>
+            <tr><td>100</td><td class="num">36</td><td class="num">30</td><td class="num">83.33%</td></tr>
+            <tr><td>119</td><td class="num">40</td><td class="num">24</td><td class="num">60.00%</td></tr>
+            <tr><td>118</td><td class="num">29</td><td class="num">21</td><td class="num">72.41%</td></tr>
+            <tr><td>102</td><td class="num">26</td><td class="num">19</td><td class="num">73.08%</td></tr>
+            <tr><td>108</td><td class="num">24</td><td class="num">18</td><td class="num">75.00%</td></tr>
+            <tr><td>105</td><td class="num">21</td><td class="num">17</td><td class="num">80.95%</td></tr>
+            <tr><td>109</td><td class="num">22</td><td class="num">15</td><td class="num">68.18%</td></tr>
+            <tr><td>110</td><td class="num">20</td><td class="num">15</td><td class="num">75.00%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="intro">These are source-anchor candidate rates, not semantic approval. The linked Test BR index and candidate-pair register provide a practical basis for business review and continued expansion.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">90% planning target</p>
+        <h2>A measurable next milestone</h2>
+        <div class="target-band">
+          <div class="target-item"><span class="target-value">+197</span><span class="target-label">distinct candidate Test BRs</span><p>Reach at least 545 of 605 catalogued rules at 90% candidate reach.</p></div>
+          <div class="target-item"><span class="target-value">+237</span><span class="target-label">complete-chain Test BRs</span><p>Reach at least 545 of 605 through candidate, linked scenario/case, and present payload/metadata.</p></div>
+        </div>
+        <p class="intro">Build toward the target by adding source-backed requirement coverage and complete test evidence. Keep the independent denominator fixed and report candidate reach, semantic approval, and execution separately.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Recommended improvement plan</p>
+        <h2>Build on the current foundation</h2>
+        <div class="steps">
+          <article class="step"><span class="step-num">01</span><div><h3>Enrich source context</h3><p>Add source page, section, quote, segment/message-family scope, and applicability conditions for the 3,332 BRs awaiting segment resolution. Route genuine ambiguity to authorized review.</p></div></article>
+          <article class="step"><span class="step-num">02</span><div><h3>Extend anchors for non-element rules</h3><p>For the 2,728 BRs without numeric element anchors, distinguish transaction/process, response, cross-field, lifecycle, and host/transport rules. Use a domain anchor where appropriate; preserve source meaning.</p></div></article>
+          <article class="step"><span class="step-num">03</span><div><h3>Sharpen requirement testability</h3><p>State conditions, required behavior, exceptions, and expected outcomes. Split independently testable obligations while retaining provenance; distinguish normative text from examples and model inference.</p></div></article>
+          <article class="step"><span class="step-num">04</span><div><h3>Confirm candidate relationships</h3><p>Review the 42 exact-anchor misses and 455 ambiguous/composite candidates; reconcile 323 legacy-anchor candidates. Record source-backed rationale for each accepted mapping and advance the four new Test BR drafts through independent review.</p></div></article>
+          <article class="step"><span class="step-num">05</span><div><h3>Complete the remaining data joins</h3><p>21,227 test cases already have payload and matching metadata under the current check. Resolve or disposition the remaining 27, then verify scenarios exercise linked BRs and test cases assert expected behavior.</p></div></article>
+          <article class="step"><span class="step-num">06</span><div><h3>Track progress consistently</h3><p>Publish the 601 source-derived and 605 catalogued views side by side. Add semantic-approved and executed measures when authorized decisions and corresponding test evidence are available.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap evidence-grid">
+        <div>
+          <p class="kicker">Evidence and transparency</p>
+          <h2>Assessment provenance</h2>
+          <ul class="evidence-list">
+            <li>AI catalog SHA-256: <code>6b40963dfec26160013f87d47fe1defa3652b414adc4b29b60619cd6d71b6b4a</code>.</li>
+            <li>Training catalog SHA-256: <code>640f053f61d0e575468a0cb80381feb0787b3f7bbdbc429333e2c960ed1f12df</code>.</li>
+            <li>Latest canonical package SHA-256: <code>4c487a68e3223b06ef509016abbc443f0ab6615fd437d147d2a6941132f04dad</code>.</li>
+            <li>Package state: `COMPLETE_STRUCTURE_REVIEW_REQUIRED`; executionReady is false; four additional rules are drafts.</li>
+            <li>Candidate matching uses exact normalized segment and numeric element anchors; no semantic equivalence is inferred.</li>
+            <li>27 / 21,254 test cases have incomplete payload or metadata under the current structural check.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="kicker">Supporting files</p>
+          <h3>Crosswalk evidence</h3>
+          <div class="links">
+            <a href="crosswalk-summary.json">Crosswalk summary (JSON)</a>
+            <a href="ai-test-br-candidate-pairs.csv">AI-to-Test BR candidate pairs (CSV)</a>
+            <a href="test-br-ai-br-index.csv">Test BR candidate index (CSV)</a>
+            <a href="ai-brs-without-test-br-candidates.csv">AI BRs without candidates (CSV)</a>
+            <a href="AI-TO-TEST-BR-COVERAGE-AND-IMPROVEMENT-REPORT.md">Full report (Markdown)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section"><div class="wrap"><div class="decision"><h2>Business next steps</h2><p>Build on the 348 candidate-reached rules by prioritizing segments 119, 101, 103, 130, 114, and 118; nominate SMEs to review ambiguous pairs; and advance the four new Test BR drafts. Report 57.52% as candidate reach across 605 catalogued rules and retain 57.24% for the prior 601-rule set. Semantic approval and execution remain separate next milestones.</p></div></div></section>
+  </main>
+  <footer><div class="wrap"><span>AI-to-Test BR Coverage | Fiserv Business Review</span><span>Updated assessment: 2026-10-14</span></div></footer>
+</body>
+</html>

@@ -24,6 +24,7 @@ public final class Chapter11MessageLayoutValidator {
     public record Result(Status status, List<Finding> findings) { }
     private final ObjectMapper mapper = new ObjectMapper();
     private final JsonNode templates;
+    private final Map<String, String> sourceSections;
     private final Atl105ElementValueValidator elementValidator;
     private final Chapter13DataElementValidator chapter13Validator;
 
@@ -37,6 +38,27 @@ public final class Chapter11MessageLayoutValidator {
         if (!templates.isObject() || templates.size() != catalog.path("total_transaction_types").asInt()) {
             throw new IOException("Incomplete Chapter 11 template catalog");
         }
+        JsonNode layouts = mapper.readTree(pack.resolve("docs").resolve("specs").resolve("kb")
+                .resolve("section-11-message-layout-index.json").toFile()).path("layouts");
+        if (!layouts.isArray() || layouts.size() != templates.size()) {
+            throw new IOException("Incomplete Section 11 source-layout index");
+        }
+        Map<String, String> indexedSections = new HashMap<>();
+        for (JsonNode layout : layouts) {
+            String family = layout.path("template_key").asText();
+            String section = layout.path("section").asText();
+            JsonNode template = templates.get(family);
+            if (template == null || !section.matches("11\\.[0-9]+(?:\\.[0-9]+)*")
+                    || indexedSections.putIfAbsent(family, section) != null) {
+                throw new IOException("Invalid or duplicate Section 11 layout index entry " + family);
+            }
+            String catalogSection = template.path("source_section").asText();
+            if (!catalogSection.isBlank() && !catalogSection.equals(section)) {
+                throw new IOException("Section 11 source mismatch for " + family + ": " + catalogSection + " vs " + section);
+            }
+        }
+        if (indexedSections.size() != templates.size()) throw new IOException("Section 11 layout index does not cover every template");
+        sourceSections = Map.copyOf(indexedSections);
         elementValidator = new Atl105ElementValueValidator(pack);
         chapter13Validator = new Chapter13DataElementValidator(pack);
     }
@@ -52,7 +74,7 @@ public final class Chapter11MessageLayoutValidator {
         JsonNode template = templates.get(family);
         if (template == null) return new Result(Status.INVALID,
                 List.of(new Finding("", "message-family", Status.INVALID, "Unknown Chapter 11 message family")));
-        String section = template.path("source_section").asText();
+        String section = sourceSections.get(family);
         Set<String> visited = new HashSet<>();
         while (template.has("alias_of")) {
             String alias = template.path("alias_of").asText();

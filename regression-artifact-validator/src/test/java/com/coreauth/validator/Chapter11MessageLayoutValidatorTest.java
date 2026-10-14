@@ -53,6 +53,26 @@ class Chapter11MessageLayoutValidatorTest {
     }
 
     @Test
+    void standardRequestAllowsSevenTotalSegmentsButRejectsAnEighth() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Request");
+        for (String id : java.util.List.of("101", "102", "103", "104", "111", "123")) {
+            input.withArray("segments").addObject().put("segment", id).put("dataSection", 3);
+        }
+        ((ObjectNode) input.path("elements")).put("63", "07");
+        var sevenSegments = validator.validate(input);
+        assertThat(sevenSegments.findings()).noneMatch(f -> f.scope().equals("segment-slots")
+                && f.status() == Status.INVALID);
+        assertThat(sevenSegments.findings()).noneMatch(f -> f.scope().equals("segment-count")
+                && f.status() == Status.INVALID);
+
+        input.withArray("segments").addObject().put("segment", "135").put("dataSection", 3);
+        ((ObjectNode) input.path("elements")).put("63", "08");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("segment-slots")
+                && f.status() == Status.INVALID);
+    }
+
+    @Test
     void emvRequires130AndHonorsSixTotalSlots() throws Exception {
         var validator = new Chapter11MessageLayoutValidator();
         ObjectNode input = financial("EMV Financial Transaction Request");
@@ -82,14 +102,24 @@ class Chapter11MessageLayoutValidatorTest {
     void everyCatalogFamilyDispatchesPartialInputsWithoutInventingMissingFields() throws Exception {
         var validator = new Chapter11MessageLayoutValidator();
         var templates = mapper.readTree(Atl105Paths.docs().resolve("atl105_complete_templates.json").toFile()).path("message_templates");
+        var layouts = mapper.readTree(Atl105Paths.docs().resolve("specs/kb/section-11-message-layout-index.json").toFile()).path("layouts");
         var families = templates.fieldNames();
         int count = 0;
         while (families.hasNext()) {
             String family = families.next();
+            String sourceSection = null;
+            for (var layout : layouts) {
+                if (family.equals(layout.path("template_key").asText())) sourceSection = layout.path("section").asText();
+            }
+            assertThat(sourceSection).as(family + " source section").isNotBlank();
             ObjectNode input = financial(family).put("completeness", "PARTIAL");
             input.putObject("elements");
             input.putArray("segments");
-            assertThat(validator.validate(input).status()).as(family).isEqualTo(Status.REVIEW_REQUIRED);
+            var result = validator.validate(input);
+            String expectedAnchor = "ATL105|2026-3|" + sourceSection + "|MESSAGE";
+            assertThat(result.status()).as(family).isEqualTo(Status.REVIEW_REQUIRED);
+            assertThat(result.findings()).as(family + " source anchor")
+                    .anyMatch(finding -> finding.ruleId().equals(expectedAnchor));
             count++;
         }
         assertThat(count).isEqualTo(31);
