@@ -4,10 +4,15 @@ import com.coreauth.validator.canonical.Atl105FieldStructureRuleRunner;
 import com.coreauth.validator.validation.Atl105ElementValueValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class Atl105FieldStructureRuleRunnerTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -42,5 +47,32 @@ class Atl105FieldStructureRuleRunnerTest {
             .isEqualTo("FAIL");
         assertThat(Atl105FieldStructureRuleRunner.reportStatus(Atl105ElementValueValidator.Status.REVIEW_REQUIRED))
             .isEqualTo("REVIEW_REQUIRED");
+    }
+
+    @Test
+    void reportBindsParsedBytesAndRefusesToOverwriteEvidence(@TempDir Path temporary) throws Exception {
+        Path inputs = Files.createDirectories(temporary.resolve("qe"));
+        Path metadata = inputs.resolve("TC-1.meta.json");
+        Path payload = inputs.resolve("TC-1.json");
+        Files.writeString(metadata, "{\"testCaseId\":\"TC-1\",\"scenarioId\":\"SC-1\",\"fields\":[]}");
+        Files.writeString(payload, "{\"Financial Request\":{\"MessageType\":\"ATL105\",\"NumSegments\":\"0\"}}");
+        Path output = temporary.resolve("report.json");
+        String[] arguments = {PACK.toString(), "fixture-run", inputs.toString(), output.toString()};
+        Atl105FieldStructureRuleRunner.main(arguments);
+        var report = MAPPER.readTree(output.toFile());
+        assertThat(report.path("inputStabilityVerified").asBoolean()).isTrue();
+        assertThat(report.path("configurationSha256").size()).isGreaterThan(5);
+        assertThat(report.path("inputMessages")).hasSize(1);
+        var input = report.path("inputMessages").get(0);
+        assertThat(input.path("metadataSha256").asText()).isEqualTo(hash(metadata));
+        assertThat(input.path("payloadSha256").asText()).isEqualTo(hash(payload));
+        assertThat(input.path("testCaseId").asText()).isEqualTo("TC-1");
+        assertThat(input.path("scenarioId").asText()).isEqualTo("SC-1");
+        assertThatThrownBy(() -> Atl105FieldStructureRuleRunner.main(arguments))
+            .isInstanceOf(java.io.IOException.class).hasMessageContaining("Refusing to overwrite");
+    }
+
+    private static String hash(Path path) throws Exception {
+        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path)));
     }
 }

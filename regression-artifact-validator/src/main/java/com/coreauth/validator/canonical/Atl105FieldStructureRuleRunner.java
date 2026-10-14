@@ -86,11 +86,14 @@ public final class Atl105FieldStructureRuleRunner {
 
         JsonNode inventory = MAPPER.readTree(inventoryFile.toFile());
         JsonNode profiles = MAPPER.readTree(profilesFile.toFile());
+        Map<String, String> configurationHashes = configurationHashes(pack, inventoryFile, profilesFile, profiles);
         Map<String, JsonNode> rules = loadFieldStructureRules(inventory);
         Map<String, List<String>> executable = loadExecutableProfiles(profiles, rules);
         Map<String, String> partialExecutors = partialStructureExecutors(rules);
         Atl105AiElementIntake intake = new Atl105AiElementIntake(pack);
         ArrayNode evaluations = MAPPER.createArrayNode();
+        ArrayNode inputMessages = MAPPER.createArrayNode();
+        Map<Path, String> physicalHashes = new TreeMap<>();
         Map<String, Map<String, Long>> outcomesByClass = new TreeMap<>();
         Map<String, Map<String, Long>> outcomesByRule = new TreeMap<>();
         Map<String, Long> failureDispositionCounts = new TreeMap<>();
@@ -104,9 +107,24 @@ public final class Atl105FieldStructureRuleRunner {
         }
         for (Path metaFile : metadataFiles) {
             Path payloadFile = metaFile.resolveSibling(metaFile.getFileName().toString().replace(".meta.json", ".json"));
-            JsonNode meta = MAPPER.readTree(metaFile.toFile());
-            JsonNode payload = Files.isRegularFile(payloadFile) ? MAPPER.readTree(payloadFile.toFile()) : null;
+            byte[] metadataBytes = Files.readAllBytes(metaFile);
+            byte[] payloadBytes = Files.isRegularFile(payloadFile) ? Files.readAllBytes(payloadFile) : null;
+            String metadataHash = digest(metadataBytes);
+            String payloadHash = payloadBytes == null ? "" : digest(payloadBytes);
+            physicalHashes.put(metaFile, metadataHash);
+            physicalHashes.put(payloadFile, payloadHash);
+            JsonNode meta = MAPPER.readTree(metadataBytes);
+            JsonNode payload = payloadBytes == null ? null : MAPPER.readTree(payloadBytes);
             Atl105AiElementIntake.MessageAssessment assessment = intake.assess(meta, payload);
+            ObjectNode input = inputMessages.addObject();
+            input.put("messageId", metaFile.getFileName().toString());
+            input.put("testCaseId", assessment.testCaseId());
+            input.put("scenarioId", meta.path("scenarioId").asText(""));
+            input.put("metadataPath", metaFile.toRealPath().toString());
+            input.put("payloadPath", payloadFile.toAbsolutePath().normalize().toString());
+            input.put("metadataSha256", metadataHash);
+            input.put("payloadSha256", payloadHash);
+            input.put("payloadPresent", payloadBytes != null);
             messageCount++;
             if (messageCount % 1000 == 0) System.out.println("assessed=" + messageCount + "/" + metadataFiles.size());
             for (var observed : assessment.observations()) {
@@ -135,6 +153,7 @@ public final class Atl105FieldStructureRuleRunner {
                     if ("FAIL".equals(outcome)) failureDispositionCounts.merge(failureDisposition, 1L, Long::sum);
                     ObjectNode row = evaluations.addObject();
                     row.put("runId", runId);
+                    row.put("messageId", metaFile.getFileName().toString());
                     row.put("testCaseId", assessment.testCaseId());
                     row.put("scenarioType", assessment.scenarioType());
                     row.put("negativeClass", assessment.negativeClass());
@@ -169,6 +188,7 @@ public final class Atl105FieldStructureRuleRunner {
             row.put("executionStatus", hasProfile ? "PROFILE_BACKED_LIMITED_EXECUTION"
                 : partialExecutor != null ? "PARTIAL_EXECUTOR_REVIEW_REQUIRED_FOR_UNCHECKED_BRANCHES" : "REVIEW_REQUIRED_NO_BOUND_EXECUTOR");
             row.put("evaluator", partialExecutor == null ? (hasProfile ? "SOURCE_VALIDATED_ELEMENT_PROFILE" : "") : partialExecutor);
+            row.set("profileIds", MAPPER.valueToTree(executable.getOrDefault(entry.getKey(), List.of())));
             row.put("evaluatedCaseCount", evaluationsByRule.getOrDefault(entry.getKey(), 0L));
             row.set("sourceAnchor", entry.getValue().path("sourceAnchor").deepCopy());
             String state = hasProfile ? "PROFILE_BACKED_LIMITED_EXECUTION"
@@ -176,6 +196,18 @@ public final class Atl105FieldStructureRuleRunner {
             coverageByClass.computeIfAbsent(entry.getValue().path("class").asText(), ignored -> new TreeMap<>()).merge(state, 1L, Long::sum);
         }
 
+        List<Path> finalMetadataFiles;
+        try (var files = Files.list(runDirectory)) {
+            finalMetadataFiles = files.filter(path -> path.getFileName().toString().endsWith(".meta.json")).sorted().toList();
+        }
+        if (!metadataFiles.equals(finalMetadataFiles)) throw new IOException("Metadata file population changed during validation");
+        for (Map.Entry<Path, String> input : physicalHashes.entrySet()) {
+            String current = Files.isRegularFile(input.getKey()) ? sha256(input.getKey()) : "";
+            if (!input.getValue().equals(current)) throw new IOException("Physical input changed during validation: " + input.getKey());
+        }
+        if (!configurationHashes.equals(configurationHashes(pack, inventoryFile, profilesFile, profiles))) {
+            throw new IOException("Validator configuration changed during execution");
+        }
         ObjectNode report = MAPPER.createObjectNode();
         report.put("artifact", "ATL105-FIELD-STRUCTURE-RULE-EXECUTION");
         report.put("specificationVersion", "2026-3");
@@ -184,6 +216,10 @@ public final class Atl105FieldStructureRuleRunner {
         report.put("policy", "PASS means the bound profile passed only its stated check; FAIL means that check detected a violation, not that the whole case failed; REVIEW_REQUIRED means no source-bound executor/context was available. These are not full BR, semantic, or business approvals.");
         report.put("negativeScenarioPolicy", "A profile FAIL on a negative scenario whose element matches the declared violated element is an expected negative-target detection candidate; other negative FAILs require review.");
         report.put("messagesAssessed", messageCount);
+        report.put("inputDirectory", runDirectory.toRealPath().toString());
+        report.put("inputStabilityVerified", true);
+        report.put("provenanceVersion", 1);
+        report.put("observationSource", "AI_METADATA_FIELDS_WITH_PHYSICAL_ENVELOPE_AND_STRUCTURE_CHECKS");
         report.put("inventoryRuleCount", rules.size());
         report.put("ruleCountsByClass", MAPPER.valueToTree(classCounts(rules)));
         report.put("executableProfileRuleCount", executable.size());
@@ -197,6 +233,8 @@ public final class Atl105FieldStructureRuleRunner {
         ObjectNode inputHashes = report.putObject("inputSha256");
         inputHashes.put("sourceRuleInventory", sha256(inventoryFile));
         inputHashes.put("validationProfiles", sha256(profilesFile));
+        report.set("configurationSha256", MAPPER.valueToTree(configurationHashes));
+        report.set("inputMessages", inputMessages);
         report.set("ruleCoverage", ruleCoverage);
         report.set("evaluations", evaluations);
         report.set("unmappedReviewSamples", unmappedSamples);
@@ -230,5 +268,25 @@ public final class Atl105FieldStructureRuleRunner {
             while ((count = input.read(buffer)) != -1) digest.update(buffer, 0, count);
         }
         return HexFormat.of().formatHex(digest.digest());
+    }
+
+    private static String digest(byte[] bytes) throws Exception {
+        return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
+    }
+
+    private static Map<String, String> configurationHashes(Path pack, Path inventoryFile, Path profilesFile, JsonNode profiles) throws Exception {
+        Map<String, String> hashes = new TreeMap<>();
+        List<Path> files = new ArrayList<>(List.of(inventoryFile, profilesFile,
+            pack.resolve("docs/specs/extracted_text.txt"), pack.resolve("docs/atl105_complete_templates.json"),
+            pack.resolve("docs/specs/kb/elements/ai-intake-crosswalk.json"),
+            pack.resolve("test-output/test-solution-independent-review/all-element-inventory.json")));
+        for (JsonNode profile : profiles.path("profiles")) {
+            files.add(pack.resolve("docs/specs/kb").resolve(profile.path("existingRuleCatalog").asText()));
+        }
+        try (var aliases = Files.list(pack.resolve("contract"))) {
+            files.addAll(aliases.filter(path -> path.getFileName().toString().matches("segment-.+-field-alias-crosswalk\\.json")).toList());
+        }
+        for (Path file : files) hashes.put(file.toAbsolutePath().normalize().toString(), sha256(file));
+        return hashes;
     }
 }

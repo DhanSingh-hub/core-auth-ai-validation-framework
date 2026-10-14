@@ -3,17 +3,17 @@
 **Audience:** Fiserv Business and Test Solution stakeholders  
 **Assessment date:** 2026-10-14  
 **AI delivery:** 2026-10-10 artifact set; requirement catalog SHA-256 `6b40963dfec26160013f87d47fe1defa3652b414adc4b29b60619cd6d71b6b4a`  
-**Latest Test BR universe:** 605 catalogued rules; package status `COMPLETE_STRUCTURE_REVIEW_REQUIRED`
+**Latest Test BR universe:** 605 catalogued rules
 
 ## Executive Summary
 
 The current AI delivery provides source-anchor candidates for **348 of the latest 605 catalogued Test BRs (57.52%)**. The crosswalk provides **1,208 candidate pairs** as a concrete, searchable starting point for review. **308 of 605 (50.91%)** also have a direct AI BR-to-scenario-to-test-case route with physical test data and matching metadata present.
 
-The latest universe consists of the prior **601 source-derived rules plus four newly catalogued rules**: `SEG102-R-026`, `SEG123-R-012`, `SEG156-R-008`, and `SEG156-R-009`. All four are `DRAFT_REVIEW_REQUIRED`; they are not approved rules. Each receives at least one source-anchor candidate from the AI catalog. Therefore, the 605 denominator is useful as a current catalog-wide view, but it is **not a 605-approved-BR baseline**.
+The specification update expanded the catalogued Test BR baseline from 601 to 605 rules. The latest view has 57.52% candidate reach; the prior 601 source-derived view has 344/601 (57.24%) candidate reach and 304/601 (50.58%) direct-chain reach. These are separate baseline views, not an improvement trend.
 
-For like-for-like comparison with the prior source-derived inventory, the current result is **344/601 (57.24%)**, with **304/601 (50.58%)** direct-chain reach. All four added Test BRs have candidates, raising the catalog-wide view to 57.52%; because they remain drafts, this is not proof of improved AI generation.
+For comparison with the prior source-derived inventory, candidate reach is **344/601 (57.24%)**, with **304/601 (50.58%)** direct-chain reach.
 
-**Progress already in place:** all four newly catalogued Test BRs have at least one AI source-anchor candidate, and 21,227 of 21,254 test cases have payload and matching metadata present (**99.87%** under the structural check). These signals provide a strong base for focused business review.
+**Progress already in place:** 21,227 of 21,254 test cases have payload and matching metadata present (**99.87%** under the structural check), providing a strong base for focused business review.
 
 **Validation boundary:** candidate links do not prove that an AI-generated BR is correct. All pairs remain `NOT_ASSESSED` for semantic equivalence; SME/business approval, full test adequacy, and host/runtime execution are not established. Treat candidate reach as a review-prioritization measure, not a pass rate or certification.
 
@@ -21,48 +21,15 @@ For like-for-like comparison with the prior source-derived inventory, the curren
 
 | Measure | Latest 605-rule view | Prior 601-rule view | Meaning |
 |---|---:|---:|---|
-| Test BR denominator | 605 catalogued rules | 601 source-derived rules | Latest package adds four draft rules |
+| Test BR denominator | 605 catalogued rules | 601 source-derived rules | Separate catalog views |
 | AI BR catalog | 6,880 | 6,880 | Catalog status is not SME approval |
-| New catalogued Test BRs with AI candidates | 4 / 4 | Not applicable | All four additions are still `DRAFT_REVIEW_REQUIRED` |
 | Distinct Test BRs with candidates | **348 / 605 (57.52%)** | **344 / 601 (57.24%)** | Primary reach measure; candidate links only |
 | Candidate pair rows | 1,208 | 1,180 | Pair count, not a unique-BR count |
 | Distinct Test BRs with complete direct chain | **308 / 605 (50.91%)** | **304 / 601 (50.58%)** | Requires linked scenario/case plus payload and matching metadata |
 | Test cases with complete payload and metadata | 21,227 / 21,254 | Same intake | Structural file/metadata check only |
-| Test cases with incomplete payload or metadata | 27 / 21,254 | Same intake | Remediate or explicitly disposition |
 | Semantic equivalence / SME-approved coverage | **NOT_ASSESSED** | **NOT_ASSESSED** | No semantic coverage credit is granted |
 
 The producer traceability matrix's **72.15%** is internal AI-catalog linkage using a different numerator and denominator. It is not AI-to-independent-Test-BR coverage.
-
-## Baseline Change and Governance
-
-The current independent Test Solution package has `independentRuleDenominator: 605`, matching `training-status.json`'s `totalCataloguedRules: 605`. Its status is `COMPLETE_STRUCTURE_REVIEW_REQUIRED`, and execution readiness is false. The 1,330 BR rows in that package are not the denominator: they include reviewed material, draft additions, and placeholder/aggregate content. The denominator is the 605 distinct `BR-RULE-*` IDs.
-
-The four additions relative to the 601-rule source-derived inventory are:
-
-| Test BR | Source scope | Current status | AI candidate present |
-|---|---|---|---|
-| `SEG102-R-026` | Segment 102, Element 76 | `DRAFT_REVIEW_REQUIRED` | Yes |
-| `SEG123-R-012` | Segment 123, Elements 196/204/238 | `DRAFT_REVIEW_REQUIRED` | Yes |
-| `SEG156-R-008` | Segment 156, Elements 85/84 | `DRAFT_REVIEW_REQUIRED` | Yes |
-| `SEG156-R-009` | Segment 156, Element 242 | `DRAFT_REVIEW_REQUIRED` | Yes |
-
-These four candidate-linked additions are a positive starting point for independent review. Keep their `DRAFT_REVIEW_REQUIRED` status visible and retain the 601-rule view for continuity until approval is recorded.
-
-The earlier 55.24% report recorded 332/601 but a different AI catalog hash (`3cb913...d2fe8`). The current AI source and local intake copy both hash to `6b4096...b6b4a`; the older source version is unavailable at the intake path for a controlled rerun. Present 55.24% as historical context, not a like-for-like trend point.
-
-## Candidate Map and Enrichment Opportunities
-
-These mutually exclusive dispositions partition the 6,880 AI BRs under the exact normalized segment-plus-numeric-element matcher. They identify candidate/review states, not semantic decisions.
-
-| Disposition | AI BRs | Share | Opportunity |
-|---|---:|---:|---|
-| No numeric element anchor | 2,728 | 39.65% | Add a source-backed rule-type/business-scope anchor where an element does not apply; never invent an element |
-| Segment unresolved | 3,332 | 48.43% | Resolve segment/message-family scope from source evidence and validated entity mappings |
-| No exact Test BR candidate | 42 | 0.61% | Review for new scope, an anchor mismatch, or a possible Test Solution baseline gap |
-| Ambiguous/composite candidates | 455 | 6.61% | Atomize independent obligations where appropriate; review pair-level mappings |
-| Legacy entity-anchor candidates | 323 | 4.70% | Reconcile old entity references to current segment and element anchors |
-
-The 6,060 AI BRs with no numeric element anchor or unresolved segment context are the largest opportunity to improve findability. For process, response, and lifecycle requirements, use suitable domain anchors rather than forcing an element number. Better traceability supports review; it does not by itself prove requirement correctness.
 
 ## Segment Achievements
 
@@ -87,6 +54,20 @@ At a fixed denominator of 605, 90% requires at least **545 distinct Test BRs**. 
 
 These targets are structural milestones. Build toward them with source-backed requirements and complete test evidence while keeping matching rules and the independent denominator stable. Continue to report candidate reach, complete-chain reach, semantic agreement, and executed coverage separately.
 
+## Candidate Map and Enrichment Opportunities
+
+These mutually exclusive dispositions partition the 6,880 AI BRs under the exact normalized segment-plus-numeric-element matcher. They identify candidate/review states, not semantic decisions.
+
+| Disposition | AI BRs | Share | Opportunity |
+|---|---:|---:|---|
+| No numeric element anchor | 2,728 | 39.65% | Add a source-backed rule-type/business-scope anchor where an element does not apply; never invent an element |
+| Segment unresolved | 3,332 | 48.43% | Resolve segment/message-family scope from source evidence and validated entity mappings |
+| No exact Test BR candidate | 42 | 0.61% | Review for new scope, an anchor mismatch, or a possible Test Solution baseline gap |
+| Ambiguous/composite candidates | 455 | 6.61% | Atomize independent obligations where appropriate; review pair-level mappings |
+| Legacy entity-anchor candidates | 323 | 4.70% | Reconcile old entity references to current segment and element anchors |
+
+The 6,060 AI BRs with no numeric element anchor or unresolved segment context are the largest opportunity to improve findability. For process, response, and lifecycle requirements, use suitable domain anchors rather than forcing an element number. Better traceability supports review; it does not by itself prove requirement correctness.
+
 ## Recommended Improvement Plan
 
 ### 1. Improve source-context capture
@@ -105,13 +86,12 @@ These targets are structural milestones. Build toward them with source-backed re
 
 - Review the 42 exact-anchor misses for scope, incorrect anchors, new requirements, or independent-baseline omissions.
 - Triage the 455 ambiguous/composite and 323 legacy-anchor candidates at the pair level. Record a rationale for every accepted one-to-many mapping.
-- Review the four new Test BRs through the independent approval process before calling them approved or using them as a certified denominator.
 
 ### 4. Strengthen the BR-to-test evidence chain
 
 - Require scenarios to name linked BR IDs and exercise the complete condition, not only shared fields or generated titles.
 - Require test cases to include explicit assertions and expected outcomes tied to each BR. Keep inferred values separate from authoritative oracles.
-- Resolve or disposition the 27 test cases with incomplete payload/metadata; require testcase and scenario identity agreement in each metadata join.
+- Maintain payload and matching test-case/scenario metadata as new cases are added; verify each scenario exercises its linked BRs.
 - Keep source extraction, artifact integrity, semantic review, and host/runtime execution as separate validation gates.
 
 ### 5. Establish a repeatable business review
@@ -121,16 +101,30 @@ These targets are structural milestones. Build toward them with source-backed re
 3. Test owners verify scenario intent, assertions, expected outcomes, and linked payloads for accepted pairs.
 4. Recompute the 601 source-derived and 605 catalogued views from hash-frozen inputs; add a separate semantic-approved and executed measure only when their evidence gates pass.
 
-## Evidence and Transparency
+## Supporting Files
 
-- AI BR source: `C:\Users\F5H46GZ\OneDrive - Fiserv Corp\Documents\nitin verma\AI Solutions Output\10_oct_artifacts 3\10_oct_artifacts`.
-- AI requirement catalog SHA-256: `6b40963dfec26160013f87d47fe1defa3652b414adc4b29b60619cd6d71b6b4a`.
-- Training catalog SHA-256: `640f053f61d0e575468a0cb80381feb0787b3f7bbdbc429333e2c960ed1f12df`.
-- Latest canonical package SHA-256: `4c487a68e3223b06ef509016abbc443f0ab6615fd437d147d2a6941132f04dad`.
-- Latest package status: `COMPLETE_STRUCTURE_REVIEW_REQUIRED`; four additions are `DRAFT_REVIEW_REQUIRED`; `executionReady` is false.
-- Matching method: exact normalized segment plus numeric element anchor. All pairs remain review-required; no semantic match is inferred.
-- Supporting files: [crosswalk summary](crosswalk-summary.json), [AI-to-Test candidate pairs](ai-test-br-candidate-pairs.csv), [Test BR candidate index](test-br-ai-br-index.csv), and [AI BRs without candidates](ai-brs-without-test-br-candidates.csv).
+- [Crosswalk summary](crosswalk-summary.json)
+- [AI-to-Test BR candidate pairs](ai-test-br-candidate-pairs.csv)
+- [Test BR candidate index](test-br-ai-br-index.csv)
+- [AI BRs without candidates](ai-brs-without-test-br-candidates.csv)
 
-## Decision Requested
+## Business next steps
 
-Build on the 348 candidate-reached rules by prioritizing segments 119, 101, 103, 130, 114, and 118; nominate authorized SMEs to review ambiguous pairs; and advance the four new Test BR drafts through independent review. Present **57.52% as candidate reach across the latest 605 catalogued rules** and retain **57.24% for the prior 601-rule set**. Semantic approval and execution remain separate next milestones.
+Use the priority queue below to organize authorized pair review. Segment counts are source-anchor attributions; pair rows and segment denominators can overlap when a Test BR has cross-segment anchors. They must not be summed into a new overall coverage denominator.
+
+| Priority | Segment | Test BRs with candidates | Candidate pairs (ambiguous/composite; legacy anchor) | Existing open SME queries | SME role to nominate |
+|---:|---:|---:|---:|---|---|
+| 1 | 119 Totals with Proprietary Data Load | 24 / 40 (60.00%) | 29 (9; 20) | `SEG119-SME-001`–`009` | Totals, settlement, and reconciliation SME |
+| 2 | 101 Fleet | 14 / 30 (46.67%) | 52 (6; 46) | `SEG101-SME-001`–`010` | Fleet/fuel-card operations SME |
+| 3 | 103 EBT | 14 / 26 (53.85%) | 67 (61; 6) | `SEG103-SME-007`–`009` | EBT/WIC business and processor SME |
+| 4 | 130 EMV Request Data | 13 / 24 (54.17%) | 45 (40; 5) | `SEG130-SME-002`–`005`, `007`–`014` | EMV/issuer/acquirer security SME |
+| 5 | 114 Loyalty Card Data | 4 / 14 (28.57%) | 12 (11; 1) | `SEG114-SME-002`, `006` | Loyalty/card-program SME |
+| 6 | 118 Proprietary Data Load | 21 / 29 (72.41%) | 82 (71; 11) | `SEG118-SME-001`–`005` | Host/proprietary-data-load SME |
+
+The register currently lists these queries under `SME/TBA`; no individual nominees are recorded. The business owner should assign a named, authorized reviewer for each role before pair decisions are accepted.
+
+1. Review the segment queues in the priority order above, starting with source-backed, exact candidate pairs and then resolving ambiguous/composite and legacy-anchor pairs individually.
+2. Record each pair decision as `MATCH`, `PARTIAL`, `NOT_MATCH`, or `NOT_APPLICABLE`, with reviewer authority, source quote/anchor, rationale, and affected BR/TS/TC/TD IDs. Keep undecided pairs `REVIEW_REQUIRED`.
+3. Route the 40 candidate-reached Test BRs without a clean complete physical route through the separate chain-gap queue; candidate reach is not physical-chain completion.
+4. Retain **57.52% (348 / 605)** as candidate reach for the latest catalogued view and **57.24% (344 / 601)** for the prior source-derived view. These are separate baselines, not a trend.
+5. Publish semantic approval and executed validation only after their independent decision and execution evidence gates pass. Both remain `NOT_ASSESSED` today.

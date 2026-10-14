@@ -59,7 +59,7 @@
     .caveat strong { color: #684b0c; }
     .status-note { margin-top: 22px; padding: 17px 20px; background: #f2f8f4; border-left: 4px solid var(--teal); color: #3f5551; }
     .status-note strong { display: block; margin-bottom: 4px; color: var(--pine); }
-    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 23px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 23px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
     .metric { min-height: 112px; padding: 17px 18px 16px 0; }
     .metric + .metric { padding-left: 18px; border-left: 1px solid var(--line); }
     .metric-value { display: block; margin-bottom: 4px; color: var(--pine); font: 400 29px/1.08 var(--serif); }
@@ -157,7 +157,6 @@
       </div>
       <div class="meta">
         <span><strong>601</strong> source-derived rules</span>
-        <span><strong>4</strong> draft additions</span>
         <span><strong>50.91%</strong> complete-chain reach</span>
         <span><strong>NOT_ASSESSED</strong> semantic status</span>
         <button class="print-button" type="button" onclick="window.print()">Print / Save as PDF</button>
@@ -173,30 +172,59 @@
         <div class="metrics">
           <div class="metric"><span class="metric-value">348 / 605</span><span class="metric-label">Candidate Test BR reach</span><small>57.52% catalogued-rule view</small></div>
           <div class="metric"><span class="metric-value">308 / 605</span><span class="metric-label">Candidate BRs with complete direct chain</span><small>50.91% with payload/metadata present</small></div>
-          <div class="metric"><span class="metric-value">4 / 4</span><span class="metric-label">New draft Test BRs with AI candidates</span><small>Source-anchor links identified</small></div>
           <div class="metric"><span class="metric-value">99.87%</span><span class="metric-label">Payload and metadata presence</span><small>21,227 of 21,254 test cases</small></div>
         </div>
         <div class="status-note"><strong>What the evidence supports</strong>These are structural source-anchor and file/metadata checks. Semantic equivalence, business approval, test adequacy, and successful execution remain `NOT_ASSESSED`; candidate links are a review starting point, not a correctness claim.</div>
-        <div class="caveat"><strong>Fair comparison:</strong> on the prior 601 source-derived rules, candidate reach is <b>344/601 (57.24%)</b>, with <b>304/601 (50.58%)</b> complete-chain reach. The 605-rule view adds four draft rules, all with candidates; the 0.28-point difference is not evidence of improved AI quality.</div>
+        <div class="caveat"><strong>Baseline comparison:</strong> the specification update expanded the catalogued Test BR baseline from 601 to 605 rules. The latest view has 57.52% candidate reach; the prior 601 source-derived view has 344/601 (57.24%) candidate reach and 304/601 (50.58%) complete-chain reach. These are separate baseline views, not an improvement trend.</div>
         <p class="intro">The earlier 55.24% report used a different AI catalog hash (`3cb913...d2fe8`). The current source and local intake hash to `6b4096...b6b4a`; the earlier input is unavailable for a controlled rerun.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">The denominator update</p>
-        <h2>All four new catalogued rules already have AI candidates</h2>
-        <p class="intro">The latest catalog adds four source-anchored rules, and each has at least one AI source-anchor candidate. This gives reviewers a direct starting point for examining the new scope. All four remain <span class="draft">DRAFT_REVIEW_REQUIRED</span>, so they are not yet approved rules.</p>
+        <p class="kicker">Segment achievements</p>
+        <h2>Candidate reach is already established across key segments</h2>
+        <p class="intro">The current candidate map reaches 348 catalogued Test BRs across 49 segments. These high-contribution segments show where source-anchor alignment is already working and provide a foundation for expanding validation into adjacent requirements.</p>
         <div class="table-wrap"><table>
-          <thead><tr><th>New Test BR</th><th>Source scope</th><th>Status</th><th>AI candidate</th></tr></thead>
+          <thead><tr><th>Segment</th><th class="num">Catalogued Test BRs</th><th class="num">Candidate-linked</th><th class="num">Reach</th></tr></thead>
           <tbody>
-            <tr><td>SEG102-R-026</td><td>Segment 102, Element 76</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
-            <tr><td>SEG123-R-012</td><td>Segment 123, Elements 196/204/238</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
-            <tr><td>SEG156-R-008</td><td>Segment 156, Elements 85/84</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
-            <tr><td>SEG156-R-009</td><td>Segment 156, Element 242</td><td class="draft">DRAFT_REVIEW_REQUIRED</td><td>Yes</td></tr>
+            <tr><td>100</td><td class="num">36</td><td class="num">30</td><td class="num">83.33%</td></tr>
+            <tr><td>119</td><td class="num">40</td><td class="num">24</td><td class="num">60.00%</td></tr>
+            <tr><td>118</td><td class="num">29</td><td class="num">21</td><td class="num">72.41%</td></tr>
+            <tr><td>102</td><td class="num">26</td><td class="num">19</td><td class="num">73.08%</td></tr>
+            <tr><td>108</td><td class="num">24</td><td class="num">18</td><td class="num">75.00%</td></tr>
+            <tr><td>105</td><td class="num">21</td><td class="num">17</td><td class="num">80.95%</td></tr>
+            <tr><td>109</td><td class="num">22</td><td class="num">15</td><td class="num">68.18%</td></tr>
+            <tr><td>110</td><td class="num">20</td><td class="num">15</td><td class="num">75.00%</td></tr>
           </tbody>
         </table></div>
-        <p class="intro">The package derives 605 unique `BR-RULE-*` IDs from the training catalog. Its 1,330 BR rows also contain review and placeholder material, so the governed 605-ID denominator is used instead of the raw row count. Keep the 601-rule view visible until the additions complete independent review.</p>
+        <p class="intro">These are source-anchor candidate rates, not semantic approval. The linked Test BR index and candidate-pair register provide a practical basis for business review and continued expansion.</p>
+        <h3>Transaction-flow achievements</h3>
+        <p class="intro">The flow view adds lifecycle evidence to the segment picture. All listed single and multileg cases have physical payloads with matching test-case and scenario metadata; candidate links provide a focused starting point for flow-level review.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Flow group</th><th class="num">Cases</th><th class="num">Cases linked to candidate BR</th><th class="num">Distinct Test BR candidates</th><th class="num">Payload and metadata present</th></tr></thead>
+          <tbody>
+            <tr><td>Single Sale-labeled</td><td class="num">565</td><td class="num">58 (10.27%)</td><td class="num">34</td><td class="num">565 / 565</td></tr>
+            <tr><td>Single Void/Reversal-labeled</td><td class="num">282</td><td class="num">0</td><td class="num">0</td><td class="num">282 / 282</td></tr>
+            <tr><td>Single Completion-labeled</td><td class="num">146</td><td class="num">0</td><td class="num">0</td><td class="num">146 / 146</td></tr>
+            <tr><td>Multileg Sale role</td><td class="num">60</td><td class="num">1 (1.67%)</td><td class="num">1</td><td class="num">60 / 60</td></tr>
+            <tr><td>Multileg Void role</td><td class="num">113</td><td class="num">0</td><td class="num">0</td><td class="num">113 / 113</td></tr>
+            <tr><td>Multileg Completion role</td><td class="num">138</td><td class="num">8 (5.80%)</td><td class="num">6</td><td class="num">138 / 138</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Case-link percentages measure cases with at least one source-anchor candidate, not the share of all Test BRs for a flow; the independent baseline has no flow-specific BR denominator. Flow groups overlap when a multileg transaction combines stages, such as Completion followed by Void. Candidate links remain subject to semantic review.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">90% planning target</p>
+        <h2>A measurable next milestone</h2>
+        <div class="target-band">
+          <div class="target-item"><span class="target-value">+197</span><span class="target-label">distinct candidate Test BRs</span><p>Reach at least 545 of 605 catalogued rules at 90% candidate reach.</p></div>
+          <div class="target-item"><span class="target-value">+237</span><span class="target-label">complete-chain Test BRs</span><p>Reach at least 545 of 605 through candidate, linked scenario/case, and present payload/metadata.</p></div>
+        </div>
+        <p class="intro">Build toward the target by adding source-backed requirement coverage and complete test evidence. Keep the independent denominator fixed and report candidate reach, semantic approval, and execution separately.</p>
       </div>
     </section>
 
@@ -220,82 +248,58 @@
 
     <section class="section">
       <div class="wrap">
-        <p class="kicker">Segment achievements</p>
-        <h2>Candidate reach is already established across key segments</h2>
-        <p class="intro">The current candidate map reaches 348 catalogued Test BRs across 49 segments. These high-contribution segments show where source-anchor alignment is already working and provide a foundation for expanding validation into adjacent requirements.</p>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Segment</th><th class="num">Catalogued Test BRs</th><th class="num">Candidate-linked</th><th class="num">Reach</th></tr></thead>
-          <tbody>
-            <tr><td>100</td><td class="num">36</td><td class="num">30</td><td class="num">83.33%</td></tr>
-            <tr><td>119</td><td class="num">40</td><td class="num">24</td><td class="num">60.00%</td></tr>
-            <tr><td>118</td><td class="num">29</td><td class="num">21</td><td class="num">72.41%</td></tr>
-            <tr><td>102</td><td class="num">26</td><td class="num">19</td><td class="num">73.08%</td></tr>
-            <tr><td>108</td><td class="num">24</td><td class="num">18</td><td class="num">75.00%</td></tr>
-            <tr><td>105</td><td class="num">21</td><td class="num">17</td><td class="num">80.95%</td></tr>
-            <tr><td>109</td><td class="num">22</td><td class="num">15</td><td class="num">68.18%</td></tr>
-            <tr><td>110</td><td class="num">20</td><td class="num">15</td><td class="num">75.00%</td></tr>
-          </tbody>
-        </table></div>
-        <p class="intro">These are source-anchor candidate rates, not semantic approval. The linked Test BR index and candidate-pair register provide a practical basis for business review and continued expansion.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <p class="kicker">90% planning target</p>
-        <h2>A measurable next milestone</h2>
-        <div class="target-band">
-          <div class="target-item"><span class="target-value">+197</span><span class="target-label">distinct candidate Test BRs</span><p>Reach at least 545 of 605 catalogued rules at 90% candidate reach.</p></div>
-          <div class="target-item"><span class="target-value">+237</span><span class="target-label">complete-chain Test BRs</span><p>Reach at least 545 of 605 through candidate, linked scenario/case, and present payload/metadata.</p></div>
-        </div>
-        <p class="intro">Build toward the target by adding source-backed requirement coverage and complete test evidence. Keep the independent denominator fixed and report candidate reach, semantic approval, and execution separately.</p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
         <p class="kicker">Recommended improvement plan</p>
         <h2>Build on the current foundation</h2>
         <div class="steps">
           <article class="step"><span class="step-num">01</span><div><h3>Enrich source context</h3><p>Add source page, section, quote, segment/message-family scope, and applicability conditions for the 3,332 BRs awaiting segment resolution. Route genuine ambiguity to authorized review.</p></div></article>
           <article class="step"><span class="step-num">02</span><div><h3>Extend anchors for non-element rules</h3><p>For the 2,728 BRs without numeric element anchors, distinguish transaction/process, response, cross-field, lifecycle, and host/transport rules. Use a domain anchor where appropriate; preserve source meaning.</p></div></article>
           <article class="step"><span class="step-num">03</span><div><h3>Sharpen requirement testability</h3><p>State conditions, required behavior, exceptions, and expected outcomes. Split independently testable obligations while retaining provenance; distinguish normative text from examples and model inference.</p></div></article>
-          <article class="step"><span class="step-num">04</span><div><h3>Confirm candidate relationships</h3><p>Review the 42 exact-anchor misses and 455 ambiguous/composite candidates; reconcile 323 legacy-anchor candidates. Record source-backed rationale for each accepted mapping and advance the four new Test BR drafts through independent review.</p></div></article>
-          <article class="step"><span class="step-num">05</span><div><h3>Complete the remaining data joins</h3><p>21,227 test cases already have payload and matching metadata under the current check. Resolve or disposition the remaining 27, then verify scenarios exercise linked BRs and test cases assert expected behavior.</p></div></article>
+          <article class="step"><span class="step-num">04</span><div><h3>Confirm candidate relationships</h3><p>Review the 42 exact-anchor misses and 455 ambiguous/composite candidates; reconcile 323 legacy-anchor candidates. Record source-backed rationale for each accepted mapping.</p></div></article>
+          <article class="step"><span class="step-num">05</span><div><h3>Sustain complete data joins</h3><p>Maintain payload and matching test-case/scenario metadata as new cases are added, and verify scenarios exercise linked BRs with assertions for expected behavior.</p></div></article>
           <article class="step"><span class="step-num">06</span><div><h3>Track progress consistently</h3><p>Publish the 601 source-derived and 605 catalogued views side by side. Add semantic-approved and executed measures when authorized decisions and corresponding test evidence are available.</p></div></article>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap evidence-grid">
-        <div>
-          <p class="kicker">Evidence and transparency</p>
-          <h2>Assessment provenance</h2>
-          <ul class="evidence-list">
-            <li>AI catalog SHA-256: <code>6b40963dfec26160013f87d47fe1defa3652b414adc4b29b60619cd6d71b6b4a</code>.</li>
-            <li>Training catalog SHA-256: <code>640f053f61d0e575468a0cb80381feb0787b3f7bbdbc429333e2c960ed1f12df</code>.</li>
-            <li>Latest canonical package SHA-256: <code>4c487a68e3223b06ef509016abbc443f0ab6615fd437d147d2a6941132f04dad</code>.</li>
-            <li>Package state: `COMPLETE_STRUCTURE_REVIEW_REQUIRED`; executionReady is false; four additional rules are drafts.</li>
-            <li>Candidate matching uses exact normalized segment and numeric element anchors; no semantic equivalence is inferred.</li>
-            <li>27 / 21,254 test cases have incomplete payload or metadata under the current structural check.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="kicker">Supporting files</p>
-          <h3>Crosswalk evidence</h3>
-          <div class="links">
-            <a href="crosswalk-summary.json">Crosswalk summary (JSON)</a>
-            <a href="ai-test-br-candidate-pairs.csv">AI-to-Test BR candidate pairs (CSV)</a>
-            <a href="test-br-ai-br-index.csv">Test BR candidate index (CSV)</a>
-            <a href="ai-brs-without-test-br-candidates.csv">AI BRs without candidates (CSV)</a>
-            <a href="AI-TO-TEST-BR-COVERAGE-AND-IMPROVEMENT-REPORT.md">Full report (Markdown)</a>
-          </div>
+      <div class="wrap">
+        <p class="kicker">Supporting files</p>
+        <h2>Crosswalk files</h2>
+        <div class="links">
+          <a href="crosswalk-summary.json">Crosswalk summary (JSON)</a>
+          <a href="ai-test-br-candidate-pairs.csv">AI-to-Test BR candidate pairs (CSV)</a>
+          <a href="test-br-ai-br-index.csv">Test BR candidate index (CSV)</a>
+          <a href="ai-brs-without-test-br-candidates.csv">AI BRs without candidates (CSV)</a>
+          <a href="AI-TO-TEST-BR-COVERAGE-AND-IMPROVEMENT-REPORT.md">Full report (Markdown)</a>
         </div>
       </div>
     </section>
 
-    <section class="section"><div class="wrap"><div class="decision"><h2>Business next steps</h2><p>Build on the 348 candidate-reached rules by prioritizing segments 119, 101, 103, 130, 114, and 118; nominate SMEs to review ambiguous pairs; and advance the four new Test BR drafts. Report 57.52% as candidate reach across 605 catalogued rules and retain 57.24% for the prior 601-rule set. Semantic approval and execution remain separate next milestones.</p></div></div></section>
+    <section class="section">
+      <div class="wrap">
+        <p class="kicker">Business next steps</p>
+        <h2>Prioritize candidate review across six segments</h2>
+        <p class="intro">Candidate reach is 57.52% (348/605) for the latest catalogued view; retain 57.24% (344/601) for the prior source-derived view. These are separate baselines, not a trend. Semantic approval and execution remain NOT_ASSESSED.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Priority</th><th>Segment</th><th class="num">Candidate Test BRs</th><th class="num">Pairs (ambiguous; legacy)</th><th>Open SME queries</th><th>SME role to nominate</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>119 Totals with Proprietary Data Load</td><td class="num">24 / 40 (60.00%)</td><td class="num">29 (9; 20)</td><td>SEG119-SME-001–009</td><td>Totals, settlement, and reconciliation SME</td></tr>
+            <tr><td>2</td><td>101 Fleet</td><td class="num">14 / 30 (46.67%)</td><td class="num">52 (6; 46)</td><td>SEG101-SME-001–010</td><td>Fleet/fuel-card operations SME</td></tr>
+            <tr><td>3</td><td>103 EBT</td><td class="num">14 / 26 (53.85%)</td><td class="num">67 (61; 6)</td><td>SEG103-SME-007–009</td><td>EBT/WIC business and processor SME</td></tr>
+            <tr><td>4</td><td>130 EMV Request Data</td><td class="num">13 / 24 (54.17%)</td><td class="num">45 (40; 5)</td><td>SEG130-SME-002–005, 007–014</td><td>EMV/issuer/acquirer security SME</td></tr>
+            <tr><td>5</td><td>114 Loyalty Card Data</td><td class="num">4 / 14 (28.57%)</td><td class="num">12 (11; 1)</td><td>SEG114-SME-002, 006</td><td>Loyalty/card-program SME</td></tr>
+            <tr><td>6</td><td>118 Proprietary Data Load</td><td class="num">21 / 29 (72.41%)</td><td class="num">82 (71; 11)</td><td>SEG118-SME-001–005</td><td>Host/proprietary-data-load SME</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">The SME register currently assigns SME/TBA, not named reviewers. Business owners must nominate authorized people. Segment denominators and pair rows can overlap for cross-segment anchors; do not add them into a new coverage denominator. All pairs remain NOT_ASSESSED pending source review.</p>
+        <div class="steps">
+          <article class="step"><span class="step-num">01</span><div><h3>Nominate reviewers</h3><p>Assign a named authorized SME for each domain role before accepting pair decisions.</p></div></article>
+          <article class="step"><span class="step-num">02</span><div><h3>Adjudicate pairs</h3><p>Review exact candidates, then ambiguous/composite and legacy-anchor pairs; record MATCH, PARTIAL, NOT_MATCH, or NOT_APPLICABLE with source evidence and rationale.</p></div></article>
+          <article class="step"><span class="step-num">03</span><div><h3>Close physical gaps</h3><p>Route the 40 candidate-reached Test BRs without a clean complete physical route through the separate chain-gap queue.</p></div></article>
+          <article class="step"><span class="step-num">04</span><div><h3>Keep gates separate</h3><p>Publish semantic approval and executed validation only after their independent review and execution evidence gates pass.</p></div></article>
+        </div>
+      </div>
+    </section>
   </main>
   <footer><div class="wrap"><span>AI-to-Test BR Coverage | Fiserv Business Review</span><span>Updated assessment: 2026-10-14</span></div></footer>
 </body>
