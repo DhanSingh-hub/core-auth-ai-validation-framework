@@ -1,6 +1,6 @@
 # Segment 153 (Network Token Data Request Segment) — Rule Catalog & Specification Anchors
 
-**Specification:** BUYPASS® Platform ATL105, Release 2026-3 | **Source:** Section 12.38 (page 12-93/307 to 309)
+**Specification:** BUYPASS® Platform ATL105, Release 2026-3 | **Source:** Section 12.38
 **Item Progress:** Item 1 in progress; 0 of 1 SME item resolved
 
 ## Learning Module Index
@@ -13,9 +13,9 @@
 
 TLV-of-TLVs container (mirrors Segment 145/146) with 6 fixed-format Network Token sub-tables.
 
-## Rule Set (3 rules)
+## Rule Set (3 source rules)
 
-Multi-sub-segment structure, Segment Type/Length, 6-table catalog (Element 239, shared number with Segments 145/146 — independent meaning).
+Multi-sub-segment structure, Segment Type/Length, and six request-side tables (Element 239, shared number with Segments 145/146 — independent meaning).
 
 ## Do-Not-Assume Rules
 
@@ -24,7 +24,7 @@ Multi-sub-segment structure, Segment Type/Length, 6-table catalog (Element 239, 
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index
 
-Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are derived from the [rule catalog](coverage/segment-153-rule-catalog.json) (3 rules) and ATL105 Chapter 13 element definitions; existing files were not modified.
+Structure mirrors the [Segment 100 Learning Module](../segment-100/README.md). Files added on 2026-09-28 are historical.
 
 | Segment 100 component | Segment 153 |
 |---|---|

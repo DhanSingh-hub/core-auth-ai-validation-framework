@@ -49,6 +49,32 @@ AI and Test Solution artifacts keep producer-local IDs. Canonical source anchors
 
 ## Validation
 
+### ATL105 Excel validation reference
+
+Open the [ATL105 2026-3 validation workbook](specifications/ATL105/reports/ATL105-2026-3-Validation-Reference.xlsx)
+and begin with **START HERE**. It includes element definitions/values, all 49 segment inventories
+and source-derived field rows, the 31 message layouts, transaction/card/response codes,
+source-backed rule candidates, source conflicts, and a BR/scenario/case/data review register.
+Source pages, line references and input SHA256 hashes are retained for traceability.
+
+**Segment Subsets** enumerates all conditional/optional subsets within each represented template,
+with required segments retained and template ordering preserved. These are structural candidates,
+not an approved list of valid transactions. Repetition counts, arbitrary reordering and a cross-product
+of all field values are not enumerated. Transaction/card prompt combinations likewise require
+contextual approval. Nested appendix layouts remain source evidence rather than fully normalized
+executable constraints; external TransArmor details remain blocked. The workbook does not run
+AI-artifact validation or certify coverage.
+
+Regenerate and test using Node.js (built-in modules only; no Excel installation required):
+
+```powershell
+node .\scripts\export-atl105-validation-workbook.cjs
+node --test .\scripts\export-atl105-validation-workbook.test.cjs
+```
+
+The exporter accepts optional ATL105 pack and output workbook paths as its first two arguments.
+It creates a separate comprehensive workbook without overwriting the existing element-only export.
+
 Run from this module directory:
 
 ```powershell

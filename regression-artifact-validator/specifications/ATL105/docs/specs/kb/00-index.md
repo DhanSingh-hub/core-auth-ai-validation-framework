@@ -1,6 +1,6 @@
 # BUYPASS ATL105 Specification Knowledge Base Index
 
-Navigation index for BUYPASS Platform ATL105 Message Format Specification, Version 2026-3
+This navigation index is primarily based on BUYPASS Platform ATL105 Message Format Specification, Version 2026-3
 (722 pages). Source: `docs/specs/BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-3.pdf`,
 extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is marked with a
 `--- PAGE N ---` line).
@@ -66,7 +66,6 @@ current implementation status of Chapters 1-14 and the planned execution order.
 | AC | [Valid Country Codes training](appendix-ac/README.md) | All four pages: 254 source rows, 248 unique numeric codes; 840 ambiguity and Table 059 acquirer/merchant role conflict remain reviewed | 36609-36810 |
 | AD | [Real Time Account Updater training](appendix-ad/README.md) | Participation, Table 060 Y/I/O, Segment 155 response gates and all VAU results, original/updated credential pairing and unchanged retries | 36805-36830 |
 | AE | [Visa Estimated and Incremental Authorization training](appendix-ae/README.md) | Special MCC restrictions, initial/incremental indicators, series continuity, Table 063, completion, 7/14-day windows and complete-then-restart | 36839-36877 |
-
 ## Related files in this knowledge base
 
 - [elements/README.md](elements/README.md) - all 231 element source/BR inventory, contextual validation profiles, implementation plan and explicit coverage gaps

@@ -2548,9 +2548,9 @@
       "segments": [
         "116"
       ],
-      "subject": "**Obtain the external `BUYPASS®_Platform_ATL105_Specification_Updates_for_TransArmor_Processing` document** (Direct Platform Specifications Portal) and supply Segment 116's complete field-by-field layout (element numbers, lengths, R/O/C designations) beyond Segment Type and Segment Length, plus confirmation of the Segment Length field's format and the segment's Origin.",
-      "context": "Sections 12.15 and 11.7.5 are both single-sentence stubs redirecting to this external document; nothing else in the current workspace source describes Segment 116's internal fields.",
-      "impact": "Blocks nearly all field-level, mutation, and traceability tests.",
+      "subject": "Provide the TransArmor specification updates document referenced by ATL105 Sections 11.7.5 and 12.15, or confirm where the Test Solution team can obtain it.",
+      "context": "The ATL105 extract contains only a note redirecting to the separately published TransArmor document; the Segment 116 request and response layouts are not present in the current workspace source.",
+      "impact": "Blocks full Segment 116 rule derivation and validation.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
@@ -2558,7 +2558,7 @@
       "links": {
         "catalogItem": "P-01",
         "rules": [
-          "SEG116-R-004",
+          "SEG116-R-002",
           "SEG116-R-006"
         ],
         "blocks": [
@@ -2578,8 +2578,8 @@
       "segments": [
         "116"
       ],
-      "subject": "Confirm whether the TransArmor PKI Encryption and Tokenization Load Request truly excludes Segment 100 (Standard Message Data Segment) and Data Section 3, or has its own distinct envelope shown only in the external document.",
-      "context": "The current conclusion is a structural analogy with sibling message types (Totals, Loyalty, Electronic Mail), not a directly shown request table.",
+      "subject": "Confirm the request envelope for the TransArmor Key/Key ID Load flow, including whether Segment 100 or other data segments are present.",
+      "context": "Sections 11.7.5 and 12.15 redirect to the external TransArmor processing specification, which is not available in the current source extract.",
       "impact": "Envelope/applicability tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
@@ -2602,8 +2602,8 @@
       "segments": [
         "116"
       ],
-      "subject": "Confirm whether Key ID (155), Key Data Length (156), and Key Data (157) are serialized as a Segment 116 response container (Segment Type/Segment Length + these fields) or as a separate positional response structure, comparable to the Electronic Mail Response (Segment 109).",
-      "context": "The Chapter 13 element catalog defines these fields and calls them part of the \"TransArmor Load Response\" but does not show the response's own layout table.",
+      "subject": "Confirm the TransArmor Load Response layout, field order, and whether it is serialized as a Segment 116 container.",
+      "context": "The Chapter 13 element catalog identifies TransArmor response fields, but the response layout is not present in the current ATL105 extract.",
       "impact": "Response-parsing and correlation tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
@@ -2697,9 +2697,9 @@
       "segments": [
         "116"
       ],
-      "subject": "The Element 63 (Number of Segments) processing rule says TransArmor Key Load requests are 'followed by Data Section No. 2, which contains Data Segment No. 116' and Communications Test requests by 'Data Section No. 2 which contains Element No. 120'. Is Segment 116 the only segment, in Field No. 3, and is the Data Section 2 label only descriptive for both messages?",
-      "context": "Chapter 13, Element 63 (Number of Segments), Processing Rules. Section 11.7.5 (TransArmor) refers to a separate TransArmor document, and Section 11.6.1 (Communications Test) is a positional message with Element 55 at position 1 and Element 120 at position 9, with no Element 63 and no data sections. Every other request reserves Data Section 2 for Segment 100.",
-      "impact": "Under the request convention in TT-0014 the Test Solution treats Segment 116 as Data Section 3, Field No. 3, and follows Section 11.6.1's positional layout for the Communications Test.",
+      "subject": "Confirm the Data Section label used by Segment 116 in the TransArmor Key/Key ID Load Request.",
+      "context": "The generic request convention and the Segment 116 reference do not establish the message-specific data-section label.",
+      "impact": "Request-envelope field placement and compatibility tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-29",
