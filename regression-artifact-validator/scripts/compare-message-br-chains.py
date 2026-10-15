@@ -121,11 +121,10 @@ def comparison(ai_features, test_features):
                                     + bool(shared_elements) + similarity - 5 * segment_conflict, 4)}
 
 
-def test_chain(package, rule_id):
-    br_id = "BR-RULE-" + rule_id
+def artifact_chain(package, br_id):
     brs = [row for row in package["businessRequirements"] if row["id"] == br_id]
     if len(brs) != 1:
-        raise ValueError("Expected one independent package BR: " + rule_id)
+        raise ValueError("Expected one independent package BR: " + br_id)
     scenarios = [row for row in package["testScenarios"] if br_id in refs(row, "requirementIds")]
     scenario_ids = {row["id"] for row in scenarios}
     cases = [row for row in package["testCases"] if scenario_ids & refs(row, "scenarioIds")]
@@ -142,6 +141,14 @@ def test_chain(package, rule_id):
             "placeholderIds": placeholders, "missingDeclaredDataIds": missing_forward_ids,
             "executablePayloadDataIds": executable,
             "chainStatus": "REVIEW_PLACEHOLDER_CHAIN" if placeholders else "DRAFT_CHAIN_REQUIRES_REVIEW"}
+
+
+def test_chain(package, rule_id):
+    return artifact_chain(package, "BR-RULE-" + rule_id)
+
+
+def anchor_signature(anchor):
+    return tuple(str(anchor.get(key) or "") for key in ("specification", "version", "section", "segment", "element", "rule"))
 
 
 def write_csv(path, rows, fields):
@@ -216,6 +223,15 @@ def run(root, review, package_path, output):
     chains = {identifier: test_chain(package, identifier) for identifier in test_categories}
     if len(chains) != package["summary"]["independentRuleDenominator"]:
         raise ValueError("Test category population differs from package")
+    authored_by_anchor = collections.defaultdict(set)
+    for br in package["businessRequirements"]:
+        if not br["id"].startswith("BR-RULE-"):
+            for anchor in br.get("sourceAnchors") or []:
+                authored_by_anchor[anchor_signature(anchor)].add(br["id"])
+    for chain in chains.values():
+        alternatives = sorted({identifier for anchor in chain["br"].get("sourceAnchors") or []
+                               for identifier in authored_by_anchor[anchor_signature(anchor)]})
+        chain["alternativeAuthoredChains"] = [artifact_chain(package, identifier) for identifier in alternatives]
     assessments = {row["id"]: row for row in jsonl(assessment_path)}
     existing = {(row["aiBrId"], row["testBrId"]): row for row in csv_rows(pairs_path)}
     ai_features = {identifier: features(row["statement"], row, True) for identifier, row in ai_rows.items()}
@@ -236,6 +252,8 @@ def run(root, review, package_path, output):
                    **result, "aiPhysicalCompleteCaseIds": assessments[ai_id]["physicalCompleteCaseIds"],
                    "testChainStatus": chains[test_id]["chainStatus"],
                    "testPlaceholderIds": chains[test_id]["placeholderIds"],
+                   "testAlternativeAuthoredBrIds": [alternative["br"]["id"] for alternative in chains[test_id]["alternativeAuthoredChains"]],
+                   "testAlternativeExecutablePayloadDataIds": sorted({identifier for alternative in chains[test_id]["alternativeAuthoredChains"] for identifier in alternative["executablePayloadDataIds"]}),
                    "brEquivalence": "REVIEW_REQUIRED", "scenarioEquivalence": "NOT_ASSESSED",
                    "caseOracleEquivalence": "NOT_ASSESSED", "testDataEquivalence": "NOT_ASSESSED",
                    "semanticApproved": False, "hostExecuted": False}
@@ -303,6 +321,8 @@ def run(root, review, package_path, output):
               "testMessageBrsWithStructuralChain": sum(chains[identifier]["structuralChainPresent"] for identifier in test_message),
               "testMessageBrsWithPlaceholders": sum(bool(chains[identifier]["placeholderIds"]) for identifier in test_message),
               "testMessageBrsWithExecutablePayloadData": sum(bool(chains[identifier]["executablePayloadDataIds"]) for identifier in test_message),
+              "testMessageBrsWithAlternativeExactAnchorChains": sum(bool(chains[identifier]["alternativeAuthoredChains"]) for identifier in test_message),
+              "testMessageBrsWithAlternativeExecutablePayloadData": sum(any(alternative["executablePayloadDataIds"] for alternative in chains[identifier]["alternativeAuthoredChains"]) for identifier in test_message),
               "candidatePairsWithFixedTypeConflict": sum(row["fixedSegmentTypeConflict"] for row in pair_rows),
               "candidatePairsWithFormatCapacityGap": sum(row["formatVersusCapacityScopeGap"] for row in pair_rows),
               "physicalPayloadMetadataPairsHashVerified": sum(verified_physical.values()),
@@ -336,6 +356,7 @@ def run(root, review, package_path, output):
     report += "The maximum reported here is reviewable candidate reach, not a maximum approved match count. Compare the BR obligations, transaction/segment applicability, scenario intent, independent expected outcome and data before adjudicating any pair. Cross-category links are retained because categories alone do not prove or disprove equivalence.\n\n"
     report += "Known example: AI :1907 concerns four-digit Segment Length. Some anchor candidates instead concern maximum segment capacity; shared element 84 alone does not establish the same obligation. Its SC-7281 chain has clean cases TC-009116 through TC-009119; TC-009120 is not credited by the clean v6 route set. Test counterparts are review-placeholder chains.\n"
     report += "\nFixed Segment Type contradictions and format-versus-capacity gaps are flagged on existing candidates; new leads with these issues are excluded. Missing/incomplete physical pairs are retained as gaps, not credited as verified. Actual scalar structure values are observations only, not wire-length or independent expected-outcome validation.\n"
+    report += "\nAlternative authored Test BR chains are included only when the full source anchor (specification, version, section, segment, element and rule) is identical. The zero executable-data count applies to primary BR-RULE chains only; alternative fixture availability is reported separately. An identical anchor is provenance/context evidence, not semantic approval or proof that the alternative completely implements the catalogued obligation.\n"
     (output / "REPORT.md").write_text(report, encoding="utf-8")
     (output / "comparison-implementation.py").write_bytes(Path(__file__).read_bytes())
     manifest = {path.name: sha256(path) for path in output.iterdir() if path.is_file()}
@@ -365,6 +386,8 @@ def self_test():
            "testData": [{"id": "TD-REVIEW-1", "testCaseIds": ["TC-REVIEW-1"], "readiness": "REVIEW_REQUIRED"}]}
     chain = test_chain(pkg, "SEG100-R-001")
     assert chain["structuralChainPresent"] and chain["placeholderIds"] and not chain["executablePayloadDataIds"]
+    assert artifact_chain(pkg, "BR-RULE-SEG100-R-001")["structuralChainPresent"]
+    assert anchor_signature({"segment": "100", "rule": "count"}) != anchor_signature({"segment": "100", "rule": "order"})
     print("PASS: context leads require shared segment/subject; disjoint scope rejected; placeholders never become executable")
 
 
