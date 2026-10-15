@@ -5,6 +5,7 @@ import java.util.List;
 public final class CanonicalTestCase {
     private String id;
     private List<String> scenarioIds;
+    private List<CanonicalTestAssertion> assertions;
     private List<SourceAnchor> sourceAnchors;
     private String expectedOutcome;
     private String category;
@@ -18,6 +19,8 @@ public final class CanonicalTestCase {
     public void setId(String id) { this.id = id; }
     public List<String> getScenarioIds() { return scenarioIds; }
     public void setScenarioIds(List<String> scenarioIds) { this.scenarioIds = scenarioIds; }
+    public List<CanonicalTestAssertion> getAssertions() { return assertions; }
+    public void setAssertions(List<CanonicalTestAssertion> assertions) { this.assertions = assertions; }
     public List<SourceAnchor> getSourceAnchors() { return sourceAnchors; }
     public void setSourceAnchors(List<SourceAnchor> sourceAnchors) { this.sourceAnchors = sourceAnchors; }
     public String getExpectedOutcome() { return expectedOutcome; }

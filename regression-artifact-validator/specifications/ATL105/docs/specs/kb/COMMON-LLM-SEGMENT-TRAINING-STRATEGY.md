@@ -573,6 +573,12 @@ The candidate-discovery population includes **all** AI BR records, regardless of
 
 Use `scripts/summarize-ai-technical-validation-coverage.py` only with a stable byte-bound runner report, the AI-excluded independent Test BR baseline, and the hash-verified delivery-wide physical-chain ledgers. The report keeps separate denominators for limited/partial executor bindings, decisive rule outcomes, runner-scope decisive outcomes, cases with any decisive predicate, and AI BRs with a linked candidate-rule observation. A case with one observed predicate is not a case pass; a candidate rule observation is not semantic confirmation. Profile values are metadata-derived and physical checks are bounded. Treat `FAIL` as an observed predicate outcome, not automatically an AI defect; a failure may be an intended negative target. Semantic-confirmed coverage requires authorized source/business review, and host-executed coverage requires host evidence; leave both `NOT_ASSESSED` / `NOT_EXECUTED` rather than inferring them from offline results. The output `manifest.json` binds the report and ledgers by SHA-256 and excludes only itself.
 
+### Execution-Ready BR-to-Test Evidence
+
+An execution-ready model must state one BR obligation, preserve its source anchor, declare an `ATOMIC` disposition, and provide a source citation with a trusted-root path, SHA-256, locator, and exact quote. This technical gate verifies file containment, integrity, and literal presence, but cannot decide whether the rule is truly atomic or correctly interpreted. Each ready scenario declares intent and preconditions; each ready test case includes an independently checkable assertion and expected result for every BR reached through its linked scenarios. Assertion anchors must match the BR. Missing or unresolved model evidence blocks execution readiness; do not fill gaps with inferred expected outcomes or promote AI producer statuses. SME decisions and host results remain separate.
+
+This is the AIV-018 quality gate. It is mandatory for `validateForExecution`; legacy and draft packages may omit the new fields while they remain non-executable. A technically complete record is still not an authorized semantic decision.
+
 ## Segment-Specific Training Addendum
 
 Each segment addendum should contain only behavior that is different or additional for that segment:

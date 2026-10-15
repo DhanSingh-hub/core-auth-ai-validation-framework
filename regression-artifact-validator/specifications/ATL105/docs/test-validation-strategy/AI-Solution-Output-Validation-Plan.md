@@ -12,6 +12,8 @@
 
 **Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
 
+**Execution-ready Test Model quality:** The canonical model carries a requirement `statement` and explicit `atomicity` disposition; a ready BR must be `ATOMIC` and include source evidence bound to a file hash, locator, and literal quote. Ready scenarios declare intent and preconditions. Ready test cases declare per-BR assertions with expected results and anchors shared with each linked requirement; every BR reached through the case's scenarios must be asserted. `CanonicalTraceabilityValidator.validateForExecution` enforces these deterministic contract checks and rejects source paths outside the trusted root, stale hashes, nonliteral quotes, incomplete assertions, and non-atomic dispositions. This is evidence/structure validation only: it does not decide that a rule is semantically atomic or approve the source interpretation. Draft/review packages remain loadable, and execution readiness remains blocked until authorized decisions and host evidence are supplied.
+
 **Coverage presentation (2026-10-06):** The complete-handoff HTML/PDF Coverage view reports producer-internal BR/TS-to-TC linkage, physical-output presence, segment-attributed linkage, exact transaction-target labels, scenario-type inventory and expected response-code declarations. Every percentage names its numerator and denominator. Segment counts overlap; scenario groups inherit linked BR attribution and TC groups use direct BR references. Do not infer normalized transaction-code or code/family coverage from producer labels or code mentions. Catalog rule counts remain a separate inventory; semantic rule coverage is `NOT_CALCULABLE` and code/family validation is `NOT_ASSESSED` until evidence-qualified comparison is performed. Hash-bind the AI inputs, response matrix and catalogs used by the view.
 
 **Independent BR coverage correction (2026-10-08):** The Test Team's BR coverage numerator is the number of distinct, in-scope independent Test Solution BRs with a delivery-bound, evidence-supported `CONFIRMED` match in the AI BR inventory; the denominator is the independent Test Solution BR baseline. Do not use AI BR-to-TC linkage as the BR coverage numerator, and do not transfer historical crosswalk decisions by reused AI ID. For October 7 Run4, the independent baseline has 601 rules and no confirmed semantic crosswalk: report `0/601` confirmed-match evidence (0.00% currently confirmed) with assessment status `NOT_ASSESSED` and all 601 rules unassessed. This is not evidence that no equivalent AI BRs exist. The former 72.17% is only AI-internal BR-to-candidate-TC structural linkage; matrix proposals remain separate. Preserve full-chain semantic coverage as `NOT_CALCULABLE`.
@@ -68,6 +70,17 @@ intended negative-target failures remain possible. Source interpretation,
 authorized semantic decisions, remaining rule execution and host execution are
 distinct gates; semantic-confirmed and host-executed percentages remain null,
 `NOT_ASSESSED` and `NOT_EXECUTED`.
+
+**Execution-ready model quality (2026-10-15, AIV-018):** The canonical Test
+Solution model now carries explicit BR statement/atomicity/source-evidence,
+scenario intent/preconditions, and per-BR TC assertions/expected results.
+Execution gating verifies a supplied trusted-root path, source SHA-256 and
+literal quote; assertion coverage across all BRs linked through the case's
+scenarios; and shared BR/assertion source anchors. This completes the
+deterministic model-integrity improvements from the review plan. It does not
+decide atomicity or business equivalence, authenticate the evidence author,
+substitute for SME adjudication, or produce host execution evidence. Existing
+pending crosswalk decisions and all approval/execution measures stay unchanged.
 
 Appendix I training uses a source-only, hash-pinned table inventory and independent
 field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks

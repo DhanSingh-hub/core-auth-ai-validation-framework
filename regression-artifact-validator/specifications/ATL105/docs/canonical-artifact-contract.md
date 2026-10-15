@@ -126,10 +126,20 @@ The validation package uses producer-local IDs plus shared `sourceAnchors`. IDs 
     {
       "id": "BR-AI-017",
       "title": "ATL105 message identifier",
+      "statement": "The financial request uses the ATL105 message format identifier.",
+      "atomicity": "ATOMIC",
       "category": "core-structure",
       "applicability": "all-financial-requests",
       "priority": "high",
       "executionStatus": "EXECUTION_READY",
+      "sourceEvidence": [
+        {
+          "sourcePath": "docs/specs/extracted_text.txt",
+          "sha256": "<sha256-of-exact-source-file>",
+          "locator": "Section 1, Element 55",
+          "quote": "The message format version identifier shall be ATL105."
+        }
+      ],
       "sourceAnchors": [
         {
           "specification": "ATL105",
@@ -160,6 +170,8 @@ The validation package uses producer-local IDs plus shared `sourceAnchors`. IDs 
   "testScenarios": [
     {
       "id": "SCN-TV-009",
+      "intent": "Validate the message format identifier on a financial request.",
+      "preconditions": ["A financial request is formed."],
       "requirementIds": ["BR-AI-017"],
       "sourceAnchors": [{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]
     }
@@ -169,6 +181,14 @@ The validation package uses producer-local IDs plus shared `sourceAnchors`. IDs 
       "id": "TC-OTHER-42",
       "scenarioIds": ["SCN-TV-009"],
       "expectedOutcome": "PASS",
+      "assertions": [
+        {
+          "requirementId": "BR-AI-017",
+          "assertion": "The request message format identifier is ATL105.",
+          "expectedResult": "Validation passes the ATL105 identifier check.",
+          "sourceAnchors": [{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]
+        }
+      ],
       "sourceAnchors": [{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]
     }
   ],
@@ -220,6 +240,15 @@ When `manifest.strictExecutionContract` is `true`, the validator also requires:
 - Object `request` and `response` envelopes for every test-data artifact.
 - One common ATL105 source anchor, including the same specification version, through the complete `BR -> TS -> TC -> TD` chain.
 - No `EXECUTION_READY` or `EXECUTABLE` status when the required chain or envelopes are incomplete.
+
+Additional execution-readiness evidence is checked by `validateForExecution`:
+
+- An `EXECUTION_READY` BR must contain a nonblank `statement`, `atomicity: "ATOMIC"`, and `sourceEvidence` rows with `sourcePath`, `sha256`, `locator`, and a literal `quote`.
+- Source paths resolve within the supplied trusted ATL105 evidence root (the default is `specifications/ATL105`). The verifier resolves symlinks, recomputes SHA-256, and checks the quote verbatim. Integrity proves which bytes were cited; it does not approve the interpretation or atomicity decision.
+- An `EXECUTION_READY` scenario must declare `intent` and `preconditions`; use an empty preconditions array when none apply.
+- An `EXECUTION_READY` test case must contain `assertions`, each tied to one linked BR by `requirementId`, a concrete assertion, an `expectedResult`, and a source anchor shared with that BR. Every BR reached through the case's linked scenarios needs an assertion; assertions for unlinked BRs are rejected.
+
+These fields are optional for draft/review artifacts so legacy input remains readable. Missing evidence blocks execution readiness; no status, atomicity, or SME approval is inferred from producer labels or a passing technical check.
 
 `SCHEDULED` is distinct from `BLOCKED`: it marks a BR/TS/TC that is correctly specified and certifiable, but not yet live in production before a stated `notBeforeDate` (ISO-8601 date). This check runs regardless of `strictExecutionContract`: any BR, TS, or TC with `SCHEDULED` status must include `notBeforeDate`, and none may be `EXECUTION_READY` while `notBeforeDate` is still in the future.
 

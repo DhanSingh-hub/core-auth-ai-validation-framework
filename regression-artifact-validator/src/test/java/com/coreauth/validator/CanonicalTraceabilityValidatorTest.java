@@ -2,6 +2,10 @@ package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalPackageLoader;
+import com.coreauth.validator.canonical.CanonicalRequirement;
+import com.coreauth.validator.canonical.CanonicalScenario;
+import com.coreauth.validator.canonical.CanonicalSourceEvidence;
+import com.coreauth.validator.canonical.CanonicalTestAssertion;
 import com.coreauth.validator.canonical.CanonicalTestCaseFilter;
 import com.coreauth.validator.canonical.CanonicalTestData;
 import com.coreauth.validator.canonical.Segment100CoverageAnalyzer;
@@ -52,10 +56,10 @@ class CanonicalTraceabilityValidatorTest {
     private static final String VALID_PACKAGE = """
             {
               "manifest": {"packageId":"ATL105-SEG100-001","specification":"ATL105","specificationVersion":"2026"},
-              "businessRequirements": [{"id":"BR-AI-017","title":"ATL105 identifier","category":"core-structure","applicability":"all-financial-requests","priority":"high","executionStatus":"EXECUTION_READY","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
+              "businessRequirements": [{"id":"BR-AI-017","title":"ATL105 identifier","statement":"The financial request uses the ATL105 identifier.","atomicity":"ATOMIC","sourceEvidence":[{"sourcePath":"source.txt","sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","locator":"Section 1, Element 55","quote":"The message format version identifier shall be ATL105."}],"category":"core-structure","applicability":"all-financial-requests","priority":"high","executionStatus":"EXECUTION_READY","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
               "requirementCrosswalk": [{"testRequirementId":"BR-BASELINE-017","aiRequirementIds":["BR-AI-017"],"matchStatus":"CONFIRMED","matchReason":"Shared ATL105 source anchor"}],
-              "testScenarios": [{"id":"SCN-TV-009","requirementIds":["BR-AI-017"],"sourceAnchors":[{"specification":"atl105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
-              "testCases": [{"id":"TC-OTHER-42","scenarioIds":["SCN-TV-009"],"expectedOutcome":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
+              "testScenarios": [{"id":"SCN-TV-009","intent":"Validate the ATL105 identifier.","preconditions":["A financial request exists."],"requirementIds":["BR-AI-017"],"sourceAnchors":[{"specification":"atl105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
+              "testCases": [{"id":"TC-OTHER-42","scenarioIds":["SCN-TV-009"],"expectedOutcome":"PASS","assertions":[{"requirementId":"BR-AI-017","assertion":"The identifier is ATL105.","expectedResult":"Validation passes.","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],"sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}]}],
               "testData": [{"id":"TD-LOCAL-7","testCaseIds":["TC-OTHER-42"],"expectedValidation":"PASS","sourceAnchors":[{"specification":"ATL105","version":"2026","section":"1","element":"55","rule":"message-format-identifier"}],"payload":{"request":{"messageType":"ATL105"}}}]
             }
             """;
@@ -69,6 +73,11 @@ class CanonicalTraceabilityValidatorTest {
         ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
 
         assertThat(result.errors()).isEmpty();
+        assertThat(artifactPackage.getBusinessRequirements().get(0).getStatement())
+            .isEqualTo("The financial request uses the ATL105 identifier.");
+        assertThat(artifactPackage.getBusinessRequirements().get(0).getSourceEvidence()).hasSize(1);
+        assertThat(artifactPackage.getTestScenarios().get(0).getPreconditions()).containsExactly("A financial request exists.");
+        assertThat(artifactPackage.getTestCases().get(0).getAssertions()).hasSize(1);
     }
 
     @Test
@@ -96,20 +105,118 @@ class CanonicalTraceabilityValidatorTest {
 
     @Test
     void validatesStrictExecutionContractAcrossBrToTestData() throws Exception {
-        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
-        artifactPackage.getManifest().setArtifactContractVersion("2");
-        artifactPackage.getManifest().setStrictExecutionContract(true);
-        artifactPackage.getTestScenarios().get(0).setStatus(com.coreauth.validator.canonical.ArtifactStatus.EXECUTION_READY);
-        artifactPackage.getTestCases().get(0).setStatus("EXECUTION_READY");
-        artifactPackage.getTestCases().get(0).setTestDataFile("TD-LOCAL-7.json");
-        CanonicalTestData data = artifactPackage.getTestData().get(0);
-        data.setFileName("TD-LOCAL-7.json");
-        data.setReadiness(com.coreauth.validator.canonical.TestDataReadiness.EXECUTABLE);
-        data.setResponse(new ObjectMapper().readTree("{\"financialResponse\":{\"responseCode\":\"00\"}}"));
+        Path sourceRoot = Files.createTempDirectory("atl105-source-evidence-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
 
-        ValidationResult result = new CanonicalTraceabilityValidator().validate(artifactPackage);
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
 
         assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
+    void blocksExecutionReadyCompositeRequirement() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-composite-br-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getBusinessRequirements().get(0).setAtomicity("COMPOSITE_CANDIDATE");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("atomicity must be ATOMIC"));
+    }
+
+    @Test
+    void blocksExecutionReadyCaseWithoutAssertionForEveryLinkedRequirement() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-missing-assertion-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getTestCases().get(0).setAssertions(java.util.List.of());
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("no assertion for linked requirement BR-AI-017"));
+    }
+
+    @Test
+    void blocksExecutionReadyRequirementWhenItsSourceQuoteOrHashChanges() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-stale-source-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        Files.writeString(sourceRoot.resolve("atl105-source.txt"), "Changed source text.");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("citation hash does not match"));
+    }
+
+    @Test
+    void blocksSourceQuoteThatIsNotLiteralEvenWhenHashMatches() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-nonliteral-source-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getBusinessRequirements().get(0).getSourceEvidence().get(0)
+                .setQuote("The source says a different thing.");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("quote is not literal"));
+    }
+
+    @Test
+    void blocksSourceCitationOutsideTheEvidenceRoot() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-source-root-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        Path outside = sourceRoot.getParent().resolve("atl105-outside-source.txt");
+        Files.writeString(outside, "The message format version identifier shall be ATL105.");
+        CanonicalSourceEvidence evidence = artifactPackage.getBusinessRequirements().get(0).getSourceEvidence().get(0);
+        evidence.setSourcePath("../" + outside.getFileName());
+        evidence.setSha256(java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+                .digest(Files.readAllBytes(outside))));
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("outside its root"));
+    }
+
+    @Test
+    void blocksExecutionReadyTestCaseWhenAssertionAnchorDoesNotMatchRequirement() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-assertion-anchor-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        SourceAnchor wrongAnchor = anchor("2", "100", "different-rule");
+        artifactPackage.getTestCases().get(0).getAssertions().get(0).setSourceAnchors(java.util.List.of(wrongAnchor));
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("must cite a sourceAnchor on that requirement"));
+    }
+
+    @Test
+    void requiresIntentForExecutionReadyScenario() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-scenario-intent-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getTestScenarios().get(0).setIntent(" ");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("SCN-TV-009.intent is required"));
+    }
+
+    @Test
+    void requiresScenarioPreconditionsToBeDeclared() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-scenario-preconditions-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getTestScenarios().get(0).setPreconditions(null);
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("preconditions must be declared"));
+    }
+
+    @Test
+    void blocksExecutionReadyScenarioWhenLinkedRequirementIsStillInReview() throws Exception {
+        Path sourceRoot = Files.createTempDirectory("atl105-scenario-br-readiness-");
+        CanonicalArtifactPackage artifactPackage = executionReadyPackage(sourceRoot);
+        artifactPackage.getBusinessRequirements().get(0).setExecutionStatus("REVIEW_REQUIRED");
+
+        ValidationResult result = new CanonicalTraceabilityValidator().validateForExecution(artifactPackage, sourceRoot);
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("links non-ready requirement BR-AI-017"));
     }
 
     @Test
@@ -649,6 +756,47 @@ class CanonicalTraceabilityValidatorTest {
                 assertThat(lifecycle.errors()).hasSize(1);
                 assertThat(lifecycle.errors().get(0).reason()).contains("reuse original Sequence Number");
             }
+
+    private static CanonicalArtifactPackage executionReadyPackage(Path sourceRoot) throws Exception {
+        CanonicalArtifactPackage artifactPackage = new CanonicalPackageLoader().load(writePackage(VALID_PACKAGE));
+        artifactPackage.getManifest().setArtifactContractVersion("2");
+        artifactPackage.getManifest().setStrictExecutionContract(true);
+
+        CanonicalRequirement requirement = artifactPackage.getBusinessRequirements().get(0);
+        requirement.setStatement("The financial request uses the ATL105 message format identifier.");
+        requirement.setAtomicity("ATOMIC");
+        String sourceQuote = "The message format version identifier shall be ATL105.";
+        Path sourceFile = sourceRoot.resolve("atl105-source.txt");
+        Files.writeString(sourceFile, "ATL105 source fixture. " + sourceQuote);
+        CanonicalSourceEvidence evidence = new CanonicalSourceEvidence();
+        evidence.setSourcePath("atl105-source.txt");
+        evidence.setSha256(java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+                .digest(Files.readAllBytes(sourceFile))));
+        evidence.setLocator("Section 1, Element 55");
+        evidence.setQuote(sourceQuote);
+        requirement.setSourceEvidence(java.util.List.of(evidence));
+
+        CanonicalScenario scenario = artifactPackage.getTestScenarios().get(0);
+        scenario.setStatus(com.coreauth.validator.canonical.ArtifactStatus.EXECUTION_READY);
+        scenario.setIntent("Validate the message format identifier on a financial request.");
+        scenario.setPreconditions(java.util.List.of("A financial request is formed."));
+
+        var testCase = artifactPackage.getTestCases().get(0);
+        testCase.setStatus("EXECUTION_READY");
+        testCase.setTestDataFile("TD-LOCAL-7.json");
+        CanonicalTestAssertion assertion = new CanonicalTestAssertion();
+        assertion.setRequirementId(requirement.getId());
+        assertion.setAssertion("The request message format identifier is ATL105.");
+        assertion.setExpectedResult("Validation passes the ATL105 identifier check.");
+        assertion.setSourceAnchors(requirement.getSourceAnchors());
+        testCase.setAssertions(java.util.List.of(assertion));
+
+        CanonicalTestData data = artifactPackage.getTestData().get(0);
+        data.setFileName("TD-LOCAL-7.json");
+        data.setReadiness(com.coreauth.validator.canonical.TestDataReadiness.EXECUTABLE);
+        data.setResponse(new ObjectMapper().readTree("{\"financialResponse\":{\"responseCode\":\"00\"}}"));
+        return artifactPackage;
+    }
 
             private static com.coreauth.validator.canonical.SourceAnchor anchor(String section, String element, String rule) {
                 com.coreauth.validator.canonical.SourceAnchor anchor = new com.coreauth.validator.canonical.SourceAnchor();
