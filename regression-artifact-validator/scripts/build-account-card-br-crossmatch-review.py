@@ -207,7 +207,7 @@ def run(review, package_path, runner_path, output):
             "categoryReviewStatus": category["categoryReviewStatus"],
             "v3HasAiCandidate": identifier in test_candidate_index,
             "v3MatchedAiBrCount": test_candidate_index.get(identifier, {}).get("matchedAiBrCount", "0"),
-            "noCandidateRegisterReason": missing_test.get(identifier, {}).get("No_Candidate_Reason", "HAS_V3_AI_CANDIDATE"),
+            "noCandidateReason": "" if identifier in test_candidate_index else "TEST_BR_ID_ABSENT_FROM_V3_AI_CANDIDATE_INDEX; NOT_AN_ADJUDICATED_NOT_MATCH",
             "packageBrStatus": chain["br"].get("status"),
             "scenarioIds": ";".join(item["id"] for item in chain["scenarios"]),
             "testCaseIds": ";".join(item["id"] for item in chain["cases"]),
@@ -314,7 +314,7 @@ def run(review, package_path, runner_path, output):
     report += "- `SEG155-R-004` is closely stated by AI `:1505` (the same five Card Status values); AI chain has six physically complete cases.\n"
     report += "- `SEG156-R-001` has a close AI statement `:5992` (EV charging segment, Visa-only) plus AI `:1529` (Visa-only) and `:1530` (EV fuel code in Segment 102); together they suggest coverage, but the condition conjunction and negative branches need review.\n"
     report += "\n`SEG105-R-015` has only partial/fragmentary AI leads; `SEG108-R-006` has no direct AI field-order rule identified; `SEGDL1-R-012` has partial block-order/indicator leads, not the full sequence.\n\n"
-    report += "No lead is an authorized semantic decision. Test category labels remain review proposals; Test BRs and package chains remain `DRAFT_REVIEW_REQUIRED`/`REVIEW_REQUIRED`. Offline predicates run on AI payloads only; no Test fixture or host executions are claimed.\n"
+    report += "The v3 crosswalk requires an exact normalized segment plus numeric-element anchor; a Test BR absent from its index means no candidate under that policy, not proof that no AI requirement exists and not an authorized `NOT_MATCH`. No lead is an authorized semantic decision. Test category labels remain review proposals; Test BRs and package chains remain `DRAFT_REVIEW_REQUIRED`/`REVIEW_REQUIRED`. Offline predicates run on AI payloads only; no Test fixture or host executions are claimed.\n"
     (output / "REPORT.md").write_text(report, encoding="utf-8")
     (output / "summary.json").write_text(json.dumps({"population": counts, "sourceSha256": source_hashes,
         "limitations": ["No match is semantically approved.", "Ranked leads prioritize review only.",
