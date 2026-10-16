@@ -244,4 +244,33 @@ class AppendixREmvChipDataOracleTest {
         assertThat(decode.entries()).hasSize(1);
         assertThat(decode.entries().get(0).tag()).isEqualTo("9F06");
     }
+
+    @Test
+    void matchingPackedBcdPrefixParsesBodyButKeepsFieldBoundaryReviewRequired() {
+        String prefixed = "0116" + GOLDEN_CHIP_DATA;
+
+        assertThat(oracle.decode(prefixed).wellFormed()).isFalse();
+
+        Map<String, Assessment> assessments = oracle.assessWithPackedLengthPrefix(
+                        "118", prefixed, new TransactionContext(true)).stream()
+                .collect(java.util.stream.Collectors.toMap(Assessment::businessRequirementId, a -> a));
+
+        assertThat(assessments.get(AppendixREmvChipDataOracle.BR_LENGTH_PREFIX).status()).isEqualTo(Status.PASS);
+        assertThat(assessments.get(AppendixREmvChipDataOracle.BR_PACKED_PREFIX_BOUNDARY).status())
+                .isEqualTo(Status.REVIEW_REQUIRED);
+        assertThat(assessments.get(AppendixREmvChipDataOracle.BR_TLV_FORMAT).status()).isEqualTo(Status.PASS);
+        assertThat(assessments.get(AppendixREmvChipDataOracle.BR_MANDATORY_IDENTIFIER).status()).isEqualTo(Status.PASS);
+        assertThat(assessments.get(AppendixREmvChipDataOracle.BR_PROHIBITED_SENSITIVE_TAG).status())
+                .isEqualTo(Status.PASS);
+    }
+
+    @Test
+    void packedBcdPrefixWithWrongFollowingByteCountFails() {
+        var candidate = oracle.decodePackedPrefixCandidate("0117" + GOLDEN_CHIP_DATA);
+
+        assertThat(candidate.validPrefix()).isFalse();
+        assertThat(candidate.declaredPayloadBytes()).isEqualTo(117);
+        assertThat(candidate.observedPayloadBytes()).isEqualTo(116);
+        assertThat(oracle.assessPackedPrefixBoundary(candidate).status()).isEqualTo(Status.FAIL);
+    }
 }

@@ -1,0 +1,61 @@
+{
+  "id" : "TD-APPI-C032-13H-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-13H-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-13H-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-29",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r022-APPI-C032-13H"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-13H",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R022" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-29",
+          "startLine" : 28682,
+          "endLine" : 28686
+        } ],
+        "logicalFields" : {
+          "subTableId" : "13",
+          "subTableLength" : "001",
+          "value" : "Y",
+          "context" : {
+            "brand" : "MasterCard",
+            "purchaseClassification" : "High securities by explicit synthetic precondition",
+            "mcc" : "6211"
+          }
+        },
+        "clearScope" : [ "H/MCC6211 stated mapping only" ],
+        "excludedClaims" : [ "Authoritative high-securities eligibility definition" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Supplied classified high-securities fixture usesH",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Actual eligibility proven",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "Y",
+          "targetedNegative" : "Cryptocurrency instead of high-securities indicator"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

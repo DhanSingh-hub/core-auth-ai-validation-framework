@@ -44,12 +44,13 @@ This module covers:
 - Business-requirement, scenario, test-case, and test-data analysis for the
   envelope rules
 
-It does not claim that the envelope validates Appendix I Table-ID-specific
+It does not claim that the envelope validates all Appendix I Table-ID-specific
 content. Approximately 400 Table-ID business rules for elements 111 and 113
 remain out of scope and are tracked in the
 [coverage closure](coverage/README.md) as `REVIEW_REQUIRED`, not silently
-passed. The combined flow now applies bounded Appendix I logical predicates
-for Tables 001-009; Tables 010-081 remain unasserted unless separately
+passed. The combined flow applies bounded predicates for Tables 001-009 and
+selected rules for Tables 010-015, 017-022, and 024-040; these are not exhaustive table
+or context validations. Other rules remain unasserted unless separately
 implemented. Two provisional items remain open pending SME resolution: `P-01`
 (Ship-to/Ship-from Postal Code format) and `P-02` (Segment 111 cardinality).
 

@@ -1,0 +1,1262 @@
+{
+  "manifest": {
+    "proposalId": "ATL105-NEEDS-REVIEW-16-RULE-REPAIR",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION",
+    "aiArtifactsIncluded": false,
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "canonicalPackageMutated": false,
+    "executionCertified": false
+  },
+  "repairSummary": {
+    "targetRules": 16,
+    "sourceGroundedDrafts": 14,
+    "blockedOrContextGated": 2,
+    "draftCaseProposals": 29,
+    "authorizedDecisions": 0,
+    "executedCases": 0
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-RULE-SEG100-R-012",
+      "currentTitle": "TPDU Protocol ID is 0x60",
+      "proposedTitle": "TCP/IP TPDU Protocol ID is fixed at 0x60",
+      "proposedRequirement": "For the standard BUYPASS TCP/IP header, the one-byte TPDU Protocol ID shall be 0x60.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "Appendix A",
+          "segment": "TCP-IP-HEADER",
+          "element": "protocol-id",
+          "rule": "tpdu-protocol-id"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_RULE",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Logical-header probes only; full-message transport/wire validation remains separate."
+    },
+    {
+      "id": "BR-RULE-SEG100-R-024",
+      "currentTitle": "Reserved TPDU destination and source addresses are zero",
+      "proposedTitle": "Reserved TPDU destination and source addresses are zero",
+      "proposedRequirement": "In messages sent to BUYPASS, the two-byte TPDU Destination Address and two-byte TPDU Source Address shall each be 0x0000.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "Appendix A",
+          "segment": "TCP-IP-HEADER",
+          "element": "destination-source-address",
+          "rule": "reserved-tpdu-addresses"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_RULE",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "The specification states this for messages to BUYPASS; do not generalize to other transports or peers."
+    },
+    {
+      "id": "BR-RULE-SEG100-R-066",
+      "currentTitle": "Declined financial responses carry a decline code",
+      "proposedTitle": "Financial Response Code (Element 83) identifies decline",
+      "proposedRequirement": "Element 83 is the one-byte Financial Response Code and identifies a financial response as an approval with purchase/capture, approval without purchase/capture, or decline. Keep the separate Element 26 Decline Code distinct.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "FINANCIAL-RESPONSE",
+          "element": "83",
+          "rule": "response-code-1-S"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_TITLE_CORRECTION",
+      "sourceEvidenceIds": [
+        "RESPONSE_CODE_83",
+        "RESPONSE_CODE_S"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Response-family value validation must use the separate Element 83 family matrix; do not treat response code as Element 26."
+    },
+    {
+      "id": "BR-RULE-SEG101-R-022",
+      "currentTitle": "Fleet Tag format is 3-byte code plus up to 31-byte data payload",
+      "proposedTitle": "Fleet Tag uses a fixed three-byte tag and up to 31 data bytes",
+      "proposedRequirement": "Fleet Tag fields 1-5, when applicable, use a three-byte fixed tag followed by zero to 31 data bytes; the source limits these fields to Auth Completion messages when Host Prompts are supported.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.2",
+          "segment": "101",
+          "rule": "fleet-tag-format"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_RULE",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "The generic maximum does not replace the per-code maximum in SEG101-R-024."
+    },
+    {
+      "id": "BR-RULE-SEG101-R-023",
+      "currentTitle": "Fleet Tag 3-byte code must be one of the 17 codes in the fleet-tag code table",
+      "proposedTitle": "Fleet Tag code is one of the 17 source-listed Auth Completion codes",
+      "proposedRequirement": "When Host Prompts are supported on an Auth Completion (0220), each three-byte Fleet Tag code shall be one of DLS, DLN, PON, INV, TRP, UNT, TLH, DOB, ZIP, END, MID, VIN, TRA, HUB, TLR, CBA, or VHT.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.2",
+          "segment": "101",
+          "rule": "fleet-tag-code-enumeration"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_ENUMERATION_COMPLETION",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "This repairs the missing eleven codes in the current partial AI-derived comparison; the source table is the authority."
+    },
+    {
+      "id": "BR-RULE-SEG101-R-024",
+      "currentTitle": "Fleet Tag data payload conforms to the per-code format",
+      "proposedTitle": "Fleet Tag data obeys the source type and maximum for its tag code",
+      "proposedRequirement": "For each Auth Completion Fleet Tag, data shall obey that code's source type and maximum length: DLS an3; DLN an22; PON an31; INV an31; TRP an15; UNT an31; TLH n6; DOB n8; ZIP an9; END an31; MID an31; VIN an17; TRA an15; HUB n9; TLR an15; CBA n6; VHT an10.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.2",
+          "segment": "101",
+          "rule": "fleet-tag-per-code-format"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_ENUMERATION_COMPLETION",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Semantic validation of values such as DOB/state/ZIP remains separate from declared type and length."
+    },
+    {
+      "id": "BR-RULE-SEG102-R-017",
+      "currentTitle": "Fuel merchants send both fuel and nonfuel product data",
+      "proposedTitle": "Fuel merchants send fuel and nonfuel product data",
+      "proposedRequirement": "A fuel merchant shall send both fuel and nonfuel product data in the Product Code Data Segment.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.3",
+          "segment": "102",
+          "rule": "fuel-merchant-nonfuel-data"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_RULE",
+      "sourceEvidenceIds": [
+        "FUEL_NONFUEL"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Comdata exclusion and product/amount reconciliation remain separate rules, not silently included here."
+    },
+    {
+      "id": "BR-RULE-SEG103-R-020",
+      "currentTitle": "eWIC does not support Return transactions (absolute prohibition, not a code lookup)",
+      "proposedTitle": "eWIC does not support Return transactions",
+      "proposedRequirement": "The eWIC transaction flow shall not issue a Return transaction; this is an operation prohibition, not a response-code lookup.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.5.5.1",
+          "segment": "103",
+          "rule": "ewic-no-return"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_PROHIBITION",
+      "sourceEvidenceIds": [
+        "EWIC_NO_RETURN"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "ATL105 does not define a host decline response for an unsupported Return; do not invent one."
+    },
+    {
+      "id": "BR-RULE-SEG109-R-019",
+      "currentTitle": "Retrieval requests use Prompt Code 981, or 996 when retrieving proprietary card data, and allow up to 750 bytes of print data per request",
+      "proposedTitle": "Electronic Mail Retrieval uses Prompt Code 981, or 996 for proprietary card data; print data is at most 750 bytes per request",
+      "proposedRequirement": "A retrieval request shall use Prompt Code 981; retrieval of proprietary card data shall use 996. Print data shall not exceed 750 bytes per request.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.11.1",
+          "segment": "109",
+          "rule": "retrieval-request"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_COMPOSITE",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Byte length is measured on encoded data; complete electronic-mail envelope/response behavior requires its own source-backed rules."
+    },
+    {
+      "id": "BR-RULE-SEG109-R-020",
+      "currentTitle": "Submission requests use Prompt Code 995, contain up to 217 bytes of data, and receive a confirmation response",
+      "proposedTitle": "Electronic Mail Submission uses Prompt Code 995, at most 217 data bytes, and a receipt confirmation response",
+      "proposedRequirement": "A submission request shall use Prompt Code 995, contain no more than 217 data bytes, and receive an Electronic Mail Response confirming receipt.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.11.2",
+          "segment": "109",
+          "rule": "submission-request"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_COMPOSITE",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "The response must be bound to the same request before integration execution; no host behavior is claimed here."
+    },
+    {
+      "id": "BR-RULE-SEG119-R-035",
+      "currentTitle": "Merchant settlement cutoff and timezone behavior is approved before certification",
+      "proposedTitle": "Settlement cutoff/time-zone approval prerequisite (policy register; not an ATL105 BR)",
+      "proposedRequirement": "No source-derived runtime requirement is proposed. Preserve the certification policy prerequisite only in the policy/SME register until the policy owner defines the cutoff, timezone, and approval authority.",
+      "sourceAnchors": [
+        {
+          "section": "9,11.4",
+          "segment": "119",
+          "rule": "settlement-cutoff-policy",
+          "specification": "ATL105",
+          "version": "2026-3"
+        }
+      ],
+      "repairClass": "POLICY_ONLY_BLOCKED",
+      "sourceEvidenceIds": [],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": {
+        "registerId": "SEG119-SME-005",
+        "owner": "SME/TBA or settlement policy owner",
+        "status": "OPEN",
+        "requiredDecision": "Approve cutoff/time-zone policy or withdraw the certification gate.",
+        "communicationRegisterId": "SEG119-SME-005"
+      },
+      "notes": "Do not count this as an ATL105 source-derived BR or AI semantic gap; do not create an execution case without the policy definition."
+    },
+    {
+      "id": "BR-RULE-SEG145-R-004",
+      "currentTitle": "MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation only and must not be used in live production transactions",
+      "proposedTitle": "MasterCard Enhanced Fleet availability notice (ATL105 2026-3, historical date condition)",
+      "proposedRequirement": "The 2026-3 specification states that MasterCard Enhanced functionality was expected in First Data production no earlier than June 2026 and, until enabled, was for development/certification preparation rather than live transactions.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.31",
+          "segment": "145",
+          "rule": "mastercard-enhanced-fleet-availability-notice"
+        }
+      ],
+      "repairClass": "DATED_SOURCE_NOTICE_CONTEXT_BLOCKED",
+      "sourceEvidenceIds": [
+        "MASTER_CARD_AVAILABILITY"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": {
+        "registerId": "SEG145-SME-002",
+        "owner": "SME/TBA or product owner",
+        "status": "OPEN",
+        "requiredDecision": "Confirm current production enablement, effective date, and environment before deriving a current live-use test.",
+        "communicationRegisterId": "SEG145-SME-002"
+      },
+      "notes": "Keep the dated source statement; do not infer that the June 2026 milestone occurred."
+    },
+    {
+      "id": "BR-RULE-SEG155-R-005",
+      "currentTitle": "Account Updater Result Code (Table 006) is a fixed 6-character code from a documented enumeration (VAU001 through VAU016, non-contiguous \u2014 VAU015 absent), applicable only to Visa",
+      "proposedTitle": "Visa Account Updater Result Code is a six-character Table 006 value from the source enumeration",
+      "proposedRequirement": "When the response field is applicable (Visa and an Account Updater Request Indicator of Y or I), Table 006 has ID 006, length 006, and one of VAU001-VAU014 or VAU016; VAU015 is not defined in the source list.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.39",
+          "segment": "155",
+          "rule": "result-code-vau-enumeration-visa-only"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_ENUMERATION_COMPLETION",
+      "sourceEvidenceIds": [
+        "ACCOUNT_UPDATER_RESULT_ENUMERATION"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Segment 155 has no separators; layout and parent transaction/Segment 111 context need independent fixture coverage."
+    },
+    {
+      "id": "BR-RULE-SEG156-R-006",
+      "currentTitle": "Connector Type (Table 12) uses a documented Visa-defined enumeration (001-003, 100-103, 200)",
+      "proposedTitle": "Visa EV Connector Type is one of the eight source-defined codes",
+      "proposedRequirement": "Connector Type Table 12, when present for the applicable Visa EV charging context, shall use 001, 002, 003, 100, 101, 102, 103, or 200.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.40",
+          "segment": "156",
+          "rule": "connector-type-visa-enumeration"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_ENUMERATION_COMPLETION",
+      "sourceEvidenceIds": [
+        "EV_CONNECTOR_ENUMERATION"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Do not synthesize EV transaction tokens or infer network support beyond the source-defined Visa list."
+    },
+    {
+      "id": "BR-RULE-SEGDL3-R-008",
+      "currentTitle": "A Date and Time Load is initiated by the device with Load Type 'D' (Date and Time Load Request: '?' + Terminal Identifier + 'D'); the merchant load flag does not have to be set, and the response includes adjustments for the initiating device's time zone and daylight saving time",
+      "proposedTitle": "Date and Time Load request is device-initiated with Load Type D; response uses initiating-device timezone/DST",
+      "proposedRequirement": "The request is the positional string '?' + 13-character Terminal Identifier + 'D', with no Field Separators; no merchant load flag is required. The response time is adjusted for the initiating device's timezone and daylight-saving setting.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.7.3",
+          "segment": "DL3",
+          "rule": "date-time-load-device-initiated-load-type-d"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_RULE_WITH_EXTERNAL_TIME_FIXTURE",
+      "sourceEvidenceIds": [
+        "DATE_TIME_LOAD"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "Request serialization is locally source-testable; response clock conversion is not executable without a source-bound timezone fixture."
+    },
+    {
+      "id": "BR-RULE-SEGDL4-R-007",
+      "currentTitle": "Software update processing: a bit on the merchant profile makes BUYPASS return Download Indicator 1 on the next transaction response; the device requests a load; BUYPASS returns DL4 and DL5; the device stores New Software Version, Software Terminal Record ID, Software Load Phone Number or IP/URL Address, Request Date and Request Time; at that date and time the device dials the Software Load Phone Number and requests a full application load; afterwards it requests a Table Load, which BUYPASS sends without the profile bit",
+      "proposedTitle": "Software update follows the eight-step profile/download/load/schedule/completion sequence",
+      "proposedRequirement": "Follow the source sequence: profile bit; Download Indicator 1 on the next transaction response; Table Load request; DL4/DL5 response; store version/record ID/address/date/time; scheduled full application load; on success request Table Load; BUYPASS sends that Table Load without the profile bit. Automated full-load attempts are limited to three; unsuccessful load prints the decline message.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.10",
+          "segment": "DL4",
+          "rule": "software-update-processing-sequence"
+        }
+      ],
+      "repairClass": "SOURCE_DERIVED_SEQUENCE_WITH_EXTERNAL_DEVICE_FIXTURE",
+      "sourceEvidenceIds": [
+        "SOFTWARE_UPDATE_SEQUENCE"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": null,
+      "notes": "No actual application image, network endpoint, device-management response, or production software data is included."
+    }
+  ],
+  "blockedItems": [
+    {
+      "id": "BR-RULE-SEG119-R-035",
+      "currentTitle": "Merchant settlement cutoff and timezone behavior is approved before certification",
+      "proposedTitle": "Settlement cutoff/time-zone approval prerequisite (policy register; not an ATL105 BR)",
+      "proposedRequirement": "No source-derived runtime requirement is proposed. Preserve the certification policy prerequisite only in the policy/SME register until the policy owner defines the cutoff, timezone, and approval authority.",
+      "sourceAnchors": [
+        {
+          "section": "9,11.4",
+          "segment": "119",
+          "rule": "settlement-cutoff-policy",
+          "specification": "ATL105",
+          "version": "2026-3"
+        }
+      ],
+      "repairClass": "POLICY_ONLY_BLOCKED",
+      "sourceEvidenceIds": [],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": {
+        "registerId": "SEG119-SME-005",
+        "owner": "SME/TBA or settlement policy owner",
+        "status": "OPEN",
+        "requiredDecision": "Approve cutoff/time-zone policy or withdraw the certification gate.",
+        "communicationRegisterId": "SEG119-SME-005"
+      },
+      "notes": "Do not count this as an ATL105 source-derived BR or AI semantic gap; do not create an execution case without the policy definition."
+    },
+    {
+      "id": "BR-RULE-SEG145-R-004",
+      "currentTitle": "MasterCard Enhanced Fleet EMV functionality was, as of the specification's authoring, expected to be enabled in First Data production no earlier than June 2026; until then it is for development/certification preparation only and must not be used in live production transactions",
+      "proposedTitle": "MasterCard Enhanced Fleet availability notice (ATL105 2026-3, historical date condition)",
+      "proposedRequirement": "The 2026-3 specification states that MasterCard Enhanced functionality was expected in First Data production no earlier than June 2026 and, until enabled, was for development/certification preparation rather than live transactions.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.31",
+          "segment": "145",
+          "rule": "mastercard-enhanced-fleet-availability-notice"
+        }
+      ],
+      "repairClass": "DATED_SOURCE_NOTICE_CONTEXT_BLOCKED",
+      "sourceEvidenceIds": [
+        "MASTER_CARD_AVAILABILITY"
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED",
+      "blocker": {
+        "registerId": "SEG145-SME-002",
+        "owner": "SME/TBA or product owner",
+        "status": "OPEN",
+        "requiredDecision": "Confirm current production enablement, effective date, and environment before deriving a current live-use test.",
+        "communicationRegisterId": "SEG145-SME-002"
+      },
+      "notes": "Keep the dated source statement; do not infer that the June 2026 milestone occurred."
+    }
+  ],
+  "draftCaseProposals": [
+    {
+      "testBrId": "BR-RULE-SEG100-R-012",
+      "title": "TPDU Protocol ID is 0x60",
+      "id": "TPDU-012-POS",
+      "intent": "Accept the source-defined TPDU Protocol ID",
+      "logicalInput": {
+        "protocolIdHex": "60"
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG100-R-012",
+      "title": "TPDU Protocol ID is 0x60",
+      "id": "TPDU-012-NEG",
+      "intent": "Reject a non-source Protocol ID",
+      "logicalInput": {
+        "protocolIdHex": "61"
+      },
+      "proposedOutcome": "REJECT",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG100-R-024",
+      "title": "Reserved TPDU destination and source addresses are zero",
+      "id": "TPDU-024-POS",
+      "intent": "Accept all four reserved TPDU address bytes as zero",
+      "logicalInput": {
+        "destinationHex": "0000",
+        "sourceHex": "0000"
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG100-R-024",
+      "title": "Reserved TPDU destination and source addresses are zero",
+      "id": "TPDU-024-NEG",
+      "intent": "Reject nonzero reserved address bytes",
+      "logicalInput": {
+        "destinationHex": "0001",
+        "sourceHex": "0000"
+      },
+      "proposedOutcome": "REJECT",
+      "sourceEvidenceIds": [
+        "TPDU_HEADER"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG100-R-066",
+      "title": "Declined financial responses carry a decline code",
+      "id": "RESP-066-CLASSIFY",
+      "intent": "Classify the source-defined financial response family, not a reason code",
+      "logicalInput": {
+        "responseElement": "83",
+        "responseCode": "S"
+      },
+      "proposedOutcome": "DECLINED_RESPONSE_FAMILY",
+      "sourceEvidenceIds": [
+        "RESPONSE_CODE_83",
+        "RESPONSE_CODE_S"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG100-R-066",
+      "title": "Declined financial responses carry a decline code",
+      "id": "RESP-066-DISTINCT",
+      "intent": "Keep response status and decline reason as distinct fields",
+      "logicalInput": {
+        "responseElement": "83",
+        "declineReasonElement": "26"
+      },
+      "proposedOutcome": "DISTINCT_FIELDS",
+      "sourceEvidenceIds": [
+        "RESPONSE_CODE_83"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG101-R-022",
+      "title": "Fleet Tag format is 3-byte code plus up to 31-byte data payload",
+      "id": "FLEET-022-POS",
+      "intent": "Accept a three-byte Fleet Tag with data at the maximum length",
+      "logicalInput": {
+        "messageType": "0220",
+        "hostPrompts": true,
+        "tag": "DLS",
+        "dataBytes": 31
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG101-R-022",
+      "title": "Fleet Tag format is 3-byte code plus up to 31-byte data payload",
+      "id": "FLEET-022-NEG",
+      "intent": "Reject tag data exceeding the 31-byte limit",
+      "logicalInput": {
+        "messageType": "0220",
+        "hostPrompts": true,
+        "tag": "DLS",
+        "dataBytes": 32
+      },
+      "proposedOutcome": "REJECT",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG101-R-023",
+      "title": "Fleet Tag 3-byte code must be one of the 17 codes in the fleet-tag code table",
+      "id": "FLEET-023-ENUM",
+      "intent": "Accept each of the 17 source-listed codes and reject an unknown code",
+      "logicalInput": {
+        "allowedCodes": [
+          "DLS",
+          "DLN",
+          "PON",
+          "INV",
+          "TRP",
+          "UNT",
+          "TLH",
+          "DOB",
+          "ZIP",
+          "END",
+          "MID",
+          "VIN",
+          "TRA",
+          "HUB",
+          "TLR",
+          "CBA",
+          "VHT"
+        ],
+        "unknownCode": "ZZZ",
+        "messageType": "0220",
+        "hostPrompts": true
+      },
+      "proposedOutcome": "ACCEPT_LIST_REJECT_UNKNOWN",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG101-R-023",
+      "title": "Fleet Tag 3-byte code must be one of the 17 codes in the fleet-tag code table",
+      "id": "FLEET-023-CONTEXT",
+      "intent": "Do not treat the code list as valid outside its stated Auth Completion/Host Prompts context",
+      "logicalInput": {
+        "messageType": "0100",
+        "hostPrompts": true,
+        "tag": "DLS"
+      },
+      "proposedOutcome": "CONTEXT_REVIEW_OR_REJECT",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG101-R-024",
+      "title": "Fleet Tag data payload conforms to the per-code format",
+      "id": "FLEET-024-BOUNDARIES",
+      "intent": "Exercise each code at its source type/maximum and one byte over",
+      "logicalInput": {
+        "perCodeBoundaries": [
+          {
+            "code": "DLS",
+            "type": "an",
+            "maxLength": 3,
+            "validLength": 3,
+            "invalidLength": 4
+          },
+          {
+            "code": "DLN",
+            "type": "an",
+            "maxLength": 22,
+            "validLength": 22,
+            "invalidLength": 23
+          },
+          {
+            "code": "PON",
+            "type": "an",
+            "maxLength": 31,
+            "validLength": 31,
+            "invalidLength": 32
+          },
+          {
+            "code": "INV",
+            "type": "an",
+            "maxLength": 31,
+            "validLength": 31,
+            "invalidLength": 32
+          },
+          {
+            "code": "TRP",
+            "type": "an",
+            "maxLength": 15,
+            "validLength": 15,
+            "invalidLength": 16
+          },
+          {
+            "code": "UNT",
+            "type": "an",
+            "maxLength": 31,
+            "validLength": 31,
+            "invalidLength": 32
+          },
+          {
+            "code": "TLH",
+            "type": "n",
+            "maxLength": 6,
+            "validLength": 6,
+            "invalidLength": 7
+          },
+          {
+            "code": "DOB",
+            "type": "n",
+            "maxLength": 8,
+            "validLength": 8,
+            "invalidLength": 9
+          },
+          {
+            "code": "ZIP",
+            "type": "an",
+            "maxLength": 9,
+            "validLength": 9,
+            "invalidLength": 10
+          },
+          {
+            "code": "END",
+            "type": "an",
+            "maxLength": 31,
+            "validLength": 31,
+            "invalidLength": 32
+          },
+          {
+            "code": "MID",
+            "type": "an",
+            "maxLength": 31,
+            "validLength": 31,
+            "invalidLength": 32
+          },
+          {
+            "code": "VIN",
+            "type": "an",
+            "maxLength": 17,
+            "validLength": 17,
+            "invalidLength": 18
+          },
+          {
+            "code": "TRA",
+            "type": "an",
+            "maxLength": 15,
+            "validLength": 15,
+            "invalidLength": 16
+          },
+          {
+            "code": "HUB",
+            "type": "n",
+            "maxLength": 9,
+            "validLength": 9,
+            "invalidLength": 10
+          },
+          {
+            "code": "TLR",
+            "type": "an",
+            "maxLength": 15,
+            "validLength": 15,
+            "invalidLength": 16
+          },
+          {
+            "code": "CBA",
+            "type": "n",
+            "maxLength": 6,
+            "validLength": 6,
+            "invalidLength": 7
+          },
+          {
+            "code": "VHT",
+            "type": "an",
+            "maxLength": 10,
+            "validLength": 10,
+            "invalidLength": 11
+          }
+        ]
+      },
+      "proposedOutcome": "MAX_ACCEPT_OVERFLOW_REJECT",
+      "sourceEvidenceIds": [
+        "FLEET_TAGS"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG102-R-017",
+      "title": "Fuel merchants send both fuel and nonfuel product data",
+      "id": "PROD-017-POS",
+      "intent": "Accept a fuel-merchant product segment containing both fuel and nonfuel products",
+      "logicalInput": {
+        "merchantContext": "FUEL",
+        "fuelProductCount": 1,
+        "nonfuelProductCount": 1
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "FUEL_NONFUEL"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG102-R-017",
+      "title": "Fuel merchants send both fuel and nonfuel product data",
+      "id": "PROD-017-NEG-FUEL",
+      "intent": "Detect omitted fuel product data for a fuel merchant",
+      "logicalInput": {
+        "merchantContext": "FUEL",
+        "fuelProductCount": 0,
+        "nonfuelProductCount": 1
+      },
+      "proposedOutcome": "REJECT_OR_REVIEW",
+      "sourceEvidenceIds": [
+        "FUEL_NONFUEL"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG102-R-017",
+      "title": "Fuel merchants send both fuel and nonfuel product data",
+      "id": "PROD-017-NEG-NONFUEL",
+      "intent": "Detect omitted nonfuel product data for a fuel merchant",
+      "logicalInput": {
+        "merchantContext": "FUEL",
+        "fuelProductCount": 1,
+        "nonfuelProductCount": 0
+      },
+      "proposedOutcome": "REJECT_OR_REVIEW",
+      "sourceEvidenceIds": [
+        "FUEL_NONFUEL"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG103-R-020",
+      "title": "eWIC does not support Return transactions (absolute prohibition, not a code lookup)",
+      "id": "EWIC-020-PROHIBIT",
+      "intent": "Block an attempted eWIC Return before emitting a host request",
+      "logicalInput": {
+        "program": "EWIC",
+        "operation": "RETURN",
+        "hostRequestEmitted": false
+      },
+      "proposedOutcome": "BLOCK_LOCAL_REQUEST",
+      "sourceEvidenceIds": [
+        "EWIC_NO_RETURN"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG109-R-019",
+      "title": "Retrieval requests use Prompt Code 981, or 996 when retrieving proprietary card data, and allow up to 750 bytes of print data per request",
+      "id": "MAIL-019-981",
+      "intent": "Use retrieval Prompt Code 981",
+      "logicalInput": {
+        "purpose": "GENERAL_RETRIEVAL",
+        "promptCode": "981"
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG109-R-019",
+      "title": "Retrieval requests use Prompt Code 981, or 996 when retrieving proprietary card data, and allow up to 750 bytes of print data per request",
+      "id": "MAIL-019-996",
+      "intent": "Use Prompt Code 996 for proprietary card data retrieval",
+      "logicalInput": {
+        "purpose": "PROPRIETARY_CARD_DATA",
+        "promptCode": "996"
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG109-R-019",
+      "title": "Retrieval requests use Prompt Code 981, or 996 when retrieving proprietary card data, and allow up to 750 bytes of print data per request",
+      "id": "MAIL-019-BOUNDARY",
+      "intent": "Check print-data byte boundary",
+      "logicalInput": {
+        "maxBytes": 750,
+        "boundaryLengths": [
+          750,
+          751
+        ]
+      },
+      "proposedOutcome": "750_ACCEPT_751_REJECT",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG109-R-020",
+      "title": "Submission requests use Prompt Code 995, contain up to 217 bytes of data, and receive a confirmation response",
+      "id": "MAIL-020-BOUNDARY",
+      "intent": "Check submission data byte boundary",
+      "logicalInput": {
+        "promptCode": "995",
+        "maxDataBytes": 217,
+        "boundaryLengths": [
+          217,
+          218
+        ]
+      },
+      "proposedOutcome": "217_ACCEPT_218_REJECT",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG109-R-020",
+      "title": "Submission requests use Prompt Code 995, contain up to 217 bytes of data, and receive a confirmation response",
+      "id": "MAIL-020-CONFIRM",
+      "intent": "Require a receipt-confirmation response after accepted submission",
+      "logicalInput": {
+        "promptCode": "995",
+        "responseFamily": "ELECTRONIC_MAIL_RESPONSE"
+      },
+      "proposedOutcome": "CONFIRMATION_REQUIRED",
+      "sourceEvidenceIds": [
+        "EMAIL_RETRIEVAL_SUBMISSION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG155-R-005",
+      "title": "Account Updater Result Code (Table 006) is a fixed 6-character code from a documented enumeration (VAU001 through VAU016, non-contiguous \u2014 VAU015 absent), applicable only to Visa",
+      "id": "UPDATER-005-ENUM",
+      "intent": "Accept every source-listed VAU result and reject the unlisted VAU015",
+      "logicalInput": {
+        "tableId": "006",
+        "tableLength": "006",
+        "validValues": [
+          "VAU001",
+          "VAU002",
+          "VAU003",
+          "VAU004",
+          "VAU005",
+          "VAU006",
+          "VAU007",
+          "VAU008",
+          "VAU009",
+          "VAU010",
+          "VAU011",
+          "VAU012",
+          "VAU013",
+          "VAU014",
+          "VAU016"
+        ],
+        "invalidValue": "VAU015"
+      },
+      "proposedOutcome": "ACCEPT_LIST_REJECT_VAU015",
+      "sourceEvidenceIds": [
+        "ACCOUNT_UPDATER_RESULT_ENUMERATION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG155-R-005",
+      "title": "Account Updater Result Code (Table 006) is a fixed 6-character code from a documented enumeration (VAU001 through VAU016, non-contiguous \u2014 VAU015 absent), applicable only to Visa",
+      "id": "UPDATER-005-GATE",
+      "intent": "Apply response-field presence only for Visa with request indicator Y or I",
+      "logicalInput": {
+        "eligibleContext": {
+          "network": "VISA",
+          "requestIndicator": [
+            "Y",
+            "I"
+          ]
+        },
+        "ineligibleContexts": [
+          {
+            "network": "MASTERCARD",
+            "requestIndicator": "Y"
+          },
+          {
+            "network": "VISA",
+            "requestIndicator": "N"
+          }
+        ]
+      },
+      "proposedOutcome": "ELIGIBLE_ONLY",
+      "sourceEvidenceIds": [
+        "ACCOUNT_UPDATER_RESULT_ENUMERATION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEG156-R-006",
+      "title": "Connector Type (Table 12) uses a documented Visa-defined enumeration (001-003, 100-103, 200)",
+      "id": "EV-006-ENUM",
+      "intent": "Accept all eight Visa Connector Type codes and reject an unknown value",
+      "logicalInput": {
+        "tableId": "12",
+        "validValues": [
+          "001",
+          "002",
+          "003",
+          "100",
+          "101",
+          "102",
+          "103",
+          "200"
+        ],
+        "invalidValue": "999"
+      },
+      "proposedOutcome": "ACCEPT_LIST_REJECT_UNKNOWN",
+      "sourceEvidenceIds": [
+        "EV_CONNECTOR_ENUMERATION"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL3-R-008",
+      "title": "A Date and Time Load is initiated by the device with Load Type 'D' (Date and Time Load Request: '?' + Terminal Identifier + 'D'); the merchant load flag does not have to be set, and the response includes adjustments for the initiating device's time zone and daylight saving time",
+      "id": "DL3-008-REQUEST",
+      "intent": "Validate exact request prefix, TID width, fixed D and no separator",
+      "logicalInput": {
+        "request": "?AB12345678901D",
+        "tidLength": 13,
+        "fieldSeparatorPresent": false
+      },
+      "proposedOutcome": "ACCEPT",
+      "sourceEvidenceIds": [
+        "DATE_TIME_LOAD"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL3-R-008",
+      "title": "A Date and Time Load is initiated by the device with Load Type 'D' (Date and Time Load Request: '?' + Terminal Identifier + 'D'); the merchant load flag does not have to be set, and the response includes adjustments for the initiating device's time zone and daylight saving time",
+      "id": "DL3-008-NEG",
+      "intent": "Reject wrong fixed load type or inserted separator",
+      "logicalInput": {
+        "requestVariants": [
+          "?AB12345678901P",
+          "?AB12345678901|D"
+        ]
+      },
+      "proposedOutcome": "REJECT",
+      "sourceEvidenceIds": [
+        "DATE_TIME_LOAD"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL3-R-008",
+      "title": "A Date and Time Load is initiated by the device with Load Type 'D' (Date and Time Load Request: '?' + Terminal Identifier + 'D'); the merchant load flag does not have to be set, and the response includes adjustments for the initiating device's time zone and daylight saving time",
+      "id": "DL3-008-TIMEZONE",
+      "intent": "Compare response time against an approved timezone/DST fixture",
+      "logicalInput": {
+        "timezoneFixtureRequired": true,
+        "deviceTimeZone": null,
+        "dstRule": null
+      },
+      "proposedOutcome": "REVIEW_REQUIRED_UNTIL_FIXTURE",
+      "sourceEvidenceIds": [
+        "DATE_TIME_LOAD"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "EXTERNAL_FIXTURE_REQUIRED",
+      "blocker": "No approved device timezone/DST fixture is supplied.",
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL4-R-007",
+      "title": "Software update processing: a bit on the merchant profile makes BUYPASS return Download Indicator 1 on the next transaction response; the device requests a load; BUYPASS returns DL4 and DL5; the device stores New Software Version, Software Terminal Record ID, Software Load Phone Number or IP/URL Address, Request Date and Request Time; at that date and time the device dials the Software Load Phone Number and requests a full application load; afterwards it requests a Table Load, which BUYPASS sends without the profile bit",
+      "id": "DL4-007-PATH",
+      "intent": "Exercise the ordered source-defined software update state machine",
+      "logicalInput": {
+        "orderedEvents": [
+          "PROFILE_BIT_SET",
+          "NEXT_RESPONSE_DOWNLOAD_INDICATOR_1",
+          "DEVICE_TABLE_LOAD_REQUEST",
+          "BUYPASS_DL4_DL5_RESPONSE",
+          "STORE_LOAD_PARAMETERS",
+          "SCHEDULED_FULL_APPLICATION_LOAD",
+          "SUCCESSFUL_LOAD",
+          "TABLE_LOAD_REQUEST",
+          "TABLE_LOAD_WITHOUT_PROFILE_BIT"
+        ]
+      },
+      "proposedOutcome": "ORDERED_PATH_REQUIRED",
+      "sourceEvidenceIds": [
+        "SOFTWARE_UPDATE_SEQUENCE"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL4-R-007",
+      "title": "Software update processing: a bit on the merchant profile makes BUYPASS return Download Indicator 1 on the next transaction response; the device requests a load; BUYPASS returns DL4 and DL5; the device stores New Software Version, Software Terminal Record ID, Software Load Phone Number or IP/URL Address, Request Date and Request Time; at that date and time the device dials the Software Load Phone Number and requests a full application load; afterwards it requests a Table Load, which BUYPASS sends without the profile bit",
+      "id": "DL4-007-RETRY",
+      "intent": "Stop automated attempts after three and print decline on unsuccessful load",
+      "logicalInput": {
+        "failedAttempts": 3,
+        "fourthAttemptAllowed": false,
+        "declineMessageOnFailure": true
+      },
+      "proposedOutcome": "THREE_ATTEMPT_LIMIT",
+      "sourceEvidenceIds": [
+        "SOFTWARE_UPDATE_SEQUENCE"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "blocker": null,
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "testBrId": "BR-RULE-SEGDL4-R-007",
+      "title": "Software update processing: a bit on the merchant profile makes BUYPASS return Download Indicator 1 on the next transaction response; the device requests a load; BUYPASS returns DL4 and DL5; the device stores New Software Version, Software Terminal Record ID, Software Load Phone Number or IP/URL Address, Request Date and Request Time; at that date and time the device dials the Software Load Phone Number and requests a full application load; afterwards it requests a Table Load, which BUYPASS sends without the profile bit",
+      "id": "DL4-007-DEVICE",
+      "intent": "Run the load state machine using an approved device-management fixture",
+      "logicalInput": {
+        "deviceFirmwareFixtureRequired": true,
+        "schedule": null,
+        "network": null
+      },
+      "proposedOutcome": "REVIEW_REQUIRED_UNTIL_FIXTURE",
+      "sourceEvidenceIds": [
+        "SOFTWARE_UPDATE_SEQUENCE"
+      ],
+      "reviewStatus": "REVIEW_REQUIRED",
+      "readiness": "EXTERNAL_FIXTURE_REQUIRED",
+      "blocker": "Application download/device-management protocol is external to ATL105.",
+      "testExecution": "NOT_EXECUTED",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    }
+  ],
+  "testDataPolicy": "Logical source-derived vectors only. Every vector is REVIEW_REQUIRED and NOT_EXECUTED; none is an executable canonical TD.",
+  "inputs": {
+    "testPackageSha256": "3977941badfbbcaab223f5cce41dd73eaf3f0a070e7844468eec838c851e32ef",
+    "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "communicationRegisterSha256": "43c45a67ab7477c94933564df2c4f0bf959502f50b6bcb6b9355995546db8bd3"
+  }
+}

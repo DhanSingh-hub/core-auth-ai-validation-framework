@@ -59,6 +59,10 @@ public final class AppendixREmvChipDataOracle {
     public record TlvDecodeResult(boolean wellFormed, List<TlvEntry> entries, String reason) {
     }
 
+    public record PackedPrefixCandidate(boolean validPrefix, int declaredPayloadBytes, int observedPayloadBytes,
+                                        TlvDecodeResult tlvDecode, String reason) {
+    }
+
     /**
      * Optional transaction context needed to evaluate {@link #BR_EMV_COMPANION}, which depends on
      * whether the transaction is EMV at all (not stated anywhere in Element 189/190 itself).
@@ -74,6 +78,7 @@ public final class AppendixREmvChipDataOracle {
     public static final String BR_EMV_COMPANION = "BR-SEG100-APPR-EMV-COMPANION";
     public static final String BR_LENGTH_PREFIX = "BR-SEG100-APPR-CHIP-LENGTH";
     public static final String BR_TLV_FORMAT = "BR-SEG100-APPR-TLV-FORMAT";
+    public static final String BR_PACKED_PREFIX_BOUNDARY = "BR-SEG100-APPR-PACKED-PREFIX-BOUNDARY";
     public static final String BR_MANDATORY_IDENTIFIER = "BR-SEG100-APPR-MANDATORY-IDENTIFIER";
     public static final String BR_PROHIBITED_SENSITIVE_TAG = "BR-SEG100-APPR-PROHIBITED-SENSITIVE-TAG";
     public static final String BR_DUPLICATE_TAG_REVIEW = "BR-SEG100-APPR-DUPLICATE-TAG-REVIEW";
@@ -101,6 +106,67 @@ public final class AppendixREmvChipDataOracle {
         assessments.add(assessEmvCompanion(lengthField, chipDataValue, context));
         assessments.add(assessCrossField());
         return assessments;
+    }
+
+    /**
+     * Evaluates an explicit producer-format candidate with a two-byte packed-BCD byte-count prefix.
+     * A matching prefix and clean TLV body remain REVIEW_REQUIRED until the producer adapter declares
+     * whether the prefix belongs to Element 189 framing or the Element 190 value.
+     */
+    public List<Assessment> assessWithPackedLengthPrefix(String lengthField, String chipDataValue,
+                                                          TransactionContext context) {
+        PackedPrefixCandidate candidate = decodePackedPrefixCandidate(chipDataValue);
+        TlvDecodeResult decode = candidate.tlvDecode();
+        List<Assessment> assessments = new ArrayList<>();
+        assessments.add(assessLengthPrefix(lengthField, chipDataValue));
+        assessments.add(assessPackedPrefixBoundary(candidate));
+        assessments.add(assessTlvFormat(decode));
+        assessments.add(assessMandatoryIdentifier(decode));
+        assessments.add(assessProhibitedSensitiveTag(decode));
+        assessments.add(assessDuplicateTagReview(decode));
+        assessments.add(assessEmvCompanion(lengthField, chipDataValue, context));
+        assessments.add(assessCrossField());
+        return assessments;
+    }
+
+    /**
+     * Inspects a candidate whose first two bytes encode a zero-padded three-digit BCD byte count.
+     * The candidate check is structural only; it does not establish the producer's field boundary.
+     */
+    public PackedPrefixCandidate decodePackedPrefixCandidate(String chipDataValue) {
+        String hex = normalizeHex(chipDataValue);
+        if (hex == null || hex.length() < 4) {
+            TlvDecodeResult invalid = new TlvDecodeResult(false, List.of(),
+                    "Packed-BCD prefix candidate must contain at least two bytes of hex data.");
+            return new PackedPrefixCandidate(false, -1, -1, invalid, invalid.reason());
+        }
+        String prefix = hex.substring(0, 4);
+        if (!prefix.matches("0[0-9]{3}")) {
+            TlvDecodeResult invalid = new TlvDecodeResult(false, List.of(),
+                    "Packed-BCD prefix candidate must be a zero-padded three-digit decimal byte count.");
+            return new PackedPrefixCandidate(false, -1, (hex.length() - 4) / 2, invalid, invalid.reason());
+        }
+        int declaredBytes = Integer.parseInt(prefix);
+        String payload = hex.substring(4);
+        int observedBytes = payload.length() / 2;
+        if (declaredBytes != observedBytes) {
+            TlvDecodeResult invalid = new TlvDecodeResult(false, List.of(),
+                    "Packed-BCD prefix declares " + declaredBytes + " payload byte(s), but "
+                            + observedBytes + " follow it.");
+            return new PackedPrefixCandidate(false, declaredBytes, observedBytes, invalid, invalid.reason());
+        }
+        TlvDecodeResult decoded = decode(payload);
+        return new PackedPrefixCandidate(true, declaredBytes, observedBytes, decoded,
+                "Packed-BCD prefix matches the following payload byte count; producer field boundary remains unconfirmed.");
+    }
+
+    public Assessment assessPackedPrefixBoundary(PackedPrefixCandidate candidate) {
+        if (candidate == null || !candidate.validPrefix()) {
+            return assessment(BR_PACKED_PREFIX_BOUNDARY, Status.FAIL, "PACKED_BCD_PREFIX",
+                    candidate == null ? "Packed-BCD prefix candidate is required." : candidate.reason());
+        }
+        return assessment(BR_PACKED_PREFIX_BOUNDARY, Status.REVIEW_REQUIRED, "PACKED_BCD_PREFIX_BOUNDARY",
+                candidate.reason());
     }
 
     /** Decomposes {@code chipDataValue} into EMV TLV entries per Element 190's binary encoding rules. */

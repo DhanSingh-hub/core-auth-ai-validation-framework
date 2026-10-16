@@ -37,6 +37,14 @@ class Segment111SerializationValidatorTest {
         assertThat(new Segment111SerializationValidator().validate(p).errors()).isEmpty();
     }
 
+    @Test void acceptsCanonicalDataSectionThreeArrayWithVariableInfoSegment() throws Exception {
+        String sep = "\\u001c";
+        CanonicalArtifactPackage p = packageWith("""
+            {"testControls":{"validateSerialization":true},"request":{"dataSection3":[{"segmentType":"111","segmentLength":"009","variableInformationSections":[],"wireFormat":"111%s009%s%s"}]}}
+            """.formatted(sep, sep, sep));
+        assertThat(new Segment111SerializationValidator().validate(p).errors()).isEmpty();
+    }
+
     @Test void rejectsWireFormatWithoutExactlyThreeSeparators() throws Exception {
         String sep = "\\u001c";
         CanonicalArtifactPackage p = packageWith("""

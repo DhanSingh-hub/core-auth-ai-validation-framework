@@ -2,6 +2,8 @@ package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status;
+import com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter;
+import com.coreauth.validator.canonical.Segment100AiJsonCompatibilityValidator;
 import com.coreauth.validator.paths.Atl105Paths;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -489,6 +491,40 @@ class Chapter12SegmentPayloadValidatorTest {
         tax.put("type", "VAT");
         assertThat(validator.validate(payload).status()).isEqualTo(Status.INVALID);
     }
+
+        @Test
+        void tax3NoTaxRuleUsesCompleteWireFixturesAndIsolatedFieldMutations() throws IOException {
+                JsonNode vectors;
+                try (var stream = getClass().getResourceAsStream("/atl105/segment-143-tax3-n-requests.json")) {
+                        assertThat(stream).isNotNull();
+                        vectors = mapper.readTree(stream).path("cases");
+                }
+                assertThat(vectors).hasSize(3);
+                var adapter = new Chapter12ActualPayloadAdapter();
+                var compatibility = new Segment100AiJsonCompatibilityValidator();
+
+                for (JsonNode vector : vectors) {
+                        ObjectNode request = (ObjectNode) vector.path("request").deepCopy();
+                        assertThat(compatibility.validatePayload(request).errors()).as(vector.path("id").asText()).isEmpty();
+                        JsonNode financialRequest = request.path("Financial Request");
+                        JsonNode taxSegment = financialRequest.path("Tax Amount Segment");
+                        JsonNode productSegment = financialRequest.path("Product Code Segment");
+                        ObjectNode standard = mapper.createObjectNode()
+                                        .put("SequenceNumber", financialRequest.path("Standard Segment").path("SequenceNumber").asText())
+                                        .put("TerminalIdentifier", financialRequest.path("Standard Segment").path("TerminalID").asText());
+                        ObjectNode evidence = mapper.createObjectNode().putObject("context").put("country", "CANADA");
+
+                        var result = adapter.validate(taxSegment, "143", "Financial Transaction Request", evidence,
+                                        standard, productSegment);
+                        assertThat(result.status().name()).as(vector.path("id").asText())
+                                        .isEqualTo(vector.path("expectedStatus").asText());
+                        for (JsonNode expected : vector.path("expectedFindings")) {
+                                assertThat(result.findings()).anyMatch(f -> f.ruleId().equals(expected.path("ruleId").asText())
+                                                && f.scope().equals(expected.path("scope").asText())
+                                                && f.status().name().equals(expected.path("status").asText()));
+                        }
+                }
+        }
 
     @Test
     void taxProductsEarlyTerminationDelimiterAndEnumerationScopeAreIndependentlyReconciled() throws IOException {

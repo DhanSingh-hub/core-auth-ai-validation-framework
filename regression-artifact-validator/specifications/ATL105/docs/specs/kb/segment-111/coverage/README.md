@@ -4,8 +4,9 @@ This folder defines the Segment 111 work package: turning the envelope and
 selected Appendix I predicate results into an auditable coverage decision.
 The Segment 111 rule catalog remains scoped to envelope rules
 (`SEG111-R-001` through `SEG111-R-007` plus provisional `SEG111-R-008`);
-the combined flow separately invokes Appendix I predicates for implemented
-Tables 001-009.
+the combined flow separately invokes bounded Appendix I predicates for Tables
+001-009 and selected rules for Tables 010-015, 017-022, and 024-040. This is not
+exhaustive table or context coverage.
 
 ## Work Package
 
@@ -31,8 +32,8 @@ Authoritative rule catalog (segment-111-rule-catalog.json)
 Before implementation, confirm:
 
 1. The rule catalog represents the intended Segment 111 envelope scope.
-   Appendix I has 78 defined tables; only selected Tables 001-009 have
-   executable logical predicates today. The remaining table semantics,
+   Appendix I has 78 defined tables; Tables 001-009 have bounded predicates,
+   with selected additional rules from Tables 010-015, 017-022, and 024-040. The remaining table semantics,
    nested layouts and contextual rules must not be silently marked `COVERED`.
 2. `COVERED`, `PARTIALLY_COVERED`, `REVIEW_REQUIRED`, and `MISSING` are
    sufficient statuses.

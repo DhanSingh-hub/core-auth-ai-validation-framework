@@ -1,0 +1,57 @@
+{
+  "id" : "TD-APPI-C035-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C035-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C035-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-32",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t035-r001-APPI-C035-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C035-01",
+        "tableId" : "035",
+        "ruleIds" : [ "APPI-T035-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-32",
+          "startLine" : 28814,
+          "endLine" : 28826
+        } ],
+        "logicalFields" : {
+          "xidOctets" : [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ],
+          "cavvOctets" : [ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 ],
+          "componentOrder" : [ "xidOctets", "cavvOctets" ],
+          "representation" : "Logical octet arrays, not hex text or encoded message"
+        },
+        "clearScope" : [ "Two explicit20-octet components and XID-before-CAVV order" ],
+        "excludedClaims" : [ "Valid XID/CAVV", "General AN/binary conflict", "Variable-short layout", "Binary transport escaping/length units", "Token cryptogram scenario applicability" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Each logical component contains20 octets",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Synthetic CAVV cryptographically valid",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "cavvOctets",
+          "value" : [ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38 ],
+          "targetedNegative" : "CAVV component shortened to19 octets"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

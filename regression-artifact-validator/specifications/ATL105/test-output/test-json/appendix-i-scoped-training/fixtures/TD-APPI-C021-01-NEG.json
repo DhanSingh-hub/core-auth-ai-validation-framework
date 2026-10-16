@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C021-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C021-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C021-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-14",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t021-r001-APPI-C021-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C021-01",
+        "tableId" : "021",
+        "ruleIds" : [ "APPI-T021-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-14",
+          "startLine" : 28017,
+          "endLine" : 28023
+        } ],
+        "data" : "1",
+        "context" : {
+          "acceptsPINlessPOSSettlement" : true,
+          "acceptsTransactionAttributesSettlement" : true
+        },
+        "clearScope" : [ "Listed capability mapping2 for both forms" ],
+        "excludedClaims" : [ "Processing rail inference", "Production availability" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Flag denotes both declared settlement capabilities",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "1",
+          "targetedNegative" : "PINless-only capability instead of both"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -5,10 +5,9 @@
 Segment 130 for EMV transactions<br>
 **Terms:** EMV Chip Data, Tag/Length/Value (TLV), Application Identifier (AID), Dedicated File (DF)
 Name, PAN, Track 2 equivalent data<br>
-**Status:** `PARTIALLY_COVERED`; six of seven BRs have an independent, bounded implementation and
-in-repo test fixtures, including a golden fixture transcribed byte-for-byte from the Appendix R-1
-worked example. Cross-field agreement with Segment 100 stays `REVIEW_REQUIRED` by design, same
-bounding used throughout this appendix family.
+**Status:** `PARTIALLY_COVERED`; eight BRs have bounded checks, but the packed-prefix field boundary
+and cross-field agreement with Segment 100 remain `REVIEW_REQUIRED`. In-repo tests include a golden
+fixture transcribed byte-for-byte from the Appendix R-1 worked example.
 
 ## Why this appendix was rebuilt rather than extended
 
@@ -47,11 +46,14 @@ the "For an example of this data element, please see Appendix R" cross-reference
   - "If the same data element appears several times ... this field must contain the last value that
     was present on the card to terminal interface during the transaction."
 
-Decomposed into seven BRs:
+Decomposed into eight BRs:
 
 - **BR-SEG100-APPR-EMV-COMPANION** — Element 189/190 presence given an EMV-transaction flag.
 - **BR-SEG100-APPR-CHIP-LENGTH** — three-digit format plus byte-count consistency with the encoded
   chip data.
+- **BR-SEG100-APPR-PACKED-PREFIX-BOUNDARY** — a matching packed-BCD prefix candidate is parsed only
+  through the explicit candidate path; without a declared producer adapter boundary it remains
+  `REVIEW_REQUIRED`, and a prefix/body byte-count mismatch fails.
 - **BR-SEG100-APPR-TLV-FORMAT** — binary TLV decomposition with no truncated field and no leftover
   bytes.
 - **BR-SEG100-APPR-MANDATORY-IDENTIFIER** — AID (9F06) or DF Name (84) presence.
@@ -71,11 +73,16 @@ the narrow field-presence check in `BR-SEG100-APPR-EMV-COMPANION`.
 
 ## Test Solution Work Completed
 
-`AppendixREmvChipDataOracle` independently implements and tests all seven BRs:
+`AppendixREmvChipDataOracle` implements bounded checks across all eight BRs:
 
 - **BR-SEG100-APPR-CHIP-LENGTH** — `FAIL` if the length field is not exactly three numeric digits, or
   if the EMV Chip Data value is not valid hex, or if the stated length does not match the actual
   decoded byte count; `PASS` otherwise.
+- **BR-SEG100-APPR-PACKED-PREFIX-BOUNDARY** — checks a two-byte packed-BCD candidate count against
+  the following payload and parses that payload as TLV. A matching count remains `REVIEW_REQUIRED`
+  until an adapter declares whether those bytes belong to Element 189 framing or the Element 190
+  value; a count mismatch is `FAIL`. The ordinary `decode()` path remains strict bare-TLV parsing
+  and does not silently strip a prefix.
 - **BR-SEG100-APPR-TLV-FORMAT** — decomposes the chip data value into TLV entries using Element 190's
   binary encoding rules (two-byte vs one-byte tag detection via the last-five-bits test, short/long
   form length decoding); `FAIL` on any truncated tag/length/value field or leftover bytes, `PASS` on
@@ -99,8 +106,8 @@ entries including both the AID and DF Name tags, exercises both the two-byte tag
 so it passes every BR under an EMV-transaction context, confirming the oracle's TLV decoding logic
 against a real spec-sourced example rather than only synthetic data.
 
-Package totals: **7 BR / 5 TS / 5 TC / 15 TD** (14 `EXECUTABLE`/`REVIEW_REQUIRED`-by-design plus one
-`EXTERNAL_FIXTURE_REQUIRED` for cryptogram authenticity), backed by 20 unit tests in
+Package totals: **8 BR / 6 TS / 6 TC / 17 TD** (14 `EXECUTABLE`, two `REVIEW_REQUIRED`, and one
+`EXTERNAL_FIXTURE_REQUIRED` for cryptogram authenticity), backed by 23 unit tests in
 [`AppendixREmvChipDataOracleTest`](../../../../../../src/test/java/com/coreauth/validator/AppendixREmvChipDataOracleTest.java)
 and
 [`appendix-r-segment-100-coverage.json`](../../../../test-output/test-json/appendices/appendix-r-segment-100-coverage.json).
@@ -117,8 +124,8 @@ and
 3. Appendix R itself states its tag list is not complete ("contact your BUYPASS representative" for
    the full list); if a closed EMV tag catalog is ever required for a future BR, it must come from
    BUYPASS directly, not be inferred from this appendix's illustrative example.
-4. Obtain real AI-generated EMV Chip Data artifacts to replace the in-repo synthetic/golden fixtures
-   before implementation certification.
+4. Obtain a producer adapter declaration for the packed-prefix boundary and real AI-generated EMV
+  Chip Data artifacts before implementation certification.
 5. If a modeled EMV Chip Data field is ever added to the Segment 100 payload schema, decide whether to
    wire `AppendixREmvChipDataOracle` into `Segment100PayloadValidator`; today no such field exists, so
    this validator is intentionally standalone (same posture as Appendix J/N/O/Q).

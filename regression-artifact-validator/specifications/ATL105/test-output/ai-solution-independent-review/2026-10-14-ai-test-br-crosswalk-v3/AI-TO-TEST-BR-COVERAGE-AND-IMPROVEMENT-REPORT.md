@@ -48,25 +48,33 @@ The current candidate map reaches 348 catalogued Test BRs across 49 segments. Th
 
 These are source-anchor candidate rates, not semantic approval. The linked Test BR index and candidate-pair register provide a practical basis for business review and continued expansion.
 
+The same candidate map also extends across single and multileg transaction flows. All listed cases have physical payloads with matching test-case and scenario metadata.
+
+| Flow group | Cases | Cases linked to candidate BR | Distinct Test BR candidates | Payload and metadata present |
+|---|---:|---:|---:|---:|
+| Single Sale-labeled | 565 | 58 (10.27%) | 34 | 565 / 565 |
+| Multileg Sale role | 60 | 1 (1.67%) | 1 | 60 / 60 |
+| Multileg Completion role | 138 | 8 (5.80%) | 6 | 138 / 138 |
+
+Case-link percentages count cases with at least one source-anchor candidate; they are not percentages of all Test BRs for a flow. The independent baseline has no flow-specific BR denominator. Flow groups overlap when a multileg case combines stages, such as Completion followed by Void. Candidate links remain subject to semantic review.
+
 ## Next Milestone: 90%
 
 At a fixed denominator of 605, 90% requires at least **545 distinct Test BRs**. Candidate reach therefore needs **197 additional distinct Test BRs** beyond the current 348. The complete-chain measure needs **237 additional Test BRs** beyond the current 308 to reach 545.
 
 These targets are structural milestones. Build toward them with source-backed requirements and complete test evidence while keeping matching rules and the independent denominator stable. Continue to report candidate reach, complete-chain reach, semantic agreement, and executed coverage separately.
 
-## Candidate Map and Enrichment Opportunities
+## Transaction BR Coverage
 
-These mutually exclusive dispositions partition the 6,880 AI BRs under the exact normalized segment-plus-numeric-element matcher. They identify candidate/review states, not semantic decisions.
+This count groups BRs explicitly anchored to Prompt Code (Element 78) and BRs whose titles/source rules identify transaction lifecycle behavior. The combined row deduplicates BRs that appear in both groups.
 
-| Disposition | AI BRs | Share | Opportunity |
-|---|---:|---:|---|
-| No numeric element anchor | 2,728 | 39.65% | Add a source-backed rule-type/business-scope anchor where an element does not apply; never invent an element |
-| Segment unresolved | 3,332 | 48.43% | Resolve segment/message-family scope from source evidence and validated entity mappings |
-| No exact Test BR candidate | 42 | 0.61% | Review for new scope, an anchor mismatch, or a possible Test Solution baseline gap |
-| Ambiguous/composite candidates | 455 | 6.61% | Atomize independent obligations where appropriate; review pair-level mappings |
-| Legacy entity-anchor candidates | 323 | 4.70% | Reconcile old entity references to current segment and element anchors |
+| BR scope | AI BRs in scope | Test BRs in scope | Test BRs with AI candidates |
+|---|---:|---:|---:|
+| Prompt Code / Element 78 | 142 | 14 | 14 |
+| Lifecycle-related BRs | 329 | 31 | 12 |
+| **Combined, deduplicated** | **453** | **41** | **26** |
 
-The 6,060 AI BRs with no numeric element anchor or unresolved segment context are the largest opportunity to improve findability. For process, response, and lifecycle requirements, use suitable domain anchors rather than forcing an element number. Better traceability supports review; it does not by itself prove requirement correctness.
+The two scopes overlap: four Test BRs and 18 AI BRs appear in both. All 41 Test BRs in this screened scope are `DRAFT_REVIEW_REQUIRED`; candidate links are not semantic approval. Per-code and per-flow BR coverage is not separately measurable from these catalogs because they lack consistent normalized transaction-code and flow identifiers.
 
 ## Recommended Improvement Plan
 
@@ -107,21 +115,10 @@ The 6,060 AI BRs with no numeric element anchor or unresolved segment context ar
 - [AI-to-Test BR candidate pairs](ai-test-br-candidate-pairs.csv)
 - [Test BR candidate index](test-br-ai-br-index.csv)
 - [AI BRs without candidates](ai-brs-without-test-br-candidates.csv)
+- [Shared category summary](../2026-10-15-ai-test-br-category-groups-v1/category-coverage-summary.md)
+- [Grouped AI and Test BR register](../2026-10-15-ai-test-br-category-groups-v1/categorized-business-requirements.csv)
+- [Scenario card-brand/network proxy groups](../2026-10-15-ai-scenario-network-groups-v1/category-coverage-summary.md)
 
-## Business next steps
-
-Use the priority queue below to organize authorized pair review. Segment counts are source-anchor attributions; pair rows and segment denominators can overlap when a Test BR has cross-segment anchors. They must not be summed into a new overall coverage denominator.
-
-| Priority | Segment | Test BRs with candidates | Candidate pairs (ambiguous/composite; legacy anchor) | Existing open SME queries | SME role to nominate |
-|---:|---:|---:|---:|---|---|
-| 1 | 119 Totals with Proprietary Data Load | 24 / 40 (60.00%) | 29 (9; 20) | `SEG119-SME-001`–`009` | Totals, settlement, and reconciliation SME |
-| 2 | 101 Fleet | 14 / 30 (46.67%) | 52 (6; 46) | `SEG101-SME-001`–`010` | Fleet/fuel-card operations SME |
-| 3 | 103 EBT | 14 / 26 (53.85%) | 67 (61; 6) | `SEG103-SME-007`–`009` | EBT/WIC business and processor SME |
-| 4 | 130 EMV Request Data | 13 / 24 (54.17%) | 45 (40; 5) | `SEG130-SME-002`–`005`, `007`–`014` | EMV/issuer/acquirer security SME |
-| 5 | 114 Loyalty Card Data | 4 / 14 (28.57%) | 12 (11; 1) | `SEG114-SME-002`, `006` | Loyalty/card-program SME |
-| 6 | 118 Proprietary Data Load | 21 / 29 (72.41%) | 82 (71; 11) | `SEG118-SME-001`–`005` | Host/proprietary-data-load SME |
-
-The register currently lists these queries under `SME/TBA`; no individual nominees are recorded. The business owner should assign a named, authorized reviewer for each role before pair decisions are accepted.
 
 1. Review the segment queues in the priority order above, starting with source-backed, exact candidate pairs and then resolving ambiguous/composite and legacy-anchor pairs individually.
 2. Record each pair decision as `MATCH`, `PARTIAL`, `NOT_MATCH`, or `NOT_APPLICABLE`, with reviewer authority, source quote/anchor, rationale, and affected BR/TS/TC/TD IDs. Keep undecided pairs `REVIEW_REQUIRED`.

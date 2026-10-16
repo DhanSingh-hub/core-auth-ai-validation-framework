@@ -250,6 +250,8 @@ Additional execution-readiness evidence is checked by `validateForExecution`:
 
 These fields are optional for draft/review artifacts so legacy input remains readable. Missing evidence blocks execution readiness; no status, atomicity, or SME approval is inferred from producer labels or a passing technical check.
 
+When the complete-package generator finds a BR with no linked scenario, it emits a `TS-REVIEW-*` proposal containing an intent restatement from the independent BR title, its source anchor, `status: REVIEW_REQUIRED`, and `scenarioDefinitionGaps`. This is a traceable scenario-authoring work item, not a completed behavioral scenario. Preconditions and expected outcomes are intentionally omitted until their evidence is derived; the package remains non-executable.
+
 `SCHEDULED` is distinct from `BLOCKED`: it marks a BR/TS/TC that is correctly specified and certifiable, but not yet live in production before a stated `notBeforeDate` (ISO-8601 date). This check runs regardless of `strictExecutionContract`: any BR, TS, or TC with `SCHEDULED` status must include `notBeforeDate`, and none may be `EXECUTION_READY` while `notBeforeDate` is still in the future.
 
 ## Segment 100 Context-Level BR Categories

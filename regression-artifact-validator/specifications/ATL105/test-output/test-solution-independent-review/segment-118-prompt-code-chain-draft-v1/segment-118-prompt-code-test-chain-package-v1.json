@@ -1,0 +1,130 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG118-PROMPT-CODE-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use only cited ATL105 clauses. The source defines field presence, representation, and values; it does not specify a host response for omitted or invalid requests.",
+      "dataPolicy": "These are field-level design vectors, not converter-ready full requests. Required companion fields, valid operation context, and host response evidence remain unresolved.",
+      "baselinePolicy": "References the existing SEG118-R-011 rule; no rule or record is added to the official Test baseline.",
+      "promotionGate": "Authorized independent Test review must confirm Segment 118 applicability, source-derived companion fields, fixture identity, expected outcomes, and readiness before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG118-R-011",
+      "title": "Prompt Code (Element 78) is Required, field 6, 3 digits, and must be one of the five documented values: 901 (Custom receipt text), 902 (Dynamic card table), 903 (Site configuration data), 904 (Host discount data), 905 (Fuel volume data)",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {
+        "specification": "ATL105",
+        "version": "2026-3",
+        "section": "12.16,Appendix E",
+        "segment": "118",
+        "element": "78",
+        "rule": "prompt-code-and-catalog"
+      }
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG118-E78",
+      "sourcePage": "12-38",
+      "startLine": 13063,
+      "quote": "6 78 Prompt Code 3 R Identifies the prompt code for requested special transaction data. Valid values: 901, 902, 903, 904, 905",
+      "interpretation": "Field 6 is Element 78, required, length 3; the listed five values are the source-defined valid values for this field in Segment 118."
+    },
+    {
+      "id": "ATL105-2026-3-SEG118-REQUEST-SEPARATORS",
+      "sourcePage": "12-37",
+      "startLine": 12993,
+      "quote": "For transaction requests, all fields are separated by Field Separators. When a field is not populated, still send the Field Separator. A Field Separator follows Field No. 13.",
+      "interpretation": "The omission probe must retain the field separator position; omission does not mean deleting the field's positional separator."
+    },
+    {
+      "id": "ATL105-2026-3-APPENDIX-E-SPECIAL-PROMPT-CODES",
+      "sourcePage": 516,
+      "startLine": 26458,
+      "quote": "901 Custom receipt text Retrieve custom text to be printed on all receipts 902 Dynamic card table Retrieve dynamic card table data. 903 Site configuration data Submit site configuration data. 904 Host discount data Retrieve host discount data by product code for AFP transactions. 905 Fuel volume data Submit fuel volume data.",
+      "interpretation": "The five values name different data operations and include both retrieve and submit directions; do not treat the field as a generic Prompt Code across other segments or infer a common operation precondition."
+    }
+  ],
+  "aiReviewReferences": {
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3401",
+    "aiStatement": "In Proprietary Data Load Segment (Data Segment No. 118), field 6 (Prompt Code) is required and must be present.",
+    "linkedAiCaseIds": [
+      "TC-004055",
+      "TC-012563",
+      "TC-012564",
+      "TC-012565",
+      "TC-012566",
+      "TC-012567",
+      "TC-012568"
+    ],
+    "preliminaryObservations": [
+      "TC-004055 is cataloged as a deliberate missing-mandatory Prompt Code case; its frozen chain evidence reports no physical payload path, and its producer response is not an independent oracle.",
+      "The six TC-012563 through TC-012568 records name Prompt Code among request fields, but their transaction contexts vary and their chain records do not identify Prompt Code as the violated element. Segment 118 applicability and per-case field values require payload-level review.",
+      "No AI case is adjudicated or counted as a match by this draft."
+    ]
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG118-E78-CATALOG-VALUES",
+      "requirementIds": ["BR-RULE-SEG118-R-011"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG118-E78", "ATL105-2026-3-APPENDIX-E-SPECIAL-PROMPT-CODES"],
+      "intent": "Exercise each of the five source-listed three-digit values in Segment 118 field 6. Confirm operation direction, required companion fields, and response oracle before building full request fixtures.",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-DRAFT-SEG118-E78-PRESENCE-FORMAT-VALUES",
+      "requirementIds": ["BR-RULE-SEG118-R-011"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG118-E78", "ATL105-2026-3-SEG118-REQUEST-SEPARATORS"],
+      "intent": "Probe omitted, wrong-length, and undocumented values in the required field while preserving the field separator position. The source does not specify host response behavior for invalid requests.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG118-E78-901", "scenarioIds": ["TS-DRAFT-SEG118-E78-CATALOG-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-901"], "assertion": "Field 6 contains 901, a documented three-digit Segment 118 Prompt Code for Custom Receipt Text retrieval.", "expectedOutcome": "REVIEW_REQUIRED_OPERATION_AND_HOST_ORACLE_UNCONFIRMED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-902", "scenarioIds": ["TS-DRAFT-SEG118-E78-CATALOG-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-902"], "assertion": "Field 6 contains 902, a documented three-digit Segment 118 Prompt Code for Dynamic Card Table retrieval.", "expectedOutcome": "REVIEW_REQUIRED_OPERATION_AND_HOST_ORACLE_UNCONFIRMED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-903", "scenarioIds": ["TS-DRAFT-SEG118-E78-CATALOG-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-903"], "assertion": "Field 6 contains 903, a documented three-digit Segment 118 Prompt Code for Site Configuration submission.", "expectedOutcome": "REVIEW_REQUIRED_OPERATION_AND_HOST_ORACLE_UNCONFIRMED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-904", "scenarioIds": ["TS-DRAFT-SEG118-E78-CATALOG-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-904"], "assertion": "Field 6 contains 904, a documented three-digit Segment 118 Prompt Code for Host Discount retrieval.", "expectedOutcome": "REVIEW_REQUIRED_OPERATION_AND_HOST_ORACLE_UNCONFIRMED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-905", "scenarioIds": ["TS-DRAFT-SEG118-E78-CATALOG-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-905"], "assertion": "Field 6 contains 905, a documented three-digit Segment 118 Prompt Code for Fuel Volume submission.", "expectedOutcome": "REVIEW_REQUIRED_OPERATION_AND_HOST_ORACLE_UNCONFIRMED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-OMITTED", "scenarioIds": ["TS-DRAFT-SEG118-E78-PRESENCE-FORMAT-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-OMITTED"], "assertion": "Omit field 6 Prompt Code while retaining the field separator and all subsequent positional fields.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-WRONG-LENGTH", "scenarioIds": ["TS-DRAFT-SEG118-E78-PRESENCE-FORMAT-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-WRONG-LENGTH"], "assertion": "Use 0901 in field 6; it is four digits and is not one of the documented three-digit values for Element 78.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG118-E78-UNDOCUMENTED", "scenarioIds": ["TS-DRAFT-SEG118-E78-PRESENCE-FORMAT-VALUES"], "testDataIds": ["TD-DRAFT-SEG118-E78-UNDOCUMENTED"], "assertion": "Use 906 in field 6; it is three digits but is not in the Segment 118 field 6 value list.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG118-E78-901", "testCaseIds": ["TC-DRAFT-SEG118-E78-901"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "901"}},
+    {"id": "TD-DRAFT-SEG118-E78-902", "testCaseIds": ["TC-DRAFT-SEG118-E78-902"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "902"}},
+    {"id": "TD-DRAFT-SEG118-E78-903", "testCaseIds": ["TC-DRAFT-SEG118-E78-903"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "903"}},
+    {"id": "TD-DRAFT-SEG118-E78-904", "testCaseIds": ["TC-DRAFT-SEG118-E78-904"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "904"}},
+    {"id": "TD-DRAFT-SEG118-E78-905", "testCaseIds": ["TC-DRAFT-SEG118-E78-905"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "905"}},
+    {"id": "TD-DRAFT-SEG118-E78-OMITTED", "testCaseIds": ["TC-DRAFT-SEG118-E78-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "omitted": true, "preserveFieldSeparator": true}},
+    {"id": "TD-DRAFT-SEG118-E78-WRONG-LENGTH", "testCaseIds": ["TC-DRAFT-SEG118-E78-WRONG-LENGTH"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "0901"}},
+    {"id": "TD-DRAFT-SEG118-E78-UNDOCUMENTED", "testCaseIds": ["TC-DRAFT-SEG118-E78-UNDOCUMENTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "118", "field": "6", "element": "78", "value": "906"}}
+  ],
+  "openQuestions": [
+    "Which of the five Prompt Code operations are in scope for the independent Test package and which companion fields/segments are required for each request?",
+    "What host-side response or validation oracle applies to omitted, wrong-length, and undocumented Prompt Code requests?",
+    "Can the AI payloads for TC-004055 and TC-012563 through TC-012568 be re-opened from the frozen source location for field-level and segment-level verification?",
+    "Does the Test owner approve the field-separator omission mutation and the three-digit undocumented value 906 as independent probes?"
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG118-PROMPT-CODE-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:3401",
+  "aiStatement": "In Proprietary Data Load Segment (Data Segment No. 118), field 6 (Prompt Code) is required and must be present.",
+  "obligationGroupId": "OBL-009EB2BB0D47",
+  "independentTestBrId": "BR-RULE-SEG118-R-011",
+  "sourceRuleId": "ENT-FIELD-118-6",
+  "decisions": {
+    "brAlignment": "ALIGNED_LIMITED_TO_REQUIRED_PRESENCE_CLAIM",
+    "chainAdequacy": "PARTIAL",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceBasis": {
+    "sourceEvidenceIds": [
+      "ATL105-2026-3-SEG118-E78",
+      "ATL105-2026-3-SEG118-REQUEST-SEPARATORS",
+      "ATL105-2026-3-APPENDIX-E-SPECIAL-PROMPT-CODES"
+    ],
+    "conclusion": "Segment 118 field 6 is required Element 78, length 3, with values 901, 902, 903, 904, and 905. This supports the AI claim's required-presence component. The independent Test BR is broader because it also covers representation and the complete value catalog.",
+    "responseOracle": "The cited source does not establish host response codes for omitted, wrong-length, or undocumented values."
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG118-R-011",
+    "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+    "testScenario": "TS-REVIEW-BR-RULE-SEG118-R-011",
+    "scenarioStatus": "REVIEW_REQUIRED",
+    "scenarioDefinitionStatus": "DRAFT_FROM_TEST_BR_TITLE_AND_SOURCE_ANCHOR",
+    "scenarioDefinitionGaps": [
+      "APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED",
+      "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED",
+      "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED",
+      "EXPECTED_OUTCOME_NOT_DERIVED"
+    ],
+    "testCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG118-R-011",
+    "testCaseStatus": "REVIEW_REQUIRED",
+    "testData": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG118-R-011",
+    "testDataReadiness": "REVIEW_REQUIRED",
+    "testDataFixtureStatus": "SME_FIXTURE_REQUIRED"
+  },
+  "aiChainReview": {
+    "linkedCaseCount": 7,
+    "cases": [
+      {"caseId": "TC-004055", "transaction": "Proprietary Data Load Request", "intent": "negative/missing_mandatory", "violatedElement": "Prompt Code", "physicalEvidenceRecords": 0, "assessment": "DIRECT_OMISSION_CLAIM; NO_FROZEN_PAYLOAD_ROUTE; PRODUCER_OUTCOME_NOT_AN_INDEPENDENT_ORACLE"},
+      {"caseId": "TC-012563", "transaction": "ECA/TeleCheck Service Transaction", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 2, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"},
+      {"caseId": "TC-012564", "transaction": "ECA/TeleCheck Service Transaction Request", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 2, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"},
+      {"caseId": "TC-012565", "transaction": "EMV Financial Transaction Request", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 2, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"},
+      {"caseId": "TC-012566", "transaction": "EMV Request Transaction", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 2, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"},
+      {"caseId": "TC-012567", "transaction": "Electronic Mail", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 4, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"},
+      {"caseId": "TC-012568", "transaction": "Electronic Mail Request", "intent": "field_constraint", "violatedElement": null, "physicalEvidenceRecords": 4, "assessment": "PROMPT_CODE_LISTED; SEGMENT_118_PLACEMENT_AND_VALUE_UNVERIFIED"}
+    ],
+    "limitations": [
+      "The six field_constraint records do not name Prompt Code as their violated element; request-field-name membership alone does not prove Segment 118 field placement or a value assertion.",
+      "Frozen chain metadata declares physical evidence for six cases, but the corresponding payload files are not present in the local workspace; no independent payload-level value comparison was performed in this review.",
+      "TC-004055 has no physical evidence path in the frozen chain record, so its omission payload cannot be re-opened here."
+    ]
+  },
+  "testDraft": {
+    "path": "segment-118-prompt-code-test-chain-package-v1.json",
+    "scenarioCount": 2,
+    "caseCount": 8,
+    "testDataDesignCount": 8,
+    "readiness": "REVIEW_REQUIRED",
+    "designCoverage": ["901", "902", "903", "904", "905", "OMITTED", "WRONG_LENGTH_0901", "UNDOCUMENTED_906"],
+    "executionPerformed": false
+  },
+  "candidateTestBrIdsNotPromoted": [
+    "SEG118-R-028",
+    "SEG118-R-011",
+    "SEG105-R-005",
+    "BR-TX9-PROMPT-996",
+    "SEG109-R-011",
+    "SEG119-R-012",
+    "SEG118-R-012",
+    "SEG118-R-030",
+    "SEG118-R-026",
+    "SEG100-R-018"
+  ],
+  "requiredEvidenceForAdjudication": [
+    "Frozen payload access for TC-004055 and all six TC-012563 through TC-012568 cases, including per-segment field mapping and actual Prompt Code values.",
+    "Authorized Test-owner decision on which Segment 118 Prompt Code operation contexts are in scope and what companion fields make each request valid.",
+    "Independent host or Test oracle for missing, wrong-length, and undocumented Prompt Code behavior.",
+    "Review and readiness approval of the eight draft Test Data designs before execution or promotion."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

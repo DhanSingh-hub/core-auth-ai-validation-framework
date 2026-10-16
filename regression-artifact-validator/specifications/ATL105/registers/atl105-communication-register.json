@@ -5562,6 +5562,23 @@
       ]
     },
     {
+      "id": "AID-0005",
+      "channel": "AI_DEV_DISCUSSION",
+      "segments": [
+        "100",
+        "130"
+      ],
+      "subject": "Agree the versioned mapping for Segment 100 account/track aliases and EMV data",
+      "detail": "A user-supplied Authorization JSON represents account/track information with a producer-level `TrackData` property and also includes Segment 130 EMV data. ATL105 Chapter 13 does not define `TrackData` as a Segment 100 wire element: for Track 2, Element 2 is the source data before `=`, and Element 12 is the source data after `=`; for Track 1, the split is at the first `^`. The supplied logical alias uses a different delimiter, but no producer-to-ATL105 converter contract was provided to establish what that delimiter means. Agree and version an adapter contract that declares entry method, distinguishes raw/aggregate track input from normalized Elements 2 and 12, specifies supported delimiters and conversion behavior, and maps Segment 130 EMV data independently. Supply synthetic positive, negative, boundary, and round-trip examples. Do not publish or copy the supplied account, track, or chip values; do not infer entry method, normalize the delimiter, or reject the request until the contract is established. This remains a format discussion, not a confirmed AI defect or SME decision.",
+      "status": "OPEN",
+      "owner": "Test Team + AI Solution Team",
+      "raisedOn": "2026-10-16",
+      "raisedBy": "Test Solution validation review",
+      "relatedItems": [
+        "AIF-0007"
+      ]
+    },
+    {
       "id": "AIF-0001",
       "channel": "AI_FEEDBACK",
       "segments": [],
@@ -6938,6 +6955,49 @@
       "impact":"The same-date AI artifacts contain a contradiction: Runs2–4 scenario records assign code 2 to negative cases, while none of the four runs' Segment 100 TC cards expects code 2/3. Those scenario assignments are chatbot-sourced and do not establish valid approved Authorization Only testing. The independent Test Solution has one combined BR, one REVIEW-only code-2 TD, and no code-3 TD. Run4 also lacks directly traceable standalone Authorization, Sale, and exact Authorization -> Completion -> Timeout flow chains. Do not grant coverage credit until expected-response assignments are corrected and positive/negative cases have complete source-backed BR -> TS -> TC -> TD evidence.",
       "evidence":["specifications/ATL105/reports/atl105-visa-legacy/ATL105 Visa - Corrected Flow List.html","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run1/pipeline_outputs_2026-10-07/src/pipeline/reporting/output/segment-100-suite-catalog.md","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run2/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run3/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-output/test-json/atl105-response-code-family-matrix.json","specifications/ATL105/test-output/test-json/segment-100-response-code-package.json","specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/case-register.csv","specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/run4-semantic-review-v2/run4-manual-search-findings.json"],
       "status":"OPEN","owner":"AI Solution Team","raisedOn":"2026-10-09","raisedBy":"Test Solution review"
+    },
+    {
+      "id":"AIF-0019",
+      "channel":"AI_FEEDBACK",
+      "segments":["105","116","119"],
+      "subject":"Correct Totals with Proprietary Data Load requirement :1040 to Segment 119",
+      "targetDelivery":"Next versioned AI delivery after the 2026-10-16 Amount review",
+      "detail":"AI BR `REQ-SRC-ATL105-PDF-001:1040` states that a Totals with Proprietary Data Load Request contains Data Segment 116. The source has a conflicting sentence in Section 11.4.1.2 that labels the request segment 116, but the same section's actual layout table identifies Segment 119 in Data Section 3, Field 3; Section 12.17 defines Data Segment 119 as the Totals with Proprietary Data Load Data Segment; and Chapter 13 Element 85 identifies Segment 116 as the TransArmor Load Data Segment and 119 as the Totals with Proprietary Data Load Data Segment. Under the Test Solution's source-precedence rule, correct the AI requirement to Segment 119 and preserve the Section 11 narrative discrepancy as a source note. Do not use the erroneous narrative label as a second segment or infer Segment 116 content. This item covers the AI BR text; AIF-0012 separately covers the missing/malformed Totals test payloads.",
+      "impact":"The AI requirement currently assigns the Totals-with-Proprietary-Data request to the TransArmor Segment 116 identity. This creates a false semantic candidate for SEG116-R-009 and obscures the correct Segment 119 chain. Correct the source-derived requirement and any linked scenarios/cases without changing immutable prior deliveries.",
+      "evidence":[
+        "REQ-SRC-ATL105-PDF-001:1040 in specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-all-ai-br-chain-test-br-review-v2/all-ai-br-review-register.csv",
+        "ATL105 2026-3 extracted_text.txt Section 11.4.1.2, page 11-17: layout table identifies Segment 119 in Data Section 3, Field No. 3; preceding narrative label 116 is retained as the source discrepancy",
+        "ATL105 2026-3 extracted_text.txt Section 12.17, page 12-46: defines Data Segment No. 119 as Totals with Proprietary Data Load Data Segment",
+        "ATL105 2026-3 extracted_text.txt Chapter 13, Element 85, page 13-68: Segment 116 is TransArmor Load Data Segment; Segment 119 is Totals with Proprietary Data Load Data Segment",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-amount-test-br-gaps-v1/REPORT.md",
+        "specifications/ATL105/registers/atl105-communication-register.json AIF-0012"
+      ],
+      "status":"OPEN",
+      "owner":"AI Solution Team",
+      "raisedOn":"2026-10-16",
+      "raisedBy":"GitHub Copilot",
+      "relatedItems":["AIF-0012"]
+    },
+    {
+      "id":"AIF-0020",
+      "channel":"AI_FEEDBACK",
+      "segments":["100"],
+      "subject":"Generate AI test cases for all 36 financial Prompt Code card types",
+      "targetDelivery":"Next versioned AI delivery after the 2026-10-16 card-type coverage audit",
+      "detail":"The hash-bound 2026-10-16 AI network/brand and card-type audit inspected 21,254 candidate Test Cases and 39,480 physical payload files (39,479 paired; one unpaired), excluded 2,359 conflicted Test Case IDs, and found Prompt Code payloads for only 1 of the 36 ATL105 financial card types. The sole observed code is 001 (BUYPASS Fleet); 35 codes have no non-conflicted case, including 020 (Credit), debit codes 011/012/013 and Loyalty 040. Generate and trace at least one appropriately scoped AI Test Case and physical Test Data payload for every missing financial card type. The actual Segment 100 Prompt Code card-type value must match the declared scenario/test metadata. Keep source-supported transaction/card applicability explicit and use synthetic/approved test fixtures. The audit also observed cases for all four currently declared flow-axis brand labels (VISA, MC, AX, DS); this is a separate producer-declared axis and is not an independent global network denominator. Do not infer or require a network-by-card-type Cartesian product. This audit measures case presence only, not semantic correctness or host execution.",
+      "impact":"The current AI delivery is incomplete against the Test Team's explicit 36-code financial card-type coverage requirement; 35 card types lack a non-conflicted payload-backed case. The current presence result grants no semantic or execution coverage credit. Preserve the separate brand-axis count and avoid unsupported combination claims.",
+      "evidence":[
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/REPORT.md",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/coverage-summary.json",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/financial-card-type-coverage.csv",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/manifest.json",
+        "src/main/java/com/coreauth/validator/canonical/Segment100CardTypeOracle.java"
+      ],
+      "status":"OPEN",
+      "owner":"AI Solution Team",
+      "raisedOn":"2026-10-16",
+      "raisedBy":"Test Solution validation review",
+      "relatedItems":["AIF-0018"]
     }
   ]
 }

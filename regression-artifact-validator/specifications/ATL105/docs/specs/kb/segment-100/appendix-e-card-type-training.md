@@ -48,6 +48,15 @@ Appendix E's 11 special Prompt Codes are separate from the financial card oracle
 5. Use only source-supported transaction/card combinations. A cross-product generated from two independent allowlists is not proof of business eligibility.
 6. Keep terminal feature effects, production enablement, prompts `900`/`997`, and special-operation/converter certification `REVIEW_REQUIRED`; do not report Appendix E as fully covered while these gaps remain.
 
+For AI-delivery intake, audit the 36 financial Prompt Code card types independently
+from the producer-declared brand/network axis. The 2026-10-16 frozen-delivery audit
+found payload-backed cases for 1/36 card types (only `001`, BUYPASS Fleet) and 4/4
+currently declared brand-axis values; 2,359 conflicted Test Case IDs were excluded.
+The 35-code gap is tracked as [AIF-0020](../../../../registers/views/ai-feedback.md#aif-0020).
+Require each case's physical Prompt Code card value to agree with its declared
+metadata. Do not infer a network-by-card-type matrix from these separate dimensions.
+Case presence is not semantic validation, source approval, or host execution.
+
 ## Source References
 
 - [ATL105 2026-3 Appendix E](../../extracted_text.txt)

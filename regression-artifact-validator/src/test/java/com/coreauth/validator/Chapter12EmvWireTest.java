@@ -1,7 +1,9 @@
 package com.coreauth.validator;
 
+import com.coreauth.validator.canonical.Chapter12ActualPayloadAdapter;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator;
 import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status;
+import com.coreauth.validator.canonical.Segment100AiJsonCompatibilityValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
@@ -84,5 +86,93 @@ class Chapter12EmvWireTest {
         input.remove("serializedSegmentHex");
         input.putObject("context").put("serializedSegmentHex", input("130").path("serializedSegmentHex").asText());
         target(input, "binary-wire", Status.REVIEW_REQUIRED);
+    }
+
+    @Test void syntheticFullRequestPassesBoundedEmvChecksAndKeepsReviewGatesOpen() throws Exception {
+        ObjectNode request = syntheticRequest();
+        assertThat(new Segment100AiJsonCompatibilityValidator().validatePayload(request).errors()).isEmpty();
+
+        var result = validateSyntheticEmv(request);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-wire") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-length") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("BR-SEG100-APPR-CHIP-LENGTH")
+                && f.scope().equals("LENGTH_FORMAT") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("SEG130-R-006")
+                && f.scope().equals("chip-card-sequence") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).noneMatch(f -> f.status() == Status.INVALID);
+        assertThat(result.status()).isEqualTo(Status.REVIEW_REQUIRED);
+    }
+
+    @Test void isolatedLengthAndSequenceMutationsFailWithoutBreakingTheMeasuredWire() throws Exception {
+        for (String length : List.of("000", "015")) {
+            ObjectNode request = syntheticRequest();
+            ObjectNode emv = emvSegment(request);
+            emv.put("EMVChipDataLength", length);
+            replaceAsciiField(emv, "014", length);
+
+            var result = validateSyntheticEmv(request);
+            assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-wire") && f.status() == Status.CHECKS_PASSED);
+            assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-length") && f.status() == Status.CHECKS_PASSED);
+            assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("BR-SEG100-APPR-CHIP-LENGTH")
+                    && f.scope().equals("LENGTH_FORMAT") && f.status() == Status.INVALID);
+        }
+
+        ObjectNode request = syntheticRequest();
+        ObjectNode emv = emvSegment(request);
+        emv.put("EMVCardSequenceNumber", "025");
+        replaceAsciiField(emv, "001", "025");
+        var sequenceResult = validateSyntheticEmv(request);
+        assertThat(sequenceResult.findings()).anyMatch(f -> f.scope().equals("binary-wire") && f.status() == Status.CHECKS_PASSED);
+        assertThat(sequenceResult.findings()).anyMatch(f -> f.ruleId().equals("SEG130-R-006")
+                && f.scope().equals("chip-card-sequence") && f.status() == Status.INVALID);
+    }
+
+    @Test void fullRequestCountAndSegmentLengthAreCheckedAtTheirOwnBoundaries() throws Exception {
+        ObjectNode request = syntheticRequest();
+        ObjectNode financialRequest = (ObjectNode) request.path("Financial Request");
+        financialRequest.put("NumSegments", "3");
+        assertThat(new Segment100AiJsonCompatibilityValidator().validatePayload(request).errors()).isEmpty();
+        financialRequest.put("NumSegments", "02");
+        assertThat(new Segment100AiJsonCompatibilityValidator().validatePayload(request).errors())
+                .anyMatch(error -> error.reason().contains("does not match segment objects found: 3"));
+
+        request = syntheticRequest();
+        ObjectNode emv = emvSegment(request);
+        emv.put("SegmentLength", "071");
+        replaceAsciiField(emv, "0071", "071");
+        var result = validateSyntheticEmv(request);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-wire") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-length") && f.status() == Status.INVALID);
+
+        request = syntheticRequest();
+        emv = emvSegment(request);
+        emv.put("SegmentLength", "0070");
+        replaceAsciiField(emv, "0071", "0070");
+        result = validateSyntheticEmv(request);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-wire") && f.status() == Status.CHECKS_PASSED);
+        assertThat(result.findings()).anyMatch(f -> f.scope().equals("binary-length") && f.status() == Status.INVALID);
+    }
+
+    private ObjectNode syntheticRequest() throws Exception {
+        try (var stream = getClass().getResourceAsStream("/atl105/segment-130-synthetic-request.json")) {
+            assertThat(stream).isNotNull();
+            return (ObjectNode) mapper.readTree(stream);
+        }
+    }
+
+    private static ObjectNode emvSegment(ObjectNode request) {
+        return (ObjectNode) request.path("Financial Request").path("EMV Data Segment");
+    }
+
+    private static Chapter12SegmentPayloadValidator.Result validateSyntheticEmv(ObjectNode request) throws Exception {
+        return new Chapter12ActualPayloadAdapter().validate(emvSegment(request), "130",
+                "EMV Financial Transaction Request", null);
+    }
+
+    private static void replaceAsciiField(ObjectNode emv, String before, String after) {
+        String beforeHex = HexFormat.of().formatHex(before.getBytes(StandardCharsets.US_ASCII));
+        String afterHex = HexFormat.of().formatHex(after.getBytes(StandardCharsets.US_ASCII));
+        String wire = emv.path("SerializedSegmentHex").asText();
+        emv.put("SerializedSegmentHex", wire.replaceFirst(beforeHex, afterHex));
     }
 }

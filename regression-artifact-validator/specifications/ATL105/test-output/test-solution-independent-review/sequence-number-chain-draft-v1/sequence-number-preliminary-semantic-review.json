@@ -1,0 +1,106 @@
+{
+  "artifact": "PRELIMINARY_AI_TO_INDEPENDENT_TEST_SEQUENCE_NUMBER_REVIEW",
+  "reviewDate": "2026-10-16",
+  "reviewStatus": "PRELIMINARY_REVIEW_OPEN",
+  "authorizedSemanticDecision": false,
+  "semanticMatchesConfirmed": 0,
+  "executionPerformed": false,
+  "hostExecuted": false,
+  "aiScenarioApprovalRequired": false,
+  "scope": {
+    "aiBrs": ["REQ-SRC-ATL105-PDF-001:3251", "REQ-SRC-ATL105-PDF-001:6098", "REQ-SRC-ATL105-PDF-001:1937"],
+    "linkedUniqueAiCases": 25,
+    "aiCaseCatalogOccurrences": 66,
+    "hashVerifiedPayloadAndMetadataFiles": 88,
+    "declaredPathsAbsentFromFrozenInventory": 44,
+    "note": "The 44 absent paths are mostly approved-catalog route declarations and are not credited. They are not 44 unique missing test cases."
+  },
+  "authority": {
+    "officialTestBaselineModified": false,
+    "draftChainSupplement": "sequence-number-test-chain-package-v2.json",
+    "draftChainStatus": "DRAFT_REVIEW_REQUIRED",
+    "draftScenarioCount": 3,
+    "draftCaseCount": 7,
+    "draftTestDataCount": 7,
+    "draftCoverageCredit": 0,
+    "existingAuthoredChains": "Retained by reference from complete-all-test-solution-br-ts-tc-td-package.json; authored PASS/FAIL labels and fixture files are not execution or SME approval."
+  },
+  "sourceInterpretation": [
+    {
+      "obligation": "Segment 100 field presence",
+      "sourceEvidence": "ATL105-2026-3-SEG100-FIELD-TABLE",
+      "sourceLocation": "extracted_text.txt, PDF page 221, lines 11339-11344",
+      "finding": "Field 14 / Element 86 is marked 6 R in Standard Message Data Segment 100.",
+      "status": "SOURCE_TEXT_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "obligation": "Numeric six-character format and valid range",
+      "sourceEvidence": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEG100-E86-RANGE"],
+      "sourceLocation": "extracted_text.txt, PDF page 402, lines 21458 and 21487",
+      "finding": "Element 86 is N, fixed length six digits, valid 000001-999999.",
+      "status": "SOURCE_TEXT_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "obligation": "Persistence through an associated transaction lifecycle",
+      "sourceEvidence": ["ATL105-2026-3-SEG100-E86-PREAUTH-CAPTURE", "ATL105-2026-3-SEG100-E86-REVERSAL", "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"],
+      "sourceLocation": "extracted_text.txt, PDF page 402, lines 21470-21475; Section 2.3.1, lines 2009-2013",
+      "finding": "Preauthorized Purchase/Capture reuses its Authorization Only Sequence Number; purchase reversal/void and TOR retain the original number. A separately forwarded new financial request receives a new Sequence Number.",
+      "status": "SOURCE_TEXT_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "obligation": "Approval Number context in SEG100-R-037",
+      "sourceEvidence": [],
+      "finding": "The linked Test fixture has an Approval Number in the follow-up request, but the exact source clause and applicability for the composite rule have not been established here.",
+      "status": "UNRESOLVED_SOURCE_CLAUSE_REQUIRED"
+    }
+  ],
+  "aiBrReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:3251",
+      "statement": "In Standard Message Data Segment (Data Segment No. 100), field 14 (Sequence Number) is required and must be present.",
+      "preliminaryDisposition": "PARTIAL_CLAUSE_ALIGNMENT_PROPOSED",
+      "reason": "The Segment 100 field table marks Element 86 required. Seven linked negative cases deliberately omit the Standard Segment value; six other cases exercise a Sequence Number field, including four Segment 100 and two Segment 109 cases. Segment 109 observations do not prove the narrower Segment 100 claim.",
+      "chainAssessment": "The linked cases provide omission/positive design evidence. Producer-declared response code 1 for omission is not independently validated. At least one omitted-100 case also carries Sequence Number values in Segments 119/132; those do not satisfy the Segment 100 requirement.",
+      "testBrCandidates": ["SEG100-R-019", "SEG100-R-037", "BR-SEG100-E86-001"],
+      "testBrScope": "SEG100-R-019 additionally claims six digits and lifecycle persistence; SEG100-R-037 adds follow-up and approval context; BR-SEG100-E86-001 is a draft format-only authored rule. No independently approved presence-only Test rule was established.",
+      "openIssues": ["Review all 13 cases and approved/candidate record conflicts.", "Validate omission response oracle independently.", "Do not count non-100 Sequence Number fields as coverage of the Segment 100 BR."],
+      "semanticStatus": "NOT_AUTHORIZED_NOT_CONFIRMED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:6098",
+      "statement": "Sequence Number: Fixed length six-digit numeric field identifying a transaction for its lifetime.",
+      "preliminaryDisposition": "STRONG_FIELD_DEFINITION_OVERLAP_WITH_SEGMENT_SCOPE_REVIEW",
+      "reason": "The statement follows the source Element 86 definition. Six linked cases use 000001; four locate it in Segment 100 and two in Segment 109. The producer anchor proposes several segments, while SEG100-R-019 is Segment 100 scoped and SEG109-R-015 is Segment 109 scoped.",
+      "chainAssessment": "No lower/upper boundary, zero, length, or nonnumeric mutation appears in this six-case set. Independent case records do not compare a sequence across the transaction lifetime.",
+      "testBrCandidates": ["SEG100-R-019", "SEG109-R-015", "SEG118-R-008", "BR-SEG100-E86-001"],
+      "testBrScope": "SEG100-R-019 and SEG118-R-008 include lifecycle language in different segments; SEG109-R-015 states required six numeric characters but not lifetime persistence. Authored BR-SEG100-E86-001 adds a six-digit positive and five-digit negative design. All remain review-required.",
+      "openIssues": ["Resolve AI segment applicability across 100/105/109/118/119/132.", "Add valid range boundaries and invalid-range cases.", "Do not infer lifetime identity from repeated standalone values."],
+      "semanticStatus": "NOT_AUTHORIZED_NOT_CONFIRMED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1937",
+      "statement": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.",
+      "preliminaryDisposition": "STRONG_LIFECYCLE_CLAUSE_OVERLAP_CHAIN_GAP",
+      "reason": "The statement closely tracks the source Element 86 purpose. The six linked AI cases are individual records; four use Segment 100 and two Segment 109, all with the same literal value, but no case links an initial authorization to follow-up messages.",
+      "chainAssessment": "Repeated 000001 values across independent cases do not demonstrate persistence. Authored independent Test chains exist for authorization completion, authorization void, sale void and timeout TOR with same-sequence and mismatch fixtures. Their data readiness remains REVIEW_REQUIRED and none was executed.",
+      "testBrCandidates": ["SEG100-R-019", "SEG100-R-037", "BR-SEG100-LIFE-AUTH-COMPLETE", "BR-SEG100-LIFE-AUTH-VOID", "BR-SEG100-LIFE-SALE-VOID", "BR-SEG100-LIFE-TIMEOUT-TOR"],
+      "testBrScope": "The authored lifecycle chains strengthen the Test-side comparison and are retained by reference. SEG100-R-037 also claims approval context, whose source applicability remains unresolved.",
+      "openIssues": ["AI chain has no initial/follow-up linked transaction assertion.", "Test fixture readiness remains REVIEW_REQUIRED; PASS/FAIL fields are not execution evidence.", "Review the separate approval-context obligation before treating SEG100-R-037 as fully aligned."],
+      "semanticStatus": "NOT_AUTHORIZED_NOT_CONFIRMED"
+    }
+  ],
+  "artifactLinkage": {
+    "casePayloadBindingArtifact": "case-review-v2/sequence-number-case-payload-bindings.jsonl",
+    "aiChainCatalogEvidence": "../2026-10-16-sequence-obligation-review-v1/catalog-record-evidence.jsonl",
+    "existingDraftChainPackage": "sequence-number-test-chain-package-v2.json",
+    "officialIndependentPackage": "../complete-all-test-solution-br-ts-tc-td-package.json",
+    "note": "The external Authorization.json attachment was not ingested, modified or treated as an independent expected outcome."
+  },
+  "requiredNextReviews": [
+    "Inspect the bound metadata sidecar for every linked case and reconcile approved/candidate content conflicts.",
+    "Review producer expectedResponse claims and response-template availability against an independent oracle.",
+    "Have an authorized Test owner review the added boundary, omission and distinct-new-request draft vectors.",
+    "Source and adjudicate the Approval Number context in SEG100-R-037.",
+    "Do not promote either Test package rows or AI/Test relations until these gates are satisfied."
+  ]
+}

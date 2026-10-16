@@ -1,0 +1,131 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG130-EMV-CHIP-LENGTH-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use cited Element 189/190 definitions for required presence, the 3-digit representation, the value domain, and the relation to the following data field.",
+      "dataPolicy": "The mismatch vectors are field-level designs reusing an existing reviewed-only Test data value by reference; they are not full converter-ready EMV requests.",
+      "baselinePolicy": "References BR-RULE-SEG130-R-007 and existing authored EMV Test records; no rule or record is added to the official baseline.",
+      "promotionGate": "Authorized Test review must confirm byte/count semantics, TLV validity, transaction applicability, fixture identity, expected validation, and readiness."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG130-R-007",
+      "title": "EMV Chip Data Length (Element 189) is required and identifies the length of the following EMV Chip Data field; valid values 000-999",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.20,Chapter 13-Element 189", "segment": "130", "element": "189", "rule": "segment-130-chip-data-length-range"}
+    },
+    {
+      "id": "BR-SEG100-APPR-CHIP-LENGTH",
+      "title": "EMV Chip Data shall begin with a valid three-digit length consistent with the following encoded chip data.",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix R", "segment": "130", "element": "189,190", "rule": "emv-chip-data-length"},
+      "relationship": "EXISTING_AUTHORED_TEST_REQUIREMENT_REFERENCE_ONLY"
+    },
+    {
+      "id": "BR-SEG100-APPR-TLV-FORMAT",
+      "title": "EMV Chip Data shall preserve valid BCD-packed/hex TLV tag, length, and value structure.",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Appendix R", "segment": "130", "element": "190", "rule": "emv-tlv-format"},
+      "relationship": "ADJACENT_CONSTRAINT_NOT_ADJUDICATED_HERE"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-CH13-E189",
+      "sourcePage": 470,
+      "startLine": 24346,
+      "quote": "Number: 189 Name: EMV Chip Data Length Character Type: N Maximum Length: 3 bytes Representation: Fixed length of three digits Purpose: Identifies the length of the following field, EMV Chip Data, in an EMV transaction request and response. Processing Rules: Required in all EMV transactions. Valid Codes/Values: 000—999",
+      "interpretation": "Element 189 is a required three-digit field in EMV transactions; its value identifies the following Element 190 field length and must lie in the stated range."
+    },
+    {
+      "id": "ATL105-2026-3-CH13-E190",
+      "sourcePage": 471,
+      "startLine": 24362,
+      "quote": "Number: 190 Name: EMV Chip Data Character Type: ANSB Maximum Length: 999 bytes Representation: Variable length of 999 characters, preceded by three digit length indicator",
+      "interpretation": "Element 190 is required and follows the three-digit length indicator; a non-empty Element 190 value cannot be described by a zero length."
+    },
+    {
+      "id": "ATL105-2026-3-APPENDIX-R-CHIP-LENGTH",
+      "sourcePage": "Appendix R",
+      "startLine": 35410,
+      "quote": "Length N3 Example: 0nnn",
+      "interpretation": "The example presents a three-digit length and BCD-packed/hex data; exact encoding/count semantics for the draft vectors still require Test-owner confirmation."
+    }
+  ],
+  "existingTestEvidence": {
+    "sourceDerivedPlaceholderChain": {
+      "businessRequirement": "BR-RULE-SEG130-R-007",
+      "testScenario": "TS-REVIEW-BR-RULE-SEG130-R-007",
+      "testCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG130-R-007",
+      "testData": "TD-REVIEW-TC-REVIEW-BR-RULE-SEG130-R-007",
+      "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+      "dataFixtureStatus": "SME_FIXTURE_REQUIRED"
+    },
+    "authoredPositiveChainReference": {
+      "businessRequirement": "BR-SEG100-APPR-CHIP-LENGTH",
+      "scenario": "TS-SEG100-APPR-CHIP-DATA",
+      "case": "TC-SEG100-APPR-CHIP-DATA",
+      "testData": "TD-SEG100-APPR-CHIP-LENGTH",
+      "testDataReadiness": "REVIEW_REQUIRED",
+      "vector": {"element189": "010", "element190Hex": "9F0607A0000000980840", "encodedByteCount": 10},
+      "vectorStatus": "EXISTING_TEST_DESIGN_REFERENCE_ONLY_NOT_EXECUTED"
+    }
+  },
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-ACB52512D020",
+    "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1347", "REQ-SRC-ATL105-PDF-001:2265"],
+    "aiStatement": "EMV Chip Data Length valid values are 000-999.",
+    "linkedCaseIds": ["TC-007688", "TC-010223"],
+    "screenedObservations": [
+      {"caseId": "TC-007688", "payloadPaths": ["test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-007688.json", "test_generation/test_generation/candidates/qe_shaped_test_data/TC-007688.json"], "sha256": "93446785cc4008b3afbfad403fa38c49bc63792b970942015b700605da987610", "element189": "000", "element190": "NON_EMPTY", "screenState": "HASH_VERIFIED_OBSERVATIONS_ONLY"},
+      {"caseId": "TC-010223", "payloadPaths": ["test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-010223.json", "test_generation/test_generation/candidates/qe_shaped_test_data/TC-010223.json"], "sha256": "fffa5682189dcf98bc1a36bd9cd43a4a373062e93e4157ac6342d88003dcce4c", "element189": "000", "element190": "NON_EMPTY", "screenState": "HASH_VERIFIED_OBSERVATIONS_ONLY"}
+    ],
+    "interpretation": "The value 000 is within Element 189's documented domain, but these payload observations do not demonstrate the length relationship because both pair it with non-empty Element 190 data. Neither case is a confirmed positive chain for the full Test rule.",
+    "responseOracle": "No host response outcome is inferred from these fields."
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG130-E189-LENGTH-CONSISTENCY",
+      "requirementIds": ["BR-RULE-SEG130-R-007", "BR-SEG100-APPR-CHIP-LENGTH"],
+      "sourceEvidenceIds": ["ATL105-2026-3-CH13-E189", "ATL105-2026-3-CH13-E190", "ATL105-2026-3-APPENDIX-R-CHIP-LENGTH"],
+      "intent": "Check that the required three-digit Element 189 identifies the following Element 190 length in a valid Segment 130 EMV request. Reuse the existing authored positive vector by reference and add reviewed mismatch mutations.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG130-E189-MISMATCH-ZERO", "scenarioIds": ["TS-DRAFT-SEG130-E189-LENGTH-CONSISTENCY"], "testDataIds": ["TD-DRAFT-SEG130-E189-MISMATCH-ZERO"], "assertion": "Element 189 is 000 while the referenced Element 190 contains the non-empty 10-byte value; the length indicator does not identify the following data length.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG130-E189-MISMATCH-PLUS-ONE", "scenarioIds": ["TS-DRAFT-SEG130-E189-LENGTH-CONSISTENCY"], "testDataIds": ["TD-DRAFT-SEG130-E189-MISMATCH-PLUS-ONE"], "assertion": "Element 189 is 011 while the referenced Element 190 contains the 10-byte value; the length indicator exceeds the following data length by one.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG130-E189-MISMATCH-ZERO", "testCaseIds": ["TC-DRAFT-SEG130-E189-MISMATCH-ZERO"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "130", "element189": "000", "element190": {"referenceTestDataId": "TD-SEG100-APPR-CHIP-LENGTH", "valueChange": "UNCHANGED_FROM_REFERENCED_10_BYTE_TEST_VECTOR"}}},
+    {"id": "TD-DRAFT-SEG130-E189-MISMATCH-PLUS-ONE", "testCaseIds": ["TC-DRAFT-SEG130-E189-MISMATCH-PLUS-ONE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "130", "element189": "011", "element190": {"referenceTestDataId": "TD-SEG100-APPR-CHIP-LENGTH", "valueChange": "UNCHANGED_FROM_REFERENCED_10_BYTE_TEST_VECTOR"}}}
+  ],
+  "openQuestions": [
+    "Confirm whether the Element 189 indicator counts encoded bytes, characters, or another wire-level unit for the supplied EMV Chip Data representation.",
+    "Confirm that the referenced 10-byte vector is valid for the applicable EMV request context and that the tested data remains unchanged in the mutations.",
+    "Define the independent source-conformance oracle for mismatched length indicators; no host response code is specified by the cited source.",
+    "Review the AI cases' complete payloads and metadata sidecars before assigning any semantic result to TC-007688 or TC-010223."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "id" : "TD-APPI-C019-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C019-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C019-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-13",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t019-r001-APPI-C019-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C019-01",
+        "tableId" : "019",
+        "ruleIds" : [ "APPI-T019-R001", "APPI-T019-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-13",
+          "startLine" : 27964,
+          "endLine" : 27975
+        } ],
+        "logicalFields" : {
+          "rechargeType" : "02",
+          "programIdentifier" : "SP2",
+          "context" : {
+            "provider" : "Blackhawk",
+            "rechargeKind" : "PIN on Receipt"
+          }
+        },
+        "clearScope" : [ "Two-digit PIN on Receipt code01", "Required SP2 companion" ],
+        "excludedClaims" : [ "Default00 business applicability", "Complete Blackhawk message" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "PIN on Receipt uses01",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Blackhawk program companionSP2",
+          "positive" : "PASS",
+          "mutated" : "PASS"
+        } ],
+        "mutation" : {
+          "path" : "rechargeType",
+          "value" : "02",
+          "targetedNegative" : "Top Up code in PIN on Receipt context"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

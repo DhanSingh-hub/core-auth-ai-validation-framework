@@ -1,0 +1,56 @@
+{
+  "id" : "TD-APPI-C032-05-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-05-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-05-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-23",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r005-APPI-C032-05"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-05",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R005" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-23",
+          "startLine" : 28388,
+          "endLine" : 28402
+        } ],
+        "logicalFields" : {
+          "subTableId" : "05",
+          "subTableLength" : "001",
+          "value" : "1",
+          "context" : {
+            "network" : "WEX",
+            "hostPromptsSupported" : false
+          }
+        },
+        "clearScope" : [ "Unsupported host prompts explicitly0, not inferred default" ],
+        "excludedClaims" : [ "Host prompting implementation", "Aggregate encoding" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Unsupported WEX host prompts map0",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "1",
+          "targetedNegative" : "Advertises support contrary to fixture"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

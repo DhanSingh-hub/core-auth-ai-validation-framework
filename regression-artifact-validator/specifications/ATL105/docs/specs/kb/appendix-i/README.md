@@ -12,7 +12,7 @@ No model-training service has been invoked.
 
 **Current stage: all 78 defined tables represented in draft source-knowledge
 batches; bounded Tables 001-009 predicate/fragment candidates implemented;
-11 selected logical examples for Tables 010-015 and 017 now independently
+57 selected logical examples for Tables 010-015, 017-022, and 024-040 now independently
 evaluated and linked using the canonical review-only contract.
 Semantic completeness, full-message training and AI equivalence remain incomplete.**
 The generator locates 78 source-defined top-level table headings, not 81 consecutive
@@ -145,8 +145,8 @@ substituted by a fragment or producer sample.
 ## Executed scoped logical batch (continuation)
 
 [Canonical review-only package](../../../../test-output/test-json/appendix-i-scoped-training/package.json)
-contains 11 BR/TS pairs and 22 TC/TD pairs for selected examples from Tables
-010-015 and 017. Each TD has a physical JSON file, the canonical
+contains 57 BR/TS pairs and 114 TC/TD pairs for selected examples from Tables
+010-015, 017-022, and 024-040. Each TD has a physical JSON file, the canonical
 `testCaseIds` link, and REVIEW_REQUIRED readiness. Source anchors use a
 distinct scoped-check identity: these partial predicates must not be matched
 as though they implement every clause of the original source rule.
@@ -161,11 +161,44 @@ network availability or host response is verified.
 
 [Execution and rule ledger](../../../../test-output/test-json/appendix-i-scoped-training/evidence.json)
 pins the source and knowledge/example hashes, records actual findings for all
-22 logical evaluations, and reconciles all 302 draft rules. Eleven supplied
+114 logical evaluations, and reconciles all 302 draft rules. Fifty-seven supplied
 targeted mutations are detected by their specific predicate. This is not
 the appendix-wide mutation threshold or complete coverage of those rules.
 The ledger identifies partial evidence **in this scoped batch**; it does not
-discard or override earlier first-batch evidence. Proposed outcomes in the
+discard or override earlier first-batch evidence. Table 018/019 checks cover
+only explicit entry-point and recharge contexts, Table 020 checks only
+synthetic numeric capacity, and Table 021 retains the external Signature Debit
+availability gate; unsupported contexts and service validity remain
+`REVIEW_REQUIRED`. Table 025 checks only alphanumeric width and equality to an
+explicit synthetic associated-card value; issuer/card validity remains
+unassessed. Tables 026/027 check supplied order/name grouping and bounded
+character-count data; Tables 028/029 check supplied logical UUID request and
+follow-up identity relationships, not host response generation or provenance.
+Table 030 checks only explicit EMV presence, the no-security-concern code and
+the MasterCard-only terminal type 29 context; Table 031 checks the listed
+capability codes and certified-capability invariance across entry modes.
+Table 032 has bounded logical candidates for every selector listed in the
+source (01, 02, 04-14; no 03 is defined there), but these do not validate
+combined subtable order, aggregate encoding, the an100-versus-digits wording,
+reserved remaining bytes, or merchant/network eligibility.
+Table 033 checks one product record's count, listed re-price type, field widths,
+matching UOM and backslash delimiter; NACS product semantics, price meaning and
+the an15-versus-133-character aggregate conflict remain `REVIEW_REQUIRED`.
+Table 034 checks Discover first/last and Visa first/last/middle 35-character
+left-aligned fields; name grammar and aggregate serialization remain
+`REVIEW_REQUIRED`.
+Table 035 checks the logical 20-octet XID/CAVV lengths and order only;
+cryptogram validity, transaction applicability and binary wire encoding remain
+`REVIEW_REQUIRED`.
+Table 036 checks the three-character channel/state example and the 43/28/28
+AAV component arithmetic; payload validity, state compatibility and complete
+UCAF wire construction remain `REVIEW_REQUIRED`.
+Tables 037/038 check only fixed-width left-justified token/identifier shapes;
+real MCX token validity and Paydiant registration remain unverified. Table 039
+checks supplied DDMMCCYY component ordering, not calendar-edge policy. Table 040
+checks the supplied EMV-initial eligibility and known-amount omission cases;
+actual settlement outcomes remain unverified.
+Proposed outcomes in the
 original 178 example records remain unchanged.
 
 Generation fails on a changed source, invalid input scope, missing candidate,
@@ -237,10 +270,10 @@ inventory/knowledge/candidate metadata, first-batch predicates and framing,
 representative immutable AI intake, register/view consistency and existing
 Segment 111/producer-neutral contract behavior, plus a reproducible Appendix B
 dependency-length inspection. This is not the full-framework
-suite. The continuation adds 23 focused checks for selected scoped predicates,
+suite. The continuation adds focused checks for selected scoped predicates,
 canonical links, physical-file reproducibility and training-status gates,
-plus shared training-status/denominator regressions. Eleven of the 178
-remaining-layout example records now have separately recorded logical
+plus shared training-status/denominator regressions. Fifty-two selected
+remaining-layout examples now have separately recorded logical
 execution evidence; predicates for the others remain unimplemented.
 The two earlier physical-TD gaps are preserved in AIF-0017; AI comparison
 is deferred, and no new delivery assessment is made by this continuation.

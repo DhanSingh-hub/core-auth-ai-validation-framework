@@ -30,10 +30,10 @@ class GenerateAppendixIScopedTrainingTest {
         var output = GenerateAppendixIScopedTraining.generate(ROOT);
         var pkg = MAPPER.treeToValue(output.artifactPackage(), CanonicalArtifactPackage.class);
         assertThat(new CanonicalTraceabilityValidator().validate(pkg).errors()).isEmpty();
-        assertThat(pkg.getBusinessRequirements()).hasSize(11);
-        assertThat(pkg.getTestScenarios()).hasSize(11);
-        assertThat(pkg.getTestCases()).hasSize(22);
-        assertThat(pkg.getTestData()).hasSize(22);
+        assertThat(pkg.getBusinessRequirements()).hasSize(57);
+        assertThat(pkg.getTestScenarios()).hasSize(57);
+        assertThat(pkg.getTestCases()).hasSize(114);
+        assertThat(pkg.getTestData()).hasSize(114);
         for (var td : pkg.getTestData()) {
             assertThat(td.getReadiness().name()).isEqualTo("REVIEW_REQUIRED");
             assertThat(td.getTestCaseIds()).hasSize(1);
@@ -52,8 +52,8 @@ class GenerateAppendixIScopedTrainingTest {
             assertThat(rule.path("completeRuleCoverage").asBoolean()).isFalse();
             assertThat(rule.path("tableId").asText()).matches("[0-9]{3}");
         });
-        assertThat(evidence.path("logicalEvaluationCount").asInt()).isEqualTo(22);
-        assertThat(evidence.path("detectedSuppliedMutationCount").asInt()).isEqualTo(11);
+        assertThat(evidence.path("logicalEvaluationCount").asInt()).isEqualTo(114);
+        assertThat(evidence.path("detectedSuppliedMutationCount").asInt()).isEqualTo(57);
         assertThat(evidence.path("appendixWideMutationThresholdEstablished").asBoolean()).isFalse();
         assertThat(evidence.path("completeRequestCount").asInt()).isZero();
         assertThat(evidence.path("certifiedCaseCount").asInt()).isZero();
@@ -63,7 +63,18 @@ class GenerateAppendixIScopedTrainingTest {
     @ParameterizedTest
     @ValueSource(strings = {"APPI-C010-01", "APPI-C010-02", "APPI-C011-01", "APPI-C011-02",
             "APPI-C011-03", "APPI-C012-01", "APPI-C013-01", "APPI-C013-02",
-            "APPI-C014-01", "APPI-C015-01", "APPI-C017-01"})
+            "APPI-C014-01", "APPI-C015-01", "APPI-C017-01", "APPI-C018-01",
+            "APPI-C018-02", "APPI-C019-01", "APPI-C019-02", "APPI-C020-01",
+            "APPI-C021-01", "APPI-C021-02", "APPI-C022-01", "APPI-C022-02",
+            "APPI-C024-01", "APPI-C024-02", "APPI-C025-01", "APPI-C026-01",
+            "APPI-C027-01", "APPI-C028-01", "APPI-C029-01", "APPI-C029-02",
+            "APPI-C030-01", "APPI-C030-02", "APPI-C031-01", "APPI-C032-01",
+            "APPI-C032-02", "APPI-C032-04", "APPI-C032-05", "APPI-C032-06",
+            "APPI-C032-07", "APPI-C032-08", "APPI-C032-09", "APPI-C032-10",
+            "APPI-C032-11", "APPI-C032-12Y", "APPI-C032-12N", "APPI-C032-13Y",
+            "APPI-C032-13H", "APPI-C032-14", "APPI-C033-01", "APPI-C034-01",
+            "APPI-C034-02", "APPI-C035-01", "APPI-C036-01", "APPI-C036-02",
+            "APPI-C037-01", "APPI-C038-01", "APPI-C039-01", "APPI-C040-01", "APPI-C040-02"})
     void detectsTheSpecificSuppliedMutationWithoutPromotingReadiness(String id) throws IOException {
         ObjectNode source = candidate(id);
         ObjectNode saved = source.deepCopy();
@@ -162,6 +173,205 @@ class GenerateAppendixIScopedTrainingTest {
         input = candidate("APPI-C017-01");
         ((ObjectNode) input.path("context")).put("brand", "Visa");
         assertReview(input, "APPI-T017-CONTEXT");
+    }
+
+    @Test
+    void table018And019KeepUnspecifiedApplicabilityUnderReview() throws IOException {
+        ObjectNode terminal = candidate("APPI-C018-02");
+        ((ObjectNode) terminal.path("logicalFields").path("context")).put("multiControllerTAVE", false);
+        assertReview(terminal, "APPI-T018-IDENTITY");
+
+        ObjectNode recharge = candidate("APPI-C019-01");
+        ObjectNode context = (ObjectNode) recharge.path("logicalFields").path("context");
+        context.put("rechargeKind", "Other").put("provider", "Other");
+        assertReview(recharge, "APPI-T019-R001");
+        assertReview(recharge, "APPI-T019-R002");
+    }
+
+    @Test
+    void table020LimitsItsAssertionToTopUpNumericCapacity() throws IOException {
+        ObjectNode phone = candidate("APPI-C020-01");
+        assertThat(VALIDATOR.validate(phone).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T020-SERVICE-VALIDITY")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        ((ObjectNode) phone.path("context")).put("transactionClass", "Other");
+        assertReview(phone, "APPI-T020-R001");
+    }
+
+    @Test
+    void table021LeavesUnsupportedCapabilityCombinationsAndAvailabilityUnderReview() throws IOException {
+        ObjectNode flag = candidate("APPI-C021-01");
+        ObjectNode context = (ObjectNode) flag.path("context");
+        context.put("acceptsPINlessPOSSettlement", false);
+        assertReview(flag, "APPI-T021-R001");
+
+        ObjectNode signatureDebit = candidate("APPI-C021-02");
+        assertThat(VALIDATOR.validate(signatureDebit).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T021-AVAILABILITY")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void table022DoesNotRejectFutureReservedValuesAndRequiresContextForClassification() throws IOException {
+        ObjectNode phone = candidate("APPI-C022-01");
+        ((ObjectNode) phone.path("context")).remove("device");
+        assertReview(phone, "APPI-T022-CLASSIFICATION");
+
+        ObjectNode futureCode = candidate("APPI-C022-02");
+        assertThat(VALIDATOR.validate(futureCode).findings()).noneMatch(f ->
+                f.ruleId().equals("APPI-T022-WIDTH")
+                        && f.status() == AppendixILogicalDataValidator.Status.FAIL);
+        ObjectNode invalidWidth = GenerateAppendixIScopedTraining.mutate(futureCode);
+        assertThat(invalidWidth.path("data").asText()).isEqualTo("100");
+        assertFail(invalidWidth, "APPI-T022-WIDTH");
+    }
+
+    @Test
+    void table024KeepsDocumentedMicrExamplesSeparateFromUnresolvedFormatValidation() throws IOException {
+        ObjectNode raw = candidate("APPI-C024-01");
+        assertThat(VALIDATOR.validate(raw).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T024-FORMAT")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode structured = candidate("APPI-C024-02");
+        assertThat(VALIDATOR.validate(structured).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T024-FORMAT")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void table025RequiresBoundedAlphanumericValueAndExplicitSyntheticIdentity() throws IOException {
+        ObjectNode giftCard = candidate("APPI-C025-01");
+        ((ObjectNode) giftCard.path("context")).remove("associatedGiftCard");
+        assertReview(giftCard, "APPI-T025-IDENTITY");
+
+        giftCard = candidate("APPI-C025-01");
+        ((ObjectNode) giftCard.path("context")).put("associatedGiftCard", "DIFFERENTCARD01");
+        assertFail(giftCard, "APPI-T025-R001");
+    }
+
+    @Test
+    void tables026To029KeepGroupingAndUuidChecksWithinSuppliedContext() throws IOException {
+        ObjectNode order = candidate("APPI-C026-01");
+        ((ObjectNode) order.path("logicalFields")).put("secondTenderOrderId", "ORDER0000002");
+        assertFail(order, "APPI-T026-R001");
+
+        ObjectNode customer = candidate("APPI-C027-01");
+        ((ObjectNode) customer.path("logicalFields")).put("payloadCharacterCount", 17);
+        assertFail(customer, "APPI-T027-R001");
+
+        ObjectNode useUuid = candidate("APPI-C028-01");
+        ((ObjectNode) useUuid.path("logicalFields")).put("useUniqueId", "Y").put("responseUUIDPresent", false);
+        assertFail(useUuid, "APPI-T028-R002");
+
+        ObjectNode followup = candidate("APPI-C029-01");
+        ((ObjectNode) followup.path("logicalFields")).put("originalResponseUUIDPresent", false);
+        assertFail(followup, "APPI-T029-R001");
+    }
+
+    @Test
+    void table030And031RespectOnlyTheirSourceBoundContexts() throws IOException {
+        ObjectNode pos = candidate("APPI-C030-01");
+        ((ObjectNode) pos.path("logicalFields").path("qComponents")).put("security", "1");
+        assertFail(pos, "APPI-T030-R002");
+
+        ObjectNode terminalType = candidate("APPI-C030-02");
+        ((ObjectNode) terminalType.path("logicalFields").path("context")).put("brand", "Visa");
+        assertFail(terminalType, "APPI-T030-R004");
+
+        ObjectNode capability = candidate("APPI-C031-01");
+        ((ObjectNode) capability.path("logicalFields")).put("keyedCapability", "09");
+        assertFail(capability, "APPI-T031-R002");
+    }
+
+    @Test
+    void table032KeepsAggregateAndEligibilityGatesOpen() throws IOException {
+        ObjectNode estimated = candidate("APPI-C032-09");
+        assertThat(VALIDATOR.validate(estimated).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T032-AGGREGATE")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        assertThat(VALIDATOR.validate(estimated).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T032-ELIGIBILITY")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode highSecurities = candidate("APPI-C032-13H");
+        assertThat(VALIDATOR.validate(highSecurities).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T032-ELIGIBILITY")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void table032CandidateInventoryCoversEverySourceListedSubtable() throws IOException {
+        JsonNode batch = MAPPER.readTree(ROOT.resolve(Path.of("test-output", "test-json", "knowledge",
+                "appendix-i-candidates-010-048.json")).toFile());
+        List<String> subtableIds = new java.util.ArrayList<>();
+        for (JsonNode candidate : batch.path("candidates")) {
+            if ("032".equals(candidate.path("tableId").asText())) {
+                subtableIds.add(candidate.path("logicalFields").path("subTableId").asText());
+            }
+        }
+        assertThat(subtableIds).containsExactlyInAnyOrder("01", "02", "04", "05", "06", "07",
+                "08", "09", "10", "11", "12", "12", "13", "13", "14");
+        assertThat(subtableIds).doesNotContain("03");
+    }
+
+    @Test
+    void table033KeepsNacsMembershipAndPriceMeaningUnassessed() throws IOException {
+        ObjectNode product = candidate("APPI-C033-01");
+        JsonNode findings = MAPPER.valueToTree(VALIDATOR.validate(product).findings());
+        assertThat(findings.toString()).contains("APPI-T033-PRICE-SEMANTICS", "REVIEW_REQUIRED")
+                .contains("APPI-T033-AGGREGATE", "REVIEW_REQUIRED");
+        ((ObjectNode) product.path("logicalFields").path("product")).put("delimiter", "/");
+        assertFail(product, "APPI-T033-R002");
+    }
+
+    @Test
+    void table034KeepsNameGrammarAndAggregateEncodingUnassessed() throws IOException {
+        for (String id : List.of("APPI-C034-01", "APPI-C034-02")) {
+            var findings = VALIDATOR.validate(candidate(id)).findings();
+            assertThat(findings).anyMatch(f -> f.ruleId().equals("APPI-T034-AGGREGATE")
+                    && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        }
+    }
+
+    @Test
+    void table035KeepsCryptographicAndWireChecksUnassessed() throws IOException {
+        ObjectNode data = candidate("APPI-C035-01");
+        var findings = VALIDATOR.validate(data).findings();
+        assertThat(findings).anyMatch(f -> f.ruleId().equals("APPI-T035-CRYPTO")
+                && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        assertThat(findings).anyMatch(f -> f.ruleId().equals("APPI-T035-WIRE")
+                && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        ((ObjectNode) data.path("logicalFields")).putArray("cavvOctets").add(20);
+        assertFail(data, "APPI-T035-R001");
+    }
+
+    @Test
+    void table036KeepsAavValidityAndFullUcafWireUnassessed() throws IOException {
+        ObjectNode aav = candidate("APPI-C036-02");
+        var findings = VALIDATOR.validate(aav).findings();
+        assertThat(findings).anyMatch(f -> f.ruleId().equals("APPI-T036-AAV-VALIDITY")
+                && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+        assertThat(findings).anyMatch(f -> f.ruleId().equals("APPI-T036-UCAF-WIRE")
+                && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode security = candidate("APPI-C036-01");
+        ((ObjectNode) security.path("logicalFields")).put("collectionState", "0");
+        assertFail(security, "APPI-T036-R002");
+    }
+
+    @Test
+    void tables037To040KeepExternalMeaningAndSettlementOutcomesBounded() throws IOException {
+        ObjectNode mcx = candidate("APPI-C037-01");
+        assertThat(VALIDATOR.validate(mcx).findings()).anyMatch(f -> f.ruleId().equals("APPI-CANDIDATE-READINESS")
+                && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode finalIndicator = candidate("APPI-C040-01");
+        ((ObjectNode) finalIndicator.path("context")).put("transactionPhase", "Follow-up");
+        assertFail(finalIndicator, "APPI-T040-R001");
+        ObjectNode sameAmount = candidate("APPI-C040-02");
+        ((ObjectNode) sameAmount.path("logicalFields")).put("indicatorPresent", true);
+        assertFail(sameAmount, "APPI-T040-R002");
     }
 
     @Test

@@ -1,0 +1,53 @@
+{
+  "id" : "TD-APPI-C029-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C029-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C029-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-18",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t029-r001-APPI-C029-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C029-01",
+        "tableId" : "029",
+        "ruleIds" : [ "APPI-T029-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-18",
+          "startLine" : 28189,
+          "endLine" : 28196
+        } ],
+        "logicalFields" : {
+          "originalResponseUUIDPresent" : true,
+          "originalResponseUUID" : "SYN-UUID-0001",
+          "subsequentTablePresent" : true,
+          "subsequentUUID" : "SYN-UUID-0001"
+        },
+        "clearScope" : [ "Original-response equality and conditional inclusion" ],
+        "excludedClaims" : [ "UUID generation/uniqueness", "UUID lexical standard" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Subsequent UUID equals original response UUID",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "subsequentUUID",
+          "value" : "SYN-UUID-0002",
+          "targetedNegative" : "Different retained identity"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

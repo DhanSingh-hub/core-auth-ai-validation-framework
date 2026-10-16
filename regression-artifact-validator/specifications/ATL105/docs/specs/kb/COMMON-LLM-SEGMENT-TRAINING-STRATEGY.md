@@ -230,6 +230,7 @@ The LLM shall:
 
 - Emit the declared producer/schema/contract version, generator version, specification version, and run ID. Do not silently change JSON/workbook shape between runs; publish a versioned schema/adapter contract for any breaking format change.
 - Preserve stable local IDs within a run, source fields, approval claims, flags, and links. Never present an automated batch as SME approval; producer approval/verdict fields remain claims for independent validation.
+- Preserve each producer field and its original value separately from any normalized ATL105 element; record the adapter version and mapping disposition. Never silently rewrite a composite alias or delimiter.
 - Include all generated records and declare counts and link totals from the serialized output. If a record cannot be represented in the supported contract, emit an explicit unsupported/review disposition rather than silently omitting or reshaping it.
 - Use the exact specification version and source page/section for every rule.
 - Preserve segment identity, message family, request/response role, and applicability.
@@ -329,6 +330,8 @@ Produce a machine-readable field inventory with one row for every ordered field:
 
 Take each element's format (type, length, padding) from its Chapter 13 definition, then cross-check the §11 layout table, the §12 segment section, and the Chapter 12 segment/transaction matrix. Record any disagreement as `PROVISIONAL` (see [L7](#lessons-learned) and [L8](#lessons-learned)).
 
+Keep producer JSON and wire identities separate. A logical alias such as `TrackData` is not an ATL105 wire element; require an explicit, versioned adapter mapping, declared entry method, and a deterministic synthetic round-trip before normalizing it. Track 2 splits into Elements 2/12 at `=`; Track 1 splits at the first `^`. A Segment 130 EMV object remains distinct and does not, by itself, prove the POS entry method. Unknown alias, delimiter, mode, or cross-segment mapping stays `REVIEW_REQUIRED`; never infer it from a sample or copy sensitive values into training fixtures. See [AID-0005](../../../registers/views/ai-dev-discussion.md#aid-0005).
+
 For PAR, validate the request opt-in and response value as separate assertions:
 ATL105 Appendix I-30 defines Table 032/Sub-Table 14 with fixed length `001`
 and request value `Y`; Appendix K-24 defines response Table 029 as a fixed
@@ -388,6 +391,16 @@ Preserve original AI files and metadata. Normalize them into canonical models, t
 ```text
 BR -> TS -> TC -> request Test Data JSON
 ```
+
+BR coverage is an intermediate milestone, not Phase 8 completion. After the BR crosswalk is built, enumerate and validate the full in-scope producer population: approved and candidate BR/TS/TC catalogs, every scenario/case/flow step, every declared payload and metadata file, response expectations, traceability matrices, run reports, and supported auxiliary artifacts. Do not validate only the BRs that already have Test BR leads or only a sample of linked cases.
+
+A standalone request or response sample without a frozen delivery inventory and explicit BR -> TS -> TC -> TD identity is field-level evidence only. Do not count it as a BR match, infer a coverage percentage from it, or use its presence to close a lifecycle rule. Keep the sample disposition separate from delivery-level coverage until its producer IDs, context, physical payload, and traceability links are established.
+
+For every artifact occurrence, record its source path/hash, stable ID, parent/child links, category/context, validator disposition, and unresolved reason. Reconcile catalogs to physical files and metadata; detect conflicting ID variants, missing/orphan links, unsafe paths, missing or duplicate payloads, step-role mismatches, and artifacts omitted from reports. Run the applicable schema, structural, field, lifecycle, oracle, serialization, and mutation checks. Unsupported formats and rules without authoritative validators remain explicitly `NOT_ASSESSED`; no-artifact/zero-match is not a PASS.
+
+For binary or packed-BCD fields, identify the source-defined field boundary before parsing the payload. Record the declared outer-field byte count, any internal prefix and its encoded count, and the remaining data length separately. If the producer adapter's inclusion/stripping rule is unknown, keep the parse `REVIEW_REQUIRED`; do not call the bytes malformed by feeding a length prefix into a value-only parser, and do not silently strip the prefix to claim PASS.
+
+For lifecycle groups, teach each request/response or original/follow-up relationship separately: verify source-defined transaction-code paths and correlation IDs, bind response-origin values to actual response evidence, require host-approved amount context where relevant, and preserve per-step Test Data and metadata identity. Never promote synthetic host responses, retrieval leads, producer statuses, or segment presence observations to confirmed business relationships.
 
 Report missing, duplicate, unsupported, malformed, contradictory, and review-required artifacts. AI-produced coverage is a claim under test, not the denominator.
 
@@ -579,6 +592,8 @@ An execution-ready model must state one BR obligation, preserve its source ancho
 
 This is the AIV-018 quality gate. It is mandatory for `validateForExecution`; legacy and draft packages may omit the new fields while they remain non-executable. A technically complete record is still not an authorized semantic decision.
 
+The complete package generator also creates one source-anchored `REVIEW_REQUIRED` scenario proposal for each BR that otherwise lacks a TS link. It restates the BR title as draft intent and lists the missing scenario context, but deliberately does not fabricate preconditions, test partitions, or expected outcomes. Treat these as the scenario-definition backlog, not completed scenarios; execution remains blocked until those fields are independently derived and reviewed.
+
 ## Segment-Specific Training Addendum
 
 Each segment addendum should contain only behavior that is different or additional for that segment:
@@ -713,6 +728,8 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L23. Separate execution outcomes from embedded reference text.** User-supplied processed-and-tested reports are legitimate independent Test Solution evidence, but an embedded code-description row is not proof that the execution returned that code. Preserve source hashes, classify actual response fields separately from descriptions and harness status, and keep the field-to-element mapping `REVIEW_REQUIRED` when labels or widths conflict. In particular, ATL105 Element 83 is one byte while Element 8 Authorizer Response Code is two bytes; never train a two-byte `Response Code` report field as Element 83 without source-backed identification. Mask production values, and do not infer universal transaction/card/entry-mode or field-presence rules from a finite run.
 
+**L24. A producer alias is not an ATL105 element mapping.** The 2026-10-16 Authorization sample uses a logical `TrackData` property alongside Segment 130, but no converter contract establishes the alias meaning or delimiter conversion. Track 2 source parsing splits Elements 2/12 at `=`; Track 1 splits at the first `^`. Record the mapping question as `AID-0005`, preserve the input, and require explicit entry mode plus versioned adapter and synthetic round-trip evidence. Do not echo account, track, or chip values; do not infer that Segment 130 proves entry mode or that an unfamiliar delimiter is invalid.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -747,7 +764,20 @@ Do not derive a direct Authorization Only -> code `8` flow. ATL105 specifies `S`
 
 For TOR timing and retries, distinguish the 30-second response interval from the source recommendation to forward a TOR at least 30 seconds after the original transaction has timed out. The retry limit is three unsuccessful attempts on each available connection route, not a global three-attempt cap. Partial-approval amount rules are card/product-specific; do not assert universal amount equality. Debit POS/CAT capture TORs are unsupported.
 
-Do not treat current validator acceptance as source approval: the validator and lifecycle catalog still accept or record invalid direct Authorization Only -> `8`, cross-paired purchase reversal codes, overly broad TOR originals, and blanket TerminalID equality. Check the relevant ATL105 clauses in the [extracted specification](../extracted_text.txt) and keep unresolved cases review-required.
+Do not treat current validator acceptance as source approval. `Segment100MultiStepCoverageValidator` now limits same-TerminalID enforcement to Timeout Reversal; the ATL105 Authorization-to-Completion source does not establish Terminal-ID equality as a universal rule. The validator/lifecycle catalog still need source-aligned handling for direct Authorization Only -> `8` and cross-paired purchase-reversal codes. Keep unsupported combinations `REVIEW_REQUIRED` until corrected and covered by regression tests. Check the relevant ATL105 clauses in the [extracted specification](../extracted_text.txt).
+
+#### Authorization-to-Completion chain acceptance
+
+For an Authorization Only -> Purchase/Capture flow, validate the complete message chain, not only each JSON object:
+
+- Confirm an eligible authorization transaction code (`3`, `5`, or `B`) followed by Purchase/Capture code `0`.
+- Preserve the original six-digit Element 86 Sequence Number through the completion.
+- Obtain Approval Number from the actual Authorization response and bind that exact value into the completion. A value marked `flow_response_runtime_value` or `FLOW_RESPONSE_SHAPE_FILLED_VIA` is a placeholder, not host evidence; it cannot establish an executable completion.
+- Compare completion amounts with the host-approved amount and applicable partial/final-amount rules. Amount equality is not universal, and Partial Approval Indicator `1` alone does not authorize a higher completion amount.
+- Do not require Terminal ID equality as a universal Authorization-to-Completion rule unless the applicable ATL105 source or authorized SME decision says so. Validate each identifier's source/provisioning and component format separately. Same-device constraints remain applicable only to source-defined flows such as TOR.
+- Link every flow case to its BR(s), scenario, each transaction step, declared payload, and matching metadata. Missing BR-to-scenario links remain an explicit review gap; do not infer a lifecycle BR from shared transaction labels.
+
+The current bounded Oct 10 flow screen (2026-10-16) found 138 Authorization-to-Completion cases: 124 have no direct AI BR link, 133 completion approvals are runtime placeholders, 5 are missing, 35 cases have amount fields needing host-response review, and all 337 declared step-data files passed hash and case/scenario metadata identity checks. No semantic or host outcome is established. See the [case register](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-case-register.csv), [BR/TS/TC/TD matrix](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-br-ts-tc-td-matrix.csv), and [host-evidence queue](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-amount-review.csv).
 
 ### Payment-Network Type Training
 
@@ -757,6 +787,8 @@ Receipt Card Type IDs are a separate namespace: ATL105 §10.1.7.3 lists seven na
 
 Appendix E has three distinct families: 56 Table Load Response entries, 36 financial Prompt Code card types, and 11 special Prompt Codes. Keep their message roles and validators separate. Financial and Table Load allowlist checks are implemented; nine special prompts have validator-harness chains, while `900` and `997` remain review-blocked. Feature effects, production configuration, full special-operation behavior, converter readiness, and AI coverage remain separate gates. See the [Appendix E training note](segment-100/appendix-e-card-type-training.md) and [special-prompt chain package](../../../test-output/test-json/appendix-e-special-prompt-chain-package.json).
 
+For AI delivery intake, inspect actual Prompt Code card values against the 36-code financial set independently of `flow_axis_values.card_brand`. Require declared card metadata to match the physical request; do not infer coverage from scenario tags or require an unsupported brand-by-card Cartesian product. The 2026-10-16 audit found 1/36 card codes and 4/4 observed producer brand-axis labels; upstream correction is tracked as `AIF-0020`. Presence remains separate from semantics, authorization, and host execution.
+
 For family-wise Test Solution backlog across Appendix A-AE, use the [Appendix Family Gap Closure Register](segment-100/appendix-family-gap-closure-register.md). It distinguishes resolvable BR -> TS -> TC -> independent TD work from SME, configuration, external-spec, and external-fixture blockers. Do not claim an appendix is `COVERED` from source BR counts or metadata-only TD placeholders.
 
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
@@ -765,6 +797,7 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
+| 2026-10-16 | Added P2 Authorization-to-Completion training and post-BR whole-delivery validation guidance. Enforce transaction-code and Sequence Number rules, bind completion approvals to actual host responses, keep amount changes evidence-gated, and do not make Terminal-ID equality a universal auth-completion requirement. Added L24 and the producer-JSON mapping boundary for Segment 100 Elements 2/12 and Segment 130. `AID-0005` records the unresolved TrackData alias/delimiter contract; samples do not establish entry mode, converter behavior, semantic approval, or host validity. Added the independent 36-code AI coverage check and `AIF-0020`; brand-axis values remain a separate dimension. |
 | 2026-10-01 | Added the versioned Element 83 source-backed assertion manifest and fail-closed source gate. Separated citation resolution, literal assertion backing, draft case derivation and SME approval; no new certification gate or executable coverage claim. |
 | 2026-10-05 | Added Segment 100 single-/multi-step BR traceability and source cross-check findings; clarified authorization cancellation, TOR scope, retry/timing rules, review-required completion-to-void behavior, trainer-led LLM questionnaire use, and the 16-leaf Section 5 payment-network taxonomy. |
 | 2026-10-01 | Added conservative body-location triage for all catalog rules; TOC entries and ambiguous chapter/appendix references cannot promote review-only locations into assertions. |

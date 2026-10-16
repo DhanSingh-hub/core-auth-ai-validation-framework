@@ -31,7 +31,7 @@
   ],
   "testCases": [
     {"id":"TC-SEG100-APPAF-APPLICABILITY","scenarioId":"TS-SEG100-APPAF-APPLICABILITY","objective":"Exercise supported IA roles and network-specific Table 82 policy.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-001","AF-TD-010","AF-TD-011","AF-TD-012"]},
-    {"id":"TC-SEG100-APPAF-DATA","scenarioId":"TS-SEG100-APPAF-DATA","objective":"Exercise Discover Table 82 presence/layout and terminal-scoped identifier/Terminal Transaction Number rules.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-002","AF-TD-003","AF-TD-004","AF-TD-005","AF-TD-006","AF-TD-013","AF-TD-014","AF-TD-015","AF-TD-016","AF-TD-017","AF-TD-018"]},
+    {"id":"TC-SEG100-APPAF-DATA","scenarioId":"TS-SEG100-APPAF-DATA","objective":"Exercise Discover Table 82 presence/layout and independently modeled AF Transaction ID open-state uniqueness.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-002","AF-TD-003","AF-TD-004","AF-TD-005","AF-TD-006","AF-TD-013","AF-TD-014","AF-TD-015","AF-TD-016","AF-TD-017","AF-TD-018","AF-TD-019","AF-TD-020","AF-TD-021"]},
     {"id":"TC-SEG100-APPAF-LIFECYCLE","scenarioId":"TS-SEG100-APPAF-LIFECYCLE","objective":"Exercise Original Auth predecessor and approval-code carry-forward.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-007","AF-TD-008","AF-TD-009"]},
     {"id":"TC-SEG100-APPAF-COMPLETION","scenarioId":"TS-SEG100-APPAF-COMPLETION","objective":"Ensure subsequent activity is rejected after completion closes the IA.","status":"REVIEW_REQUIRED","testDataIds":["AF-TD-010"]}
   ],
@@ -53,17 +53,20 @@
     {"id":"AF-TD-015","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TABLE82-FORMAT","fixtureCaseId":"AF-TD-015","expectedRule":"AF-TABLE82-LAYOUT","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
     {"id":"AF-TD-016","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TTN-SERIES","fixtureCaseId":"AF-TD-016","expectedRule":"NONE","expectedWarning":"AF-TABLE82-CONTINUITY","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
     {"id":"AF-TD-017","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TTN-SERIES","fixtureCaseId":"AF-TD-017","expectedRule":"NONE","expectedWarning":"AF-TABLE82-CONTINUITY","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
-    {"id":"AF-TD-018","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TTN-SERIES","fixtureCaseId":"AF-TD-018","expectedRule":"NONE","expectedWarning":"AF-TABLE82-CONTINUITY","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"}
+    {"id":"AF-TD-018","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TTN-SERIES","fixtureCaseId":"AF-TD-018","expectedRule":"NONE","expectedWarning":"AF-TABLE82-CONTINUITY","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-019","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TRANSACTION-ID","fixtureCaseId":"AF-TD-019","expectedRule":"NONE","expectedWarning":"AF-TRANSACTION-ID-UNIQUENESS","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-020","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TRANSACTION-ID","fixtureCaseId":"AF-TD-020","expectedRule":"NONE","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"id":"AF-TD-021","testCaseIds":["TC-SEG100-APPAF-DATA"],"coversBr":"BR-SEG111-APPAF-TRANSACTION-ID","fixtureCaseId":"AF-TD-021","expectedRule":"AF-TRANSACTION-ID-UNIQUENESS","readiness":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED"}
   ],
   "logicalTrainingEvidence": {
     "sourceRuleCatalog": "docs/specs/kb/appendix-af-rule-catalog.json",
     "trainingNote": "docs/specs/kb/appendix-af-estimated-incremental-training.md",
     "validator": "AppendixAFIncrementalAuthorizationValidator",
     "fixtureFile": "src/test/resources/atl105/appendix-af-logical-flows.json",
-    "logicalFixtureCount": 18,
+    "logicalFixtureCount": 21,
     "scope": "LOGICAL_PREDICATES_ONLY_NOT_CANONICAL_HOST_OR_WIRE_EXECUTION",
     "executionCertified": false
   },
-  "testDataReadinessSummary": {"executable": 0,"reviewRequired": 18},
+  "testDataReadinessSummary": {"executable": 0,"reviewRequired": 21},
   "testDataStatus": "Source-derived logical cases only; no physical request/response, independent open-state fixture, SME decision, or host execution is certified."
 }

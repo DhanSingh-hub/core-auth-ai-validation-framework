@@ -42,8 +42,8 @@ public final class GenerateAppendixIScopedTraining {
         for (JsonNode data : output.artifactPackage().path("testData")) {
             write(destination.resolve(data.path("fileName").asText()), data);
         }
-        System.out.println("Generated 11 scoped review-only BR/TS and 22 linked logical TC/TD; "
-                + "11 supplied mutations detected. Full requests and certification remain incomplete.");
+        System.out.println("Generated 57 scoped review-only BR/TS and 114 linked logical TC/TD; "
+            + "57 supplied mutations detected. Full requests and certification remain incomplete.");
     }
 
     public static Output generate(Path root) throws IOException {

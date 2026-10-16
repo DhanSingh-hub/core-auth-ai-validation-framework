@@ -87,17 +87,22 @@ public final class AppendixAFIncrementalAuthorizationValidator {
     }
 
     private static void checkTerminalNumberUniqueness(JsonNode flow, JsonNode original, String terminalId, ValidationResult result) {
-        JsonNode terminalNumber = original.path("table82").path("terminalTransactionNumber");
-        if (!terminalNumber.isTextual() || !terminalNumber.asText().matches("[0-9]{4}")) return;
+        JsonNode transactionId = original.path("transactionId");
         JsonNode open = flow.path("openIncrementalAuthTransactions");
-        if (terminalId.isBlank() || !open.isArray() || !flow.path("openIncrementalAuthorizationHistoryComplete").asBoolean(false)) {
-            result.addWarning("AF-TRANSACTION-ID-UNIQUENESS: Complete open-purchase history and terminal identity are required to assess uniqueness.");
+        if (terminalId.isBlank() || !transactionId.isTextual() || transactionId.asText().isBlank()
+                || !open.isArray() || !flow.path("openIncrementalAuthorizationHistoryComplete").asBoolean(false)) {
+            result.addWarning("AF-TRANSACTION-ID-UNIQUENESS: AF Transaction ID, terminal identity, and complete open-purchase history are required to assess uniqueness.");
             return;
         }
         for (JsonNode entry : open) {
+            if (!entry.isObject() || entry.path("terminalId").asText().isBlank()
+                    || !entry.path("transactionId").isTextual() || entry.path("transactionId").asText().isBlank()) {
+                result.addWarning("AF-TRANSACTION-ID-UNIQUENESS: Open-purchase history contains an entry without terminal identity or AF Transaction ID; uniqueness is unassessed.");
+                return;
+            }
             if (terminalId.equals(entry.path("terminalId").asText())
-                    && terminalNumber.asText().equals(entry.path("terminalTransactionNumber").asText())) {
-                error(result, "AF-TRANSACTION-ID-UNIQUENESS", "Terminal Transaction Number duplicates an open IA series on the same terminal; the AF Transaction ID field mapping remains under review.");
+                    && transactionId.asText().equals(entry.path("transactionId").asText())) {
+                error(result, "AF-TRANSACTION-ID-UNIQUENESS", "AF Transaction ID duplicates an open IA purchase on the same terminal.");
                 return;
             }
         }

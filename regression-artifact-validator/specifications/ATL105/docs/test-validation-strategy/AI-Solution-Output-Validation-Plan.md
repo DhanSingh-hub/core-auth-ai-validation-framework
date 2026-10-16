@@ -12,6 +12,8 @@
 
 **Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
 
+An isolated request/response sample without a frozen delivery inventory and explicit BR -> TS -> TC -> TD identity is not a coverage population. Record only sample-scoped validator outcomes; do not create a BR-match numerator, classify unseen requirements as `AI_ONLY`, or infer lifecycle coverage from a single leg. For the sanitized 2026-10-16 Authorization sample, the declared segment count and EMV byte count are structurally consistent. The new `AppendixREmvChipDataOracle.assessWithPackedLengthPrefix` candidate path validates the apparent packed-BCD count against the trailing TLV body and parses that body, but returns `REVIEW_REQUIRED` until the producer adapter declares the field boundary. The strict bare-TLV path remains unchanged; no prefix is silently stripped. Element 188 fails its N3 format and does not match the decoded card-sequence tag; the producer track alias is unmapped. No BR coverage percentage is calculable from that sample.
+
 **Execution-ready Test Model quality:** The canonical model carries a requirement `statement` and explicit `atomicity` disposition; a ready BR must be `ATOMIC` and include source evidence bound to a file hash, locator, and literal quote. Ready scenarios declare intent and preconditions. Ready test cases declare per-BR assertions with expected results and anchors shared with each linked requirement; every BR reached through the case's scenarios must be asserted. `CanonicalTraceabilityValidator.validateForExecution` enforces these deterministic contract checks and rejects source paths outside the trusted root, stale hashes, nonliteral quotes, incomplete assertions, and non-atomic dispositions. This is evidence/structure validation only: it does not decide that a rule is semantically atomic or approve the source interpretation. Draft/review packages remain loadable, and execution readiness remains blocked until authorized decisions and host evidence are supplied.
 
 **Coverage presentation (2026-10-06):** The complete-handoff HTML/PDF Coverage view reports producer-internal BR/TS-to-TC linkage, physical-output presence, segment-attributed linkage, exact transaction-target labels, scenario-type inventory and expected response-code declarations. Every percentage names its numerator and denominator. Segment counts overlap; scenario groups inherit linked BR attribution and TC groups use direct BR references. Do not infer normalized transaction-code or code/family coverage from producer labels or code mentions. Catalog rule counts remain a separate inventory; semantic rule coverage is `NOT_CALCULABLE` and code/family validation is `NOT_ASSESSED` until evidence-qualified comparison is performed. Hash-bind the AI inputs, response matrix and catalogs used by the view.
@@ -28,7 +30,7 @@
 
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
 
-**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, the Appendix I fixed Table 82 layout, terminal-number series rules, Original Auth predecessor, approval-code carry-forward, and completion closure. `IA_REVERSAL` is distinct from the legacy partial-approval reversal rule. The AF Transaction ID to Appendix I Terminal Transaction Number mapping remains `REVIEW_REQUIRED`. Discover missing Table 82 is a failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only. The overlay is pinned to the 2026-4 PDF hash and does not certify physical wire, complete open-state history, processor outcomes, or the full 2026-4 release.
+**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, the Appendix I fixed Table 82 layout, terminal-number series guidance, Original Auth predecessor, approval-code carry-forward, and completion closure. `IA_REVERSAL` is distinct from the legacy partial-approval reversal rule. Per-terminal open-purchase uniqueness uses an explicit Appendix AF `transactionId` observation and a complete synthetic state list; it does not substitute Table 82's Terminal Transaction Number. A source-hash-bound, synthetic 110-byte Financial Transaction Request application-payload candidate is available at `appendix-af-physical-wire-candidate-v1.json`; its Segment 100/111 lengths and base Chapter 11 layout pass local structural checks. It is request-only, excludes TCP/IP/TPDU, and leaves Table 82 N2-to-N3 indicator and AF Transaction ID-to-N4 mappings `REVIEW_REQUIRED`. It supplies no response bytes, host oracle, or independent open-state evidence. The 21 logical cases and this wire candidate do not establish full 2026-4 serialization or certification. Discover missing Table 82 is a source-defined failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
 
@@ -81,6 +83,50 @@ deterministic model-integrity improvements from the review plan. It does not
 decide atomicity or business equivalence, authenticate the evidence author,
 substitute for SME adjudication, or produce host execution evidence. Existing
 pending crosswalk decisions and all approval/execution measures stay unchanged.
+
+**Missing-scenario handling (2026-10-15, AIV-019):** The complete Test Solution
+package now emits one source-anchored draft scenario proposal for every
+independent BR without a linked scenario. Each proposal uses only the BR title
+and source anchor, names its unresolved applicability/preconditions, transaction
+context, test partitions, and expected-outcome gaps, and remains
+`REVIEW_REQUIRED`. This closes the scenario-inventory gap without fabricating
+test behavior; authoring complete scenario conditions and outcomes remains a
+source-review/SME task. Draft proposals do not change business coverage or
+execution readiness.
+
+**AI network/card-type test-case completeness (2026-10-16, AIV-020):** The new
+`scripts/audit-ai-network-cardtype-coverage.py` verifies presence of cases for
+the declared `flow_axis_values.card_brand` values and independently for every
+financial card code in `Segment100CardTypeOracle`. It hashes the catalogs and
+checks payload/metadata bytes against the frozen delivery inventory, excluding
+conflicted Test Case IDs. It reports combinations observed but does not require
+unsupported combinations or promote them to semantic matches. Current delivery
+coverage is 4/4 declared brand-axis values and 1/36 card types; status is
+`INCOMPLETE_REQUIRED_DIMENSION_COVERAGE` with 35 missing card codes. The AI
+generator source is outside this repository; the audit is the independent
+acceptance gate and supplies the upstream generation gap list.
+
+The 2026-10-16 audit's 35 missing financial card codes are routed to the AI
+Solution Team as `AIF-0020`. Recheck a corrected, versioned delivery against the
+same 36-code oracle and frozen-payload identity rules. Require the Prompt Code's
+card type in the physical request payload to agree with its scenario/test-case
+metadata. Keep the four observed brand-axis values separate: this feedback does
+not define a global network denominator or a network-by-card-type combination
+matrix, and case-presence checks do not validate semantics or host outcomes.
+
+**Account/track alias and EMV mapping (2026-10-16, AIV-021 / AID-0005):** A
+producer-level property such as `TrackData` is not itself an ATL105 Segment 100
+element. The adapter must declare the POS entry method and a versioned mapping
+from producer fields to Elements 2 and 12. Source-defined Track 2 splitting uses
+`=`; Track 1 splitting uses the first `^`. Segment 130 EMV data remains a separate
+segment and must not be reconstructed from a track alias. The supplied
+Authorization sample establishes only that this mapping question exists: absent
+the producer/converter contract, its alias and delimiter are neither normalized
+nor declared invalid. `AccountNumberEntryValidator` exercises normalized fields
+only; AIV-021 remains partial until an adapter has round-trip, mode, delimiter,
+missing-context, and EMV-coexistence regressions. Preserve the input unchanged,
+use synthetic fixtures, and keep semantic approval, wire validation, and host
+execution separate.
 
 Appendix I training uses a source-only, hash-pinned table inventory and independent
 field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
@@ -337,6 +383,7 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 - Lifecycle messages contain original/follow-up relationships.
 - Sensitive values are synthetic or approved masked values.
 - Test data proves the test case objective.
+- Producer-specific composite properties that represent multiple ATL105 elements require a versioned adapter mapping, explicit source/entry context, and round-trip tests. Unknown aliases or delimiters remain `REVIEW_REQUIRED`; do not infer a wire separator from an example or merge separate EMV segment content into track fields.
 
 ### Gate 9: Final serialization
 
@@ -363,6 +410,23 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 - Review-required items are visible.
 - Report status agrees with rule-level findings.
 - Source pages and artifact IDs are clickable or resolvable.
+
+### Gate 11: Post-BR whole-delivery artifact validation
+
+BR coverage is a milestone, not the final acceptance gate. After the BR crosswalk/coverage pass, enumerate and validate the complete AI-produced artifact population for the frozen delivery, including every approved and candidate BR/TS/TC catalog, every flow step, every declared payload and metadata file, response expectations, traceability matrices, run summaries, and auxiliary outputs that the report claims to cover.
+
+**Required checks:**
+
+- Freeze the exact delivery population and hashes; reconcile artifact counts and duplicate/content-conflict IDs across candidate and approved tiers without treating producer state as approval.
+- Validate each BR -> TS -> TC -> TD edge from explicit identifiers; report dangling, missing, orphaned, duplicate, and conflicting links at row level. Every artifact must be accounted for as validated, review-required, unsupported/unassessed, or explicitly out of scope.
+- For multi-step flows, validate each step's transaction family/code, original/follow-up correlation fields, runtime host-response dependencies, declared TD path, step-specific metadata identity, and expected outcome. Never substitute a synthetic response value for an actual host response.
+- Validate physical payload structure and value bindings with the applicable source-profile validator; compare metadata to physical payload and wire serialization where supported. File presence/hash equality alone is not semantic or wire validity.
+- Validate expected-response oracle tiers, positive/negative/boundary coverage, test determinism, and source-backed assertions. Separate ASSERT, INFER, FLAG, and observed host outcomes.
+- Reconcile validation outputs and manifests to their input hashes. Publish candidate coverage, complete-chain structural coverage, semantic decisions, and executed/host coverage as separate measures.
+
+**Exit condition:** a whole-delivery result is complete only when every in-scope artifact is represented in the inventory and has an explicit disposition. Any unsupported format, missing source binding, unvalidated payload family, pending BR mapping, missing oracle, or unexecuted host outcome remains visible as `REVIEW_REQUIRED`, `NOT_ASSESSED`, or `NOT_EXECUTED`; do not promote the package to fully validated based on BR coverage alone.
+
+**Current boundary:** V6 inventories 79,040 Oct 10 files and checks catalog links and declared physical routes; V6 technical coverage executes bounded predicates on 326/601 Test BR rules. The Authorization-to-Completion review adds step-level checks for 138 flows but still has 124 cases without direct AI BR links, 133 runtime approval placeholders, 5 missing completion approvals, and 35 amount-change cases awaiting host-approved amount evidence. These are not whole-delivery semantic or host certification.
 
 ## 4. What the Current ATL105 Output Already Provides
 

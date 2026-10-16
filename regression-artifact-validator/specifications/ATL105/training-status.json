@@ -38,7 +38,7 @@
     "108": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 25, "reviewRequired": true, "nextGate": "SME_REVIEW_AND_AI_INTAKE", "blockers": ["financial-transaction-request-presence-reopened", "max-length-142-below-field-total", "trailing-field-separator-position-unclear", "update-code-reversal-mapping-undefined"] },
     "109": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 22, "reviewRequired": true, "nextGate": "AI_ARTIFACT_REWORK_AND_INDEPENDENT_INTAKE", "blockers": ["ai-chain-has-zero-segment-109-payloads", "ai-br-ts-tc-td-mapping-not-intake-ready", "conditional-field-policy-pending"] },
     "110": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 21, "reviewRequired": true, "nextGate": "SME_REVIEW_AND_AI_INTAKE", "blockers": ["manually-entered-check-trigger-undefined", "extended-micr-data-hosting-segment-unconfirmed", "ai-artifact-package-authoritative-source-unconfirmed"], "smeDecisions": ["2026-09-26: Segment 110 approved for any Financial Transaction Request Data Section 3 (not restricted to ECA/TeleCheck)", "2026-09-26: Element 239 modeled as two distinct segment-scoped entities (Segment 110 Alternate MICR IND vs Segment 145 Enhanced Fleet Data), permanently REVIEW_REQUIRED by design"] },
-    "111": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 8, "reviewRequired": true, "nextGate": "INDEPENDENT_AI_ARTIFACT_INTAKE_AND_APPENDIX_I_TABLE_VALIDATION", "blockers": ["appendix-i-semantic-predicates-implemented-for-tables-001-009-only", "appendix-i-tables-010-081-layout-semantics-not-validated", "SEG111-SME-001", "SEG111-SME-002", "independent-ai-coverage-review-pending"] },
+    "111": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 8, "reviewRequired": true, "nextGate": "INDEPENDENT_AI_ARTIFACT_INTAKE_AND_APPENDIX_I_TABLE_VALIDATION", "blockers": ["appendix-i-predicates-bounded-for-001-009-and-selected-010-015-017-022-and-024-040", "appendix-i-table-semantics-and-contexts-not-exhaustively-validated", "appendix-i-tables-016-and-041-081-canonical-chains-pending", "table-032-aggregate-framing-and-subtable-context-coverage-pending", "table-033-price-semantics-and-aggregate-length-conflict-pending", "table-034-name-grammar-and-aggregate-encoding-pending", "table-035-cryptographic-and-binary-wire-validation-pending", "table-036-ucaf-payload-encoding-and-cryptogram-validity-pending", "table-037-token-validity-and-network-acceptance-unverified", "table-038-paydiant-registration-unverified", "table-039-calendar-edge-validation-unimplemented", "table-040-settlement-outcome-and-full-amount-comparison-unverified", "full-message-lifecycle-and-wire-evidence-pending", "SEG111-SME-001", "SEG111-SME-002", "independent-ai-coverage-review-pending"] },
     "112": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 10, "reviewRequired": true, "nextGate": "APPENDIX_K_LAYOUT_VALIDATION_AND_SME_REVIEW", "blockers": ["appendix-k-bounded-layout-predicates-for-001-003-004-024-025-026-028-029-030-031-032-035-036-037-038-039-040-041-042-043-044-045-046-047", "appendix-k-19-assigned-layouts-and-physical-response-fixtures-incomplete", "SEG112-SME-003", "SEG112-SME-008", "SEG112-SME-009", "issuer-network-layout-semantics-review-required", "sme-tba-certification-pending"] },
     "113": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 18, "reviewRequired": true, "nextGate": "SME_REVIEW_AND_AI_INTAKE", "blockers": ["financial-transaction-request-presence-reopened", "eca-void-support-unconfirmed", "segment-111-required-unconfirmed"] },
     "114": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 13, "reviewRequired": true, "nextGate": "SME_REVIEW_AND_AI_INTAKE", "blockers": ["financial-transaction-request-presence-reopened", "repeatability-citation-missing"] },
@@ -144,7 +144,7 @@
       "evidenceLevel": "SOURCE_DERIVED_REVIEW_REQUIRED",
       "reviewRequired": true,
       "draftRuleCount": 9,
-      "logicalFixtureCount": 18,
+      "logicalFixtureCount": 21,
       "countsExcludedFromSegmentCatalogSummary": true,
       "sourceCompletenessCertified": false,
       "executionCertified": false,
@@ -153,14 +153,14 @@
       "testModel": "specifications/ATL105/test-output/test-json/appendices/appendix-af-segment-100-coverage.json",
       "testFixtures": "src/test/resources/atl105/appendix-af-logical-flows.json",
       "validator": "AppendixAFIncrementalAuthorizationValidator",
-      "nextGate": "APPENDIX_I_TABLE_82_REVIEW_AND_AF_SME_SOURCE_VALIDATION",
+      "nextGate": "APPENDIX_AF_TRANSACTION_ID_MAPPING_AND_PHYSICAL_FIXTURE_REVIEW",
       "blockers": [
         "appendix-af-source-interpretation-review-pending",
         "appendix-i-table-82-transaction-id-vs-terminal-number-mapping-review-pending",
-        "complete-open-transaction-state-fixture-pending",
         "independent-physical-request-response-fixtures-pending",
         "sme-tba-certification-pending"
-      ]
+      ],
+      "note": "The 21-case synthetic logical suite exercises a complete modeled open-state list and checks Appendix AF Transaction ID separately from Table 82 Terminal Transaction Number. A review-only 110-byte synthetic Financial Transaction Request application-payload candidate is recorded at test-output/test-solution-independent-review/appendix-af-physical-wire-candidate-v1.json; Segment 100/111 lengths and base layout have local checks. The candidate is request-only, excludes TCP/IP/TPDU and host response, and its Table 82 N2-to-N3 indicator assumption and AF ID-to-N4 mapping remain REVIEW_REQUIRED. It does not supply independently observed terminal state or host outcomes."
     }
   },
   "kbCoverageReconciliation": {

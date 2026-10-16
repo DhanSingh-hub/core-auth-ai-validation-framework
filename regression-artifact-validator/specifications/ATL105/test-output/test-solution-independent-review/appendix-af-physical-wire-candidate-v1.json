@@ -1,0 +1,169 @@
+{
+  "artifact" : "ATL105-APPENDIX-AF-PHYSICAL-WIRE-CANDIDATE",
+  "status" : "REVIEW_REQUIRED",
+  "specificationVersion" : "2026-4",
+  "baseEnvelopeVersion" : "2026-3",
+  "scope" : "Synthetic Financial Transaction Request ATL105 application payload; not transport framing or host evidence",
+  "executionReady" : false,
+  "hostExecuted" : false,
+  "sourceEvidence" : {
+    "baseSpecificationText" : "docs/specs/extracted_text.txt",
+    "baseSpecificationSha256" : "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "table82QuoteFile" : "docs/specs/kb/appendix-af-table82-source-quotes.txt",
+    "table82QuoteFileSha256" : "19d0ed0d0b0f014458ec236c620c5d1aec79540fd4c6b9013c67199d757f901a",
+    "afSourcePdfSha256Pinned" : "568c04d3081cac6c5cc545adee9c6f8f3a34334e788fdf5ee0260ffef57c77af",
+    "afSourcePdfPresentInWorkspace" : false
+  },
+  "request" : {
+    "messageFamily" : "Financial Transaction Request",
+    "declaredSegmentCount" : "02",
+    "applicationPayloadEscaped" : "ATL105\\u001c02\\u001c100\\u001c081\\u001c0\\u001cTS06123456001\\u001c3020\\u001cSYNTHETIC01\\u001c1228\\u001c\\u001c\\u001c\\u001c00001000\\u001c\\u001c\\u001c100001\\u001c\\u001c1016261200\\u001c1\\u001c111\\u001c024\\u001c082009820040001\\u001c",
+    "applicationPayloadHex" : "41544C3130351C30321C3130301C3038311C301C545330363132333435363030311C333032301C53594E54484554494330311C313232381C1C1C1C30303030313030301C1C1C3130303030311C1C313031363236313230301C311C3131311C3032341C3038323030393832303034303030311C",
+    "applicationPayloadByteCount" : 115,
+    "tcpIpTpduFraming" : "NOT_INCLUDED",
+    "dataSection1" : {
+      "messageFormatVersionIdentifier" : "ATL105",
+      "numberOfSegments" : "02"
+    },
+    "segment100" : {
+      "segmentLength" : "081",
+      "byteCount" : 81,
+      "serializedWireEscaped" : "100\\u001c081\\u001c0\\u001cTS06123456001\\u001c3020\\u001cSYNTHETIC01\\u001c1228\\u001c\\u001c\\u001c\\u001c00001000\\u001c\\u001c\\u001c100001\\u001c\\u001c1016261200\\u001c1\\u001c",
+      "numberedElements" : {
+        "85" : "100",
+        "84" : "081",
+        "44" : "0",
+        "102" : "TS06123456001",
+        "78" : "3020",
+        "2" : "SYNTHETIC01",
+        "12" : "1228",
+        "33" : "",
+        "79" : "",
+        "41" : "",
+        "58" : "00001000",
+        "99" : "",
+        "17" : "",
+        "86" : "100001",
+        "5" : "",
+        "49" : "1016261200",
+        "121" : "1"
+      }
+    },
+    "segment111" : {
+      "segmentLength" : "024",
+      "byteCount" : 24,
+      "serializedWireEscaped" : "111\\u001c024\\u001c082009820040001\\u001c",
+      "variableInformationSection" : {
+        "indicatorN3Candidate" : "082",
+        "lengthN3" : "009",
+        "table82BodyN2N3N4" : "820040001",
+        "tableIdN2" : "82",
+        "tableLengthN3" : "004",
+        "terminalTransactionNumberN4" : "0001"
+      },
+      "table82IndicatorEncodingStatus" : "SOURCE_DEFINED",
+      "table82IndicatorEncodingReason" : "ATL105 2026-4 Chapter 13 maps Element 111 value 082 to Incremental Auth Data; Appendix I defines Element 113 content as N2 Table ID 82, N3 Table Length 004, and N4 Terminal Transaction Number.",
+      "afTransactionIdMappingStatus" : "REVIEW_REQUIRED",
+      "afTransactionIdSerialized" : false
+    }
+  },
+  "testDataPayload" : {
+    "testControls" : {
+      "validateDataSection1" : true,
+      "validateSerialization" : true,
+      "requireCompleteSectionFields" : true
+    },
+    "request" : {
+      "dataSection1" : {
+        "messageFormatVersionIdentifier" : "ATL105",
+        "numberOfSegments" : "02",
+        "fieldSeparators" : {
+          "betweenElements55And63" : true,
+          "afterElement63" : true
+        }
+      },
+      "dataSection2" : {
+        "standardSegment" : {
+          "segmentType" : "100",
+          "segmentLength" : "081",
+          "informationByte" : "0",
+          "terminalIdentifier" : "TS06123456001",
+          "promptCode" : "3020",
+          "accountNumber" : "SYNTHETIC01",
+          "cardDiscretionaryBlockData" : "1228",
+          "encryptedPinBlockData" : "",
+          "pumpLaneNumber" : "",
+          "fuelPurchaseAmount" : "",
+          "nonfuelAmount" : "00001000",
+          "taxAmount" : "",
+          "cashAmount" : "",
+          "sequenceNumber" : "100001",
+          "approvalNumber" : "",
+          "localDateTime" : "1016261200",
+          "partialApprovalIndicator" : "1",
+          "serializedSegment" : "100\u001C081\u001C0\u001CTS06123456001\u001C3020\u001CSYNTHETIC01\u001C1228\u001C\u001C\u001C\u001C00001000\u001C\u001C\u001C100001\u001C\u001C1016261200\u001C1\u001C"
+        }
+      },
+      "dataSection3" : [ {
+        "segmentType" : "111",
+        "segmentLength" : "024",
+        "wireFormat" : "111\u001C024\u001C082009820040001\u001C",
+        "variableInformationSections" : [ {
+          "variableInformationIndicator" : "082",
+          "variableInformationLength" : "009",
+          "variableInformation" : "820040001"
+        } ]
+      } ]
+    }
+  },
+  "chapter11LayoutObservation" : {
+    "specificationVersion" : "2026-3",
+    "messageFamily" : "Financial Transaction Request",
+    "completeness" : "PARTIAL",
+    "elements" : {
+      "55" : "ATL105",
+      "63" : "02"
+    },
+    "segments" : [ {
+      "segment" : "100",
+      "dataSection" : 2,
+      "fieldNumber" : 3,
+      "observation" : {
+        "specificationVersion" : "2026-3",
+        "messageFamily" : "Financial Transaction Request",
+        "segment" : "100",
+        "elements" : {
+          "85" : "100",
+          "84" : "081",
+          "44" : "0",
+          "102" : "TS06123456001",
+          "78" : "3020",
+          "2" : "SYNTHETIC01",
+          "12" : "1228",
+          "33" : "",
+          "79" : "",
+          "41" : "",
+          "58" : "00001000",
+          "99" : "",
+          "17" : "",
+          "86" : "100001",
+          "5" : "",
+          "49" : "1016261200",
+          "121" : "1"
+        },
+        "dataSection" : 2,
+        "fieldNumber" : 3,
+        "serializedSegment" : "100\u001C081\u001C0\u001CTS06123456001\u001C3020\u001CSYNTHETIC01\u001C1228\u001C\u001C\u001C\u001C00001000\u001C\u001C\u001C100001\u001C\u001C1016261200\u001C1\u001C"
+      }
+    }, {
+      "segment" : "111",
+      "dataSection" : 3,
+      "fieldNumber" : 8
+    } ]
+  },
+  "response" : {
+    "status" : "NOT_PROVIDED",
+    "reason" : "No captured host response or approved AF response oracle was supplied; no response bytes or expected outcome are fabricated."
+  },
+  "limitations" : [ "The full 2026-4 PDF is external to the repository; its pinned hash was verified against the local source copy, and the candidate uses exact quote extracts.", "Element 111 VIF 082 and the Table 82 Element 113 body (N2 ID 82, N3 length 004, N4 value) are source-defined; AF Transaction ID to Terminal Transaction Number equivalence remains REVIEW_REQUIRED.", "The payload is not a complete TCP/IP/TPDU transmission and has no host response.", "Synthetic field values are for local structural wire checks only; no card/network compatibility or approval result is asserted." ]
+}

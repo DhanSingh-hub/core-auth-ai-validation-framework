@@ -2,8 +2,10 @@
 
 import argparse
 import collections
+import gzip
 import hashlib
 import json
+import re
 import runpy
 import tempfile
 from pathlib import Path
@@ -62,6 +64,128 @@ def write_rows(path, rows):
     with path.open("w", encoding="utf-8", newline="\n") as stream:
         for row in rows:
             stream.write(canonical(row) + "\n")
+
+
+def write_gzip_rows(path, rows):
+    with path.open("wb") as raw:
+        with gzip.GzipFile(fileobj=raw, mode="wb", mtime=0) as compressed:
+            for row in rows:
+                compressed.write((canonical(row) + "\n").encode("utf-8"))
+
+
+def normalize_field_name(value):
+    return re.sub(r"[^a-z0-9]", "", str(value).lower())
+
+
+def recursive_field_scan(value, *, metadata=False):
+    occurrences = collections.defaultdict(lambda: {"count": 0, "populated": 0, "empty": 0, "types": collections.Counter()})
+    segments = set()
+    object_count = 0
+    array_count = 0
+
+    def walk(node, path="", segment=""):
+        nonlocal object_count, array_count
+        if isinstance(node, dict):
+            object_count += 1
+            local_segment = segment
+            for key, child in node.items():
+                if normalize_field_name(key) == "segmenttype" and not isinstance(child, (dict, list)) and child not in (None, ""):
+                    local_segment = str(child).strip().upper()
+                    segments.add(local_segment)
+            for key, child in node.items():
+                child_path = path + "/" + str(key)
+                if isinstance(child, (dict, list)):
+                    walk(child, child_path, local_segment)
+                else:
+                    identity = (child_path, local_segment)
+                    entry = occurrences[identity]
+                    entry["count"] += 1
+                    entry["types"][type(child).__name__] += 1
+                    if child is None or child == "":
+                        entry["empty"] += 1
+                    else:
+                        entry["populated"] += 1
+        elif isinstance(node, list):
+            array_count += 1
+            if not node:
+                identity = (path + "[]", segment)
+                occurrences[identity]["types"]["empty_list"] += 1
+            for child in node:
+                child_path = path + "[]"
+                if isinstance(child, (dict, list)):
+                    walk(child, child_path, segment)
+                else:
+                    identity = (child_path, segment)
+                    entry = occurrences[identity]
+                    entry["count"] += 1
+                    entry["types"][type(child).__name__] += 1
+                    if child is None or child == "":
+                        entry["empty"] += 1
+                    else:
+                        entry["populated"] += 1
+
+    walk(value)
+    field_paths = [{"path": path, "segment": segment, "occurrences": entry["count"],
+                    "populated": entry["populated"], "empty": entry["empty"],
+                    "valueTypes": dict(sorted(entry["types"].items()))}
+                   for (path, segment), entry in sorted(occurrences.items())]
+    metadata_claims = []
+    if metadata and isinstance(value, dict):
+        fields = value.get("fields") or []
+        if isinstance(fields, list):
+            for index, claim in enumerate(fields):
+                if not isinstance(claim, dict):
+                    metadata_claims.append({"index": index, "name": None, "element": None, "segment": None,
+                                            "declaredValuePresent": False, "state": "MALFORMED_METADATA_FIELD_CLAIM"})
+                    continue
+                declared_value = claim.get("value")
+                metadata_claims.append({
+                    "index": index,
+                    "name": claim.get("specElementName") or claim.get("element"),
+                    "element": claim.get("element"),
+                    "segment": str(claim.get("segment") or "").strip().upper() or None,
+                    "nameSource": claim.get("nameSource"),
+                    "dataSection": claim.get("dataSection"),
+                    "declaredValuePresent": declared_value is not None and declared_value != "",
+                    "declaredValueType": type(declared_value).__name__,
+                    "state": "CLAIM_REQUIRES_PAYLOAD_COMPARISON",
+                })
+    return {
+        "rootType": type(value).__name__, "objectCount": object_count, "arrayCount": array_count,
+        "scalarOccurrenceCount": sum(entry["count"] for entry in occurrences.values()),
+        "populatedScalarOccurrenceCount": sum(entry["populated"] for entry in occurrences.values()),
+        "emptyScalarOccurrenceCount": sum(entry["empty"] for entry in occurrences.values()),
+        "segmentTypes": sorted(segments), "fieldPaths": field_paths,
+        "metadataClaimCount": len(metadata_claims), "metadataClaims": metadata_claims,
+        "fieldValuesExported": False,
+    }
+
+
+def compare_field_presence(metadata_scan, payload_scan):
+    lookup = collections.defaultdict(list)
+    for field in payload_scan.get("fieldPaths", []):
+        name = field["path"].rsplit("/", 1)[-1].replace("[]", "")
+        lookup[(str(field.get("segment") or "").upper(), normalize_field_name(name))].append(field)
+    observations = []
+    for claim in metadata_scan.get("metadataClaims", []):
+        name = claim.get("name")
+        segment = claim.get("segment")
+        if not name or not segment:
+            state, count = "METADATA_NAME_OR_SEGMENT_UNRESOLVED", 0
+        else:
+            matches = lookup.get((segment, normalize_field_name(name)), [])
+            count = len(matches)
+            if count == 1:
+                state = "EXACT_FIELD_NAME_AND_SEGMENT_OBSERVED"
+            elif count > 1:
+                state = "REPEATED_FIELD_SCOPE_REVIEW_REQUIRED"
+            else:
+                state = "NO_EXACT_FIELD_NAME_OR_ALIAS_REVIEW_REQUIRED"
+        observations.append({"metadataFieldIndex": claim["index"], "fieldName": name,
+                             "element": claim.get("element"), "segment": segment,
+                             "declaredValuePresent": claim.get("declaredValuePresent"),
+                             "physicalNameMatchCount": count, "state": state})
+    return observations
 
 
 def catalog_header(path, array):
@@ -222,7 +346,7 @@ def physical_case(root, catalog, row, files):
     if not isinstance(legs, list):
         return {"status": "INCOMPLETE", "issues": ["INVALID_LEG_DECLARATION"], "paths": []}
     declared.extend(legs)
-    paths, issues = [], []
+    paths, issues, field_data_pairs = [], [], []
     if not declared:
         issues.append("NO_EXPLICIT_TD_DECLARATION")
     for declaration in declared:
@@ -239,8 +363,7 @@ def physical_case(root, catalog, row, files):
         info = files.get(relative)
         if not info:
             issues.append("PAYLOAD_MISSING:" + relative)
-            continue
-        if info.get("jsonStatus") != "OBJECT":
+        elif info.get("jsonStatus") != "OBJECT":
             issues.append("PAYLOAD_INVALID_OR_EMPTY:" + relative)
         meta_relative = payload.with_suffix(".meta.json").relative_to(root).as_posix()
         meta = files.get(meta_relative)
@@ -248,7 +371,27 @@ def physical_case(root, catalog, row, files):
             issues.append("METADATA_MISSING_OR_INVALID:" + meta_relative)
         elif meta.get("testCaseId") != row.get("id") or meta.get("scenarioId") != row.get("scenario_id"):
             issues.append("METADATA_ID_MISMATCH:" + meta_relative)
-    return {"status": "COMPLETE_PHYSICAL_DECLARATIONS" if not issues else "INCOMPLETE", "issues": issues, "paths": sorted(set(paths))}
+        pair_state = "PAIRED_EXACT_DECLARATION"
+        if not info:
+            pair_state = "DECLARED_PAYLOAD_MISSING"
+        elif info.get("jsonStatus") != "OBJECT":
+            pair_state = "DECLARED_PAYLOAD_INVALID_OR_EMPTY"
+        elif not meta or meta.get("jsonStatus") != "OBJECT":
+            pair_state = "SIDECAR_MISSING_OR_INVALID"
+        elif meta.get("testCaseId") != row.get("id") or meta.get("scenarioId") != row.get("scenario_id"):
+            pair_state = "SIDECAR_IDENTITY_MISMATCH"
+        payload_scan = (info or {}).get("fieldScan") or {}
+        metadata_scan = (meta or {}).get("fieldScan") or {}
+        presence_observations = compare_field_presence(metadata_scan, payload_scan)
+        field_data_pairs.append({
+            "payloadPath": relative, "metadataPath": meta_relative, "pairState": pair_state,
+            "payloadFieldOccurrenceCount": payload_scan.get("scalarOccurrenceCount", 0),
+            "metadataFieldClaimCount": metadata_scan.get("metadataClaimCount", 0),
+            "metadataFieldPresenceStates": dict(collections.Counter(item["state"] for item in presence_observations)),
+            "metadataValuesExported": False,
+        })
+    return {"status": "COMPLETE_PHYSICAL_DECLARATIONS" if not issues else "INCOMPLETE", "issues": issues,
+            "paths": sorted(set(paths)), "fieldDataPairs": field_data_pairs}
 
 
 def audit(root, baseline_dir, source_text, output):
@@ -294,10 +437,12 @@ def audit(root, baseline_dir, source_text, output):
                 try:
                     data = read_json(path)
                     info["jsonStatus"] = "OBJECT" if isinstance(data, dict) and data else "EMPTY_OR_UNSUPPORTED"
+                    info["fieldScan"] = recursive_field_scan(data, metadata=info["kind"] == "METADATA")
                     if info["kind"] == "METADATA" and isinstance(data, dict):
                         info.update({key: data.get(key) for key in ("testCaseId", "scenarioId", "role", "step")})
                 except (ValueError, UnicodeError):
                     info["jsonStatus"] = "MALFORMED"
+                    info["fieldScan"] = None
             files[relative] = info
             inventory.write(canonical(info) + "\n")
     print("Inventoried", len(files), "files; reading", len(catalog_paths), "catalogs", flush=True)
@@ -369,7 +514,49 @@ def audit(root, baseline_dir, source_text, output):
     physically_complete = {row["id"] for row in chains if row["status"] == "COMPLETE_PHYSICAL_DECLARATIONS" and row["id"] in clean["TC"]}
     claimed_paths = {path for row in chains for path in row["paths"]}
     orphan_files = [info for path, info in files.items() if info["kind"] == "PAYLOAD" and path not in claimed_paths]
+    claimed_metadata_paths = {pair["metadataPath"] for row in chains for pair in row.get("fieldDataPairs", [])}
+    orphan_metadata_files = [info for path, info in files.items() if info["kind"] == "METADATA" and path not in claimed_metadata_paths]
+    payloads_without_sidecars = []
+    metadata_without_payloads = []
+    for relative, info in files.items():
+        if info["kind"] == "PAYLOAD":
+            metadata_path = Path(relative).with_suffix(".meta.json").as_posix()
+            metadata = files.get(metadata_path)
+            if not metadata or metadata.get("jsonStatus") != "OBJECT":
+                payloads_without_sidecars.append({"path": relative, "expectedMetadataPath": metadata_path,
+                                                  "status": "SIDECAR_MISSING_OR_INVALID"})
+        elif info["kind"] == "METADATA":
+            payload_path = relative[:-len(".meta.json")] + ".json"
+            if payload_path not in files or files[payload_path].get("kind") != "PAYLOAD":
+                metadata_without_payloads.append({"path": relative, "expectedPayloadPath": payload_path,
+                                                   "status": "PAYLOAD_MISSING"})
     write_rows(output / "unreferenced-payloads.jsonl", orphan_files)
+    write_rows(output / "unreferenced-metadata.jsonl", orphan_metadata_files)
+    write_rows(output / "payloads-without-sidecars.jsonl", payloads_without_sidecars)
+    write_rows(output / "metadata-without-payloads.jsonl", metadata_without_payloads)
+    field_scan_rows = ({"path": path, "kind": info["kind"], "sha256": info["sha256"],
+                        "jsonStatus": info.get("jsonStatus"), "fieldScan": info.get("fieldScan"),
+                        "fieldValuesExported": False}
+                       for path, info in sorted(files.items()) if info["kind"] in {"PAYLOAD", "METADATA"})
+    write_gzip_rows(output / "field-data-scan.jsonl.gz", field_scan_rows)
+    field_pair_observations = []
+    for chain in chains:
+        for pair in chain.get("fieldDataPairs", []):
+            payload_scan = files.get(pair["payloadPath"], {}).get("fieldScan") or {}
+            metadata_scan = files.get(pair["metadataPath"], {}).get("fieldScan") or {}
+            observations = compare_field_presence(metadata_scan, payload_scan)
+            field_pair_observations.append({"testCaseId": chain["id"], "catalog": chain["catalog"],
+                                            "payloadPath": pair["payloadPath"], "metadataPath": pair["metadataPath"],
+                                            "pairState": pair["pairState"], "fieldClaimCount": len(observations),
+                                            "fieldPresenceStates": dict(collections.Counter(item["state"] for item in observations)),
+                                            "observations": observations, "fieldValuesExported": False})
+    write_gzip_rows(output / "paired-field-observations.jsonl.gz", field_pair_observations)
+    field_paths_by_kind = collections.defaultdict(collections.Counter)
+    for info in files.values():
+        if info["kind"] not in {"PAYLOAD", "METADATA"} or not info.get("fieldScan"):
+            continue
+        for entry in info["fieldScan"]["fieldPaths"]:
+            field_paths_by_kind[info["kind"]][entry["path"]] += entry["occurrences"]
     write_rows(output / "auxiliary-artifacts-unassessed.jsonl", ({**info, "validationStatus": "NOT_ASSESSED_FORMAT_SPECIFIC_VALIDATOR_REQUIRED"} for info in files.values() if info["kind"] == "AUXILIARY"))
     write_rows(output / "broken-links.jsonl", issues)
     write_rows(output / "incomplete-tc-declarations.jsonl", (row for row in chains if row["issues"]))
@@ -401,9 +588,20 @@ def audit(root, baseline_dir, source_text, output):
     summary = {"artifact": "ATL105-DELIVERY-WIDE-ASSESSMENT", "runRoot": str(root), "baselineVersion": baseline.get("specificationVersion"), "inputHashes": input_hashes,
                "catalogs": catalog_counts, "fileCount": len(files), "fileInventorySha256": file_hash(output / "file-inventory.jsonl"),
                "physicalFileCountsByKind": dict(collections.Counter(info["kind"] for info in files.values())),
+               "recursiveFieldScan": {"filesScanned": sum(info["kind"] in {"PAYLOAD", "METADATA"} and bool(info.get("fieldScan")) for info in files.values()),
+                                       "fieldScalarOccurrences": dict((kind, sum(info.get("fieldScan", {}).get("scalarOccurrenceCount", 0) for info in files.values() if info["kind"] == kind and info.get("fieldScan"))) for kind in ("PAYLOAD", "METADATA")),
+                                       "distinctFieldPathsByKind": {kind: len(counts) for kind, counts in field_paths_by_kind.items()},
+                                       "fieldPathOccurrencesByKind": {kind: dict(sorted(counts.items())) for kind, counts in field_paths_by_kind.items()},
+                                       "fieldValuesExported": False,
+                                       "interpretation": "Recursive field names, segment context, scalar type and populated/empty state only; no values or semantic conclusions."},
                "missingCatalogNames": sorted(set(CATALOGS) - present_names),
                "uniqueIdsByKind": {kind: len(by_id) for kind, by_id in variants.items()}, "occurrencesByKind": dict(collections.Counter(row["kind"] for row in occurrences)),
                "contentConflictIds": len(conflicts), "brokenLinkCount": len(issues), "unreferencedPayloadFiles": len(orphan_files),
+               "unreferencedMetadataFiles": len(orphan_metadata_files), "payloadFilesWithoutValidSidecars": len(payloads_without_sidecars),
+               "metadataFilesWithoutPayloads": len(metadata_without_payloads),
+               "declaredPayloadMetadataPairs": len(field_pair_observations),
+               "declaredPairStates": dict(collections.Counter(row["pairState"] for row in field_pair_observations)),
+               "metadataFieldPresenceStates": dict(collections.Counter(state for row in field_pair_observations for state, count in row["fieldPresenceStates"].items() for _ in range(count))),
                "completePhysicalTcIds": len(physically_complete), "tcIdsWithoutUnconflictedCompletePhysicalRoute": len(set(variants["TC"]) - physically_complete), "incompletePhysicalOccurrences": sum(bool(row["issues"]) for row in chains),
                "anchorTypeCounts": dict(collections.Counter(row["anchorProposal"]["type"] for row in br_rows)),
                "candidateDispositionCounts": dict(collections.Counter(row["candidateDisposition"] for row in br_rows)),
@@ -428,6 +626,8 @@ def audit(root, baseline_dir, source_text, output):
     for name, metric in summary["measures"].items():
         report += f"| {name} | {metric['numerator']} | {metric['denominator']} | {metric['percent']} | {metric['status']} |\n"
     report += f"\n## Population And Triage\n\nFiles inventoried: {len(files)}. Physical file kinds: {canonical(summary['physicalFileCountsByKind'])}.\n\n"
+    report += f"Recursive field shapes inspected for {summary['recursiveFieldScan']['filesScanned']} payload/metadata JSON files; scalar occurrences by kind: {canonical(summary['recursiveFieldScan']['fieldScalarOccurrences'])}. No field values were exported.\n\n"
+    report += f"Declared payload/metadata pairs: {summary['declaredPayloadMetadataPairs']} ({canonical(summary['declaredPairStates'])}). Unreferenced payloads: {summary['unreferencedPayloadFiles']}; unreferenced metadata sidecars: {summary['unreferencedMetadataFiles']}; payloads without valid sidecars: {summary['payloadFilesWithoutValidSidecars']}.\n\n"
     report += f"Unique IDs: {canonical(summary['uniqueIdsByKind'])}. Retained occurrences: {canonical(summary['occurrencesByKind'])}.\n\n"
     report += f"Content-conflicting IDs: {len(conflicts)}. TCs with clean complete physical routes: {len(physically_complete)}. TCs without such a route: {summary['tcIdsWithoutUnconflictedCompletePhysicalRoute']}.\n\n"
     report += f"Candidate-reached Test BRs without clean complete routes: {len(reached - chain_reached)}. These are structural follow-up queues, not proof of missing business coverage.\n\n"
@@ -456,6 +656,20 @@ def self_test():
     assert proposed_anchor({"category": "Lifecycle"}, {})["type"] == "LIFECYCLE"
     assert proposed_anchor({"category": "Message", "requirement_type": "Business Rule"}, {})["type"] == "MESSAGE"
     assert proposed_anchor({"category": "Dependency", "requirement_type": "Cross-Segment Rule"}, {})["type"] == "CROSS_SEGMENT"
+    nested_payload = {"Financial Request": {"Standard Segment": {
+        "SegmentType": "100", "SequenceNumber": "000001", "OptionalEmpty": ""},
+        "Variable Info Segment": {"SegmentType": "111", "VarInfoTable": [{"TableID": "047", "Value": "sensitive"}]}}}
+    payload_scan = recursive_field_scan(nested_payload)
+    metadata_scan = recursive_field_scan({"fields": [
+        {"segment": "100", "element": "86", "specElementName": "Sequence Number", "value": "000001"},
+        {"segment": "100", "element": "999", "specElementName": "Unmapped Amount", "value": "1"}]}, metadata=True)
+    field_observations = compare_field_presence(metadata_scan, payload_scan)
+    assert payload_scan["segmentTypes"] == ["100", "111"]
+    assert payload_scan["emptyScalarOccurrenceCount"] == 1
+    assert field_observations[0]["state"] == "EXACT_FIELD_NAME_AND_SEGMENT_OBSERVED"
+    assert field_observations[1]["state"] == "NO_EXACT_FIELD_NAME_OR_ALIAS_REVIEW_REQUIRED"
+    assert "sensitive" not in canonical(payload_scan)
+    assert "000001" not in canonical(payload_scan)
     with tempfile.TemporaryDirectory() as temporary:
         root = Path(temporary).resolve()
         catalog = root / "candidates" / "test_case_candidates.json"
@@ -483,8 +697,12 @@ def self_test():
             "candidates/candidate_scenarios.json": {"scenarios": []},
             "approved/test_case_catalog.json": {"test_cases": [{"id": "TC1", "scenario_id": "TS1", "test_data_file": "qe_shaped_test_data/TC1.json"}]},
             "candidates/test_case_candidates.json": {"test_cases": [{"id": "TC2", "scenario_id": "MISSING"}]},
-            "approved/qe_shaped_test_data/TC1.json": {"request": {}},
-            "approved/qe_shaped_test_data/TC1.meta.json": {"testCaseId": "TC1", "scenarioId": "TS1"},
+            "approved/qe_shaped_test_data/TC1.json": {"request": {"Standard Segment": {"SegmentType": "100", "SequenceNumber": "000001"}}},
+            "approved/qe_shaped_test_data/TC1.meta.json": {"testCaseId": "TC1", "scenarioId": "TS1", "fields": [
+                {"segment": "100", "element": "86", "specElementName": "Sequence Number", "value": "000001"},
+                {"segment": "100", "element": "999", "specElementName": "Absent Field", "value": "1"}]},
+            "approved/qe_shaped_test_data/ORPHAN.json": {"request": {"Standard Segment": {"SegmentType": "100", "SequenceNumber": "000002"}}},
+            "approved/qe_shaped_test_data/ORPHAN.meta.json": {"testCaseId": "ORPHAN", "scenarioId": "ORPHAN-TS", "fields": []},
         }
         for relative, document in catalogs.items():
             path = run / relative
@@ -495,6 +713,20 @@ def self_test():
         assert result["occurrencesByKind"]["BR"] == 2
         assert result["completePhysicalTcIds"] == 1
         assert result["brokenLinkCount"] == 1
+        assert result["recursiveFieldScan"]["filesScanned"] == 4
+        assert result["unreferencedPayloadFiles"] == 1
+        assert result["unreferencedMetadataFiles"] == 1
+        assert result["payloadFilesWithoutValidSidecars"] == 0
+        assert result["metadataFilesWithoutPayloads"] == 0
+        with gzip.open(root / "report" / "paired-field-observations.jsonl.gz", "rt", encoding="utf-8") as stream:
+            pair_observations = [json.loads(line) for line in stream if line.strip()]
+        assert len(pair_observations) == 1
+        assert pair_observations[0]["pairState"] == "PAIRED_EXACT_DECLARATION"
+        assert pair_observations[0]["fieldPresenceStates"]["EXACT_FIELD_NAME_AND_SEGMENT_OBSERVED"] == 1
+        assert pair_observations[0]["fieldPresenceStates"]["NO_EXACT_FIELD_NAME_OR_ALIAS_REVIEW_REQUIRED"] == 1
+        with gzip.open(root / "report" / "field-data-scan.jsonl.gz", "rt", encoding="utf-8") as stream:
+            field_scan_text = stream.read()
+        assert "000001" not in field_scan_text and "sensitive" not in field_scan_text
         assert result["measures"]["physicalCompleteChainCandidateReach"]["numerator"] == 1
         assert result["measures"]["semanticConfirmedCoverage"]["percent"] is None
         assert proposed_anchor({"category": "Response", "evidence_ref": {"page": 1, "quote": "Verified rule text."}}, {1: "Verified rule text."})["quoteVerified"]

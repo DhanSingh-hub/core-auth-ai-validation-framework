@@ -89,17 +89,32 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             }
         }
 
+        Path accountPackageFile = Atl105Paths.testJson().resolve(GenerateSegment100AccountEntryPackage.FILE_NAME);
+        JsonNode accountPackage = mapper.readTree(accountPackageFile.toFile());
+        var accountReadiness = new com.coreauth.validator.canonical.CanonicalTraceabilityValidator()
+                .validateForExecution(mapper.treeToValue(accountPackage,
+                        com.coreauth.validator.canonical.CanonicalArtifactPackage.class),
+                        Atl105Paths.root());
+        if (!accountReadiness.isValid()) {
+            throw new IllegalStateException("Element 2/12 package is not execution-ready: " + accountReadiness.errors());
+        }
+        for (JsonNode requirement : accountPackage.path("businessRequirements")) {
+            String id = requirement.path("id").asText();
+            JsonNode previous = requirementsById.putIfAbsent(id, requirement);
+            if (previous != null && !previous.equals(requirement)) {
+                throw new IllegalStateException("Conflicting Element 2/12 business requirement " + id);
+            }
+        }
+        mergeExecutionArtifacts(scenarios, accountPackage.path("testScenarios"));
+        mergeExecutionArtifacts(testCases, accountPackage.path("testCases"));
+        mergeExecutionArtifacts(testData, accountPackage.path("testData"));
+
         List<JsonNode> completeRequirements = new ArrayList<>(requirementsById.values());
         for (JsonNode br : completeRequirements) {
             String brId = br.path("id").asText();
             List<JsonNode> linkedScenarios = scenariosForRequirement(scenarios, brId);
             if (linkedScenarios.isEmpty()) {
-                ObjectNode scenario = mapper.createObjectNode();
-                scenario.put("id", "TS-REVIEW-" + safe(brId));
-                scenario.putArray("requirementIds").add(brId);
-                scenario.set("sourceAnchors", br.path("sourceAnchors"));
-                scenario.put("status", "REVIEW_REQUIRED");
-                scenario.put("trainingStatus", "TS_DERIVATION_REQUIRED");
+                ObjectNode scenario = draftScenarioProposal(br, mapper);
                 scenarios.add(scenario);
                 scenariosById.put(scenario.path("id").asText(), scenario);
                 linkedScenarios = List.of(scenario);
@@ -182,6 +197,9 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         output.putArray("requirementCrosswalk");
         ObjectNode provenance = output.putObject("provenance");
         provenance.set("unlinkedTestDataCandidates", array(unlinkedTestDataCandidates, mapper));
+        provenance.putArray("localExecutionPackages").addObject()
+            .put("file", GenerateSegment100AccountEntryPackage.FILE_NAME)
+            .put("scope", "Element 2/12 source-bound local predicates; not complete wire, host or semantic certification");
         ObjectNode summary = output.putObject("summary");
         summary.put("independentRuleDenominator", independentRuleCount);
         summary.put("businessRequirements", completeRequirements.size());
@@ -193,8 +211,12 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         summary.put("syntheticReviewFixtureDrafts", unlinkedTestDataCandidates.stream()
             .filter(candidate -> candidate.path("fixtureDraftCreated").asBoolean()).count());
         summary.put("placeholderScenarios", placeholderScenarios);
+        summary.put("reviewRequiredScenarioProposals", placeholderScenarios);
         summary.put("placeholderTestCases", placeholderTestCases);
         summary.put("placeholderTestData", placeholderTestData);
+        summary.put("executionReadyElement2And12Requirements", accountPackage.path("businessRequirements").size());
+        summary.put("executionReadyElement2And12TestCases", accountPackage.path("testCases").size());
+        summary.put("executableElement2And12TestData", accountPackage.path("testData").size());
         summary.put("executionReady", false);
         summary.put("reason", "Every independent BR has a structural BR->TS->TC->TD chain; placeholders remain REVIEW_REQUIRED until independently derived, reviewed, and fixture-backed.");
 
@@ -204,6 +226,19 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         System.out.printf("BR=%d TS=%d TC=%d TD=%d placeholders=%d/%d/%d output=%s%n",
                 independentRuleCount, scenarios.size(), testCases.size(), testData.size(),
                 placeholderScenarios, placeholderTestCases, placeholderTestData, outputFile);
+    }
+
+    static void mergeExecutionArtifacts(List<JsonNode> target, JsonNode additions) {
+        Map<String, JsonNode> indexed = new LinkedHashMap<>();
+        for (JsonNode artifact : target) indexed.put(artifact.path("id").asText(), artifact);
+        for (JsonNode artifact : additions) {
+            String id = artifact.path("id").asText();
+            JsonNode previous = indexed.putIfAbsent(id, artifact);
+            if (previous != null && !previous.equals(artifact)) {
+                throw new IllegalStateException("Conflicting execution artifact " + id);
+            }
+            if (previous == null) target.add(artifact);
+        }
     }
 
     static Map<String, JsonNode> ruleRequirements(List<JsonNode> rules, ObjectMapper mapper) {
@@ -226,6 +261,37 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             }
         }
         return requirements;
+    }
+
+    static ObjectNode draftScenarioProposal(JsonNode requirement, ObjectMapper mapper) {
+        String requirementId = requirement.path("id").asText();
+        String title = requirement.path("title").asText("").trim();
+        ObjectNode scenario = mapper.createObjectNode();
+        scenario.put("id", "TS-REVIEW-" + safe(requirementId));
+        scenario.put("intent", title.isBlank()
+                ? "Derive a scenario for independent Test BR " + requirementId
+                : "Draft scenario proposal to exercise: " + title);
+        scenario.putArray("requirementIds").add(requirementId);
+        JsonNode anchors = requirement.path("sourceAnchors");
+        if (anchors.isArray() && !anchors.isEmpty()) {
+            scenario.set("sourceAnchors", anchors.deepCopy());
+        } else if (requirement.path("sourceAnchor").isObject()) {
+            scenario.set("sourceAnchors", arrayWith(requirement.path("sourceAnchor"), mapper));
+        } else {
+            scenario.set("sourceAnchors", mapper.createArrayNode());
+            scenario.put("scenarioDefinitionStatus", "DRAFT_REVIEW_REQUIRED_MISSING_SOURCE_ANCHOR");
+        }
+        scenario.put("status", "REVIEW_REQUIRED");
+        scenario.put("trainingStatus", "TS_DERIVATION_REQUIRED");
+        if (!scenario.has("scenarioDefinitionStatus")) {
+            scenario.put("scenarioDefinitionStatus", "DRAFT_FROM_TEST_BR_TITLE_AND_SOURCE_ANCHOR");
+        }
+        scenario.putArray("scenarioDefinitionGaps")
+                .add("APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED")
+                .add("TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED")
+                .add("POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED")
+                .add("EXPECTED_OUTCOME_NOT_DERIVED");
+        return scenario;
     }
 
     private static List<JsonNode> loadRules(ObjectMapper mapper) throws Exception {
@@ -292,7 +358,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
     private static String markdown(ObjectNode summary) {
         return "# Complete Canonical Test Solution Package\n\n"
                 + "Every independent rule-catalog BR has a structural BR -> TS -> TC -> TD chain. "
-                + "Placeholder links remain REVIEW_REQUIRED and do not imply execution readiness.\n\n"
+                + "Scenario proposals are derived only from independent BR titles and source anchors; they remain REVIEW_REQUIRED until applicability, preconditions, cases, and outcomes are independently derived. They do not imply execution readiness.\n\n"
                 + "| Metric | Count |\n|---|---:|\n"
                 + "| Independent BR denominator | " + summary.path("independentRuleDenominator").asInt() + " |\n"
                 + "| BR | " + summary.path("businessRequirements").asInt() + " |\n"
@@ -301,9 +367,12 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 + "| TD | " + summary.path("testData").asInt() + " |\n"
                 + "| Unlinked TD candidates (excluded from canonical chain) | " + summary.path("unlinkedTestDataCandidates").asInt() + " |\n"
                 + "| Synthetic review fixture drafts | " + summary.path("syntheticReviewFixtureDrafts").asInt() + " |\n"
-                + "| Placeholder TS | " + summary.path("placeholderScenarios").asInt() + " |\n"
+                + "| Review-required scenario proposals | " + summary.path("reviewRequiredScenarioProposals").asInt() + " |\n"
                 + "| Placeholder TC | " + summary.path("placeholderTestCases").asInt() + " |\n"
                 + "| Placeholder TD | " + summary.path("placeholderTestData").asInt() + " |\n"
+                + "| Element 2/12 execution-ready local BRs | " + summary.path("executionReadyElement2And12Requirements").asInt() + " |\n"
+                + "| Element 2/12 executable local cases | " + summary.path("executionReadyElement2And12TestCases").asInt() + " |\n"
+                + "| Element 2/12 executable synthetic fixtures | " + summary.path("executableElement2And12TestData").asInt() + " |\n"
                 + "| Execution ready | " + summary.path("executionReady").asBoolean() + " |\n";
     }
 }

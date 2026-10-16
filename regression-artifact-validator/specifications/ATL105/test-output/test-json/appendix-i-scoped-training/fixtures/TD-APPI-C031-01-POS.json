@@ -1,0 +1,54 @@
+{
+  "id" : "TD-APPI-C031-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C031-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C031-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-20",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t031-r002-APPI-C031-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C031-01",
+        "tableId" : "031",
+        "ruleIds" : [ "APPI-T031-R001", "APPI-T031-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-20",
+          "startLine" : 28259,
+          "endLine" : 28278
+        } ],
+        "logicalFields" : {
+          "certifiedCapability" : "12",
+          "hardware" : "Hybrid contact/contactless chip reader",
+          "emvCapability" : "12",
+          "magstripeCapability" : "12",
+          "keyedCapability" : "12"
+        },
+        "clearScope" : [ "Two-digit hybrid mapping", "Capability invariant across modes for same synthetic certified terminal" ],
+        "excludedClaims" : [ "Obtained hardware certification", "Transaction PAN entry-mode digits" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Keyed capability remains certified12",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "keyedCapability",
+          "value" : "09",
+          "targetedNegative" : "Entry-mode-driven capability change"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -74,7 +74,7 @@ class AppendixAFIncrementalAuthorizationValidatorTest {
         JsonNode afTraining = read("training-status.json").path("appendixTraining").path("AF");
         assertThat(afTraining.path("specificationVersion").asText()).isEqualTo("2026-4");
         assertThat(afTraining.path("draftRuleCount").asInt()).isEqualTo(9);
-        assertThat(afTraining.path("logicalFixtureCount").asInt()).isEqualTo(18);
+        assertThat(afTraining.path("logicalFixtureCount").asInt()).isEqualTo(21);
         assertThat(afTraining.path("countsExcludedFromSegmentCatalogSummary").asBoolean()).isTrue();
     }
 
@@ -129,6 +129,25 @@ class AppendixAFIncrementalAuthorizationValidatorTest {
         ValidationResult result = validator.validate(flow);
         assertThat(result.errors()).isEmpty();
         assertThat(result.warnings()).anyMatch(warning -> warning.contains("AF-ROLE"));
+    }
+
+    @Test
+    void afTransactionIdUniquenessDoesNotAssumeTable82TerminalNumberMapping() throws Exception {
+        JsonNode fixture = mapper.readTree(Path.of("src/test/resources/atl105/appendix-af-logical-flows.json").toFile());
+        ObjectNode flow = fixture.path("baseFlow").deepCopy();
+        ObjectNode original = (ObjectNode) flow.path("steps").get(0);
+        original.put("transactionId", "AF-TX-0001");
+        flow.putArray("openIncrementalAuthTransactions").addObject()
+                .put("terminalId", "TERM-A").put("transactionId", "AF-TX-OTHER")
+                .put("terminalTransactionNumber", "0001");
+
+        ValidationResult distinctIds = validator.validate(flow);
+        assertThat(distinctIds.errors()).noneMatch(error -> error.reason().contains("AF-TRANSACTION-ID-UNIQUENESS"));
+
+        ((ObjectNode) flow.path("openIncrementalAuthTransactions").get(0))
+                .put("transactionId", "AF-TX-0001").put("terminalTransactionNumber", "0099");
+        ValidationResult duplicateId = validator.validate(flow);
+        assertThat(duplicateId.errors()).anyMatch(error -> error.reason().contains("AF-TRANSACTION-ID-UNIQUENESS"));
     }
 
     private void apply(ObjectNode flow, JsonNode change) {
