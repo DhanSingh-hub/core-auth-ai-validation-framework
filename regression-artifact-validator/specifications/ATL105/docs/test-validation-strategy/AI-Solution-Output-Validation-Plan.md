@@ -428,6 +428,8 @@ BR coverage is a milestone, not the final acceptance gate. After the BR crosswal
 
 **Current boundary:** V6 inventories 79,040 Oct 10 files and checks catalog links and declared physical routes; V6 technical coverage executes bounded predicates on 326/601 Test BR rules. The Authorization-to-Completion review adds step-level checks for 138 flows but still has 124 cases without direct AI BR links, 133 runtime approval placeholders, 5 missing completion approvals, and 35 amount-change cases awaiting host-approved amount evidence. These are not whole-delivery semantic or host certification.
 
+**QE-Fiserv feedback rules (2026-10-17, AIV-025):** the QE/SME feedback workbook is trained as 33 enforced rules in `contract/qe-feedback-rule-catalog.json` and executed by `scripts/apply-qe-feedback-rules.py` over every BR, scenario, test case and payload leg of a preserved, per-file hash-verified delivery (`scripts/verify-ai-delivery-intake.py`). Rules are enforced regardless of workbook status; differences from ATL105 2026-3 are kept as source conflicts for SME confirmation. The first run on the 10 October delivery (`test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/`) validated 17,769/17,769 payloads and found defects for 29 of 33 rules, including missing Segment Length on every payload, 19-segment financial requests, 9,979 wrong Segment Types, 3,171 scenarios and 2,806 BRs without test cases, and 3,970 test cases without physical data. It also publishes readable per-segment traceability, manual test tables and Test Case Cards. Results are feedback conformance, not semantic or host certification.
+
 ## 4. What the Current ATL105 Output Already Provides
 
 The inspected pipeline already provides useful evidence fields such as:

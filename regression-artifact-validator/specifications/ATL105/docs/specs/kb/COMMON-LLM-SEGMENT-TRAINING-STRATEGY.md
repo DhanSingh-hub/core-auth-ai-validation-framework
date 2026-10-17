@@ -10,7 +10,7 @@
 ## Contents
 
 1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
-2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
+2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [QE-Fiserv Feedback Overlay](#qe-fiserv-feedback-training-overlay-october-2026), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
 3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [Data Sections](#request-data-section-convention), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy), [Independent Review Process](#independent-review-process)
 4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
 5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
@@ -86,6 +86,79 @@ The curated `chapter-13-rule-evidence.json` register and `GenerateAtl105Chapter1
 Route each SME outcome to its subject register: AI-to-Test crosswalk decisions go in `test-output/test-solution-independent-review/semantic-br-decision-register.json`; AI-only BR triage goes in `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json`. Keep both registers append-only. Resolve an existing pending subject by appending a revision with an explicit `supersedesDecisionId`; never edit or delete the pending event. Decisions must not modify immutable AI input files.
 
 Use the [SME Decision and Promotion Workflow](../../test-validation-strategy/SME-DECISION-AND-PROMOTION-WORKFLOW.md) for the structured decision input and promotion gates. `ValidateSmeDecisionRegister` checks unique event IDs, linear revisions, reviewer evidence, and outcome-specific requirements. `NEW_RULE` additionally requires independently authored rule text, an explicit independence attestation, and a segment-matching ATL105 source anchor. Promotion uses only each subject's latest effective decision; it creates a BR candidate for chain derivation, not execution-ready coverage. Heuristic similarity, AI confidence, or a generated chain never substitutes for SME/TBA approval.
+
+## QE-Fiserv Feedback Training Overlay (October 2026)
+
+Use the [QE-Fiserv feedback workbook](../../../../../QE-Fiserv.xlsx) as a training input. Its feedback is enforced as Test Solution rules (see [Trained Rule Catalog and Engine](#trained-rule-catalog-and-engine)); it does not amend ATL105 itself, and a feedback rule that differs from the bound source keeps a recorded source conflict. Apply the following controls when training or reviewing a delivery:
+
+| Training focus | Required behavior |
+| --- | --- |
+| Segment attribution and chain integrity | Derive segment/message-family scope from cited source evidence. Validate segment identity continuously from BR through scenario, case, and request data; reject mismatches such as a segment-132 BR chain whose case data contains only segments 101/111. Keep unresolved attribution and BRs without downstream cases visible rather than inventing links. |
+| BR, scenario, and case quality | Keep BRs atomic and source-anchored; scenarios express higher-level functional intent; cases define detailed preconditions, steps, assertions, and expected outcomes. Detect duplicate cases, include meaningful negative/boundary cases, and expose each BR -> scenario -> case -> data path. |
+| Readable review artifacts | Generate a segment-filterable Markdown traceability view and risk-focused case cards from canonical JSON. The requested manual table uses the workbook's eight columns in order: Test Case ID, TC Name, Description, Test Steps, Expected Result, Actual Result, Priority, Feature Name (Endpoint). Keep actual results `Not Executed`; use only functional coverage in that table. Case cards include source statement/page, preconditions, input-generation method, expected outcome/oracle tier, linked IDs, and reviewer questions. |
+| Request-data fidelity | Confirm every declared segment and field is actually serialized with the source-defined segment type, canonical name, valid nonzero calculated length where required, correct transaction context, and no duplicate aliases. Preserve complete BR/case intent in the payload; do not accept empty or partial data as complete. Per the QE feedback, every serialized segment carries its full field set (empty values allowed); ATL105 required/optional/conditional presence is still not SME-adjudicated, so this is enforced as a feedback rule with a recorded source conflict. |
+| Oracle and verdict quality | Expected response values require an approved source-backed oracle. Null or unsupported response codes, unresolved advisories, and incomplete payloads cannot receive a success verdict; retain `NOT_ASSESSED`, `REVIEW_REQUIRED`, or the appropriate blocked state. |
+| Specification currency | Bind training to an explicit ATL105 release and hash-pinned source set. The workbook's requests to ingest additional documents or change the version require source ownership and applicability review; never silently replace the current release or hard-code a new version. |
+
+### Workbook Disposition (forced enforcement)
+
+By Test Team instruction (2026-10-17), every workbook feedback item is trained and enforced as a Test Solution rule **regardless of its status column** (`Fixed`, `Pending`, or blank). Status is kept only as history; a rule is closed by a passing rerun against a new frozen delivery, not by the workbook label. Where a feedback rule differs from the bound ATL105 2026-3 text, the rule still runs and the difference is recorded as a `sourceConflict` for SME confirmation (Terminal ID 13-22 vs Element 102's 22 bytes; Token PAN Suffix as a request field vs Element 197's response-only text; `NumSegments` vs Element 63's name; the 17-segment maximum; the 3-character special Prompt Code vs Element 182's 4-digit codes; empty-field Approval Number presence). The `Oct-10 AutoRun-FB` decision columns are empty, so its candidate anchor/segment rows still receive no SME approval or coverage credit.
+
+### Trained Rule Catalog and Engine
+
+The feedback is encoded as the versioned rule catalog [`contract/qe-feedback-rule-catalog.json`](../../../contract/qe-feedback-rule-catalog.json) (`QEF-001`-`QEF-033`, each mapped to its workbook IDs) and executed by `scripts/apply-qe-feedback-rules.py`. Run it against a preserved, hash-verified delivery and write to a new versioned folder:
+
+```text
+python scripts/verify-ai-delivery-intake.py --source <delivery> --copy <runs/<date>/Run<n>/...> --manifest <runs/<date>/Run<n>/intake-manifest.json>
+python scripts/apply-qe-feedback-rules.py --self-test
+python scripts/apply-qe-feedback-rules.py --delivery <runs/<date>/Run<n>/10_oct_artifacts> --output test-output/ai-solution-independent-review/<date>-qe-feedback-training-v<n>
+```
+
+| Level | Rules | What the Test Solution now checks |
+| --- | --- | --- |
+| Catalog | QEF-001, 002, 003, 006, 007, 008, 009, 010, 012, 013, 014 | Segment attribution per BR; BR→TS and TS→TC gaps; scenario not a verbatim BR copy; TC name present; duplicate TCs; concrete expected response code; negative coverage per BR; `{specification, version, segment, rule}` anchor on BR/TS/TC; presence-only BRs; PASS verdict with unresolved advisories |
+| Chain | QEF-004, 005 | Every TC has existing payload + metadata for every leg; the BR's segment is serialized in the test data |
+| Payload (every leg) | QEF-011, 015-028, 030-032 | Segment identity TC↔TD; empty payloads; composed segments/fields serialized; Approval Number by context (empty for sale/auth/refund, 6-char value for completion/void/void-of-return); Segment Length present, non-zero, Element 84 width; Segment 100 field set; Terminal ID 13-22; Segment Type equals segment number; TD ID ≠ TC ID; `NumSegments` name and count; Segment 123 Token PAN Suffix; CAVV alphanumeric; Track Data = Account Number + discretionary data (≤75); Segment 111 indicator/information fields; no numbered field aliases; 1-17 financial segments; Prompt Code shape by family; TransArmor expiration |
+| Delivery | QEF-029, 033 | Source set/version (2014-1 Dynamic Card Table Addendum, 2024-2 TransArmor updates, no `2025-3`); readable review outputs |
+
+The engine also generates the readable outputs the feedback requested, from canonical JSON on every run: per-segment BR → TS → TC → TD traceability with `GAP` rows and clickable `pdf#page=` source links, per-segment 8-column manual test tables (`Actual Result` = `Not Executed`), and per-TC Test Case Cards with purpose, derivation path, preconditions, flagged inputs, expected outcome/oracle tier, traceability, Test Solution findings and a five-question SME checklist.
+
+### Training Run Result — 10 October AI Delivery (2026-10-17)
+
+Input: `10_oct_artifacts` preserved at `test-input/ai-solution/runs/2026-10-17/Run1/` (35,564 files, 2,656,275,370 bytes; every file SHA-256 matched the source). Output: [`2026-10-17-qe-feedback-training-v2`](../../../test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/QE-FEEDBACK-VALIDATION-REPORT.md) (card input values longer than 12 characters or account/track/token/key-like fields are masked). Population: 6,880 BRs, 12,254 scenarios, 21,254 test cases (387 flows), all 17,769 payloads validated, 0 unreferenced payloads.
+
+| Rule | Feedback | Applicable | Fail | Observation |
+| --- | --- | ---: | ---: | --- |
+| QEF-001 | Def_SepRun01/04 | 6,880 | 1,599 | plus 893 LLM-proposed segments held for review |
+| QEF-003 | Def_SepRun02/05 | 12,254 | 3,171 | scenarios with no test case |
+| QEF-004 | Def_SepRun02/21 | 21,254 | 3,970 | 27 declare no data; the rest reference absent payload/metadata (from `TC-017312`) |
+| QEF-005 | Def_SepRun15/20 | 16,325 | 3,105 | BR segment not serialized (e.g. segment 123 BR, payload without 123) |
+| QEF-006 | Def_Sep30Run04 | 12,254 | 6,654 | scenario repeats BR text or has no parameters/target |
+| QEF-007 | Oct10Run_D007 | 21,254 | 21,254 | no TC name/description |
+| QEF-009 | Def_Sep30Run03 | 21,254 | 5,443 | null expected response code |
+| QEF-010 | Def_Sep30Run05 | 4,074 | 3,763 | BRs whose test cases are all positive |
+| QEF-012 | Def_Sep30Run07 | 40,388 | 32,644 | anchor lacks version (BR/TC) or rule (TS/TC) |
+| QEF-013 | Def_Sep30Run08 | 6,880 | 421 | presence-only BRs |
+| QEF-014 | Def_Sep30Run09 | 21,237 | 18,830 | PASS with KB-gap advisories |
+| QEF-015 | Def_Sep30Run02 | 17,769 | 9 | empty payloads, 7 reported COMPLETE/PASS |
+| QEF-016 | D004/D014 | 17,769 | 17,746 | composer-omitted fields; Type-only Fleet/EBT/Purchase Card segments |
+| QEF-017 | D001/D002 | 3,438 | 3,211 | Approval Number absent on sale/auth/refund (3,018), non-empty on sale/auth/refund (172), missing/invalid on completion/void (21) |
+| QEF-018 | D003 | 17,762 | 17,762 | Segment Length missing on every segment |
+| QEF-019 | D012 | 3,594 | 3,202 | Segment 100 field set incomplete |
+| QEF-020 | D005 | 23,100 | 28 | Terminal ID 23 characters |
+| QEF-021 | D006/D015 | 17,762 | 9,979 | Moneris/Enhanced Fleet/InComm/Network Token/SKU typed 100/105 |
+| QEF-022 | D008 | 17,769 | 17,769 | TD named `TC-nnnn` |
+| QEF-023 | D009 | 17,769 | 17,769 | `NumberofSegments`, not `NumSegments` |
+| QEF-024 | D010 | 3,650 | 3,090 | Segment 123 without Token PAN Suffix |
+| QEF-025 | D011 | 3,650 | 280 | CAVV = literal `Position` |
+| QEF-026 | D013 | 3,594 | 3,090 | separate AccountNumber, no TrackData |
+| QEF-027 | D016 | 13,272 | 13,272 | Segment 111 indicator/information fields missing |
+| QEF-028 | D017 | 17,762 | 13,242 | `VariableInformationLength2` alias |
+| QEF-030 | D020 | 3,594 | 3,594 | every financial request serializes 19 segments |
+| QEF-031 | Action Items#1 | 5,301 | 1,709 | empty `{}` Prompt Code in Email/Totals requests |
+| QEF-029/033 | D018/D019, Def_SepRun03-10 | 1 each | 1 each | addenda not ingested; no 8-column table, cards, or page links delivered |
+
+QEF-002 (BR→TS), QEF-008 (duplicates), QEF-011 (unresolved segment names) had no failures; QEF-032 found no TransArmor/token transactions. The September-cited IDs `TC-022807`, `TC-022843`, `TC-045587` are not in this delivery; `TC-004348` and `TC-001329` reproduce the October findings. Results are feedback conformance only: semantic coverage stays `NOT_ASSESSED` and host execution `NOT_EXECUTED`.
 
 ## Communication Register
 
@@ -730,6 +803,8 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L24. A producer alias is not an ATL105 element mapping.** The 2026-10-16 Authorization sample uses a logical `TrackData` property alongside Segment 130, but no converter contract establishes the alias meaning or delimiter conversion. Track 2 source parsing splits Elements 2/12 at `=`; Track 1 splits at the first `^`. Record the mapping question as `AID-0005`, preserve the input, and require explicit entry mode plus versioned adapter and synthetic round-trip evidence. Do not echo account, track, or chip values; do not infer that Segment 130 proves entry mode or that an unfamiliar delimiter is invalid.
 
+**L25. Train feedback as executable rules, and check the whole delivery.** QE feedback written as prose drifted between reviews and was re-checked by hand on a few cited cases. Encode each item as a catalog rule with its workbook IDs, run it on every BR, scenario, test case and payload leg of a hash-verified delivery, and publish the counts. Cited IDs from an earlier run may not exist in the next one (the September `TC-022807`/`TC-045587` are absent from the October delivery); always re-find the defect pattern rather than the ID. Multi-step payload names exceed 260 characters inside the run folder, so read them with the `\\?\` extended-path prefix.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -797,7 +872,7 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
-| 2026-10-16 | Added P2 Authorization-to-Completion training and post-BR whole-delivery validation guidance. Enforce transaction-code and Sequence Number rules, bind completion approvals to actual host responses, keep amount changes evidence-gated, and do not make Terminal-ID equality a universal auth-completion requirement. Added L24 and the producer-JSON mapping boundary for Segment 100 Elements 2/12 and Segment 130. `AID-0005` records the unresolved TrackData alias/delimiter contract; samples do not establish entry mode, converter behavior, semantic approval, or host validity. Added the independent 36-code AI coverage check and `AIF-0020`; brand-axis values remain a separate dimension. |
+| 2026-10-17 | Trained the Test Solution on the QE-Fiserv feedback workbook: 33 rules (`QEF-001`-`QEF-033`) in `contract/qe-feedback-rule-catalog.json`, enforced regardless of workbook status, executed by `scripts/apply-qe-feedback-rules.py` on the hash-verified 10 October delivery (6,880 BR / 12,254 TS / 21,254 TC / 17,769 payloads). Added readable per-segment traceability, 8-column manual tables and Test Case Cards, recorded source conflicts for SME confirmation, and L25. || 2026-10-16 | Added P2 Authorization-to-Completion training and post-BR whole-delivery validation guidance. Enforce transaction-code and Sequence Number rules, bind completion approvals to actual host responses, keep amount changes evidence-gated, and do not make Terminal-ID equality a universal auth-completion requirement. Added L24 and the producer-JSON mapping boundary for Segment 100 Elements 2/12 and Segment 130. `AID-0005` records the unresolved TrackData alias/delimiter contract; samples do not establish entry mode, converter behavior, semantic approval, or host validity. Added the independent 36-code AI coverage check and `AIF-0020`; brand-axis values remain a separate dimension. |
 | 2026-10-01 | Added the versioned Element 83 source-backed assertion manifest and fail-closed source gate. Separated citation resolution, literal assertion backing, draft case derivation and SME approval; no new certification gate or executable coverage claim. |
 | 2026-10-05 | Added Segment 100 single-/multi-step BR traceability and source cross-check findings; clarified authorization cancellation, TOR scope, retry/timing rules, review-required completion-to-void behavior, trainer-led LLM questionnaire use, and the 16-leaf Section 5 payment-network taxonomy. |
 | 2026-10-01 | Added conservative body-location triage for all catalog rules; TOC entries and ambiguous chapter/appendix references cannot promote review-only locations into assertions. |

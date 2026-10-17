@@ -31,6 +31,7 @@
 | Version | Date | Author/Owner | Change | Status |
 | --- | --- | --- | --- | --- |
 | 0.2 | 2026-09-16 | Core Auth Test Validation Team | Added Test Team solution design, AI artifact validation value, and risk-based manual testing | Working review |
+| 0.3 | 2026-10-17 | Core Auth Test Validation Team | Trained QE-Fiserv SME feedback as 33 enforced rules (AIV-025) and applied them to the full 10 October AI delivery | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -164,10 +165,27 @@ For every AI artifact package, execute these checks in order:
 6. **Semantic and executable checks:** run positive, negative, boundary, conditional, lifecycle, serialization, and compatibility cases against deterministic validators.
 7. **Mutation checks:** alter valid AI data deliberately and confirm the independent validator detects the intended violation and identifies the correct rule.
 8. **Decision reporting:** publish precision, recall, traceability, coverage, ambiguity, defect, and review-queue metrics against exact package and specification versions.
+9. **Human-review outputs:** publish readable, segment-filterable Markdown views and a traceability matrix showing BR -> scenario -> test case -> test data, including missing links, derivation evidence, and source-page references. Keep canonical JSON authoritative; readable views must be reproducible from it.
 
 The AI package may contain more or fewer requirements than the independent catalog. Count equality is not an acceptance criterion; every difference must be explained and dispositioned.
 
 The stable validation controls for this workflow are catalogued separately as `AIV-*` in [AI Artifact Validation Controls](AI-ARTIFACT-VALIDATION-CONTROLS.md). `AIV-*` control coverage measures whether the Test Solution's validator rules have implementation and regression evidence; it is not ATL105 business-rule coverage. Per-delivery BR/TS/TC/TD dispositions and coverage results are recorded separately under `test-output/ai-solution-independent-review/`.
+
+### QE-Fiserv SME Feedback Intake (October 2026)
+
+The [QE-Fiserv feedback workbook](../../../../QE-Fiserv.xlsx) is enforced as Test Solution validation rules, not as an amendment to the versioned ATL105 specification. By Test Team instruction every item is enforced regardless of the workbook status column; a rule is closed only by a passing rerun on a new frozen delivery. Where a feedback rule differs from ATL105 2026-3 text, it still runs and the difference is recorded as a source conflict for SME confirmation. The workbook's `Oct-10 AutoRun-FB` tab has no populated AI-team decision, corrected-anchor, or review-rationale fields, so those candidate rows do not constitute SME decisions.
+
+| Feedback area | Validation requirement |
+| --- | --- |
+| Segment-aware BRs and traceability (`Def_SepRun01`-`05`, `Def_SepRun14`-`21`) | Show BRs by attributed segment and validate every BR -> scenario -> test case -> test data edge. Keep unresolved segment attribution visible; never assign a segment merely to close a gap. Report BRs without scenarios, scenarios without cases, and cases without data as separate gaps. |
+| Readable review evidence (`Def_SepRun03`, `06`-`10`, `Status-SepDef`) | Retain JSON as the canonical input and provide the requested Markdown matrix and risk-focused test-case views with source links, derivation path, expected outcome/oracle tier, and explicit `Not Executed` status where applicable. Matrix generation must be tested on repeated runs before it is called automatic. |
+| Artifact and data fidelity (`Def_Sep30Run01`-`10`, `Oct10Run_D001`-`020`) | Compare each test case to its serialized request data, including segment identity/type, field names, length and count values, field duplication, transaction context, and the complete declared segment population. Empty or incomplete data cannot pass merely because producer metadata says `COMPLETE` or `PASS`. |
+| Test design and expected outcomes (`Def_Sep30Run03`-`05`, `Def_SepRun16`-`18`) | Keep scenarios at business-flow level and cases specific enough to verify behavior; detect duplicate cases and include meaningful negative/boundary coverage. A missing or unsupported response oracle remains `NOT_ASSESSED`/`REVIEW_REQUIRED`, not a passing test. |
+| Source/version and open rule claims (`Oct10Run_D018`-`020`, `Action Items`) | Pin the exact specification/addendum version and source evidence before changing ingestion or expected behavior. Prompt Code shape, Track Data composition/length, token expiration handling, and the proposed 17-segment maximum require source/context confirmation before becoming validator rules. |
+
+The workbook's September counts (including 3,072/6,291 and the reported scenario/test-case gaps) describe a separate historical delivery. Do not combine them with the independently calculated denominator in the current BR coverage report.
+
+**Implementation (2026-10-17):** the feedback is trained as 33 rules `QEF-001`-`QEF-033` in [`contract/qe-feedback-rule-catalog.json`](../../contract/qe-feedback-rule-catalog.json), executed by `scripts/apply-qe-feedback-rules.py` (control `AIV-025`). The 10 October AI delivery was preserved unchanged at `test-input/ai-solution/runs/2026-10-17/Run1/` and verified file by file (35,564 files, all SHA-256 matches). The engine validated 6,880 BRs, 12,254 scenarios, 21,254 test cases and all 17,769 payload legs and published the [QE feedback validation report](../../test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/QE-FEEDBACK-VALIDATION-REPORT.md) with readable per-segment traceability, 8-column manual tables and Test Case Cards. Headline results: 29 of 33 rules found defects (QEF-002, 008 and 011 passed; QEF-032 had no applicable transactions); every payload lacks Segment Length, uses `NumberofSegments` and a `TC-` data ID; every financial request serializes 19 segments; 9,979 payloads carry a wrong Segment Type; 3,171 scenarios and 2,806 BRs have no test case; 3,970 test cases lack physical test data; 5,443 test cases have no concrete expected response code. Rule-level counts are in the [training handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#training-run-result--10-october-ai-delivery-2026-10-17). These are feedback-conformance results; semantic coverage stays `NOT_ASSESSED` and host execution `NOT_EXECUTED`.
 
 ### Proposed Coverage and Reporting Model (Pending Fiserv Leadership Approval)
 
