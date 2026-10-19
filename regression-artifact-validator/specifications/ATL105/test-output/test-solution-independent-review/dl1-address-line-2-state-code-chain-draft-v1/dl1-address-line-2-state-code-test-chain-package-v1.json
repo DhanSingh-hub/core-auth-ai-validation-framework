@@ -1,0 +1,113 @@
+{
+  "manifest": {
+    "packageId": "ATL105-DL1-ADDRESS-LINE2-STATE-CODE-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use Appendix D's explicit alphabetical-code applicability and the DL1 Element 4 position map. Do not substitute ANSI State Codes used in Terminal Identifier.",
+      "dataPolicy": "Symbolic Address Line 2 templates only. City and ZIP must be authorized/assigned fixture values before a full executable test is built.",
+      "baselinePolicy": "References BR-RULE-SEGDL1-R-010 and existing Appendix D Element 124 vectors by reference; no official Test record is modified.",
+      "promotionGate": "Authorized Test review must confirm Table Load Response applicability, city/ZIP fixtures, full 21-character rendering, and the Appendix D expected-state oracle before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEGDL1-R-010",
+      "title": "Address Line 2 (Element 4, 21 characters) is positional: positions 1-12 city, 13 space, 14-15 alphabetic State Code (Appendix D), 16 space, 17-21 ZIP Code",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "13.2", "segment": "DL1", "element": "4", "rule": "address-line-2-positional-layout"}
+    },
+    {
+      "id": "BR-SEG100-APPD-ALPHA-STATE",
+      "title": "Alphabetical State Codes used in Card Discretionary Block Data or state context use an Appendix D alphabetical code.",
+      "status": "PARTIALLY_COVERED",
+      "relationship": "REUSE_EXISTING_ELEMENT124_CODESET_REFERENCE_ONLY; Address Line 2 Element 4 is not in its tested context."
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-APPENDIX-D-ALPHA-STATE-USES",
+      "sourcePage": 632,
+      "startLine": 26082,
+      "quote": "The alphabetical State Codes are used in the following data elements: • Address Line 2 (No. 4) • Card Discretionary Block Data (No. 12) • State Code (No. 124)",
+      "interpretation": "The source limits alphabetical state-code use to Elements 4, 12, and 124; ANSI codes are separately assigned to Element 102 Terminal Identifier."
+    },
+    {
+      "id": "ATL105-2026-3-DL1-E4-STATE-POSITIONS",
+      "sourcePage": 361,
+      "startLine": 19587,
+      "quote": "14–15 Any valid alphabetical State Code. Please refer to Appendix D. Valid State Codes for a list of valid alphabetical State Codes.",
+      "interpretation": "In DL1 Address Line 2, the state code occupies positions 14-15 of the fixed 21-character field."
+    },
+    {
+      "id": "ATL105-2026-3-DL1-E4-LAYOUT",
+      "sourcePage": 361,
+      "startLine": 19591,
+      "quote": "13 Space 14–15 Any valid alphabetical State Code. Please refer to Appendix D. Valid State Codes for a list of valid alphabetical State Codes. 16 Space 17–21 Any valid ZIP Code™/ZIP+4® assigned by BUYPASS personnel.",
+      "interpretation": "The code is embedded in a positional city/state/ZIP field; surrounding city and ZIP values must be independently valid before full-chain promotion."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-037A3E4CB847",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:2387",
+    "linkedCases": [
+      {"caseId": "TC-010489", "transaction": "ECA/TeleCheck Service Transaction", "elements4_12_124": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010490", "transaction": "ECA/TeleCheck Service Transaction Request", "elements4_12_124": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010491", "transaction": "EMV Financial Transaction Request", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010492", "transaction": "EMV Request Transaction", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010493", "transaction": "Financial Transaction Request", "elements4_12_124": "DECLARED_OMISSION_NO_EXACT_FIELD"}
+    ],
+    "assessment": "None of the five candidate cases supplies an exact observed value for the targeted state-code locations. Their financial/TeleCheck contexts do not exercise DL1 Merchant Data Segment Element 4; source use alone is not a case-level match.",
+    "producerResponseOracleAccepted": false
+  },
+  "existingTestReferences": {
+    "appendixDTestBr": "BR-SEG100-APPD-ALPHA-STATE",
+    "validCase": "TC-SEG100-APPD-ALPHA-VALID",
+    "invalidCase": "TC-SEG100-APPD-ALPHA-INVALID",
+    "validStateCode": "CA",
+    "invalidStateCodeCandidate": "ZZ",
+    "testedContext": "Segment 110 Element 124 only; Element 12 remains untested and Element 4 DL1 is not in this chain."
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-DL1-E4-APPD-STATE-POSITION",
+      "requirementIds": ["BR-RULE-SEGDL1-R-010"],
+      "sourceEvidenceIds": ["ATL105-2026-3-APPENDIX-D-ALPHA-STATE-USES", "ATL105-2026-3-DL1-E4-STATE-POSITIONS", "ATL105-2026-3-DL1-E4-LAYOUT"],
+      "intent": "Check that the 14-15 positions of a reviewed-valid 21-character DL1 Address Line 2 contain a two-character Appendix D alphabetical State Code.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-DL1-E4-STATE-CA", "scenarioIds": ["TS-DRAFT-DL1-E4-APPD-STATE-POSITION"], "testDataIds": ["TD-DRAFT-DL1-E4-STATE-CA"], "assertion": "Positions 14-15 contain CA, an Appendix D alphabetical state code, in a source-positioned Address Line 2 template.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-DL1-E4-STATE-ZZ", "scenarioIds": ["TS-DRAFT-DL1-E4-APPD-STATE-POSITION"], "testDataIds": ["TD-DRAFT-DL1-E4-STATE-ZZ"], "assertion": "Positions 14-15 contain ZZ, the existing independent Test model's unlisted-code candidate, in the same positional template.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-DL1-E4-STATE-CA", "testCaseIds": ["TC-DRAFT-DL1-E4-STATE-CA"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "DL1", "element": "4", "length": 21, "template": "CITY_12_CHARS + SPACE + CA + SPACE + ZIP_5_CHARS", "city": "BUYPASS_ASSIGNED_CITY_REQUIRED", "zip": "BUYPASS_ASSIGNED_ZIP_REQUIRED"}},
+    {"id": "TD-DRAFT-DL1-E4-STATE-ZZ", "testCaseIds": ["TC-DRAFT-DL1-E4-STATE-ZZ"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "DL1", "element": "4", "length": 21, "template": "CITY_12_CHARS + SPACE + ZZ + SPACE + ZIP_5_CHARS", "city": "BUYPASS_ASSIGNED_CITY_REQUIRED", "zip": "BUYPASS_ASSIGNED_ZIP_REQUIRED"}}
+  ],
+  "openQuestions": [
+    "Confirm the actual city and ZIP fixture values assigned for the DL1 response; placeholder text is not executable data.",
+    "Review whether the authored Element 124 Appendix D code-set validator can be reused for DL1 Element 4 without promoting its current Segment 110 scope.",
+    "Add independent chain detail for Card Discretionary Block Data Element 12, which the existing authored BR explicitly leaves outside its validator.",
+    "Re-open all five AI payloads and sidecars; current screen observations show no exact state-code values in the claimed contexts."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

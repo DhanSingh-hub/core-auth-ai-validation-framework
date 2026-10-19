@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Set;
 
 import static com.coreauth.validator.canonical.AppendixILogicalDataValidator.Status.*;
@@ -22,7 +25,19 @@ public final class AppendixIScopedCandidateValidator {
             "APPI-C032-10", "APPI-C032-11", "APPI-C032-12Y", "APPI-C032-12N",
             "APPI-C032-13Y", "APPI-C032-13H", "APPI-C032-14", "APPI-C033-01",
             "APPI-C034-01", "APPI-C034-02", "APPI-C035-01", "APPI-C036-01", "APPI-C036-02",
-            "APPI-C037-01", "APPI-C038-01", "APPI-C039-01", "APPI-C040-01", "APPI-C040-02");
+            "APPI-C037-01", "APPI-C038-01", "APPI-C039-01", "APPI-C040-01", "APPI-C040-02",
+            "APPI-C041-01", "APPI-C042-01", "APPI-C043-01", "APPI-C044-01",
+            "APPI-C045-01", "APPI-C046-01", "APPI-C047-01", "APPI-C048-01", "APPI-C048-02",
+            "APPI-T049-C001", "APPI-T049-C002", "APPI-T049-C003", "APPI-T049-C004",
+            "APPI-T049-C005", "APPI-T049-C006", "APPI-T049-C007", "APPI-T049-C009",
+            "APPI-T049-C010", "APPI-T049-C011", "APPI-T049-C013", "APPI-T049-C016",
+            "APPI-T049-C017", "APPI-T049-C018", "APPI-T049-C020", "APPI-T049-C021",
+            "APPI-T049-C022", "APPI-T049-C023", "APPI-T049-C024", "APPI-T049-C025",
+            "APPI-T049-C026", "APPI-T049-C027", "APPI-T049-C028", "APPI-T049-C030",
+            "APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C053-OUTER-001",
+            "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
+            "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-OUTER-001",
+            "APPI-C062-N01-001", "APPI-C062-N02-001");
 
     public AppendixILogicalDataValidator.Result validate(JsonNode candidate) {
         List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
@@ -40,6 +55,17 @@ public final class AppendixIScopedCandidateValidator {
             add(findings, "APPI-CANDIDATE-IDENTITY", FAIL, "Candidate and table identities disagree.");
             return new AppendixILogicalDataValidator.Result(findings);
         }
+        if ("APPI-C050-OUTER-001".equals(id) || "APPI-C051-OUTER-001".equals(id)) {
+            return validateAdditionalCardField(candidate, id);
+        }
+        if (id.startsWith("APPI-C053-")) return validateTable053(candidate);
+        if (id.startsWith("APPI-C054-")) return validateTable054(candidate);
+        if (id.startsWith("APPI-C055-")) return validateTable055(candidate);
+        if (id.startsWith("APPI-C057-") || id.startsWith("APPI-C058-") || id.startsWith("APPI-C059-")) {
+            return validateMerchantLocation(candidate, id);
+        }
+        if (id.startsWith("APPI-C062-")) return validateTable062(candidate);
+        if (id.startsWith("APPI-T049-C")) return validateTable049(candidate);
         JsonNode fields = candidate.path("logicalFields");
         JsonNode context = candidate.path("context");
         switch (text(candidate, "tableId")) {
@@ -694,12 +720,526 @@ public final class AppendixIScopedCandidateValidator {
                                 }
                             }
                             }
+                            case "041" -> {
+                            String subdivision = text(fields, "subdivision");
+                            check(findings, "APPI-T041-R001", subdivision.matches("[A-Za-z0-9]{1,3}"),
+                                "Country subdivision fragment is 1-3 alphanumeric characters only; ISO validity is not checked.");
+                            JsonNode tableContext = fields.path("context");
+                            JsonNode outside = tableContext.path("outsideUSCanada");
+                            String stateCode = text(tableContext, "terminalNumericState");
+                            if (!outside.isBoolean() || stateCode.isEmpty()) {
+                                add(findings, "APPI-T041-R002", REVIEW_REQUIRED,
+                                    "Explicit country scope and Segment 100 numeric-state context are required.");
+                            } else if (outside.booleanValue() && "00".equals(stateCode)) {
+                                check(findings, "APPI-T041-R002", fields.path("tablePresent").asBoolean(false),
+                                    "Include Table 041 when a non-US/Canada terminal uses numeric state code 00.");
+                            }
+                            add(findings, "APPI-T041-ISO", REVIEW_REQUIRED,
+                                "The synthetic subdivision value is not checked against the ISO 3166-2 catalog.");
+                            }
+                            case "042" -> {
+                            String language = text(context, "cardholderLanguage");
+                            String expected = switch (language) {
+                                case "English" -> "eng";
+                                case "French" -> "fre";
+                                default -> "";
+                            };
+                            if (expected.isEmpty()) {
+                                add(findings, "APPI-T042-R001", REVIEW_REQUIRED,
+                                    "Only the source-listed English/French example mappings are covered.");
+                            } else {
+                                check(findings, "APPI-T042-R001", text(candidate, "data").matches("[A-Za-z]{3}")
+                                        && expected.equals(text(candidate, "data")),
+                                    "Cardholder language uses the supplied three-character English/French example mapping.");
+                            }
+                            }
+                            case "043" -> {
+                            JsonNode tableContext = fields.path("context");
+                            JsonNode outside = tableContext.path("outsideUSCanada");
+                            if (!outside.isBoolean()) {
+                                add(findings, "APPI-T043-R001", REVIEW_REQUIRED,
+                                    "International versus US/Canada AVS context is required.");
+                                add(findings, "APPI-T043-R002", REVIEW_REQUIRED,
+                                    "Postal-code formatting and the separate normal AVS address are context dependent.");
+                            } else if (outside.booleanValue()) {
+                                String postal = text(fields, "postalFragment");
+                                check(findings, "APPI-T043-R001", postal.matches("[A-Za-z0-9]{1,3}"),
+                                    "Check only the 1-3 character alphanumeric intersection; the broader source limit is unresolved.");
+                                boolean addressPresent = fields.path("normalAVSAddressPresent").asBoolean(false)
+                                        && !text(fields, "normalAVSAddress").isEmpty();
+                                check(findings, "APPI-T043-R002", addressPresent,
+                                    "International postal data accompanies a separate normal AVS address item.");
+                            }
+                            add(findings, "APPI-T043-FORMAT", REVIEW_REQUIRED,
+                                "Authorizer-specific postal formatting and the source length/type conflict remain unresolved.");
+                            }
+                            case "044" -> {
+                            String brand = text(fields, "brand");
+                            String initiation = text(fields, "initiation");
+                            String first044 = text(fields, "firstSubsequent044");
+                            String second044 = text(fields, "secondSubsequent044");
+                            boolean eligibleBrand = Set.of("Visa", "Amex").contains(brand);
+                            check(findings, "APPI-T044-R001", eligibleBrand && "MIT".equals(initiation)
+                                    && first044.matches(".{15}") && second044.matches(".{15}"),
+                                "The supplied Visa/Amex MIT chain uses 15-character transaction identifiers.");
+                            String initialResponse = text(fields, "initialResponseID");
+                            String firstResponse = text(fields, "firstSubsequentResponseID");
+                            boolean chain = "Visa".equals(brand) && "I".equals(text(fields, "initialCOFIndicator"))
+                                    && !fields.path("initial044Present").asBoolean(true)
+                                    && initialResponse.matches(".{15}")
+                                    && "C".equals(text(fields, "firstSubsequentCOFIndicator"))
+                                    && first044.equals(initialResponse) && firstResponse.matches(".{15}")
+                                    && second044.equals(firstResponse);
+                            check(findings, "APPI-T044-R002", chain,
+                                "The illustrated Visa chain omits 044 on initial I and carries each immediately preceding response ID on C follow-ups.");
+                            check(findings, "APPI-T044-R003", initialResponse.matches(".{15}")
+                                    && firstResponse.matches(".{15}"),
+                                "Supplied response identifiers meet the illustrated 15-character retention shape only.");
+                            add(findings, "APPI-T044-PROVENANCE", REVIEW_REQUIRED,
+                                "Actual authorizer-issued identifier provenance and other COF selection rules are not verified.");
+                            }
+                            case "045" -> {
+                            String digits = text(fields, "firstAuthAmountDigits");
+                            boolean numeric = digits.matches("[0-9]{1,12}");
+                            check(findings, "APPI-T045-R001", numeric,
+                                "First Authorization Amount contains up to 12 numeric digits with two assumed decimals.");
+                            JsonNode amountContext = fields.path("context");
+                            if ("Discover".equals(text(amountContext, "brand"))
+                                    && "MIT".equals(text(amountContext, "initiation"))
+                                    && Set.of("Recurring", "Installment").contains(text(amountContext, "series"))) {
+                                long originalApproved = fields.path("originalApprovedMinorUnits").asLong(Long.MIN_VALUE);
+                                long amount = numeric ? Long.parseLong(digits) : Long.MIN_VALUE;
+                                check(findings, "APPI-T045-R002", numeric && amount == originalApproved,
+                                    "Discover recurring/installment follow-ups retain the supplied original approved minor-unit amount.");
+                            } else {
+                                add(findings, "APPI-T045-R002", REVIEW_REQUIRED,
+                                    "The retention rule is bounded to explicit Discover MIT recurring/installment context.");
+                            }
+                            }
+                            case "046" -> {
+                            JsonNode followupContext = fields.path("context");
+                            String required = text(fields, "authorizerRequiredData");
+                            if (!"Follow-up".equals(text(followupContext, "transactionPhase")) || required.isEmpty()) {
+                                add(findings, "APPI-T046-R001", REVIEW_REQUIRED,
+                                    "Explicit follow-up phase and authorizer-required data are needed for this bounded comparison.");
+                            } else {
+                                String previous = text(fields, "previousTransactionData");
+                                check(findings, "APPI-T046-R001", previous.matches("[A-Za-z0-9]{1,3}")
+                                        && previous.equals(required),
+                                    "Retain the supplied authorizer-required previous data in this 1-3 character intersection.");
+                            }
+                            add(findings, "APPI-T046-CONTRACT", REVIEW_REQUIRED,
+                                "Authorizer applicability and the source AN3 versus maximum-16 conflict remain unresolved.");
+                            }
+                            case "047" -> {
+                            String descriptor = text(candidate, "data");
+                            check(findings, "APPI-T047-R001", printable(candidate, "data", 1, 38),
+                                "Alternate merchant descriptor is printable ASCII within the 38-character candidate bound.");
+                            JsonNode descriptorContext = context;
+                            if ("Discover".equals(text(descriptorContext, "brand"))
+                                    && descriptorContext.path("thirdPartyInstallment").asBoolean(false)) {
+                                String expected = text(fields, "thirdPartyName") + "*"
+                                        + text(fields, "underlyingMerchantName");
+                                check(findings, "APPI-T047-R002", !text(fields, "thirdPartyName").isEmpty()
+                                        && !text(fields, "underlyingMerchantName").isEmpty()
+                                        && descriptor.equals(expected) && descriptor.length() <= 38,
+                                    "Discover third-party installment descriptor is provider*underlying retailer.");
+                            } else {
+                                add(findings, "APPI-T047-R002", REVIEW_REQUIRED,
+                                    "The provider/retailer composition rule applies only in the supplied Discover installment context.");
+                            }
+                            add(findings, "APPI-T047-ENROLLMENT", REVIEW_REQUIRED,
+                                "Third-party provider enrollment and descriptor escaping/truncation are not verified.");
+                            }
+                            case "048" -> {
+                            String protocol = text(fields, "programProtocol");
+                            String version = text(fields.path("context"), "protocolVersion");
+                            String expectedProtocol = switch (version) {
+                                case "EMV3DS2.1" -> "1";
+                                case "EMV3DS2.2" -> "2";
+                                case "EMV3DS2.3" -> "3";
+                                case "EMV3DS2.4" -> "4";
+                                case "EMV3DS2.5" -> "5";
+                                case "EMV3DS2.6" -> "6";
+                                case "EMV3DS2.7" -> "7";
+                                case "EMV3DS2.8" -> "8";
+                                case "EMV3DS2.9" -> "9";
+                                default -> "";
+                            };
+                            if (expectedProtocol.isEmpty()) {
+                                add(findings, "APPI-T048-R002", REVIEW_REQUIRED,
+                                    "Only the explicitly source-listed EMV 3DS protocol-version mappings are evaluated.");
+                            } else {
+                                check(findings, "APPI-T048-R002", expectedProtocol.equals(protocol),
+                                    "Program Protocol matches the supplied EMV 3DS version classification.");
+                            }
+                            boolean dsIdPresent = fields.path("directoryServerIdPresent").asBoolean(false);
+                            String dsId = text(fields, "directoryServerTransactionId");
+                            int expectedLength = dsIdPresent ? 37 : 1;
+                            boolean header = protocol.matches("[1-9]")
+                                    && fields.path("payloadCharacterCount").asInt(-1) == expectedLength
+                                    && (!dsIdPresent || (fields.path("programProtocolPresent").asBoolean(false)
+                                    && dsId.length() == 36));
+                            check(findings, "APPI-T048-R001", header,
+                                "Table 048 candidate uses length 001 for protocol-only or 037 for protocol plus 36-character DS ID.");
+                            if (dsIdPresent) {
+                                String brand = text(fields.path("context"), "brand");
+                                String participation = text(fields.path("context"), "emv3dsParticipation");
+                                if (brand.isEmpty() || participation.isEmpty()) {
+                                    add(findings, "APPI-T048-R003", REVIEW_REQUIRED,
+                                    "MasterCard participation context is required when a Directory Server ID is supplied.");
+                                } else {
+                                    check(findings, "APPI-T048-R003", "MasterCard".equals(brand)
+                                        && dsId.length() == 36
+                                        && fields.path("programProtocolPresent").asBoolean(false),
+                                    "DS ID is bounded to explicit MasterCard participation and paired with Program Protocol.");
+                                }
+                                add(findings, "APPI-T048-PROVENANCE", REVIEW_REQUIRED,
+                                    "Server issuance, uniqueness and actual EMV 3DS participation are not independently verified.");
+                            }
+                            }
             default -> throw new IllegalStateException("Unhandled implemented candidate");
         }
         add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
                 "Logical checks do not establish framing, full-message validity, SME approval or host acceptance.");
         return new AppendixILogicalDataValidator.Result(findings);
     }
+
+        private AppendixILogicalDataValidator.Result validateTable053(JsonNode candidate) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        String identifier = text(data, "identifier");
+        String decodedIdentifier = "";
+        boolean encodedIdentifier;
+        try {
+            byte[] decoded = Base64.getDecoder().decode(identifier);
+            decodedIdentifier = new String(decoded, StandardCharsets.UTF_8);
+            encodedIdentifier = Base64.getEncoder().encodeToString(decoded).equals(identifier);
+        } catch (IllegalArgumentException ignored) {
+            encodedIdentifier = false;
+        }
+        check(findings, "APPI-T053-R001", "053".equals(text(data, "tableSelector"))
+                && encodedIdentifier && decodedIdentifier.equals(text(data, "logicalCheckoutIdentifier")),
+            "Table 053 identifier is canonical base64 for the supplied checkout identifier.");
+
+        JsonNode context = data.path("context");
+        boolean companionPresent = context.path("segment123Present").asBoolean(false)
+            && context.path("element237Present").asBoolean(false);
+        check(findings, "APPI-T053-R002", "MasterCard".equals(text(context, "cardBrand")) && companionPresent,
+            "Table 053 is bounded to the supplied MasterCard and Segment 123 cryptogram companion.");
+        String cryptogram = text(data, "element237StructuralString");
+        boolean validCryptogramShape = cryptogram.length() == 28;
+        try {
+            byte[] decoded = Base64.getDecoder().decode(cryptogram);
+            validCryptogramShape &= Base64.getEncoder().encodeToString(decoded).equals(cryptogram);
+        } catch (IllegalArgumentException ignored) {
+            validCryptogramShape = false;
+        }
+        check(findings, "APPI-T053-R003", context.path("element237Present").asBoolean(false)
+                && validCryptogramShape,
+            "Element 237 is a separate 28-character base64 structural value; cryptographic validity is excluded.");
+        add(findings, "APPI-T053-LENGTH-INTERPRETATION", REVIEW_REQUIRED,
+            "The source's 028 identifier limit has an unresolved encoded-versus-decoded interpretation.");
+        add(findings, "APPI-T053-CRYPTOGRAPHIC-VALIDITY", REVIEW_REQUIRED,
+            "Structural base64 does not establish token cryptogram validity.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
+
+        private AppendixILogicalDataValidator.Result validateTable054(JsonNode candidate) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        String value = text(data, "merchantTranId");
+        boolean moneris = "Moneris".equals(text(data.path("context"), "processor"));
+        JsonNode count = data.path("logicalPayloadLength");
+        String mappedValue = text(data.path("downstreamLogicalField"), "value");
+        boolean valueShape = value.isEmpty() || value.matches("[\\x20-\\x7E]{1,95}");
+        boolean withinProcessorLimit = moneris ? !value.isEmpty() && value.length() <= 15 : value.length() <= 95;
+        boolean countMatches = value.isEmpty() || count.isIntegralNumber() && count.intValue() == value.length();
+        boolean mappingMatches = !moneris || value.equals(mappedValue);
+        check(findings, "APPI-T054-R001", "054".equals(text(data, "tableSelector"))
+                && valueShape && withinProcessorLimit && countMatches && mappingMatches,
+            "Table 054 is at most 95 printable ASCII bytes; Moneris requires at most 15 and the supplied Client Request ID mapping.");
+        add(findings, "APPI-T054-TRANSMISSION", REVIEW_REQUIRED,
+            "Actual processor transmission and merchant identifier uniqueness are not established.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
+
+        private AppendixILogicalDataValidator.Result validateTable055(JsonNode candidate) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        String value = text(data, "providerValue");
+        String assignment = text(data.path("context"), "syntheticUcomAssignment");
+        Map<String, String> assignments = Map.of("Walmart+", "WMPY", "Amazon Pay", "AAPY",
+            "Google Pay", "GSPY", "Wex Pay", "WXPY");
+        JsonNode count = data.path("logicalPayloadLength");
+        boolean valid = "055".equals(text(data, "tableSelector")) && assignments.containsValue(value)
+            && value.matches("[A-Za-z0-9]{1,4}") && value.equals(assignments.get(assignment))
+            && count.isIntegralNumber() && count.intValue() == value.length();
+        check(findings, "APPI-T055-R001", valid,
+            "Table 055 matches one of four source-listed provider codes to the supplied UCOM assignment and four-byte maximum.");
+        add(findings, "APPI-T055-ASSIGNMENT", REVIEW_REQUIRED,
+            "The UCOM provider assignment is a synthetic precondition, not independently verified.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
+
+    private AppendixILogicalDataValidator.Result validateMerchantLocation(JsonNode candidate, String id) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        JsonNode context = data.path("context");
+        String tableId = id.substring(6, 9);
+        String identityField = "057".equals(tableId) ? "tableSelector" : "logicalTableIdentity";
+        String valueField = switch (tableId) {
+            case "057" -> "merchantCity";
+            case "058" -> "merchantState";
+            case "059" -> "merchantCountry";
+            default -> throw new IllegalArgumentException("Unsupported merchant-location table: " + tableId);
+        };
+        String retailerField = switch (tableId) {
+            case "057" -> "underlyingRetailerCity";
+            case "058" -> "underlyingRetailerState";
+            case "059" -> "underlyingRetailerCountry";
+            default -> throw new IllegalArgumentException("Unsupported merchant-location table: " + tableId);
+        };
+        String value = text(data, valueField);
+        boolean identityMatches = tableId.equals(text(data, identityField));
+        boolean valueShape = switch (tableId) {
+            case "057" -> value.length() <= 20 && value.chars().allMatch(c -> c >= 32 && c <= 126);
+            case "058" -> !value.isEmpty();
+            case "059" -> value.matches("[0-9]{3}");
+            default -> false;
+        };
+        boolean valid = identityMatches && "Discover".equals(text(context, "cardBrand"))
+                && "third-party payment provider".equals(text(context, "merchantRole"))
+                && valueShape && value.equals(text(context, retailerField));
+        check(findings, "APPI-T" + tableId + "-R001", valid,
+                "Discover third-party-provider logical merchant location matches the supplied underlying retailer context.");
+        add(findings, "APPI-T" + tableId + "-SOURCE-ATTRIBUTES", REVIEW_REQUIRED,
+                switch (tableId) {
+                    case "057" -> "The source N2/Element 112 length-attribute conflict and padding remain unresolved.";
+                    case "058" -> "The fixed selector/length and An3-versus-02 declarations conflict; no wire form is inferred.";
+                    case "059" -> "The source n2 framing and external Appendix AC country-code authority remain unverified.";
+                    default -> "Source attributes require review.";
+                });
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+                "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+    }
+
+        private AppendixILogicalDataValidator.Result validateTable062(JsonNode candidate) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        String id = text(candidate, "candidateId");
+        JsonNode context = data.path("context");
+        boolean applicable = "Visa".equals(text(context, "cardBrand"))
+            && "account verification".equals(text(context, "transactionContext"));
+        boolean layoutValid;
+        if (id.endsWith("OUTER-001")) {
+            JsonNode records = data.path("records");
+            int calculatedLength = 0;
+            layoutValid = "062".equals(text(data, "tableSelector")) && records.isArray() && !records.isEmpty();
+            for (JsonNode record : records) {
+            String selector = text(record, "selector");
+            String valueField = "01".equals(selector) ? "phone" : "02".equals(selector) ? "email" : "";
+            String value = text(record, valueField);
+            int maximum = "01".equals(selector) ? 16 : 99;
+            boolean validRecord = !valueField.isEmpty() && !value.isEmpty() && value.length() <= maximum
+                && record.path("logicalLength").isIntegralNumber()
+                && record.path("logicalLength").intValue() == value.length();
+            layoutValid &= validRecord;
+            calculatedLength += 5 + value.length();
+            }
+            layoutValid &= calculatedLength <= 150
+                && data.path("logicalPayloadLength").isIntegralNumber()
+                && data.path("logicalPayloadLength").intValue() == calculatedLength;
+        } else {
+            String selector = text(data, "selector");
+            boolean phone = "01".equals(selector);
+            String value = text(data, phone ? "phone" : "email");
+            int maximum = phone ? 16 : 99;
+            layoutValid = selector.matches("0[12]") && !value.isEmpty() && value.length() <= maximum
+                && data.path("logicalLength").isIntegralNumber()
+                && data.path("logicalLength").intValue() == value.length();
+        }
+        check(findings, "APPI-T062-R001", layoutValid,
+            "Table 062 defined records are bounded by phone 16/email 99, matching logical counts and the supplied 150-byte aggregate ceiling.");
+        check(findings, "APPI-T062-R002", applicable,
+            "Table 062 phone/email contact records are bounded to Visa account-verification context.");
+        add(findings, "APPI-T062-CONTACT-VALIDITY", REVIEW_REQUIRED,
+            "No E.164, email RFC, deliverability, minimum-length or mandatory-record rule is inferred.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
+
+        private AppendixILogicalDataValidator.Result validateAdditionalCardField(JsonNode candidate, String id) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode data = candidate.path("syntheticData");
+        String tableId = id.equals("APPI-C050-OUTER-001") ? "050" : "051";
+        String valueField = "050".equals(tableId) ? "securityCode" : "cardId";
+        String value = text(data, valueField);
+        String program = text(data.path("context"), "cardProgram");
+        JsonNode length = data.path("logicalPayloadLength");
+        boolean allowedLength = "SVS".equals(program) ? value.length() == 4
+            : value.length() >= 1 && value.length() <= 16;
+        boolean valid = tableId.equals(text(data, "tableSelector"))
+            && value.matches("[A-Za-z0-9]{1,16}") && allowedLength
+            && length.isIntegralNumber() && length.intValue() == value.length();
+        check(findings, "APPI-T" + tableId + "-R001", valid,
+            "Table " + tableId + " value is 1-16 alphanumeric characters, SVS is exactly four, and supplied logical length matches.");
+        add(findings, "APPI-T" + tableId + "-AUTHENTICITY", REVIEW_REQUIRED,
+            "Security-code authenticity or Additional Card ID allocation/uniqueness is not established.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "This is a logical fragment, not a complete Segment 111 request or certification result.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
+
+        private AppendixILogicalDataValidator.Result validateTable049(JsonNode candidate) {
+        List<AppendixILogicalDataValidator.Finding> findings = new ArrayList<>();
+        JsonNode fields = candidate.path("structuredLogicalFields");
+        String id = text(candidate, "candidateId");
+        String selector = text(fields, "subTableId");
+        String data = text(fields, "baselinePositiveData");
+        String declaredLength = text(fields, "declaredDataLength");
+        if (declaredLength.isEmpty()) declaredLength = text(fields.path("declaredDataLengthsByData"), data);
+        boolean envelope = selector.matches("[0-9]{2}") && selector.equals(text(candidate, "nestedSelector"))
+            && declaredLength.matches("[1-9]") && data.matches("[A-Za-z0-9]{1,9}")
+            && Integer.parseInt(declaredLength) == data.length();
+        check(findings, "APPI-T049-R003", envelope,
+            "Nested entry uses a two-digit selector, one-digit length 1-9, and matching alphanumeric data length.");
+
+        JsonNode common = fields.path("preconditions");
+        JsonNode byData = fields.path("preconditionsByData").path(data);
+        JsonNode context = byData.isObject() ? byData : common;
+        String target = mutationTarget(id);
+        Boolean valid = switch (id) {
+            case "APPI-T049-C001" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && "Purchase".equals(text(context, "transaction"))
+                && context.path("merchantLocallyApproved").asBoolean(false)
+                && "Unavailable".equals(text(context, "connectivityAtCapture"))
+                && "Restored".equals(text(context, "connectivityAtSubmission"));
+            case "APPI-T049-C002" -> Set.of("M", "C").contains(data)
+                && "Subsequent".equals(text(context, "credentialStage"))
+                && ("M".equals(data) ? "Merchant" : "Cardholder").equals(text(context, "initiator"))
+                && "C".equals(text(context, "table032SubTable08"));
+            case "APPI-T049-C003" -> "WEX".equals(text(context, "network"))
+                && context.path("receivesAvailableProducts").isBoolean()
+                && (context.path("receivesAvailableProducts").booleanValue() ? "4" : "0").equals(data);
+            case "APPI-T049-C004" -> ("CB".equals(data) && "Visa".equals(text(context, "network"))
+                && "Consumer Bill Payment Service".equals(text(context, "paymentIntent")))
+                || ("IR".equals(data) && "MasterCard".equals(text(context, "network"))
+                && "Purchase Repayment".equals(text(context, "paymentIntent")));
+            case "APPI-T049-C005" -> data.matches("[0-9]{1,6}");
+            case "APPI-T049-C006" -> Set.of("AC", "AS", "CC", "CS").contains(data)
+                && "MasterCard".equals(text(common, "network"))
+                && "mPOS".equals(text(common, "terminalType"))
+                && "M".equals(text(common, "table032SubTable01"));
+            case "APPI-T049-C007" -> "Y".equals(data) && "MasterCard".equals(text(context, "network"))
+                && context.path("merchantWantsAdviceCode").asBoolean(false);
+            case "APPI-T049-C009" -> {
+            String expectedOperation = switch (data) {
+                case "310" -> "Benefit Eligibility & Balance Lookup";
+                case "910" -> "Item Qualification";
+                case "920" -> "Limited Spend";
+                case "200" -> "Limited Spend Refund";
+                default -> "";
+            };
+            yield !expectedOperation.isEmpty() && "InComm OTC".equals(text(context, "program"))
+                && expectedOperation.equals(text(context, "operation"));
+            }
+            case "APPI-T049-C010" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsDAFIndicator").asBoolean(false);
+            case "APPI-T049-C011" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsAgreementID").asBoolean(false);
+            case "APPI-T049-C013" -> Set.of("S", "T", "V").contains(data)
+                && "Discover".equals(text(common, "network"))
+                && "Installment".equals(text(common, "paymentIntent"))
+                && ("S".equals(data) ? "Merchant" : "T".equals(data) ? "Third Party" : "Issuer")
+                .equals(text(context, "installmentProviderClass"));
+            case "APPI-T049-C016" -> "D".equals(data) && "Discover".equals(text(context, "network"))
+                && "Delayed Card Sale".equals(text(context, "saleClass"));
+            case "APPI-T049-C017" -> "N".equals(data) && "Discover".equals(text(context, "network"))
+                && "No Show".equals(text(context, "chargeClass"));
+            case "APPI-T049-C018" -> {
+            boolean chip = context.path("chipRestrictionsSupported").asBoolean(false);
+            boolean host = context.path("hostRestrictionsSupported").asBoolean(false);
+            String expected = chip ? host ? "3" : "1" : host ? "2" : "0";
+            yield expected.equals(data);
+            }
+            case "APPI-T049-C020" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsAccountInformation").asBoolean(false);
+            case "APPI-T049-C021" -> Set.of("R", "I").contains(data)
+                && ("R".equals(data) ? "Recurring" : "Installment").equals(text(context, "paymentIntent"));
+            case "APPI-T049-C022" -> "Y".equals(data) && "MasterCard".equals(text(context, "network"))
+                && context.path("merchantWantsTransactionLinkIdentifier").asBoolean(false);
+            case "APPI-T049-C023" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsAuthenticationDataQuality").asBoolean(false);
+            case "APPI-T049-C024" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsTokenUpdateFirstUse").asBoolean(false);
+            case "APPI-T049-C025" -> "Y".equals(data) && context.path("merchantAcceptsMerchantTranID").asBoolean(false);
+            case "APPI-T049-C026" -> "Y".equals(data) && "Maestro".equals(text(context, "network"))
+                && context.path("merchantWantsTransactionLinkAction").asBoolean(false);
+            case "APPI-T049-C027" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantAcceptsAppliedSpecialService").asBoolean(false);
+            case "APPI-T049-C028" -> "Y".equals(data) && "Voyager".equals(text(context, "network"))
+                && context.path("merchantAcceptsVoyagerRestrictionCodes").asBoolean(false);
+            case "APPI-T049-C030" -> "Y".equals(data) && "Visa".equals(text(context, "network"))
+                && context.path("merchantWantsVisaCategoryCode").asBoolean(false);
+            default -> null;
+        };
+        if (valid == null) {
+            add(findings, target, REVIEW_REQUIRED, "No bounded Table 049 predicate is implemented for this candidate.");
+        } else {
+            check(findings, target, valid, "Candidate predicate is evaluated only under its explicit synthetic preconditions.");
+        }
+
+        if ("APPI-T049-C004".equals(id) && "IR".equals(data)) {
+            check(findings, "APPI-T049-R012", "I".equals(text(context, "table013Data")),
+                "The IR candidate includes the supplied logical Table 013 installment indicator.");
+            check(findings, "APPI-T049-R013", text(context, "table047Data").equals(
+                text(context, "providerName") + "*" + text(context, "merchantName")),
+                "The IR candidate's supplied descriptor follows provider*merchant ordering.");
+            add(findings, "APPI-T049-IR-DEPENDENCY", REVIEW_REQUIRED,
+                "Cross-table wire lengths and merchant enrollment are not verified.");
+        }
+        if ("APPI-T049-C005".equals(id)) {
+            JsonNode basket = context.path("basket");
+            if (!basket.isArray() || basket.isEmpty()) {
+            add(findings, "APPI-T049-R015", REVIEW_REQUIRED, "Explicit synthetic product-price basket is required.");
+            } else {
+            int highest = Integer.MIN_VALUE;
+            String highestCode = "";
+            boolean tied = false;
+            for (JsonNode item : basket) {
+                int price = item.path("priceMinorUnits").asInt(Integer.MIN_VALUE);
+                if (price > highest) {
+                highest = price;
+                highestCode = text(item, "syntheticProductCode");
+                tied = false;
+                } else if (price == highest) {
+                tied = true;
+                }
+            }
+            if (tied) add(findings, "APPI-T049-R015", REVIEW_REQUIRED, "Equal-price product tie behavior is not defined.");
+            else check(findings, "APPI-T049-R015", highestCode.equals(data),
+                "The supplied TeleCheck candidate selects the unique highest-priced synthetic item.");
+            }
+        }
+        if (Set.of("APPI-T049-C018", "APPI-T049-C021").contains(id)) {
+            add(findings, "APPI-T049-APPLICABILITY", REVIEW_REQUIRED,
+                "The code mapping is checked, but network/acquirer applicability remains SME-gated.");
+        }
+        add(findings, "APPI-T049-EXTERNAL", REVIEW_REQUIRED,
+            "External network, product catalogue, terminal certification, and host behavior are not asserted.");
+        add(findings, "APPI-CANDIDATE-READINESS", REVIEW_REQUIRED,
+            "Table 049 is a nested logical fragment; ordering, aggregate serialization, and host acceptance are not checked.");
+        return new AppendixILogicalDataValidator.Result(findings);
+        }
 
     public static String mutationTarget(String id) {
         return switch (id) {
@@ -756,6 +1296,48 @@ public final class AppendixIScopedCandidateValidator {
             case "APPI-C039-01" -> "APPI-T039-R001";
             case "APPI-C040-01" -> "APPI-T040-R001";
             case "APPI-C040-02" -> "APPI-T040-R002";
+            case "APPI-C041-01" -> "APPI-T041-R002";
+            case "APPI-C042-01" -> "APPI-T042-R001";
+            case "APPI-C043-01" -> "APPI-T043-R002";
+            case "APPI-C044-01" -> "APPI-T044-R002";
+            case "APPI-C045-01" -> "APPI-T045-R002";
+            case "APPI-C046-01" -> "APPI-T046-R001";
+            case "APPI-C047-01" -> "APPI-T047-R002";
+            case "APPI-C048-01" -> "APPI-T048-R002";
+            case "APPI-C048-02" -> "APPI-T048-R003";
+            case "APPI-T049-C001" -> "APPI-T049-R006";
+            case "APPI-T049-C002" -> "APPI-T049-R007";
+            case "APPI-T049-C003" -> "APPI-T049-R009";
+            case "APPI-T049-C004" -> "APPI-T049-R010";
+            case "APPI-T049-C005" -> "APPI-T049-R014";
+            case "APPI-T049-C006" -> "APPI-T049-R016";
+            case "APPI-T049-C007" -> "APPI-T049-R020";
+            case "APPI-T049-C009" -> "APPI-T049-R023";
+            case "APPI-T049-C010" -> "APPI-T049-R024";
+            case "APPI-T049-C011" -> "APPI-T049-R026";
+            case "APPI-T049-C013" -> "APPI-T049-R028";
+            case "APPI-T049-C016" -> "APPI-T049-R030";
+            case "APPI-T049-C017" -> "APPI-T049-R031";
+            case "APPI-T049-C018" -> "APPI-T049-R032";
+            case "APPI-T049-C020" -> "APPI-T049-R039";
+            case "APPI-T049-C021" -> "APPI-T049-R042";
+            case "APPI-T049-C022" -> "APPI-T049-R044";
+            case "APPI-T049-C023" -> "APPI-T049-R046";
+            case "APPI-T049-C024" -> "APPI-T049-R048";
+            case "APPI-T049-C025" -> "APPI-T049-R050";
+            case "APPI-T049-C026" -> "APPI-T049-R052";
+            case "APPI-T049-C027" -> "APPI-T049-R054";
+            case "APPI-T049-C028" -> "APPI-T049-R056";
+            case "APPI-T049-C030" -> "APPI-T049-R058";
+            case "APPI-C050-OUTER-001" -> "APPI-T050-R001";
+            case "APPI-C051-OUTER-001" -> "APPI-T051-R001";
+            case "APPI-C053-OUTER-001" -> "APPI-T053-R001";
+            case "APPI-C054-OUTER-001" -> "APPI-T054-R001";
+            case "APPI-C055-OUTER-001" -> "APPI-T055-R001";
+            case "APPI-C057-OUTER-001" -> "APPI-T057-R001";
+            case "APPI-C058-OUTER-001" -> "APPI-T058-R001";
+            case "APPI-C059-OUTER-001" -> "APPI-T059-R001";
+            case "APPI-C062-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001" -> "APPI-T062-R001";
             default -> throw new IllegalArgumentException("Unsupported candidate: " + id);
         };
     }

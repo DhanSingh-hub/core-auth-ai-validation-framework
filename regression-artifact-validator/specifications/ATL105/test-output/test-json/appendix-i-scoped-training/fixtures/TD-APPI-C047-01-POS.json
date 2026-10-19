@@ -1,0 +1,57 @@
+{
+  "id" : "TD-APPI-C047-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C047-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C047-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-38",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t047-r002-APPI-C047-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C047-01",
+        "tableId" : "047",
+        "ruleIds" : [ "APPI-T047-R001", "APPI-T047-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-38",
+          "startLine" : 29152,
+          "endLine" : 29157
+        } ],
+        "data" : "SYNCO*SYNSTORE",
+        "logicalFields" : {
+          "thirdPartyName" : "SYNCO",
+          "separator" : "*",
+          "underlyingMerchantName" : "SYNSTORE"
+        },
+        "context" : {
+          "brand" : "Discover",
+          "thirdPartyInstallment" : true
+        },
+        "clearScope" : [ "Actual composite14-character descriptor within38", "Provider/star/retailer ordering" ],
+        "excludedClaims" : [ "Truncation/escaping", "Actual provider enrollment" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Descriptor equals provider then star then retailer",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "SYNSTORE*SYNCO",
+          "targetedNegative" : "Provider/retailer reversed"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

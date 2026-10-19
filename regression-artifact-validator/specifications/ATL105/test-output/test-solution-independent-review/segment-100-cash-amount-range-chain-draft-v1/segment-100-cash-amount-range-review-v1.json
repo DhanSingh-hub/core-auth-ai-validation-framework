@@ -1,0 +1,56 @@
+{
+  "reviewId": "ATL105-SEG100-CASH-AMOUNT-RANGE-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroupId": "OBL-E25E069D7E46",
+  "aiBrIds": ["REQ-SRC-ATL105-PDF-001:2371", "REQ-SRC-ATL105-PDF-001:6033"],
+  "sourceFinding": {
+    "claims": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:2371", "claim": "Cash Amount has maximum length 8.", "assessment": "Source-aligned: Element 17 is numeric with a maximum length of eight bytes. The statement omits that the representation has two assumed decimal places."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:6033", "claim": "Cash Amount: Variable up to 8 digits with two decimal places, identifies cash back amount of a transaction.", "assessment": "Source-aligned with the variable eight-digit, two-assumed-decimal representation and cash-back purpose."}
+    ],
+    "additionalRule": "When a merchant supports Interlink's Optional Cash Back Fee, Element 17 includes the cash-back amount plus the fee.",
+    "sourceEvidenceIds": ["ATL105-2026-3-E17-NUMERIC-MAX", "ATL105-2026-3-E17-DECIMALS", "ATL105-2026-3-E17-PURPOSE", "ATL105-2026-3-E17-FEE", "ATL105-2026-3-E17-RANGE"],
+    "caution": "Element 17 total cash semantics are distinct from its format/range, and Segment 157 amount reconciliation is another separate obligation."
+  },
+  "independentTestAssessment": {
+    "existingRule": "SEG100-R-048",
+    "existingRuleScope": "Total cash amount semantics; not the Element 17 range/length boundary.",
+    "chainState": "DRAFT_REVIEW_REQUIRED_PLACEHOLDER",
+    "candidateDraft": "segment-100-cash-amount-range-test-chain-package-v1.json",
+    "candidateDesign": "One scenario with minimum, maximum, zero, and over-maximum field-value vectors. Optional fee calculation and total-cash semantics are not inferred.",
+    "status": "REVIEW_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 12,
+    "cases": [
+      {"caseId": "TC-010413", "payloadSha256": "b84c75e1f40f64981a95f0e858fbe5fa5e822e3689121ba3e81f04cef41a3438", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010414", "payloadSha256": "8025a258f589171ab0216c0aebb9e1d54bb4f0f05041e235672a744fc81021aa", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010415", "payloadSha256": "2a438cca90f98d63c41ee1f0cd1a088a68da3a3e7391bf57bbbf24440dc4f0e6", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010416", "payloadSha256": "fdeb9ecd27a7e21668d34807cf0ca7ce051ef78e9dc18627433425699829920e", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010417", "payloadSha256": "0d5d1768aebd231f248a1326278ec14d72720a38e34039cca58bd1a02c0faa30", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-010418", "payloadSha256": "8aa5ed7fd0acf0018b9d2322f4b1759a18cd493fbe6a1894be24800f1aa34d2b", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019694", "payloadSha256": "e3050c48d759facf5c5d62a78131958927219afaab7bbadd653c743b7da081e0", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019695", "payloadSha256": "9e56be38490bda548da568a71b17b0408bb4185dedd19613e60b1fe979f106e8", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019696", "payloadSha256": "9d3dea179c3f091fc9d567043442999c891df59469bbcb1310ca6e3c51c50be6", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019697", "payloadSha256": "2211ce8e52297826ea33bdb641be7cb2a33d4f8f5464dd6e4685cb78f6878925", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019698", "payloadSha256": "ec2c42ba0f8a8588e7780df37d132b05b40da57664e28076947155dd53acf7fb", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-019699", "payloadSha256": "78404d1cc891a0842e58806c0926d2469c2a8ed3a547c81f5ddb8e6875e86599", "element17": "DECLARED_OMISSION_NO_EXACT_FIELD"}
+    ],
+    "conclusion": "All 12 frozen candidate payload observations declare Segment 100 Element 17 omitted. None demonstrates its eight-digit maximum, range, assumed decimals, cash-back purpose, or optional fee treatment."
+  },
+  "adjudicationGaps": [
+    "Confirm the authorized cash-back transaction, currency, and amount encoding context.",
+    "Confirm whether the merchant supports the optional Interlink Cash Back Fee and how that fee is included.",
+    "Keep range/length validation distinct from total cash semantics and Segment 157 reconciliation.",
+    "Review complete fixtures and expected outcomes with the authorized Test owner before promotion or execution."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

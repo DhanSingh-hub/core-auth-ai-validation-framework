@@ -34,7 +34,7 @@ class Chapter13DataElementValidatorTest {
         List<DynamicTest> tests = new ArrayList<>();
         var catalog = MAPPER.readTree(Atl105Paths.root().resolve("docs").resolve("specs").resolve("kb")
                 .resolve("elements").resolve("value-domains.json").toFile()).path("domains");
-        assertThat(catalog).hasSize(69);
+        assertThat(catalog).hasSize(70);
         for (var domain : catalog) {
             String id = domain.path("element").asText();
             String rule = "CH13-E" + id + "-DOMAIN";
@@ -59,6 +59,15 @@ class Chapter13DataElementValidatorTest {
             }));
         }
         return tests;
+    }
+
+    @Test void pcTaxAmountChecksOnlyNumericTypeAndSevenDigitMaximum() {
+        assertFinding(observe("74", "1234567"), "CH13-E74-DOMAIN", Status.CHECKS_PASSED);
+        assertFinding(observe("74", "0"), "CH13-E74-DOMAIN", Status.CHECKS_PASSED);
+        assertFinding(observe("74", "12345678"), "CH13-E74-DOMAIN", Status.INVALID);
+        assertFinding(observe("74", "12A45"), "CH13-E74-DOMAIN", Status.INVALID);
+        assertFinding(observe("74", "1.23"), "CH13-E74-DOMAIN", Status.INVALID);
+        assertFinding(observe("74", ""), "CH13-E74-OMISSION", Status.REVIEW_REQUIRED);
     }
 
     @Test void wireWidthIsNotAppliedToLogicalNumericValues() {

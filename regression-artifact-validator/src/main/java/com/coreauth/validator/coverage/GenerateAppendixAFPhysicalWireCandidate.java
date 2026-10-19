@@ -40,18 +40,26 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
     private ObjectNode create() throws Exception {
         Path baseSource = Atl105Paths.docs().resolve(Path.of("specs", "extracted_text.txt"));
         Path table82Source = Atl105Paths.docs().resolve(Path.of("specs", "kb", "appendix-af-table82-source-quotes.txt"));
+        Path responseSource = Atl105Paths.docs().resolve(Path.of("specs", "kb", "appendix-af-response-wire-source-quotes.txt"));
         Path afCatalog = Atl105Paths.docs().resolve(Path.of("specs", "kb", "appendix-af-rule-catalog.json"));
         String baseText = Files.readString(baseSource, StandardCharsets.UTF_8);
         String table82Text = Files.readString(table82Source, StandardCharsets.UTF_8);
+        String responseText = Files.readString(responseSource, StandardCharsets.UTF_8);
         ObjectNode catalog = (ObjectNode) mapper.readTree(afCatalog.toFile());
         if (!baseText.contains("All Financial Transaction Requests contain Element Nos. 55 and 63.")
                 || !baseText.contains("Standard Message Data Segment Format")
                 || !baseText.contains("Variable Information Indicator")
                 || !table82Text.contains("N2 Fixed Value: 82")
                 || !table82Text.contains("N3 Fixed Length : 004")
-                || !table82Text.contains("Terminal Transaction Number")) {
+                                || !table82Text.contains("When Element No. 111 (Variable Information Indicator) has a value of 082 (Incremental Auth Data), the Incremental Auth Data is included here.")
+                || !table82Text.contains("Terminal Transaction Number")
+                || !responseText.contains("it has no Field Separators.")
+                || !responseText.contains("Element 101 Terminal Display/Printer Message: position 71, length 31, required; repeats up to three times.")) {
             throw new IllegalStateException("Required source quotes for the wire candidate are not present");
         }
+                if (!AF_PDF_SHA256.equalsIgnoreCase(catalog.path("sourceDocumentSha256").asText())) {
+                        throw new IllegalStateException("Appendix AF source hash does not match the reviewed 2026-4 release");
+                }
 
         ObjectNode standard = standardFields();
         standard.put("84", "000");
@@ -84,6 +92,8 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
         ObjectNode evidence = candidate.putObject("sourceEvidence");
         evidence.put("baseSpecificationText", "docs/specs/extracted_text.txt").put("baseSpecificationSha256", sha256(baseSource));
         evidence.put("table82QuoteFile", "docs/specs/kb/appendix-af-table82-source-quotes.txt").put("table82QuoteFileSha256", sha256(table82Source));
+        evidence.put("responseLayoutEvidenceFile", "docs/specs/kb/appendix-af-response-wire-source-quotes.txt")
+                .put("responseLayoutEvidenceSha256", sha256(responseSource));
         evidence.put("afSourcePdfSha256Pinned", catalog.path("sourceDocumentSha256").asText());
         evidence.put("afSourcePdfPresentInWorkspace", false);
 
@@ -107,8 +117,8 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
                 .put("indicatorN3Candidate", indicator)
                 .put("lengthN3", variableLength)
                 .put("terminalTransactionNumberN4", terminalTransactionNumber);
-        variableOutput.put("table82IndicatorEncodingStatus", "REVIEW_REQUIRED")
-                .put("table82IndicatorEncodingReason", "Appendix I quotes Table ID N2 fixed to 82, while base Segment 111 defines a three-character N3 indicator; zero-padding to 082 is only a wire candidate.")
+        variableOutput.put("table82IndicatorEncodingStatus", "SOURCE_CONFIRMED")
+                .put("table82IndicatorEncodingReason", "ATL105 2026-4 Chapter 13.2 Element 113 explicitly says Element 111 value 082 is Incremental Auth Data; Appendix I Table 82 supplies Table ID 82, N3 length 004, and N4 Terminal Transaction Number.")
                 .put("afTransactionIdMappingStatus", "REVIEW_REQUIRED")
                 .put("afTransactionIdSerialized", false);
 
@@ -158,13 +168,47 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
         ((ObjectNode) standardLayout.path("observation")).put("dataSection", 2).put("fieldNumber", 3)
                 .put("serializedSegment", standardWire);
         layoutSegments.addObject().put("segment", "111").put("dataSection", 3).put("fieldNumber", 8);
-        candidate.putObject("response").put("status", "NOT_PROVIDED")
-                .put("reason", "No captured host response or approved AF response oracle was supplied; no response bytes or expected outcome are fabricated.");
+        ObjectNode response = candidate.putObject("response").put("status", "SYNTHETIC_LAYOUT_ONLY")
+                .put("sourceLayout", "ATL105 2026-4 Section 11.1.2, PDF pages 171-172")
+                .put("sourceEvidenceFile", "docs/specs/kb/appendix-af-response-wire-source-quotes.txt")
+                .put("sourceEvidenceSha256", sha256(responseSource))
+                .put("hostCapture", false).put("expectedBusinessOutcome", "NOT_ASSESSED")
+                .put("wireSeparator", "NONE");
+        ObjectNode responseElements = response.putObject("elements");
+        responseElements.put("83", "2").put("30", "0").put("45", "101626").put("46", "1200")
+                .put("86", "100001").put("6", "000001000").put("5", "SYN001")
+                .put("2", "SYNTHETICACCOUNT000000000").put("26", "  ").put("7", "01")
+                .put("8", "00").put("119", "1016").put("115", "0").put("61", "1")
+                .put("101", padRight("SYNTHETIC MESSAGE - NO HOST", 31));
+        List<String> responseOrder = List.of("83", "30", "45", "46", "86", "6", "5", "2", "26", "7", "8", "119", "115", "61", "101");
+        StringBuilder responseWire = new StringBuilder();
+        ArrayNode responseFieldLayout = response.putArray("fieldLayout");
+        int responsePosition = 1;
+        int[] responseWidths = {1, 1, 6, 4, 6, 9, 6, 25, 2, 2, 2, 4, 1, 1, 31};
+        for (int i = 0; i < responseOrder.size(); i++) {
+            String element = responseOrder.get(i);
+            String value = responseElements.path(element).asText();
+            if (value.length() != responseWidths[i]) throw new IllegalStateException("Synthetic response Element " + element + " width mismatch");
+            responseWire.append(value);
+            responseFieldLayout.addObject().put("element", element).put("position", responsePosition)
+                    .put("length", responseWidths[i]);
+            responsePosition += responseWidths[i];
+        }
+        byte[] responseBytes = responseWire.toString().getBytes(StandardCharsets.US_ASCII);
+        if (responseBytes.length != 101) throw new IllegalStateException("Response source-layout length must be 101 bytes");
+        response.put("applicationPayloadEscaped", responseWire.toString())
+                .put("applicationPayloadHex", HexFormat.of().withUpperCase().formatHex(responseBytes))
+                .put("applicationPayloadByteCount", responseBytes.length)
+                .put("transportFraming", "NOT_INCLUDED");
+        ObjectNode responseLayout = response.putObject("chapter11LayoutObservation")
+                .put("specificationVersion", "2026-3").put("messageFamily", "Financial Transaction Response")
+                .put("completeness", "PARTIAL");
+        responseLayout.set("elements", responseElements.deepCopy());
+        responseLayout.putArray("segments");
         candidate.putArray("limitations")
-                .add("The 2026-4 source PDF is not present in the workspace; only a pinned hash and quote extracts are available.")
-                .add("The Table 82 N2 table identifier to Segment 111 N3 indicator encoding remains REVIEW_REQUIRED.")
+                .add("The full 2026-4 PDF is external to this repository; the candidate binds to its pinned hash and reviewed extracted source quotes.")
                 .add("Appendix AF Transaction ID to Table 82 Terminal Transaction Number equivalence remains REVIEW_REQUIRED.")
-                .add("The payload is not a complete TCP/IP/TPDU transmission and has no host response.")
+                .add("The response is synthetic layout data, not a captured host response or expected-outcome oracle; TCP/IP/TPDU framing is not included.")
                 .add("Synthetic field values are for local structural wire checks only; no card/network compatibility or approval result is asserted.");
         return candidate;
     }
@@ -185,6 +229,10 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
     }
 
     private static int asciiLength(String value) { return value.getBytes(StandardCharsets.US_ASCII).length; }
+        private static String padRight(String value, int width) {
+                if (value.length() > width) throw new IllegalArgumentException("Value exceeds source field width " + width);
+                return value + " ".repeat(width - value.length());
+        }
     private static String escape(String value) { return value.replace(String.valueOf(FIELD_SEPARATOR), "\\u001c"); }
     private static String sha256(Path path) throws Exception {
         return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path)));

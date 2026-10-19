@@ -14,8 +14,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,10 +42,22 @@ class AppendixAFPhysicalWireCandidateTest {
         assertThat(candidate.path("request").path("applicationPayloadByteCount").asInt()).isEqualTo(110);
         assertThat(candidate.path("request").path("tcpIpTpduFraming").asText()).isEqualTo("NOT_INCLUDED");
         assertThat(candidate.path("request").path("segment111").path("table82IndicatorEncodingStatus").asText())
-                .isEqualTo("REVIEW_REQUIRED");
+                .isEqualTo("SOURCE_CONFIRMED");
+        assertThat(candidate.path("request").path("segment111").path("variableInformationSection")
+                .path("indicatorN3Candidate").asText()).isEqualTo("082");
         assertThat(candidate.path("request").path("segment111").path("afTransactionIdMappingStatus").asText())
                 .isEqualTo("REVIEW_REQUIRED");
-        assertThat(candidate.path("response").path("status").asText()).isEqualTo("NOT_PROVIDED");
+        assertThat(candidate.path("response").path("status").asText()).isEqualTo("SYNTHETIC_LAYOUT_ONLY");
+        assertThat(candidate.path("response").path("hostCapture").asBoolean()).isFalse();
+        assertThat(candidate.path("response").path("expectedBusinessOutcome").asText()).isEqualTo("NOT_ASSESSED");
+        Path responseSource = Atl105Paths.docs().resolve(Path.of("specs", "kb", "appendix-af-response-wire-source-quotes.txt"));
+        assertThat(candidate.path("response").path("sourceEvidenceSha256").asText()).isEqualTo(sha256(responseSource));
+        assertThat(candidate.path("response").path("applicationPayloadByteCount").asInt()).isEqualTo(101);
+        assertThat(candidate.path("response").path("fieldLayout")).hasSize(15);
+        String responseWire = candidate.path("response").path("applicationPayloadEscaped").asText();
+        assertThat(responseWire).hasSize(101).doesNotContain(String.valueOf(FIELD_SEPARATOR));
+        assertThat(java.util.HexFormat.of().withUpperCase().formatHex(responseWire.getBytes(StandardCharsets.US_ASCII)))
+                .isEqualTo(candidate.path("response").path("applicationPayloadHex").asText());
 
         String escaped = candidate.path("request").path("applicationPayloadEscaped").asText();
         String wire = escaped.replace("\\u001c", String.valueOf(FIELD_SEPARATOR));
@@ -77,5 +92,14 @@ class AppendixAFPhysicalWireCandidateTest {
         var layout = new Chapter11MessageLayoutValidator().validate(candidate.path("chapter11LayoutObservation"));
         assertThat(layout.findings()).noneMatch(finding -> finding.status() == Status.INVALID);
         assertThat(layout.findings()).anyMatch(finding -> finding.status() == Status.REVIEW_REQUIRED);
+
+        var responseLayout = new Chapter11MessageLayoutValidator()
+                .validate(candidate.path("response").path("chapter11LayoutObservation"));
+        assertThat(responseLayout.findings()).noneMatch(finding -> finding.status() == Status.INVALID);
+        assertThat(responseLayout.findings()).anyMatch(finding -> finding.status() == Status.REVIEW_REQUIRED);
     }
+
+        private static String sha256(Path path) throws Exception {
+                return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(path)));
+        }
 }

@@ -1,0 +1,78 @@
+{
+  "id" : "TD-APPI-T049-C026-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C026-NEG.json",
+  "testCaseIds" : [ "TC-APPI-T049-C026-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-51",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r052-APPI-T049-C026"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C026",
+        "tableId" : "049",
+        "nestedSelector" : "26",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R052" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-50",
+          "startLine" : 29928,
+          "endLine" : 29935
+        }, {
+          "section" : "Appendix I-51",
+          "startLine" : 29945,
+          "endLine" : 29962
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "26",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "Y" ],
+          "baselinePositiveData" : "1",
+          "negativeLogicalFields" : {
+            "data" : "1"
+          },
+          "preconditions" : {
+            "network" : "Maestro",
+            "merchantWantsTransactionLinkAction" : true
+          }
+        },
+        "clearScope" : "Maestro action-support request flag; response action1 is not a valid request flag.",
+        "excludedClaims" : [ "22 dependency resolved", "Guaranteed039 or038", "Network lifecycle matching" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "transaction-link-action-support-code-is-Y",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "listed-maestro-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "transaction-link-action-support-code-is-Y",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "Y",
+          "to" : "1",
+          "targetPredicate" : "transaction-link-action-support-code-is-Y"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

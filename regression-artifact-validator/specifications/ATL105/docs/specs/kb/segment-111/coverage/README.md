@@ -5,7 +5,7 @@ selected Appendix I predicate results into an auditable coverage decision.
 The Segment 111 rule catalog remains scoped to envelope rules
 (`SEG111-R-001` through `SEG111-R-007` plus provisional `SEG111-R-008`);
 the combined flow separately invokes bounded Appendix I predicates for Tables
-001-009 and selected rules for Tables 010-015, 017-022, and 024-040. This is not
+001-009 and selected rules for Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062. This is not
 exhaustive table or context coverage.
 
 ## Work Package
@@ -33,7 +33,7 @@ Before implementation, confirm:
 
 1. The rule catalog represents the intended Segment 111 envelope scope.
    Appendix I has 78 defined tables; Tables 001-009 have bounded predicates,
-   with selected additional rules from Tables 010-015, 017-022, and 024-040. The remaining table semantics,
+   with selected additional rules from Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062. The remaining table semantics,
    nested layouts and contextual rules must not be silently marked `COVERED`.
 2. `COVERED`, `PARTIALLY_COVERED`, `REVIEW_REQUIRED`, and `MISSING` are
    sufficient statuses.

@@ -1,0 +1,73 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG104-PC-TAX-AMOUNT-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-009265CA660E",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:6083",
+  "aiStatement": "PC Tax Amount: Identifies transaction tax amount in the Purchase Card Data Segment.",
+  "independentTestCandidate": {
+    "testBrId": "BR-RULE-SEG104-R-008",
+    "title": "PC Tax Amount is numeric, up to 7 digits with 2 assumed decimal places, when populated.",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED"
+  },
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_SOURCE_PURPOSE",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE_NO_VALUE_OBSERVED",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-E74-NUMERIC-MAX", "ATL105-2026-3-E74-DECIMALS", "ATL105-2026-3-E74-PURPOSE", "ATL105-2026-3-E74-VS-E99"],
+    "facts": [
+      "Element 74 is numeric, variable length up to seven digits, with two assumed decimal places.",
+      "Its stated purpose is the transaction tax amount in Segment 104, the Purchase Card Data Segment.",
+      "The specification distinguishes Element 74 from Element 99 Tax Amount in Segment 100."
+    ],
+    "scopeNote": "The source purpose statement is descriptive; the bounded AI cases provide no populated PC Tax Amount value from which to validate its semantics."
+  },
+  "aiCaseReview": {
+    "caseCount": 3,
+    "cases": [
+      {"caseId": "TC-019804", "transaction": "EMV Financial Transaction Request", "intent": "supplemental_entity", "element74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "d4561c3154d662cd535cbd2a71cdaa8ba2fb390edf16f38f81bfdc009ca8ddb2"},
+      {"caseId": "TC-019805", "transaction": "Financial Transaction Request", "intent": "supplemental_entity", "element74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "91c31f4210e65ea692aec2c35b9155a64a2a0b6e77db8e76f3ecb0a714f7d0bb"},
+      {"caseId": "TC-019806", "transaction": "Financial Transactions", "intent": "supplemental_entity", "element74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f747a36b8662466dc373d23f085f4886d4006dcb38aae67c9f795fb2f2c9fa98"}
+    ],
+    "assessment": "All three hash-verified candidate observations declare Element 74 omitted. The cases do not demonstrate a populated amount, character type, length boundary, or purpose relationship."
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG104-R-008",
+    "testScenario": "TS-REVIEW-BR-RULE-SEG104-R-008",
+    "testCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-008",
+    "testData": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-008",
+    "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+    "testDataReadiness": "REVIEW_REQUIRED",
+    "fixtureStatus": "SME_FIXTURE_REQUIRED"
+  },
+  "supplementalDraft": {
+    "path": "pc-tax-amount-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 4,
+    "testDataDesignCount": 4,
+    "coverageScope": "Element 74 numeric type, seven-digit maximum, and two assumed decimal places only",
+    "doesNotCover": ["when Segment 104 is applicable", "whether Element 74 must be present", "semantic correctness of a transaction tax amount", "wire encoding"],
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "candidateTestBrIdsNotPromoted": ["SEG104-R-008", "BR-SEG104-LENGTH", "SEG104-R-001", "SEG104-R-006", "SEG104-R-007"],
+  "requiredEvidenceForAdjudication": [
+    "A source-justified Segment 104 context where PC Tax Amount is populated, with the meaning and amount derived independently.",
+    "Full converter-ready Segment 104 fixtures and sidecars for positive, maximum-length, overlength, and nonnumeric cases.",
+    "Authorized Test-owner decision on Segment 104 applicability and Element 74 presence; this format draft does not decide it.",
+    "Independent semantic review that Element 74 is not being confused with Standard Message Data Element 99."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

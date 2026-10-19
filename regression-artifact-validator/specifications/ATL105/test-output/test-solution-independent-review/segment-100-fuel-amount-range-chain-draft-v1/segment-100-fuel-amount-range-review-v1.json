@@ -1,0 +1,53 @@
+{
+  "reviewId": "ATL105-SEG100-FUEL-AMOUNT-RANGE-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroups": ["OBL-46FAF0354443", "OBL-5DA8189FB5C6"],
+  "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769", "REQ-SRC-ATL105-PDF-001:1773"],
+  "sourceFinding": {
+    "claims": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1769", "claim": "Fuel Purchase Amount max length is 8 bytes for American Express cards only; 7 bytes for all other card types.", "assessment": "Matches the Element 41 card-brand width note."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1773", "claim": "Valid values for Fuel Purchase Amount are 1-99999999.", "assessment": "Matches the Element 41 valid-values range."}
+    ],
+    "omissions": "The claims do not mention two assumed decimal places or that Element 41 applies to transactions with fuel sales.",
+    "sourceEvidenceIds": ["ATL105-2026-3-E41-NUMERIC-MAX", "ATL105-2026-3-E41-DECIMALS", "ATL105-2026-3-E41-CARD-WIDTHS", "ATL105-2026-3-E41-PURPOSE", "ATL105-2026-3-E41-FUEL-CONTEXT", "ATL105-2026-3-E41-VALID-RANGE"],
+    "semanticLimits": "Fuel amount calculation with discounts and allocation of discounts in mixed fuel/nonfuel transactions are separate source rules and are not decided by these range/width vectors."
+  },
+  "independentTestAssessment": {
+    "existingRule": "SEG100-R-045",
+    "existingRuleScope": "Net fuel amount semantics; not the range/card-specific width rule.",
+    "chainState": "DRAFT_REVIEW_REQUIRED_PLACEHOLDER",
+    "candidateDraft": "segment-100-fuel-amount-range-test-chain-package-v1.json",
+    "status": "REVIEW_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 11,
+    "cases": [
+      {"caseId": "TC-008694", "payloadSha256": "2da417fe2deaf5a4116b48ced8f8eb961ffa04307cb031419a025c25506f9421", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008695", "payloadSha256": "f19a7b3a9153a09eee867f3d6cc47b5c16d975ad95c8cae3d3c8f86482bae7c2", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008696", "payloadSha256": "dfddc1e2bdd928a5044fa1d907c96366b9ec6077f8d7d418f9d73d0248149651", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008697", "payloadSha256": "6d7e85949732628b8b275374fdd62a69170e3f6787954109f7b814cf78954dda", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008698", "payloadSha256": "1637b110302661b57e67d2ed891a3a4cdc721b6925c83ded247a698d06059ac9", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008717", "payloadSha256": "983ff9dcc82b8c97b957d47112bc1167c38c0e3a44afae14f12518833fe22677", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008718", "payloadSha256": "ab23545a304ebe965468491c07e6cdb5b5873347f2c4794ce4a9deb82cb0ad5f", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008719", "payloadSha256": "e75505fcd41a2ca6a37b74e9bf4033207c2ab587541fab8fe3f6e97ea9b3813f", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008720", "payloadSha256": "3399a8f51ab21bd50ea07a89a3b4816c378c70ec3361389c097be61d745c9720", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008721", "payloadSha256": "425bd27db9f98694f78c5d79e67a665f8387f2e113ab220682c37dbf11172c9f", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008722", "payloadSha256": "29dbf2a17ab2e4a207eeb6b7ee39feb025e107a0165871329341aa6d0e9187d6", "element41": "DECLARED_OMISSION_NO_EXACT_FIELD"}
+    ],
+    "conclusion": "All 11 frozen candidate payload observations declare Segment 100 Element 41 omitted. None demonstrates the range, brand-specific width, assumed-decimal representation, or fuel amount semantics."
+  },
+  "adjudicationGaps": [
+    "Confirm card-brand/type encoding and how the Amex width exception is selected.",
+    "Confirm fuel-sale applicability and two-decimal serialization for the full transaction context.",
+    "Review complete fixtures and expected outcomes with the authorized Test owner before promotion or execution."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

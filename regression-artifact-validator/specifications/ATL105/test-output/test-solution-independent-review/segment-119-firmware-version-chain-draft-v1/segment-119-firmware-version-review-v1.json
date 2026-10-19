@@ -1,0 +1,69 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG119-FIRMWARE-VERSION-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-00D32F465C20",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:3421",
+  "aiStatement": "In Totals with Proprietary Data Load Data Segment (Data Segment No. 119), field 11 (Firmware Version) is required and must be present.",
+  "independentTestBrId": "BR-RULE-SEG119-R-018",
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_SEGMENT119_FIELD_TABLE",
+    "chainAdequacy": "PARTIAL",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG119-FIELD11-E39", "ATL105-2026-3-SEG119-REQUEST-CONTEXT"],
+    "facts": [
+      "The Segment 119 table maps Field 11 to Element 39 Firmware Version, length 8, Required (R), and identifies the device's EPROM level.",
+      "The segment originates at the device with the purpose of requesting Totals.",
+      "The AI claim's field number and required-presence statement are source-supported for this Segment 119 context."
+    ],
+    "fieldNumberConflict": "NONE_FOUND_IN_SEGMENT119_SOURCE_TABLE"
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG119-R-018",
+    "testScenario": "TS-REVIEW-BR-RULE-SEG119-R-018",
+    "testCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-018",
+    "testData": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-018",
+    "testStatus": "REVIEW_REQUIRED",
+    "scenarioDefinitionGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+    "fixtureStatus": "SME_FIXTURE_REQUIRED"
+  },
+  "aiChainReview": {
+    "caseCount": 5,
+    "targetContextCases": [
+      {"caseId": "TC-004199", "transaction": "Totals with Proprietary Data Load Request", "scenarioType": "negative/missing_mandatory", "element39": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "3755e46e847670a55be1e638c9b357da40cdb228c791dc0b93442913931b9bbe", "status": "SOURCE_SCOPE_RELEVANT_PRODUCER_NEGATIVE"},
+      {"caseId": "TC-012646", "transaction": "Totals with Proprietary Data Load Request", "scenarioType": "field_constraint", "element39": "RQGZ9DQ6", "payloadSha256": "fa32089b34fdca9bf202adc8a0a15c6dcb35005ff0a8cd45a23028f9154cdc62", "status": "SOURCE_SCOPE_RELEVANT_PRODUCER_VALUE"}
+    ],
+    "otherContextCases": [
+      {"caseId": "TC-003470", "transaction": "Financial Transaction Request", "element39": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "28e990d6b7a2c66c9a567b8a04bd4bbf667485c60b1da458f4a0a26de04e4e61", "status": "NOT_ESTABLISHED_AS_SEGMENT119_TOTALS_REQUEST"},
+      {"caseId": "TC-012644", "transaction": "Financial Transaction Request", "element39": "NQN6U5Z5", "payloadSha256": "295bebce2db5d3a32c3c61bc39b8d252e14c871d9cafe4b5ccf9b705fcbf4817", "status": "PRESENCE_OBSERVED_BUT_BUSINESS_CONTEXT_UNRESOLVED"},
+      {"caseId": "TC-012645", "transaction": "Totals Request", "element39": "NO_EXACT_SEGMENT119_OBSERVATION", "payloadSha256": "88f55d71267f6aa274c1b9b70be61719d13960c3b8d0c1cfebdeabfd08846291", "status": "DOES_NOT_DEMONSTRATE_SEGMENT119_FIRMWARE_VERSION"}
+    ],
+    "assessment": "The target-context AI chain includes one declared omission and one eight-character value. This is useful preliminary negative/positive evidence, but candidate payload observations are not independent Test validation, sidecars are not semantically approved, and no execution occurred. Three other cases do not establish the same Segment 119 Totals-with-Proprietary-Data-Load context."
+  },
+  "supplementalDraft": {
+    "path": "segment-119-firmware-version-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 2,
+    "testDataDesignCount": 2,
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Authorized Test-owner confirmation of a valid Totals with Proprietary Data Load request fixture and all companion fields.",
+    "Full payload and metadata-sidecar review for TC-004199 and TC-012646, with the exact Segment 119 container bound.",
+    "Independent structural oracle and execution evidence for presence and omission behavior.",
+    "Separate decisions for the remaining three AI cases; do not generalize this rule across their transaction types."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

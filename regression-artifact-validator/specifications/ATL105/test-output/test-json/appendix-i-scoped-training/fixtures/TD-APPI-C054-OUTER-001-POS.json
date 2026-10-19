@@ -1,0 +1,134 @@
+{
+  "id" : "TD-APPI-C054-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C054-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C054-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-54",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t054-r001-APPI-C054-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C054-OUTER-001",
+        "tableId" : "054",
+        "ruleIds" : [ "APPI-T054-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "054",
+          "logicalPayloadLength" : 15,
+          "merchantTranId" : "M00000000000001",
+          "context" : {
+            "processor" : "Moneris"
+          },
+          "downstreamLogicalField" : {
+            "name" : "Client Request ID 7b",
+            "value" : "M00000000000001"
+          }
+        },
+        "clearScope" : "Moneris mandatory identifier,max15,logical map7b; non-Moneris max95.",
+        "excludedClaims" : [ "Actual processor transmission", "Merchant ID uniqueness", "Truncation/defaulting" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Moneris required ID,max15",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "7b copies merchant identifier",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "merchantTranId",
+            "operation" : "remove",
+            "expected" : "FAIL Moneris requiredness"
+          }, {
+            "path" : "merchantTranId",
+            "replacement" : "M000000000000010",
+            "expected" : "FAIL Moneris max15"
+          }, {
+            "path" : "downstreamLogicalField.value",
+            "replacement" : "M00000000000002",
+            "expected" : "FAIL logical identity mapping"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 14,
+            "expected" : "FAIL count agreement"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "nonMonerisAllowedWidth" : 95,
+          "nonMonerisDisallowedWidth" : 96,
+          "note" : "Concrete95/96-character data supplied in lengthBoundaryExamples during source linkage."
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30166,
+          "section" : "Appendix I-54",
+          "endLine" : 30180
+        }, {
+          "startLine" : 30170,
+          "section" : "Appendix I-54",
+          "endLine" : 30180
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 054",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30170,
+            "section" : "Appendix I-54",
+            "endLine" : 30170
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30171,
+            "section" : "Appendix I-54",
+            "endLine" : 30173
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans95",
+          "sourceLength" : "variable up to 95 bytes; Moneris maximum 15",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30174,
+            "section" : "Appendix I-54",
+            "endLine" : 30180
+          } ]
+        } ],
+        "lengthBoundaryExamples" : {
+          "nonMoneris95" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "nonMoneris96" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "moneris15" : "M00000000000001",
+          "moneris16" : "M000000000000010"
+        }
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

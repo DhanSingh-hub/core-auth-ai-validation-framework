@@ -1,0 +1,88 @@
+{
+  "id" : "TD-APPI-T049-C013-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C013-NEG.json",
+  "testCaseIds" : [ "TC-APPI-T049-C013-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-46",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r028-APPI-T049-C013"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C013",
+        "tableId" : "049",
+        "nestedSelector" : "13",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R028" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-46",
+          "startLine" : 29615,
+          "endLine" : 29639
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "13",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "S", "T", "V" ],
+          "baselinePositiveData" : "I",
+          "negativeLogicalFields" : {
+            "data" : "I"
+          },
+          "preconditions" : {
+            "network" : "Discover",
+            "paymentIntent" : "Installment"
+          },
+          "preconditionsByData" : {
+            "S" : {
+              "installmentProviderClass" : "Merchant"
+            },
+            "T" : {
+              "installmentProviderClass" : "Third Party"
+            },
+            "V" : {
+              "installmentProviderClass" : "Issuer"
+            }
+          }
+        },
+        "clearScope" : "Every Discover nested installment-type code; not top-level013.",
+        "excludedClaims" : [ "Complete third-party descriptor/MCC dependencies", "Full Discover MIT installment coverage", "Guaranteed approval" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "installment-type-in-S-T-V",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "discover-context",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "type-matches-logical-provider",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "installment-type-in-S-T-V",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "T",
+          "to" : "I",
+          "targetPredicate" : "installment-type-in-S-T-V"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

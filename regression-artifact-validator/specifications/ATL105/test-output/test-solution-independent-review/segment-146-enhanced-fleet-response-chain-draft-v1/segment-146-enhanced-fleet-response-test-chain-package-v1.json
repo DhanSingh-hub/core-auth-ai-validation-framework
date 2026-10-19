@@ -1,0 +1,102 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG146-ENHANCED-FLEET-RESPONSE-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the Segment 146 response table's R marker for field 3 Element 239. Distinguish response Segment 146 from request Segment 145, which reuses Element 239.",
+      "dataPolicy": "Field-level symbolic response design only. A non-empty Table 001 flag is used to avoid relying on the nested no-flags omission clause; no wire bytes or host response are fabricated.",
+      "baselinePolicy": "References BR-RULE-SEG146-R-002; no official Test baseline record is modified.",
+      "promotionGate": "Authorized Test review must resolve response applicability, Element 239 container identity, nested table encoding, and full response fixture before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG146-R-002",
+      "title": "Enhanced Fleet Data (Element 239) is required, max 999 characters, with documented response data layouts",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.32", "segment": "146", "element": "239", "rule": "enhanced-fleet-response-data-table-catalog"}
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG146-FIELD3-E239",
+      "sourcePage": 295,
+      "startLine": 15652,
+      "quote": "3 239 Enhanced Fleet Data 999 R All or some of the Enhanced Fleet Data specified below. Data is in <tag><len><data> format.",
+      "interpretation": "In the Segment 146 response table, field 3 / Element 239 has required marker R and carries the described Enhanced Fleet Data format."
+    },
+    {
+      "id": "ATL105-2026-3-SEG146-TABLE001-NO-FLAGS",
+      "sourcePage": 295,
+      "startLine": 15670,
+      "quote": "If no flags are present, this field will not be included.",
+      "interpretation": "This omission statement is for the nested Table 001 Table Data field when no flags are present. It is not treated as a general ruling that Segment 146 field 3 / Element 239 is optional. The positive draft includes CP to avoid that subcondition."
+    },
+    {
+      "id": "ATL105-2026-3-SEG145-REQUEST-REUSED-E239",
+      "sourcePage": 278,
+      "startLine": 16073,
+      "quote": "Enhanced Fleet Data 239 Enhanced Fleet Request Segment (No. 145)",
+      "interpretation": "Segment 145 is a separate request-side Enhanced Fleet Data container; Element 239 identity must be bound to the segment container, not name alone."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-025EE9A68D4A",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3554",
+    "linkedCases": [
+      {"caseId": "TC-002726", "transaction": "EMV Financial Transaction Request", "scenarioType": "negative/missing_mandatory", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "af54a8875f161e82081a51676d0edba82dc841ca43195be81bdfc3f75c62ba91", "expectedResponseFieldListed": false},
+      {"caseId": "TC-003503", "transaction": "Financial Transaction Request", "scenarioType": "negative/missing_mandatory", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "8e95f9ff4b8222c005578bb2c77001eb0c7be3be6d867ef7113464225db7a5fa", "expectedResponseFieldListed": true},
+      {"caseId": "TC-013018", "transaction": "ECA/TeleCheck Service Transaction", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "20565707c4c37f109303d12264e2e1c953307db3f0a0b8e48d79127b64486664", "expectedResponseFieldListed": false},
+      {"caseId": "TC-013019", "transaction": "ECA/TeleCheck Service Transaction Request", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "036571e5f9649c047309478f944801a8a30623c1bb9a8379a8173bc6f9b42ffc", "expectedResponseFieldListed": false},
+      {"caseId": "TC-013020", "transaction": "EMV Financial Transaction Request", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "UNRESOLVED_FIELD_OR_ALIAS", "payloadSha256": "ff1c68764c9913136b3b2abac96878f3c352a5cdde74db7f731cf7eed6515ed1", "expectedResponseFieldListed": false},
+      {"caseId": "TC-013021", "transaction": "Financial Transaction Request", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "UNRESOLVED_FIELD_OR_ALIAS", "payloadSha256": "8d80a9d125c24910d5798665a80707e7cdf2f419d08e307448b16b58bb15fd3c", "expectedResponseFieldListed": true},
+      {"caseId": "TC-013022", "transaction": "Financial Transactions", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "b4c91d09f54ca5789681b46b8d27e49fbf4b54a6cdb2059e9d210060a20a1ea3", "expectedResponseFieldListed": false}
+    ],
+    "interpretation": "Element 239 is reused across Segments 145 and 146. The two omission cases have Segment 146 declared omissions; one expected-response catalog lists the field and the other does not. Two other cases have unresolved aliases across request and response containers; three have no exact Segment 146 observation. No case is adjudicated from field-name or producer metadata alone.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG146-E239-REQUIRED-RESPONSE",
+      "requirementIds": ["BR-RULE-SEG146-R-002"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG146-FIELD3-E239", "ATL105-2026-3-SEG146-TABLE001-NO-FLAGS", "ATL105-2026-3-SEG145-REQUEST-REUSED-E239"],
+      "intent": "In a reviewed-valid Enhanced Fleet Response context, verify Segment 146 field 3 / Element 239 with a non-empty Table 001 settlement flag, and compare with omission of the response field. Bind request Segment 145 separately.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG146-E239-PRESENT-TABLE001-CP", "scenarioIds": ["TS-DRAFT-SEG146-E239-REQUIRED-RESPONSE"], "testDataIds": ["TD-DRAFT-SEG146-E239-PRESENT-TABLE001-CP"], "assertion": "The response contains Segment 146 field 3 / Element 239 with a non-empty Table 001 Settlement Indicator value CP.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG146-E239-OMITTED", "scenarioIds": ["TS-DRAFT-SEG146-E239-REQUIRED-RESPONSE"], "testDataIds": ["TD-DRAFT-SEG146-E239-OMITTED"], "assertion": "The response omits Segment 146 field 3 / Element 239 in the reviewed-valid response context.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG146-E239-PRESENT-TABLE001-CP", "testCaseIds": ["TC-DRAFT-SEG146-E239-PRESENT-TABLE001-CP"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_DESIGN_NOT_CONVERTER_READY", "responseSegment": "146", "field": "3", "element": "239", "tableId": "001", "tableData": "CP", "requestSegment145": "SEPARATE_CONTAINER_IF_APPLICABLE"}},
+    {"id": "TD-DRAFT-SEG146-E239-OMITTED", "testCaseIds": ["TC-DRAFT-SEG146-E239-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_DESIGN_NOT_CONVERTER_READY", "responseSegment": "146", "field": "3", "element": "239", "omitted": true, "requestSegment145": "SEPARATE_CONTAINER_IF_APPLICABLE"}}
+  ],
+  "openQuestions": [
+    "Confirm when Segment 146 is required in the host response and whether the field-level R marker is unconditional for the applicable response contexts.",
+    "Confirm complete Table 001 length and <tag><len><data> encoding for a response containing CP.",
+    "Resolve the conflicting expected-response catalog for TC-002726 versus TC-003503 and re-open the payload/sidecars.",
+    "Bind Element 239 to request Segment 145 or response Segment 146 in the two unresolved-alias cases.",
+    "Provide authorized Test-owner outcome and execution evidence for full response fixtures."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

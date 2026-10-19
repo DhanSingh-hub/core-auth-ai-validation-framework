@@ -12,7 +12,7 @@ No model-training service has been invoked.
 
 **Current stage: all 78 defined tables represented in draft source-knowledge
 batches; bounded Tables 001-009 predicate/fragment candidates implemented;
-57 selected logical examples for Tables 010-015, 017-022, and 024-040 now independently
+101 selected logical chains for Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062 now independently
 evaluated and linked using the canonical review-only contract.
 Semantic completeness, full-message training and AI equivalence remain incomplete.**
 The generator locates 78 source-defined top-level table headings, not 81 consecutive
@@ -29,7 +29,6 @@ claimed by this inventory.
 
 - [ATL105 2026-3 source](../../extracted_text.txt): Appendix I, Section 12.10,
   Chapter 13 Elements 111, 112, 113, and relevant Chapter 11 message layouts.
-- [Generated source inventory](../../../../test-output/test-json/knowledge/appendix-i-inventory.json):
   text/PDF SHA-256, exact source lines, printed appendix pages, PDF page markers,
   table IDs, and nested-selector occurrences.
 - [First knowledge batch, Tables 001-009](../../../../test-output/test-json/knowledge/appendix-i-001-009.json):
@@ -38,18 +37,12 @@ claimed by this inventory.
 - [Segment 111 knowledge](../segment-111/README.md): existing segment training,
   not exhaustive Appendix I table training.
 - [Common handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md).
-- [Communication register](../../../../registers/atl105-communication-register.json):
   unresolved framing is tracked once as `SEG111-SME-002`; existing ECA-specific
-  length ambiguity remains `SEG111-SME-001`.
 
 ## Trainer decisions recorded on 2026-10-06
-
 These are user-directed process decisions, not SME approval of business rules:
 
-1. Train the complete appendix incrementally, including Elements 111/112/113 and
    nested sub-tables, rather than only the indicator.
-2. Compare with existing immutable repository AI deliveries. Missing appendix
-   artifacts remain explicit gaps; do not fabricate producer output.
 3. Continue unambiguous training while the Table 009 framing issue remains
    REVIEW_REQUIRED under `SEG111-SME-002`.
 4. Repair the communication-register prerequisite using the DL6-owned
@@ -89,7 +82,6 @@ intake -> technical readiness. Human review and approval are separate gates.
 | 3 | Defined Tables 024-048; nested Table 030/032; cross-appendix dependencies | KNOWLEDGE_DRAFTED_98_RULES_IN_010_048_BATCH_REVIEW_REQUIRED |
 | 4 | Table 049 and every source-defined nested layout | KNOWLEDGE_DRAFTED_60_RULES_24_LAYOUTS_REVIEW_REQUIRED |
 | 5 | Tables 050-059, including Table 056 and all nested layouts | KNOWLEDGE_DRAFTED_IN_050_067_BATCH_REVIEW_REQUIRED |
-| 6 | Defined Tables 060-073, including nested/conditional 060, 062, 063, 064, 066 | KNOWLEDGE_DRAFTED_ACROSS_050_067_AND_068_081_REVIEW_REQUIRED |
 | 7 | Defined Tables 075-081, including Line Item 078 and Commercial Card 079 | KNOWLEDGE_DRAFTED_IN_068_081_BATCH_REVIEW_REQUIRED |
 | Reconciliation | Field/rule inventory, all source notes/conditions, TS/TC/TD and AI evidence gaps | EXACT_TABLE_ID_AND_QUERY_LINK_RECONCILIATION_IMPLEMENTED_SEMANTIC_REVIEW_PENDING |
 
@@ -145,8 +137,8 @@ substituted by a fragment or producer sample.
 ## Executed scoped logical batch (continuation)
 
 [Canonical review-only package](../../../../test-output/test-json/appendix-i-scoped-training/package.json)
-contains 57 BR/TS pairs and 114 TC/TD pairs for selected examples from Tables
-010-015, 017-022, and 024-040. Each TD has a physical JSON file, the canonical
+contains 101 BR/TS pairs and 218 TC/TD pairs for selected examples from Tables
+010-015, 017-022, 024-051, 053-055, 057-059, and 062. Each TD has a physical JSON file, the canonical
 `testCaseIds` link, and REVIEW_REQUIRED readiness. Source anchors use a
 distinct scoped-check identity: these partial predicates must not be matched
 as though they implement every clause of the original source rule.
@@ -161,7 +153,7 @@ network availability or host response is verified.
 
 [Execution and rule ledger](../../../../test-output/test-json/appendix-i-scoped-training/evidence.json)
 pins the source and knowledge/example hashes, records actual findings for all
-114 logical evaluations, and reconciles all 302 draft rules. Fifty-seven supplied
+218 logical evaluations, and reconciles all 302 draft rules. One hundred one supplied
 targeted mutations are detected by their specific predicate. This is not
 the appendix-wide mutation threshold or complete coverage of those rules.
 The ledger identifies partial evidence **in this scoped batch**; it does not
@@ -174,6 +166,33 @@ explicit synthetic associated-card value; issuer/card validity remains
 unassessed. Tables 026/027 check supplied order/name grouping and bounded
 character-count data; Tables 028/029 check supplied logical UUID request and
 follow-up identity relationships, not host response generation or provenance.
+Table 044 checks only the illustrated Visa response-ID chain and 15-character
+shape; issuer provenance and generalized brand rules remain unverified.
+Table 045 checks numeric scale and the supplied Discover original-approved
+amount context. Table 046 checks only the explicit authorizer fixture, with its
+applicability and length conflict still open. Table 047 checks the Discover
+provider*retailer descriptor example, not enrollment. Table 048 checks listed
+protocol/length mappings and protocol-plus-DS-ID shape; server issuance and
+EMV 3DS participation remain unverified.
+Table 049 adds 24 nested-selector candidates, covering 40 positive data
+variants and 24 targeted negatives. They remain logical fragments; aggregate
+framing/order, external catalogue and eligibility checks, and 14 open SME items
+are not resolved by these cases.
+Tables 050/051 add source-bounded checks for 1-16 alphanumeric values, exact
+logical length, and the four-byte SVS exception. Security-code authenticity and
+Additional Card ID allocation/uniqueness remain unverified.
+Tables 053-055 cover canonical base64 identifier/cryptogram shape with companion
+context, Moneris identifier length/mapping, and the four listed UCOM provider
+codes. Table 053's 028 interpretation, cryptographic validity, actual processor
+transmission, and UCOM assignment remain review-required.
+Tables 057-059 compare Discover third-party-provider city, state, and country
+against the supplied underlying-retailer context. They do not resolve source
+selector/length/padding conflicts or independently verify country-code authority;
+their registered SME questions remain open.
+Table 062 checks the defined phone/email record maxima, supplied nested/aggregate
+counts, and Visa account-verification context. It does not impose E.164, email
+RFC, deliverability, or mandatory-contact rules; the email character/count conflict
+remains open.
 Table 030 checks only explicit EMV presence, the no-security-concern code and
 the MasterCard-only terminal type 29 context; Table 031 checks the listed
 capability codes and certified-capability invariance across entry modes.
@@ -198,6 +217,11 @@ real MCX token validity and Paydiant registration remain unverified. Table 039
 checks supplied DDMMCCYY component ordering, not calendar-edge policy. Table 040
 checks the supplied EMV-initial eligibility and known-amount omission cases;
 actual settlement outcomes remain unverified.
+Table 041 checks conditional presence for the supplied numeric-state-00 context
+but does not validate ISO subdivision membership. Table 042 checks only the
+English/French examples. Table 043 checks an explicit synthetic short postal
+fragment and separate AVS-address presence; actual international postal
+formatting remains `REVIEW_REQUIRED`.
 Proposed outcomes in the
 original 178 example records remain unchanged.
 

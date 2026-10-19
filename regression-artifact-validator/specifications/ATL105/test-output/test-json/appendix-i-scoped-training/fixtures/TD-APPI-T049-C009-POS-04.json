@@ -1,0 +1,91 @@
+{
+  "id" : "TD-APPI-T049-C009-POS-04",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C009-POS-04.json",
+  "testCaseIds" : [ "TC-APPI-T049-C009-POS-04" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-44",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r023-APPI-T049-C009"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C009",
+        "tableId" : "049",
+        "nestedSelector" : "09",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R023" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-44",
+          "startLine" : 29505,
+          "endLine" : 29530
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "09",
+          "declaredDataLength" : "3",
+          "positiveDataValues" : [ "310", "910", "920", "200" ],
+          "baselinePositiveData" : "200",
+          "negativeLogicalFields" : {
+            "data" : "201"
+          },
+          "preconditionsByData" : {
+            "310" : {
+              "program" : "InComm OTC",
+              "operation" : "Benefit Eligibility & Balance Lookup"
+            },
+            "910" : {
+              "program" : "InComm OTC",
+              "operation" : "Item Qualification"
+            },
+            "920" : {
+              "program" : "InComm OTC",
+              "operation" : "Limited Spend"
+            },
+            "200" : {
+              "program" : "InComm OTC",
+              "operation" : "Limited Spend Refund"
+            }
+          }
+        },
+        "clearScope" : "Every documented OTC code and three-digit layout.",
+        "excludedClaims" : [ "External benefit eligibility", "Product qualification", "OTC full transaction" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "OTC-code-in-310-910-920-200",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "numeric-three-byte-data",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "code-matches-logical-operation",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "OTC-code-in-310-910-920-200",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "numeric-three-byte-data",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "200",
+          "to" : "201",
+          "targetPredicate" : "OTC-code-in-310-910-920-200"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

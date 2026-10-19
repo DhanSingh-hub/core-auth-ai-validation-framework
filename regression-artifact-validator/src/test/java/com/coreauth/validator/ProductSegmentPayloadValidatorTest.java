@@ -89,6 +89,25 @@ class ProductSegmentPayloadValidatorTest {
     }
 
     @Test
+    void enforcesTheSourceQuantityExampleSeparatelyForBothProductSegments() {
+        for (String id : new String[]{"102", "157"}) {
+            String segmentName = "102".equals(id) ? "Product Code Data Segment" : "Adjusted Product Code Data Segment";
+            var payload = withWire(id, false);
+            ObjectNode segment = (ObjectNode) payload.path(segmentName);
+            segment.remove("SerializedSegment");
+            ObjectNode product = (ObjectNode) segment.path("Products").get(0);
+
+            product.put("Quantity", "205");
+            assertThat(validator.validate(payload, id).errors()).as(id + " 0.05 at two assumed decimal places").isEmpty();
+
+            product.put("Quantity", "25");
+            assertThat(validator.validate(payload, id).errors()).as(id + " missing fractional digit")
+                    .anyMatch(error -> error.reason().contains("Quantity")
+                            && error.reason().contains("all fractional digits"));
+        }
+    }
+
+    @Test
     void rejectsWrongProductDelimiterPositionsAndMeasuredLengthEvenWhenLogicalValuesPass() {
         for (String id : new String[]{"102", "157"}) {
             String name = "102".equals(id) ? "Product Code Data Segment" : "Adjusted Product Code Data Segment";

@@ -1,0 +1,173 @@
+{
+  "id" : "TD-APPI-C053-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C053-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C053-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-54",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t053-r001-APPI-C053-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C053-OUTER-001",
+        "tableId" : "053",
+        "ruleIds" : [ "APPI-T053-R001", "APPI-T053-R002", "APPI-T053-R003" ],
+        "syntheticData" : {
+          "tableSelector" : "053",
+          "logicalEncodedLength" : 12,
+          "identifier" : "c2hvcC50ZXN0",
+          "logicalCheckoutIdentifier" : "shop.test",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "segment123Present" : true,
+            "element237Present" : true,
+            "cryptogramPurpose" : "token or DSRP"
+          },
+          "element237StructuralString" : "AAAAAAAAAAAAAAAAAAAAAAAAAAA="
+        },
+        "clearScope" : "Checkout merchant identifier is base64; MasterCard companion in123; Element237 is28 base64 characters and distinct from merchant identifier.",
+        "excludedClaims" : [ "Whether028 limit counts encoded versus decoded bytes", "Cryptographic validity", "Required Table053 for all token transactions", "AAV semantics beyond separately declared companion" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Encoded checkout identity and MasterCard companion scope",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Element237 structural length/alphabet",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Ambiguous028 size measurement",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "context.cardBrand",
+            "replacement" : "Visa",
+            "expected" : "FAIL Table053 MasterCard-only scope"
+          }, {
+            "path" : "context.element237Present",
+            "replacement" : false,
+            "expected" : "FAIL companion presence"
+          }, {
+            "path" : "identifier",
+            "replacement" : "shop.test",
+            "expected" : "FAIL required base64 representation"
+          }, {
+            "path" : "element237StructuralString",
+            "replacement" : "AAAAAAAAAAAAAAAAAAAAAAAAAAA?",
+            "expected" : "FAIL Element237 alphabet at unchanged28 characters"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "element237TooShort" : "AAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "element237TooLong" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+          "merchantIdentifierLimitObservation" : "028, measurement unresolved"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30144,
+          "section" : "Appendix I-54",
+          "endLine" : 30165
+        }, {
+          "startLine" : 30152,
+          "section" : "Appendix I-54",
+          "endLine" : 30162
+        }, {
+          "section" : "12.19",
+          "startLine" : 13816,
+          "endLine" : 13826
+        }, {
+          "section" : "12.19",
+          "startLine" : 13857,
+          "endLine" : 13870
+        }, {
+          "section" : "12.19",
+          "startLine" : 13970,
+          "endLine" : 13987
+        }, {
+          "section" : "13 / Element 237",
+          "startLine" : 25222,
+          "endLine" : 25235
+        }, {
+          "startLine" : 30163,
+          "section" : "Appendix I-54",
+          "endLine" : 30165
+        }, {
+          "section" : "Appendix Y-3",
+          "startLine" : 36004,
+          "endLine" : 36020
+        }, {
+          "startLine" : 35939,
+          "section" : "Appendix Y-2",
+          "endLine" : 35992
+        }, {
+          "startLine" : 35993,
+          "section" : "Appendix Y-3",
+          "endLine" : 36040
+        }, {
+          "section" : "Appendix Y-3",
+          "startLine" : 36014,
+          "endLine" : 36020
+        }, {
+          "startLine" : 28795,
+          "section" : "Appendix I-31",
+          "endLine" : 28810
+        }, {
+          "startLine" : 28811,
+          "section" : "Appendix I-32",
+          "endLine" : 28826
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 053",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30148,
+            "section" : "Appendix I-54",
+            "endLine" : 30148
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30149,
+            "section" : "Appendix I-54",
+            "endLine" : 30151
+          } ]
+        }, {
+          "path" : "113.Remote Commerce Acceptor Identifier",
+          "sourceType" : "ans (b64 encoded)",
+          "sourceLength" : "variable up to 028 characters",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30152,
+            "section" : "Appendix I-54",
+            "endLine" : 30165
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

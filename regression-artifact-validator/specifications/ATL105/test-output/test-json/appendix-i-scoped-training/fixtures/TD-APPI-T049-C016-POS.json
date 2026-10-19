@@ -1,0 +1,78 @@
+{
+  "id" : "TD-APPI-T049-C016-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C016-POS.json",
+  "testCaseIds" : [ "TC-APPI-T049-C016-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-47",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r030-APPI-T049-C016"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C016",
+        "tableId" : "049",
+        "nestedSelector" : "16",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R030" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-46",
+          "startLine" : 29640,
+          "endLine" : 29659
+        }, {
+          "section" : "Appendix I-47",
+          "startLine" : 29670,
+          "endLine" : 29671
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "16",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "D" ],
+          "baselinePositiveData" : "D",
+          "negativeLogicalFields" : {
+            "data" : "Y"
+          },
+          "preconditions" : {
+            "network" : "Discover",
+            "saleClass" : "Delayed Card Sale"
+          }
+        },
+        "clearScope" : "Discover delayed-sale codeD.",
+        "excludedClaims" : [ "Deferred-connectivity01 equivalence", "Mandatory presence", "Complete delayed-sale flow" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "delayed-sale-code-is-D",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "discover-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "delayed-sale-code-is-D",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "D",
+          "to" : "Y",
+          "targetPredicate" : "delayed-sale-code-is-D"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -30,10 +30,10 @@ class GenerateAppendixIScopedTrainingTest {
         var output = GenerateAppendixIScopedTraining.generate(ROOT);
         var pkg = MAPPER.treeToValue(output.artifactPackage(), CanonicalArtifactPackage.class);
         assertThat(new CanonicalTraceabilityValidator().validate(pkg).errors()).isEmpty();
-        assertThat(pkg.getBusinessRequirements()).hasSize(57);
-        assertThat(pkg.getTestScenarios()).hasSize(57);
-        assertThat(pkg.getTestCases()).hasSize(114);
-        assertThat(pkg.getTestData()).hasSize(114);
+        assertThat(pkg.getBusinessRequirements()).hasSize(101);
+        assertThat(pkg.getTestScenarios()).hasSize(101);
+        assertThat(pkg.getTestCases()).hasSize(218);
+        assertThat(pkg.getTestData()).hasSize(218);
         for (var td : pkg.getTestData()) {
             assertThat(td.getReadiness().name()).isEqualTo("REVIEW_REQUIRED");
             assertThat(td.getTestCaseIds()).hasSize(1);
@@ -52,8 +52,8 @@ class GenerateAppendixIScopedTrainingTest {
             assertThat(rule.path("completeRuleCoverage").asBoolean()).isFalse();
             assertThat(rule.path("tableId").asText()).matches("[0-9]{3}");
         });
-        assertThat(evidence.path("logicalEvaluationCount").asInt()).isEqualTo(114);
-        assertThat(evidence.path("detectedSuppliedMutationCount").asInt()).isEqualTo(57);
+        assertThat(evidence.path("logicalEvaluationCount").asInt()).isEqualTo(218);
+        assertThat(evidence.path("detectedSuppliedMutationCount").asInt()).isEqualTo(101);
         assertThat(evidence.path("appendixWideMutationThresholdEstablished").asBoolean()).isFalse();
         assertThat(evidence.path("completeRequestCount").asInt()).isZero();
         assertThat(evidence.path("certifiedCaseCount").asInt()).isZero();
@@ -74,7 +74,19 @@ class GenerateAppendixIScopedTrainingTest {
             "APPI-C032-11", "APPI-C032-12Y", "APPI-C032-12N", "APPI-C032-13Y",
             "APPI-C032-13H", "APPI-C032-14", "APPI-C033-01", "APPI-C034-01",
             "APPI-C034-02", "APPI-C035-01", "APPI-C036-01", "APPI-C036-02",
-            "APPI-C037-01", "APPI-C038-01", "APPI-C039-01", "APPI-C040-01", "APPI-C040-02"})
+            "APPI-C037-01", "APPI-C038-01", "APPI-C039-01", "APPI-C040-01", "APPI-C040-02",
+            "APPI-C041-01", "APPI-C042-01", "APPI-C043-01", "APPI-C044-01",
+            "APPI-C045-01", "APPI-C046-01", "APPI-C047-01", "APPI-C048-01", "APPI-C048-02",
+            "APPI-T049-C001", "APPI-T049-C002", "APPI-T049-C003", "APPI-T049-C004",
+            "APPI-T049-C005", "APPI-T049-C006", "APPI-T049-C007", "APPI-T049-C009",
+            "APPI-T049-C010", "APPI-T049-C011", "APPI-T049-C013", "APPI-T049-C016",
+            "APPI-T049-C017", "APPI-T049-C018", "APPI-T049-C020", "APPI-T049-C021",
+            "APPI-T049-C022", "APPI-T049-C023", "APPI-T049-C024", "APPI-T049-C025",
+            "APPI-T049-C026", "APPI-T049-C027", "APPI-T049-C028", "APPI-T049-C030",
+            "APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C053-OUTER-001",
+            "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
+            "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-OUTER-001",
+            "APPI-C062-N01-001", "APPI-C062-N02-001"})
     void detectsTheSpecificSuppliedMutationWithoutPromotingReadiness(String id) throws IOException {
         ObjectNode source = candidate(id);
         ObjectNode saved = source.deepCopy();
@@ -209,6 +221,144 @@ class GenerateAppendixIScopedTrainingTest {
         assertThat(VALIDATOR.validate(signatureDebit).findings()).anyMatch(f ->
                 f.ruleId().equals("APPI-T021-AVAILABILITY")
                         && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void tables044To048KeepIssuerAndUuidProvenanceReviewGated() throws IOException {
+        ObjectNode originalId = candidate("APPI-C044-01");
+        assertThat(VALIDATOR.validate(originalId).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T044-PROVENANCE")
+                        && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode previousData = candidate("APPI-C046-01");
+        ((ObjectNode) previousData.path("logicalFields").path("context")).remove("authorizerRequirement");
+        ((ObjectNode) previousData.path("logicalFields")).remove("authorizerRequiredData");
+        assertReview(previousData, "APPI-T046-R001");
+
+        ObjectNode descriptor = candidate("APPI-C047-01");
+        ((ObjectNode) descriptor.path("context")).put("brand", "Visa");
+        assertReview(descriptor, "APPI-T047-R002");
+
+        ObjectNode serverId = candidate("APPI-C048-02");
+        ((ObjectNode) serverId.path("logicalFields").path("context")).remove("brand");
+        assertReview(serverId, "APPI-T048-R003");
+    }
+
+    @Test
+    void table049InventoryCoversAllDefinedSelectorsAndPreservesReviewGaps() throws IOException {
+        JsonNode batch = MAPPER.readTree(ROOT.resolve(Path.of("test-output", "test-json", "knowledge",
+                "appendix-i-candidates-049.json")).toFile());
+        assertThat(batch.path("coverage")).hasSize(24);
+        assertThat(batch.path("candidates")).hasSize(24);
+        assertThat(batch.path("gaps")).hasSize(11);
+        assertThat(batch.path("readiness").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(batch.path("gaps")).anyMatch(gap ->
+                gap.path("registerIds").toString().contains("SEG111-SME-003"));
+
+        var evidence = GenerateAppendixIScopedTraining.generate(ROOT).evidence();
+        assertThat(evidence.path("scopedCandidateCount").asInt()).isEqualTo(101);
+        assertThat(evidence.path("logicalEvaluationCount").asInt()).isEqualTo(218);
+        assertThat(evidence.path("approvedRuleCount").asInt()).isZero();
+        assertThat(evidence.path("certifiedCaseCount").asInt()).isZero();
+    }
+
+    @Test
+    void tables050And051DetectAllDeclaredMutationsAndRespectTheSvsException() throws IOException {
+        for (String id : List.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001")) {
+            ObjectNode source = candidate(id);
+            String target = AppendixIScopedCandidateValidator.mutationTarget(id);
+            for (JsonNode mutation : source.path("mutation").path("cases")) {
+                ObjectNode mutated = source.deepCopy();
+                ((ObjectNode) mutated.path("syntheticData")).set(mutation.path("path").asText(),
+                        mutation.path("replacement").deepCopy());
+                assertFail(mutated, target);
+            }
+
+            ObjectNode nonSvs = source.deepCopy();
+            ObjectNode synthetic = (ObjectNode) nonSvs.path("syntheticData");
+            synthetic.putObject("context").put("cardProgram", "OTHER");
+            String valueField = id.contains("050") ? "securityCode" : "cardId";
+            for (String value : List.of("A", "ABCDEFGHIJKLMNOP")) {
+                synthetic.put(valueField, value).put("logicalPayloadLength", value.length());
+                assertThat(VALIDATOR.validate(nonSvs).findings()).anyMatch(f ->
+                        f.ruleId().equals(target) && f.status() == AppendixILogicalDataValidator.Status.PASS);
+            }
+            synthetic.put(valueField, "ABCDEFGHIJKLMNOPQ").put("logicalPayloadLength", 17);
+            assertFail(nonSvs, target);
+        }
+    }
+
+    @Test
+    void tables053Through055DetectEveryDeclaredMutation() throws IOException {
+        for (String id : List.of("APPI-C053-OUTER-001", "APPI-C054-OUTER-001", "APPI-C055-OUTER-001")) {
+            ObjectNode source = candidate(id);
+            String tableId = source.path("tableId").asText();
+            for (JsonNode mutation : source.path("mutation").path("cases")) {
+                ObjectNode mutated = source.deepCopy();
+                applyDeclaredMutation(mutated, mutation);
+                assertThat(VALIDATOR.validate(mutated).findings()).anyMatch(f ->
+                        f.ruleId().startsWith("APPI-T" + tableId + "-")
+                                && f.status() == AppendixILogicalDataValidator.Status.FAIL);
+            }
+        }
+
+        ObjectNode maximumMonerisId = candidate("APPI-C054-OUTER-001");
+        ObjectNode monerisData = (ObjectNode) maximumMonerisId.path("syntheticData");
+        monerisData.put("merchantTranId", "M".repeat(15)).put("logicalPayloadLength", 15);
+        ((ObjectNode) monerisData.path("downstreamLogicalField")).put("value", "M".repeat(15));
+        assertThat(VALIDATOR.validate(maximumMonerisId).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T054-R001") && f.status() == AppendixILogicalDataValidator.Status.PASS);
+    }
+
+    @Test
+    void tables057Through059DetectEveryDeclaredLocationMutation() throws IOException {
+        for (String id : List.of("APPI-C057-OUTER-001", "APPI-C058-OUTER-001", "APPI-C059-OUTER-001")) {
+            ObjectNode source = candidate(id);
+            String tableId = source.path("tableId").asText();
+            for (JsonNode mutation : source.path("mutation").path("cases")) {
+                ObjectNode mutated = source.deepCopy();
+                applyDeclaredMutation(mutated, mutation);
+                assertThat(VALIDATOR.validate(mutated).findings()).anyMatch(f ->
+                        f.ruleId().startsWith("APPI-T" + tableId + "-")
+                                && f.status() == AppendixILogicalDataValidator.Status.FAIL);
+            }
+        }
+
+        ObjectNode maximumCity = candidate("APPI-C057-OUTER-001");
+        ((ObjectNode) maximumCity.path("syntheticData")).put("merchantCity", "C".repeat(20));
+        ((ObjectNode) maximumCity.path("syntheticData").path("context")).put("underlyingRetailerCity", "C".repeat(20));
+        assertThat(VALIDATOR.validate(maximumCity).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T057-R001") && f.status() == AppendixILogicalDataValidator.Status.PASS);
+    }
+
+    @Test
+    void table062DetectsNestedRecordMutationsAndEnforcesDeclaredMaximums() throws IOException {
+        for (String id : List.of("APPI-C062-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001")) {
+            ObjectNode source = candidate(id);
+            for (JsonNode mutation : source.path("mutation").path("cases")) {
+                ObjectNode mutated = source.deepCopy();
+                applyDeclaredMutation(mutated, mutation);
+                assertThat(VALIDATOR.validate(mutated).findings()).anyMatch(f ->
+                        f.ruleId().startsWith("APPI-T062-")
+                                && f.status() == AppendixILogicalDataValidator.Status.FAIL);
+            }
+        }
+
+        ObjectNode phone = candidate("APPI-C062-N01-001");
+        ObjectNode phoneData = (ObjectNode) phone.path("syntheticData");
+        phoneData.put("phone", "P".repeat(16)).put("logicalLength", 16);
+        assertThat(VALIDATOR.validate(phone).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T062-R001") && f.status() == AppendixILogicalDataValidator.Status.PASS);
+        phoneData.put("phone", "P".repeat(17)).put("logicalLength", 17);
+        assertFail(phone, "APPI-T062-R001");
+
+        ObjectNode email = candidate("APPI-C062-N02-001");
+        ObjectNode emailData = (ObjectNode) email.path("syntheticData");
+        emailData.put("email", "E".repeat(99)).put("logicalLength", 99);
+        assertThat(VALIDATOR.validate(email).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T062-R001") && f.status() == AppendixILogicalDataValidator.Status.PASS);
+        emailData.put("email", "E".repeat(100)).put("logicalLength", 100);
+        assertFail(email, "APPI-T062-R001");
     }
 
     @Test
@@ -375,6 +525,17 @@ class GenerateAppendixIScopedTrainingTest {
     }
 
     @Test
+    void tables041To043KeepIsoAndPostalValidityReviewGated() throws IOException {
+        ObjectNode subdivision = candidate("APPI-C041-01");
+        assertThat(VALIDATOR.validate(subdivision).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T041-ISO") && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+
+        ObjectNode postal = candidate("APPI-C043-01");
+        assertThat(VALIDATOR.validate(postal).findings()).anyMatch(f ->
+                f.ruleId().equals("APPI-T043-FORMAT") && f.status() == AppendixILogicalDataValidator.Status.REVIEW_REQUIRED);
+    }
+
+    @Test
     void invalidScopeIdentityAndAbsentMutationPathsFailExplicitly() throws IOException {
         assertThat(VALIDATOR.validate(null).findings().get(0).status()).isEqualTo(AppendixILogicalDataValidator.Status.FAIL);
         ObjectNode input = candidate("APPI-C010-01");
@@ -456,12 +617,39 @@ class GenerateAppendixIScopedTrainingTest {
     }
 
     private static ObjectNode candidate(String id) throws IOException {
-        var batch = MAPPER.readTree(ROOT.resolve(Path.of("test-output", "test-json", "knowledge",
-                "appendix-i-candidates-010-048.json")).toFile());
+        String fileName = id.startsWith("APPI-T049-C") ? "appendix-i-candidates-049.json"
+                : id.startsWith("APPI-C050-") || id.startsWith("APPI-C051-")
+                || id.startsWith("APPI-C053-") || id.startsWith("APPI-C054-") || id.startsWith("APPI-C055-")
+                || id.startsWith("APPI-C057-") || id.startsWith("APPI-C058-") || id.startsWith("APPI-C059-")
+                || id.startsWith("APPI-C062-")
+                ? "appendix-i-candidates-050-067.json" : "appendix-i-candidates-010-048.json";
+        var batch = MAPPER.readTree(ROOT.resolve(Path.of("test-output", "test-json", "knowledge", fileName)).toFile());
         for (JsonNode row : batch.path("candidates")) {
             if (id.equals(row.path("candidateId").asText())) return row.deepCopy();
         }
         throw new IllegalArgumentException("Candidate missing: " + id);
+    }
+
+    private static void applyDeclaredMutation(ObjectNode candidate, JsonNode mutation) {
+        String[] path = mutation.path("path").asText().split("\\.");
+        JsonNode parent = candidate.path("syntheticData");
+        for (int index = 0; index < path.length - 1; index++) {
+            String part = path[index];
+            if (part.endsWith("]")) {
+                int bracket = part.indexOf('[');
+                parent = parent.path(part.substring(0, bracket))
+                        .path(Integer.parseInt(part.substring(bracket + 1, part.length() - 1)));
+            } else {
+                parent = parent.path(part);
+            }
+        }
+        String field = path[path.length - 1];
+        ObjectNode objectParent = (ObjectNode) parent;
+        if ("remove".equals(mutation.path("operation").asText())) {
+            objectParent.remove(field);
+        } else {
+            objectParent.set(field, mutation.path("replacement").deepCopy());
+        }
     }
 
     private static void assertFail(JsonNode input, String rule) {

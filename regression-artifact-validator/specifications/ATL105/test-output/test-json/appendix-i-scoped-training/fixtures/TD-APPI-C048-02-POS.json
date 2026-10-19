@@ -1,0 +1,70 @@
+{
+  "id" : "TD-APPI-C048-02-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C048-02-POS.json",
+  "testCaseIds" : [ "TC-APPI-C048-02-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-38",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t048-r003-APPI-C048-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C048-02",
+        "tableId" : "048",
+        "ruleIds" : [ "APPI-T048-R001", "APPI-T048-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-38",
+          "startLine" : 29168,
+          "endLine" : 29171
+        }, {
+          "section" : "Appendix I-39",
+          "startLine" : 29206,
+          "endLine" : 29212
+        } ],
+        "logicalFields" : {
+          "programProtocol" : "2",
+          "programProtocolPresent" : true,
+          "directoryServerTransactionId" : "11111111-2222-4333-8444-555555555555",
+          "directoryServerIdPresent" : true,
+          "payloadCharacterCount" : 37,
+          "context" : {
+            "brand" : "MasterCard",
+            "emv3dsParticipation" : "Explicit synthetic precondition"
+          }
+        },
+        "clearScope" : [ "Concrete36-character ID shape plus one protocol character", "ID requires protocol" ],
+        "excludedClaims" : [ "Issued/unique Directory Server ID", "UUID lexical certification", "Network program enrollment" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Directory Server ID accompanied by protocol",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "1+36 equals logical count37",
+          "positive" : "PASS",
+          "mutated" : "NOT_APPLICABLE"
+        }, {
+          "predicate" : "Server-issued identity established",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "programProtocolPresent",
+          "value" : false,
+          "targetedNegative" : "ID-only logical fragment; protocol value ignored when presence false"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

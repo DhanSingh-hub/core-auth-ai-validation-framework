@@ -1,0 +1,48 @@
+{
+  "id" : "TD-APPI-C038-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C038-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C038-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-34",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t038-r001-APPI-C038-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C038-01",
+        "tableId" : "038",
+        "ruleIds" : [ "APPI-T038-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-34",
+          "startLine" : 28918,
+          "endLine" : 28926
+        } ],
+        "data" : "SYNID       ",
+        "clearScope" : [ "Actual12-character left-justified space-filled identifier" ],
+        "excludedClaims" : [ "Paydiant registration" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Tender ID is left-justified with trailing spaces",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "       SYNID",
+          "targetedNegative" : "Twelve-character value right-justified"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

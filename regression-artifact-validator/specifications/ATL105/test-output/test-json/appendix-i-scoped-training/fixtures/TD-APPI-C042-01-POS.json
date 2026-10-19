@@ -1,0 +1,54 @@
+{
+  "id" : "TD-APPI-C042-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C042-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C042-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-36",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t042-r001-APPI-C042-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C042-01",
+        "tableId" : "042",
+        "ruleIds" : [ "APPI-T042-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-36",
+          "startLine" : 28997,
+          "endLine" : 29004
+        } ],
+        "data" : "eng",
+        "context" : {
+          "cardholderLanguage" : "English"
+        },
+        "logicalFields" : {
+          "frenchExample" : "fre"
+        },
+        "clearScope" : [ "Source examples eng/fre and fixed3 only" ],
+        "excludedClaims" : [ "Full ISO catalog", "Case or B/T variant policy" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "English source example iseng",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "fre",
+          "targetedNegative" : "French code for unchanged English context"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}
