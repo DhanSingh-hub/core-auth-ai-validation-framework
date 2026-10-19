@@ -336,7 +336,23 @@ def is_physical_data_json(path):
     return "qe_shaped_test_data" in path.parts and path.suffix == ".json" and path.name != "traceability.json"
 
 
-def physical_case(root, catalog, row, files):
+def resolve_declared_payload(root, catalog, declaration, files, catalog_data_prefixes):
+    declared = Path(declaration.replace("\\", "/"))
+    direct = safe_path(root, catalog.parent / declared)
+    direct_relative = direct.relative_to(root).as_posix()
+    if direct_relative in files:
+        return direct, "EXACT_CATALOG_RELATIVE"
+    for prefix in catalog_data_prefixes:
+        prefix = Path(prefix)
+        if prefix.is_absolute() or ".." in prefix.parts:
+            raise ValueError("Catalog data prefix must remain within delivery root: " + str(prefix))
+        candidate = safe_path(root, root / prefix / declared)
+        if candidate.relative_to(root).as_posix() in files:
+            return candidate, "EXPLICIT_LAYOUT_PREFIX:" + prefix.as_posix()
+    return direct, "DECLARED_PATH_UNRESOLVED"
+
+
+def physical_case(root, catalog, row, files, catalog_data_prefixes=()):
     declared = []
     if row.get("test_data_file"):
         declared.append(row["test_data_file"])
@@ -354,7 +370,8 @@ def physical_case(root, catalog, row, files):
             issues.append("INVALID_TD_DECLARATION")
             continue
         try:
-            payload = safe_path(root, catalog.parent / declaration.replace("\\", "/"))
+            payload, path_resolution = resolve_declared_payload(
+                root, catalog, declaration, files, catalog_data_prefixes)
         except ValueError:
             issues.append("UNSAFE_TD_PATH")
             continue
@@ -371,7 +388,7 @@ def physical_case(root, catalog, row, files):
             issues.append("METADATA_MISSING_OR_INVALID:" + meta_relative)
         elif meta.get("testCaseId") != row.get("id") or meta.get("scenarioId") != row.get("scenario_id"):
             issues.append("METADATA_ID_MISMATCH:" + meta_relative)
-        pair_state = "PAIRED_EXACT_DECLARATION"
+        pair_state = "PAIRED_EXACT_DECLARATION" if path_resolution == "EXACT_CATALOG_RELATIVE" else "PAIRED_AFTER_EXPLICIT_LAYOUT_PREFIX"
         if not info:
             pair_state = "DECLARED_PAYLOAD_MISSING"
         elif info.get("jsonStatus") != "OBJECT":
@@ -384,7 +401,8 @@ def physical_case(root, catalog, row, files):
         metadata_scan = (meta or {}).get("fieldScan") or {}
         presence_observations = compare_field_presence(metadata_scan, payload_scan)
         field_data_pairs.append({
-            "payloadPath": relative, "metadataPath": meta_relative, "pairState": pair_state,
+            "declaredPath": declaration, "payloadPath": relative, "metadataPath": meta_relative,
+            "pathResolution": path_resolution, "pairState": pair_state,
             "payloadFieldOccurrenceCount": payload_scan.get("scalarOccurrenceCount", 0),
             "metadataFieldClaimCount": metadata_scan.get("metadataClaimCount", 0),
             "metadataFieldPresenceStates": dict(collections.Counter(item["state"] for item in presence_observations)),
@@ -394,7 +412,7 @@ def physical_case(root, catalog, row, files):
             "paths": sorted(set(paths)), "fieldDataPairs": field_data_pairs}
 
 
-def audit(root, baseline_dir, source_text, output):
+def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
     root, baseline_dir, source_text, output = (Path(path).resolve() for path in (root, baseline_dir, source_text, output))
     if output.exists() or output.is_relative_to(root):
         raise ValueError("Output must be new and outside the immutable delivery")
@@ -479,7 +497,7 @@ def audit(root, baseline_dir, source_text, output):
                 else:
                     compact["scenarioId"] = row.get("scenario_id")
                     compact["requirementIds"] = references(row, "requirement_ids", "requirement_id")
-                    physical = physical_case(root, path, row, files)
+                    physical = physical_case(root, path, row, files, catalog_data_prefixes)
                     chains.append({"id": identifier, "contentSha256": content, "catalog": relative, "scenarioId": row.get("scenario_id"), **physical})
         catalog_counts[relative] = {"kind": kind, "records": count, "uniqueIds": len(seen), "sha256": files[relative]["sha256"], "producerMetadata": metadata}
         print(kind, relative, count, flush=True)
@@ -546,7 +564,9 @@ def audit(root, baseline_dir, source_text, output):
             metadata_scan = files.get(pair["metadataPath"], {}).get("fieldScan") or {}
             observations = compare_field_presence(metadata_scan, payload_scan)
             field_pair_observations.append({"testCaseId": chain["id"], "catalog": chain["catalog"],
+                                            "declaredPath": pair["declaredPath"],
                                             "payloadPath": pair["payloadPath"], "metadataPath": pair["metadataPath"],
+                                            "pathResolution": pair["pathResolution"],
                                             "pairState": pair["pairState"], "fieldClaimCount": len(observations),
                                             "fieldPresenceStates": dict(collections.Counter(item["state"] for item in observations)),
                                             "observations": observations, "fieldValuesExported": False})
@@ -599,8 +619,10 @@ def audit(root, baseline_dir, source_text, output):
                "contentConflictIds": len(conflicts), "brokenLinkCount": len(issues), "unreferencedPayloadFiles": len(orphan_files),
                "unreferencedMetadataFiles": len(orphan_metadata_files), "payloadFilesWithoutValidSidecars": len(payloads_without_sidecars),
                "metadataFilesWithoutPayloads": len(metadata_without_payloads),
+               "catalogDataPrefixes": [Path(prefix).as_posix() for prefix in catalog_data_prefixes],
                "declaredPayloadMetadataPairs": len(field_pair_observations),
                "declaredPairStates": dict(collections.Counter(row["pairState"] for row in field_pair_observations)),
+               "declaredPathResolutionMethods": dict(collections.Counter(row["pathResolution"] for row in field_pair_observations)),
                "metadataFieldPresenceStates": dict(collections.Counter(state for row in field_pair_observations for state, count in row["fieldPresenceStates"].items() for _ in range(count))),
                "completePhysicalTcIds": len(physically_complete), "tcIdsWithoutUnconflictedCompletePhysicalRoute": len(set(variants["TC"]) - physically_complete), "incompletePhysicalOccurrences": sum(bool(row["issues"]) for row in chains),
                "anchorTypeCounts": dict(collections.Counter(row["anchorProposal"]["type"] for row in br_rows)),
@@ -681,6 +703,15 @@ def self_test():
         row["test_data_file"] = "../../escape.json"
         assert "UNSAFE_TD_PATH" in physical_case(root, catalog, row, files)["issues"]
         assert physical_case(root, catalog, {"id": "TC2"}, files)["issues"] == ["NO_EXPLICIT_TD_DECLARATION"]
+        nested_files = {
+            "layout/qe_shaped_test_data/TC1.json": {"jsonStatus": "OBJECT"},
+            "layout/qe_shaped_test_data/TC1.meta.json": {"jsonStatus": "OBJECT", "testCaseId": "TC1", "scenarioId": "TS1"},
+        }
+        nested_case = physical_case(root, catalog, {**row, "test_data_file": "qe_shaped_test_data/TC1.json"},
+                                    nested_files, ("layout",))
+        assert nested_case["status"] == "COMPLETE_PHYSICAL_DECLARATIONS"
+        assert nested_case["fieldDataPairs"][0]["pathResolution"] == "EXPLICIT_LAYOUT_PREFIX:layout"
+        assert nested_case["fieldDataPairs"][0]["pairState"] == "PAIRED_AFTER_EXPLICIT_LAYOUT_PREFIX"
         baseline_dir, run = root / "baseline", root / "run"
         baseline_dir.mkdir()
         run.mkdir()
@@ -741,7 +772,7 @@ def self_test():
             raise AssertionError("Duplicate record key was accepted")
         except (ValueError, SystemError):
             pass
-    print("PASS: typed anchors stay unconfirmed; direct paths, identity mismatches and unsafe/missing declarations discriminate")
+    print("PASS: typed anchors stay unconfirmed; exact and explicit-prefix paths, identity mismatches and unsafe/missing declarations discriminate")
 
 
 def main():
@@ -750,12 +781,14 @@ def main():
     parser.add_argument("--test-solution-directory", type=Path)
     parser.add_argument("--source-text", type=Path)
     parser.add_argument("--output-directory", type=Path)
+    parser.add_argument("--catalog-data-prefix", action="append", default=[])
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:
         self_test()
     elif all((args.run_root, args.test_solution_directory, args.source_text, args.output_directory)):
-        result = audit(args.run_root, args.test_solution_directory, args.source_text, args.output_directory)
+        result = audit(args.run_root, args.test_solution_directory, args.source_text, args.output_directory,
+                   tuple(args.catalog_data_prefix))
         print(json.dumps({key: result[key] for key in ("uniqueIdsByKind", "contentConflictIds", "measures")}, indent=2))
     else:
         parser.error("Supply run root, test solution directory, source text and a new output directory")

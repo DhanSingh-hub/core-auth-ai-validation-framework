@@ -1,0 +1,1555 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-013-ENCRYPTED-PIN-BLOCK",
+  "reviewDate": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:040",
+    "statement": "Encrypted PIN Block\nData must be alphanumeric and must not exceed 36 bytes.",
+    "scenarioIds": [
+      "SC-2313",
+      "SC-2434",
+      "SC-2558",
+      "SC-2915",
+      "SC-3293",
+      "SC-3992",
+      "SC-4097"
+    ],
+    "caseIds": [
+      "TC-002209",
+      "TC-002330",
+      "TC-002454",
+      "TC-002757",
+      "TC-003135",
+      "TC-003762",
+      "TC-003867"
+    ],
+    "physicalCompleteCaseIds": [
+      "TC-002209",
+      "TC-002330",
+      "TC-002454",
+      "TC-002757",
+      "TC-003135"
+    ],
+    "segments": [
+      "100"
+    ],
+    "elements": [
+      "33"
+    ],
+    "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE",
+    "physicalPayloadPathCount": 18
+  },
+  "registeredArtifactScope": {
+    "payloadPathCount": 18,
+    "candidatePathCount": 14,
+    "approvedPathCount": 4,
+    "missingApprovedPathsRecordedInIntake": 4,
+    "labelCaveat": "Folder labels 'approved' and 'candidates' are source-corpus states, not semantic approval."
+  },
+  "sourceRule": {
+    "id": "ENT-ELEM-33",
+    "element": "33",
+    "name": "Encrypted PIN Block Data",
+    "characterType": "AN",
+    "maximumLengthBytes": 36,
+    "dukptRepresentation": "16- to 20-byte KSN plus 16-byte PIN block",
+    "applicability": "Required for debit and EBT; not required for a completion.",
+    "processing": "Customer-keyed PIN block must be encrypted using DUKPT; omitted request field uses a Field Separator.",
+    "emvOfflinePinContext": "Source gives a distinct 16-byte PIN block rule for EMV offline PIN-validated debit.",
+    "compositionOracle": "Composition is validated by hardware PIN encryption devices; not established by this static format audit.",
+    "alignment": "AI alphanumeric/maximum-36 claim is source-aligned but omits DUKPT composition, context and hardware validation.",
+    "sourceEvidence": [
+      {
+        "sourcePage": 375,
+        "startLine": 20247,
+        "quote": "Number: 33 Name: Encrypted PIN Block Data"
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20249,
+        "quote": "Character Type: AN Maximum Length: 36 bytes"
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20251,
+        "quote": "Representation: For DUKPT PIN encryption, this is a 16- to 20-byte Key Serial Number (KSN) plus a 16-byte PIN block."
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20253,
+        "quote": "Purpose: Required for debit and EBT."
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20254,
+        "quote": "It is not required for a completion."
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20257,
+        "quote": "Processing Rules: Customer-keyed, must be encrypted using DUKPT."
+      },
+      {
+        "sourcePage": 375,
+        "startLine": 20262,
+        "quote": "Valid Codes/Values: PIN block composition is validated by hardware PIN encryption devices."
+      }
+    ],
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "testCrosswalk": {
+    "exactAnchorCandidates": [
+      "SEG100-R-043"
+    ],
+    "rankedCandidatesAreLeadsOnly": true,
+    "rankedCandidates": [
+      {
+        "candidateId": "SEG100-R-043",
+        "packageId": "BR-RULE-SEG100-R-043",
+        "title": "Encrypted PIN Block Data follows DUKPT representation when PIN applies",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "33",
+            "rule": "encrypted-pin-block-data"
+          }
+        ],
+        "disposition": "Direct Element 33 DUKPT representation lead; draft and not an approved cryptographic oracle.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG100-R-043"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-043"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-043"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-GAP-PIN",
+        "packageId": "BR-SEG100-GAP-PIN",
+        "title": "Encrypted PIN Block Data shall use the source-defined DUKPT KSN and PIN-block representation when PIN processing applies.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "33",
+            "rule": "encrypted-pin-block-data"
+          }
+        ],
+        "disposition": "Related source-defined PIN/DUKPT gap requirement; conditional applicability and outcomes remain review-required.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-GAP-PIN"
+          ],
+          "scenarioStatuses": [
+            null
+          ],
+          "caseIds": [
+            "TC-SEG100-GAP-FIELD-POSITIVE-NEGATIVE"
+          ],
+          "caseStatuses": [
+            null
+          ],
+          "testDataIds": [
+            "TD-SEG100-GAP-CONDITIONAL-FIELDS"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-APPO-CRYPTOGRAM-BLOCK-SPLIT",
+        "packageId": "BR-SEG100-APPO-CRYPTOGRAM-BLOCK-SPLIT",
+        "title": "56 bytes of cryptogram data shall be interpreted as Token Data Block A followed by Token Data Block B; 28 bytes of cryptogram data shall be interpreted as Token Data Block A only.",
+        "status": "REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "Appendix O",
+            "segment": "100",
+            "element": "33",
+            "rule": "payment-token-cryptogram-block-split"
+          }
+        ],
+        "disposition": "Payment-token cryptogram block split is a distinct data construct, not the PIN-block composition rule.",
+        "chain": {
+          "businessRequirementStatus": "REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-SEG100-APPO-TOKEN-CONTEXT"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-SEG100-APPO-TOKEN-CONTEXT"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-SEG100-APPO-TOKEN-EXPIRATION",
+            "TD-SEG100-APPO-CRYPTOGRAM-FORMAT",
+            "TD-SEG100-APPO-CRYPTOGRAM-BLOCK-SPLIT",
+            "TD-SEG100-APPO-ENTRY-MODE"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW",
+            "REVIEW",
+            "REVIEW",
+            "REVIEW"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-APPO-CRYPTOGRAM",
+        "packageId": "BR-SEG100-APPO-CRYPTOGRAM",
+        "title": "In-App token cryptogram data shall use the source-defined 28-byte or 56-byte base64 representation and token-data-block interpretation.",
+        "status": "REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "Appendix O",
+            "segment": "100",
+            "element": "33",
+            "rule": "payment-token-cryptogram"
+          }
+        ],
+        "disposition": "In-app payment-token cryptogram format is distinct from Encrypted PIN Block Data.",
+        "chain": {
+          "businessRequirementStatus": "REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-SEG100-APPO-TOKEN-CONTEXT"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-SEG100-APPO-TOKEN-CONTEXT"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-SEG100-APPO-TOKEN-EXPIRATION",
+            "TD-SEG100-APPO-CRYPTOGRAM-FORMAT",
+            "TD-SEG100-APPO-CRYPTOGRAM-BLOCK-SPLIT",
+            "TD-SEG100-APPO-ENTRY-MODE"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW",
+            "REVIEW",
+            "REVIEW",
+            "REVIEW"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E12-MAX-LENGTH",
+        "packageId": "BR-SEG100-E12-MAX-LENGTH",
+        "title": "A supplied Element 12 value does not exceed 51 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "12",
+            "rule": "card-discretionary-block-data"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E12-MAX-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E12-MAX-LENGTH-51",
+            "TC-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E12-MAX-LENGTH-51",
+            "TD-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "packageId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "title": "Non-TransArmor request Element 2 does not exceed 24 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-REQUEST-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-REQUEST-LENGTH-24",
+            "TC-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-REQUEST-LENGTH-24",
+            "TD-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+        "packageId": "BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP",
+        "title": "Recharge/Issue Card adds the entered amount to the current stored-value balance without exceeding the card's original value.",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "10.7.3.8",
+            "segment": "100",
+            "element": "78",
+            "rule": "transaction-type-Q-recharge-original-value-cap"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP"
+          ],
+          "scenarioStatuses": [
+            "DRAFT_REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP"
+          ],
+          "caseStatuses": [
+            "DRAFT_REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-DRAFT-BR-TX-Q-TRANSACTION-TYPE-Q-RECHARGE-ORIGINAL-VALUE-CAP"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-MANUAL-CHARACTERS",
+        "packageId": "BR-SEG100-E2-MANUAL-CHARACTERS",
+        "title": "Non-TransArmor manually entered account identifiers use alphanumeric bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-MANUAL-CHARACTERS"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-MANUAL-CHARACTERS-ALPHANUMERIC",
+            "TC-SEG100-E2-MANUAL-CHARACTERS-PUNCTUATION"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-MANUAL-CHARACTERS-ALPHANUMERIC",
+            "TD-SEG100-E2-MANUAL-CHARACTERS-PUNCTUATION"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-GAP-DISCRETIONARY",
+        "packageId": "BR-SEG100-GAP-DISCRETIONARY",
+        "title": "Card Discretionary Block Data shall be validated to its source-defined conditional length and usage.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "12",
+            "rule": "card-discretionary-block-data"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-GAP-DISCRETIONARY"
+          ],
+          "scenarioStatuses": [
+            null
+          ],
+          "caseIds": [
+            "TC-SEG100-GAP-FIELD-POSITIVE-NEGATIVE"
+          ],
+          "caseStatuses": [
+            null
+          ],
+          "testDataIds": [
+            "TD-SEG100-GAP-CONDITIONAL-FIELDS"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E12-TRACK1-SPLIT",
+        "packageId": "BR-SEG100-E12-TRACK1-SPLIT",
+        "title": "Element 12 preserves the source track1 data after its separator.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "12",
+            "rule": "card-discretionary-block-data"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E12-TRACK1-SPLIT"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E12-TRACK1-SPLIT-MATCH",
+            "TC-SEG100-E12-TRACK1-SPLIT-MISSING-SUFFIX"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E12-TRACK1-SPLIT-MATCH",
+            "TD-SEG100-E12-TRACK1-SPLIT-MISSING-SUFFIX"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      }
+    ],
+    "directRuleDisposition": "SOURCE_SCOPED_DUKPT_CANDIDATE_CHAIN_REVIEW_REQUIRED"
+  },
+  "cases": [
+    {
+      "caseId": "TC-002209",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002209.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002209.meta.json",
+          "payloadSha256": "e14f293d6a2dbaa773fc82c7945768a4eb863e6d68573b4be83e9194496d5fc6",
+          "sidecarSha256": "0af7fb3f18b6ed080e2c7f32c9518d405338b3e18c9eb32f963f34eb879a9dd9",
+          "messageFamily": "ECA/TeleCheck Service Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002209.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002209.meta.json",
+          "payloadSha256": "e14f293d6a2dbaa773fc82c7945768a4eb863e6d68573b4be83e9194496d5fc6",
+          "sidecarSha256": "0af7fb3f18b6ed080e2c7f32c9518d405338b3e18c9eb32f963f34eb879a9dd9",
+          "messageFamily": "ECA/TeleCheck Service Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-002330",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002330.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002330.meta.json",
+          "payloadSha256": "34a6c010ad786a8c6ec96d4d6af74cbdaefa872ee059f0a8e23723c49d4cee03",
+          "sidecarSha256": "5e36bb04801f42ca3c6db7a8cc6e3d0925173a169e628b6a859f1ecfff1c5e71",
+          "messageFamily": "ECA/TeleCheck Service Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002330.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002330.meta.json",
+          "payloadSha256": "34a6c010ad786a8c6ec96d4d6af74cbdaefa872ee059f0a8e23723c49d4cee03",
+          "sidecarSha256": "5e36bb04801f42ca3c6db7a8cc6e3d0925173a169e628b6a859f1ecfff1c5e71",
+          "messageFamily": "ECA/TeleCheck Service Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/ECA/TeleCheck Service Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-002454",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002454.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002454.meta.json",
+          "payloadSha256": "591055855e82c9b0961c258259356704b68c1985b16ab5371f425c7cec84237c",
+          "sidecarSha256": "f286898fb6a9c7eb55f7442d58c6dfa66f9787ee32178745dfe8fae046c42ee0",
+          "messageFamily": "EMV Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EMV Data Segment/SegmentType",
+              "segment": "130"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002454.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002454.meta.json",
+          "payloadSha256": "591055855e82c9b0961c258259356704b68c1985b16ab5371f425c7cec84237c",
+          "sidecarSha256": "f286898fb6a9c7eb55f7442d58c6dfa66f9787ee32178745dfe8fae046c42ee0",
+          "messageFamily": "EMV Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EMV Data Segment/SegmentType",
+              "segment": "130"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-002757",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002757.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002757.meta.json",
+          "payloadSha256": "5df4912d134c4f56dab8c48355813df3ddf36f93dcb6c7db1e476ec5c6a1ffdb",
+          "sidecarSha256": "7e5c9d731fcd51a1834021d420d4835bebd57abcb487dd4cc400b429a2837ee9",
+          "messageFamily": "EMV Request Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Request Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Request Transaction/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Request Transaction/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Request Transaction/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Request Transaction/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002757.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002757.meta.json",
+          "payloadSha256": "5df4912d134c4f56dab8c48355813df3ddf36f93dcb6c7db1e476ec5c6a1ffdb",
+          "sidecarSha256": "7e5c9d731fcd51a1834021d420d4835bebd57abcb487dd4cc400b429a2837ee9",
+          "messageFamily": "EMV Request Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Request Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Request Transaction/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Request Transaction/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Request Transaction/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Request Transaction/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-003135",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003135.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003135.meta.json",
+          "payloadSha256": "e61f0e31180b622bf08db1d627b118cdf75ac643509cd82a5f9da19d80a644b2",
+          "sidecarSha256": "35d74ab43e3481a755cb7fc70ca22dc3156e0a6e0ea68eea4f12e1f2aef5ffc0",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003135.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003135.meta.json",
+          "payloadSha256": "e61f0e31180b622bf08db1d627b118cdf75ac643509cd82a5f9da19d80a644b2",
+          "sidecarSha256": "35d74ab43e3481a755cb7fc70ca22dc3156e0a6e0ea68eea4f12e1f2aef5ffc0",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-003762",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003762.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003762.meta.json",
+          "payloadSha256": "4cf8543de3253e9b4fe1a264d054e95b17ff62517c6ed8d678d3963896f61dd2",
+          "sidecarSha256": "5e454267dedce4ed424edd518661886c14e35998bbea1400ec611aa7c62b7448",
+          "messageFamily": "Loyalty Card Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Loyalty Card Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Loyalty Card Transaction/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Loyalty Card Transaction/SKU Data Segment/SegmentType",
+              "segment": "100"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003762.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003762.meta.json",
+          "payloadSha256": "4cf8543de3253e9b4fe1a264d054e95b17ff62517c6ed8d678d3963896f61dd2",
+          "sidecarSha256": "5e454267dedce4ed424edd518661886c14e35998bbea1400ec611aa7c62b7448",
+          "messageFamily": "Loyalty Card Transaction",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Loyalty Card Transaction/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Loyalty Card Transaction/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Loyalty Card Transaction/SKU Data Segment/SegmentType",
+              "segment": "100"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    },
+    {
+      "caseId": "TC-003867",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003867.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003867.meta.json",
+          "payloadSha256": "473e7eb0f761233d849dd0fff9681afb6236f450dc6a78ab1f25487e3a5e90d5",
+          "sidecarSha256": "b521a0bd6ea9a6814b86a6f3df18395d8e910ef13d11c7f2446701bc26de849e",
+          "messageFamily": "Loyalty Card Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Loyalty Card Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Loyalty Card Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Loyalty Card Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003867.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003867.meta.json",
+          "payloadSha256": "473e7eb0f761233d849dd0fff9681afb6236f450dc6a78ab1f25487e3a5e90d5",
+          "sidecarSha256": "b521a0bd6ea9a6814b86a6f3df18395d8e910ef13d11c7f2446701bc26de849e",
+          "messageFamily": "Loyalty Card Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Loyalty Card Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Loyalty Card Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Loyalty Card Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            }
+          ],
+          "targetOccurrences": [],
+          "sidecarTargetCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement33": [
+            {
+              "element": "Encrypted PIN Block Data",
+              "friendly": "PINBlockData",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "violatedElementName": "Encrypted PIN Block Data"
+          },
+          "rawEncryptedValueWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element33Observed": false,
+      "formatClassifications": [],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "violatedElementName": "Encrypted PIN Block Data"
+      }
+    }
+  ],
+  "summary": {
+    "caseCount": 7,
+    "physicalCompleteCaseCountInRoster": 5,
+    "caseIdsWithElement33": [],
+    "caseIdsWithoutElement33": [
+      "TC-002209",
+      "TC-002330",
+      "TC-002454",
+      "TC-002757",
+      "TC-003135",
+      "TC-003762",
+      "TC-003867"
+    ],
+    "candidateCopyCount": 14,
+    "allDuplicateCandidateCopiesIdentical": true,
+    "uniqueFormatObservationCount": 0,
+    "formatClassCounts": {},
+    "segmentBoundCaseCounts": {
+      "100": 7
+    },
+    "missingApprovedReferences": 4,
+    "coverageCredit": 0,
+    "semanticMatchesConfirmed": 0,
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+    "caseEvidence": "No Element 33 value was present in the candidate payloads; all seven sidecars mark it omitted by composer. JSON byte length is not wire encoding, and no cryptographic validation was attempted.",
+    "testCounterparts": "SEG100-R-043 and BR-SEG100-GAP-PIN are relevant DUKPT candidates; token-cryptogram rules are distinct. All direct chains remain review-required.",
+    "overall": "PRELIMINARY_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "rawEncryptedPinBlockValuesWritten": false,
+    "wireEncodingVerified": false,
+    "cryptographicValidityVerified": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

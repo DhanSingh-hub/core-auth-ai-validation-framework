@@ -1,0 +1,539 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-015-END-OF-LOAD-INDICATOR",
+  "reviewDate": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:042",
+    "statement": "End-of-Load Indicator must be alphabetic and must not exceed 1 bytes.",
+    "segments": [],
+    "elements": [
+      "35"
+    ],
+    "scenarioIds": [
+      "SC-5553"
+    ],
+    "scenarioCount": 1,
+    "caseIds": [],
+    "caseCount": 0,
+    "payloadPaths": [],
+    "chainStatus": "SCENARIO_LINK_WITHOUT_CASE",
+    "physicalPayloadPathCount": 0
+  },
+  "sourceRule": {
+    "id": "ENT-ELEM-35",
+    "element": "35",
+    "name": "End-of-Load Indicator",
+    "characterType": "A",
+    "maximumLengthBytes": 1,
+    "representation": "Fixed length of one alpha character",
+    "validCode": "*",
+    "validCodeAsciiAlphabetic": false,
+    "purpose": "Indicates the end of a Table Load.",
+    "processingContext": "Used in the Table Load Response.",
+    "tableLoadResponseMarker": {
+      "fixedValue": "*",
+      "source": "Host",
+      "tableRow": 7
+    },
+    "dl6Condition": "DL6 follows in the Table Load Response when DL1 carries Card Type 173; DL6 is Data Block No. 4.",
+    "distinctFromEndOfData": {
+      "element": "34",
+      "name": "End-of-Data Indicator",
+      "marker": "~"
+    },
+    "sourceTension": "The source describes Character Type A/fixed alpha but lists '*' (ASCII punctuation) as the valid code; do not erase this explicit source conflict.",
+    "sourceDisposition": "SOURCE_WORDING_REQUIRES_AUTHORIZED_INTERPRETATION",
+    "sourceEvidence": [
+      {
+        "startLine": 20292,
+        "quote": "Number: 35 Name: End-of-Load Indicator"
+      },
+      {
+        "startLine": 20293,
+        "quote": "Character Type: A Maximum Length: 1 byte"
+      },
+      {
+        "startLine": 20295,
+        "quote": "Representation: Fixed length of one alpha character"
+      },
+      {
+        "startLine": 20296,
+        "quote": "Purpose: Indicates the end of a Table Load."
+      },
+      {
+        "startLine": 20297,
+        "quote": "Processing Rules: It is used in the Table Load Response."
+      },
+      {
+        "startLine": 20298,
+        "quote": "Valid Codes/Values: *"
+      },
+      {
+        "startLine": 9190,
+        "quote": "If Segment No. DL1 (Merchant Data Segment) includes a Card Type value of"
+      },
+      {
+        "section": "Table Load Response",
+        "startLine": 9184,
+        "quote": "7 35 End-of-Load"
+      }
+    ],
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "testCrosswalk": {
+    "exactAnchorCandidates": [],
+    "rankedCandidatesAreLeadsOnly": true,
+    "rankedCandidates": [
+      {
+        "candidateId": "SEGDL6-R-006",
+        "packageId": "BR-RULE-SEGDL6-R-006",
+        "title": "Segment DL6 is Data Block No. 4 of the Table Load Response: it follows the End-of-Load Indicator '*' that closes Data Block No. 3 and is itself followed by an End-of-Load Indicator '*'; it is sent only on a Table Load Response",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "11.7.1.2",
+            "segment": "DL6",
+            "element": "35",
+            "rule": "table-load-response-data-block-4-after-end-of-load"
+          }
+        ],
+        "disposition": "Table Load Response DL6 block-order lead; draft/review-required, not an approved Element 35 oracle.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL1-R-012",
+        "packageId": "BR-RULE-SEGDL1-R-012",
+        "title": "Table Load Response block order is ')' + DL1, then DL2 (Conditional), then DL3 (Conditional), then End-of-Load Indicator '*' (Element 35); when DL1 carries Card Type 173, DL6 (Data Block No. 4) follows and the load ends with '*'. For TCP/IP the Start-of-Data Block Indicator appears only before Data Block No. 1",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "11.7.1.2",
+            "segment": "DL1",
+            "element": "97,35",
+            "rule": "table-load-response-block-order"
+          }
+        ],
+        "disposition": "Table Load Response block-order lead; draft/review-required, not an approved Element 35 oracle.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL1-R-012"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-012"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-012"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG111-R-003",
+        "packageId": "BR-RULE-SEG111-R-003",
+        "title": "Indicator length",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.10",
+            "segment": "111",
+            "element": "111",
+            "rule": "segment-111-indicator-length"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "packageId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "title": "Non-TransArmor request Element 2 does not exceed 24 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-REQUEST-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-REQUEST-LENGTH-24",
+            "TC-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-REQUEST-LENGTH-24",
+            "TD-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E12-MAX-LENGTH",
+        "packageId": "BR-SEG100-E12-MAX-LENGTH",
+        "title": "A supplied Element 12 value does not exceed 51 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "12",
+            "rule": "card-discretionary-block-data"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E12-MAX-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E12-MAX-LENGTH-51",
+            "TC-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E12-MAX-LENGTH-51",
+            "TD-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG105-R-003",
+        "packageId": "BR-RULE-SEG105-R-003",
+        "title": "Information Byte is required",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.6",
+            "segment": "105",
+            "element": "44",
+            "rule": "information-byte"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG119-R-010",
+        "packageId": "BR-RULE-SEG119-R-010",
+        "title": "Information Byte is required",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "section": "12.17",
+            "segment": "119",
+            "element": "44",
+            "rule": "information-byte",
+            "specification": "ATL105",
+            "version": "2026-3"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG102-R-023",
+        "packageId": "BR-RULE-SEG102-R-023",
+        "title": "Segment 102 total length does not exceed 381 characters",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.3",
+            "segment": "102",
+            "rule": "max-segment-length"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG102-R-023"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-023"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-023"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG113-R-014",
+        "packageId": "BR-RULE-SEG113-R-014",
+        "title": "Extended MICR Data, when populated, is alphanumeric with maximum length 65; must supplement MICR Data (Element 122) in Segment 110 when raw MICR data exceeds 50 bytes",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.12,13.2",
+            "segment": "113,110",
+            "element": "137",
+            "rule": "extended-micr-data"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG113-R-014"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG113-R-014"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG113-R-014"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG118-R-022",
+        "packageId": "BR-RULE-SEG118-R-022",
+        "title": "When Prompt Code is 904 (Host Discount Data, response only), fields 14-27 are: Host Discount Timestamp (179, 12), Number of Discounts (171, 2), then a repeated block of Start Date (165,8), Start Time (166,4), End Date (165,8), End Time (166,4), BUYPASS Card Type (173,4), Card BIN Range Beginning (183,12), Card BIN Range Ending (184,12), Product Code (77,3), Product Discount Amount (172,5), Product Code (77,3), Discount Quantity Limit (185,3), Discount Program Description (186,15), for a total variable length not to exceed 3,600 bytes",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.16.4",
+            "segment": "118",
+            "element": "77,165,166,171,172,173,179,183,184,185,186",
+            "rule": "prompt-code-904-host-discount"
+          }
+        ],
+        "disposition": "Ranked lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG118-R-022"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG118-R-022"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG118-R-022"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      }
+    ],
+    "closestLeads": [
+      "SEGDL6-R-006",
+      "SEGDL1-R-012"
+    ],
+    "disposition": "The closest leads cover Table Load Response block ordering and DL6 context, not an approved standalone Element 35 assertion; both chains remain review-required."
+  },
+  "caseReview": {
+    "scenarioCount": 1,
+    "caseCount": 0,
+    "payloadPathCount": 0,
+    "evidence": "SCENARIO_ONLY_NO_LINKED_CASES_OR_PAYLOAD_PATHS",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatClaim": "One-byte/fixed-alpha text aligns with the generic representation, but the listed '*' value is not alphabetic.",
+    "segmentScope": "Table Load Response context; DL6 is conditional on DL1 Card Type 173.",
+    "overall": "PRELIMINARY_SOURCE_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "casePayloadsInspected": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}
