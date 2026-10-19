@@ -1,6 +1,6 @@
 # Appendix O Payment Token Terminology Training
 
-**Specification:** BUYPASS ATL105 2026-3, Appendix O-1<br>
+**Specification:** BUYPASS ATL105 2026-3, Appendix O-1 and Chapter 10.13.3<br>
 **Data segment:** Segment 100 tokenized-transaction context (Account Number, Expiration Date,
 security/cryptogram data, and POS Entry Mode fields), applies to both request and response<br>
 **Terms:** Cryptogram Token Data, Payment Token, Payment Token Expiration Date, Payment Token

@@ -1,6 +1,6 @@
 # ATL105 Segment Training Handbook
 
-**Specification:** BUYPASS ATL105 2026-3
+**Training baseline:** BUYPASS ATL105 2026-3<br>
 **Applies to:** Every ATL105 data segment, numbered segment, and download segment (`DL1`-`DL8`)
 **System under test:** AI Solution artifacts
 **Independent oracle:** Core Auth Test Solution rules derived from the specification

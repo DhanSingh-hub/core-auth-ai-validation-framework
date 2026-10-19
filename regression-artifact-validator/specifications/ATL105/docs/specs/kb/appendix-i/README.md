@@ -27,7 +27,7 @@ claimed by this inventory.
 
 ## Authoritative and related evidence
 
-- [ATL105 2026-3 source](../../extracted_text.txt): Appendix I, Section 12.10,
+- [ATL105 2026-3 source extract](../../extracted_text.txt): Appendix I, Section 12.10,
   Chapter 13 Elements 111, 112, 113, and relevant Chapter 11 message layouts.
   text/PDF SHA-256, exact source lines, printed appendix pages, PDF page markers,
   table IDs, and nested-selector occurrences.

@@ -5,7 +5,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 | Element | Source name(s) | Constraint | Catalog refs | BR refs | Template refs | Code refs | Test refs | Profiles |
 |---|---|---|---:|---:|---:|---:|---:|---:|
 |1|Access Code; |AN VARIABLE max 12|2|7|0|2|2|0|
-|2|Account Number; |REVIEW|5|66|4|1|0|0|
+|2|Account Number; |REVIEW|5|76|4|1|0|0|
 |3|Address Line 1; |AN FIXED max 24|1|3|0|1|0|0|
 |4|Address Line 2; |AN FIXED max 21|2|7|0|2|1|0|
 |5|Approval Number; |AN FIXED max 6|1|7|4|0|0|0|
@@ -13,7 +13,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |7|Authorizer Code; |N FIXED max 2|0|4|2|0|0|0|
 |8|Authorizer Response Code; |AN FIXED max 2|0|0|2|0|0|0|
 |11|Block Number; |N FIXED max 3|5|48|6|4|2|0|
-|12|Card Discretionary Block Data; |AN VARIABLE max 51|1|24|2|0|0|0|
+|12|Card Discretionary Block Data; |AN VARIABLE max 51|1|40|2|0|0|0|
 |13|Card Label; |AN FIXED max 4|1|4|3|0|0|0|
 |14|Card Type; |AN FIXED max 3|5|35|0|5|2|0|
 |15|Card Type Total Amount; |N FIXED max 8|1|6|3|0|0|0|
@@ -31,7 +31,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |28|Dial String Type; |N FIXED max 1|2|8|0|2|2|0|
 |29|Direct Marketing Invoice Number; |AN VARIABLE max 10|1|3|0|1|1|0|
 |30|Download Indicator; |N FIXED max 1|2|11|4|1|2|2|
-|31|Driver/Identification Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|31|Driver/Identification Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |32|Employee Number; |N FIXED max 4|3|12|3|2|0|1|
 |33|Encrypted PIN Block Data; |REVIEW|1|18|2|0|0|0|
 |34|End-of-Data Indicator; |A FIXED max 1|5|33|0|5|2|0|
@@ -39,15 +39,15 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |36|Extract Date; |N FIXED max 6|1|5|1|1|0|1|
 |37|Extract Time; |N FIXED max 4|1|4|1|1|0|0|
 |38|Fee Amount; |N FIXED max 8|0|2|1|0|0|0|
-|39|Firmware Version; |AN FIXED max 8|3|14|5|2|0|1|
-|40|Fleet Employee Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|39|Firmware Version; |AN FIXED max 8|3|15|5|2|0|1|
+|40|Fleet Employee Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |41|Fuel Purchase Amount; |N VARIABLE max 8|3|21|2|1|1|0|
 |42|Grand Total; |N FIXED max 8|2|8|3|0|0|0|
 |43|Hardware Version; |REVIEW|3|15|5|2|1|1|
 |44|Information Byte; |AN FIXED max 1|5|24|12|3|2|1|
 |45|Initiation Date; |N FIXED max 6|2|8|3|1|2|1|
 |46|Initiation Time; |N FIXED max 4|2|7|3|1|2|0|
-|47|Job Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|47|Job Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |48|Load Type; |A FIXED max 1|1|8|6|1|0|0|
 |49|Local Date and Local Time; |N FIXED max 10|1|6|2|0|0|0|
 |50|Local Time; |N FIXED max 4|1|4|1|1|0|0|
@@ -63,7 +63,7 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |61|Number of Print Lines; |N FIXED max 1|0|3|2|0|0|0|
 |62|Number of Products; |N FIXED max 2|4|19|0|1|1|0|
 |63|Number of Segments; |N VARIABLE max 2|8|38|9|8|5|5|
-|64|Odometer; |N VARIABLE max 8|1|8|0|1|1|1|
+|64|Odometer; |N VARIABLE max 8|1|12|0|1|1|1|
 |65|Password; |N VARIABLE max 6|5|24|4|4|2|0|
 |66|Pause Indicator; |AN FIXED max 1|2|8|0|2|2|0|
 |72|PC Duty Amount; |N VARIABLE max 7|1|3|0|1|1|0|
@@ -77,9 +77,9 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |80|Purchase Code; |AN VARIABLE max 16|1|3|0|1|1|0|
 |81|Quantity; |N VARIABLE max 9|2|9|0|0|1|0|
 |82|Redial Count; |N FIXED max 1|2|8|0|2|2|0|
-|83|Response Code; |AN FIXED max 1|10|54|7|4|6|0|
-|84|Segment Length; |N VARIABLE max 4|56|370|13|36|25|19|
-|85|Segment Type; |N FIXED max 3|40|391|13|20|20|39|
+|83|Response Code; |AN FIXED max 1|10|55|7|4|6|0|
+|84|Segment Length; |N VARIABLE max 4|56|375|13|36|25|19|
+|85|Segment Type; |N FIXED max 3|40|393|13|20|20|39|
 |86|Sequence Number; |N FIXED max 6|11|118|14|8|5|4|
 |87|Service Level; |A FIXED max 1|2|9|0|0|0|0|
 |88|Ship-from Postal Code; |AN FIXED max 10|1|3|0|1|0|0|
@@ -102,16 +102,16 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |105|Totals Date; |N FIXED max 6|3|33|4|2|1|1|
 |106|Unit of Measure; |A FIXED max 1|2|9|0|0|0|0|
 |107|Unit Price; |N VARIABLE max 9|2|9|0|0|1|0|
-|108|Vehicle Number; |N VARIABLE max 10|1|3|0|1|0|0|
+|108|Vehicle Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |109|Voucher ID; |N VARIABLE max 10|1|10|0|1|1|0|
 |111|Variable Information Indicator; |AN FIXED max 3|3|13|1|1|1|0|
-|112|Variable Information Length; |N FIXED max 3|3|11|1|1|2|0|
-|113|Variable Information; |AN VARIABLE max 982|2|72|1|0|1|0|
+|112|Variable Information Length; |N FIXED max 3|3|20|1|1|2|0|
+|113|Variable Information; |AN VARIABLE max 982|2|180|1|0|1|0|
 |114|Software Load IP/URL Address; |AN FIXED max 30|2|12|0|2|0|0|
 |115|Additional Information Data Segment Flag; |N FIXED max 1|2|10|2|2|1|0|
 |116|Additional Information Indicator; |N FIXED max 3|1|67|0|1|0|0|
 |117|Additional Information Length; |N FIXED max 3|1|5|0|1|0|0|
-|118|Additional Information; EMV Additional Information; |REVIEW|7|58|0|7|1|0|
+|118|Additional Information; EMV Additional Information; |REVIEW|7|61|0|7|1|0|
 |119|Settlement Date; |N FIXED max 4|0|0|2|0|0|0|
 |120|Network Management Message; |A FIXED max 8|0|2|1|0|0|0|
 |121|Partial Approval Indicator; |N FIXED max 1|2|15|2|1|0|0|
@@ -151,12 +151,12 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |155|Key ID; |AN FIXED max 11|1|4|0|1|1|0|
 |156|Key Data Length; |N VARIABLE max 3|1|5|0|1|1|0|
 |157|Key Data; |AN VARIABLE max 999|1|4|0|1|1|0|
-|158|License #; |AN VARIABLE max 10|1|3|0|1|0|0|
-|159|Job ID; |AN VARIABLE max 12|1|3|0|1|0|0|
-|160|Department #; |AN VARIABLE max 12|1|3|0|1|0|0|
-|161|Customer Data; |AN VARIABLE max 12|1|3|0|1|0|0|
-|162|User ID; |AN VARIABLE max 12|1|6|0|1|1|0|
-|163|Vehicle ID#; |AN VARIABLE max 8|1|3|0|1|0|0|
+|158|License #; |AN VARIABLE max 10|1|7|0|1|0|0|
+|159|Job ID; |AN VARIABLE max 12|1|7|0|1|0|0|
+|160|Department #; |AN VARIABLE max 12|1|7|0|1|0|0|
+|161|Customer Data; |AN VARIABLE max 12|1|7|0|1|0|0|
+|162|User ID; |AN VARIABLE max 12|1|11|0|1|1|0|
+|163|Vehicle ID#; |AN VARIABLE max 8|1|7|0|1|0|0|
 |164|EBT Program Data; |AN VARIABLE max 267|5|38|0|5|4|0|
 |165|Start Date or End Date; |N FIXED max 8|2|34|0|2|2|0|
 |166|Start Time or End Time; |N FIXED max 4|5|57|0|5|2|0|
@@ -179,11 +179,11 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |185|Discount Quantity Limit; |N FIXED max 3|1|9|0|1|1|0|
 |186|Discount Program Description; |AN FIXED max 15|1|9|0|1|1|0|
 |187|CA Public Key File Checksum; |N FIXED max 25|4|70|2|4|2|0|
-|188|EMV Card Sequence Number; |AN FIXED max 3|1|17|0|1|0|0|
-|189|EMV Chip Data Length; |N FIXED max 3|2|15|0|0|0|0|
-|190|EMV Chip Data; |ANSB VARIABLE max 999|3|20|0|1|0|0|
-|191|EMV Additional Information Indicator; |N FIXED max 3|4|22|0|4|1|0|
-|192|EMV Additional Information Length; |N FIXED max 3|4|21|0|4|1|0|
+|188|EMV Card Sequence Number; |AN FIXED max 3|1|17|0|1|1|0|
+|189|EMV Chip Data Length; |N FIXED max 3|2|16|0|0|0|0|
+|190|EMV Chip Data; |ANSB VARIABLE max 999|3|21|0|1|0|0|
+|191|EMV Additional Information Indicator; |N FIXED max 3|4|25|0|4|1|0|
+|192|EMV Additional Information Length; |N FIXED max 3|4|24|0|4|1|0|
 |193|CA Public Key File Block Length; |N FIXED max 3|0|5|1|0|0|0|
 |194|CA Public Key File Block; |AN VARIABLE max 9999|0|3|1|0|0|0|
 |195|CAVV Revised Format; |AN FIXED max 20|1|11|0|1|0|0|
