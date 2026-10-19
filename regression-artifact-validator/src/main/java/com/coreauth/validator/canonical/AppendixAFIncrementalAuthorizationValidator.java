@@ -14,7 +14,7 @@ public final class AppendixAFIncrementalAuthorizationValidator {
     public ValidationResult validate(JsonNode flow) {
         ValidationResult result = new ValidationResult("atl105-appendix-af-incremental-authorization");
         result.addWarning("Appendix AF logical observations only; source approval, physical wire, processor behavior and host outcomes are not certified.");
-        result.addWarning("Appendix AF says Transaction ID; Appendix I calls the Table 82 field Terminal Transaction Number. This field-name mapping remains REVIEW_REQUIRED.");
+            result.addWarning("Appendix AF Transaction ID is modeled as the Table 82 N4 Terminal Transaction Number from the shared Incremental Auth Data context; SME/business approval remains REVIEW_REQUIRED.");
         if (!flow.isObject() || !"2026-4".equals(flow.path("specificationVersion").asText())) {
             result.addWarning("AF-CONTEXT: ATL105 2026-4 context is required; other releases are not assessed by this overlay.");
             return result;

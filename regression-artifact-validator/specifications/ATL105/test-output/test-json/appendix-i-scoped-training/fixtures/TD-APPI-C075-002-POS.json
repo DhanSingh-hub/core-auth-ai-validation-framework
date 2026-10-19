@@ -1,0 +1,82 @@
+{
+  "id" : "TD-APPI-C075-002-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-002-POS.json",
+  "testCaseIds" : [ "TC-APPI-C075-002-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t075-r002-APPI-C075-002"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-002",
+        "tableId" : "075",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T075-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31914,
+          "endLine" : 31919
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tag" : "01",
+            "valueLength" : 1,
+            "value" : "2",
+            "meaning" : "cost plus"
+          },
+          "negative" : {
+            "tag" : "01",
+            "valueLength" : 1,
+            "value" : "4",
+            "meaning" : "cost plus"
+          },
+          "positiveVariants" : [ {
+            "value" : "1",
+            "meaning" : "retail minus"
+          }, {
+            "value" : "3",
+            "meaning" : "best of retail minus or cost plus"
+          } ]
+        },
+        "clearScope" : "One-byte method code and all three explicitly listed meanings.",
+        "excludedClaims" : [ "Method calculation algorithm", "Wire length-header width", "Mandatory presence or tag order" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "value is one of 1/2/3",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "value has one byte",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "value is one of 1/2/3",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "value has one byte",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "value",
+          "from" : "2",
+          "to" : "4",
+          "unchanged" : "tag, valueLength and intended cost-plus meaning",
+          "targetedFailure" : "unlisted method code cannot represent the unchanged intended meaning"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

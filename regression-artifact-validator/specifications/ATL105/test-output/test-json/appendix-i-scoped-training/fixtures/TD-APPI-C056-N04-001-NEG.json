@@ -1,0 +1,115 @@
+{
+  "id" : "TD-APPI-C056-N04-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N04-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C056-N04-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-58",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r006-APPI-C056-N04-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N04-001",
+        "tableId" : "056",
+        "nestedSelector" : "04",
+        "ruleIds" : [ "APPI-T056-R006" ],
+        "syntheticData" : {
+          "selector" : "04",
+          "logicalLength" : 14,
+          "uniqueId" : "ABCDEFGHIJKLMN",
+          "context" : {
+            "cardBrand" : "Visa",
+            "payment" : "installment"
+          },
+          "authorizationReference" : "ABCDEFGHIJKLMN",
+          "adviceReference" : "ABCDEFGHIJKLMN"
+        },
+        "clearScope" : "Fourteen alphanumeric merchant payment ID,Discover-only,authorization/advice reference semantics.",
+        "excludedClaims" : [ "Uniqueness algorithm or lifetime", "Host UUID equivalence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Discover scope,width andreference identity",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "context.cardBrand",
+            "replacement" : "Visa",
+            "expected" : "FAIL Discover-only scope"
+          }, {
+            "path" : "adviceReference",
+            "replacement" : "ABCDEFGHIJKLMX",
+            "expected" : "FAIL logical payment-reference identity"
+          }, {
+            "path" : "uniqueId",
+            "replacement" : "ABCDEFGHIJKLM",
+            "expected" : "FAIL fixed14"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 15,
+            "expected" : "FAIL count"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "tooLong" : "ABCDEFGHIJKLMNO",
+          "nonAlphanumeric" : "ABCDEFGHIJKLM!"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30406,
+          "section" : "Appendix I-58",
+          "endLine" : 30424
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.04.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 04",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30409,
+            "section" : "Appendix I-58",
+            "endLine" : 30411
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 14",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30412,
+            "section" : "Appendix I-58",
+            "endLine" : 30415
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Data",
+          "sourceType" : "an14",
+          "sourceLength" : "14 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30416,
+            "section" : "Appendix I-58",
+            "endLine" : 30424
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

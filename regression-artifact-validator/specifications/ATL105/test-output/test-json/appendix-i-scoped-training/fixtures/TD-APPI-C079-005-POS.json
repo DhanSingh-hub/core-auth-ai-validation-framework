@@ -1,0 +1,74 @@
+{
+  "id" : "TD-APPI-C079-005-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-005-POS.json",
+  "testCaseIds" : [ "TC-APPI-C079-005-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-87",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r006-APPI-C079-005"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-005",
+        "tableId" : "079",
+        "nestedSelector" : "07",
+        "ruleIds" : [ "APPI-T079-R006" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-87",
+          "startLine" : 32391,
+          "endLine" : 32410
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "07",
+            "declaredValueLength" : "01",
+            "data" : "1",
+            "sourceTitle" : "Other Tax Included Indicator",
+            "sourceDescriptionTax" : "national"
+          },
+          "negative" : {
+            "id" : "07",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "sourceTitle" : "Other Tax Included Indicator",
+            "sourceDescriptionTax" : "national"
+          }
+        },
+        "clearScope" : "Defined aggregate 07 selector and true-only code with source terminology preserved.",
+        "excludedClaims" : [ "Other/national tax equivalence", "False/absence encoding", "078 selector substitution" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data belongs to listed set {1}",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data belongs to listed set {1}",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "fixed header widths and n1 value remain valid",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "1",
+          "to" : "0",
+          "unchanged" : "headers and terminology",
+          "targetedFailure" : "unlisted included-tax code"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

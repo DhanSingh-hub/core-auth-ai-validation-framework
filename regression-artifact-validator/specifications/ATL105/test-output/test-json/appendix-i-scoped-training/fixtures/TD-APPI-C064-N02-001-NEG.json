@@ -1,0 +1,169 @@
+{
+  "id" : "TD-APPI-C064-N02-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C064-N02-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C064-N02-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-73",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t064-r004-APPI-C064-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C064-N02-001",
+        "tableId" : "064",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T064-R002", "APPI-T064-R004" ],
+        "syntheticData" : {
+          "selector" : "02",
+          "logicalLength" : 3,
+          "subdivision" : " CA",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "paymentType" : "Credit",
+            "acceptorSubdivision" : "CO",
+            "serviceSubdivisionName" : "California"
+          }
+        },
+        "clearScope" : "Threeansbytes,leftjustified/trailingspaces;AppendixDalphabeticalCA;neededifdifferent.",
+        "excludedClaims" : [ "WorldwideISOsubdivisionlist", "CNAexampleauthority", "ANSgenericstripping" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "DlistedCAandleftspacepadding",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Requiredifsubdivisiondiffers",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "subdivision",
+            "replacement" : " CA",
+            "expected" : "FAIL leftjustification"
+          }, {
+            "path" : "subdivision",
+            "replacement" : "06 ",
+            "expected" : "FAIL useofANSIterminalnumericcodeinsteadalphabeticalCA"
+          }, {
+            "path" : "subdivision",
+            "operation" : "remove",
+            "expected" : "FAIL differing-subdivisionpresence"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed3"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "unpaddedTooShort" : "CA",
+          "tooLong" : "CA  ",
+          "unknownCna" : "CNA",
+          "cnaOutcome" : "REVIEW_REQUIRED sourceexampleconflict"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31419,
+          "section" : "Appendix I-73",
+          "endLine" : 31446
+        }, {
+          "startLine" : 31352,
+          "section" : "Appendix I-72",
+          "endLine" : 31378
+        }, {
+          "startLine" : 31402,
+          "section" : "Appendix I-73",
+          "endLine" : 31412
+        }, {
+          "startLine" : 31431,
+          "section" : "Appendix I-73",
+          "endLine" : 31441
+        }, {
+          "startLine" : 31459,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31478
+        }, {
+          "startLine" : 31495,
+          "section" : "Appendix I-74",
+          "endLine" : 31505
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "section" : "Appendix D-1",
+          "startLine" : 26082,
+          "endLine" : 26100
+        }, {
+          "startLine" : 26070,
+          "section" : "Appendix D-1",
+          "endLine" : 26117
+        }, {
+          "startLine" : 26118,
+          "section" : "Appendix D-2",
+          "endLine" : 26159
+        }, {
+          "startLine" : 26160,
+          "section" : "Appendix D-3",
+          "endLine" : 26201
+        }, {
+          "startLine" : 26202,
+          "section" : "Appendix D-4",
+          "endLine" : 26231
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31431,
+            "section" : "Appendix I-73",
+            "endLine" : 31433
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 3 bytes; logical 003",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31434,
+            "section" : "Appendix I-73",
+            "endLine" : 31437
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "ans3",
+          "sourceLength" : "3 bytes; left justified; trailing spaces",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31438,
+            "section" : "Appendix I-73",
+            "endLine" : 31446
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

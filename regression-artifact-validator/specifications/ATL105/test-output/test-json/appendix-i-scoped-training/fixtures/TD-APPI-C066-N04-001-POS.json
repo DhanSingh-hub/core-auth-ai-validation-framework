@@ -1,0 +1,154 @@
+{
+  "id" : "TD-APPI-C066-N04-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C066-N04-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C066-N04-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-76",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t066-r004-APPI-C066-N04-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C066-N04-001",
+        "tableId" : "066",
+        "nestedSelector" : "04",
+        "ruleIds" : [ "APPI-T066-R001", "APPI-T066-R004", "APPI-T066-R005" ],
+        "syntheticData" : {
+          "selector" : "04",
+          "logicalLength" : 8,
+          "data" : "REF 1234",
+          "logicalMeaning" : {
+            "methodDescription" : "synthetic reference-number method",
+            "referenceAlias" : "1234"
+          },
+          "context" : {
+            "cardBrand" : "Maestro",
+            "program" : "NextGen POI",
+            "phase" : "Auth"
+          },
+          "completionRecordPresent" : true
+        },
+        "clearScope" : "ansmax40,NextGenrequired,MC/Maestro,completionpresence;methodpurposenotcodedformat.",
+        "excludedClaims" : [ "REFasofficialmethodcode", "Actualcardholderpresencevalidation", "Internaldelimiter/offsets" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Eightbytes/max40,requiredrecord",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Actualcheck-inmethodserializationandvalidity",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "data",
+            "operation" : "remove",
+            "expected" : "FAIL NextGenrequiredpresence"
+          }, {
+            "path" : "data",
+            "replacement" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNO",
+            "expected" : "FAIL maximum40"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 7,
+            "expected" : "FAIL count"
+          }, {
+            "path" : "completionRecordPresent",
+            "replacement" : false,
+            "expected" : "FAIL completionpresence"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "max40StructuralString" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31689,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        }, {
+          "startLine" : 31563,
+          "section" : "Appendix I-75",
+          "endLine" : 31595
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31657,
+          "section" : "Appendix I-76",
+          "endLine" : 31683
+        }, {
+          "startLine" : 31684,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31619
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31654
+        }, {
+          "startLine" : 31686,
+          "section" : "Appendix I-77",
+          "endLine" : 31688
+        }, {
+          "startLine" : 31709,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.04.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed04",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31692,
+            "section" : "Appendix I-77",
+            "endLine" : 31694
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; up to40",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31695,
+            "section" : "Appendix I-77",
+            "endLine" : 31699
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Data",
+          "sourceType" : "ans..40",
+          "sourceLength" : "maximum40 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31700,
+            "section" : "Appendix I-77",
+            "endLine" : 31711
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

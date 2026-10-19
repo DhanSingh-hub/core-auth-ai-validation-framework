@@ -1,0 +1,77 @@
+{
+  "id" : "TD-APPI-C075-003-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-003-POS.json",
+  "testCaseIds" : [ "TC-APPI-C075-003-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t075-r003-APPI-C075-003"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-003",
+        "tableId" : "075",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T075-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31921,
+          "endLine" : 31925
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tag" : "02",
+            "valueLength" : 1,
+            "value" : "M"
+          },
+          "negative" : {
+            "tag" : "02",
+            "valueLength" : 1,
+            "value" : "X"
+          },
+          "positiveVariants" : [ {
+            "value" : "V",
+            "meaning" : "Visa"
+          }, {
+            "value" : "M",
+            "meaning" : "Merchant"
+          } ]
+        },
+        "clearScope" : "One-byte discount-agent code M or V.",
+        "excludedClaims" : [ "Wire header width", "Presence requirement", "Method-agent compatibility restrictions" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "agent value is M or V",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "agent value is M or V",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "value remains one byte",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "value",
+          "from" : "M",
+          "to" : "X",
+          "unchanged" : "tag and valueLength",
+          "targetedFailure" : "unlisted discount agent"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

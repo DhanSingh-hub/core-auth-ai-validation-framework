@@ -1,0 +1,84 @@
+{
+  "id" : "TD-APPI-C069-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C069-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C069-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-78",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t069-r001-APPI-C069-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C069-001",
+        "tableId" : "069",
+        "ruleIds" : [ "APPI-T069-R001", "APPI-T069-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-78",
+          "startLine" : 31775,
+          "endLine" : 31784
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "069",
+            "declaredDataLength" : "004",
+            "data" : "0250",
+            "logicalContext" : {
+              "transaction" : "EV charging",
+              "businessRole" : "merchant additional fee 2"
+            }
+          },
+          "negative" : {
+            "tableId" : "069",
+            "declaredDataLength" : "004",
+            "data" : "02A0",
+            "logicalContext" : {
+              "transaction" : "EV charging",
+              "businessRole" : "merchant additional fee 2"
+            }
+          },
+          "positiveVariants" : [ {
+            "declaredDataLength" : "012",
+            "data" : "000000000250"
+          } ]
+        },
+        "clearScope" : "Numeric fee-2 data and local maximum, distinct selector and EV role.",
+        "excludedClaims" : [ "Amount precision", "Required co-presence of 068", "Actual fee-slot assignment", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data is numeric",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "declared length equals actual four bytes",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data is numeric",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "declared length equals actual four bytes",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[2]",
+          "from" : "5",
+          "to" : "A",
+          "unchanged" : "length, selector and context",
+          "targetedFailure" : "one alphabetic character in numeric fee"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

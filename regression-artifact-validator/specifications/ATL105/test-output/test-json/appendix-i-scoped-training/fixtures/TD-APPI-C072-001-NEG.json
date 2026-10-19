@@ -1,0 +1,114 @@
+{
+  "id" : "TD-APPI-C072-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C072-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C072-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-79",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t072-r002-APPI-C072-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C072-001",
+        "tableId" : "072",
+        "ruleIds" : [ "APPI-T072-R001", "APPI-T072-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-79",
+          "startLine" : 31853,
+          "endLine" : 31867
+        }, {
+          "section" : "Appendix K-30",
+          "startLine" : 34211,
+          "endLine" : 34227
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "072",
+            "declaredDataLength" : "005",
+            "data" : "AB-12",
+            "logicalContext" : {
+              "network" : "MasterCard",
+              "stage" : "subsequent request",
+              "originalResponse" : {
+                "segment" : "112",
+                "tableId" : "038",
+                "data" : "AB-12"
+              }
+            }
+          },
+          "negative" : {
+            "tableId" : "072",
+            "declaredDataLength" : "005",
+            "data" : "AB-13",
+            "logicalContext" : {
+              "network" : "MasterCard",
+              "stage" : "subsequent request",
+              "originalResponse" : {
+                "segment" : "112",
+                "tableId" : "038",
+                "data" : "AB-12"
+              }
+            }
+          },
+          "positiveVariants" : [ {
+            "declaredDataLength" : "022",
+            "data" : "ABCDEFGHIJKLMNOPQRSTUV",
+            "originalResponseData" : "ABCDEFGHIJKLMNOPQRSTUV",
+            "network" : "Maestro"
+          } ],
+          "active" : {
+            "tableId" : "072",
+            "declaredDataLength" : "005",
+            "data" : "AB-13",
+            "logicalContext" : {
+              "network" : "MasterCard",
+              "stage" : "subsequent request",
+              "originalResponse" : {
+                "segment" : "112",
+                "tableId" : "038",
+                "data" : "AB-12"
+              }
+            }
+          }
+        },
+        "clearScope" : "At-most-22-byte identifier, special-character permission and unchanged replay of a supplied original identifier.",
+        "excludedClaims" : [ "Complete special-character repertoire or separator escaping", "Actual network response", "Moneris encoding", "Automatic response inclusion without 049/22=Y", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data length is at most 22 and declared count matches",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "subsequent identifier equals original response identifier",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data length is at most 22 and declared count matches",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "subsequent identifier equals original response identifier",
+            "outcome" : "FAIL"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[4]",
+          "from" : "2",
+          "to" : "3",
+          "unchanged" : "original response value, width and context",
+          "targetedFailure" : "subsequent request does not retain original link value"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

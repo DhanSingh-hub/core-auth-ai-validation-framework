@@ -1,6 +1,8 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.TotalsRequestPayloadValidator;
+import com.coreauth.validator.canonical.Segment119ActualPayloadAdapter;
+import com.coreauth.validator.paths.Atl105Paths;
 import com.coreauth.validator.validation.ValidationError;
 import com.coreauth.validator.validation.ValidationResult;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -156,6 +158,57 @@ class TotalsRequestPayloadValidatorTest {
         ((ObjectNode) segment.path("CategoryTotals").get(0)).put("CardTypeTotalCount", "00000");
         assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
                 .anyMatch(e -> e.reason().contains("SEG105-R-015"));
+    }
+
+    @Test
+    void validatesCardTypeTotalCountSourceBoundariesInSegments105And119() throws IOException {
+        ObjectMapper inventoryMapper = MAPPER;
+        var inventory = inventoryMapper.readTree(Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                .resolve("all-element-inventory.json").toFile());
+        var segment119Adapter = new Segment119ActualPayloadAdapter(inventory);
+        for (boolean withPdl : new boolean[]{false, true}) {
+            String messageName = withPdl ? TotalsRequestPayloadValidator.TOTALS_WITH_PDL_REQUEST
+                    : TotalsRequestPayloadValidator.TOTALS_REQUEST;
+            String segmentName = withPdl ? "Totals with Proprietary Data Load Data Segment" : "Totals Data Segment";
+            String ruleId = withPdl ? "SEG119-R-025" : "SEG105-R-015";
+            Path fixture = TEST_DATA.resolve(withPdl
+                    ? Paths.get("segment-119", "message", "totals-pdl-request.valid.json")
+                    : Paths.get("segment-105", "message", "totals-request.valid.json"));
+            ObjectNode payload = (ObjectNode) MAPPER.readTree(fixture.toFile());
+            ObjectNode segment = (ObjectNode) payload.path(messageName).path(segmentName);
+            ObjectNode firstBucket = (ObjectNode) segment.path("CategoryTotals").get(0);
+
+            for (String value : new String[]{"00001", "99999"}) {
+                firstBucket.put("CardTypeTotalCount", value);
+                if (withPdl) {
+                    assertThat(segment119Adapter.validate(segment, messageName, MAPPER.createObjectNode()).findings())
+                            .as("%s count %s", segmentName, value)
+                            .noneMatch(finding -> finding.ruleId().equals(ruleId)
+                                    && finding.scope().equals("bucket-count-width")
+                                    && finding.status().name().equals("INVALID"));
+                } else {
+                    assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                            .as("%s count %s", segmentName, value)
+                            .noneMatch(error -> error.reason().contains(ruleId)
+                                    && error.reason().contains("CardTypeTotalCount"));
+                }
+            }
+            for (String value : new String[]{"00000", "100000", "12A45", ""}) {
+                firstBucket.put("CardTypeTotalCount", value);
+                if (withPdl) {
+                    assertThat(segment119Adapter.validate(segment, messageName, MAPPER.createObjectNode()).findings())
+                            .as("%s invalid count shape %s", segmentName, value.isEmpty() ? "empty" : "nonempty")
+                            .anyMatch(finding -> finding.ruleId().equals(ruleId)
+                                    && finding.scope().equals("bucket-count-width")
+                                    && finding.status().name().equals("INVALID"));
+                } else {
+                    assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                            .as("%s invalid count shape %s", segmentName, value.isEmpty() ? "empty" : "nonempty")
+                            .anyMatch(error -> error.reason().contains(ruleId)
+                                    && error.reason().contains("CardTypeTotalCount"));
+                }
+            }
+        }
     }
 
     @Test

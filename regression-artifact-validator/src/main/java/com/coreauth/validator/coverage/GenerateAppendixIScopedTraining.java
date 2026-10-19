@@ -43,8 +43,8 @@ public final class GenerateAppendixIScopedTraining {
         for (JsonNode data : output.artifactPackage().path("testData")) {
             write(destination.resolve(data.path("fileName").asText()), data);
         }
-        System.out.println("Generated 101 scoped review-only BR/TS and 218 linked logical TC/TD; "
-            + "101 supplied mutations detected. Full requests and certification remain incomplete.");
+        System.out.println("Generated 178 scoped review-only BR/TS and 372 linked logical TC/TD; "
+            + "178 supplied mutations detected. Full requests and certification remain incomplete.");
     }
 
     public static Output generate(Path root) throws IOException {
@@ -265,8 +265,18 @@ public final class GenerateAppendixIScopedTraining {
         Set<String> table050Seen = new HashSet<>();
         for (JsonNode candidate : table050Batch.path("candidates")) {
             String id = candidate.path("candidateId").asText();
-                if (!Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C053-OUTER-001",
+                if (!Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C052-OUTER-001",
+                    "APPI-C052-N01-001", "APPI-C052-N02-001", "APPI-C053-OUTER-001",
                         "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
+                    "APPI-C065-OUTER-001", "APPI-C067-OUTER-001",
+                        "APPI-C060-OUTER-001", "APPI-C060-N01-001", "APPI-C060-N02-001",
+                        "APPI-C063-OUTER-001",
+                        "APPI-C066-OUTER-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+                        "APPI-C066-N03-001", "APPI-C066-N04-001", "APPI-C064-OUTER-001",
+                        "APPI-C064-N01-001", "APPI-C064-N02-001", "APPI-C064-N03-001", "APPI-C064-N04-001",
+                        "APPI-C056-OUTER-001", "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001",
+                        "APPI-C056-N04-001", "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001",
+                        "APPI-C056-N08-001", "APPI-C056-N09-001", "APPI-C056-N12-001", "APPI-C056-N13-001",
                         "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-OUTER-001",
                         "APPI-C062-N01-001", "APPI-C062-N02-001").contains(id)) continue;
             if (!AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id)
@@ -274,7 +284,12 @@ public final class GenerateAppendixIScopedTraining {
                     || !"REVIEW_REQUIRED".equals(candidate.path("readiness").asText())
                     || !"LOGICAL_FRAGMENT".equals(candidate.path("payloadScope").asText())
                     || candidate.path("ruleIds").isEmpty()) {
-                throw new IllegalStateException("Invalid or duplicate Table 050/051 candidate " + id);
+                throw new IllegalStateException("Invalid or duplicate later-table candidate " + id
+                        + ": supported=" + AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id)
+                        + ", newlySeen=" + table050Seen.contains(id)
+                        + ", readiness=" + candidate.path("readiness").asText()
+                        + ", scope=" + candidate.path("payloadScope").asText()
+                        + ", ruleCount=" + candidate.path("ruleIds").size());
             }
             for (JsonNode ref : candidate.path("ruleIds")) {
                 if (!rules.containsKey(ref.asText())) throw new IllegalStateException("Missing Table 050/051 source rule " + ref);
@@ -304,7 +319,8 @@ public final class GenerateAppendixIScopedTraining {
             if (positiveResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
                     && f.status() == AppendixILogicalDataValidator.Status.PASS)
                     || positiveResult.findings().stream().anyMatch(f -> f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
-                throw new IllegalStateException("Table 050/051 positive candidate failed: " + id);
+                throw new IllegalStateException("Table 050/051 positive candidate failed: " + id
+                    + "; findings=" + positiveResult.findings());
             }
             appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, positive, anchors,
                     brId, tsId, target, "-POS", AppendixILogicalDataValidator.Status.PASS, positiveResult);
@@ -320,10 +336,95 @@ public final class GenerateAppendixIScopedTraining {
         if (!table050Seen.equals(Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001",
             "APPI-C053-OUTER-001", "APPI-C054-OUTER-001", "APPI-C055-OUTER-001",
                 "APPI-C057-OUTER-001", "APPI-C058-OUTER-001", "APPI-C059-OUTER-001",
+                "APPI-C052-OUTER-001", "APPI-C052-N01-001", "APPI-C052-N02-001",
+                "APPI-C065-OUTER-001", "APPI-C067-OUTER-001",
+                "APPI-C066-OUTER-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+                "APPI-C066-N03-001", "APPI-C066-N04-001",
+                "APPI-C064-OUTER-001", "APPI-C064-N01-001", "APPI-C064-N02-001",
+                "APPI-C064-N03-001", "APPI-C064-N04-001",
+                "APPI-C060-OUTER-001", "APPI-C060-N01-001", "APPI-C060-N02-001",
+                "APPI-C063-OUTER-001",
+                "APPI-C056-OUTER-001", "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001",
+                "APPI-C056-N04-001", "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001",
+                "APPI-C056-N08-001", "APPI-C056-N09-001", "APPI-C056-N12-001", "APPI-C056-N13-001",
                 "APPI-C062-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001"))) {
             throw new IllegalStateException("Implemented later-table candidate inventory is incomplete");
         }
         seen.addAll(table050Seen);
+        Path laterCandidatePath = knowledge.resolve("appendix-i-candidates-068-081.json");
+        inputHashes.addObject().put("file", laterCandidatePath.getFileName().toString()).put("sha256", hash(laterCandidatePath));
+        JsonNode laterBatch = MAPPER.readTree(laterCandidatePath.toFile());
+        if (!"ATL105".equals(laterBatch.path("specification").asText())
+                || !"2026-3".equals(laterBatch.path("specificationVersion").asText())
+                || !"REVIEW_REQUIRED".equals(laterBatch.path("readiness").asText())
+                || !"LOGICAL_FRAGMENT".equals(laterBatch.path("payloadScope").asText())
+                || !"appendix-i-068-081.json".equals(laterBatch.path("knowledgeReference").asText())) {
+            throw new IllegalStateException("Unexpected Table 068–081 candidate identity or readiness");
+        }
+        Set<String> selectedLaterIds = Set.of("APPI-C068-001", "APPI-C069-001", "APPI-C070-001",
+            "APPI-C071-001", "APPI-C072-001", "APPI-C073-001", "APPI-C075-001",
+            "APPI-C075-002", "APPI-C075-003", "APPI-C075-004", "APPI-C075-005",
+            "APPI-C075-006", "APPI-C076-001", "APPI-C076-002", "APPI-C077-001",
+            "APPI-C078-001", "APPI-C078-002", "APPI-C078-003", "APPI-C078-004",
+            "APPI-C078-005", "APPI-C078-006", "APPI-C078-007", "APPI-C078-008",
+            "APPI-C078-009", "APPI-C078-010", "APPI-C078-011", "APPI-C078-012", "APPI-C078-013",
+            "APPI-C079-001", "APPI-C079-002", "APPI-C079-003", "APPI-C079-004",
+            "APPI-C079-005", "APPI-C079-006", "APPI-C079-007",
+            "APPI-C080-001", "APPI-C081-001");
+        Set<String> selectedLaterSeen = new HashSet<>();
+        for (JsonNode candidate : laterBatch.path("candidates")) {
+            String id = candidate.path("candidateId").asText();
+            if (!selectedLaterIds.contains(id)) continue;
+            if (!AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id) || !selectedLaterSeen.add(id)
+                    || !"REVIEW_REQUIRED".equals(candidate.path("readiness").asText())
+                    || !"LOGICAL_FRAGMENT".equals(candidate.path("payloadScope").asText())) {
+                throw new IllegalStateException("Invalid or duplicate selected later-table candidate " + id);
+            }
+            for (JsonNode ref : candidate.path("ruleIds")) {
+                if (!rules.containsKey(ref.asText())) throw new IllegalStateException("Missing source rule " + ref);
+                supportingCandidates.computeIfAbsent(ref.asText(), ignored -> new HashSet<>()).add(id);
+            }
+            String target = AppendixIScopedCandidateValidator.mutationTarget(id);
+            JsonNode targetRule = rules.get(target);
+            if (targetRule == null) throw new IllegalStateException("Missing target rule " + target);
+            ArrayNode anchors = MAPPER.createArrayNode();
+            ObjectNode sourceAnchor = targetRule.path("sourceAnchor").deepCopy();
+            sourceAnchor.put("rule", "scoped-" + target.toLowerCase(java.util.Locale.ROOT) + "-" + id);
+            anchors.add(sourceAnchor);
+            String brId = "BR-" + id;
+            String tsId = "TS-" + id;
+            ObjectNode br = brs.addObject();
+            br.put("id", brId).put("title", "Scoped logical check " + target + ": " + candidate.path("clearScope"))
+                    .put("category", "BOUNDED_LOGICAL_PREDICATE")
+                    .put("applicability", "Supplied synthetic later-table variant only; not complete source-rule coverage")
+                    .put("priority", "high").put("executionStatus", "REVIEW_REQUIRED");
+            br.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode scenario = scenarios.addObject();
+            scenario.put("id", tsId).put("status", "REVIEW_REQUIRED");
+            scenario.putArray("requirementIds").add(brId);
+            scenario.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode positive = candidate.deepCopy();
+            var positiveResult = validator.validate(positive);
+            if (positiveResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.PASS)
+                    || positiveResult.findings().stream().anyMatch(f -> f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Selected later-table positive candidate failed: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, positive, anchors,
+                    brId, tsId, target, "-POS", AppendixILogicalDataValidator.Status.PASS, positiveResult);
+            ObjectNode negative = mutate(candidate);
+            var negativeResult = validator.validate(negative);
+            if (negativeResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Selected later-table negative was not detected: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, negative, anchors,
+                    brId, tsId, target, "-NEG", AppendixILogicalDataValidator.Status.FAIL, negativeResult);
+        }
+        if (!selectedLaterSeen.equals(selectedLaterIds)) {
+            throw new IllegalStateException("Selected Table 068–081 candidate inventory is incomplete");
+        }
+        seen.addAll(selectedLaterSeen);
         if (!seen.equals(AppendixIScopedCandidateValidator.CANDIDATE_IDS)) {
             throw new IllegalStateException("Implemented candidate inventory is incomplete");
         }
@@ -337,7 +438,9 @@ public final class GenerateAppendixIScopedTraining {
         report.put("suppliedMutationCount", seen.size()).put("detectedSuppliedMutationCount", seen.size());
         report.put("appendixWideMutationThresholdEstablished", false).put("approvedRuleCount", 0)
                 .put("completeRequestCount", 0).put("certifiedCaseCount", 0);
-        report.put("aiComparison", "DEFERRED_BY_USER").put("mergeToDevelop", "USER_APPROVAL_REQUIRED");
+        report.put("aiComparison", "STRUCTURAL_TRACEABILITY_ONLY_REVIEW_REQUIRED")
+            .put("aiComparisonReport", "../../ai-solution-independent-review/appendix-i-segment111-run1-comparison/comparison.json")
+            .put("mergeToDevelop", "USER_APPROVAL_REQUIRED");
         var ledger = report.putArray("ruleLedger");
         rules.forEach((ruleId, rule) -> {
             ObjectNode row = ledger.addObject();
@@ -362,15 +465,60 @@ public final class GenerateAppendixIScopedTraining {
             throw new IllegalArgumentException("A structured candidate is required for mutation");
         }
         ObjectNode result = candidate.deepCopy();
+        if ("APPI-C060-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            ((ArrayNode) result.path("syntheticData").path("records")).add(mutation.path("value").deepCopy());
+            return result;
+        }
+        if ("APPI-C063-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            ((ObjectNode) result.path("syntheticData")).set("logicalPayloadLength", mutation.path("replacement").deepCopy());
+            return result;
+        }
+        if ("APPI-C056-N08-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            String path = mutation.path("path").asText();
+            int bracket = path.indexOf('[');
+            int index = Integer.parseInt(path.substring(bracket + 1, path.length() - 1));
+            ((ArrayNode) result.path("syntheticData").path("sequenceSeries"))
+                    .set(index, mutation.path("replacement").deepCopy());
+            return result;
+        }
+        if ("APPI-C066-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            ((ArrayNode) result.path("syntheticData").path("records")).remove(2);
+            return result;
+        }
+        if ("APPI-C052-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            ((ArrayNode) result.path("syntheticData").path("nestedRecords")).remove(1);
+            return result;
+        }
+        if (candidate.path("candidateId").asText().matches("APPI-C07[0-3]-001|APPI-C06[89]-001")
+            || Set.of("APPI-C075-001", "APPI-C075-002", "APPI-C075-003", "APPI-C075-004",
+                "APPI-C075-005", "APPI-C075-006", "APPI-C076-001", "APPI-C076-002",
+                "APPI-C077-001", "APPI-C080-001", "APPI-C081-001")
+                    .contains(candidate.path("candidateId").asText())
+            || candidate.path("candidateId").asText().matches("APPI-C078-0(0[1-9]|1[0-3])|APPI-C079-00[1-7]")) {
+            ObjectNode synthetic = (ObjectNode) result.path("syntheticData");
+            synthetic.set("active", synthetic.path("negative").deepCopy());
+            return result;
+        }
         if ("APPI-C062-OUTER-001".equals(candidate.path("candidateId").asText())) {
             JsonNode mutation = candidate.path("mutation").path("cases").path(0);
             ObjectNode firstRecord = (ObjectNode) result.path("syntheticData").path("records").get(0);
             firstRecord.set("logicalLength", mutation.path("replacement").deepCopy());
             return result;
         }
-        if (Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C053-OUTER-001",
+        if (Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C052-N01-001",
+            "APPI-C052-N02-001", "APPI-C065-OUTER-001", "APPI-C067-OUTER-001", "APPI-C053-OUTER-001",
             "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
-            "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001")
+            "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001",
+            "APPI-C060-N01-001", "APPI-C060-N02-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+            "APPI-C066-N03-001", "APPI-C066-N04-001",
+            "APPI-C064-OUTER-001", "APPI-C064-N01-001", "APPI-C064-N02-001", "APPI-C056-OUTER-001",
+            "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001", "APPI-C056-N04-001",
+            "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001", "APPI-C056-N09-001",
+            "APPI-C056-N12-001", "APPI-C056-N13-001",
+            "APPI-C064-N03-001", "APPI-C064-N04-001")
                 .contains(candidate.path("candidateId").asText())) {
             String id = candidate.path("candidateId").asText();
             int mutationIndex = "APPI-C053-OUTER-001".equals(id) ? 2 : 0;

@@ -1,0 +1,148 @@
+{
+  "id" : "TD-APPI-C064-N01-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C064-N01-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C064-N01-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-72",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t064-r003-APPI-C064-N01-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C064-N01-001",
+        "tableId" : "064",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T064-R002", "APPI-T064-R003" ],
+        "syntheticData" : {
+          "selector" : "01",
+          "logicalLength" : 6,
+          "serviceCity" : "DENVER",
+          "context" : {
+            "cardBrand" : "Maestro",
+            "paymentType" : "Debit",
+            "acceptorCity" : "BOSTON",
+            "country" : "US",
+            "uspsApprovedSpellingSyntheticPrecondition" : true
+          }
+        },
+        "clearScope" : "Cityneededifdifferent,ansmax13,n3nestedcount;USPSmatchisexplicitunverifiedprecondition.",
+        "excludedClaims" : [ "AuthenticUSPSlookup", "Worldcitycatalog", "Unknownminimum" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Requiredlogicalcityandcount6,max13",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Externalapprovedspelling",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "serviceCity",
+            "operation" : "remove",
+            "expected" : "FAIL differsfromacceptor"
+          }, {
+            "path" : "serviceCity",
+            "replacement" : "ABCDEFGHIJKLMN",
+            "expected" : "FAIL maximum13 independentofpostalvalidity"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 5,
+            "expected" : "FAIL count"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "max13StructuralString" : "ABCDEFGHIJKLM",
+          "note" : "Alphabeticmaxfixtureisnotassertedanapprovedcity"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31380,
+          "section" : "Appendix I-72",
+          "endLine" : 31391
+        }, {
+          "startLine" : 31392,
+          "section" : "Appendix I-73",
+          "endLine" : 31418
+        }, {
+          "startLine" : 31352,
+          "section" : "Appendix I-72",
+          "endLine" : 31378
+        }, {
+          "startLine" : 31402,
+          "section" : "Appendix I-73",
+          "endLine" : 31412
+        }, {
+          "startLine" : 31431,
+          "section" : "Appendix I-73",
+          "endLine" : 31441
+        }, {
+          "startLine" : 31459,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31478
+        }, {
+          "startLine" : 31495,
+          "section" : "Appendix I-74",
+          "endLine" : 31505
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.01.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31402,
+            "section" : "Appendix I-73",
+            "endLine" : 31404
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "variable count up to 13",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31405,
+            "section" : "Appendix I-73",
+            "endLine" : 31408
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Data",
+          "sourceType" : "ans..13",
+          "sourceLength" : "maximum 13 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31409,
+            "section" : "Appendix I-73",
+            "endLine" : 31418
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

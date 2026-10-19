@@ -1,0 +1,204 @@
+{
+  "id" : "TD-APPI-C056-N12-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N12-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C056-N12-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-62",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r013-APPI-C056-N12-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N12-001",
+        "tableId" : "056",
+        "nestedSelector" : "12",
+        "ruleIds" : [ "APPI-T056-R013", "APPI-T056-R014", "APPI-T056-R015", "APPI-T056-R016", "APPI-T056-R017" ],
+        "syntheticData" : {
+          "selector" : "12",
+          "logicalLength" : 1,
+          "event" : "2",
+          "context" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "payment" : "recurring",
+            "phase" : "registration",
+            "additionalFactorAuthentication" : true
+          }
+        },
+        "clearScope" : "1registration,2subsequent,3modification,4cancellation; onlyIndia Visa recurring; initial authentication.",
+        "excludedClaims" : [ "Successful issuer authorization based only onevent", "External authentication protocol validity", "Full request serialization" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Registration event1 withauthentication",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "OnlyIndia Visa recurring scope",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "event",
+            "replacement" : "2",
+            "expected" : "FAIL registration event mapping"
+          }, {
+            "path" : "context.additionalFactorAuthentication",
+            "replacement" : false,
+            "expected" : "FAIL registration authentication prerequisite"
+          }, {
+            "path" : "context.issuerCountry",
+            "replacement" : "Canada",
+            "expected" : "FAIL onlyIndia recurring applicability"
+          }, {
+            "path" : "event",
+            "replacement" : "5",
+            "expected" : "FAIL code domain"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed1"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "eventPairs" : [ {
+            "value" : "1",
+            "phase" : "registration/first"
+          }, {
+            "value" : "2",
+            "phase" : "subsequent"
+          }, {
+            "value" : "3",
+            "phase" : "modification"
+          }, {
+            "value" : "4",
+            "phase" : "cancellation"
+          } ],
+          "invalidBelow" : "0"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30648,
+          "section" : "Appendix I-62",
+          "endLine" : 30706
+        }, {
+          "startLine" : 30707,
+          "section" : "Appendix I-63",
+          "endLine" : 30717
+        }, {
+          "startLine" : 30648,
+          "section" : "Appendix I-62",
+          "endLine" : 30675
+        }, {
+          "startLine" : 30677,
+          "section" : "Appendix I-62",
+          "endLine" : 30690
+        }, {
+          "startLine" : 27801,
+          "section" : "Appendix I-9",
+          "endLine" : 27812
+        }, {
+          "startLine" : 27813,
+          "section" : "Appendix I-10",
+          "endLine" : 27822
+        }, {
+          "startLine" : 28209,
+          "section" : "Appendix I-19",
+          "endLine" : 28236
+        }, {
+          "startLine" : 28795,
+          "section" : "Appendix I-31",
+          "endLine" : 28810
+        }, {
+          "startLine" : 28811,
+          "section" : "Appendix I-32",
+          "endLine" : 28826
+        }, {
+          "startLine" : 35219,
+          "section" : "Appendix Q-3",
+          "endLine" : 35246
+        }, {
+          "startLine" : 35939,
+          "section" : "Appendix Y-2",
+          "endLine" : 35992
+        }, {
+          "startLine" : 35993,
+          "section" : "Appendix Y-3",
+          "endLine" : 36040
+        }, {
+          "startLine" : 30692,
+          "section" : "Appendix I-62",
+          "endLine" : 30706
+        }, {
+          "startLine" : 30707,
+          "section" : "Appendix I-63",
+          "endLine" : 30708
+        }, {
+          "startLine" : 30710,
+          "section" : "Appendix I-63",
+          "endLine" : 30717
+        }, {
+          "startLine" : 30747,
+          "section" : "Appendix I-63",
+          "endLine" : 30769
+        }, {
+          "startLine" : 30770,
+          "section" : "Appendix I-64",
+          "endLine" : 30771
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.12.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 12",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30651,
+            "section" : "Appendix I-62",
+            "endLine" : 30653
+          } ]
+        }, {
+          "path" : "113.12.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30654,
+            "section" : "Appendix I-62",
+            "endLine" : 30657
+          } ]
+        }, {
+          "path" : "113.12.Sub-Table Data",
+          "sourceType" : "n1",
+          "sourceLength" : "1 digit; 1/2/3/4",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30658,
+            "section" : "Appendix I-62",
+            "endLine" : 30706
+          }, {
+            "startLine" : 30707,
+            "section" : "Appendix I-63",
+            "endLine" : 30717
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

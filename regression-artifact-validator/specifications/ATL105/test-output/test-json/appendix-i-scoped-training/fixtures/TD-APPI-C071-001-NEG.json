@@ -1,0 +1,101 @@
+{
+  "id" : "TD-APPI-C071-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C071-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C071-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-79",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t071-r002-APPI-C071-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C071-001",
+        "tableId" : "071",
+        "ruleIds" : [ "APPI-T071-R001", "APPI-T071-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-78",
+          "startLine" : 31813,
+          "endLine" : 31818
+        }, {
+          "section" : "Appendix I-79",
+          "startLine" : 31830,
+          "endLine" : 31845
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "071",
+            "declaredDataLength" : "005",
+            "data" : "A1B2C",
+            "logicalContext" : {
+              "network" : "Visa",
+              "entity" : "hypothetical network-assigned enabler",
+              "assignmentVerified" : false
+            }
+          },
+          "negative" : {
+            "tableId" : "071",
+            "declaredDataLength" : "005",
+            "data" : "A1B2C",
+            "logicalContext" : {
+              "network" : "MasterCard",
+              "entity" : "hypothetical network-assigned enabler",
+              "assignmentVerified" : false
+            }
+          },
+          "positiveVariants" : [ {
+            "network" : "Interlink",
+            "declaredDataLength" : "005",
+            "data" : "D3E4F"
+          } ],
+          "active" : {
+            "tableId" : "071",
+            "declaredDataLength" : "005",
+            "data" : "A1B2C",
+            "logicalContext" : {
+              "network" : "MasterCard",
+              "entity" : "hypothetical network-assigned enabler",
+              "assignmentVerified" : false
+            }
+          }
+        },
+        "clearScope" : "Formal five-byte alphanumeric EVV definition and explicit Visa/Interlink-only scope, not the conflicting printed example.",
+        "excludedClaims" : [ "Actual assignment", "Resolution of sub-table-64 migration reference", "Approval of printed four-byte example", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "five ASCII alphanumeric data bytes with declared length 005",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "network is Visa or Interlink",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "five ASCII alphanumeric data bytes with declared length 005",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "network is Visa or Interlink",
+            "outcome" : "FAIL"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalContext.network",
+          "from" : "Visa",
+          "to" : "MasterCard",
+          "unchanged" : "all field values and synthetic assignment status",
+          "targetedFailure" : "outside explicitly stated network scope"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

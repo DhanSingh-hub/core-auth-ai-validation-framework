@@ -1,0 +1,72 @@
+{
+  "id" : "TD-APPI-C079-002-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-002-POS.json",
+  "testCaseIds" : [ "TC-APPI-C079-002-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-86",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r003-APPI-C079-002"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-002",
+        "tableId" : "079",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T079-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-86",
+          "startLine" : 32329,
+          "endLine" : 32347
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "01",
+            "declaredValueLength" : "01",
+            "data" : "1",
+            "logicalMeaning" : "unit cost includes local tax"
+          },
+          "negative" : {
+            "id" : "01",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "logicalMeaning" : "unit cost includes local tax"
+          }
+        },
+        "clearScope" : "079 local included-tax true-only indicator and fixed headers.",
+        "excludedClaims" : [ "False encoding permission", "Mandatory presence", "078 taxable indicator semantics" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data belongs to listed set {1}",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data belongs to listed set {1}",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data remains n1",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "1",
+          "to" : "0",
+          "unchanged" : "id, length and intended included-local-tax meaning",
+          "targetedFailure" : "unlisted indicator; no false semantics invented"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

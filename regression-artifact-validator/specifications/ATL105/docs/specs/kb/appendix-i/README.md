@@ -12,7 +12,7 @@ No model-training service has been invoked.
 
 **Current stage: all 78 defined tables represented in draft source-knowledge
 batches; bounded Tables 001-009 predicate/fragment candidates implemented;
-101 selected logical chains for Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062 now independently
+178 selected logical candidates for Tables 010-022, 024-059, 062, 064-073, and 075-081 now independently
 evaluated and linked using the canonical review-only contract.
 Semantic completeness, full-message training and AI equivalence remain incomplete.**
 The generator locates 78 source-defined top-level table headings, not 81 consecutive
@@ -137,8 +137,8 @@ substituted by a fragment or producer sample.
 ## Executed scoped logical batch (continuation)
 
 [Canonical review-only package](../../../../test-output/test-json/appendix-i-scoped-training/package.json)
-contains 101 BR/TS pairs and 218 TC/TD pairs for selected examples from Tables
-010-015, 017-022, 024-051, 053-055, 057-059, and 062. Each TD has a physical JSON file, the canonical
+contains 178 BR/TS pairs and 372 TC/TD pairs for selected examples from Tables
+010-022, 024-059, 062, 064-073, and 075-081. Each TD has a physical JSON file, the canonical
 `testCaseIds` link, and REVIEW_REQUIRED readiness. Source anchors use a
 distinct scoped-check identity: these partial predicates must not be matched
 as though they implement every clause of the original source rule.
@@ -153,8 +153,9 @@ network availability or host response is verified.
 
 [Execution and rule ledger](../../../../test-output/test-json/appendix-i-scoped-training/evidence.json)
 pins the source and knowledge/example hashes, records actual findings for all
-218 logical evaluations, and reconciles all 302 draft rules. One hundred one supplied
-targeted mutations are detected by their specific predicate. This is not
+372 logical evaluations, with findings against all 302 draft rules: 236 have
+partial logical evidence in this batch and 66 have no scoped candidate. All 178
+supplied targeted mutations are detected by their specific predicate. This is not
 the appendix-wide mutation threshold or complete coverage of those rules.
 The ledger identifies partial evidence **in this scoped batch**; it does not
 discard or override earlier first-batch evidence. Table 018/019 checks cover
@@ -193,6 +194,28 @@ Table 062 checks the defined phone/email record maxima, supplied nested/aggregat
 counts, and Visa account-verification context. It does not impose E.164, email
 RFC, deliverability, or mandatory-contact rules; the email character/count conflict
 remains open.
+Tables 016 and 052 add selected EMV-tag and nested-record checks; aggregate framing,
+tag-set completeness and cryptographic/key validity remain unresolved. Tables
+065-073 add bounded gateway, amount, EV fee, EVV, loyalty-link, and fixed-width
+field checks. Table 066 also checks the listed domain/program pair and supplied
+Auth/completion selector recurrence. Table 056 checks selected supplied
+recurrence/history values and synthetic registration-reference equality, but
+cryptographic and network validity remain unverified. Tables 075-077 check
+selected logical discount tags and positional amounts without asserting TLV
+serialization or program enrollment. Table 078 checks selected listed subtable
+values, product-code linkage and supplied decimal examples; wrapper, length/count
+basis, ordering and conflicting tax examples remain review-required. Table 079
+checks selected local tax fragments and the explicit small aggregate example;
+required tag sets, ordering and reconciliation to Table 078 remain review-required.
+Tables 080/081 check eleven-byte values while their header and reserved-byte
+layouts remain review-required.
+Table 064 checks supplied service-versus-acceptor differences, local nested
+record widths and follow-on recurrence. USPS city validity, Appendix D/AC code
+membership, country postal standards and the conflicting outer header remain
+review-required.
+The current increment adds bounded predicates for selected Table 056, 078, and
+079 candidates. These remain logical review evidence; unresolved source conflicts,
+applicability, full-message behavior, and SME approval are not inferred from them.
 Table 030 checks only explicit EMV presence, the no-security-concern code and
 the MasterCard-only terminal type 29 context; Table 031 checks the listed
 capability codes and certified-capability invariance across entry modes.
@@ -287,20 +310,15 @@ not publish files. Missing sources, boundaries, duplicate IDs and I/O failures
 fail explicitly. Generation uses only the specification; AI input cannot change
 its denominator.
 
-## Baseline and completion boundary
+## Prior baseline and completion boundary
 
-Current targeted validation: 151 tests, zero failures/errors, covering Appendix I
+The earlier 151-test targeted checkpoint covered Appendix I
 inventory/knowledge/candidate metadata, first-batch predicates and framing,
 representative immutable AI intake, register/view consistency and existing
 Segment 111/producer-neutral contract behavior, plus a reproducible Appendix B
-dependency-length inspection. This is not the full-framework
-suite. The continuation adds focused checks for selected scoped predicates,
-canonical links, physical-file reproducibility and training-status gates,
-plus shared training-status/denominator regressions. Fifty-two selected
-remaining-layout examples now have separately recorded logical
-execution evidence; predicates for the others remain unimplemented.
-The two earlier physical-TD gaps are preserved in AIF-0017; AI comparison
-is deferred, and no new delivery assessment is made by this continuation.
+dependency-length inspection. It was not the full-framework suite. The two
+earlier physical-TD gaps are preserved in AIF-0017; AI comparison was deferred
+at that checkpoint.
 
 The targeted existing Segment 111 and contract tests passed before the change.
 The prior full-framework review of this same `Develop` baseline recorded four
@@ -347,3 +365,30 @@ equivalence. The CA Public Key File Load message family, companion segments,
 negative-case intent, full wire and host responses remain unassessed. Complete
 Appendix I AI mapping and October-delivery TC/TD intake remain pending. Producer
 approval/OK labels never enter Test Solution approval or execution counts.
+
+## 2026-10-17 continuation
+
+The [current canonical review-only package](../../../../test-output/test-json/appendix-i-scoped-training/package.json)
+contains 178 BR/TS chains and 372 linked logical TC/TD cases. The [execution and
+rule ledger](../../../../test-output/test-json/appendix-i-scoped-training/evidence.json)
+records 178 detected supplied mutations. All records remain REVIEW_REQUIRED;
+complete requests, host responses, approved rules and certification remain zero.
+The focused generator class passes 217 tests after regenerating the persisted
+package and fixtures; the combined focused Appendix I/Segment 111 suite passes
+325 tests with zero failures or errors.
+
+The [2026-10-17 Run1 comparison](../../../../test-output/ai-solution-independent-review/appendix-i-segment111-run1-comparison/comparison.json)
+binds twelve approved AI cases to their scenario, requirement, TD and metadata
+records under the verified intake manifest. The slice has ten scenarios and three
+requirements; six cases carry producer status DELIBERATE_OMISSION and six COMPLETE.
+All twelve logical TD records contain Table 005 value 000 and Table 031 value 00.
+This is traceability evidence only: semantic equivalence is NOT_ASSESSED, SME
+approval is not granted, and no raw wire capture or host response was found in
+the selected TD records.
+
+The [full-message evidence-gap register](../../../../test-output/ai-solution-independent-review/appendix-i-segment111-run1-comparison/appendix-i-full-message-evidence-gap.json)
+keeps full-message validation NOT_ASSESSED. It lists the required byte-identical
+capture pair, request-bound hashes, converter identity, framing manifest,
+line-bound source quotes and complete request context. It retains the Segment 100
+82-versus-78 source conflict as open SME item SEG111-SME-121 and does not synthesize
+captures or infer host acceptance.

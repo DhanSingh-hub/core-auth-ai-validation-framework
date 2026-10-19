@@ -45,8 +45,16 @@ class AppendixAFPhysicalWireCandidateTest {
                 .isEqualTo("SOURCE_CONFIRMED");
         assertThat(candidate.path("request").path("segment111").path("variableInformationSection")
                 .path("indicatorN3Candidate").asText()).isEqualTo("082");
+        assertThat(candidate.path("request").path("segment111").path("variableInformationSection")
+                .path("afTransactionIdAlias").asText()).isEqualTo("0001");
+        assertThat(candidate.path("request").path("segment111").path("variableInformationSection")
+                .path("afTransactionIdSerializedAsSeparateField").asBoolean()).isFalse();
         assertThat(candidate.path("request").path("segment111").path("afTransactionIdMappingStatus").asText())
-                .isEqualTo("REVIEW_REQUIRED");
+                .isEqualTo("SOURCE_DERIVED_REVIEW_REQUIRED");
+        assertThat(candidate.path("request").path("segment111").path("afTransactionIdMappingReason").asText())
+                .contains("authorized SME/business confirmation remains pending");
+        assertThat(candidate.path("request").path("segment111").path("afTransactionIdSerializedAsTable82N4").asBoolean())
+                .isTrue();
         assertThat(candidate.path("response").path("status").asText()).isEqualTo("SYNTHETIC_LAYOUT_ONLY");
         assertThat(candidate.path("response").path("hostCapture").asBoolean()).isFalse();
         assertThat(candidate.path("response").path("expectedBusinessOutcome").asText()).isEqualTo("NOT_ASSESSED");

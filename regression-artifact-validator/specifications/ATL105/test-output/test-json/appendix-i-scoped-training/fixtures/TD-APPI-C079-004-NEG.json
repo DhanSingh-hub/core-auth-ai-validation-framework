@@ -1,0 +1,88 @@
+{
+  "id" : "TD-APPI-C079-004-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-004-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C079-004-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-87",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r005-APPI-C079-004"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-004",
+        "tableId" : "079",
+        "nestedSelector" : "03",
+        "ruleIds" : [ "APPI-T079-R005" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-87",
+          "startLine" : 32376,
+          "endLine" : 32390
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "03",
+            "declaredValueLength" : "04",
+            "data" : "0625",
+            "logicalPercentage" : "6.25",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "negative" : {
+            "id" : "03",
+            "declaredValueLength" : "04",
+            "data" : "0625",
+            "logicalPercentage" : "62.5",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "positiveVariants" : [ {
+            "data" : "0001",
+            "logicalPercentage" : "0.01"
+          } ],
+          "active" : {
+            "id" : "03",
+            "declaredValueLength" : "04",
+            "data" : "0625",
+            "logicalPercentage" : "62.5",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          }
+        },
+        "clearScope" : "Formal fuel VAT/local-rate n4 and two implied decimals.",
+        "excludedClaims" : [ "Mixed-product or nonfuel aggregate formula", "Business rate maximum", "Real tax jurisdiction" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalPercentage equals data divided by 100",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalPercentage equals data divided by 100",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "fixed four-digit field still valid",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalPercentage",
+          "from" : "6.25",
+          "to" : "62.5",
+          "unchanged" : "value, precision and fuel context",
+          "targetedFailure" : "incorrect scale"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

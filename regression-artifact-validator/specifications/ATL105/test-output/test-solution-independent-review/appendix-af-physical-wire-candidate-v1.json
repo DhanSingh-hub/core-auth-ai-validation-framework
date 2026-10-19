@@ -58,12 +58,15 @@
       "variableInformationSection" : {
         "indicatorN3Candidate" : "082",
         "lengthN3" : "004",
-        "terminalTransactionNumberN4" : "0001"
+        "terminalTransactionNumberN4" : "0001",
+        "afTransactionIdAlias" : "0001",
+        "afTransactionIdSerializedAsSeparateField" : false
       },
       "table82IndicatorEncodingStatus" : "SOURCE_CONFIRMED",
       "table82IndicatorEncodingReason" : "ATL105 2026-4 Chapter 13.2 Element 113 explicitly says Element 111 value 082 is Incremental Auth Data; Appendix I Table 82 supplies Table ID 82, N3 length 004, and N4 Terminal Transaction Number.",
-      "afTransactionIdMappingStatus" : "REVIEW_REQUIRED",
-      "afTransactionIdSerialized" : false
+      "afTransactionIdMappingStatus" : "SOURCE_DERIVED_REVIEW_REQUIRED",
+      "afTransactionIdMappingReason" : "Appendix AF says Table 82 Incremental Auth Data contains Transaction ID; Appendix I defines the table's N4 payload as Terminal Transaction Number. The candidate binds the logical alias to that one N4 value, serialized once; authorized SME/business confirmation remains pending.",
+      "afTransactionIdSerializedAsTable82N4" : true
     }
   },
   "testDataPayload" : {
@@ -273,5 +276,5 @@
       "segments" : [ ]
     }
   },
-  "limitations" : [ "The full 2026-4 PDF is external to this repository; the candidate binds to its pinned hash and reviewed extracted source quotes.", "Appendix AF Transaction ID to Table 82 Terminal Transaction Number equivalence remains REVIEW_REQUIRED.", "The response is synthetic layout data, not a captured host response or expected-outcome oracle; TCP/IP/TPDU framing is not included.", "Synthetic field values are for local structural wire checks only; no card/network compatibility or approval result is asserted." ]
+  "limitations" : [ "The full 2026-4 PDF is external to this repository; the candidate binds to its pinned hash and reviewed extracted source quotes.", "The source-derived AF Transaction ID to Table 82 N4 alias still awaits authorized SME/business confirmation.", "The response is synthetic layout data, not a captured host response or expected-outcome oracle; TCP/IP/TPDU framing is not included.", "Synthetic field values are for local structural wire checks only; no card/network compatibility or approval result is asserted." ]
 }

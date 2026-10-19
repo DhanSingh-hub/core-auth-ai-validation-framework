@@ -1,0 +1,82 @@
+{
+  "id" : "TD-APPI-C078-006-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-006-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-006-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-84",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r009-APPI-C078-006"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-006",
+        "tableId" : "078",
+        "nestedSelector" : "03",
+        "ruleIds" : [ "APPI-T078-R009" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-84",
+          "startLine" : 32147,
+          "endLine" : 32164
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "03",
+            "declaredValueLength" : "01",
+            "data" : "0"
+          },
+          "negative" : {
+            "id" : "03",
+            "declaredValueLength" : "01",
+            "data" : "2"
+          },
+          "positiveVariants" : [ {
+            "data" : "0",
+            "meaning" : "false, item not taxable"
+          }, {
+            "data" : "1",
+            "meaning" : "true, item taxable"
+          } ],
+          "active" : {
+            "id" : "03",
+            "declaredValueLength" : "01",
+            "data" : "2"
+          }
+        },
+        "clearScope" : "Taxable indicator codes 0 and 1, fixed one-byte numeric value.",
+        "excludedClaims" : [ "Tax formula", "Required presence", "0 allowed for included-tax tags", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "taxable data is 0 or 1",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "taxable data is 0 or 1",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data still has one numeric byte",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "0",
+          "to" : "2",
+          "unchanged" : "id and length",
+          "targetedFailure" : "unlisted taxable indicator"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

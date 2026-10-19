@@ -105,8 +105,8 @@ Source/BR reconciliation only. NOT full semantic validation or model training. A
 |108|Vehicle Number; |N VARIABLE max 10|1|6|0|1|1|0|
 |109|Voucher ID; |N VARIABLE max 10|1|10|0|1|1|0|
 |111|Variable Information Indicator; |AN FIXED max 3|3|13|1|1|1|0|
-|112|Variable Information Length; |N FIXED max 3|3|20|1|1|2|0|
-|113|Variable Information; |AN VARIABLE max 982|2|180|1|0|1|0|
+|112|Variable Information Length; |N FIXED max 3|3|27|1|1|2|0|
+|113|Variable Information; |AN VARIABLE max 982|2|225|1|0|1|0|
 |114|Software Load IP/URL Address; |AN FIXED max 30|2|12|0|2|0|0|
 |115|Additional Information Data Segment Flag; |N FIXED max 1|2|10|2|2|1|0|
 |116|Additional Information Indicator; |N FIXED max 3|1|67|0|1|0|0|

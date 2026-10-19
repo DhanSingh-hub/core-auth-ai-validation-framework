@@ -1,0 +1,105 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-004-CURRENCY-CODE",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "caseCount": 632,
+    "obligationGroups": ["OBL-351E0EBEB734", "OBL-B735CC62A98A"]
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:022",
+      "claim": "Currency Code must be numeric and must not exceed 3 bytes.",
+      "sourceRuleId": "ENT-ELEM-20",
+      "linkedCaseCount": 12,
+      "caseIdsPreservedIn": "2026-10-19-all-ai-br-chain-test-br-review-v3/ai-br-chain-evidence.jsonl.gz",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "additionalSourceConstraint": "Element 20 is fixed-length three digits, not merely a maximum-three-byte field."
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:023",
+      "claim": "Currency Code must be one of: 971, 012, 973, 032, 051, 036, 944, 044, 933, 048, 764, 590, 052, 084, 060, 064, 928, 068, 986, 096, 108, 124, 132, 136, 936, 953, 952, 950, 152, 158, 156, 170, 174, 976, 977, 558, 188, 270, 208, 807, 262, 930, 214, 704, 951, 818, 222, 232, 230, 978, 238, 242, 348, 292, 332, 600, 533, 324, 328, 344, 980, 352, 356, 368, 388, 400, 404, 598, 418, 203, 414, 981, 422, 008, 340, 925, 430, 434, 748, 426, 969, 458, 454, 934, 480, 484, 498, 504, 943, 104, 566, 516, 524, 532, 376, 901, 554, 578, 604, 929, 776, 586, 446, 858, 608, 826, 072, 634, 320, 710, 512, 116, 946, 462, 360, 643, 646, 682, 891, 941, 690, 702, 417, 090, 706, 728, 996, 144, 654, 938, 968, 752, 756, 972, 050, 882, 834, 398, 780, 496, 788, 949, 784, 800, 840, 860, 548, 410, 886, 392, 967, 924, 985.",
+      "sourceRuleId": "ENT-ELEM-20",
+      "linkedCaseCount": 620,
+      "caseIdsPreservedIn": "2026-10-19-all-ai-br-chain-test-br-review-v3/ai-br-chain-evidence.jsonl.gz",
+      "sourceAlignment": "ALLOW_LIST_EXACTLY_MATCHES_APPENDIX_L",
+      "appendixLComparison": {"sourceCodeCount": 153, "aiCodeCount": 153, "missingFromAi": [], "notInSource": []}
+    }
+  ],
+  "sourceEvidence": [
+    {"sourcePage": 368, "startLine": 19977, "quote": "Number: 20 Name: Currency Code"},
+    {"sourcePage": 368, "startLine": 19979, "quote": "Character Type: N Maximum Length: 3 bytes"},
+    {"sourcePage": 368, "startLine": 19981, "quote": "Representation: Fixed length of three digits"},
+    {"sourcePage": 368, "startLine": 19983, "quote": "Processing Rules: If not sent in Transaction Request, the value defaults to 840 (United States currency)."},
+    {"sourcePage": 368, "startLine": 19989, "quote": "Please see Appendix L. Valid Currency Codes."},
+    {"sourcePage": "Appendix L-1", "startLine": 34457, "quote": "Appendix L. Valid Currency Codes"},
+    {"sourcePage": "Appendix L-1", "startLine": 34458, "quote": "This appendix contains a list of currencies and their corresponding valid Currency Codes for Element No. 20 (Currency Code)."}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "directCurrentTestRules": [
+      {"testBrId": "BR-RULE-SEG105-R-014", "title": "Currency Code is optional when allowed by the message context", "status": "DRAFT_REVIEW_REQUIRED", "anchor": "Segment 105 / Element 20", "chainAdequacy": "PLACEHOLDER"},
+      {"testBrId": "BR-RULE-SEG119-R-022", "title": "Currency Code is optional", "status": "DRAFT_REVIEW_REQUIRED", "anchor": "Segment 119 / Element 20", "chainAdequacy": "PLACEHOLDER"},
+      {"testBrId": "BR-SEG100-ANN-L", "title": "Currency values in Segment 100-related transaction and variable data use valid Appendix L currency codes", "status": "NOT_SET", "anchor": "Segments 100/111; Elements 20/153", "chainAdequacy": "AUTHORED_CHAIN_STATUS_UNAPPROVED"}
+    ],
+    "formatCounterpart": "No direct Segment 105/119 numeric/fixed-length rule found in the 1,343-record Test model.",
+    "allowedValuesCounterpart": "A broader Appendix L authored rule exists but is scoped to Segments 100/111, not these Segment 105/119 chains.",
+    "optionalContext": "Currency Code may be optional for these message types; if omitted in a Transaction Request, ATL105 states the value defaults to 840. Do not treat an empty-string observation as proof of field omission or as a presence failure.",
+    "coverageDisposition": "POTENTIAL_FORMAT_GAP_AND_CONTEXTUAL_VALUE_RULE_REVIEW_REQUIRED"
+  },
+  "caseReview": {
+    "screenFile": "2026-10-19-all-ai-br-chain-test-br-review-v3/automated-chain-screen-v1/case-field-observations.jsonl.gz",
+    "caseObservationSummary": {
+      "formatCases": {
+        "caseCount": 12,
+        "observedValues": {"0000": 3, "00#": 3, "": 3, "000": 3},
+        "intents": {"lengthExceeded": 3, "invalidCharacterSet": 3, "emptyValue": 3, "boundaryAtLimit": 3},
+        "assessment": "The four values are observed in the correct candidate field scope. The format-only boundary value 000 is three numeric digits; currency-code validity is a separate rule. Empty string is not proof of omitted field."
+      },
+      "allowedValueCases": {
+        "caseCount": 620,
+        "observedCurrencyCodes": {"008": 292, "012": 65, "270": 65, "524": 65, "840": 65, "996": 65, "000": 3},
+        "codesObservedAndListedInAppendixL": ["008", "012", "270", "524", "840", "996"],
+        "invalidCodeObserved": {"000": 3},
+        "sourceListCoverage": "Only 6 of 153 allowed values are exercised; not exhaustive list coverage."
+      },
+      "outcomeDeclarations": {
+        "formatCases": {"responseCode1Assert": 9, "responseCode0Assert": 1, "responseCodeAbsentInfer": 2},
+        "allowedValueCases": {"responseCode0Assert": 317, "responseCodeAbsentInfer": 300, "responseCode1Assert": 3},
+        "authority": "All are candidate producer declarations; ASSERT/INFER tiers are not independent response oracles."
+      },
+      "missingFrozenPayloadPaths": 0,
+      "fieldObservations": "All 1,264 expected Element 20 observations across two physical copies per case were exact-value observations."
+    }
+  },
+  "analystDisposition": {
+    "formatClaimAlignment": "ALIGNED_BUT_FIXED_LENGTH_DETAIL_OMITTED",
+    "allowedValuesClaimAlignment": "EXACT_MATCH_TO_ALL_153_APPENDIX_L_CODES",
+    "aiCaseEvidence": "ALL_632_CASES_RETAINED_AND_HASH_BOUND; CASE_DATA_EXERCISES_ONLY_SIX_VALID_CODES_PLUS_000",
+    "testCounterpart": "OPTIONALITY_RULES_EXIST_FOR_105/119; NO_DIRECT_FORMAT_RULE; APPENDIX_L_RULE_HAS_DIFFERENT_SEGMENT_SCOPE",
+    "outcomeAdequacy": "UNRESOLVED_PRODUCER_ASSERTS_AND_INFERRED_CODES",
+    "overall": "PRELIMINARY_SOURCE_ALIGNMENT_WITH_INCOMPLETE_CONTEXT_AND_COVERAGE",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Confirm source-listed optionality and 840 default behavior for the exact Segment 105/119 message contexts before interpreting empty values or omissions.",
+    "Review the scope mismatch between Segment 105/119 AI claims and the Segment 100/111 authored Appendix L Test rule; do not propagate it as coverage without an authorized decision.",
+    "Determine whether exhaustive 153-code coverage is required; current AI cases exercise six valid codes and one invalid code.",
+    "Independently establish the response outcome for invalid Currency Code 000 and the 300 INFER cases.",
+    "Keep the :022 format obligation separate from the :023 allowed-value obligation."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

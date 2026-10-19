@@ -1,0 +1,106 @@
+{
+  "id" : "TD-APPI-C076-002-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C076-002-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C076-002-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-81",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t076-r002-APPI-C076-002"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C076-002",
+        "tableId" : "076",
+        "nestedSelector" : "line-item-repeat",
+        "ruleIds" : [ "APPI-T076-R002", "APPI-T076-R003", "APPI-T076-R004", "APPI-T076-R005", "APPI-T076-R006", "APPI-T076-R007", "APPI-T076-R008" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-81",
+          "startLine" : 31966,
+          "endLine" : 31998
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "numberOfLineItems" : "1",
+            "items" : [ {
+              "productCode" : "001",
+              "discountRatePercentage" : "0250",
+              "discountRateUnitDiscount" : "00000025",
+              "flatDiscountRate" : "000000000075",
+              "totalDiscountAmount" : "000000000100",
+              "netFuelPrice" : "000000034567"
+            } ],
+            "logicalPercentage" : "2.50",
+            "logicalNetFuelPrice" : "3.4567"
+          },
+          "negative" : {
+            "numberOfLineItems" : "2",
+            "items" : [ {
+              "productCode" : "001",
+              "discountRatePercentage" : "0250",
+              "discountRateUnitDiscount" : "00000025",
+              "flatDiscountRate" : "000000000075",
+              "totalDiscountAmount" : "000000000100",
+              "netFuelPrice" : "000000034567"
+            } ],
+            "logicalPercentage" : "2.50",
+            "logicalNetFuelPrice" : "3.4567"
+          },
+          "sourceFieldOrder" : [ "productCode", "discountRatePercentage", "discountRateUnitDiscount", "flatDiscountRate", "totalDiscountAmount", "netFuelPrice" ],
+          "active" : {
+            "numberOfLineItems" : "2",
+            "items" : [ {
+              "productCode" : "001",
+              "discountRatePercentage" : "0250",
+              "discountRateUnitDiscount" : "00000025",
+              "flatDiscountRate" : "000000000075",
+              "totalDiscountAmount" : "000000000100",
+              "netFuelPrice" : "000000034567"
+            } ],
+            "logicalPercentage" : "2.50",
+            "logicalNetFuelPrice" : "3.4567"
+          }
+        },
+        "clearScope" : "All six nested fields populated with numeric source widths and leading-zero examples; percentage two decimals, net price four; exact counted repetition.",
+        "excludedClaims" : [ "Fuel-code assignment validity", "Implied scales of unit discount/flat rate/total discount", "Calculation or reconciliation formulas", "Object property order as wire format" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "numberOfLineItems equals actual items count",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "field widths in source order are 3/4/8/12/12/12 and all values numeric",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "0250 means 2.50 percent and 000000034567 means 3.4567 net price",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "numberOfLineItems equals actual items count",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "all existing item fields still meet widths and types",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "numberOfLineItems",
+          "from" : "1",
+          "to" : "2",
+          "unchanged" : "one complete item and logical decimal annotations",
+          "targetedFailure" : "count declares an absent second item"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

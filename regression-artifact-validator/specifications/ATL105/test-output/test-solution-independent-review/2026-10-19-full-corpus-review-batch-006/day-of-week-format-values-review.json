@@ -1,0 +1,78 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-006-DAY-OF-WEEK",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "linkedCaseCount": 0,
+    "element": "25",
+    "segmentContext": "DL3 in the direct Test rules; AI claims carry no segment anchor"
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:029",
+      "obligationGroupId": "OBL-5B8B20E62F8F",
+      "claim": "Day of the Week must be numeric and must not exceed 1 bytes.",
+      "sourceRuleId": "ENT-ELEM-25",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 25 is numeric, fixed length of one digit, originates at BUYPASS, and represents the current day of the week.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:030",
+      "obligationGroupId": "OBL-AA1EF7F03663",
+      "claim": "Day of the Week must be one of: 0 Sunday, 1 Monday, 2 Tuesday, 3 Wednesday, 4 Thursday, 5 Friday, 6 Saturday.",
+      "sourceRuleId": "ENT-ELEM-25",
+      "sourceAlignment": "ALIGNED_TO_SOURCE_ENUM",
+      "sourceDetail": "The AI's 0-6 enumeration matches the source's complete weekday mapping.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    }
+  ],
+  "sourceEvidence": [
+    {"sourcePage": 371, "startLine": 20085, "quote": "Number: 25 Name: Day of the Week"},
+    {"sourcePage": 371, "startLine": 20086, "quote": "Character Type: N Maximum Length: 1 byte"},
+    {"sourcePage": 371, "startLine": 20088, "quote": "Representation: Fixed length of one digit"},
+    {"sourcePage": 371, "startLine": 20089, "quote": "Purpose: Identifies the current day of the week."},
+    {"sourcePage": 371, "startLine": 20090, "quote": "Processing Rules: Originates at BUYPASS."},
+    {"sourcePage": 371, "startLine": 20091, "quote": "Valid Codes/Values: Code Description"},
+    {"sourcePage": 371, "startLine": 20102, "quote": "0 Sunday"},
+    {"sourcePage": 371, "startLine": 20108, "quote": "6 Saturday"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "directDl3Rules": [
+      {"testBrId": "BR-RULE-SEGDL3-R-002", "title": "Day of the Week, Current Date, Current Time, and Cut Time are all required and Host-sourced", "status": "DRAFT_REVIEW_REQUIRED", "sourceElements": ["25", "21", "22", "23"], "chain": "ONE_SYMBOLIC_SCENARIO_CASE_AND_DATA_PLACEHOLDER"},
+      {"testBrId": "BR-RULE-SEGDL3-R-005", "title": "Day of the Week is 0-6; Current Date MMDDYY; Current Time and Cut Time HHMM", "status": "DRAFT_REVIEW_REQUIRED", "sourceElement": "25", "chain": "ONE_SYMBOLIC_SCENARIO_CASE_AND_DATA_PLACEHOLDER"}
+    ],
+    "disposition": "SOURCE_ALIGNED_TEST_COUNTERPARTS_EXIST_BUT_HAVE_NO_EXECUTABLE_CASE_ORACLE",
+    "aiSegmentApplicability": "NOT_ESTABLISHED_BY_THE_AI_BR_ANCHORS; DL3 CONTEXT COMES FROM LINKED SCENARIO/TARGET AND TEST SOURCE RULES"
+  },
+  "analystDisposition": {
+    "numericWidthClaim": "SOURCE_ALIGNED",
+    "enumerationClaim": "SOURCE_ALIGNED_EXACT_SET",
+    "aiCaseCoverage": "NO_LINKED_CASES_FOR_EITHER_AI_BR",
+    "testChainAdequacy": "SYMBOLIC_PLACEHOLDERS_ONLY",
+    "overall": "PRELIMINARY_SOURCE_ALIGNMENT_WITH_INCOMPLETE_CHAINS",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Create hash-bound positive cases for all seven weekday values or an authorized representative partition, plus invalid-width and out-of-range values.",
+    "Confirm BUYPASS host-source and DL3 applicability in a complete message fixture.",
+    "Keep date/time companion fields as separate obligations if sharing a DL3 scenario; do not infer a common executable oracle from the composite Test BR title."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

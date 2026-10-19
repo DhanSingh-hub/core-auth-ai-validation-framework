@@ -116,11 +116,14 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
         variableOutput.putObject("variableInformationSection")
                 .put("indicatorN3Candidate", indicator)
                 .put("lengthN3", variableLength)
-                .put("terminalTransactionNumberN4", terminalTransactionNumber);
+                .put("terminalTransactionNumberN4", terminalTransactionNumber)
+                .put("afTransactionIdAlias", terminalTransactionNumber)
+                .put("afTransactionIdSerializedAsSeparateField", false);
         variableOutput.put("table82IndicatorEncodingStatus", "SOURCE_CONFIRMED")
                 .put("table82IndicatorEncodingReason", "ATL105 2026-4 Chapter 13.2 Element 113 explicitly says Element 111 value 082 is Incremental Auth Data; Appendix I Table 82 supplies Table ID 82, N3 length 004, and N4 Terminal Transaction Number.")
-                .put("afTransactionIdMappingStatus", "REVIEW_REQUIRED")
-                .put("afTransactionIdSerialized", false);
+                .put("afTransactionIdMappingStatus", "SOURCE_DERIVED_REVIEW_REQUIRED")
+                .put("afTransactionIdMappingReason", "Appendix AF says Table 82 Incremental Auth Data contains Transaction ID; Appendix I defines the table's N4 payload as Terminal Transaction Number. The candidate binds the logical alias to that one N4 value, serialized once; authorized SME/business confirmation remains pending.")
+                .put("afTransactionIdSerializedAsTable82N4", true);
 
         ObjectNode testDataPayload = candidate.putObject("testDataPayload");
         testDataPayload.putObject("testControls").put("validateDataSection1", true).put("validateSerialization", true);
@@ -207,7 +210,7 @@ public final class GenerateAppendixAFPhysicalWireCandidate {
         responseLayout.putArray("segments");
         candidate.putArray("limitations")
                 .add("The full 2026-4 PDF is external to this repository; the candidate binds to its pinned hash and reviewed extracted source quotes.")
-                .add("Appendix AF Transaction ID to Table 82 Terminal Transaction Number equivalence remains REVIEW_REQUIRED.")
+                .add("The source-derived AF Transaction ID to Table 82 N4 alias still awaits authorized SME/business confirmation.")
                 .add("The response is synthetic layout data, not a captured host response or expected-outcome oracle; TCP/IP/TPDU framing is not included.")
                 .add("Synthetic field values are for local structural wire checks only; no card/network compatibility or approval result is asserted.");
         return candidate;

@@ -1,0 +1,84 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-008-DL2-DIAL-STRING-FIELDS",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "linkedCaseCount": 0,
+    "segmentContextFromSourceAndTest": "DL2"
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:033",
+      "obligationGroupId": "OBL-4723606C06AC",
+      "claim": "Dial String Terminator must be alphanumeric and must not exceed 1 bytes.",
+      "sourceRuleId": "ENT-ELEM-27",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 27 is AN, fixed one alphanumeric character. In DL2 it is A after the first dial string and F after the second.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:034",
+      "obligationGroupId": "OBL-8EF2D72A246D",
+      "claim": "Dial String Type must be numeric and must not exceed 1 bytes.",
+      "sourceRuleId": "ENT-ELEM-28",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 28 is numeric, fixed one digit, and fixed value 1 for transaction dial strings.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    }
+  ],
+  "sourceEvidence": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:033", "sourcePage": 372, "startLine": 20131, "quote": "Number: 27 Name: Dial String Terminator"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:033", "sourcePage": 372, "startLine": 20132, "quote": "Character Type: AN Maximum Length: 1 byte"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:033", "sourcePage": 372, "startLine": 20134, "quote": "Representation: Fixed length of one alphanumeric character"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:033", "sourcePage": 372, "startLine": 20138, "quote": "A Indicates the end of the first dial string in the Dial String Data Segment (Data Segment No. DL2)."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:033", "sourcePage": 372, "startLine": 20140, "quote": "F Indicates the end of the second dial string in the Dial String Data Segment (Data Segment No. DL2)."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:034", "sourcePage": 373, "startLine": 20154, "quote": "Number: 28 Name: Dial String Type"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:034", "sourcePage": 373, "startLine": 20155, "quote": "Character Type: N Maximum Length: 1 byte"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:034", "sourcePage": 373, "startLine": 20157, "quote": "Representation: Fixed length of one digit"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:034", "sourcePage": 373, "startLine": 20159, "quote": "Processing Rules: Fixed value: 1"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:034", "sourcePage": 373, "startLine": 20161, "quote": "1 Transaction dial strings"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "directDl2Rules": [
+      {"testBrId": "BR-RULE-SEGDL2-R-002", "title": "Dial String Type is fixed value 1; Primary Phone Number block is required", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL2 primary phone block; includes fixed Dial String Type 1 and terminator A."},
+      {"testBrId": "BR-RULE-SEGDL2-R-007", "title": "Phone Number is variable length; Dial String Type is fixed 1; Terminator A first/F second", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL2 dial-string sequence and positional terminator values."}
+    ],
+    "chains": "Both have one scenario/case/data, all review-required; executable payloads and independent outcomes are not established.",
+    "disposition": "SOURCE_ALIGNED_RULES_EXIST_WITH_MORE_SPECIFIC_VALUE/POSITIONAL_CONSTRAINTS_BUT_ARE_NOT_APPROVED"
+  },
+  "caseReview": {
+    "aiCaseCount": 0,
+    "aiCaseEvidence": "NO_LINKED_CASES_FOR_EITHER_AI_BR",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatAlignment": "BOTH_CLAIMS_ALIGNED_BUT_SOURCE_HAS_FIXED_VALUES_AND_POSITIONAL_TERMINATOR_SEMANTICS",
+    "chainAdequacy": "AI_SIDE_HAS_NO_CASES; TEST_SIDE_REMAINS_DRAFT_PLACEHOLDER_CHAIN",
+    "overall": "PRELIMINARY_SOURCE_ALIGNMENT_WITH_INCOMPLETE_CHAIN",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Confirm the intended DL2 first/second dial-string contexts for Element 27 before constructing A/F cases.",
+    "Exercise Element 28 fixed value 1 and any invalid values with authorized expected outcomes.",
+    "Build complete DL2 payloads and verify field order, length and terminator placement; no AI cases currently demonstrate them.",
+    "Keep the Primary Phone Number block presence requirement separate from the Element 27/28 value rules."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}
