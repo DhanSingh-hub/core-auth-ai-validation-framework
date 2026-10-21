@@ -1,0 +1,139 @@
+{
+  "name": "Flow — Purchase/Sale followed by Void or Reversal (Financial Transaction Request → Purchase Reversal) [wallet-present]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Wallet Identifier": "04",
+    "Wallet Method": "S"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        567
+      ],
+      "sub_table_id": "07",
+      "sub_table_length": "002",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_07",
+      "axis": "wallet",
+      "value": "04",
+      "parameter": "Wallet Identifier"
+    },
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        569
+      ],
+      "sub_table_id": "10",
+      "sub_table_length": "001",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_10",
+      "axis": "wallet_method",
+      "value": "S",
+      "parameter": "Wallet Method"
+    }
+  ],
+  "flow_id": "FLOW-SALE-VOID",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "sale",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      }
+    },
+    {
+      "step": 2,
+      "role": "void",
+      "transaction": "Purchase Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "8"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-3",
+          "source_page": null,
+          "rule": "The Sequence Number must be the Sequence Number contained in the original transaction.",
+          "spec_anchor": {
+            "keywords": [
+              "purchase reversal void",
+              "time-out reversal",
+              "must match original transaction request"
+            ],
+            "element_no": "86"
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.9,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-402-3",
+  "source_page": null,
+  "business_rule_assertion": "The Sequence Number must be the Sequence Number contained in the original transaction.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "239f648e8609a49bf003652d3233695f807c24ca46de27d220c9ccb5e8f930dd",
+  "dedup_key": "32f59838ea9c58ab71a0a52ed2639bf7edf4d102a7ceabb8200f23c8a3a328ac",
+  "flow_variant_id": "wallet-present",
+  "flow_variant_name": "Digital wallet presentment",
+  "flow_axis_values": {
+    "wallet": "04",
+    "wallet_method": "S"
+  },
+  "flow_axis_provenance": {
+    "wallet": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Identifier"
+    },
+    "wallet_method": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Method"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1923",
+      "rule_id": "BR-402-3",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1923"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2494",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

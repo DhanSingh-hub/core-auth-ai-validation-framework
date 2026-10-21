@@ -1,0 +1,182 @@
+{
+  "name": "Flow — Visa Estimated/Initial Authorization followed by Incremental Authorization then Completion (Financial Transaction Request → Financial Transaction Request → Purchase/Capture) [boundary-at-limit-sequence-number]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:089",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Sequence Number": "<flow at-limit valid value, exact max length>"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-ESTIMATED-INCREMENTAL-AUTH",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "estimated_or_initial_authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "incremental_authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-722-5",
+          "source_page": 722,
+          "rule": "Incremental authorization requests contain the same Sequence Number as the estimated or initial transaction request.",
+          "spec_anchor": {
+            "keywords": [
+              "incremental authorization request must contain",
+              "same sequence number"
+            ]
+          }
+        },
+        {
+          "type": "carry_response_field",
+          "from_step": 1,
+          "element_name": "Approval Number",
+          "source_rule_id": "BR-722-8",
+          "source_page": 722,
+          "rule": "Declared explicitly (2026-10-01) because carry_obligations.py's auto-derivation can never reach this step: it resolves origin steps by matching Transaction Type code, and step 1 and step 2 both use code '3', so step 2 is itself treated as an origin candidate and skipped. Appendix AE (p.722) says BUYPASS 'will identify the transactions as incremental based on the approval code that the merchant sends ... in the subsequent transactions' — the incremental leg must carry the estimated/initial leg's own response approval code.",
+          "spec_anchor": {
+            "keywords": [
+              "buypass host identifies",
+              "incremental authorization",
+              "approval code"
+            ]
+          }
+        },
+        {
+          "type": "carry_var_info_table_field",
+          "from_step": 1,
+          "element_name": "Terminal Transaction Number",
+          "table_id": "063",
+          "positions": [
+            7,
+            10
+          ],
+          "source_rule_id": "BR-722-7",
+          "source_page": 722,
+          "rule": "Contains the same Terminal transaction number (Table ID 63 in Segment 111) as the estimated or initial transaction request. Table 063's own layout (p.609-610): Table Data = Arrival Date (positions 1-4) + Duration (5-6) + Terminal Transaction Number (7-10) + Preferred Customer Indicator (11). Only takes effect when step 1's own composed request already carries a Table 063 row — never fabricated (composer.py::_carry_var_info_table_field).",
+          "spec_anchor": {
+            "keywords": [
+              "incremental authorization request must contain",
+              "terminal transaction number"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-2",
+          "source_page": 402,
+          "rule": "In the case of a preauthorized transaction, the Sequence Number in the Purchase/Capture identifies the Sequence Number in the transaction's Authorization Only request.",
+          "spec_anchor": {
+            "keywords": [
+              "preauthorized transactions",
+              "purchase/capture equals"
+            ],
+            "element_no": "86"
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-86",
+  "source_page": 722,
+  "business_rule_assertion": "Incremental authorization requests contain the same Sequence Number as the estimated or initial transaction request.; Declared explicitly (2026-10-01) because carry_obligations.py's auto-derivation can never reach this step: it resolves origin steps by matching Transaction Type code, and step 1 and step 2 both use code '3', so step 2 is itself treated as an origin candidate and skipped. Appendix AE (p.722) says BUYPASS 'will identify the transactions as incremental based on the approval code that the merchant sends ... in the subsequent transactions' — the incremental leg must carry the estimated/initial leg's own response approval code.; Contains the same Terminal transaction number (Table ID 63 in Segment 111) as the estimated or initial transaction request. Table 063's own layout (p.609-610): Table Data = Arrival Date (positions 1-4) + Duration (5-6) + Terminal Transaction Number (7-10) + Preferred Customer Indicator (11). Only takes effect when step 1's own composed request already carries a Table 063 row — never fabricated (composer.py::_carry_var_info_table_field).; In the case of a preauthorized transaction, the Sequence Number in the Purchase/Capture identifies the Sequence Number in the transaction's Authorization Only request.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "2392e9eb3a73a850a749aba0df725b053d6dbdf470c4c586b9b5528a6d62c274",
+  "dedup_key": "a6eb0160e1fe96079d436076adba076df973fc808a6d18059f6b520f08dc9943",
+  "flow_variant_id": "boundary-at-limit-sequence-number",
+  "flow_variant_name": "Boundary — Sequence Number at max length (6 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1922",
+    "REQ-SRC-ATL105-PDF-001:3212",
+    "REQ-SRC-ATL105-PDF-001:3214",
+    "REQ-SRC-ATL105-PDF-001:3215"
+  ],
+  "flow_boundary_element": "Sequence Number",
+  "flow_boundary_max_bytes": 6,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:3212",
+      "rule_id": "BR-722-5",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:3215",
+      "rule_id": "BR-722-8",
+      "basis": "flow_link",
+      "link_type": "carry_response_field",
+      "step": 2,
+      "element_name": "Approval Number",
+      "confidence_band": "LOW"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:3214",
+      "rule_id": "BR-722-7",
+      "basis": "flow_link",
+      "link_type": "carry_var_info_table_field",
+      "step": 2,
+      "element_name": "Terminal Transaction Number",
+      "confidence_band": "LOW"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1922",
+      "rule_id": "BR-402-2",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 3,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2664",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

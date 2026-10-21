@@ -1,0 +1,92 @@
+{
+  "id": "TC-006587",
+  "name": "Business Rule — BR-585-3: For MasterCard, Maestro, Discover, JCB, and Diners, this field is optional for mPOS transactions. [ECA/TeleCheck Service Transaction Request]",
+  "scenario_id": "SC-5506",
+  "scenario_type": "business_rule",
+  "transaction_type": "ECA/TeleCheck Service Transaction Request",
+  "priority": "P3",
+  "priority_score": 0.305,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:2620",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:2620"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "completeness_status": "COMPLETE",
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "source_rule_id": "BR-585-3",
+  "source_page": 585,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "F",
+      "meaning": "approval, partial amount approved",
+      "source_page": [
+        82,
+        95,
+        123
+      ],
+      "grounding": "config/partial_approval_response_code.json (ATL105 SRC-ATL105-PDF-001 pages [82, 95, 123])",
+      "matched_on": "Partial Approval Indicator='1', Prompt Code transaction_type='0'",
+      "scenario_type_basis": "'business_rule' treated as valid, non-violating data (same rule as 'positive')"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "business_rule": {
+      "tier": "ASSERT",
+      "assertion": "Field is optional",
+      "source_page": 585,
+      "confidence_score": 0.8,
+      "grounding": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'ECA/TeleCheck Service Transaction Request' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "business_rule_assertion": "Field is optional",
+  "related_entity_ids": [
+    "ENT-CONCEPT-585-SUB-TABLE-ID-06-MOBILE-TERMINAL-CLASSIFICATION-CODE"
+  ],
+  "confidence_score": 0.8,
+  "confidence_pct": 23,
+  "confidence_band": "LOW",
+  "test_data_file": "qe_shaped_test_data/TD-TC-006587.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": []
+  },
+  "test_data": [
+    {
+      "step": 1,
+      "role": "single",
+      "transaction_type": "Sale",
+      "prompt_code": "0046",
+      "file": "TD-TC-006587.json"
+    }
+  ]
+}

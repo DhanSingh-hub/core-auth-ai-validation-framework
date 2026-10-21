@@ -1,0 +1,104 @@
+{
+  "name": "Flow — Loyalty Sale followed by Reversal (Financial Transaction Request → Purchase Reversal) [boundary-at-limit-unit-of-work]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:165",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Unit of Work": "<flow at-limit valid value, exact max length>"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-LOYALTY-SALE-REVERSAL",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "sale",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      }
+    },
+    {
+      "step": 2,
+      "role": "reversal",
+      "transaction": "Purchase Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "8"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Unit of Work",
+          "source_rule_id": "BR-444-2",
+          "source_page": 444,
+          "rule": "Required on loyalty reversals for matching information to the original purchase. Appears in Loyalty Card Data Segment (Segment No. 108).",
+          "spec_anchor": {
+            "keywords": [
+              "required on loyalty reversals",
+              "matching information to the original purchase"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-151",
+  "source_page": 444,
+  "business_rule_assertion": "Required on loyalty reversals for matching information to the original purchase. Appears in Loyalty Card Data Segment (Segment No. 108).",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "e7e3ee0ea355a9502d59493f39c51d9fd9de8dcb1c5087c63aaf5ef53df4c7c2",
+  "dedup_key": "9ac21ae621d4a4b564553e5ad4dd2f5affd639e0dfe5c8b79847f2543c9c3355",
+  "flow_variant_id": "boundary-at-limit-unit-of-work",
+  "flow_variant_name": "Boundary — Unit of Work at max length (19 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:2143"
+  ],
+  "flow_boundary_element": "Unit of Work",
+  "flow_boundary_max_bytes": 19,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:2143",
+      "rule_id": "BR-444-2",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Unit of Work",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2540",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:165",
+      "REQ-SRC-ATL105-PDF-001:2143"
+    ],
+    "testCaseIds": [
+      "TC-002232"
+    ],
+    "chainSide": "request",
+    "flowId": "FLOW-LOYALTY-SALE-REVERSAL"
+  }
+}
