@@ -49,6 +49,19 @@ Distinguish resolved preservation from certified negative objectives. Exact comp
 
 An agent or automation may perform Phases 1-4 (Source Inventory through Independent BR Derivation) directly from the ATL105 specification text without human involvement, as long as it reads only the specification and cites exact section/page/line evidence; this does not require human assistance. It may not certify its own output: a rule produced this way is `DRAFT_REVIEW_REQUIRED` until an SME/TBA (or formally delegated business approver) reviews and signs off, per the Required Training Record below. Segment training status must reflect this distinction (`IN_PROGRESS` with a `sme-tba-certification-pending` blocker, not `TRAINED_FOR_INTAKE`).
 
+For automated delivery validation, `scripts/validate-ai-delivery-evidence.py`
+extends the completed delivery audit with nested/flat JSON matrix edge reconciliation
+and a hash-bound ledger for **every physical TD**, including orphans. It reuses
+existing QE payload-leg checks only; per-rule observations retain source conflicts,
+and unevaluated rules/unsupported or ambiguous identities remain explicit. No raw
+payload values are published. Optional exact-file Chapter 13 intake evidence remains
+bounded. Neither feedback conformance nor a structurally consistent matrix certifies
+source meaning, complete allowed values/conditions/dependencies, negative-objective
+isolation, lifecycle behavior or host outcomes. The gate keeps full semantic acceptance
+blocked; set equality does not certify matrix row counts or producer coverage claims.
+See [AI validation Gate 8 and Gate 11](../../test-validation-strategy/AI-Solution-Output-Validation-Plan.md)
+and [controls AIV-023, AIV-025 and AIV-026](../../test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md).
+
 ## Automatic Update Rule
 
 Assessment execution readiness always applies the strict execution contract, regardless of a producer's `strictExecutionContract` flag. BRs, scenarios and cases must declare `EXECUTION_READY`; TDs must declare `EXECUTABLE` and contain request/response envelopes. Future availability, unresolved outcomes, missing metadata, failed validators, empty denominators or incomplete strategy maps block readiness. Structural full-chain coverage may still be 100% while readiness is false. These checks validate declared states and contract evidence, not reviewer authenticity or SME approval; independent source/approval binding remains a separate gate.

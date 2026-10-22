@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Milestone 2 test plan for ATL105 closure and ISO8583 AI-output validation, 1 November to 15 December 2026.">
+  <title>Milestone 2 Test Plan | ATL105 + ISO8583</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #102a43;
+      --panel: #243b53;
+      --panel-alt: #1f4b63;
+      --line: #486581;
+      --text: #f4f7fa;
+      --muted: #cbd5e1;
+      --blue: #8fd3ff;
+      --blue-strong: #176b87;
+      --green: #9ae6b4;
+      --amber: #ffd166;
+      --red: #ff9b9b;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font: 16px/1.65 "Segoe UI", Arial, sans-serif;
+    }
+    a { color: var(--blue); }
+    a:hover { color: #c6ecff; }
+    header, main, footer { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    header { padding: 52px 0 28px; }
+    header h1 { max-width: 900px; margin: 0; color: var(--blue); font-size: clamp(2rem, 5vw, 3.35rem); line-height: 1.12; }
+    header .subtitle { margin: 14px 0 22px; color: #d8ebf7; font-size: clamp(1.1rem, 2vw, 1.4rem); }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .meta li { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); }
+    .notice { margin: 24px 0 0; padding: 16px 18px; border-left: 5px solid var(--amber); border-radius: 4px; background: var(--panel-alt); }
+    nav { position: sticky; top: 0; z-index: 5; border-block: 1px solid var(--line); background: rgba(16, 42, 67, .97); }
+    nav ul { display: flex; width: min(1160px, calc(100% - 40px)); gap: 8px 18px; margin: auto; padding: 10px 0; overflow-x: auto; list-style: none; white-space: nowrap; }
+    nav a { font-size: .92rem; text-decoration: none; }
+    main { padding-bottom: 48px; }
+    section { padding: 32px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 62px; }
+    h2 { margin: 0 0 18px; color: #b8e1ff; font-size: clamp(1.55rem, 3vw, 2rem); line-height: 1.25; }
+    h3 { margin: 24px 0 8px; color: #d8ebf7; font-size: 1.2rem; }
+    p { margin: 10px 0; }
+    li { margin-block: 5px; }
+    .callout { margin: 18px 0; padding: 16px 18px; border-left: 5px solid var(--green); border-radius: 4px; background: var(--panel-alt); }
+    .callout.warning { border-left-color: var(--amber); }
+    .callout.blocked { border-left-color: var(--red); }
+    .table-wrap { margin: 18px 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 11px 13px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: var(--blue-strong); color: white; }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) { background: rgba(36, 59, 83, .55); }
+    .schedule table { min-width: 950px; }
+    .schedule td:first-child { min-width: 105px; font-weight: 700; color: var(--blue); white-space: nowrap; }
+    .roles table { min-width: 760px; }
+    .roles td:first-child { min-width: 210px; font-weight: 700; color: var(--blue); }
+    .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: .85rem; white-space: nowrap; }
+    .sample-steps { counter-reset: step; padding: 0; list-style: none; }
+    .sample-steps li { position: relative; margin: 12px 0; padding: 14px 16px 14px 54px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    .sample-steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 15px; top: 13px; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: var(--blue-strong); color: white; font-weight: 700; }
+    .criteria { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+    .criteria article { padding: 17px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+    .criteria h3 { margin-top: 0; color: var(--green); }
+    footer { padding: 24px 0 40px; color: var(--muted); }
+    code { padding: 1px 5px; border-radius: 4px; background: var(--panel); color: #d8ebf7; }
+    @media (max-width: 640px) {
+      header, main, footer, nav ul { width: min(100% - 28px, 1160px); }
+      header { padding-top: 34px; }
+      section { padding: 25px 0; }
+      th, td { padding: 9px 10px; }
+    }
+    @media print {
+      :root { color-scheme: light; --text: #111827; --muted: #374151; --page: #fff; --panel: #f3f4f6; --panel-alt: #eff6ff; --line: #9ca3af; --blue: #075985; --blue-strong: #075985; --green: #166534; --amber: #92400e; --red: #991b1b; }
+      body { background: #fff; color: #111827; font-size: 10.5pt; }
+      header, main, footer { width: 100%; }
+      nav { position: static; background: white; }
+      nav ul { width: 100%; flex-wrap: wrap; }
+      nav a { color: #075985; }
+      section { break-inside: avoid; }
+      .table-wrap { overflow: visible; }
+      a { color: inherit; }
+      .notice, .callout, .criteria article, .sample-steps li { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Milestone 2 Test Plan</h1>
+    <p class="subtitle">ATL105 Closure and ISO8583 AI-Output Validation</p>
+    <ul class="meta" aria-label="Plan details">
+      <li>1 November-15 December 2026</li>
+      <li>Four test resources</li>
+      <li>Draft for stakeholder agreement</li>
+    </ul>
+    <p class="notice"><strong>Core objective:</strong> deliver the Test Solution's independent capability to validate AI-generated artifacts. The Test Solution owns its source-derived oracle and validation evidence; it does not generate the AI Solution's output or substitute for authorized business approval.</p>
+  </header>
+
+  <nav aria-label="Plan sections">
+    <ul>
+      <li><a href="#objective">Objective</a></li>
+      <li><a href="#scope">Scope</a></li>
+      <li><a href="#baseline">Baseline</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#manual-review">Manual review</a></li>
+      <li><a href="#acceptance">Acceptance</a></li>
+      <li><a href="#governance">Governance</a></li>
+      <li><a href="#risks">Risks</a></li>
+      <li><a href="#decisions">Kickoff decisions</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="objective">
+      <h2>1. Purpose and objective</h2>
+      <p>Milestone 2 delivers the Test Solution's independent capability to validate AI-generated test artifacts for both ATL105 and ISO8583. The Test Solution will derive its own source-anchored rule baseline and assess AI-generated business requirements (BRs), test scenarios (TSs), test cases (TCs), test data (TD), traceability, and coverage.</p>
+      <div class="callout">Every result must be evidence-backed and reported as passed, failed, review-required, or blocked. Unresolved interpretations are not silently treated as valid or invalid.</div>
+      <p><strong>Specification baselines:</strong> BUYPASS ATL105 2026-3; First Data ISO8583 Global Version 2026-3; and Global TA Addendum Version 2021-1a, subject to an applicability and precedence decision.</p>
+    </section>
+
+    <section id="scope">
+      <h2>2. Scope</h2>
+      <div class="criteria">
+        <article>
+          <h3>In scope</h3>
+          <ul>
+            <li>Inventory, identify, and hash specification versions and relevant sections, appendices, tables, message/segment definitions, and addenda.</li>
+            <li>Independently derive source-anchored Test Solution rules and BRs, distinct from AI-generated BRs and <code>AIV-*</code> validator controls.</li>
+            <li>Build or extend reusable intake, normalization, schema, traceability, coverage, semantic-validation, reporting, and regression-test capabilities.</li>
+            <li>Create specification-specific rule packs for agreed ATL105 and ISO8583 scope.</li>
+            <li>Validate frozen AI deliveries, retaining provenance, hashes, results, discrepancies, and unresolved questions.</li>
+            <li>Manually review a risk-stratified 5-10% sample of eligible AI-generated end-to-end flows.</li>
+            <li>Retest defects and publish results, limitations, and required decisions.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Out of scope</h3>
+          <ul>
+            <li>Generating or correcting the AI Solution's BRs, scenarios, cases, or data on its behalf.</li>
+            <li>Claiming host, network, processor, or production execution from offline validation.</li>
+            <li>Treating structural links, placeholders, AI-reported confidence/coverage, or the manual sample as proof of approval or complete correctness.</li>
+            <li>Promoting unresolved source conflicts or business interpretations without an authorized decision.</li>
+            <li>Expanding either specification beyond scope agreed at the 6 November scope gate.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="baseline">
+      <h2>3. Planning baseline and controls</h2>
+      <p>The current repository reports 601 ATL105 catalog rules, while related chain evidence uses different denominators. The current element-chain report counts 555 structurally complete rules, 0 executable non-placeholder chains, and 555 placeholder/review rules. These are different scopes and must not be combined as a single measure.</p>
+      <div class="callout warning"><strong>Week-one gate:</strong> reconcile source versions, rule/element denominators, artifact snapshots, and report-generation inputs. Record one dated baseline and its hashes. Until then, mark affected measures <code>NOT_RECONCILED</code>; do not declare ATL105 complete from an older aggregate.</div>
+      <p>ATL105 technical/source evidence and SME semantic approval are separate gates. For ISO8583, document the two supplied sources' relationship, effective-date/applicability, precedence, and conflicts before claiming a combined oracle. If an authorized SME/business decision is unavailable, preserve the item as <code>REVIEW_REQUIRED</code> and report the schedule dependency.</p>
+      <h3>Governing project standards</h3>
+      <ul>
+        <li><a href="../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md">ATL105 Segment Training Handbook</a></li>
+        <li><a href="TEST-SOLUTION-FRAMEWORK-OWNERSHIP.md">Test Solution Framework Ownership</a></li>
+        <li><a href="AI-ARTIFACT-VALIDATION-CONTROLS.md">AI Artifact Validation Controls</a></li>
+        <li><a href="SME-DECISION-AND-PROMOTION-WORKFLOW.md">SME Decision and Promotion Workflow</a></li>
+        <li><a href="../java-framework-agenda.md">Java Framework Agenda</a></li>
+      </ul>
+    </section>
+
+    <section id="resources" class="roles">
+      <h2>4. Four-resource plan</h2>
+      <p>All four test resources (R1-R4) are cross-trained and capable of performing every activity: specification understanding, independent Test Solution BR/rule authoring, automation and validation, and manual review of AI-generated flows. Resource labels do not denote fixed specialist roles.</p>
+      <p>At kickoff, assign a rotating activity lead for each work package and a different peer reviewer for its evidence. Rotate leads across ATL105 and ISO8583 and across analysis, authoring, automation, and review as capacity permits. All resources participate in planning, implementation, cross-review, and final evidence review. Avoid relying on one person as the sole author or reviewer of an oracle, validator control, or acceptance result.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Resource</th><th>Capability and assignment model</th><th>Expected contribution</th></tr></thead>
+          <tbody>
+            <tr><td>R1</td><td>Cross-trained across all activities; takes rotating work-package lead and peer-review assignments.</td><td>Source maps, independent rules/BRs, automation, AI intake, manual review, or verification according to the current assignment.</td></tr>
+            <tr><td>R2</td><td>Cross-trained across all activities; takes rotating work-package lead and peer-review assignments.</td><td>Source maps, independent rules/BRs, automation, AI intake, manual review, or verification according to the current assignment.</td></tr>
+            <tr><td>R3</td><td>Cross-trained across all activities; takes rotating work-package lead and peer-review assignments.</td><td>Source maps, independent rules/BRs, automation, AI intake, manual review, or verification according to the current assignment.</td></tr>
+            <tr><td>R4</td><td>Cross-trained across all activities; takes rotating work-package lead and peer-review assignments.</td><td>Source maps, independent rules/BRs, automation, AI intake, manual review, or verification according to the current assignment.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Collaboration, independence, and rotation</h3>
+      <ul>
+        <li>The assigned rule author derives rules from specification evidence before comparing with AI artifacts. A different resource reviews source interpretation and evidence links.</li>
+        <li>The assigned automation author implements controls from source-supported or explicitly bounded rules; a different resource reviews the control and regression evidence, including what it does not prove.</li>
+        <li>The assigned manual sample lead selects flows only after AI delivery freeze. Reviewers judge AI content against the independently derived Test Solution oracle, never using AI content to author that oracle.</li>
+        <li>Rotate lead and reviewer assignments between work packages and, where practical, between specifications. Record names, roles, and review evidence in the work register.</li>
+        <li>Unresolved semantics go to an authorized SME/TBA or delegate. Cross-training does not grant business-approval authority; no resource may represent an unapproved assumption as an approval.</li>
+      </ul>
+    </section>
+
+    <section id="schedule" class="schedule">
+      <h2>5. Schedule and work packages</h2>
+      <p>Work begins Monday, 2 November, following the 1 November milestone start. The plan assumes four cross-trained resources are available throughout. Work-package leads and peer reviewers rotate; named assignments are recorded at kickoff and in weekly plans. 14-15 December are reserved for final evidence, decisions, and handover.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Dates</th><th>Focus and work</th><th>Primary owners</th><th>Exit evidence</th></tr></thead>
+          <tbody>
+            <tr><td>1-6 Nov</td><td>Kickoff; confirm capacity, stakeholders, AI delivery owners, and SME approvers. Freeze ATL105 inputs and reconcile counts/scopes. Inventory and hash both ISO8583 PDFs; map versions, sections, tables, terminology, and addendum relationship. Agree initial scope and outputs.</td><td>All four; rotate work-package lead and peer reviewer.</td><td>Signed scope/baseline register; source hashes; reconciled or explicitly unresolved ATL105 metrics; ISO source/version/conflict register; dependency and decision log.</td></tr>
+            <tr><td>7-13 Nov</td><td>Close high-priority ATL105 source/rule gaps and author independent BRs for agreed scope. Build ISO8583 source map and first atomic rule/BR catalogue. Identify fields, message types, processing codes, conditions, response relationships, and source-stated wire/format constraints. Raise unsupported or conflicting interpretations.</td><td>All four; rotate source-analysis, rule-authoring, and review assignments.</td><td>Reviewed, source-anchored rule/BR inventories; explicit <code>REVIEW_REQUIRED</code> queue; agreed AI package formats and metadata.</td></tr>
+            <tr><td>14-20 Nov</td><td>Complete ATL105 agreed rule/test-design baseline and implement priority semantic, structural, traceability, and coverage checks. Stand up ISO8583 pack and implement shared intake/canonicalization plus bounded structure checks for agreed scope.</td><td>All four; rotate oracle-definition, implementation, and independent verification assignments.</td><td>Runnable ATL105 controls; ISO8583 pack and bounded checks; unit/regression evidence; rules traceable to validator controls.</td></tr>
+            <tr><td>21-27 Nov</td><td>Integrate frozen or agreed AI deliveries for both specs. Independently recalculate coverage; run schema, ID, link/orphan, provenance, rule applicability, and supported semantic checks. Triage discrepancies. Freeze manual-review denominator and sample.</td><td>All four; rotate intake, automation, analysis, and sample-planning leads.</td><td>Reproducible per-spec reports; discrepancy register; frozen eligible-flow population and auditable sample selection.</td></tr>
+            <tr><td>28 Nov-4 Dec</td><td>Manually review selected end-to-end flows across high-risk and representative conditions. Fix validator defects, not AI artifacts. Add regression tests for confirmed defects and edge cases. Obtain decisions on high-impact open items.</td><td>All four; rotate sample-review, validator-fix, and peer-review assignments while keeping authorship/review distinct.</td><td>Review records; defect/root-cause log; regression tests; SME decisions or explicit blockers.</td></tr>
+            <tr><td>5-11 Dec</td><td>Re-run both specs end-to-end on frozen deliveries. Verify controls, denominators, report reproducibility, review statuses, and failed cases. Complete cross-review and resolve release-blocking validator defects.</td><td>All four; rotate integrated-run and independent-evidence-check leads.</td><td>Reconciled final reports; test-suite results; defect disposition; no silent/unknown outcomes for in-scope controls.</td></tr>
+            <tr><td>12-15 Dec</td><td>Final acceptance review; document limitations/carryovers; publish handover and milestone outcome. Decide per specification: accepted for agreed scope, conditionally accepted, or blocked.</td><td>All four contribute evidence; Test Lead and authorized stakeholders approve.</td><td>Signed milestone report; evidence index; open-decision owners/dates; next-milestone recommendation.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="manual-review">
+      <h2>6. Manual end-to-end AI-flow review</h2>
+      <p>Manual review is independent quality evidence, not a substitute for automated coverage or a claim of statistical confidence.</p>
+      <ol class="sample-steps">
+        <li><strong>Freeze the population.</strong> R4 records delivery ID, specification/version, file hashes, intake time, and exclusions. Eligible flows trace from an AI-generated BR or declared source requirement through scenario and case to associated test data. Keep incomplete/orphaned flows in the defect population and report them.</li>
+        <li><strong>Set the denominator.</strong> Count unique eligible end-to-end flows after deduplicating exact duplicates within the frozen delivery. Report separately per specification and in-scope message/segment or flow family. List excluded/incomplete flows and reasons.</li>
+        <li><strong>Target 7.5% per specification.</strong> For each specification with at least 10 eligible unique flows, select a count within 5-10%: start at <code>ceil(0.075 x eligible flows)</code>, cap at <code>floor(0.10 x eligible flows)</code>, and ensure at least <code>ceil(0.05 x eligible flows)</code>. If rounding makes the band impossible, seek Test Lead approval for an exception before review. For fewer than 10 flows, approve an exception or block the gate. Zero/unknown denominator is blocked, never 100%.</li>
+        <li><strong>Stratify by risk and coverage.</strong> Include both specifications and, where present, high-impact transaction/message families, conditional rules, positive/negative and boundary cases, and source/version changes. Prioritize ambiguous claims, complex links, and high-risk data. Record the selection method, seed/deterministic rule, and per-stratum counts.</li>
+        <li><strong>Protect the cap.</strong> If minimum stratum representation would exceed 10%, seek Test Lead approval for a revised sample or report uncovered strata as a limitation. Do not silently exceed the cap.</li>
+        <li><strong>Review independently.</strong> Compare applicability, BR meaning, source anchor, scenario, expected result, test data, and traceability against the Test Solution oracle and specification. Record reviewer, evidence, result, defect severity, and SME adjudication need.</li>
+        <li><strong>Report honestly.</strong> Publish numerator, denominator, percentage, selection method, distribution, findings, and limitations. The sample does not prove that unreviewed AI flows are correct.</li>
+      </ol>
+    </section>
+
+    <section id="acceptance">
+      <h2>7. Validator capabilities and acceptance criteria</h2>
+      <p>Acceptance is against documented scope. A validator pass means the checked control passed; it does not universally approve the AI package.</p>
+      <h3>Common required capabilities</h3>
+      <ul>
+        <li><strong>Intake and provenance:</strong> Preserve original delivery; identify producer/package/version, specification/version, available generation metadata, and source hashes; fail or explicitly hold unsupported formats.</li>
+        <li><strong>Canonicalization and schema:</strong> Map supported formats without silent information loss; validate structure, types, IDs, and specification-specific payload shape.</li>
+        <li><strong>Independent oracle:</strong> Keep source-derived Test Solution rules/BRs separate from AI output; every in-scope rule has source evidence and status.</li>
+        <li><strong>Traceability:</strong> Validate rule/BR-to-scenario-to-case-to-data links, IDs, duplicates, orphans, unresolved references, and required reciprocal links.</li>
+        <li><strong>Coverage:</strong> Recompute coverage from eligible artifacts and the independent denominator; compare producer claims; do not credit placeholders or heuristic matches.</li>
+        <li><strong>Specification checks:</strong> Run only source-backed implemented checks; distinguish bounded format/shape predicates from full semantic, lifecycle, host, or business validation.</li>
+        <li><strong>Review state:</strong> Emit explicit pass/fail/review-required/blocked results; preserve conflicts, missing evidence, and SME dependencies.</li>
+        <li><strong>Evidence and regression:</strong> Produce deterministic, versioned reports and tests for valid controls, targeted invalid mutations, boundary cases, and unresolved cases.</li>
+      </ul>
+      <div class="criteria">
+        <article>
+          <h3>ATL105 exit</h3>
+          <ul>
+            <li>Source/version, rule denominator, chain scope, and report snapshots reconciled or explicitly bounded by approved scope.</li>
+            <li>Every in-scope rule has stable source anchor/status; gaps and SME dependencies visible.</li>
+            <li>Agreed AI delivery ingested and assessed by common validator and ATL105 rule pack.</li>
+            <li>Structural, traceability, supported semantic, and coverage controls have regression evidence; placeholders/review-only evidence are distinguished.</li>
+            <li>Manual sample completed, or gate explicitly blocked with owner/reason.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>ISO8583 exit</h3>
+          <ul>
+            <li>Both source files inventoried and hash-identified; applicability, relationship, precedence, and contradictions documented.</li>
+            <li>Agreed scope has independent source-anchored rules/BRs with applicability and open questions recorded.</li>
+            <li>Versioned ISO8583 pack accepted by shared validator for agreed AI format/scope.</li>
+            <li>Automated structural, traceability, coverage, and source-supported semantic checks have regression evidence, including defined positive/negative/boundary mutations.</li>
+            <li>AI delivery, manual sample, limitations, and SME dependencies reported.</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Milestone exit by 15 Dec</h3>
+          <ul>
+            <li>Both scopes have dated, hash-backed baselines and agreed denominators or explicit <code>NOT_CALCULABLE</code> limitations.</li>
+            <li>Agreed controls execute reproducibly; no in-scope artifact is silently dropped or converted to success.</li>
+            <li>Failures, unresolved semantics, unsupported formats, and approval dependencies are assigned; unresolved items are never promoted to pass.</li>
+            <li>Automated regression suites pass, or remaining failures have impact, owner, and acceptance decision documented.</li>
+            <li>Manual review population and results are auditable.</li>
+            <li>Test Lead and authorized stakeholders record per-spec acceptance, conditional acceptance, or blocked status.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="governance">
+      <h2>8. Governance, reporting, and change control</h2>
+      <ul>
+        <li><strong>Daily:</strong> Update the shared task/decision/defect register with status, evidence link, next action, and blocker.</li>
+        <li><strong>Weekly:</strong> Test Lead reviews scope, schedule exits, control/test results, sample readiness, SME decisions, and risks; publish a concise status per specification.</li>
+        <li><strong>Change control:</strong> Record any scope, source-version, denominator, or sampling-method change with reason, impact, approver, and baseline revision; preserve prior evidence.</li>
+        <li><strong>Defects:</strong> Separate AI artifact defects, validator defects, and source/SME questions. Correct validator logic when wrong; do not edit frozen AI input during assessment.</li>
+        <li><strong>Release decision:</strong> Authorized stakeholders accept documented scope and limitations. Technical completion alone does not authorize business semantics or production use.</li>
+      </ul>
+    </section>
+
+    <section id="risks">
+      <h2>9. Risks and dependencies</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Risk/dependency</th><th>Impact</th><th>Mitigation / decision</th></tr></thead>
+          <tbody>
+            <tr><td>ATL105 reports use different denominators; current element-chain evidence has 0 executable non-placeholder chains.</td><td>False completion claim or insufficient independent oracle for semantic AI assessment.</td><td>Reconcile scope/reports in week 1; separate placeholders; prioritize source-backed executable checks; report unapproved rules as review-required.</td></tr>
+            <tr><td>ISO8583 2021 addendum applicability/precedence against Version 2026-3 is unclear.</td><td>Conflicting or incorrectly combined rule baseline.</td><td>Record source hashes and section-level conflicts; obtain an authorized decision before merging/applying rules.</td></tr>
+            <tr><td>SME/TBA or authorized business reviewer unavailable.</td><td>Ambiguous rules remain unapproved and may block semantic acceptance.</td><td>Submit prioritized questions early; continue bounded technical validation; keep decisions pending and acceptance conditional/blocked.</td></tr>
+            <tr><td>AI delivery, schema details, or representative flows arrive late or change after freeze.</td><td>Less automation/review time and unstable denominator.</td><td>Agree format/delivery dates by 6 Nov; hash/freeze each run; treat later delivery as new run and assess schedule impact.</td></tr>
+            <tr><td>Four cross-trained resources are not fully available or are assigned without rotating ownership/review.</td><td>Parallel work, independent peer review, and sampling may not fit or may depend on one person.</td><td>Confirm capacity and cross-training at kickoff; rotate work-package leads and reviewers; replan scope at 6 Nov gate; retain only approved, measurable scope.</td></tr>
+            <tr><td>Source clause lacks a deterministic oracle for a desired validator check.</td><td>Automation may encode unsupported assumptions.</td><td>Do not implement as pass/fail; record <code>REVIEW_REQUIRED</code> and raise a decision request.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="decisions">
+      <h2>10. Decisions required at kickoff</h2>
+      <ol>
+        <li>Name the four cross-trained resources, Test Lead, AI delivery contacts, and authorized SME/TBA or delegate for each specification; agree the rotating lead/reviewer assignment method.</li>
+        <li>Confirm full ISO8583 scope or a bounded prioritized subset. If full scope is required, confirm expected AI package, message/transaction inventory, and acceptance denominator by 6 November.</li>
+        <li>Confirm the effective relationship and precedence of ISO8583 Global TA Addendum 2021-1a relative to Global Version 2026-3.</li>
+        <li>Confirm AI artifact formats, frozen delivery dates, and expected end-to-end flow structure for both specifications.</li>
+        <li>Approve manual sampling policy: 7.5% target, 5% floor, 10% cap, and escalation where risk-stratum representation cannot fit within the cap.</li>
+        <li>Approve acceptance vocabulary and authorize the Test Lead to report <code>CONDITIONAL</code> or <code>BLOCKED</code> rather than assert completion when decisions, inputs, or evidence are missing.</li>
+      </ol>
+    </section>
+
+    <section id="source-plan">
+      <h2>Source plan and related documents</h2>
+      <p>This page is a presentation of the canonical <a href="MILESTONE-2-TEST-PLAN-ATL105-ISO8583.md">Milestone 2 Test Plan (Markdown)</a>.</p>
+      <p>ISO8583 source files identified for intake:</p>
+      <ul>
+        <li>FirstData_ISO8583_Global_10092026_Version2026-3.pdf</li>
+        <li>FirstData_ISO8583_Global_TA_Addendum_11032021_Version2021-1a.pdf</li>
+      </ul>
+      <p>The applicability and precedence of these source documents remain an explicit kickoff decision.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Status:</strong> Draft for team and stakeholder agreement. Names, final scope, AI delivery dates, and SME/approver availability remain to be confirmed.</p>
+    <p><a href="README.md">Return to the strategy document index</a></p>
+  </footer>
+</body>
+</html>

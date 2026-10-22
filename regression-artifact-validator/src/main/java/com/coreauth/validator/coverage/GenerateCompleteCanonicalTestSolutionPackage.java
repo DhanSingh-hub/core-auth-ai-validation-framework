@@ -25,7 +25,10 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         Path aggregateFile = outputRoot.resolve("all-test-solution-br-ts-tc-td-training-package.json");
         JsonNode existing = mapper.readTree(aggregateFile.toFile());
 
-        Map<String, JsonNode> requirementsById = ruleRequirements(loadRules(mapper), mapper);
+        List<JsonNode> catalogRules = loadRules(mapper);
+        Map<String, JsonNode> rulesById = new LinkedHashMap<>();
+        for (JsonNode rule : catalogRules) rulesById.put(rule.path("ruleId").asText(), rule);
+        Map<String, JsonNode> requirementsById = ruleRequirements(catalogRules, mapper);
         Map<String, JsonNode> scenariosById = index(existing.path("testScenarios"));
         Map<String, JsonNode> testCasesById = index(existing.path("testCases"));
         List<JsonNode> unlinkedTestDataCandidates = new ArrayList<>(
@@ -181,6 +184,53 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             placeholderTestData++;
         }
 
+        ObjectNode draftPackage = mapper.createObjectNode();
+        ObjectNode draftManifest = draftPackage.putObject("manifest");
+        draftManifest.put("packageId", "ATL105-INDEPENDENT-TEST-SOLUTION-PLACEHOLDER-DRAFTS");
+        draftManifest.put("specification", "ATL105");
+        draftManifest.put("specificationVersion", "2026-3");
+        draftManifest.put("authority", "INDEPENDENT_TEST_SOLUTION");
+        draftManifest.put("status", "SOURCE_ANCHORED_DRAFTS_REVIEW_REQUIRED");
+        draftManifest.put("aiArtifactsIncluded", false);
+        draftManifest.put("executionReady", false);
+        draftManifest.put("sourcePackage", "complete-all-test-solution-br-ts-tc-td-package.json");
+        ArrayNode testCaseDrafts = draftPackage.putArray("testCaseDrafts");
+        ArrayNode testDataDrafts = draftPackage.putArray("testDataDrafts");
+        Map<String, JsonNode> scenarioIndex = index(array(scenarios, mapper));
+        for (JsonNode value : testCases) {
+            if (!(value instanceof ObjectNode testCase)
+                    || !"TC_DERIVATION_REQUIRED".equals(testCase.path("trainingStatus").asText())) {
+                continue;
+            }
+            JsonNode scenario = firstLinked(scenarioIndex, testCase.path("scenarioIds"));
+            JsonNode requirement = firstLinked(requirementsById, scenario.path("requirementIds"));
+            JsonNode rule = sourceRule(testCase, requirement, rulesById);
+            ObjectNode draft = testCaseDraftDefinition(testCase, scenario, requirement, rule, mapper);
+            testCaseDrafts.add(draft);
+        }
+
+        Map<String, JsonNode> testCaseIndex = index(array(testCases, mapper));
+        for (JsonNode value : testData) {
+            if (!(value instanceof ObjectNode data)
+                    || !"TEST_DATA_DERIVATION_REQUIRED".equals(data.path("trainingStatus").asText())) {
+                continue;
+            }
+            JsonNode testCase = firstLinked(testCaseIndex, data.path("testCaseIds"));
+            JsonNode scenario = firstLinked(scenarioIndex, testCase.path("scenarioIds"));
+            JsonNode requirement = firstLinked(requirementsById, scenario.path("requirementIds"));
+            JsonNode rule = sourceRule(data, requirement, rulesById);
+            ObjectNode draft = testDataDraftDefinition(data, testCase, requirement, rule, mapper);
+            testDataDrafts.add(draft);
+        }
+        if (testCaseDrafts.size() != placeholderTestCases || testDataDrafts.size() != placeholderTestData) {
+            throw new IllegalStateException("Every generated placeholder must receive a source-anchored draft definition.");
+        }
+        ObjectNode draftSummary = draftPackage.putObject("summary");
+        draftSummary.put("sourceAnchoredDraftTestCases", testCaseDrafts.size());
+        draftSummary.put("sourceAnchoredDraftTestData", testDataDrafts.size());
+        draftSummary.put("executionReady", false);
+        draftSummary.put("reason", "These are review drafts only; exact applicability, expected outcomes and fixture values require source or SME confirmation.");
+
         ObjectNode output = mapper.createObjectNode();
         ObjectNode manifest = output.putObject("manifest");
         manifest.put("packageId", "ATL105-COMPLETE-INDEPENDENT-TEST-SOLUTION-BR-TS-TC-TD");
@@ -214,6 +264,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         summary.put("reviewRequiredScenarioProposals", placeholderScenarios);
         summary.put("placeholderTestCases", placeholderTestCases);
         summary.put("placeholderTestData", placeholderTestData);
+        summary.put("sourceAnchoredDraftTestCases", testCaseDrafts.size());
+        summary.put("sourceAnchoredDraftTestData", testDataDrafts.size());
         summary.put("executionReadyElement2And12Requirements", accountPackage.path("businessRequirements").size());
         summary.put("executionReadyElement2And12TestCases", accountPackage.path("testCases").size());
         summary.put("executableElement2And12TestData", accountPackage.path("testData").size());
@@ -222,6 +274,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
 
         Path outputFile = outputRoot.resolve("complete-all-test-solution-br-ts-tc-td-package.json");
         mapper.writerWithDefaultPrettyPrinter().writeValue(outputFile.toFile(), output);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(
+                outputRoot.resolve("test-solution-placeholder-drafts.json").toFile(), draftPackage);
         Files.writeString(outputRoot.resolve("complete-all-test-solution-br-ts-tc-td-summary.md"), markdown(summary));
         System.out.printf("BR=%d TS=%d TC=%d TD=%d placeholders=%d/%d/%d output=%s%n",
                 independentRuleCount, scenarios.size(), testCases.size(), testData.size(),
@@ -358,7 +412,9 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
     private static String markdown(ObjectNode summary) {
         return "# Complete Canonical Test Solution Package\n\n"
                 + "Every independent rule-catalog BR has a structural BR -> TS -> TC -> TD chain. "
-                + "Scenario proposals are derived only from independent BR titles and source anchors; they remain REVIEW_REQUIRED until applicability, preconditions, cases, and outcomes are independently derived. They do not imply execution readiness.\n\n"
+                + "Scenario proposals are derived only from independent BR titles and source anchors. "
+                + "Source-anchored TC and TD draft definitions are in `test-solution-placeholder-drafts.json`; "
+                + "they remain REVIEW_REQUIRED until applicability, expected outcomes, and fixture values are independently derived and reviewed. They do not imply execution readiness.\n\n"
                 + "| Metric | Count |\n|---|---:|\n"
                 + "| Independent BR denominator | " + summary.path("independentRuleDenominator").asInt() + " |\n"
                 + "| BR | " + summary.path("businessRequirements").asInt() + " |\n"
@@ -370,9 +426,98 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
                 + "| Review-required scenario proposals | " + summary.path("reviewRequiredScenarioProposals").asInt() + " |\n"
                 + "| Placeholder TC | " + summary.path("placeholderTestCases").asInt() + " |\n"
                 + "| Placeholder TD | " + summary.path("placeholderTestData").asInt() + " |\n"
+                + "| Source-anchored TC draft definitions | " + summary.path("sourceAnchoredDraftTestCases").asInt() + " |\n"
+                + "| Source-anchored TD fixture designs | " + summary.path("sourceAnchoredDraftTestData").asInt() + " |\n"
                 + "| Element 2/12 execution-ready local BRs | " + summary.path("executionReadyElement2And12Requirements").asInt() + " |\n"
                 + "| Element 2/12 executable local cases | " + summary.path("executionReadyElement2And12TestCases").asInt() + " |\n"
                 + "| Element 2/12 executable synthetic fixtures | " + summary.path("executableElement2And12TestData").asInt() + " |\n"
                 + "| Execution ready | " + summary.path("executionReady").asBoolean() + " |\n";
+    }
+
+    private static JsonNode firstLinked(Map<String, JsonNode> records, JsonNode links) {
+        if (links.isArray()) {
+            for (JsonNode link : links) {
+                JsonNode record = records.get(link.asText());
+                if (record != null) return record;
+            }
+        }
+        return com.fasterxml.jackson.databind.node.MissingNode.getInstance();
+    }
+
+    private static JsonNode sourceRule(JsonNode artifact, JsonNode requirement, Map<String, JsonNode> rulesById) {
+        for (JsonNode anchor : list(artifact.path("sourceAnchors"))) {
+            JsonNode rule = rulesById.get(anchor.path("rule").asText());
+            if (rule != null) return rule;
+        }
+        String requirementId = requirement.path("id").asText();
+        if (requirementId.startsWith("BR-RULE-")) {
+            return rulesById.getOrDefault(requirementId.substring("BR-RULE-".length()),
+                    com.fasterxml.jackson.databind.node.MissingNode.getInstance());
+        }
+        return com.fasterxml.jackson.databind.node.MissingNode.getInstance();
+    }
+
+    static ObjectNode testCaseDraftDefinition(
+            JsonNode testCase, JsonNode scenario, JsonNode requirement, JsonNode rule, ObjectMapper mapper) {
+        ObjectNode definition = mapper.createObjectNode();
+        definition.put("testCaseId", testCase.path("id").asText());
+        definition.set("scenarioIds", testCase.path("scenarioIds").deepCopy());
+        definition.set("requirementIds", scenario.path("requirementIds").deepCopy());
+        definition.put("status", "DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
+        definition.put("objective", firstText(rule.path("title"), requirement.path("title"), scenario.path("intent")));
+        if (rule.isObject()) {
+            definition.put("ruleClass", rule.path("class").asText("UNCLASSIFIED"));
+            definition.put("severity", rule.path("severity").asText("REVIEW_REQUIRED"));
+        }
+        definition.set("sourceAnchors", testCase.path("sourceAnchors").deepCopy());
+        definition.putArray("procedure")
+                .add("Establish a baseline satisfying all independently confirmed applicable requirements.")
+                .add("Vary only the condition identified by the cited source rule.")
+                .add("Observe and compare the result with the normative rule and approved Test Solution oracle.");
+        definition.putArray("reviewGaps")
+                .add("APPLICABILITY_AND_TRANSACTION_CONTEXT_REQUIRE_CONFIRMATION")
+                .add("EXACT_PASS_FAIL_ORACLE_REQUIRES_SOURCE_OR_SME_CONFIRMATION")
+                .add("TEST_STEPS_AND_BOUNDARY_VARIANTS_REQUIRE_INDEPENDENT_REVIEW");
+        return definition;
+    }
+
+    static ObjectNode testDataDraftDefinition(
+            JsonNode data, JsonNode testCase, JsonNode requirement, JsonNode rule, ObjectMapper mapper) {
+        ObjectNode definition = mapper.createObjectNode();
+        definition.put("testDataId", data.path("id").asText());
+        definition.set("testCaseIds", data.path("testCaseIds").deepCopy());
+        definition.put("status", "DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
+        definition.put("purpose", firstText(rule.path("title"), requirement.path("title"),
+                "Provide fixture data for " + testCase.path("id").asText()));
+        if (rule.isObject()) {
+            definition.put("ruleClass", rule.path("class").asText("UNCLASSIFIED"));
+            definition.put("severity", rule.path("severity").asText("REVIEW_REQUIRED"));
+        }
+        JsonNode anchors = data.path("sourceAnchors");
+        definition.set("sourceAnchors", anchors.deepCopy());
+        ObjectNode target = definition.putObject("sourceTarget");
+        if (anchors.isArray() && !anchors.isEmpty()) {
+            JsonNode anchor = anchors.get(0);
+            for (String field : List.of("specification", "version", "section", "segment", "element", "rule")) {
+                if (anchor.hasNonNull(field)) target.set(field, anchor.get(field).deepCopy());
+            }
+        }
+        definition.putArray("construction")
+                .add("Use a baseline satisfying all independently confirmed applicable requirements.")
+                .add("Represent the source-anchored condition without changing unrelated inputs.");
+        definition.put("fixtureValuesStatus", "SOURCE_OR_SME_DERIVATION_REQUIRED");
+        definition.putArray("reviewGaps")
+                .add("EXACT_FIELD_MAPPING_AND_ENCODING_REQUIRE_SOURCE_CONFIRMATION")
+                .add("BASELINE_AND_CONTROLLED_VALUES_REQUIRE_INDEPENDENT_DERIVATION")
+                .add("EXPECTED_VALIDATION_ORACLE_REQUIRES_SOURCE_OR_SME_CONFIRMATION");
+        return definition;
+    }
+
+    private static String firstText(JsonNode... values) {
+        for (JsonNode value : values) {
+            String text = value.asText("").trim();
+            if (!text.isEmpty()) return text;
+        }
+        return "Source-anchored test definition requires review.";
     }
 }

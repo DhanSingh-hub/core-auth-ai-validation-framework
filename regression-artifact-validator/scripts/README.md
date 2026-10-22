@@ -91,6 +91,40 @@ Review-directory and jsdom paths are resolved from the caller's directory before
 
 ## Retention
 
+`validate-ai-delivery-evidence.py` consumes a **completed** delivery audit, not
+an incomplete inventory. It independently compares both `requirements` and
+`flat_rows` in `traceability_matrix_full.json` to direct catalog identities and
+BR/TS/TC/TD edges. Every physical payload, including unclaimed payloads, receives
+one row in `test-data-validation.jsonl`. Catalogs are streamed with `ijson`.
+
+```powershell
+python.exe .\scripts\validate-ai-delivery-evidence.py --self-test
+python.exe .\scripts\validate-ai-delivery-evidence.py `
+  --audit-directory .\specifications\ATL105\test-output\ai-solution-independent-review\av1021-v2 `
+  --output-directory .\specifications\ATL105\test-output\ai-solution-independent-review\eg1021-v1
+```
+
+Run from the module directory; use a new, short output directory on Windows.
+The gate verifies audit ledger hashes and current delivery hashes, binds source
+dependencies, and rechecks delivery population before publishing its summary.
+It reuses `apply-qe-feedback-rules.py`'s **payload-leg checks only**, not its
+full BR/TS/TC feedback workflow. Case/sidecar/declared-path identity must resolve;
+conflicting/duplicate case IDs and ambiguous legs do not receive feedback credit.
+Each TD lists rule observations and unevaluated payload rules. Findings omit
+payload values; QE/source conflicts are retained, not adjudicated.
+
+Optional `--element-report` requires an existing
+`ATL105-AI-RUN-ELEMENT-VALIDATION` report with `chapter13Semantics=true`,
+matching root-relative paths, file hashes, metadata and TC identity. Its bounded
+predicate verdicts never establish full TD semantic correctness. A deliberately
+invalid negative fixture is not automatically an AI defect. Neither a feedback
+PASS nor a matrix match proves BR meaning, all conditional/allowed-value rules,
+cross-field conflicts, negative objectives, lifecycle correctness or host results.
+These remain explicit unassessed dimensions; the delivery status remains
+`BLOCKED_UNPROVEN_SEMANTIC_CORRECTNESS`. Matrix set reconciliation does not
+validate repeated row counts, producer coverage/status claims, the Markdown
+matrix, physical `traceability.json`, archives or other auxiliary formats.
+
 `audit-ai-delivery-coverage.py` provides the delivery-wide ledger. Run with
 `--run-root`, `--test-solution-directory`, `--source-text` and a new
 `--output-directory`; run `--self-test` for synthetic regressions. Requires the

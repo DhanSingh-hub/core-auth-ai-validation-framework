@@ -38,3 +38,10 @@ test-output/traceability-matrix/segment-100/
 ```
 
 The strategy now targets complete ATL105 coverage across all segments and message categories, followed by reuse of the same platform for future specifications. Implementation will expand module by module from the Segment 100 foundation.
+
+## Milestone 2 Plan
+
+The [Milestone 2 Test Plan: ATL105 Closure and ISO8583 Validation](MILESTONE-2-TEST-PLAN-ATL105-ISO8583.md) schedules the 1 November-15 December 2026 work across four test resources, including source understanding, independent Test Solution BRs, automated AI-artifact validation, and risk-stratified manual end-to-end review.
+
+- [Browser-ready HTML plan](MILESTONE-2-TEST-PLAN-ATL105-ISO8583.html)
+- [Markdown plan](MILESTONE-2-TEST-PLAN-ATL105-ISO8583.md)

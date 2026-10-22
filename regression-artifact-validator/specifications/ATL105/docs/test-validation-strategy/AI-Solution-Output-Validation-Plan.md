@@ -385,6 +385,18 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 - Test data proves the test case objective.
 - Producer-specific composite properties that represent multiple ATL105 elements require a versioned adapter mapping, explicit source/entry context, and round-trip tests. Unknown aliases or delimiters remain `REVIEW_REQUIRED`; do not infer a wire separator from an example or merge separate EMV segment content into track fields.
 
+**Every-TD evidence gate:** `scripts/validate-ai-delivery-evidence.py` consumes a completed,
+hash-bound delivery audit and emits one `test-data-validation.jsonl` row per physical
+payload, including orphans. It checks sidecar/TC/scenario identity and reuses the existing
+QE payload-leg executor with explicit per-rule observations, source conflicts and
+unevaluated rules; ambiguous cases/legs and unsupported shapes remain unassessed.
+Payload values are not exported. These feedback checks are not the full 33-rule
+BR/TS/TC workflow and are not source-semantic approval. Optional hash/identity-bound
+Chapter 13 intake evidence supplies bounded predicates only. Every TD still reports
+unproven complete value semantics, conditional applicability, cross-field/segment
+dependencies, negative-objective isolation and lifecycle context. Expected negative
+violations must not be relabeled as AI defects without an independent objective/oracle.
+
 ### Gate 9: Final serialization
 
 **AI outputs:** approved test suite JSON, serialized messages, expected responses where supported.
@@ -427,6 +439,18 @@ BR coverage is a milestone, not the final acceptance gate. After the BR crosswal
 **Exit condition:** a whole-delivery result is complete only when every in-scope artifact is represented in the inventory and has an explicit disposition. Any unsupported format, missing source binding, unvalidated payload family, pending BR mapping, missing oracle, or unexecuted host outcome remains visible as `REVIEW_REQUIRED`, `NOT_ASSESSED`, or `NOT_EXECUTED`; do not promote the package to fully validated based on BR coverage alone.
 
 **Current boundary:** V6 inventories 79,040 Oct 10 files and checks catalog links and declared physical routes; V6 technical coverage executes bounded predicates on 326/601 Test BR rules. The Authorization-to-Completion review adds step-level checks for 138 flows but still has 124 cases without direct AI BR links, 133 runtime approval placeholders, 5 missing completion approvals, and 35 amount-change cases awaiting host-approved amount evidence. These are not whole-delivery semantic or host certification.
+
+**Additional matrix/every-TD gate:** `scripts/validate-ai-delivery-evidence.py` reconciles
+direct catalog identities and BR-TS, TS-TC, BR-TC and TC-TD edge sets independently
+against both nested and flat representations of `traceability_matrix_full.json`.
+It preserves declared paths rather than guessing basename matches, checks input/output
+hash dependencies and delivery-population stability, and reconciles the TD ledger
+count to the completed audit. Repeated matrix-row counts, coverage/status assertions,
+the Markdown matrix, physical `traceability.json`, archives and auxiliary formats
+are not validated by this set comparison. BR/TS/TC meaning and complete TD semantics
+remain unassessed. The result is deliberately
+`BLOCKED_UNPROVEN_SEMANTIC_CORRECTNESS`, with `fullDeliveryValidated=false`,
+even when all structural comparisons and bounded feedback predicates pass.
 
 **Per-leg lifecycle evidence screen (2026-10-16, AIV-024):** `scripts/build-ai-flow-semantic-review.py` creates a separate, hash-bound ledger for every AI BR and each linked multileg flow step. It records transaction code, step identity, sequence/approval field shape, observed sequence equality, response-object presence, frozen payload copies and BR/Test-BR candidate links without exporting field values. Expected-response declarations are not actual responses; response-shaped producer payloads are not host evidence without independent provenance. Authorization approval binding remains blocked until the actual Authorization response is supplied and provenance reviewed; approval rules for purchase/return/timeout reversal families remain flow-specific `REVIEW_REQUIRED`. Current output `test-output/ai-solution-independent-review/2026-10-16-ai-flow-semantic-review-v3/` carries all 6,880 BRs, 28 flow cases, 67 logical steps and 134 hash-verified payload copies; 26 sequence comparisons match, zero response objects are present, 15 Authorization approval bindings are blocked, 13 reversal approval bindings remain flow-specific review, and semantic review remains 0/6,880. These are evidence observations and review queues, not semantic decisions or execution certification.
 

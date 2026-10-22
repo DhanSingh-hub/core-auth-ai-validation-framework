@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -130,5 +131,80 @@ class CanonicalRuleDenominatorTest {
             .isEqualTo("EXPECTED_OUTCOME_NOT_DERIVED");
         assertThat(scenario.has("preconditions")).isFalse();
         assertThat(scenario.has("expectedOutcome")).isFalse();
+    }
+
+    @Test
+    void placeholderCaseAndDataGetSourceAnchoredDraftDefinitionsWithoutPromotion() throws Exception {
+        JsonNode testCase = mapper.readTree("""
+            {"id":"TC-REVIEW-1","expectedOutcome":"REVIEW_REQUIRED","status":"REVIEW_REQUIRED",
+             "sourceAnchors":[{"specification":"ATL105","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}]}
+            """);
+        JsonNode scenario = mapper.readTree("{\"intent\":\"Check Segment 100 presence\"}");
+        JsonNode requirement = mapper.readTree("{\"title\":\"Segment 100 is required exactly once\"}");
+        JsonNode rule = mapper.readTree("""
+            {"title":"Segment 100 is required exactly once","class":"structure","severity":"error"}
+            """);
+
+        JsonNode caseDraft = GenerateCompleteCanonicalTestSolutionPackage.testCaseDraftDefinition(
+                testCase, scenario, requirement, rule, mapper);
+
+        JsonNode data = mapper.readTree("""
+            {"id":"TD-REVIEW-1","readiness":"REVIEW_REQUIRED","expectedValidation":"REVIEW_REQUIRED",
+             "sourceAnchors":[{"specification":"ATL105","section":"11.1.1","segment":"100","rule":"segment-100-required-once"}],
+             "payload":{"fixtureStatus":"SME_FIXTURE_REQUIRED"}}
+            """);
+        JsonNode dataDraft = GenerateCompleteCanonicalTestSolutionPackage.testDataDraftDefinition(
+                data, testCase, requirement, rule, mapper);
+
+        assertThat(caseDraft.path("status").asText())
+                .isEqualTo("DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
+        assertThat(caseDraft.path("objective").asText())
+                .isEqualTo("Segment 100 is required exactly once");
+        assertThat(caseDraft.path("procedure")).hasSize(3);
+        assertThat(testCase.path("expectedOutcome").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(testCase.path("status").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(dataDraft.path("sourceTarget").path("rule").asText())
+                .isEqualTo("segment-100-required-once");
+        assertThat(dataDraft.path("fixtureValuesStatus").asText())
+                .isEqualTo("SOURCE_OR_SME_DERIVATION_REQUIRED");
+        assertThat(data.path("readiness").asText()).isEqualTo("REVIEW_REQUIRED");
+        assertThat(data.path("payload").path("fixtureStatus").asText()).isEqualTo("SME_FIXTURE_REQUIRED");
+    }
+
+    @Test
+    void publishedPlaceholderDraftsCoverEveryReviewOnlyCaseAndFixture() throws Exception {
+        Path outputRoot = Atl105Paths.testOutput().resolve("test-solution-independent-review");
+        JsonNode packageRoot = mapper.readTree(outputRoot
+                .resolve("complete-all-test-solution-br-ts-tc-td-package.json").toFile());
+        JsonNode drafts = mapper.readTree(outputRoot.resolve("test-solution-placeholder-drafts.json").toFile());
+        List<String> placeholderCases = StreamSupport.stream(packageRoot.path("testCases").spliterator(), false)
+                .filter(row -> "TC_DERIVATION_REQUIRED".equals(row.path("trainingStatus").asText()))
+                .map(row -> row.path("id").asText()).toList();
+        List<String> draftedCases = StreamSupport.stream(drafts.path("testCaseDrafts").spliterator(), false)
+                .map(row -> row.path("testCaseId").asText()).toList();
+        List<String> placeholderData = StreamSupport.stream(packageRoot.path("testData").spliterator(), false)
+                .filter(row -> "TEST_DATA_DERIVATION_REQUIRED".equals(row.path("trainingStatus").asText()))
+                .map(row -> row.path("id").asText()).toList();
+        List<String> draftedData = StreamSupport.stream(drafts.path("testDataDrafts").spliterator(), false)
+                .map(row -> row.path("testDataId").asText()).toList();
+
+        assertThat(draftedCases).containsExactlyInAnyOrderElementsOf(placeholderCases).doesNotHaveDuplicates();
+        assertThat(draftedData).containsExactlyInAnyOrderElementsOf(placeholderData).doesNotHaveDuplicates();
+        assertThat(packageRoot.path("summary").path("sourceAnchoredDraftTestCases").asInt()).isEqualTo(623);
+        assertThat(packageRoot.path("summary").path("sourceAnchoredDraftTestData").asInt()).isEqualTo(645);
+        assertThat(drafts.path("manifest").path("executionReady").asBoolean()).isFalse();
+        assertThat(StreamSupport.stream(drafts.path("testCaseDrafts").spliterator(), false).toList())
+                .allSatisfy(row -> {
+                    assertThat(row.path("sourceAnchors")).isNotEmpty();
+                    assertThat(row.path("objective").asText()).isNotBlank();
+                    assertThat(row.path("status").asText()).isEqualTo("DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
+                });
+        assertThat(StreamSupport.stream(drafts.path("testDataDrafts").spliterator(), false).toList())
+                .allSatisfy(row -> {
+                    assertThat(row.path("sourceAnchors")).isNotEmpty();
+                    assertThat(row.path("fixtureValuesStatus").asText())
+                            .isEqualTo("SOURCE_OR_SME_DERIVATION_REQUIRED");
+                    assertThat(row.path("status").asText()).isEqualTo("DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
+                });
     }
 }
