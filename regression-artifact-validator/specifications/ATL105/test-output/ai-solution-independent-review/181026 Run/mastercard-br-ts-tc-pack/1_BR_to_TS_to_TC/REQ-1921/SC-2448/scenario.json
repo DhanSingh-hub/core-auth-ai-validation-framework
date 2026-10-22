@@ -1,0 +1,198 @@
+{
+  "name": "Flow — Authorization, Completion, then Void (Financial Transaction Request → Purchase/Capture → Purchase Reversal) [wallet-present]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Wallet Identifier": "08",
+    "Wallet Method": "P"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        567
+      ],
+      "sub_table_id": "07",
+      "sub_table_length": "002",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_07",
+      "axis": "wallet",
+      "value": "08",
+      "parameter": "Wallet Identifier"
+    },
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        569
+      ],
+      "sub_table_id": "10",
+      "sub_table_length": "001",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_10",
+      "axis": "wallet_method",
+      "value": "P",
+      "parameter": "Wallet Method"
+    }
+  ],
+  "flow_id": "FLOW-AUTH-COMPLETION-VOID",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "void",
+      "transaction": "Purchase Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "8"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 2,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-3",
+          "source_page": null,
+          "rule": "CORRECTED 2026-10-01 (was from_step 1): a code '8' Void reverses a purchase (Appendix G p.539) — the Completion (step 2) is the purchase being voided, not the Authorization. REVIEW_REQUIRED, see flow description.",
+          "spec_anchor": {
+            "keywords": [
+              "purchase reversal void",
+              "time-out reversal",
+              "must match original transaction request"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "carry_response_field",
+          "from_step": 2,
+          "element_name": "Approval Number",
+          "source_rule_id": "BR-361-1",
+          "source_page": 361,
+          "rule": "Declared explicitly so auto-derivation (which resolves origin by the Authorization's quoted Transaction Type code '3') cannot re-attach this to step 1 instead of step 2. Same correction and REVIEW_REQUIRED status as the Sequence Number link above.",
+          "spec_anchor": {
+            "keywords": [
+              "approval number is required on reversals",
+              "matching information to the original purchase"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 1.0,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-402-1",
+  "source_page": 361,
+  "business_rule_assertion": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.; CORRECTED 2026-10-01 (was from_step 1): a code '8' Void reverses a purchase (Appendix G p.539) — the Completion (step 2) is the purchase being voided, not the Authorization. REVIEW_REQUIRED, see flow description.; Declared explicitly so auto-derivation (which resolves origin by the Authorization's quoted Transaction Type code '3') cannot re-attach this to step 1 instead of step 2. Same correction and REVIEW_REQUIRED status as the Sequence Number link above.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "22b5c2f72b6fc16bd78d43a581129ffa71dc274f9986474d9b2e2c3cee8be2e4",
+  "dedup_key": "ad44a78c17f379f879a585eff292267e9f7870696191cce5ec907cf59b543add",
+  "flow_variant_id": "wallet-present",
+  "flow_variant_name": "Digital wallet presentment",
+  "flow_axis_values": {
+    "wallet": "08",
+    "wallet_method": "P"
+  },
+  "flow_axis_provenance": {
+    "wallet": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Identifier"
+    },
+    "wallet_method": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Method"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1923",
+      "rule_id": "BR-402-3",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 3,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1661",
+      "rule_id": "BR-361-1",
+      "basis": "flow_link",
+      "link_type": "carry_response_field",
+      "step": 3,
+      "element_name": "Approval Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1661",
+    "REQ-SRC-ATL105-PDF-001:1921",
+    "REQ-SRC-ATL105-PDF-001:1923"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2448",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}
