@@ -31,6 +31,7 @@
 | Version | Date | Author/Owner | Change | Status |
 | --- | --- | --- | --- | --- |
 | 0.2 | 2026-09-16 | Core Auth Test Validation Team | Added Test Team solution design, AI artifact validation value, and risk-based manual testing | Working review |
+| 0.3 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -220,6 +221,19 @@ Segment 130: EMV Request Data Segment
 
 It demonstrates Sale and Void messages, raw AI JSON assessment, canonical normalization, traceability, compatibility checks, lifecycle correlation, and coverage reporting.
 
+### Application Functional Scope - Business Transaction Contexts
+
+A business transaction context validates a business flow across segments, starting from the approved FR-matrix template rather than from one segment. The first context is **Mastercard Credit Purchase**:
+
+```text
+BR-01 Mastercard credit financial purchase transaction processing
+  -> FR-001 Card Validation ... FR-008 Post Authorization
+  -> business scenarios TS-001..TS-037 (template) and TS-038 onward (Test Solution)
+  -> Test Solution BR -> TS -> TC -> TD chains (Segments 100, 111, 123, 130, 131 and the financial response)
+```
+
+The business BR stays at business level; segment-level Test Solution BRs are traceability evidence under each scenario. The context's trained package, review queue and gates are defined in the [training handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#transaction-context-training-mastercard-credit-purchase) and tracked under `transactionContextTraining` in `training-status.json`. AI artifacts for this context are validated against that package once an AI package is provisioned.
+
 ### Out of Scope
 
 - Auto-approval based only on AI claims.
@@ -258,6 +272,8 @@ Coverage is reported as a vector of independently calculated measures:
 | Traceability coverage | Artifact links required by the graph | Links that resolve and share canonical anchors |
 | Semantic execution coverage | Test data requiring executable validation | Data items independently checked by applicable validators |
 | Parameter coverage | Valid specification combinations | Combinations represented and independently validated |
+| Business-context BR coverage | In-scope Test Solution BRs for the context | BRs with at least one BR -> TS -> TC -> TD chain that passes canonical traceability |
+| Business-scenario coverage | Template business scenarios for the context | Scenarios whose Test Solution BRs are all trained (`MAPPED`/`PARTIAL` record template intent separately) |
 
 The proposed primary certification metric is **Rule Coverage**. A single aggregate percentage cannot hide a missing mandatory rule, broken traceability, or test data that does not exercise its case.
 
@@ -274,6 +290,18 @@ Subject to Fiserv Leadership approval, the Test Solution would report each dimen
 - Any semantic mismatch blocks approval.
 - `REVIEW_REQUIRED` is held for human review and is not counted as certified coverage.
 - AI-produced coverage metrics are compared with independently calculated metrics and are never authoritative.
+
+#### Business Transaction-Context Validation
+
+For a business transaction context, the Test Solution validates in this order:
+
+1. **Template conformance:** every template scenario is classified `MAPPED`, `PARTIAL` or `NOT_IN_TEST_SOLUTION` against Test Solution BRs, with the gap stated; Test Solution BRs with no template scenario are `TEST_SOLUTION_ONLY`.
+2. **Scope:** in-scope BRs are selected by an explicit, versioned rule (template mapping, brand naming, or segment anchor without another product or brand). Keyword-derived FR placement is a grouping aid and stays `REVIEW_REQUIRED`.
+3. **Canonical chain:** each in-scope BR is trained only when a BR -> TS -> TC -> TD chain passes `CanonicalTraceabilityValidator`. Failing BRs go to an explicit review queue with the reason and required evidence; they are never counted as covered.
+4. **Independence and freshness:** trained records must equal the Test Solution source apart from logged link/status normalizations, and must match the source package hash. AI artifacts are not inputs.
+5. **Status:** the context is `IN_PROGRESS` until the review queue is closed, SME/TBA certification is recorded, and AI intake and execution readiness gates have evidence.
+
+The Mastercard Credit Purchase result is published in the [context BR coverage report](../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md). On 2026-10-26: 153 of 176 in-scope BRs (86.9%) trained, 23 in review, and 9 of 37 template scenarios have no Test Solution evidence (card status, routing, timeout timer/detection, TOR ordering, clearing, settlement and audit logging).
 
 ### SME Availability Dependency
 
@@ -350,7 +378,7 @@ Checks adapters, package ingestion, specification-pack loading, report generatio
 
 ### Regression Testing
 
-Runs the reusable core suite and all impacted specification-pack tests whenever the engine, adapter, rule catalog, AI package, or schema changes.
+Runs the reusable core suite and all impacted specification-pack tests whenever the engine, adapter, rule catalog, AI package, or schema changes. Trained transaction contexts also run when the Test Solution source package changes: their training test compares the source hash and fails until the context is retrained.
 
 ### Performance Testing
 
@@ -419,6 +447,8 @@ test-output/
 ```
 
 Data shall be synthetic or approved masked data, versioned, traceable, reproducible, and explicit about logical versus wire-ready representation.
+
+Business identifiers in test data are reported only where Test Solution evidence carries them. For Mastercard Credit Purchase, the Merchant ID is the BUYPASS Merchant Number component of Segment 100 Element 102 (`123456` in `TD-SEG100-E102-004` and `TD-SEG100-E102-005`). No evidence carries a Merchant Name, so it is reported as `NO_EVIDENCE` and is not invented.
 
 The AI team must provide JSON schemas, metadata, source-reference conventions, expected-outcome semantics, lifecycle representation, serialization rules, and known limitations.
 
@@ -534,6 +564,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | TD06 | Coverage Report | Rule-level JSON and Markdown evidence |
 | TD07 | Defect/Review Report | Open defects, manual-review decisions, and dispositions |
 | TD08 | Test Summary Report | Phase outcome, metrics, risks, and sign-off status |
+| TD09 | Transaction-Context Training Package | Business BR/FR/scenario matrix, canonical trained chains, review queue, context BR coverage report and training gate (first: Mastercard Credit Purchase) |
 
 ## Test Environments
 
@@ -571,6 +602,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | R005 | SME/TBA reviewer is unavailable or decisions are not recorded | Semantic defects or ambiguous interpretations may be mistaken for approved behavior; release decision is unauditable | Keep decisions `PENDING` / `REVIEW_REQUIRED`; automate evidence preparation and deterministic checks only; use a formally delegated reviewer or record explicit business risk acceptance; do not certify on silence | Test/Fiserv Business/Development |
 | R006 | Test Solution baseline omits a source-supported requirement found in AI output | A valid AI BR may be mislabeled AI-only, or coverage may use an incomplete denominator | Record a Test Solution omission candidate; independently re-derive from ATL105 without copying AI wording; keep coverage `NOT_CALCULABLE` for an incomplete eligible baseline | Test/TBA/SME |
 | R007 | Validator logic or rule catalog has a false-pass defect | Invalid AI behavior may pass the checks and appear covered | Bind validators to source-anchored rules; test positive, negative, boundary, and applicability cases; mutation-test wrong values, omitted checks, and context changes; report validator effectiveness separately from AI outcome; require independent review for unresolved semantics | Test/TBA/SME |
+| R008 | A business transaction context's scope or FR placement is heuristic, or its scenarios are shared by BRs with different anchors | Business coverage is over- or understated; shared scenarios silently fail canonical traceability | Versioned scope rule; keyword FR placement kept `REVIEW_REQUIRED`; only canonically valid chains counted; failing BRs listed in the review queue with reasons; split shared scenarios per BR | Test/TBA/SME |
 
 ## Appendix A: ATL105 Demonstration
 

@@ -573,6 +573,7 @@ Every segment should eventually produce:
 - Test Case catalog
 - Request Test Data JSON catalog
 - Aggregate independent BR -> TS -> TC -> TD training package with source-file provenance
+- For a trained transaction context: a business BR/FR/scenario matrix, a canonical training package, a review queue and a context BR coverage report (see [Transaction-Context Training](#transaction-context-training-mastercard-credit-purchase))
 - Traceability matrix
 - Independent coverage report
 - Field-alias crosswalk (evidence-based, may be partial or empty; never fabricated)
@@ -675,6 +676,10 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L22. Encode multi-element anchors as a list, not a delimited string.** Rule catalogs store multi-element anchors as a comma-separated string, for example `SEGDL1-R-002` `element: "24,34"` and `SEGDL1-R-003` `element: "53,98,3,4,54"`, while `canonical-anchor.schema.json` types `element` as a single string. Any consumer doing an equality lookup silently fails: a search for `24` does not match `24,34`. This produced a false unmatched verdict for DL1 and Segment 157, and a false matched verdict for Segments 151 and 152 whose rules carry no element at all. Until the encoding is fixed (`TT-0013`), split on `,` before comparing, and never treat an empty `element` as a wildcard.
 
+**L23. Keep the business BR at business level.** The first Mastercard Credit Purchase matrix put one segment-level Test Solution BR in each BR row, so the business view became a list of Segment 100 rules. The template's BR column holds the business requirement (`BR-01 Mastercard credit financial purchase transaction processing`); segment-level BRs are evidence under its FRs and scenarios. Restricting a business context to segment-wise BRs also hides cross-segment scope such as Segments 111, 123, 130 and 131.
+
+**L24. A scenario shared by BRs with different anchors cannot form a canonical chain.** `TS-SEG100-APPO-TOKEN-ACCOUNT`, `TS-SEG100-APPO-TOKEN-CONTEXT` and `TS-SEG100-APPR-CHIP-DATA` each link several BRs, but each test data record carries only one BR's anchor. The canonical validator checks every reachable BR -> TS -> TC -> TD combination, so the shared scenario fails for the other BRs. Split such scenarios per BR, or give the chain a genuinely common anchor; do not add anchors to make a chain pass.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -721,6 +726,40 @@ Appendix E has three distinct families: 56 Table Load Response entries, 36 finan
 
 For family-wise Test Solution backlog across Appendix A-AE, use the [Appendix Family Gap Closure Register](segment-100/appendix-family-gap-closure-register.md). It distinguishes resolvable BR -> TS -> TC -> independent TD work from SME, configuration, external-spec, and external-fixture blockers. Do not claim an appendix is `COVERED` from source BR counts or metadata-only TD placeholders.
 
+### Transaction-Context Training: Mastercard Credit Purchase
+
+A transaction context trains a business flow that crosses segments. It reuses segment-trained Test Solution records instead of deriving new rules, so it adds no catalog rules and its counts stay outside the segment totals. The first context is `MASTERCARD_CREDIT_PURCHASE`, recorded under `transactionContextTraining` in [training-status.json](../../../training-status.json).
+
+**Business layer.** The business BR is the template's single `BR-01 Mastercard credit financial purchase transaction processing`; it is never replaced by segment-level BRs ([L23](#lessons-learned)). It has eight template FRs (`FR-001` Card Validation to `FR-008` Post Authorization) and business scenarios `TS-001`-`TS-037` from the approved template, followed by `TS-038` onward, one per Test Solution scenario name. Segment-level Test Solution BR/TS/TC/TD IDs are traceability evidence under each business scenario, shown in the [FR matrix workbook](../../../test-output/test-solution-fr-matrix/Mastercard_Credit_Purchase_Test_Solution_FR_Matrix.xlsx) columns J-P.
+
+**Scope.** A Test Solution BR is in scope when it is mapped to a template scenario, names Mastercard, is a Section 5 credit/network classification BR, or is anchored to Segment 100, the financial response, or Segments 111, 123, 130 or 131 without being specific to another product or brand (EBT/eWIC, fleet, check/ECA, loyalty, stored value, Visa, Amex, Appendix G special flows). Template-mapped BRs keep the template FR. Every other BR receives a keyword-derived FR, which is a grouping aid and stays `REVIEW_REQUIRED` (blocker `keyword-derived-fr-assignment-review`).
+
+**Training run.** From the validator module:
+
+```powershell
+python scripts/build-mastercard-fr-matrix.py          # business FR matrix workbook
+python scripts/train-mastercard-credit-purchase.py    # canonical training package + BR coverage report
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105TrainingReport'
+mvn '-Dtest=MastercardCreditPurchaseTrainingTest,TestSolutionJsonFormatTest,TrainingStatusConsistencyTest' test
+```
+
+`train-mastercard-credit-purchase.py` selects every in-scope BR -> TS -> TC -> TD chain that satisfies the `CanonicalTraceabilityValidator` contract: complete ATL105 2026-3 anchors, one common anchor through every reachable BR -> TS -> TC -> TD combination, a TD payload and expected validation, and no orphans. When a scenario is shared by BRs whose test data carry different anchors, it keeps the best-supported BR and prunes the others ([L24](#lessons-learned)). Records are copied verbatim. The only permitted normalizations are trimming link arrays to in-package IDs, turning a singular `scenarioId` into `scenarioIds`, and mapping a non-canonical TS status to `REVIEW_REQUIRED` with the original kept in the normalization log (and in `sourceStatus` when the record has none); each one is logged in `provenance.normalizations` and every pruned link in `provenance.prunedLinks`. A BR without a valid chain goes to `reviewQueue` with its reasons and required evidence. No BR, anchor, status or test data is fabricated.
+
+**Training gate.** `MastercardCreditPurchaseTrainingTest` proves that the [training package](../../../test-output/test-json/mc-credit-purchase-training-package.json):
+
+- passes canonical traceability, which `TestSolutionJsonFormatTest` also enforces for every `test-json` package;
+- contains only records equal to the Test Solution source apart from logged normalizations, with links taken only from the source;
+- matches the source package SHA-256, so a changed Test Solution fails the gate until the context is retrained;
+- maps every in-scope BR to a business scenario, with no BR both trained and queued;
+- agrees with `training-status.json`, the training report and the [BR coverage report](../../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md); and
+- cannot be `TRAINED_FOR_INTAKE` while review items or SME/TBA certification remain.
+
+**Current result (2026-10-26).** 153 of 176 in-scope BRs (86.9%) are trained through 174 TS, 182 TC and 186 TD. 23 BRs are in the review queue: annexure scenarios without a shared anchor, scenarios and lifecycle test cases without source anchors, and shared token/chip scenarios. Nine template scenarios (`TS-003`, `TS-019`, `TS-028`, `TS-029`, `TS-032`, `TS-034`-`TS-037`) have no Test Solution evidence. Only 26 TDs declare `EXECUTABLE`. Status is `IN_PROGRESS`; serialization/mutation, AI intake and execution readiness have not started for this context.
+
+**Merchant data.** Merchant ID is evidenced only as the BUYPASS Merchant Number component of Segment 100 Element 102 (`123456` in `TD-SEG100-E102-004`/`-005`, template `TS-006`). No Test Solution evidence carries a Merchant Name: Appendix I Table 047 has no scoped evidence, and DL1 Element 53 is a host download field. Keep Merchant Name `NO_EVIDENCE` rather than inventing a value.
+
+To train another context, copy this pattern: a template business BR/FR/TS layer, an explicit scope rule, a generator that copies Test Solution records and logs every normalization, a review queue, a `transactionContextTraining` entry and a regression test with the same assertions.
+
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
 
 ## Handbook History
@@ -757,3 +796,4 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-30 | Started code-by-code Element 83 response training with code `0` (Approved Purchase/Capture). Added a dedicated family/segment coverage module and clarified that transaction-type compatibility is a Test Solution rule rather than an explicit ATL105 cross-product; Segment 100 Approval Number remains conditional on lifecycle context. |
 | 2026-09-30 | Expanded Element 83 training to all 31 source-defined code values and seven message families; added 35 source-defined code/family BR meanings and exhaustive validation of all 217 code/family pairs (35 valid, 182 invalid for the selected family). This does not claim the source defines every transaction/card cross-product or that BRs are business-approved. |
 | 2026-09-30 | Reviewed the AI `phase_1_single_leg` delivery (2026-09-29): first five-leg delivery, 37 full chains, perfect referential integrity, but 51.5% of composed segments lost in serialization, three empty test-data files reported `PASS`, no expected outcomes and no negative cases. Verdict `CHAIN_STRUCTURE_SOUND_EXECUTION_EVIDENCE_INSUFFICIENT`. A second check retracted six claimed Test Solution coverage gaps as anchoring gaps (zero coverage gaps found) and corrected `TT-0011`/`TT-0012`. Added L21 and L22; raised `TT-0013` and `AIF-0013`. Report: [reports/ai-feedback/](../../../reports/ai-feedback/). |
+| 2026-10-26 | Trained the first transaction context, `MASTERCARD_CREDIT_PURCHASE`: business BR-01/FR/scenario layer, canonical training package from verbatim Test Solution records, review queue, context BR coverage report, `transactionContextTraining` status entry, training-report section and `MastercardCreditPurchaseTrainingTest`. Result 153/176 BRs trained, 23 queued, `IN_PROGRESS`. Added L23 and L24. |
