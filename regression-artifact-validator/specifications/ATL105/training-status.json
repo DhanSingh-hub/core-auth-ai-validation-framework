@@ -239,6 +239,57 @@
       "note": "The 21-case synthetic logical suite exercises a complete modeled open-state list and checks Appendix AF Transaction ID separately from Table 82 Terminal Transaction Number. A review-only application-payload candidate is recorded at test-output/test-solution-independent-review/appendix-af-physical-wire-candidate-v1.json: 110-byte synthetic request and 101-byte synthetic response layout. Chapter 13.2 source confirms Element 111 value 082 is Incremental Auth Data. The response is layout-only, not a host capture or outcome oracle; TCP/IP/TPDU framing is excluded; AF ID-to-N4 mapping remains REVIEW_REQUIRED. Independent open-state evidence and host outcomes remain absent."
     }
   },
+  "transactionContextTraining": {
+    "MASTERCARD_CREDIT_PURCHASE": {
+      "status": "IN_PROGRESS",
+      "businessRequirement": "BR-01 Mastercard credit financial purchase transaction processing",
+      "evidenceLevel": "SUBSTANTIVE_CANONICAL_CHAIN_PARTIAL",
+      "reviewRequired": true,
+      "trainedOn": "2026-10-26",
+      "countsExcludedFromSegmentCatalogSummary": true,
+      "nextGate": "REVIEW_QUEUE_CLOSURE_AND_SME_REVIEW",
+      "aiComparison": "NOT_STARTED_NO_AI_PACKAGE",
+      "evidence": "specifications/ATL105/test-output/test-json/mc-credit-purchase-training-package.json",
+      "coverageReport": "specifications/ATL105/test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md",
+      "generator": "scripts/train-mastercard-credit-purchase.py",
+      "regressionTest": "src/test/java/com/coreauth/validator/MastercardCreditPurchaseTrainingTest.java",
+      "counts": {
+        "functionalRequirements": 8,
+        "businessScenarios": 130,
+        "templateScenarios": 37,
+        "testSolutionScenarios": 93,
+        "scopeRequirements": 176,
+        "trainedRequirements": 153,
+        "reviewQueue": 23,
+        "testScenarios": 174,
+        "testCases": 182,
+        "testData": 186,
+        "executableTestData": 26,
+        "brCoveragePercent": 86.9,
+        "templateScenariosWithoutTestSolutionEvidence": 9
+      },
+      "gates": {
+        "SOURCE_INVENTORY": "EVIDENCED_ATL105_ANCHORED_TEST_SOLUTION_SCOPE",
+        "SEGMENT_KNOWLEDGE_MODEL": "REUSES_SEGMENT_TRAINING_REVIEW_REQUIRED",
+        "CONTEXT_MATRIX": "EVIDENCED_FR_ASSIGNMENT_REVIEW_REQUIRED",
+        "INDEPENDENT_BR_DERIVATION": "TEST_SOLUTION_BRS_DRAFT_REVIEW_REQUIRED",
+        "TS_TC_TEST_DATA_CHAIN": "CANONICAL_TRACEABILITY_PASSED_PARTIAL",
+        "LIFECYCLE_AND_SPECIALIZED_FLOWS": "PARTIAL_TEMPLATE_GAPS",
+        "SERIALIZATION_AND_MUTATION": "NOT_STARTED_FOR_CONTEXT",
+        "INDEPENDENT_AI_ARTIFACT_INTAKE": "NOT_STARTED_NO_AI_PACKAGE",
+        "CONVERTER_AND_EXECUTION_READINESS": "REVIEW_REQUIRED"
+      },
+      "blockers": [
+        "template-scenarios-without-test-solution-evidence",
+        "chains-failing-canonical-traceability",
+        "keyword-derived-fr-assignment-review",
+        "merchant-name-evidence-missing",
+        "strict-execution-contract-not-met",
+        "ai-artifact-package-not-provisioned",
+        "sme-tba-certification-pending"
+      ]
+    }
+  },
   "kbCoverageReconciliation": {
     "reconciledOn": "2026-09-29",
     "evidenceSource": "specifications/ATL105/docs/specs/kb/segment-*/coverage/segment-*-rule-catalog.json",

@@ -84,9 +84,37 @@ public final class GenerateAtl105TrainingReport {
             + "## Segment Progress\n\n"
             + "| Segment | Rules | Evidence | Status | Explicit blockers | Next gate |\n"
             + "|---|---:|---|---|---:|---|\n" + rows
+            + transactionContextSection(training.path("transactionContextTraining"))
             + "\nSee each segment's `segment-*/` KB module for source anchors and its open SME/TBA decisions. "
             + "Historical branch activity is available in repository history; it is not a training-completion measure.\n";
         Files.writeString(kb.resolve("SEGMENT-TRAINING-EXECUTION-REPORT.md"), report);
         System.out.printf("segments=%d rules=%d trained=%d%n", catalogCounts.size(), totalRules, trained);
+    }
+
+    /** Transaction-context training spans several segments, so its counts stay outside the segment totals. */
+    private static String transactionContextSection(JsonNode contexts) {
+        if (contexts.isMissingNode() || contexts.isEmpty()) {
+            return "";
+        }
+        StringBuilder rows = new StringBuilder();
+        contexts.fields().forEachRemaining(entry -> {
+            JsonNode context = entry.getValue();
+            JsonNode counts = context.path("counts");
+            rows.append("| ").append(entry.getKey()).append(" | ")
+                .append(context.path("status").asText()).append(" | ")
+                .append(counts.path("trainedRequirements").asInt()).append(" / ")
+                .append(counts.path("scopeRequirements").asInt()).append(" | ")
+                .append(counts.path("reviewQueue").asInt()).append(" | ")
+                .append(counts.path("testScenarios").asInt()).append(" / ")
+                .append(counts.path("testCases").asInt()).append(" / ")
+                .append(counts.path("testData").asInt()).append(" | ")
+                .append(context.path("blockers").size()).append(" | ")
+                .append(context.path("nextGate").asText()).append(" |\n");
+        });
+        return "\n## Transaction-Context Training\n\n"
+            + "Business-level contexts reuse segment-trained Test Solution records; their counts are excluded from the segment totals above. "
+            + "Trained BRs have a BR -> TS -> TC -> TD chain that passes canonical traceability; this is not SME approval or execution readiness.\n\n"
+            + "| Context | Status | Trained BRs / scope | Review queue | TS / TC / TD | Explicit blockers | Next gate |\n"
+            + "|---|---|---:|---:|---:|---:|---|\n" + rows;
     }
 }

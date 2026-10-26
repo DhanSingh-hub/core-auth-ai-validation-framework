@@ -69,4 +69,12 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 | DL7 | 6 | SUBSTANTIVE | IN_PROGRESS | 7 | SME_REVIEW_AND_AI_INTAKE |
 | DL8 | 5 | SUBSTANTIVE | IN_PROGRESS | 6 | SME_REVIEW_AND_AI_INTAKE |
 
+## Transaction-Context Training
+
+Business-level contexts reuse segment-trained Test Solution records; their counts are excluded from the segment totals above. Trained BRs have a BR -> TS -> TC -> TD chain that passes canonical traceability; this is not SME approval or execution readiness.
+
+| Context | Status | Trained BRs / scope | Review queue | TS / TC / TD | Explicit blockers | Next gate |
+|---|---|---:|---:|---:|---:|---|
+| MASTERCARD_CREDIT_PURCHASE | IN_PROGRESS | 153 / 176 | 23 | 174 / 182 / 186 | 7 | REVIEW_QUEUE_CLOSURE_AND_SME_REVIEW |
+
 See each segment's `segment-*/` KB module for source anchors and its open SME/TBA decisions. Historical branch activity is available in repository history; it is not a training-completion measure.

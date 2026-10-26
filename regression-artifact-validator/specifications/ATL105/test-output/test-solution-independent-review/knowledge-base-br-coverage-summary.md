@@ -15,3 +15,7 @@ This package links every Test Solution rule-catalog entry to the authored Test S
 | Appendix-evidence BRs | 24 |
 
 Coverage means an authored BR exists, not SME approval. TS/TC/TD are intentionally zero here; downstream chain derivation remains the next Test Solution gate.
+
+## Transaction-Context BR Coverage
+
+Business-level contexts measure BR -> TS -> TC -> TD chain coverage against their own denominator: [Mastercard Credit Purchase BR coverage](mc-credit-purchase-br-coverage.md).
