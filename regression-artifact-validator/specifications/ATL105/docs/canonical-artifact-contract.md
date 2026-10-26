@@ -33,6 +33,29 @@ This review sidecar must not be submitted as a complete canonical BR/TS/TC/TD
 package. Existing canonical validators, source-evidence requirements, runtime
 network policies, approval gates and coverage denominators are unchanged.
 
+The [new-format sample and validation process](new-format-sample-and-validation-process.md)
+provides a concrete BR/TS/TC/TD logical-field pilot and bounded JSON intake.
+Its normalized envelope preserves producer artefacts but is not a strict
+execution-ready canonical package. Local Element 86 outcomes are separate from
+prose equivalence, full-message validation and host outcomes; those unsupported
+gates must not be inferred from a sample PASS.
+
+## Release-aware New-format Review Envelope (Version 2)
+
+The [V2 release validation contract](new-format-release-validation.md) extends
+new-format intake to multiple independent BR/TS/TC/TD chains and distinct
+ATL105 2026-3/2026-4 source profiles. The original V1 sample remains supported.
+Producer IDs, fields and status claims are retained. Exact source-anchor and
+typed-claim checks, scoped observations, token-segment byte comparisons and
+logical lifecycle results are separate gates. Unsupported claims/contexts and
+retired source behavior remain explicit; no producer approval grants readiness.
+
+This is a review envelope, not an alternate execution-ready canonical schema.
+The Java semantic sidecar below still supports 2026-3; V2 does not silently
+enable 2026-4 there. Full-message wire/capture provenance, negative effectiveness,
+host evidence, whole-spec rule coverage and authorized approval remain required
+before complete-validation certification.
+
 ## Semantic Evidence Gate Sidecar (Version 1)
 
 `SemanticEvidenceValidator` and `SemanticEvidenceBatch` implement technical

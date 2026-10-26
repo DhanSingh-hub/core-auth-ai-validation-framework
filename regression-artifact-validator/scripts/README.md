@@ -17,6 +17,44 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Release-aware new-format validation and readiness
+
+Run `.\framework.ps1 -Task new-format-readiness-build`,
+`new-format-readiness-check` and `new-format-readiness-test` from the module root.
+The [V2 contract and readiness guide](../specifications/ATL105/docs/new-format-release-validation.md)
+defines multi-chain input, independent 2026-3/2026-4 profiles, separate structured
+semantic/predicate/wire/lifecycle results, synthetic chains, release crosswalks,
+draft lessons and explicit complete-validation blockers.
+
+```powershell
+python.exe .\scripts\new-format-validation.py --input 'C:\review\ai-v2.json' --output 'C:\review\new-assessment'
+```
+
+The output directory must not exist. Input bytes, producer-local IDs, unknown
+observations, metadata and approval claims are retained without promotion.
+The existing `new-format-sample.py --input ...` entry point also routes the
+explicit V2 format; its V1 sample contract remains unchanged.
+Ten target-release profiles and three baseline profiles are a scoped
+implementation, not whole-spec readiness. The readiness report stays BLOCKED
+until the remaining independent evidence/approval/coverage/execution gates close.
+No Java execution-ready canonical or host certification is inferred.
+
+### New-format BR/TS/TC/TD sample and bounded intake
+
+Run `.\framework.ps1 -Task new-format-sample-build`, `new-format-sample-check`
+and `new-format-sample-test` from the module root.
+The [sample and validation process](../specifications/ATL105/docs/new-format-sample-and-validation-process.md)
+describes the BA hierarchy and a concrete 1 BR / 2 TS / 6 TC / 6 TD example.
+`new-format-sample.py --input <JSON> --output <new-directory>` preserves the input,
+checks draft structure/traceability/context and runs an independent Element 86
+six-ASCII-digit/range predicate against logical TD observations. The Test source,
+not AI expected results, supplies the bounded oracle. Wrong implemented
+expectations fail; unsupported claims/contexts remain NOT_ASSESSED.
+This is not a general semantic validator, full-message serializer or host runner.
+The normalized review envelope must not be submitted as an execution-ready
+canonical package. Network eligibility, prose meaning, full wire and host outcomes
+remain gated; no canonical counts or coverage are promoted.
+
 ### All-network requirements and lifecycle review
 
 From the module root, run `.\framework.ps1 -Task all-network-review-build`,

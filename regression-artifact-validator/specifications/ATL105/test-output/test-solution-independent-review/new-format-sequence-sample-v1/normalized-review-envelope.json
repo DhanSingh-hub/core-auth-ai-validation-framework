@@ -1,0 +1,824 @@
+{
+  "schemaVersion": 1,
+  "format": "BA_BUSINESS_CONTEXT_REVIEW_V1",
+  "manifest": {
+    "packageId": "TEST-SAMPLE-NEW-FORMAT-SEQUENCE-V1",
+    "producer": "INDEPENDENT_TEST_SOLUTION",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "strictExecutionContract": false
+  },
+  "businessRequirements": [
+    {
+      "id": "SAMPLE-BR-SEQ",
+      "statement": "For the scoped financial request, Sequence Number (Element 86) must be exactly six ASCII digits with value 000001 through 999999. This does not establish Mastercard eligibility, cross-transaction uniqueness or lifecycle continuity.",
+      "claim": {
+        "subject": "Segment100.Element86",
+        "operator": "asciiDigitsRange",
+        "width": 6,
+        "minimum": 1,
+        "maximum": 999999,
+        "modality": "must",
+        "conditions": {
+          "messageFamily": "STANDARD_FINANCIAL_REQUEST"
+        },
+        "exceptions": [
+          "CAPK_FILE_LOAD_PROFILE_OUT_OF_SCOPE"
+        ]
+      },
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "SAMPLE-TS-VALID",
+      "requirementIds": [
+        "SAMPLE-BR-SEQ"
+      ],
+      "intent": "Accept the source-defined lower and upper sequence boundaries.",
+      "preconditions": [
+        "Synthetic, isolated Segment 100 field observation; not a complete host message."
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TS-INVALID",
+      "requirementIds": [
+        "SAMPLE-BR-SEQ"
+      ],
+      "intent": "Reject zero, wrong width, nonnumeric or missing sequence.",
+      "preconditions": [
+        "One field predicate only; no claim that the rest of a financial message is valid."
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {
+      "id": "SAMPLE-TC-MIN",
+      "scenarioIds": [
+        "SAMPLE-TS-VALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation PASS; do not infer a host response."
+      ],
+      "expectedOutcome": "PASS",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "PASS"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TC-MAX",
+      "scenarioIds": [
+        "SAMPLE-TS-VALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation PASS; do not infer a host response."
+      ],
+      "expectedOutcome": "PASS",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "PASS"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TC-ZERO",
+      "scenarioIds": [
+        "SAMPLE-TS-INVALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation FAIL; do not infer a host response."
+      ],
+      "expectedOutcome": "FAIL",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "FAIL"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TC-WIDTH",
+      "scenarioIds": [
+        "SAMPLE-TS-INVALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation FAIL; do not infer a host response."
+      ],
+      "expectedOutcome": "FAIL",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "FAIL"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TC-NONNUMERIC",
+      "scenarioIds": [
+        "SAMPLE-TS-INVALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation FAIL; do not infer a host response."
+      ],
+      "expectedOutcome": "FAIL",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "FAIL"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TC-MISSING",
+      "scenarioIds": [
+        "SAMPLE-TS-INVALID"
+      ],
+      "steps": [
+        "Read Element 86 from the logical Segment 100 observation.",
+        "Apply the independent six-ASCII-digit and inclusive-range predicate.",
+        "Expect local field validation FAIL; do not infer a host response."
+      ],
+      "expectedOutcome": "FAIL",
+      "assertions": [
+        {
+          "requirementId": "SAMPLE-BR-SEQ",
+          "rule": "financial-sequence-six-digits-range",
+          "expectedResult": "FAIL"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    }
+  ],
+  "testData": [
+    {
+      "id": "SAMPLE-TD-MIN",
+      "testCaseIds": [
+        "SAMPLE-TC-MIN"
+      ],
+      "expectedValidation": "PASS",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {
+          "sequenceNumber": "000001"
+        }
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TD-MAX",
+      "testCaseIds": [
+        "SAMPLE-TC-MAX"
+      ],
+      "expectedValidation": "PASS",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {
+          "sequenceNumber": "999999"
+        }
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TD-ZERO",
+      "testCaseIds": [
+        "SAMPLE-TC-ZERO"
+      ],
+      "expectedValidation": "FAIL",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {
+          "sequenceNumber": "000000"
+        }
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TD-WIDTH",
+      "testCaseIds": [
+        "SAMPLE-TC-WIDTH"
+      ],
+      "expectedValidation": "FAIL",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {
+          "sequenceNumber": "12345"
+        }
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TD-NONNUMERIC",
+      "testCaseIds": [
+        "SAMPLE-TC-NONNUMERIC"
+      ],
+      "expectedValidation": "FAIL",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {
+          "sequenceNumber": "12A456"
+        }
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "SAMPLE-TD-MISSING",
+      "testCaseIds": [
+        "SAMPLE-TC-MISSING"
+      ],
+      "expectedValidation": "FAIL",
+      "readiness": "LOGICAL_HARNESS_ONLY",
+      "payload": {
+        "standardSegment": {}
+      },
+      "response": null,
+      "scope": "ISOLATED_FIELD_OBSERVATION_NOT_CONVERTER_READY",
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "cardProgram": "CREDIT",
+        "commercialUsage": "UNRESOLVED",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "processingProfile": "CREDIT",
+        "transactionCategory": "SALE",
+        "transactionCodes": [
+          "0"
+        ],
+        "candidateCardCodes": [
+          "020"
+        ],
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED",
+        "mappingBasis": "CONDITIONAL_REVIEW_SELECTION_NOT_APPROVED_COMPATIBILITY"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86",
+          "rule": "financial-sequence-six-digits-range"
+        }
+      ],
+      "status": "DRAFT_REVIEW_REQUIRED"
+    }
+  ],
+  "limitations": [
+    "Illustrative declared Mastercard context, not resolved BIN/processor evidence.",
+    "No network eligibility, cryptography, full wire, host, settlement or certification evidence.",
+    "Local field checks only; not a Java execution-ready canonical package."
+  ],
+  "adapter": {
+    "name": "BA_BUSINESS_CONTEXT_REVIEW_V1_TO_REVIEW_ENVELOPE",
+    "canonicalExecutionReady": false,
+    "policy": "Producer IDs, claims, contexts and payloads preserved. Do not submit as a strict execution-ready canonical package."
+  }
+}

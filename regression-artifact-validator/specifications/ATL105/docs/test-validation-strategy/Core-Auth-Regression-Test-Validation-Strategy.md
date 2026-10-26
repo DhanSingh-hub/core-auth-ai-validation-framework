@@ -31,8 +31,11 @@
 | Version | Date | Author/Owner | Change | Status |
 | --- | --- | --- | --- | --- |
 | 0.2 | 2026-09-16 | Core Auth Test Validation Team | Added Test Team solution design, AI artifact validation value, and risk-based manual testing | Working review |
+<<<<<<< HEAD
 | 0.3 | 2026-10-17 | Core Auth Test Validation Team | Trained QE-Fiserv SME feedback as 33 enforced rules (AIV-025) and applied them to the full 10 October AI delivery | Working review |
-| 0.4 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
+=======
+| 0.3 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
+>>>>>>> origin/Dhan_Singh_HTML
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
