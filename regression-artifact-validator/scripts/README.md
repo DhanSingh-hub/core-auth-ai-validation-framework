@@ -17,6 +17,68 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### All-network requirements and lifecycle review
+
+From the module root, run `.\framework.ps1 -Task all-network-review-build`,
+`.\framework.ps1 -Task all-network-review-check`, and
+`.\framework.ps1 -Task all-network-review-test`.
+The [curated input](../specifications/ATL105/docs/specs/kb/segment-100/all-network-requirements-review.json)
+defines seven named network groups (AMEX, Visa, Mastercard, Discover, Diners Club,
+JCB and STAR Signature Debit) plus separate generic Debit and EBT groups.
+Credit is a program, not a network. The original 145 mixed-dimension requirements
+remain a shared library; Section 5 categories and financial/receipt/transaction codes
+are secondary dimensions, never substitute network groups.
+The [published supplement](../specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/README.md)
+includes a network index, 176 contextual draft BR/TS records under 12 review profiles,
+44 explicitly selected conditional flow contexts, ten BA/SME questions and byte
+provenance. Every shared ID is linked or explicitly unmapped (64 linked, 81 unmapped).
+The BA business tree is platform -> spec/version -> card program -> network/generic
+group -> transaction category -> presence/entry/channel -> flow/leg -> BR/TS/TC/TD.
+Commercial usage is orthogonal to funding program; presence, entry mode and channel
+are separate. Unresolved values are review gaps, not wildcard eligibility.
+The generator reuses the Mastercard source-resolution, hashing and CSV-safety helpers;
+both generator and helper hashes are recorded.
+
+Only curated classifications and conditional source rules enter the draft lessons.
+The unapproved contextual bindings, unanswered questions, external contracts and 2026-4
+Appendix AF release overlay do not become executable policy or 2026-3 teaching truth.
+The selected flow contexts inventory questions, not supported combinations. It never silently
+infers identity from a receipt label or card code. Source locations/hashes do not
+prove semantics, source completeness, host outcomes or approval.
+Review format 2 replaces the former 25 mixed primary contexts and 850-cell cross-product.
+The primary `requirements-review.csv` now contains contextual records; the original
+145-row format is preserved in `shared-requirements-library.csv`. The JSON
+`requirements` array remains the shared library; `businessNavigation` holds the
+business tree, nine groups, profiles, contextual `businessRequirements`,
+`testScenarios` and empty `testCases`/`testData` arrays. `chain-gaps.csv` exposes
+missing concrete cases, synthetic payloads and independent oracles. No artificial
+TC/TD IDs or complete chains are counted. `shared-library-mapping.csv` retains every
+unassigned shared requirement for source-backed review, including closed-loop SVC
+rules that must not be assigned automatically to open-loop prepaid.
+No canonical BR/TC/TD counts, model weights, execution gates or coverage are promoted.
+Rebuilding replaces generated files; return BA edits separately and persist approved
+decisions through the existing SME workflow before updating curated input.
+
+### Mastercard BA reference review
+
+From the module root, run `.\framework.ps1 -Task mastercard-review-build`,
+`.\framework.ps1 -Task mastercard-review-check`, and
+`.\framework.ps1 -Task mastercard-review-test`.
+The builder reads the curated independent
+[review input](../specifications/ATL105/docs/specs/kb/segment-100/mastercard-ba-reference-review.json),
+resolves unique source locations and fingerprints, and publishes the corrected
+37-scenario CSV, nine-question BA/SME questionnaire, 13-lesson draft teaching pack,
+email draft and provenance under
+[mastercard-ba-reference-review-v1](../specifications/ATL105/test-output/test-solution-independent-review/mastercard-ba-reference-review-v1).
+`--check` is read-only and fails for missing/stale outputs or changed inputs/sources.
+The curated lesson statements are independently authored review drafts, not semantic
+facts proven by string matching. Source lookup only verifies location and hashes.
+The screenshot and unanswered questions are never training truth, and no model
+weights, canonical BR counts, SME decisions or execution gates are promoted.
+BA edits belong in a separate returned copy of the CSV; rebuilding replaces generated
+outputs. Persist authorized outcomes through the existing SME decision workflow
+before revising the curated input.
+
 | Group | Tools | Ownership |
 |---|---|---|
 | Intake and provenance | `analyze-oct05-handoff.py`, `assess-late-traceability-matrix.py`, `detect-ai-run-duplicates.py`, `build-ai-run1-4-combined-crosswalk.py`, `audit-ai-br-chain-maximum-coverage.py`, `verify-ai-run-intake.py` | Preserve producer data; identify byte-identical content; and build provenance-preserving BR/scenario/TC indexes and per-BR chain-coverage audits. |

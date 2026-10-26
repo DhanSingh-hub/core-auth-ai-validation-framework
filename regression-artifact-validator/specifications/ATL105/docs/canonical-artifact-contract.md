@@ -1,5 +1,38 @@
 # Canonical Artifact Contract
 
+## Business Navigation Review Sidecar
+
+The [network-first review supplement](../test-output/test-solution-independent-review/all-network-requirements-review-v1/README.md)
+uses BA/SME business grouping as navigation, not a new canonical producer contract.
+Its review format version 2 preserves the original 145 shared requirement IDs and
+links conditional contextual BR/TS drafts beneath:
+
+`Platform -> specification/version -> card program -> network or generic category
+-> transaction category -> card presence / entry mode / channel -> flow and leg
+-> BR -> TS -> TC -> TD`.
+
+The primary groups are seven named network labels (AMEX, Visa, Mastercard, Discover,
+Diners Club, JCB and STAR Signature Debit), plus generic Debit and EBT.
+Credit is a card program, not a network. Commercial usage is an orthogonal
+attribute, not a mutually exclusive funding program. Presence, entry mode and
+channel have separate values: contactless is an entry mode, not an e-commerce
+channel. Unresolved dimensions are explicit review gaps, never wildcard support.
+ATL104, ISO and Gen2 shown in the BA diagram are not enabled by the ATL105 baseline.
+
+The sidecar's `businessNavigation` contains an ordered business tree, network-first
+group index, conditional profiles, `businessRequirements` and `testScenarios`.
+Shared library references are validated and source-linked; every shared row is
+linked or explicitly unmapped. Context bindings and candidate card/transaction
+codes are review selections, not proven network eligibility or new approved BRs.
+Network-specific exceptions require their own independent sources.
+
+The `testCases` and `testData` arrays remain empty where concrete cases, payloads
+and independent outcomes have not been authored. Empty TC/TD links are exposed in
+the gap ledger, not filled with fabricated identifiers or declared complete.
+This review sidecar must not be submitted as a complete canonical BR/TS/TC/TD
+package. Existing canonical validators, source-evidence requirements, runtime
+network policies, approval gates and coverage denominators are unchanged.
+
 ## Semantic Evidence Gate Sidecar (Version 1)
 
 `SemanticEvidenceValidator` and `SemanticEvidenceBatch` implement technical

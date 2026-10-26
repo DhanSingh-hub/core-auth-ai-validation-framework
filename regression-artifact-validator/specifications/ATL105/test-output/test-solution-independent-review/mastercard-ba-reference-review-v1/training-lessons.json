@@ -1,0 +1,427 @@
+{
+  "artifact": "ATL105-MASTERCARD-SOURCE-LINKED-TRAINING-SUPPLEMENT",
+  "authority": "INDEPENDENT_TEST_SOLUTION",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "specificationVersion": "2026-3",
+  "certified": false,
+  "executionReady": false,
+  "baselineChanged": false,
+  "policy": "Only curated independent source-derived statements are teaching content. Reference claims and open answers are excluded. Source location/hash checks do not certify semantic correctness.",
+  "lessons": [
+    {
+      "id": "MC-L01",
+      "sources": [
+        "account"
+      ],
+      "statement": "Account Number is Element 2, not Element 24; validate the declared non-TransArmor, track, token or encrypted representation rather than applying a universal numeric-only constraint.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "account",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 2",
+          "anchor": "Number: 2 Name: Account Number",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-001",
+        "TS-010"
+      ]
+    },
+    {
+      "id": "MC-L02",
+      "sources": [
+        "expiry",
+        "creditExpiry"
+      ],
+      "statement": "The device validates credit-card expiry. For manual account entry, Element 12 carries expiry in MMYY format; Element 51 is not the expiry field. The requirement to send expiry even for expired-card authorizations is not a blanket local rejection rule.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "expiry",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 12",
+          "anchor": "Number: 12 Name: Card Discretionary",
+          "line": 19751,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "creditExpiry",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "10.1.1.1",
+          "anchor": "The device performs expiration date validation in a credit card transaction.",
+          "line": 3823,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-002"
+      ]
+    },
+    {
+      "id": "MC-L03",
+      "sources": [
+        "prompt",
+        "promptKnowledge"
+      ],
+      "statement": "In the scoped credit purchase context Element 78 is 0020: transaction type 0 plus financial card type 020. Neither 020 nor 0020 alone proves Mastercard brand identity.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "prompt",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 78",
+          "anchor": "Number: 78 Name: Prompt Code",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "promptKnowledge",
+          "path": "docs/specs/kb/segment-100/prompt-code-sme-tba-note.md",
+          "section": "Prompt Code decision examples",
+          "anchor": "| `0020` | Purchase/capture, card type `020` |",
+          "line": 46,
+          "sha256": "0e73a8530dd3e11422735614658068b6927d3068b15dac8a0fbbe8b6c9f54243",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-004",
+        "TS-018",
+        "TS-020"
+      ]
+    },
+    {
+      "id": "MC-L04",
+      "sources": [
+        "sequence"
+      ],
+      "statement": "Sequence Number is Element 86, not Element 80; it is six digits in 000001-999999 for the scoped financial flow. Related preauthorized completion, reversal and cancellation legs retain the applicable original sequence; unrelated new transactions receive a new sequence.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "sequence",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 86",
+          "anchor": "Number: 86 Name: Sequence Number",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-016",
+        "TS-017",
+        "TS-031"
+      ]
+    },
+    {
+      "id": "MC-L05",
+      "sources": [
+        "approval",
+        "approvedAmount"
+      ],
+      "statement": "Approval Number is Element 5 with six alphanumeric characters; Element 6 is Approved Amount. Preserve the original approval reference when required by the specific follow-up flow.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "approval",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 5",
+          "anchor": "Number: 5 Name: Approval Number",
+          "line": 19617,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "approvedAmount",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 6",
+          "anchor": "Number:   6 Name:   Approved Amount",
+          "line": 19636,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-022",
+        "TS-023"
+      ]
+    },
+    {
+      "id": "MC-L06",
+      "sources": [
+        "message",
+        "count"
+      ],
+      "statement": "Financial requests carry Element 55, Element 63 and Segment 100 in the source-defined layout; count transmitted segments and apply companion-segment conditions. Format compliance does not prove host acceptance.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "message",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 55",
+          "anchor": "Number: 55 Name: Message Format",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "count",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 63",
+          "anchor": "Number: 63 Name: Number of Segments",
+          "line": 20807,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-007",
+        "TS-008",
+        "TS-009",
+        "TS-020"
+      ]
+    },
+    {
+      "id": "MC-L07",
+      "sources": [
+        "fuel",
+        "nonfuel",
+        "tax"
+      ],
+      "statement": "Fuel Amount is Element 41, Nonfuel Amount is Element 58 and Segment 100 Tax Amount is Element 99, not PC Tax Element 74. In the scoped Mastercard case these fields have up to seven digits with two assumed decimal places; apply presence and discount rules separately.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "fuel",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 41",
+          "anchor": "Number: 41 Name: Fuel Purchase Amount",
+          "line": 20376,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "nonfuel",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 58",
+          "anchor": "Number: 58 Name: Nonfuel Amount",
+          "line": 20713,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "tax",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 99",
+          "anchor": "Number: 99 Name: Tax Amount",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-012",
+        "TS-013",
+        "TS-014"
+      ]
+    },
+    {
+      "id": "MC-L08",
+      "sources": [
+        "cash"
+      ],
+      "statement": "Cash Amount Element 17 describes cash back and uses up to eight numeric digits with two assumed decimal places. Its existence does not establish Mastercard credit cash-back eligibility.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "cash",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 17",
+          "anchor": "Number: 17 Name: Cash Amount",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-015"
+      ]
+    },
+    {
+      "id": "MC-L09",
+      "sources": [
+        "response"
+      ],
+      "statement": "Interpret Element 83 in its transaction context: 0 is Purchase/Capture approval, 2 is authorization-only approval and 1 is communications-test approval but decline for other transactions. Format validity is not an issuer outcome.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "response",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 83",
+          "anchor": "Number: 83 Name: Response Code",
+          "line": 21186,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-021",
+        "TS-024",
+        "TS-025"
+      ]
+    },
+    {
+      "id": "MC-L10",
+      "sources": [
+        "partial",
+        "indicator",
+        "approvedAmount"
+      ],
+      "statement": "Partial Approval Indicator is Element 121. For supported credit partial-approval contexts with indicator 1, response F and Element 6 identify partial approval and approved amount; prompt for the remaining balance. Indicator 5 is not a generic Mastercard partial-approval value.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "partial",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "10.1.2.1",
+          "anchor": "A Partial Approval transaction enables a merchant to receive approval for the amount available",
+          "line": 3903,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "indicator",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 121",
+          "anchor": "Number: 121 Name: Partial Approval",
+          "line": 22824,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "approvedAmount",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 6",
+          "anchor": "Number:   6 Name:   Approved Amount",
+          "line": 19636,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-024",
+        "TS-026",
+        "TS-027"
+      ]
+    },
+    {
+      "id": "MC-L11",
+      "sources": [
+        "timeout",
+        "sequence"
+      ],
+      "statement": "Use the 30-second response interval and source-defined late-response handling. An eligible TOR retains the original sequence; do not infer TOR eligibility for all authorization or completion contexts.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "timeout",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "2.3.1",
+          "anchor": "The customer\u2019s 30-second response interval expires without a response from BUYPASS.",
+          "line": 1990,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "sequence",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "13.2 Element 86",
+          "anchor": "Number: 86 Name: Sequence Number",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-028",
+        "TS-029",
+        "TS-030",
+        "TS-031"
+      ]
+    },
+    {
+      "id": "MC-L12",
+      "sources": [
+        "torQueue"
+      ],
+      "statement": "For the Section 2.3.1 same-device queued-TOR flow, transmit the queued TOR before the next financial request from that device. Do not impose a global single-thread restriction on unrelated devices or flows.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "torQueue",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "2.3.1",
+          "anchor": "from that device, the queued TOR is transmitted to BUYPASS ahead of the new financial",
+          "line": 2002,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-030",
+        "TS-032"
+      ]
+    },
+    {
+      "id": "MC-L13",
+      "sources": [
+        "receipt",
+        "receiptPan",
+        "receiptExpiry"
+      ],
+      "statement": "Credit receipts use the source-defined content and Mastercard receipt identifier MC; mask the account to the last four digits and suppress expiry. Receipt production is not settlement evidence.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceEvidence": [
+        {
+          "sourceId": "receipt",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "10.1.7",
+          "anchor": "This section discusses the following information that must print on credit card receipts:",
+          "line": 4189,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "receiptPan",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "10.1.7.4",
+          "anchor": "The Account Number (Element No. 2) must be truncated",
+          "line": 4229,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        },
+        {
+          "sourceId": "receiptExpiry",
+          "path": "docs/specs/extracted_text.txt",
+          "section": "10.1.7.5",
+          "anchor": "The Expiration Date must be suppressed on all transaction receipts.",
+          "line": 4240,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "evidenceScope": "LOCATION_AND_HASH_ONLY_NOT_SEMANTIC_CERTIFICATION"
+        }
+      ],
+      "scenarioIds": [
+        "TS-033"
+      ]
+    }
+  ]
+}

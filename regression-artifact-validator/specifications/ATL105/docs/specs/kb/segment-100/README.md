@@ -31,6 +31,8 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Final Closure Flow](final-closure-flow.md)
 - [Response Code (Element 83) Training](response-code-training.md)
 - [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
+- [Mastercard BA reference review and draft teaching pack](../../../../test-output/test-solution-independent-review/mastercard-ba-reference-review-v1/README.md): all 37 reference scenarios corrected or question-gated against independent evidence; no certification or BR-count change.
+- [Network-first requirements and lifecycle review](../../../../test-output/test-solution-independent-review/all-network-requirements-review-v1/NETWORK-REVIEW.md): seven named networks plus generic Debit/EBT; BA business hierarchy, conditional contextual BR/TS records, all 145 shared requirements retained, explicit TC/TD gaps and ten BA/SME questions. Classification dimensions are secondary and no eligibility policy is implied.
 - [Appendix E Card Type Training (three separate code families)](appendix-e-card-type-training.md)
 - [Appendix F Product Code Training (table classification and transaction context)](appendix-f-product-code-training.md)
 - [Appendix G Transaction Type Training (code classification and flow boundaries)](appendix-g-transaction-type-training.md)
