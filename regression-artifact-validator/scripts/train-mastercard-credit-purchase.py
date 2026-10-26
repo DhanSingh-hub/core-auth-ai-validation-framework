@@ -7,10 +7,12 @@ Input (Test Solution only, AI artifacts excluded):
 
 Training selects every Mastercard-applicable Test Solution BR -> TS -> TC -> TD chain that satisfies the
 framework's CanonicalTraceabilityValidator contract (complete ATL105 2026-3 anchors, one common anchor through
-every reachable BR -> TS -> TC -> TD combination, TD payload and expected validation, no orphans). Records are
-copied verbatim; the only normalizations are link-array trimming to in-package IDs, singular-to-array link
-fields and non-canonical TS status values, each logged in provenance.normalizations. BRs without a valid
-chain go to reviewQueue with the reason and required evidence; nothing is fabricated or approved.
+every reachable BR -> TS -> TC -> TD combination, TD payload and expected validation, no orphans). Anchors are
+evaluated exactly as the canonical model reads them (sourceAnchors). Records are copied verbatim; the only
+normalizations are link-array trimming to in-package IDs, singular-to-array link and anchor fields
+(scenarioId -> scenarioIds, sourceAnchor -> sourceAnchors) and non-canonical TS status values, each logged in
+provenance.normalizations. BRs without a valid chain go to reviewQueue with the reason and required evidence;
+nothing is fabricated or approved.
 
 Outputs:
   test-output/test-json/mc-credit-purchase-training-package.json          (canonical, validated by TestSolutionJsonFormatTest)
@@ -57,21 +59,29 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def canonical_anchors(record):
+    """Anchors as the canonical model reads them: sourceAnchors, or a singular sourceAnchor made explicit."""
+    if record.get("sourceAnchors"):
+        return list(record["sourceAnchors"])
+    return [record["sourceAnchor"]] if record.get("sourceAnchor") else []
+
+
 def key(a):
     return "|".join(str(a.get(k) or "").strip().lower()
                     for k in ("specification", "version", "section", "segment", "element", "rule"))
 
 
 def keys(record):
-    return {key(a) for a in ts_fr.anchors(record)}
+    return {key(a) for a in canonical_anchors(record) if isinstance(a, dict)}
 
 
 def anchor_problem(record):
-    anchors = ts_fr.anchors(record)
+    anchors = canonical_anchors(record)
     if not anchors:
         return "no sourceAnchor"
     for a in anchors:
-        if not a.get("specification") or not a.get("version") or not any(a.get(k) for k in ("section", "segment", "element", "rule")):
+        if not isinstance(a, dict) or not a.get("specification") or not a.get("version") \
+                or not any(a.get(k) for k in ("section", "segment", "element", "rule")):
             return "incomplete sourceAnchor"
         if str(a.get("version")).strip() != SPEC_VERSION:
             return f"anchor version {a.get('version')} is not {SPEC_VERSION}"
@@ -223,11 +233,19 @@ def package_records(sel, trained):
         if before != after:
             normalizations.append({"id": record_id, "field": field, "from": before, "to": after, "reason": reason})
 
-    brs = [sel.br[b] for b in trained]
+    def conform_anchors(rec):
+        if not rec.get("sourceAnchors") and rec.get("sourceAnchor"):
+            before = rec.get("sourceAnchors")
+            rec["sourceAnchors"] = [rec["sourceAnchor"]]
+            note(rec["id"], "sourceAnchors", before, rec["sourceAnchors"],
+                 "singular sourceAnchor made explicit as the canonical sourceAnchors array")
+        return rec
+
+    brs = [conform_anchors(dict(sel.br[b])) for b in trained]
     ts_order = list(OrderedDict.fromkeys(t for b in trained for t in sel.tb if b in sel.tb[t]))
     tss = []
     for t in ts_order:
-        rec = dict(sel.ts[t])
+        rec = conform_anchors(dict(sel.ts[t]))
         links = linked(rec.get("requirementIds") or [], sel.tb[t])
         note(t, "requirementIds", rec.get("requirementIds"), links, "trimmed to BRs trained in this context")
         rec["requirementIds"] = links
@@ -241,7 +259,7 @@ def package_records(sel, trained):
     tc_order = list(OrderedDict.fromkeys(c for t in ts_order for c in sel.ct if t in sel.ct[c]))
     tcs = []
     for c in tc_order:
-        rec = dict(sel.tc[c])
+        rec = conform_anchors(dict(sel.tc[c]))
         source = list(rec.get("scenarioIds") or []) + ([rec["scenarioId"]] if rec.get("scenarioId") else [])
         links = linked(source, sel.ct[c])
         note(c, "scenarioIds", rec.get("scenarioIds"), links, "trimmed to scenarios trained in this context")
@@ -250,7 +268,7 @@ def package_records(sel, trained):
     td_order = list(OrderedDict.fromkeys(d for c in tc_order for d in sel.dc if c in sel.dc[d]))
     tds = []
     for d in td_order:
-        rec = dict(sel.td[d])
+        rec = conform_anchors(dict(sel.td[d]))
         links = list(sel.dc[d])
         note(d, "testCaseIds", rec.get("testCaseIds"), links,
              "trimmed to trained test cases; links declared only by TC.testDataIds are made explicit")
@@ -417,7 +435,8 @@ def write_coverage(m, package, scenarios, review, readiness, outcomes):
                                   ("trained", sum(i in trained for i in ids)), ("review", sum(i not in trained for i in ids))])
     per_segment = OrderedDict()
     for b in m["detail_ids"]:
-        segs = sorted({s for a in ts_fr.anchors(m["br_by_id"][b]) for s in str(a.get("segment") or "NONE").split(",")})
+        segs = sorted({s for a in canonical_anchors(m["br_by_id"][b]) if isinstance(a, dict)
+                       for s in str(a.get("segment") or "NONE").split(",")} or {"NONE"})
         for s in segs:
             row = per_segment.setdefault(s, OrderedDict([("scope", 0), ("trained", 0)]))
             row["scope"] += 1

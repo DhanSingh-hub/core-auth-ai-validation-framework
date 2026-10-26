@@ -319,10 +319,10 @@ For a business transaction context, the Test Solution validates in this order:
 1. **Template conformance:** every template scenario is classified `MAPPED`, `PARTIAL` or `NOT_IN_TEST_SOLUTION` against Test Solution BRs, with the gap stated; Test Solution BRs with no template scenario are `TEST_SOLUTION_ONLY`.
 2. **Scope:** in-scope BRs are selected by an explicit, versioned rule (template mapping, brand naming, or segment anchor without another product or brand). Keyword-derived FR placement is a grouping aid and stays `REVIEW_REQUIRED`.
 3. **Canonical chain:** each in-scope BR is trained only when a BR -> TS -> TC -> TD chain passes `CanonicalTraceabilityValidator`. Failing BRs go to an explicit review queue with the reason and required evidence; they are never counted as covered.
-4. **Independence and freshness:** trained records must equal the Test Solution source apart from logged link/status normalizations, and must match the source package hash. AI artifacts are not inputs.
+4. **Independence and freshness:** trained records must equal the Test Solution source apart from logged link, status and anchor-field normalizations, and must match the source package hash. AI artifacts are not inputs.
 5. **Status:** the context is `IN_PROGRESS` until the review queue is closed, SME/TBA certification is recorded, and AI intake and execution readiness gates have evidence.
 
-The Mastercard Credit Purchase result is published in the [context BR coverage report](../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md). On 2026-10-26: 153 of 176 in-scope BRs (86.9%) trained, 23 in review, and 9 of 37 template scenarios have no Test Solution evidence (card status, routing, timeout timer/detection, TOR ordering, clearing, settlement and audit logging).
+The Mastercard Credit Purchase result is published in the [context BR coverage report](../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md). On 2026-10-26 (retrained on Develop): 168 of 189 in-scope BRs (88.9%) trained, 21 in review, and 9 of 37 template scenarios have no Test Solution evidence (card status, routing, timeout timer/detection, TOR ordering, clearing, settlement and audit logging).
 
 ### SME Availability Dependency
 

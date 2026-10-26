@@ -88,10 +88,10 @@ class MastercardCreditPurchaseTrainingTest {
         });
 
         for (JsonNode br : pkg.path("businessRequirements")) {
-            assertThat(br).as("BR %s", br.path("id").asText()).isEqualTo(brs.get(br.path("id").asText()));
+            assertThat(br).as("BR %s", br.path("id").asText()).isEqualTo(withAnchorNormalization(br, required(brs, br), logged));
         }
         for (JsonNode ts : pkg.path("testScenarios")) {
-            JsonNode original = required(tss, ts);
+            JsonNode original = withAnchorNormalization(ts, required(tss, ts), logged);
             String id = ts.path("id").asText();
             boolean addedSourceStatus = ts.has("sourceStatus") && !original.has("sourceStatus");
             String[] changeable = addedSourceStatus
@@ -108,14 +108,14 @@ class MastercardCreditPurchaseTrainingTest {
             }
         }
         for (JsonNode tc : pkg.path("testCases")) {
-            JsonNode original = required(tcs, tc);
+            JsonNode original = withAnchorNormalization(tc, required(tcs, tc), logged);
             assertThat(strip(tc, "scenarioIds")).isEqualTo(strip(original, "scenarioIds"));
             Set<String> allowed = texts(original.path("scenarioIds"));
             if (original.hasNonNull("scenarioId")) allowed.add(original.path("scenarioId").asText());
             assertLinksAllowedAndLogged(tc, "scenarioIds", allowed, logged, original);
         }
         for (JsonNode td : pkg.path("testData")) {
-            JsonNode original = required(tds, td);
+            JsonNode original = withAnchorNormalization(td, required(tds, td), logged);
             assertThat(strip(td, "testCaseIds")).isEqualTo(strip(original, "testCaseIds"));
             Set<String> allowed = texts(original.path("testCaseIds"));
             tcs.values().stream().filter(tc -> texts(tc.path("testDataIds")).contains(td.path("id").asText()))
@@ -228,6 +228,23 @@ class MastercardCreditPurchaseTrainingTest {
         if (!record.path(field).equals(original.path(field))) {
             assertThat(logged).as("%s.%s normalization must be logged", id, field).contains(id + "#" + field);
         }
+    }
+
+    /**
+     * The source record as the training package may legitimately present it: a singular sourceAnchor is made
+     * explicit as the canonical sourceAnchors array only when that normalization is logged and the source
+     * record has no sourceAnchors of its own.
+     */
+    private static JsonNode withAnchorNormalization(JsonNode record, JsonNode original, Set<String> logged) {
+        String id = record.path("id").asText();
+        if (!logged.contains(id + "#sourceAnchors")) {
+            return original;
+        }
+        assertThat(original.path("sourceAnchors").isEmpty()).as("%s already declares sourceAnchors", id).isTrue();
+        assertThat(original.path("sourceAnchor").isObject()).as("%s has no singular sourceAnchor to normalize", id).isTrue();
+        ObjectNode expected = original.deepCopy();
+        expected.set("sourceAnchors", MAPPER.createArrayNode().add(original.path("sourceAnchor").deepCopy()));
+        return expected;
     }
 
     private static JsonNode required(Map<String, JsonNode> sourceRecords, JsonNode record) {

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -488,7 +489,7 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         definition.set("testCaseIds", data.path("testCaseIds").deepCopy());
         definition.put("status", "DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
         definition.put("purpose", firstText(rule.path("title"), requirement.path("title"),
-                "Provide fixture data for " + testCase.path("id").asText()));
+                TextNode.valueOf("Provide fixture data for " + testCase.path("id").asText())));
         if (rule.isObject()) {
             definition.put("ruleClass", rule.path("class").asText("UNCLASSIFIED"));
             definition.put("severity", rule.path("severity").asText("REVIEW_REQUIRED"));

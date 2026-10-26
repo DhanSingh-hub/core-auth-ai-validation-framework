@@ -28,7 +28,7 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 | 108 | 25 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |
 | 109 | 22 | SUBSTANTIVE | IN_PROGRESS | 3 | AI_ARTIFACT_REWORK_AND_INDEPENDENT_INTAKE |
 | 110 | 21 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_AI_INTAKE |
-| 111 | 8 | SUBSTANTIVE | IN_PROGRESS | 23 | INDEPENDENT_AI_ARTIFACT_INTAKE_AND_APPENDIX_I_TABLE_VALIDATION |
+| 111 | 8 | SUBSTANTIVE | IN_PROGRESS | 38 | INDEPENDENT_AI_ARTIFACT_INTAKE_AND_APPENDIX_I_TABLE_VALIDATION |
 | 112 | 10 | SUBSTANTIVE | IN_PROGRESS | 7 | APPENDIX_K_LAYOUT_VALIDATION_AND_SME_REVIEW |
 | 113 | 18 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_AI_INTAKE |
 | 114 | 13 | SUBSTANTIVE | IN_PROGRESS | 2 | SME_REVIEW_AND_AI_INTAKE |
@@ -75,6 +75,6 @@ Business-level contexts reuse segment-trained Test Solution records; their count
 
 | Context | Status | Trained BRs / scope | Review queue | TS / TC / TD | Explicit blockers | Next gate |
 |---|---|---:|---:|---:|---:|---|
-| MASTERCARD_CREDIT_PURCHASE | IN_PROGRESS | 153 / 176 | 23 | 174 / 182 / 186 | 7 | REVIEW_QUEUE_CLOSURE_AND_SME_REVIEW |
+| MASTERCARD_CREDIT_PURCHASE | IN_PROGRESS | 168 / 189 | 21 | 189 / 226 / 230 | 7 | REVIEW_QUEUE_CLOSURE_AND_SME_REVIEW |
 
 See each segment's `segment-*/` KB module for source anchors and its open SME/TBA decisions. Historical branch activity is available in repository history; it is not a training-completion measure.
