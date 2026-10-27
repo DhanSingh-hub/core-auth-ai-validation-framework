@@ -167,7 +167,7 @@ class PaymentSystemProductCodeOracleTest {
         Map<String, ObjectNode> crosswalk = GeneratePaymentSystemProductCodeCoverage.crosswalk(oracleSource, appendixF);
         JsonNode pack = MAPPER.readTree(GeneratePaymentSystemProductCodeCoverage.CHAINS.toFile());
         assertThat(pack).isEqualTo(GeneratePaymentSystemProductCodeCoverage.chains(oracleSource, crosswalk));
-        assertThat(Files.readString(GeneratePaymentSystemProductCodeCoverage.CROSSWALK, StandardCharsets.UTF_8))
+        assertThat(Files.readString(GeneratePaymentSystemProductCodeCoverage.CROSSWALK, StandardCharsets.UTF_8).replace("\r\n", "\n"))
                 .isEqualTo(GeneratePaymentSystemProductCodeCoverage.crosswalkCsv(crosswalk));
 
         JsonNode summary = pack.path("coverageSummary");
