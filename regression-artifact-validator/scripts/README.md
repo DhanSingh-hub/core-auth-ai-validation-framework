@@ -17,6 +17,85 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Petroleum supplemental source ingestion
+
+From the module root, run `.\framework.ps1 -Task petroleum-ingest-build`,
+`.\framework.ps1 -Task petroleum-ingest-check` and
+`.\framework.ps1 -Task petroleum-ingest-test`. Python with `pypdf` is required
+(the manifest records the installed extractor version). `--check` re-extracts the
+registered PDF and compares every output without writing; source, lesson-input,
+generator, page-text and output SHA-256 hashes expose changed or stale evidence.
+Regenerate after an intentional extractor change and review the new bytes.
+
+The original [Petroleum PDF](../specifications/ATL105/docs/specs/BUYPASS_Platform_Petroleum_Industry_Processing_Specifications__2025-1.pdf)
+remains beside ATL105 2026-3 and 2026-4. The
+[knowledge index](../specifications/ATL105/docs/specs/kb/00-index.md#supplemental-petroleum-source-2025-1)
+links the complete page corpus, bookmarks and 13 explicitly curated draft lessons.
+Only these quoted, scoped lessons enter the draft teaching pack; raw pages are
+retrieval evidence, not generated business requirements. Review questions and
+cross-version/card/flow conflicts remain open. No model weights, canonical counts,
+SME decisions or execution gates change.
+
+For read-only all-term lexical retrieval, run:
+
+```powershell
+python .\scripts\ingest-petroleum-spec.py --query "MasterCard expiration"
+```
+
+Each hit retains physical PDF page, printed label and extracted-text hash. Empty
+results are explicit; table/diagram semantics still require visual source review.
+
+ATL105 sections 10.6 and 13.2 refer fleet processing to Petroleum 2025-1. Build,
+check and test the versioned cross-reference map with
+`petroleum-atl105-crossref-build`, `petroleum-atl105-crossref-check` and
+`petroleum-atl105-crossref-test`. It records the 13 direct locations found in
+each ATL105 release, including Section 10.6 and Elements 2, 31, 40, 47, 64, 108
+and 158-163. These references cue fleet-only, issuer-specific rule lookup; they
+do not override ATL105 field/format rules or establish current-release authority,
+SME approval, execution readiness or model-weight training.
+
+### Petroleum context training
+
+From the module root, run `.\framework.ps1 -Task petroleum-train-build`,
+`.\framework.ps1 -Task petroleum-train-check` and
+`.\framework.ps1 -Task petroleum-train-test` for the MasterCard Fleet pilot, and
+`petroleum-visa-train-build`, `-check` and `-test` for Visa Fleet. Card-program
+differences (BINs, Prompt Code card type, prompt selector, track positions and
+mutations) live in a plug-in such as `scripts/petroleum_visa_fleet.py`, selected
+by `program` in `context-input.json`. Voyager chapter 9 uses
+`petroleum-voyager-train-build`, `-check` and `-test`; its source catalog is
+implemented in `scripts/petroleum_voyager.py`. Other contexts use
+`python .\scripts\train-petroleum-context.py --context <folder>` once their
+`context-input.json` exists. Ingestion outputs must be current first.
+
+Each build checks the
+[training plan](../specifications/ATL105/docs/specs/kb/petroleum-2025-1/training-plan.json)
+(phases 0 to 10, steps, gate mapping and chapter-aligned rollout) and a context's
+curated input. Every Petroleum quote must resolve on its stated page inside the
+scope, every scoped bookmark and rule item must be covered, ATL105 evidence must
+resolve on the stated page of both 2026-3 and 2026-4, and `PETROLEUM_ONLY` claims
+must be absent from both ATL105 texts. Track layout rows, BIN ranges repeated across
+pages, enumerations and printed examples (BIN, Mod 10, field lengths) are checked
+against the source. Example anomalies stay `REVIEW_REQUIRED`. Phase status only
+reaches an SME decision through a complete approval record; counts of BR/TS/TC/TD
+and executed cases stay zero until later phases supply independent evidence.
+
+When a context has `chain-input.json`, the same build runs phases 4 to 8 through
+`petroleum_chain.py`: transactions must match the scoped list and quote ATL105
+Appendix G in both releases; Product Type prompts must agree with the source
+enumeration; every rule item needs a draft BR; every BR, supported matrix cell and
+flow transition needs a scenario; each generated TD must give exactly the expected
+rule-validator outcome; and every mutation operator must be caught. Results go to
+`chain-package.json` and are reported as draft counts, never as independent
+Test Solution counts or executed cases. Run `.\framework.ps1 -Task petroleum-chain-test`.
+
+A context may add `scope.appendixPages` for document-local Petroleum appendices; each
+range must start at its own appendix bookmark and stay inside it. `catalog.productCodes`
+re-extracts every Appendix B row, checks the categories span 000 to 999 without gaps,
+and compares each row with ATL105 Appendix F in both releases; the build fails unless
+the differences equal `expectedDifferences`. Scenarios whose expectation depends on a
+recorded source conflict carry `oracleConflict` and are reported as conflicting oracles.
+
 ### All-network requirements and lifecycle review
 
 From the module root, run `.\framework.ps1 -Task all-network-review-build`,

@@ -169,6 +169,12 @@ class CanonicalRuleDenominatorTest {
                 .isEqualTo("SOURCE_OR_SME_DERIVATION_REQUIRED");
         assertThat(data.path("readiness").asText()).isEqualTo("REVIEW_REQUIRED");
         assertThat(data.path("payload").path("fixtureStatus").asText()).isEqualTo("SME_FIXTURE_REQUIRED");
+
+        JsonNode missingTitles = mapper.createObjectNode();
+        JsonNode fallbackDraft = GenerateCompleteCanonicalTestSolutionPackage.testDataDraftDefinition(
+                data, mapper.readTree("{\"id\":\"TC-REVIEW-FALLBACK\"}"), missingTitles, missingTitles, mapper);
+        assertThat(fallbackDraft.path("purpose").asText())
+                .isEqualTo("Provide fixture data for TC-REVIEW-FALLBACK");
     }
 
     @Test

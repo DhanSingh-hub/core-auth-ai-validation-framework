@@ -487,8 +487,8 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
         definition.put("testDataId", data.path("id").asText());
         definition.set("testCaseIds", data.path("testCaseIds").deepCopy());
         definition.put("status", "DRAFT_SOURCE_ANCHORED_REVIEW_REQUIRED");
-        definition.put("purpose", firstText(rule.path("title"), requirement.path("title"),
-                "Provide fixture data for " + testCase.path("id").asText()));
+        definition.put("purpose", firstTextOrDefault("Provide fixture data for " + testCase.path("id").asText(),
+                rule.path("title"), requirement.path("title")));
         if (rule.isObject()) {
             definition.put("ruleClass", rule.path("class").asText("UNCLASSIFIED"));
             definition.put("severity", rule.path("severity").asText("REVIEW_REQUIRED"));
@@ -519,5 +519,13 @@ public final class GenerateCompleteCanonicalTestSolutionPackage {
             if (!text.isEmpty()) return text;
         }
         return "Source-anchored test definition requires review.";
+    }
+
+    private static String firstTextOrDefault(String fallback, JsonNode... values) {
+        for (JsonNode value : values) {
+            String text = value.asText("").trim();
+            if (!text.isEmpty()) return text;
+        }
+        return fallback;
     }
 }
