@@ -67,6 +67,14 @@ current implementation status of Chapters 1-14 and the planned execution order.
 | AD | [Real Time Account Updater training](appendix-ad/README.md) | Participation, Table 060 Y/I/O, Segment 155 response gates and all VAU results, original/updated credential pairing and unchanged retries | 36805-36830 |
 | AE | [Visa Estimated and Incremental Authorization training](appendix-ae/README.md) | Special MCC restrictions, initial/incremental indicators, series continuity, Table 063, completion, 7/14-day windows and complete-then-restart | 36839-36877 |
 | AF | [Estimated and Incremental Authorization training](appendix-af-estimated-incremental-training.md) | 2026-4 release overlay: four IA roles, Discover Table 82 mandate, Appendix I fixed Table 82 layout, Terminal Transaction Number series rules; field-name mapping and execution remain review-gated | PDF 636-637, 730 |
+
+## External reference documents
+
+| Reference | Referenced by | Training | Source |
+|-----------|---------------|----------|--------|
+| Conexxus Payment System Product Codes (PSPC) v4.1 (2022-05-12) and v3.7 (2015-09-04); ATL105 names no version | Appendix K-27 Table ID 034 (Host-based Purchase Restriction) "refer to the Conexxus PSPC reference document"; informative crosswalk for Appendix F / Element 77 | [PSPC training](../../test-validation-strategy/pspc-payment-system-product-codes/README.md), [BR Coverage](../../test-validation-strategy/pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](../../test-validation-strategy/pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](../../test-validation-strategy/pspc-payment-system-product-codes/Validation%20Strategy.md) | `docs/specs/extracted_text_pspc_v4.1.txt`, `docs/specs/extracted_text_pspc_v3.7.txt`; [training record](../../test-validation-strategy/Conexxus-PSPC-Training-Record.md) (ATL105 2026-4 anchors in `docs/specs/extracted_text_new.txt`) |
+| Fiserv EMV and Chip Implementation Guide v2025.RG20 (2025-08-12), formerly the "First Data EMV Implementation Guide" | §10.14 EMV Processing Requirements: "Refer to First Data EMV Implementation Guide ... must be used in conjunction with the ATL105 Message Format Specifications". Also the Appendix R full tag list. | [EMV training memory](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md), documentation level. Oracle, chain package and per-reference coverage documents are pending. | Local PDF, SHA-256 `A79B133C…89EF4`. Not committed because the repository is public. ATL105 anchors are in `docs/specs/extracted_text_new.txt`. |
+
 ## Related files in this knowledge base
 
 - [elements/README.md](elements/README.md) - all 231 element source/BR inventory, contextual validation profiles, implementation plan and explicit coverage gaps

@@ -112,6 +112,18 @@ grants a semantic anchor. Pending pair-review queues do not grant SME equivalenc
 Physical JSON/file checks are bounded; matrix,
 archive and auxiliary format validation remains explicitly unassessed.
 
+Segment-free BR coverage: the 601-rule baseline anchors rules only by segment +
+element, so AI BRs about Data Section 1, positional response/load fields or the
+Chapter 13 element dictionary were previously `NOT_MATCHABLE_SEGMENT_UNRESOLVED`
+and could not count. The source-derived `location-scoped-requirement-inventory.json`
+(131 message-location + 232 element-definition rules) and the auditor's
+location-aware matching close that structural gap. Segment omissions for
+segment-scoped elements are classified as AI defect candidates, not coverage. The
+supplement is not a whole-spec denominator; `extended*` measures are structural
+candidates only and semantic coverage stays null until authorized pair decisions
+exist. Regression: `scripts/test_location_scoped_requirements.py` and the auditor
+`--self-test`.
+
 For `AIV-009`, `AIV-010`, `AIV-012` and `AIV-013`, Java
 `SemanticEvidenceValidator` adds complete declared structured-claim comparison,
 isolated control/mutant predicates, independently profiled companion checks,

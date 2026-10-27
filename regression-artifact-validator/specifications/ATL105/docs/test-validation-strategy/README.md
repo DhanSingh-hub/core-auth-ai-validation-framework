@@ -7,8 +7,9 @@
 - [PDF Presentation](presentations/AI-Generation-Output-Validation-Presentation.pdf)
 - [RAID Log](RAID-Log.md)
 - [Expected Questions and Answers](Expected-Questions-and-Answers.md)
-- [Core Auth Regression Test Validation Strategy](Core-Auth-Regression-Test-Validation-Strategy.md)
-- [ATL105 EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md): hash-pinned ingestion of the Fiserv EMV and Chip Implementation Guide v2025.RG20, which ATL105 §10.14 requires. It is the persistent EMV training memory.
+- [Core Auth Regression Test Validation Strategy](Core-Auth-Regression-Test-Validation-Strategy.md), including the Test Solution training procedure and memory record
+- External reference: Conexxus Payment System Product Codes (PSPC) v3.7 and v4.1. [Training record](Conexxus-PSPC-Training-Record.md), [training memory](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md)
+- External reference: Fiserv EMV and Chip Implementation Guide v2025.RG20, required by ATL105 §10.14. [Training memory](ATL105-EMV-Implementation-Guide-Training-Knowledge.md): a documentation-level record, hash-pinned. The PDF is not committed because this repository is public.
 - [Browser Presentation](presentations/AI-Generation-Output-Validation-Presentation.html)
 - [PDF Presentation](presentations/AI-Generation-Output-Validation-Presentation.pdf)
 

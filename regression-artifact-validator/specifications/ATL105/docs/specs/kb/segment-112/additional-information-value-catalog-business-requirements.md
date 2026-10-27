@@ -51,7 +51,7 @@ These are requirements for the Element 116/117/118 triad dimension of Segment 11
 | AI-112-001-030 | `030` | Merchant Advice Code | A Segment 112 triad may carry a merchant advice code with code `030` when applicable. |
 | AI-112-001-031 | `031` | DAF Indicator | A Segment 112 triad may carry DAF-indicator information with code `031` when applicable. |
 | AI-112-001-032 | `032` | Agreement ID | A Segment 112 triad may carry an agreement ID with code `032` when applicable. |
-| AI-112-001-034 | `034` | Host-based Purchase Restriction | A Segment 112 triad may carry host-based purchase-restriction information with code `034` when applicable. |
+| AI-112-001-034 | `034` | Host-based Purchase Restriction | A Segment 112 triad may carry host-based purchase-restriction information with code `034` when applicable. The carried product-code values are Conexxus PSPC codes (ATL105 2026-4 Appendix K-27); see [PSPC BR Coverage](../../../test-validation-strategy/pspc-payment-system-product-codes/BR%20Coverage.md). |
 | AI-112-001-035 | `035` | Cardholder Additional Information Result Code | A Segment 112 triad may carry a cardholder additional-information result code with code `035` when applicable. |
 | AI-112-001-036 | `036` | Account Type | A Segment 112 triad may carry account-type information with code `036` when applicable. |
 | AI-112-001-037 | `037` | Account Funding Source | A Segment 112 triad may carry account-funding-source information with code `037` when applicable. |

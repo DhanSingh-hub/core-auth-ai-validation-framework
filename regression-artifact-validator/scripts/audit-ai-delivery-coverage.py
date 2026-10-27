@@ -22,6 +22,8 @@ CATALOGS = {
     "test_case_candidates.json": ("TC", "test_cases"),
 }
 PRODUCER_STATE_KEYS = {"approval_status", "approval_note", "approval_audit", "approved_by", "approved_at", "status", "state"}
+LOCATION_INVENTORY = "location-scoped-requirement-inventory.json"
+REAL_SEGMENT = re.compile(r"\d{3}|DL\d")
 
 
 class UniqueKeys(dict):
@@ -326,6 +328,74 @@ def anchor_candidates(row, source_pages, index):
     return proposal
 
 
+def load_location_inventory(baseline_dir, baseline, source_hash):
+    """Load the optional segment-free supplement; absent means legacy segment-only behavior."""
+    path = baseline_dir / LOCATION_INVENTORY
+    if not path.is_file():
+        return None, None
+    inventory = read_json(path)
+    rules = inventory.get("businessRequirements") or []
+    identifiers = {rule.get("ruleId") for rule in rules}
+    baseline_ids = {rule["ruleId"] for rule in baseline.get("businessRequirements") or []}
+    if (inventory.get("authority") != "INDEPENDENT_TEST_SOLUTION" or inventory.get("aiArtifactsIncluded") is not False
+            or not rules or None in identifiers or len(identifiers) != len(rules) or inventory.get("ruleCount") != len(rules)
+            or identifiers & baseline_ids or inventory.get("specificationVersion") != baseline.get("specificationVersion")
+            or (inventory.get("sourceText") or {}).get("sha256") != source_hash
+            or any(rule.get("requirementType") not in {"MESSAGE_LOCATION", "ELEMENT_DEFINITION"} or (rule.get("sourceAnchor") or {}).get("segment") is not None for rule in rules)):
+        raise ValueError("Location-scoped inventory is inconsistent with the independent baseline or source text")
+    return path, inventory
+
+
+def location_index(baseline_rules, inventory):
+    index = {name: collections.defaultdict(set) for name in ("pseudo", "segments", "location", "definition")}
+    for rule in baseline_rules:
+        anchor = rule.get("sourceAnchor") or {}
+        segments = [value.strip().upper() for value in str(anchor.get("segment") or "").split(",") if value.strip()]
+        for element in re.split(r"[,|]", str(anchor.get("element") or "")):
+            element = element.strip()
+            if not element.isdigit():
+                continue
+            for segment in segments:
+                if REAL_SEGMENT.fullmatch(segment):
+                    index["segments"][str(int(element))].add(segment)
+                elif segment != "UNKNOWN":
+                    index["pseudo"][str(int(element))].add(rule["ruleId"])
+    for rule in inventory["businessRequirements"]:
+        kind = "location" if rule["requirementType"] == "MESSAGE_LOCATION" else "definition"
+        index[kind][str(int(rule["sourceAnchor"]["element"]))].add(rule["ruleId"])
+    return index
+
+
+def location_aware_candidates(proposal, index):
+    """Element-number lookup for BRs the segment+element index cannot reach; candidates stay review-required."""
+    elements = sorted({item["element"] for item in proposal["elementCandidates"]})
+    segments = sorted({item["segment"] for item in proposal["segmentCandidates"] if item["lookupEligible"]})
+    definition = {rule for element in elements for rule in index["definition"].get(element, ())}
+    baseline_location, location, known_segments = set(), set(), []
+    if not elements:
+        resolution = "NO_NUMERIC_ELEMENT_ANCHOR"
+    elif segments:
+        resolution = "SEGMENT_RESOLVED"
+    else:
+        baseline_location = {rule for element in elements for rule in index["pseudo"].get(element, ())}
+        location = {rule for element in elements for rule in index["location"].get(element, ())}
+        known_segments = sorted({segment for element in elements for segment in index["segments"].get(element, ())})
+        if baseline_location or location:
+            resolution = "NON_SEGMENT_LOCATION_CANDIDATE"
+        elif known_segments:
+            resolution = "SEGMENT_SCOPED_ELEMENT_SEGMENT_OMITTED"
+        elif definition:
+            resolution = "ELEMENT_DEFINITION_ONLY_LOCATION_UNKNOWN"
+        else:
+            resolution = "ELEMENT_NOT_IN_TEST_INVENTORY"
+    supplement = sorted(location | definition)
+    return {"resolution": resolution, "knownSegmentsForElements": known_segments,
+            "unverifiedSegmentProposals": sorted({item["segment"] for item in proposal["segmentCandidates"] if not item["lookupEligible"]}),
+            "baselineLocationCandidates": sorted(baseline_location), "supplementCandidates": supplement,
+            "disposition": "REVIEW_REQUIRED_LOCATION_AWARE_CANDIDATE" if baseline_location or supplement else "NO_LOCATION_AWARE_CANDIDATE",
+            "basis": "ELEMENT_NUMBER_AND_SOURCE_LOCATION; REVIEW_REQUIRED_NOT_SOURCE_ADJUDICATED"}
+
+
 def source_page_index(text):
     import re
     parts = re.split(r"--- PAGE ([0-9]+) ---", text)
@@ -427,6 +497,9 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
     if {rule["ruleId"] for rule in classified} != rule_ids or len(classified) != len(rules):
         raise ValueError("Classification IDs must match the independent baseline exactly")
     pages = source_page_index(source_text.read_text(encoding="utf-8-sig"))
+    location_path, location_inventory = load_location_inventory(baseline_dir, baseline, file_hash(source_text))
+    location_rules = location_inventory["businessRequirements"] if location_inventory else []
+    location_lookup = location_index(rules, location_inventory) if location_inventory else None
     output.mkdir(parents=True)
     dependency_snapshot = output / "crosswalk-implementation.py"
     dependency_source = Path(__file__).with_name("export-ai-test-br-crosswalk.py")
@@ -438,6 +511,8 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
     crosswalk = runpy.run_path(str(dependency_snapshot))
     index = crosswalk["source_rule_index"](classified)
     input_hashes = {str(path): file_hash(path) for path in (baseline_path, classification_path, source_text, Path(__file__), auditor_snapshot, dependency_snapshot)}
+    if location_path:
+        input_hashes[str(location_path)] = file_hash(location_path)
     files = {}
     catalog_paths = []
     with (output / "file-inventory.jsonl").open("w", encoding="utf-8") as inventory:
@@ -492,6 +567,8 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
                 if kind == "BR":
                     proposal = anchor_candidates(row, pages, index)
                     compact.update({"statement": row.get("statement"), "anchorProposal": proposal, "candidateDisposition": proposal["candidateDisposition"], "candidateSegments": [item["segment"] for item in proposal["segmentCandidates"] if item["lookupEligible"]], "candidateElements": [item["element"] for item in proposal["elementCandidates"]], "testBrCandidates": proposal["candidateTestBrs"]})
+                    if location_lookup:
+                        compact["locationAwareAssessment"] = location_aware_candidates(proposal, location_lookup)
                 elif kind == "TS":
                     compact["requirementIds"] = references(row, "requirement_ids", "requirement_id")
                 else:
@@ -582,7 +659,10 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
     write_rows(output / "incomplete-tc-declarations.jsonl", (row for row in chains if row["issues"]))
     br_rows, pair_rows = [], []
     reached, chain_reached = set(), set()
+    location_reached, location_chain_reached = set(), set()
     candidate_by_rule = collections.defaultdict(set)
+    location_candidate_by_rule = collections.defaultdict(set)
+    location_pairs = []
     for identifier, versions in variants["BR"].items():
         for content, br in versions.items():
             eligible = identifier in clean["BR"]
@@ -598,6 +678,18 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
             for rule in br["testBrCandidates"]:
                 candidate_by_rule[rule].add(identifier)
                 pair_rows.append({"aiBrId": identifier, "aiContentSha256": content, "testBrId": rule, "candidateDisposition": br["candidateDisposition"], "decisionStatus": "PENDING_AUTHORIZED_SOURCE_REVIEW", "semanticStatus": "NOT_ASSESSED"})
+            location = br.get("locationAwareAssessment")
+            if location:
+                targets = [(rule, "BASELINE_PSEUDO_LOCATION") for rule in location["baselineLocationCandidates"]]
+                targets += [(rule, "SUPPLEMENT") for rule in location["supplementCandidates"]]
+                for rule, tier in targets:
+                    location_candidate_by_rule[rule].add(identifier)
+                    location_pairs.append({"aiBrId": identifier, "aiContentSha256": content, "testBrId": rule, "testBrTier": tier,
+                                           "resolution": location["resolution"], "decisionStatus": "PENDING_AUTHORIZED_SOURCE_REVIEW", "semanticStatus": "NOT_ASSESSED"})
+                    if eligible:
+                        location_reached.add(rule)
+                        if complete_ids:
+                            location_chain_reached.add(rule)
     write_rows(output / "br-assessment.jsonl", br_rows)
     write_rows(output / "candidate-review-queue.jsonl", pair_rows)
     write_rows(output / "anchor-review-queue.jsonl", (row for row in br_rows if row["anchorProposal"]["status"] != "CONFIRMED"))
@@ -631,6 +723,36 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
                             "semanticConfirmedCoverage": {"numerator": None, "denominator": len(rules), "percent": None, "status": "NOT_ASSESSED_AUTHORIZED_DECISIONS_REQUIRED"},
                             "executedValidationCoverage": {"numerator": None, "denominator": len(rules), "percent": None, "status": "NOT_ASSESSED_EXECUTION_EVIDENCE_REQUIRED"}},
                "executionCertified": False, "limitations": ["Typed anchors are producer proposals; quote verification does not adjudicate interpretation or authenticate producer source/version identity.", "No automatic semantic pair decisions or host execution.", "Physical completeness checks explicit declarations, JSON objects and metadata IDs, not payload semantics.", "Files missing at catalog-relative paths remain gaps; no basename or undeclared-file fallback.", "Auxiliary files, producer matrices, archives and other formats are inventoried/hashed, not semantically validated.", "Only files actually present in the supplied run root can be assessed; absent source copies cannot count as validated artifacts."]}
+    if location_inventory:
+        baseline_ids = {rule["ruleId"] for rule in rules}
+        supplement_ids = {rule["ruleId"] for rule in location_rules}
+        aware_baseline, aware_baseline_chain = reached | (location_reached & baseline_ids), chain_reached | (location_chain_reached & baseline_ids)
+        bounded = lambda ids, denominator: {"numerator": len(ids), "denominator": denominator, "percent": round(100 * len(ids) / denominator, 2), "status": "STRUCTURAL_CANDIDATE_ONLY"}
+        extended_total = len(rules) + len(location_rules)
+        write_rows(output / "location-aware-review-queue.jsonl", location_pairs)
+        write_rows(output / "supplement-test-br-ledger.jsonl", ({"testBrId": rule["ruleId"], "requirementType": rule["requirementType"], "sourceAnchor": rule["sourceAnchor"],
+                                                                 "candidateAiBrIds": sorted(location_candidate_by_rule[rule["ruleId"]]), "candidateReached": rule["ruleId"] in location_reached,
+                                                                 "physicalChainCandidateReached": rule["ruleId"] in location_chain_reached, "semanticStatus": "NOT_ASSESSED", "executionStatus": "NOT_ASSESSED"} for rule in location_rules))
+        write_rows(output / "segment-omission-findings.jsonl", ({"aiBrId": row["id"], "aiContentSha256": row["contentSha256"], "statement": row.get("statement"), "elements": row["candidateElements"],
+                                                                "knownSegmentsForElements": row["locationAwareAssessment"]["knownSegmentsForElements"],
+                                                                "finding": "AI_BR_OMITS_SEGMENT_FOR_SEGMENT_SCOPED_ELEMENT", "status": "REVIEW_REQUIRED_AI_DEFECT_CANDIDATE"}
+                                                               for row in br_rows if row["locationAwareAssessment"]["resolution"] == "SEGMENT_SCOPED_ELEMENT_SEGMENT_OMITTED"))
+        segment_unresolved = [row for row in br_rows if row["candidateDisposition"] == "NOT_MATCHABLE_SEGMENT_UNRESOLVED"]
+        summary["locationScopedInventory"] = {"path": str(location_path), "sha256": file_hash(location_path), "ruleCount": len(location_rules),
+                                              "countsByRequirementType": dict(collections.Counter(rule["requirementType"] for rule in location_rules))}
+        summary["locationAwareResolutionCounts"] = dict(collections.Counter(row["locationAwareAssessment"]["resolution"] for row in br_rows))
+        summary["segmentUnresolvedAiBrResolution"] = {"total": len(segment_unresolved),
+                                                      "byResolution": dict(collections.Counter(row["locationAwareAssessment"]["resolution"] for row in segment_unresolved)),
+                                                      "withLocationAwareCandidate": sum(row["locationAwareAssessment"]["disposition"] == "REVIEW_REQUIRED_LOCATION_AWARE_CANDIDATE" for row in segment_unresolved)}
+        summary["measures"].update({
+            "locationAwareCandidateReach": bounded(aware_baseline, len(rules)),
+            "locationAwarePhysicalCompleteChainCandidateReach": bounded(aware_baseline_chain, len(rules)),
+            "supplementCandidateReach": bounded(location_reached & supplement_ids, len(location_rules)),
+            "supplementPhysicalCompleteChainCandidateReach": bounded(location_chain_reached & supplement_ids, len(location_rules)),
+            "extendedCandidateReach": bounded(aware_baseline | (location_reached & supplement_ids), extended_total),
+            "extendedPhysicalCompleteChainCandidateReach": bounded(aware_baseline_chain | (location_chain_reached & supplement_ids), extended_total),
+            "extendedSemanticConfirmedCoverage": {"numerator": None, "denominator": extended_total, "percent": None, "status": "NOT_ASSESSED_AUTHORIZED_DECISIONS_REQUIRED"},
+        })
     current_paths = {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()}
     if current_paths != set(files):
         raise ValueError("Delivery file population changed during assessment")
@@ -653,6 +775,14 @@ def audit(root, baseline_dir, source_text, output, catalog_data_prefixes=()):
     report += f"Unique IDs: {canonical(summary['uniqueIdsByKind'])}. Retained occurrences: {canonical(summary['occurrencesByKind'])}.\n\n"
     report += f"Content-conflicting IDs: {len(conflicts)}. TCs with clean complete physical routes: {len(physically_complete)}. TCs without such a route: {summary['tcIdsWithoutUnconflictedCompletePhysicalRoute']}.\n\n"
     report += f"Candidate-reached Test BRs without clean complete routes: {len(reached - chain_reached)}. These are structural follow-up queues, not proof of missing business coverage.\n\n"
+    if location_inventory:
+        unresolved = summary["segmentUnresolvedAiBrResolution"]
+        report += "## Location-Aware Matching\n\n"
+        report += (f"Supplemental segment-free Test BRs: {len(location_rules)} {canonical(summary['locationScopedInventory']['countsByRequirementType'])}. "
+                   f"The original measures above are unchanged; location-aware and extended measures are reported separately.\n\n")
+        report += (f"AI BRs previously NOT_MATCHABLE_SEGMENT_UNRESOLVED: {unresolved['total']}; resolution {canonical(unresolved['byResolution'])}; "
+                   f"with a location-aware candidate: {unresolved['withLocationAwareCandidate']}. "
+                   "SEGMENT_SCOPED_ELEMENT_SEGMENT_OMITTED rows are AI defect candidates in segment-omission-findings.jsonl.\n\n")
     report += "## Outstanding Work\n\nAnchor proposals require source-backed interpretation; candidate pair decisions require authorized source review. Physical file/object checks are not full payload or wire validation. Auxiliary matrices/archives remain unassessed. Semantic confirmation and executed validation remain unavailable.\n"
     report += "\nSee summary.json and the hashed JSONL ledgers for occurrence, conflict, chain, anchor and review evidence. This is not full-message, semantic or host certification.\n"
     (output / "REPORT.md").write_text(report, encoding="utf-8")
@@ -766,6 +896,58 @@ def self_test():
         conflicted = audit(run, baseline_dir, source, root / "conflicted")
         assert conflicted["contentConflictIds"] == 1
         assert conflicted["measures"]["candidateReach"]["numerator"] == 0
+        assert "locationAwareCandidateReach" not in conflicted["measures"]
+        location_baseline, location_run = root / "location-baseline", root / "location-run"
+        location_baseline.mkdir()
+        segment_rule = {"ruleId": "SEG1", "sourceAnchor": {"segment": "DL1", "element": "14", "version": "2026-3"}, "atomicity": "ATOMIC"}
+        pseudo_rule = {"ruleId": "PSEUDO1", "sourceAnchor": {"segment": "FINANCIAL-RESPONSE", "element": "83", "version": "2026-3"}, "atomicity": "ATOMIC"}
+        baseline_document = {"authority": "INDEPENDENT_TEST_SOLUTION", "aiArtifactsIncluded": False, "specificationVersion": "2026-3", "ruleCount": 2, "businessRequirements": [segment_rule, pseudo_rule]}
+        (location_baseline / "source-derived-requirement-inventory.json").write_text(json.dumps(baseline_document))
+        (location_baseline / "atomic-composite-rule-classification.json").write_text(json.dumps({"rules": [segment_rule, pseudo_rule]}))
+        supplement = [
+            {"ruleId": "LOC-83", "requirementType": "MESSAGE_LOCATION", "sourceAnchor": {"segment": None, "element": "83"}},
+            {"ruleId": "DEF-6", "requirementType": "ELEMENT_DEFINITION", "sourceAnchor": {"segment": None, "element": "6"}},
+            {"ruleId": "DEF-14", "requirementType": "ELEMENT_DEFINITION", "sourceAnchor": {"segment": None, "element": "14"}},
+        ]
+        inventory_document = {"authority": "INDEPENDENT_TEST_SOLUTION", "aiArtifactsIncluded": False, "specificationVersion": "2026-3",
+                              "sourceText": {"sha256": file_hash(source)}, "ruleCount": len(supplement), "businessRequirements": supplement}
+        (location_baseline / LOCATION_INVENTORY).write_text(json.dumps(inventory_document))
+        location_brs = [
+            {"id": "BR-RESP", "source_rule_id": "ENT-ELEM-83", "segment_assignment_method": "unresolved"},
+            {"id": "BR-OMIT", "source_rule_id": "ENT-ELEM-14", "segment_assignment_method": "unresolved"},
+            {"id": "BR-DEF", "source_rule_id": "ENT-ELEM-6", "segment_assignment_method": "unresolved"},
+            {"id": "BR-NONE", "source_rule_id": "ENT-ELEM-999", "segment_assignment_method": "unresolved"},
+        ]
+        location_catalogs = {
+            "candidates/requirement_candidates.json": {"requirements": location_brs},
+            "approved/approved_scenarios.json": {"scenarios": [{"id": "TS1", "requirement_ids": [br["id"] for br in location_brs]}]},
+            "approved/test_case_catalog.json": {"test_cases": [{"id": "TC1", "scenario_id": "TS1", "test_data_file": "qe_shaped_test_data/TC1.json"}]},
+            "approved/qe_shaped_test_data/TC1.json": {"request": {}},
+            "approved/qe_shaped_test_data/TC1.meta.json": {"testCaseId": "TC1", "scenarioId": "TS1", "fields": []},
+        }
+        for relative, document in location_catalogs.items():
+            path = location_run / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps(document))
+        located = audit(location_run, location_baseline, source, root / "located")
+        assert located["measures"]["candidateReach"]["numerator"] == 0
+        assert located["measures"]["locationAwareCandidateReach"] == {"numerator": 1, "denominator": 2, "percent": 50.0, "status": "STRUCTURAL_CANDIDATE_ONLY"}
+        assert located["measures"]["supplementCandidateReach"]["numerator"] == 3
+        assert located["measures"]["extendedPhysicalCompleteChainCandidateReach"]["numerator"] == 4
+        assert located["measures"]["extendedPhysicalCompleteChainCandidateReach"]["denominator"] == 5
+        assert located["segmentUnresolvedAiBrResolution"]["byResolution"] == {
+            "NON_SEGMENT_LOCATION_CANDIDATE": 1, "SEGMENT_SCOPED_ELEMENT_SEGMENT_OMITTED": 1,
+            "ELEMENT_DEFINITION_ONLY_LOCATION_UNKNOWN": 1, "ELEMENT_NOT_IN_TEST_INVENTORY": 1}
+        findings = [json.loads(line) for line in (root / "located" / "segment-omission-findings.jsonl").read_text(encoding="utf-8").splitlines()]
+        assert [(row["aiBrId"], row["knownSegmentsForElements"]) for row in findings] == [("BR-OMIT", ["DL1"])]
+        assert located["segmentUnresolvedAiBrResolution"]["withLocationAwareCandidate"] == 3
+        inventory_document["sourceText"]["sha256"] = "0" * 64
+        (location_baseline / LOCATION_INVENTORY).write_text(json.dumps(inventory_document))
+        try:
+            audit(location_run, location_baseline, source, root / "stale-location")
+            raise AssertionError("A location inventory bound to another source text was accepted")
+        except ValueError:
+            pass
         import io
         try:
             list(ijson.items(io.BytesIO(b'{"rows":[{"id":"A","id":"B"}]}'), "rows.item", map_type=UniqueKeys))

@@ -5,6 +5,7 @@ import copy
 import importlib.util
 import json
 import re
+import sys
 from pathlib import Path
 
 
@@ -25,10 +26,6 @@ CLAIM = {"subject": "Segment100.Element86", "operator": "asciiDigitsRange",
 EVIDENCE = {
     "sequence": {"path": "docs/specs/extracted_text.txt", "section": "13.2 Element 86",
                  "anchor": "Number: 86 Name: Sequence Number"},
-    "width": {"path": "docs/specs/extracted_text.txt", "section": "13.2 Element 86 representation",
-              "anchor": "Representation: Fixed length of six digits"},
-    "range": {"path": "docs/specs/extracted_text.txt", "section": "13.2 Element 86 valid values",
-              "anchor": "Valid Codes/Values: 000001\u2013999999"},
 }
 
 
@@ -109,7 +106,8 @@ def valid_sequence(payload: dict) -> bool:
 
 
 def validate(document: dict, root: Path = PACK) -> tuple[dict, dict]:
-    if document.get("schemaVersion") != 1 or document.get("format") != "BA_BUSINESS_CONTEXT_REVIEW_V1":
+    if (not isinstance(document, dict) or document.get("schemaVersion") != 1
+            or document.get("format") != "BA_BUSINESS_CONTEXT_REVIEW_V1"):
         raise ValueError("Unsupported new-format schema/version")
     manifest = document["manifest"]
     if (manifest["specification"] != "ATL105" or manifest["specificationVersion"] != "2026-3"
@@ -118,6 +116,13 @@ def validate(document: dict, root: Path = PACK) -> tuple[dict, dict]:
             or manifest["producer"] not in {"INDEPENDENT_TEST_SOLUTION", "AI_SOLUTION"}):
         raise ValueError("Invalid manifest or unsupported execution-ready claim")
     evidence = shared.resolve_sources(EVIDENCE, root)
+    source = (root / evidence["sequence"]["path"]).read_text(encoding="utf-8-sig")
+    block = source.split(EVIDENCE["sequence"]["anchor"])[1].split("Number: 87 Name: Service Level")[0]
+    for quote in ("Representation: Fixed length of six digits", "Valid Codes/Values: 000001\u2013999999"):
+        if quote not in block:
+            raise ValueError("Independent Element 86 source profile changed; review the width/range interpretation")
+    evidence["sequence"]["checkedQuotesWithinElement86"] = [
+        "Representation: Fixed length of six digits", "Valid Codes/Values: 000001\u2013999999"]
     collections = {}
     all_ids = set()
     base_context = None
@@ -206,7 +211,8 @@ def validate(document: dict, root: Path = PACK) -> tuple[dict, dict]:
         and base_context["lifecycleRole"] == "ORIGINAL"
     )
     supported_claims = all(
-        row["sourceAnchors"] == [ANCHOR] and shared.json_text(row["claim"]) == shared.json_text(CLAIM)
+        row["sourceAnchors"] == [ANCHOR]
+        and json.dumps(row["claim"], sort_keys=True) == json.dumps(CLAIM, sort_keys=True)
         for row in brs.values()
     )
     supported_assertions = all(assertion["rule"] == ANCHOR["rule"]
@@ -248,6 +254,13 @@ def validate(document: dict, root: Path = PACK) -> tuple[dict, dict]:
 
 
 def outputs(document: dict, input_hash: str) -> dict[str, str]:
+    if isinstance(document, dict) and document.get("format") == "BA_BUSINESS_CONTEXT_REVIEW_V2":
+        path = Path(__file__).with_name("new-format-validation.py")
+        spec = importlib.util.spec_from_file_location("new_format_release_validation", path)
+        assert spec is not None and spec.loader is not None
+        validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(validator)
+        return validator.external_outputs(document, input_hash)
     assessment, normalized = validate(document)
     assessment["inputSha256"] = input_hash
     assessment["validatorSha256"] = shared.fingerprint(Path(__file__).read_bytes())
@@ -273,10 +286,12 @@ def main() -> None:
         raw = args.input.read_bytes()
         document = load(args.input)
         files = outputs(document, shared.fingerprint(raw))
-        files["input-snapshot.json"] = raw.decode("utf-8-sig")
+        if args.input.read_bytes() != raw:
+            raise ValueError("Input changed during validation")
         network.publish(files, args.output, False)
+        (args.output / "input-snapshot.json").write_bytes(raw)
         report = json.loads(files["validation-report.json"])
-        print("Local field assessment:", report["testExpectationAgreement"], "; overall: REVIEW_REQUIRED")
+        print("Scoped assessment:", report["testExpectationAgreement"], "; overall: REVIEW_REQUIRED")
         if report["testExpectationAgreement"] != "PASS":
             raise SystemExit(1 if report["testExpectationAgreement"] == "FAIL" else 2)
     else:
@@ -291,4 +306,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyError, TypeError, ValueError, OSError) as error:
+        print(f"New-format validation failed: {error}", file=sys.stderr)
+        raise SystemExit(1) from error

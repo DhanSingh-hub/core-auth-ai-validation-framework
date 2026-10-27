@@ -756,7 +756,7 @@ Nothing in this list has been implemented. Under the handbook's [Automatic Updat
 | B-08 | P3 | Tighten CAPK checks: RID exactly 10 characters, Modulus at most 496, at most 6 keys per RID (CAPK-002, CAPK-003). |
 | B-09 | P3 | Add fallback signals FB-003 to FB-006 and session-context fallback eligibility. |
 | B-10 | P1 | Update `registers/atl105-communication-register.json` and regenerate its views: attach companion evidence to `SEG130-SME-002/003/004/008/009/012/013` and `SEG131-SME-003`; add Q-EMV-01 to Q-EMV-11; close the fallback-note "80/90" item from Appendix J. |
-| B-11 | P2 | Add a hash-pinned companion-overlay entry to `specifications/ATL105/training-status.json` (source, SHA-256, `IN_PROGRESS`). |
+| B-11 | P2 | Complete steps 10 and 11 of the strategy's [External Reference Document Training Procedure](Core-Auth-Regression-Test-Validation-Strategy.md#external-reference-document-training-procedure): add per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md` under `test-validation-strategy/<reference>/`, and add a hash-pinned `referenceTraining.<name>` entry to `specifications/ATL105/training-status.json` (source, SHA-256, `IN_PROGRESS`). |
 
 ## 19. How to Reuse This Memory
 

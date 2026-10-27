@@ -82,6 +82,36 @@
     "DL8": { "status": "IN_PROGRESS", "evidenceLevel": "SUBSTANTIVE", "ruleCount": 5, "reviewRequired": true, "nextGate": "SME_REVIEW_AND_AI_INTAKE", "blockers": ["dl8-table-load-position-and-special-flag-undefined", "rid-representation-and-buypass-rid-card-type-values-undefined", "segment-length-own-digits-counting-and-device-source-unconfirmed", "hybrid-framing-without-end-of-data-marker-diverges-from-dl1-dl6-convention", "ai-artifact-package-not-provisioned", "sme-tba-certification-pending"] }
   },
   "referenceTraining": {
+    "newFormatReleaseValidation": {
+      "status": "IN_PROGRESS",
+      "specificationVersions": ["2026-3", "2026-4"],
+      "evidenceLevel": "SOURCE_BOUND_SCOPED_RELEASE_VALIDATION",
+      "reviewFormatVersion": 2,
+      "baselineProfileCount": 3,
+      "targetProfileCount": 10,
+      "baselineDraftCaseCount": 23,
+      "targetDraftCaseCount": 80,
+      "reviewRequired": true,
+      "completeValidationReady": false,
+      "countsExcludedFromSegmentCatalogSummary": true,
+      "sourceCompletenessCertified": false,
+      "executionCertified": false,
+      "modelWeightsUpdated": false,
+      "evidence": "specifications/ATL105/test-output/test-solution-independent-review/new-format-release-readiness-v2/readiness-summary.json",
+      "trainingPack": "specifications/ATL105/test-output/test-solution-independent-review/new-format-release-readiness-v2/draft-training-lessons.json",
+      "releaseCrosswalk": "specifications/ATL105/test-output/test-solution-independent-review/new-format-release-readiness-v2/release-crosswalk.json",
+      "contract": "specifications/ATL105/docs/new-format-release-validation.md",
+      "nextGate": "COMPLETE_SOURCE_CODE_CASE_RECONCILIATION_AND_INDEPENDENT_EXECUTION_EVIDENCE",
+      "blockers": [
+        "whole-spec-atomic-denominator-and-profile-completeness",
+        "authorized-source-and-context-approval",
+        "af-identity-and-approval-wire-mappings",
+        "independent-full-message-converter-captures-and-host-oracles",
+        "java-semantic-sidecar-target-release-dispatch",
+        "held-out-real-new-format-ai-delivery-assessment"
+      ],
+      "note": "Versioned supplemental draft chains and bounded predicates only. Preserves the 2026-3 active baseline and 49/605/0 segment summary. Structured agreement, local token-segment bytes and logical lifecycle observations do not certify prose meaning, eligibility, full-message validity or host outcomes."
+    },
     "allNetworkRequirements": {
       "status": "IN_PROGRESS",
       "specificationVersion": "2026-3",
@@ -153,6 +183,59 @@
         "clearing-settlement-and-audit-contracts",
         "physical-request-response-fixtures-and-execution"
       ]
+    },
+    "conexxusPaymentSystemProductCodes": {
+      "status": "IN_PROGRESS",
+      "specificationVersion": "2026-4",
+      "referenceDocument": "Conexxus Payment System Product Codes",
+      "referenceVersion": "4.1",
+      "referenceDate": "2022-05-12",
+      "suppliedVersions": [
+        {"version": "3.7", "date": "2015-09-04", "sourceRowCount": 394, "oracle": "src/main/resources/atl105/pspc-product-code-oracle-v3.7.json"},
+        {"version": "4.1", "date": "2022-05-12", "sourceRowCount": 413, "oracle": "src/main/resources/atl105/pspc-product-code-oracle.json"}
+      ],
+      "versionBound": false,
+      "versionSensitiveCodeCount": 62,
+      "evidenceLevel": "SOURCE_BOUND_EXECUTABLE_HARNESS",
+      "atl105Dependencies": [
+        "Appendix K-27 Table ID 034 value list",
+        "Appendix K-26 Table ID 034 layout",
+        "Appendix I-46 Table 049 Sub Table ID 18",
+        "Appendix F-1 Element 77 (informative crosswalk only)"
+      ],
+      "sourceRowCount": 413,
+      "classifiedCodeCount": 1000,
+      "businessRequirementCount": 817,
+      "testScenarioCount": 5043,
+      "testCaseCount": 5043,
+      "testDataCount": 5043,
+      "element77CrosswalkReviewRequiredCount": 142,
+      "element77CrosswalkReviewRequiredCountV37": 104,
+      "hostRestrictionCaseCount": 32,
+      "appendixFIdenticalIn20264": true,
+      "appendixFLineage": "Appendix F follows the numbering from before the PSPC v3.5 deprecations; every product deprecated in v3.7 is still assigned in Appendix F",
+      "reviewRequired": true,
+      "countsExcludedFromSegmentCatalogSummary": true,
+      "sourceCompletenessCertified": false,
+      "executionCertified": false,
+      "modelWeightsUpdated": false,
+      "evidence": "src/main/resources/atl105/pspc-product-code-oracle.json",
+      "trainingPack": "specifications/ATL105/test-output/test-json/pspc-product-code-chain-package.json",
+      "trainingPackV37": "specifications/ATL105/test-output/test-json/pspc-v3.7-product-code-chain-package.json",
+      "crosswalk": "specifications/ATL105/test-output/test-json/pspc-appendix-f-crosswalk.csv",
+      "crosswalkV37": "specifications/ATL105/test-output/test-json/pspc-v3.7-appendix-f-crosswalk.csv",
+      "versionDiff": "specifications/ATL105/test-output/test-json/pspc-version-diff-v3.7-v4.1.csv",
+      "trainingNote": "specifications/ATL105/docs/test-validation-strategy/pspc-payment-system-product-codes/README.md",
+      "trainingRecord": "specifications/ATL105/docs/test-validation-strategy/Conexxus-PSPC-Training-Record.md",
+      "communicationRegisterId": "SEG111-SME-012",
+      "nextGate": "SME_CONFIRM_PSPC_VERSION_AND_TABLE_034_PACKING",
+      "blockers": [
+        "pspc-version-binding-not-stated-in-atl105-62-version-sensitive-codes",
+        "table-034-ans32-packing-undefined",
+        "visa-fleet-sub-table-18-scope-SEG111-SME-003",
+        "merchant-dynamic-card-table-eligibility"
+      ],
+      "note": "Ingests the missing external reference cited by Appendix K-27 in both supplied versions (v3.7 and v4.1). An unbound Table 034 code is judged against both versions, and disagreement is REVIEW_REQUIRED. Element 77 remains governed by Appendix F; PSPC divergence is flagged, never substituted. Classification never implies transaction eligibility."
     }
   },
   "appendixTraining": {
