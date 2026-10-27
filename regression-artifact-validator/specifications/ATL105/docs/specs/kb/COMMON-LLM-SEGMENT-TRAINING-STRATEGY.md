@@ -840,6 +840,15 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L28. Check anchors exactly as the canonical model reads them.** After Develop updated the Test Solution source, two BRs (`BR-SEG100-APPE-PROMPT-COMPOSITION`, `BR-SEG100-APPE-FINANCIAL-CARD-TYPES`) carried their anchor only in a singular `sourceAnchor` field. The training script merged singular and plural anchors, so it accepted them, but `CanonicalArtifactPackage` reads only `sourceAnchors`, and `CanonicalTraceabilityValidator` failed with a `NullPointerException` instead of a traceability error. Evaluate anchors from the canonical field, and either make a singular anchor explicit as `sourceAnchors` with a logged normalization or queue the BR for review.
 
+**L29. Validate the original artifact, not a transcription.** The Mastercard BA reference review was transcribed from a screenshot and was not bound to a file. Checking the actual workbook line by line showed four differences:
+
+- TS-001 "PAN present" had been dropped.
+- TS-034's validation was transcribed as "Approval number captured".
+- TS-035's validation was transcribed as "Transaction data and amounts retained".
+- TS-036's only validation line was missing.
+
+Bind every review to the original file's SHA-256 and give each validation line exactly one assessment, so a changed or partially transcribed artifact fails the check instead of passing silently.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -933,6 +942,22 @@ mvn '-Dtest=MastercardCreditPurchaseTrainingTest,TestSolutionJsonFormatTest,Trai
 
 **Merchant data.** Merchant ID is evidenced only as the BUYPASS Merchant Number component of Segment 100 Element 102 (`123456` in `TD-SEG100-E102-004`/`-005`, template `TS-006`). No Test Solution evidence carries a Merchant Name: Appendix I Table 047 has no scoped evidence, and DL1 Element 53 is a host download field. Keep Merchant Name `NO_EVIDENCE` rather than inventing a value.
 
+**Template workbook validation.** The template itself is validated before its claims are taught. `scripts/validate-mastercard-fr-matrix.py` hash-binds the original workbook (`Mastercard_Credit_Purchase_FR_Matrix (1) 1.xlsx`) and requires exactly one curated assessment per validation line and expected result in [mastercard-fr-matrix-validation.json](segment-100/mastercard-fr-matrix-validation.json). It then:
+
+- resolves every source anchor and section-absence claim;
+- checks every `Element N` citation against its Chapter 13 name;
+- reads each cited BR's live Mastercard training status, plus the Section 10.1 drafts and the BA review's lessons and questions;
+- computes outcomes with the [Independent Review Process](#independent-review-process).
+
+It refuses to run if the workbook, a line, an element definition, an anchor or a cited BR changes ([L29](#lessons-learned)). Run it with `--check` to detect stale outputs, and keep `scripts/test_validate_mastercard_fr_matrix.py` passing.
+
+The 2026-10-26 result is `REJECTED_NOT_INTAKE_READY`. Of 65 lines, 14 are supported as written and 29 once corrected. Five contradict ATL105: Element 51, 24, 80 and 6 are cited for expiry, account number, sequence number and approval number, and "Processing Code 020" stands in for Prompt Code 0020. Another 14 depend on external contracts and 3 are not testable. None of the 37 expected results can be confirmed from the message alone. The run also found two Test Solution defects:
+
+- Multi-segment anchors are excluded from the context scope (11 BRs, L22).
+- TS-020 is mapped to Authorization Only.
+
+See the [validation report](../../../test-output/test-solution-independent-review/mc-fr-matrix-validation-v1/README.md).
+
 To train another context, copy this pattern: a template business BR/FR/TS layer, an explicit scope rule, a generator that copies Test Solution records and logs every normalization, a review queue, a `transactionContextTraining` entry and a regression test with the same assertions.
 
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
@@ -976,4 +1001,5 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-30 | Reviewed the AI `phase_1_single_leg` delivery (2026-09-29): first five-leg delivery, 37 full chains, perfect referential integrity, but 51.5% of composed segments lost in serialization, three empty test-data files reported `PASS`, no expected outcomes and no negative cases. Verdict `CHAIN_STRUCTURE_SOUND_EXECUTION_EVIDENCE_INSUFFICIENT`. A second check retracted six claimed Test Solution coverage gaps as anchoring gaps (zero coverage gaps found) and corrected `TT-0011`/`TT-0012`. Added L21 and L22; raised `TT-0013` and `AIF-0013`. Report: [reports/ai-feedback/](../../../reports/ai-feedback/). |
 | 2026-10-26 | Trained the first transaction context, `MASTERCARD_CREDIT_PURCHASE`: business BR-01/FR/scenario layer, canonical training package from verbatim Test Solution records, review queue, context BR coverage report, `transactionContextTraining` status entry, training-report section and `MastercardCreditPurchaseTrainingTest`. Result 153/176 BRs trained, 23 queued, `IN_PROGRESS`. Added L26 and L27. |
 | 2026-10-26 | Retrained `MASTERCARD_CREDIT_PURCHASE` after Develop updated the Test Solution source package (the training test's source-hash check failed as designed): 168/189 BRs trained (88.9%), 21 queued, 189 TS / 226 TC / 230 TD, 68 executable TD. Gates and blockers unchanged. Anchors are now read from the canonical `sourceAnchors` field, with singular `sourceAnchor` made explicit by logged normalization; added L28. |
+| 2026-10-26 | Validated the original Mastercard Credit Purchase FR-matrix workbook (hash-bound) line by line against the Test Solution with `scripts/validate-mastercard-fr-matrix.py` and its regression test. Result `REJECTED_NOT_INTAKE_READY`: 5 contradicted field mappings, 29 lines needing correction, 17 needing external contracts or definitions, 0 of 37 expected results confirmable from the message alone. Recorded Test Solution findings MCV-T01 to MCV-T05 (including multi-segment scope exclusion and the TS-020 mapping); added L29. |
 | 2026-10-27 | Ingested the EMV companion reference that ATL105 §10.14 requires and that was missing in earlier training: Fiserv EMV and Chip Implementation Guide v2025.RG20, as a hash-pinned companion overlay. Added the [EMV Companion Reference Overlay](#emv-companion-reference-overlay-october-2026) rules (ATL105 precedence, companion anchors, `PROVISIONAL` guide rules, brand-dependent tags, known corrections, missing references) and the [training knowledge record](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md): 17 gap dispositions; 73 guide-derived rules; 53 scenarios; 11 SME queries; backlog B-01 to B-11, including the Appendix S exponent `010001` correction. No validator code changed. |
