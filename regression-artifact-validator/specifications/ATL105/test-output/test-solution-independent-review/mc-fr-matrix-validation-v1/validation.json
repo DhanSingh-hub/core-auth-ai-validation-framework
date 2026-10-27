@@ -1,0 +1,4650 @@
+{
+  "artifact": "ATL105-MASTERCARD-FR-MATRIX-WORKBOOK-VALIDATION",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "reviewer": "Core Auth Test Solution (curated assessment with automated checks)",
+  "reviewedOn": "2026-10-26",
+  "workbook": {
+    "path": "../Mastercard_Credit_Purchase_FR_Matrix (1) 1.xlsx",
+    "sha256": "b984445301d8f83acadc96e3a31b7b771a81486d807a4bb010985dec45698b92",
+    "sheet": "MC Purchase BR Matrix",
+    "producer": "Not stated in the workbook; the Mastercard BA reference review attributes it to the BA",
+    "firstCommit": "9f616f22e",
+    "authority": "ARTIFACT_UNDER_REVIEW_NOT_AN_ORACLE"
+  },
+  "businessRequirement": {
+    "id": "BR-01",
+    "text": "Mastercard credit financial purchase transaction processing",
+    "cell": "A3"
+  },
+  "functionalRequirements": [
+    {
+      "id": "FR-001",
+      "name": "Card Validation",
+      "scenarios": [
+        "TS-001",
+        "TS-002",
+        "TS-003"
+      ]
+    },
+    {
+      "id": "FR-002",
+      "name": "Request Construction",
+      "scenarios": [
+        "TS-004",
+        "TS-005",
+        "TS-006",
+        "TS-007",
+        "TS-008",
+        "TS-009",
+        "TS-010"
+      ]
+    },
+    {
+      "id": "FR-003",
+      "name": "Amount Processing",
+      "scenarios": [
+        "TS-011",
+        "TS-012",
+        "TS-013",
+        "TS-014",
+        "TS-015"
+      ]
+    },
+    {
+      "id": "FR-004",
+      "name": "Tracking",
+      "scenarios": [
+        "TS-016",
+        "TS-017",
+        "TS-018",
+        "TS-019"
+      ]
+    },
+    {
+      "id": "FR-005",
+      "name": "Authorization",
+      "scenarios": [
+        "TS-020",
+        "TS-021",
+        "TS-022",
+        "TS-023",
+        "TS-024",
+        "TS-025"
+      ]
+    },
+    {
+      "id": "FR-006",
+      "name": "Partial Approval",
+      "scenarios": [
+        "TS-026",
+        "TS-027"
+      ]
+    },
+    {
+      "id": "FR-007",
+      "name": "Exception Handling",
+      "scenarios": [
+        "TS-028",
+        "TS-029",
+        "TS-030",
+        "TS-031",
+        "TS-032"
+      ]
+    },
+    {
+      "id": "FR-008",
+      "name": "Post Authorization",
+      "scenarios": [
+        "TS-033",
+        "TS-034",
+        "TS-035",
+        "TS-036",
+        "TS-037"
+      ]
+    }
+  ],
+  "outcome": "REJECTED_NOT_INTAKE_READY",
+  "executionCertified": false,
+  "smeApproval": "NOT_ESTABLISHED_BY_THIS_REVIEW",
+  "summary": {
+    "businessRequirements": 1,
+    "functionalRequirements": 8,
+    "scenarios": 37,
+    "validationLines": 65,
+    "expectedResults": 37,
+    "lineVerdicts": {
+      "CONTRADICTED": 5,
+      "EXTERNAL_POLICY": 14,
+      "NOT_TESTABLE_AS_WRITTEN": 3,
+      "SUPPORTED": 14,
+      "SUPPORTED_WITH_CORRECTION": 29
+    },
+    "lineSeverities": {
+      "HIGH": 6,
+      "LOW": 18,
+      "MEDIUM": 27,
+      "NONE": 14
+    },
+    "lineCoverage": {
+      "DRAFT_ONLY": 5,
+      "NONE": 18,
+      "OUTSIDE_MC_CONTEXT": 1,
+      "REVIEW_QUEUE_ONLY": 1,
+      "TRAINED_CHAIN": 40
+    },
+    "findingClassesOnLines": {
+      "AI_ARTIFACT_DEFECT": 37,
+      "CHAIN_GAP": 1,
+      "PROVENANCE_OR_VERSION_GAP": 1,
+      "REVIEW_REQUIRED": 24,
+      "TEST_SOLUTION_GAP": 8
+    },
+    "scenarioOutcomes": {
+      "ACCEPTED_WITH_GAPS": 15,
+      "REJECTED_NOT_INTAKE_READY": 5,
+      "REVIEW_REQUIRED": 17
+    },
+    "expectedResultVerdicts": {
+      "EXTERNAL_CONTRACT": 8,
+      "NEEDS_EXECUTION_EVIDENCE": 23,
+      "SOURCE_SUPPORTED_NEEDS_EXECUTION": 6
+    },
+    "elementCitations": 6,
+    "elementMismatches": 4,
+    "structureObservations": 12,
+    "transcriptionDifferences": 4,
+    "baFidelityMismatches": 0,
+    "findings": 12,
+    "findingsBySeverity": {
+      "HIGH": 2,
+      "LOW": 3,
+      "MEDIUM": 7
+    }
+  },
+  "inputs": [
+    {
+      "path": "specifications/ATL105/docs/specs/kb/segment-100/mastercard-fr-matrix-validation.json",
+      "sha256": "484e44de860b439e4b3cb92e6628349235c7f7dd972324023fbf38902d66e4b0"
+    },
+    {
+      "path": "specifications/ATL105/docs/specs/kb/segment-100/mastercard-ba-reference-review.json",
+      "sha256": "f05d4ef3b03f24248e82de857aaaed41c31887348119ec2e2aa2b4151148b648"
+    },
+    {
+      "path": "specifications/ATL105/test-output/test-json/mc-credit-purchase-training-package.json",
+      "sha256": "3e5f102e5796461d17642e92ecfedc6b23cfeb417aada45c3b9619b9bf0391e4"
+    },
+    {
+      "path": "specifications/ATL105/test-output/test-solution-independent-review/complete-all-test-solution-br-ts-tc-td-package.json",
+      "sha256": "e7b6ded76d76ca456666bb3e2c2b6841102ea8320827b76e73da1dfc9dfa53fd"
+    },
+    {
+      "path": "specifications/ATL105/test-output/test-solution-independent-review/section-10-1-credit-card-processing-review-v4/section-10-1-br-ts-tc-td-draft-package.json",
+      "sha256": "ef0ef5aa0fb9fd04a06bd99de10502a9fb636bb65bccc8840e8a201cebca21dd"
+    },
+    {
+      "path": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "TS-001",
+      "fr": "FR-001",
+      "name": "Card Number Validation",
+      "acceptanceCriteria": "System shall accept valid Mastercard credit card numbers only",
+      "expectedResult": "Transaction proceeds to authorization",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Device flow outcome; field checks cannot show it.",
+      "lineIds": [
+        "TS-001.V1",
+        "TS-001.V2",
+        "TS-001.V3",
+        "TS-001.V4",
+        "TS-001.V5",
+        "TS-001.V6"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Separate raw-PAN checks, trusted Mastercard identity and issuer status from ATL105 account-field representation.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "PARTIALLY_TRAINED",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-ACCOUNT",
+        "BR-RULE-SEG100-R-041",
+        "BR-SEG100-APPO-TOKEN-ACCOUNT",
+        "BR-SEG100-APPO-TOKEN-LUHN",
+        "BR-SEG100-APPO-TOKEN-NOT-PAN"
+      ],
+      "questions": [
+        "MC-Q01",
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-002",
+      "fr": "FR-001",
+      "name": "Expiry Date Validation",
+      "acceptanceCriteria": "System shall validate card expiration date",
+      "expectedResult": "Transaction accepted for processing",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Device or host outcome.",
+      "lineIds": [
+        "TS-002.V1",
+        "TS-002.V2",
+        "TS-002.V3",
+        "TS-002.V4"
+      ],
+      "outcome": "REJECTED_NOT_INTAKE_READY",
+      "worstLineVerdict": "CONTRADICTED",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Use Element 12 for manual expiry and perform credit expiry validation; distinguish malformed/expired checks from required transmission for expired-card authorizations.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-DISCRETIONARY",
+        "BR-RULE-SEG100-R-042",
+        "BR-SEG100-APPO-TOKEN-EXPIRATION"
+      ],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-003",
+      "fr": "FR-001",
+      "name": "Card Status Validation",
+      "acceptanceCriteria": "Card must be active and eligible for purchase",
+      "expectedResult": "Purchase processing continues",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Depends on issuer or status-service data (MC-Q02).",
+      "lineIds": [
+        "TS-003.V1",
+        "TS-003.V2",
+        "TS-003.V3"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Obtain account eligibility from a trusted status service or simulator; request data cannot establish active-card status.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-004",
+      "fr": "FR-002",
+      "name": "Processing Code Validation",
+      "acceptanceCriteria": "System shall identify purchase transaction correctly",
+      "expectedResult": "Routed as purchase transaction",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Prompt Code 0020 classifies the request; routing is host behaviour.",
+      "lineIds": [
+        "TS-004.V1"
+      ],
+      "outcome": "REJECTED_NOT_INTAKE_READY",
+      "worstLineVerdict": "CONTRADICTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "For this POS credit Purchase/Capture use Element 78 Prompt Code 0020, not standalone 020.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "PARTIALLY_TRAINED",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E78-001",
+        "BR-SEG100-E78-002",
+        "BR-RULE-SEG100-R-018",
+        "BR-RULE-SEG100-R-033",
+        "BR-SEG100-APPE-PROMPT-COMPOSITION",
+        "BR-SEG100-ANN-G",
+        "BR-APPG-CODE-0"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-005",
+      "fr": "FR-002",
+      "name": "Entry Mode Validation",
+      "acceptanceCriteria": "System shall validate card entry method",
+      "expectedResult": "Entry mode accepted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host acceptance.",
+      "lineIds": [
+        "TS-005.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Validate exact Appendix J encodings and conditional companion data for the declared entry context; do not treat labels as wire values.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E2-001",
+        "BR-RULE-SEG100-R-034",
+        "BR-SEG100-EMV-001"
+      ],
+      "questions": [
+        "MC-Q04"
+      ]
+    },
+    {
+      "id": "TS-006",
+      "fr": "FR-002",
+      "name": "Merchant Validation",
+      "acceptanceCriteria": "Merchant must be eligible",
+      "expectedResult": "Transaction accepted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host acceptance with merchant configuration (MC-Q03).",
+      "lineIds": [
+        "TS-006.V1",
+        "TS-006.V2",
+        "TS-006.V3"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Separate merchant field mapping from configured active status and Mastercard purchase eligibility.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E102-001",
+        "BR-SEG100-E102-003",
+        "BR-RULE-SEG100-R-017",
+        "BR-RULE-SEG100-R-031"
+      ],
+      "questions": [
+        "MC-Q03"
+      ]
+    },
+    {
+      "id": "TS-007",
+      "fr": "FR-002",
+      "name": "Message Format Validation",
+      "acceptanceCriteria": "ATL105 request must meet format requirements",
+      "expectedResult": "Message accepted by BuyPass",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Format compliance does not prove host acceptance.",
+      "lineIds": [
+        "TS-007.V1",
+        "TS-007.V2",
+        "TS-007.V3"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Validate Element 55 and financial request layout, including conditional data; report format compliance separately from host acceptance.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E55-001"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-008",
+      "fr": "FR-002",
+      "name": "Segment Count Validation",
+      "acceptanceCriteria": "Number of segments must match actual payload",
+      "expectedResult": "Message parsing successful",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "The count predicate is checkable; host parsing is not.",
+      "lineIds": [
+        "TS-008.V1",
+        "TS-008.V2"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Element 63 must match the actual source-defined transmitted segment count, not merely the number of JSON objects.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E63-001",
+        "BR-RULE-SEG100-R-007"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-009",
+      "fr": "FR-002",
+      "name": "Standard Message Data Segment Validation",
+      "acceptanceCriteria": "Segment 100 required",
+      "expectedResult": "Request accepted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host acceptance.",
+      "lineIds": [
+        "TS-009.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Require Segment 100 in the financial request layout; presence alone does not establish full request validity.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-RULE-SEG100-R-001",
+        "BR-SEG100-ID-001",
+        "BR-RULE-SEG100-R-015"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-010",
+      "fr": "FR-002",
+      "name": "Account Number Validation",
+      "acceptanceCriteria": "Account number required",
+      "expectedResult": "Account validation successful",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Ambiguous: field representation check versus host or issuer account validation.",
+      "lineIds": [
+        "TS-010.V1",
+        "TS-010.V2",
+        "TS-010.V3",
+        "TS-010.V4"
+      ],
+      "outcome": "REJECTED_NOT_INTAKE_READY",
+      "worstLineVerdict": "CONTRADICTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Use Element 2, not Data Type Indicator Element 24; validate the declared account-entry/TransArmor representation.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E2-002",
+        "BR-RULE-SEG100-R-035"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-011",
+      "fr": "FR-003",
+      "name": "Purchase Amount Validation",
+      "acceptanceCriteria": "Purchase amount must be valid",
+      "expectedResult": "Amount accepted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host acceptance; the amount field is undefined (MC-Q05).",
+      "lineIds": [
+        "TS-011.V1",
+        "TS-011.V2",
+        "TS-011.V3",
+        "TS-011.V4"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "NOT_TESTABLE_AS_WRITTEN",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Bind purchase amount and currency to explicit fields and source-defined encoding and reconciliation rules before asserting pass/fail.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-APPR-CROSS-FIELD"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-012",
+      "fr": "FR-003",
+      "name": "Fuel Amount Validation",
+      "acceptanceCriteria": "Fuel amount populated when applicable",
+      "expectedResult": "Fuel purchase processed",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host processing.",
+      "lineIds": [
+        "TS-012.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Use Element 41 with applicable fuel/discount rules; Mastercard uses the non-Amex seven-digit maximum and two assumed decimal places.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-FUEL-AMOUNT",
+        "BR-RULE-SEG100-R-045"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-013",
+      "fr": "FR-003",
+      "name": "Non-Fuel Amount Validation",
+      "acceptanceCriteria": "Non-fuel amount populated when applicable",
+      "expectedResult": "Non-fuel components processed",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host processing.",
+      "lineIds": [
+        "TS-013.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Element 58 excludes fuel, tax and cash and uses up to seven digits for Mastercard with two assumed decimal places; do not automatically admit zero from a generic >=0 claim.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-NONFUEL-AMOUNT",
+        "BR-RULE-SEG100-R-046"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-014",
+      "fr": "FR-003",
+      "name": "Tax Amount Validation",
+      "acceptanceCriteria": "Tax amount transmitted when present",
+      "expectedResult": "Tax amount accepted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Host acceptance.",
+      "lineIds": [
+        "TS-014.V1",
+        "TS-014.V2"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Use Segment 100 Element 99, not PC Tax Element 74; apply its seven-digit Mastercard limit, assumed decimals and source-defined applicability.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-TAX-AMOUNT",
+        "BR-RULE-SEG100-R-047"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-015",
+      "fr": "FR-003",
+      "name": "Cash Amount Validation",
+      "acceptanceCriteria": "Cash amount only allowed when applicable",
+      "expectedResult": "Cash component processed",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Cash-back eligibility for Mastercard credit is product policy (MC-Q05).",
+      "lineIds": [
+        "TS-015.V1",
+        "TS-015.V2"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "NOT_TESTABLE_AS_WRITTEN",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Element 17 describes cash back; do not infer eligibility for Mastercard credit from this field's existence.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-CASH-AMOUNT",
+        "BR-RULE-SEG100-R-048"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-016",
+      "fr": "FR-004",
+      "name": "Sequence Number Generation",
+      "acceptanceCriteria": "Unique sequence number generated",
+      "expectedResult": "Unique transaction tracking established",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Needs device history across transactions.",
+      "lineIds": [
+        "TS-016.V1",
+        "TS-016.V2",
+        "TS-016.V3"
+      ],
+      "outcome": "REJECTED_NOT_INTAKE_READY",
+      "worstLineVerdict": "CONTRADICTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Use Element 86, not Purchase Code Element 80; check six digits and range 000001-999999 for this financial scope and uniqueness for unrelated transactions.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E86-001",
+        "BR-RULE-SEG100-R-019"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-017",
+      "fr": "FR-004",
+      "name": "Sequence Number Retention",
+      "acceptanceCriteria": "Same sequence used throughout lifecycle",
+      "expectedResult": "Full transaction traceability",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Needs linked original and follow-up legs; settlement needs its own contract.",
+      "lineIds": [
+        "TS-017.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Retain Element 86 for source-defined associated financial legs; settlement-interface correlation requires its own contract.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "PARTIALLY_TRAINED",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E86-002",
+        "BR-RULE-SEG100-R-037",
+        "BR-SEG100-LIFE-001",
+        "BR-SEG100-LIFE-AUTH-COMPLETE",
+        "BR-SEG100-LIFE-SALE-VOID",
+        "BR-SEG100-LIFE-AUTH-VOID",
+        "BR-SEG100-LIFE-REFUND-VOID"
+      ],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-018",
+      "fr": "FR-004",
+      "name": "Mastercard Credit Identification",
+      "acceptanceCriteria": "Transaction identified as Mastercard Credit Purchase",
+      "expectedResult": "Routed correctly",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Routing policy (MC-Q01).",
+      "lineIds": [
+        "TS-018.V1",
+        "TS-018.V2",
+        "TS-018.V3"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Combine trusted brand evidence with credit purchase context; 0020 does not independently establish Mastercard.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-APPE-FINANCIAL-CARD-TYPES",
+        "BR-SEG100-SEC5-LEAF-CREDIT-NONPROPRIETARY"
+      ],
+      "questions": [
+        "MC-Q01"
+      ]
+    },
+    {
+      "id": "TS-019",
+      "fr": "FR-004",
+      "name": "Routing Validation",
+      "acceptanceCriteria": "Transaction sent to correct network",
+      "expectedResult": "Transaction reaches issuer",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Issuer receipt needs network or simulator evidence (MC-Q01, MC-Q06).",
+      "lineIds": [
+        "TS-019.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Validate against an approved routing policy and observe dispatch separately from issuer receipt.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q01",
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-020",
+      "fr": "FR-005",
+      "name": "Authorization Request Validation",
+      "acceptanceCriteria": "Complete authorization request sent",
+      "expectedResult": "Request accepted by issuer",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Issuer outcome needs a host or simulator (MC-Q06).",
+      "lineIds": [
+        "TS-020.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Check all context-applicable request fields and serialization, then separately observe host/issuer outcome.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-APPG-CODE-3"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-021",
+      "fr": "FR-005",
+      "name": "Response Reception Validation",
+      "acceptanceCriteria": "Response received and processed",
+      "expectedResult": "Response successfully interpreted",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Needs actual or controlled response data (MC-Q06).",
+      "lineIds": [
+        "TS-021.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Parse the applicable financial response, correlate it to the request and interpret Element 83 in context.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "REVIEW_QUEUE",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-ANN-H"
+      ],
+      "questions": [
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-022",
+      "fr": "FR-005",
+      "name": "Approval Number Capture",
+      "acceptanceCriteria": "Approval number stored",
+      "expectedResult": "Approval stored",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Persistence must be observed.",
+      "lineIds": [
+        "TS-022.V1"
+      ],
+      "outcome": "REJECTED_NOT_INTAKE_READY",
+      "worstLineVerdict": "CONTRADICTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Capture Approval Number Element 5; Element 6 is Approved Amount, not the approval identifier.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-GAP-APPROVAL",
+        "BR-RULE-SEG100-R-049"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-023",
+      "fr": "FR-005",
+      "name": "Approval Number Retention",
+      "acceptanceCriteria": "Approval retained for downstream processes",
+      "expectedResult": "Traceability maintained",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Needs original and follow-up evidence.",
+      "lineIds": [
+        "TS-023.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Preserve Element 5 where the source requires the original approval reference; confirm settlement mapping separately.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-LIFE-001"
+      ],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-024",
+      "fr": "FR-005",
+      "name": "Approval Response Processing",
+      "acceptanceCriteria": "Approved response processed correctly",
+      "expectedResult": "Sale completed",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Response code interpretation alone does not prove sale completion.",
+      "lineIds": [
+        "TS-024.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Interpret Element 83 by message/transaction context; distinguish full and partial approval before updating sale state.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-RC-APPROVED-PURCHASE",
+        "BR-SEG100-RC-APPROVED-AUTH",
+        "BR-RULE-SEG100-R-063",
+        "BR-RULE-SEG100-R-064"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-025",
+      "fr": "FR-005",
+      "name": "Decline Response Processing",
+      "acceptanceCriteria": "Declined response processed correctly",
+      "expectedResult": "Sale rejected",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Device behaviour with a defined simulator result.",
+      "lineIds": [
+        "TS-025.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Use financial-context decline mapping; do not classify communications-test approval code 1 without context.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-RC-DECLINED",
+        "BR-RULE-SEG100-R-066"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-026",
+      "fr": "FR-006",
+      "name": "Partial Approval Indicator Validation",
+      "acceptanceCriteria": "Merchant supports partial approval",
+      "expectedResult": "Partial approval enabled",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Needs merchant configuration and response evidence.",
+      "lineIds": [
+        "TS-026.V1",
+        "TS-026.V2"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Use Element 121 and applicable merchant/network support. Value 1 signals support; value 5 is an Amex-prepaid balance-only context, not generic Mastercard.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-E121-001",
+        "BR-RULE-SEG100-R-020"
+      ],
+      "questions": [
+        "MC-Q03",
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-027",
+      "fr": "FR-006",
+      "name": "Partial Approval Processing",
+      "acceptanceCriteria": "System handles approved partial amount",
+      "expectedResult": "Customer prompted for balance",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Section 10.1.2.1 requires the prompt; the device UI must be observed.",
+      "lineIds": [
+        "TS-027.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "In supported contexts interpret response F and approved amount Element 6; prompt for the remaining sale balance with independently established amount inputs.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-RC-PARTIAL",
+        "BR-RULE-SEG100-R-065"
+      ],
+      "questions": [
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-028",
+      "fr": "FR-007",
+      "name": "Timeout Monitoring",
+      "acceptanceCriteria": "Timeout timer started",
+      "expectedResult": "Await response",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Section 2.3.1 transport behaviour; needs timed transport evidence.",
+      "lineIds": [
+        "TS-028.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Monitor the source-defined 30-second response interval and distinguish it from the separate TOR forwarding recommendation.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-029",
+      "fr": "FR-007",
+      "name": "Timeout Detection",
+      "acceptanceCriteria": "Timeout identified correctly",
+      "expectedResult": "Timeout triggered",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Section 2.3.1; needs timed transport evidence.",
+      "lineIds": [
+        "TS-029.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Include both absent and late responses; apply source-defined late-response handling.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-030",
+      "fr": "FR-007",
+      "name": "Timeout Reversal Generation",
+      "acceptanceCriteria": "TOR generated after timeout",
+      "expectedResult": "TOR created",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Only for eligible originals; needs transport evidence (MC-Q07).",
+      "lineIds": [
+        "TS-030.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Generate TOR only for a source-supported original context and apply queue, timing, retry and amount rules; authorization-only hold release uses cancellation, not an inferred TOR.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "REVIEW_QUEUE",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-LIFE-TIMEOUT-TOR"
+      ],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-031",
+      "fr": "FR-007",
+      "name": "Timeout Reversal Sequence Validation",
+      "acceptanceCriteria": "TOR references original purchase",
+      "expectedResult": "Original transaction matched",
+      "expectedVerdict": "NEEDS_EXECUTION_EVIDENCE",
+      "expectedNote": "Sequence equality is checkable; host matching is not.",
+      "lineIds": [
+        "TS-031.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED",
+      "baDisposition": "SOURCE_SUPPORTED_CORRECTION",
+      "baCorrectedRequirement": "Eligible TOR Element 86 must equal original Element 86; equality alone does not prove host matching.",
+      "templateCoverage": "MAPPED",
+      "trainingState": "REVIEW_QUEUE",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-LIFE-TIMEOUT-TOR"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-032",
+      "fr": "FR-007",
+      "name": "TOR Processing Order Validation",
+      "acceptanceCriteria": "TOR sent before next financial message",
+      "expectedResult": "TOR submitted first",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Section 2.3.1 same-device queue; needs transport evidence.",
+      "lineIds": [
+        "TS-032.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Section 2.3.1 supports queued TOR before the next request from that same device, or before settlement when no next request occurs; do not require a global queue across unrelated devices.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-033",
+      "fr": "FR-008",
+      "name": "Receipt Generation",
+      "acceptanceCriteria": "Receipt generated after completion",
+      "expectedResult": "Customer receipt produced",
+      "expectedVerdict": "SOURCE_SUPPORTED_NEEDS_EXECUTION",
+      "expectedNote": "Section 10.1.7 receipt content; needs the rendered receipt.",
+      "lineIds": [
+        "TS-033.V1"
+      ],
+      "outcome": "ACCEPTED_WITH_GAPS",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "CORRECTED_WITH_QUESTIONS",
+      "baCorrectedRequirement": "Generate source-required credit receipt content, use Mastercard receipt ID MC, mask account to last four digits and suppress expiry; include applicable outcome and partial-approval information.",
+      "templateCoverage": "PARTIAL",
+      "trainingState": "TRAINED_CANONICAL_CHAIN",
+      "mappedTestSolutionBrIds": [
+        "BR-SEG100-RECEIPT-CARDTYPE-MASTERCARD"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-034",
+      "fr": "FR-008",
+      "name": "Clearing Record Creation",
+      "acceptanceCriteria": "Clearing information stored",
+      "expectedResult": "Transaction available for clearing",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Clearing contract (MC-Q08).",
+      "lineIds": [
+        "TS-034.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "EXTERNAL_CONTRACT_REQUIRED",
+      "baCorrectedRequirement": "Use an authoritative clearing contract for record construction and eligibility; captured approval alone is insufficient.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-035",
+      "fr": "FR-008",
+      "name": "Settlement Preparation",
+      "acceptanceCriteria": "Transaction prepared for settlement",
+      "expectedResult": "Settlement ready",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Settlement contract (MC-Q08).",
+      "lineIds": [
+        "TS-035.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "EXTERNAL_CONTRACT_REQUIRED",
+      "baCorrectedRequirement": "Establish settlement eligibility, record fields and amount reconciliation using the settlement contract.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-036",
+      "fr": "FR-008",
+      "name": "Settlement Reporting",
+      "acceptanceCriteria": "Settlement reporting supported",
+      "expectedResult": "Transaction settled successfully",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Settlement acknowledgement and reconciliation (MC-Q08).",
+      "lineIds": [
+        "TS-036.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "EXTERNAL_POLICY",
+      "baDisposition": "EXTERNAL_CONTRACT_REQUIRED",
+      "baCorrectedRequirement": "Report successful settlement only from correlated settlement acknowledgement and reconciliation evidence.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-037",
+      "fr": "FR-008",
+      "name": "Audit Logging",
+      "acceptanceCriteria": "End-to-end transaction logged",
+      "expectedResult": "Audit trail available",
+      "expectedVerdict": "EXTERNAL_CONTRACT",
+      "expectedNote": "Audit and security policy (MC-Q09); BUYPASS provides no journal (Section 9.1).",
+      "lineIds": [
+        "TS-037.V1"
+      ],
+      "outcome": "REVIEW_REQUIRED",
+      "worstLineVerdict": "SUPPORTED_WITH_CORRECTION",
+      "baDisposition": "REVIEW_REQUIRED",
+      "baCorrectedRequirement": "Define permitted audit events, correlation and retention through approved security policy; do not copy full request/response card data into logs by default.",
+      "templateCoverage": "NOT_IN_TEST_SOLUTION",
+      "trainingState": "NO_TEST_SOLUTION_EVIDENCE",
+      "mappedTestSolutionBrIds": [],
+      "questions": [
+        "MC-Q09"
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "id": "TS-001.V1",
+      "ts": "TS-001",
+      "text": "PAN present",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 2 Account Number must be present for the transaction context; 'PAN' means the Element 2 account representation.",
+      "correction": "Element 2 Account Number present (representation per entry context).",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-ACCOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-041",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-001.V2",
+      "ts": "TS-001",
+      "text": "PAN numeric",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 2 is character type ANS (24 bytes non-TransArmor, up to 425 bytes TransArmor). Numeric-only holds for a raw keyed PAN, not for track, token or encrypted representations.",
+      "correction": "Apply numeric-only to a raw keyed PAN; validate track, token and TransArmor representations by their own rules.",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E2-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-034",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E2-002",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-035",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-058",
+          "section": "10.1.8.2",
+          "title": "Host card-data format contains only account number and expiration after an equals delimiter"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-001.V3",
+      "ts": "TS-001",
+      "text": "Mastercard BIN range valid",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "ATL105 defines no Mastercard BIN/IIN table, and Prompt Code card type 020 does not prove the brand. The only Test Solution BIN rule covers payment-token BIN ranges (Appendix O).",
+      "correction": "Check the BIN against an approved, versioned Mastercard BIN/IIN source supplied by the BA.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        },
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [
+        {
+          "id": "BR-SEG100-APPO-TOKEN-LUHN",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L03"
+      ],
+      "questions": [
+        "MC-Q01"
+      ]
+    },
+    {
+      "id": "TS-001.V4",
+      "ts": "TS-001",
+      "text": " PAN length valid",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "ATL105 sets Element 2 maximum lengths by representation, not a Mastercard PAN length. The Test Solution checks 13-19 digits only for payment tokens.",
+      "correction": "Apply the BA-approved PAN length policy to raw PANs; keep the Element 2 maximum-length check by representation.",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [
+        {
+          "id": "BR-SEG100-APPO-TOKEN-ACCOUNT",
+          "state": "TRAINED"
+        }
+      ],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-001.V5",
+      "ts": "TS-001",
+      "text": " Luhn check passed",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "ATL105 requires a LUHN check only for payment tokens (Appendix O); no raw-PAN check-digit rule is defined.",
+      "correction": "Apply LUHN to raw PANs only under the BA-approved card-validation policy; keep the token LUHN rule for tokens.",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [
+        {
+          "id": "BR-SEG100-APPO-TOKEN-LUHN",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-001.V6",
+      "ts": "TS-001",
+      "text": " Card status active",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Card status is issuer or status-service data, not carried or decided by the ATL105 request. It also duplicates TS-003.",
+      "correction": "Remove from TS-001; check card status once, in TS-003, using a trusted status service.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-002.V1",
+      "ts": "TS-002",
+      "text": "Element 51 present for manual entry",
+      "verdict": "CONTRADICTED",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 51 is Mail Text Data. For manual entry the MMYY expiry is carried in Element 12 Card Discretionary Block Data.",
+      "correction": "Element 12 carries the MMYY expiry for a manually entered account.",
+      "evidence": [
+        {
+          "sourceId": "element51",
+          "section": "13.2 Element 51",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20557,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "expiry",
+          "section": "13.2 Element 12",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19751,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-DISCRETIONARY",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-042",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-006",
+          "section": "10.1.1.3",
+          "title": "Manual entry follows three unsuccessful magnetic-stripe attempts"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L02"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-002.V2",
+      "ts": "TS-002",
+      "text": "Format=MMYY",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Manual entry prompts for the expiry in MMYY (Section 10.1.1.3), and the Section 10.1.1.1 example 1249 is MMYY. Track-derived host card data stores YYMM after '=' (Section 10.1.8.2).",
+      "correction": "MMYY for manual entry; track-derived host data uses YYMM.",
+      "evidence": [
+        {
+          "sourceId": "creditExpiry",
+          "section": "10.1.1.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3823,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "expiry",
+          "section": "13.2 Element 12",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19751,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-DISCRETIONARY",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-042",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-006",
+          "section": "10.1.1.3",
+          "title": "Manual entry follows three unsuccessful magnetic-stripe attempts"
+        },
+        {
+          "id": "BR-DRAFT-10-1-058",
+          "section": "10.1.8.2",
+          "title": "Host card-data format contains only account number and expiration after an equals delimiter"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L02"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-002.V3",
+      "ts": "TS-002",
+      "text": "Length=4",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "An MMYY expiry is four digits.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "expiry",
+          "section": "13.2 Element 12",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19751,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-DISCRETIONARY",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-042",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-006",
+          "section": "10.1.1.3",
+          "title": "Manual entry follows three unsuccessful magnetic-stripe attempts"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L02"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-002.V4",
+      "ts": "TS-002",
+      "text": "Expiry date not past current date",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "The device validates credit expiry (Section 10.1.1.1) and treats dates up to 1249 as 20xx. ATL105 still requires expiry to be sent for some expired-card authorizations, so a blanket local rejection is not source-backed, and the month-end and time-zone boundary is undefined.",
+      "correction": "Validate expiry with the 1249 century rule; take the local expired-card outcome from the BA-approved policy.",
+      "evidence": [
+        {
+          "sourceId": "creditExpiry",
+          "section": "10.1.1.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3823,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-001",
+          "section": "10.1.1.1",
+          "title": "Credit card expiration date is validated"
+        }
+      ],
+      "coverage": "DRAFT_ONLY",
+      "lessons": [
+        "MC-L02"
+      ],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-003.V1",
+      "ts": "TS-003",
+      "text": "Card not blocked",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Blocked status comes from the issuer or a status service; the ATL105 request cannot establish it.",
+      "correction": "Bind a trusted status-service or simulator outcome to the case.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-003.V2",
+      "ts": "TS-003",
+      "text": "not reported lost/stolen",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Lost/stolen status comes from the issuer or a status service; the ATL105 request cannot establish it.",
+      "correction": "Bind a trusted status-service or simulator outcome to the case.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-003.V3",
+      "ts": "TS-003",
+      "text": "not expired",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Expiry is a device check (Section 10.1.1.1) already covered by TS-002.V4, not an issuer card-status check.",
+      "correction": "Remove from TS-003 and rely on TS-002.",
+      "evidence": [
+        {
+          "sourceId": "creditExpiry",
+          "section": "10.1.1.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3823,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-001",
+          "section": "10.1.1.1",
+          "title": "Credit card expiration date is validated"
+        }
+      ],
+      "coverage": "DRAFT_ONLY",
+      "lessons": [
+        "MC-L02"
+      ],
+      "questions": [
+        "MC-Q02"
+      ]
+    },
+    {
+      "id": "TS-004.V1",
+      "ts": "TS-004",
+      "text": "Processing Code = Purchase/Capture (020)",
+      "verdict": "CONTRADICTED",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "ATL105 has no Processing Code element. A credit Purchase/Capture is identified by Element 78 Prompt Code 0020: transaction type 0 (Appendix G) plus financial card type 020 (Appendix E). '020' alone is the card type, not the transaction.",
+      "correction": "Element 78 Prompt Code = 0020 (transaction type 0, card type 020); 0020 alone does not prove Mastercard.",
+      "evidence": [
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "promptKnowledge",
+          "section": "Prompt Code decision examples",
+          "path": "docs/specs/kb/segment-100/prompt-code-sme-tba-note.md",
+          "line": 46,
+          "sha256": "0e73a8530dd3e11422735614658068b6927d3068b15dac8a0fbbe8b6c9f54243"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E78-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E78-002",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-018",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-033",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-APPE-PROMPT-COMPOSITION",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-APPG-CODE-0",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L03"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-005.V1",
+      "ts": "TS-005",
+      "text": "Swipe, EMV, Contactless, Manual Entry, E-Commerce values allowed",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Entry modes are encoded as Appendix J POS Entry Mode values with conditional companion data (Segment 130 for EMV, e-commerce data). The cell lists five labels as one check and gives no wire values.",
+      "correction": "List the in-scope Appendix J POS Entry Mode codes, one check per mode, with each mode's companion data.",
+      "evidence": [
+        {
+          "sourceId": "entry",
+          "section": "Appendix J entry-mode training",
+          "path": "docs/specs/kb/segment-100/appendix-j-pos-entry-mode-training.md",
+          "line": 1,
+          "sha256": "7f8fb9d5f1d1f52c7c3143c6e0581451f68dc4800c72ec4adfadc8d873bf7305"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E2-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-034",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-EMV-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ANN-J",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-023",
+          "section": "10.1.5",
+          "title": "RFID receiver presence determines Point-of-Sale Entry Mode on every transaction"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [],
+      "questions": [
+        "MC-Q04"
+      ]
+    },
+    {
+      "id": "TS-006.V1",
+      "ts": "TS-006",
+      "text": "Merchant ID present",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "The purchase request has no standalone Merchant ID element. The BUYPASS Merchant Number is a component of Element 102 Terminal Identifier (device type, state code, merchant number, device number); Test Solution data use merchant number 123456.",
+      "correction": "Element 102 Terminal Identifier present with a valid BUYPASS Merchant Number component.",
+      "evidence": [
+        {
+          "sourceId": "element102",
+          "section": "13.2 Element 102",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21791,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E102-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E102-003",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-031",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [],
+      "questions": []
+    },
+    {
+      "id": "TS-006.V2",
+      "ts": "TS-006",
+      "text": "merchant active",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Merchant active status is host or merchant configuration; it is not part of the ATL105 request.",
+      "correction": "Use BA-supplied merchant configuration with active and inactive profiles.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q03"
+      ]
+    },
+    {
+      "id": "TS-006.V3",
+      "ts": "TS-006",
+      "text": "MCC valid",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "The Segment 100 purchase request carries no MCC; MCC is merchant configuration.",
+      "correction": "Check MCC against the BA-supplied merchant profile.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q03"
+      ]
+    },
+    {
+      "id": "TS-007.V1",
+      "ts": "TS-007",
+      "text": "Element 55 populated",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 55 Message Format Version Identifier is required in the financial request.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "message",
+          "section": "13.2 Element 55",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E55-001",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-007.V2",
+      "ts": "TS-007",
+      "text": "supported ATL105 version",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "PROVENANCE_OR_VERSION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "PROVENANCE_OR_VERSION_GAP"
+      ],
+      "assessment": "Testable only against a named version, and the workbook never states which ATL105 version it targets.",
+      "correction": "Element 55 carries the Message Format Version Identifier defined for ATL105 2026-3.",
+      "evidence": [
+        {
+          "sourceId": "message",
+          "section": "13.2 Element 55",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E55-001",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-007.V3",
+      "ts": "TS-007",
+      "text": "mandatory fields populated",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Not atomic: the required field set depends on the financial-request layout and the 0020 context.",
+      "correction": "List the required Segment 100 fields and conditional companion segments for the 0020 request, one check each.",
+      "evidence": [
+        {
+          "sourceId": "message",
+          "section": "13.2 Element 55",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-RULE-SEG100-R-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ID-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-015",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-018",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-019",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-041",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-008.V1",
+      "ts": "TS-008",
+      "text": "Element 63 populated; ",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 63 Number of Segments is required in the financial request.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "count",
+          "section": "13.2 Element 63",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20807,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E63-001",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-008.V2",
+      "ts": "TS-008",
+      "text": "count matches transmitted segments",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 63 must equal the number of segments actually transmitted.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "count",
+          "section": "13.2 Element 63",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20807,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E63-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-007",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-009.V1",
+      "ts": "TS-009",
+      "text": "Segment 100 present",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Segment 100 is required exactly once in the financial request.",
+      "correction": "Segment 100 present exactly once.",
+      "evidence": [
+        {
+          "sourceId": "message",
+          "section": "13.2 Element 55",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-RULE-SEG100-R-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ID-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-015",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-010.V1",
+      "ts": "TS-010",
+      "text": "Element 24 present",
+      "verdict": "CONTRADICTED",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 24 is Data Type Indicator. Account Number is Element 2.",
+      "correction": "Element 2 Account Number present.",
+      "evidence": [
+        {
+          "sourceId": "element24",
+          "section": "13.2 Element 24",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20052,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-ACCOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-041",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-010.V2",
+      "ts": "TS-010",
+      "text": "numeric only",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 2 is character type ANS. Numeric-only holds for a raw keyed PAN, not for track, token or TransArmor/encrypted representations.",
+      "correction": "Apply numeric-only to a raw keyed PAN; validate other representations by their own rules.",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E2-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-034",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E2-002",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-035",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-058",
+          "section": "10.1.8.2",
+          "title": "Host card-data format contains only account number and expiration after an equals delimiter"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-010.V3",
+      "ts": "TS-010",
+      "text": "no delimiters",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Separator handling depends on the representation: track data splits at '=' (Track 2) or '^' (Track 1), and TransArmor/encrypted values are ANS. A blanket 'no delimiters' rule would reject valid representations.",
+      "correction": "Check separator handling for the declared account representation.",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E2-002",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-035",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-058",
+          "section": "10.1.8.2",
+          "title": "Host card-data format contains only account number and expiration after an equals delimiter"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-010.V4",
+      "ts": "TS-010",
+      "text": "no control characters",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [],
+      "assessment": "Consistent with Element 2's ANS character type; field separators are structural, not field content. No Test Solution rule checks the Element 2 character set yet.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "account",
+          "section": "13.2 Element 2",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19397,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L01"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-011.V1",
+      "ts": "TS-011",
+      "text": "Amount > 0",
+      "verdict": "NOT_TESTABLE_AS_WRITTEN",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Segment 100 has no single purchase-amount element; amounts are split into Fuel (41), Nonfuel (58), Tax (99) and Cash (17). The workbook does not say which field or total must be greater than zero, or how zero components are handled.",
+      "correction": "Name the amount field or total formula (41 + 58 + 99, plus 17 if cash back applies) and its zero rule.",
+      "evidence": [
+        {
+          "sourceId": "fuel",
+          "section": "13.2 Element 41",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20376,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "nonfuel",
+          "section": "13.2 Element 58",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20713,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "tax",
+          "section": "13.2 Element 99",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "cash",
+          "section": "13.2 Element 17",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-FUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-NONFUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-TAX-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-CASH-AMOUNT",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [
+        {
+          "id": "BR-SEG100-APPR-CROSS-FIELD",
+          "state": "TRAINED"
+        }
+      ],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07",
+        "MC-L08"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-011.V2",
+      "ts": "TS-011",
+      "text": "numeric",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Every Segment 100 amount element (41, 58, 99, 17) is character type N.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "fuel",
+          "section": "13.2 Element 41",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20376,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "nonfuel",
+          "section": "13.2 Element 58",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20713,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "tax",
+          "section": "13.2 Element 99",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "cash",
+          "section": "13.2 Element 17",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-FUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-NONFUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-TAX-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-CASH-AMOUNT",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07",
+        "MC-L08"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-011.V3",
+      "ts": "TS-011",
+      "text": "currency supplied",
+      "verdict": "NOT_TESTABLE_AS_WRITTEN",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Segment 100 (Section 12.1) has no currency element. Appendix L currency codes appear only in companion data such as Segment 111 or EMV chip data, so a universal 'currency supplied' check has no field to test.",
+      "correction": "State the currency source for each entry context (for example EMV data or Segment 111), or drop the check.",
+      "evidence": [
+        {
+          "absence": {
+            "section": "12.1 Standard Message Data Segment",
+            "lines": "11209-11395",
+            "term": "currency",
+            "occurrences": 0
+          },
+          "path": "docs/specs/extracted_text.txt"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-ANN-L",
+          "state": "NOT_IN_MC_CONTEXT"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "OUTSIDE_MC_CONTEXT",
+      "lessons": [],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-011.V4",
+      "ts": "TS-011",
+      "text": "decimal precision valid",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "ATL105 amounts have two assumed decimal places and no decimal point. For Mastercard, Fuel, Nonfuel and Tax allow up to 7 digits and Cash up to 8.",
+      "correction": "Amounts are unsigned digits with two implied decimals; check each field's maximum length.",
+      "evidence": [
+        {
+          "sourceId": "fuel",
+          "section": "13.2 Element 41",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20376,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "nonfuel",
+          "section": "13.2 Element 58",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20713,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "tax",
+          "section": "13.2 Element 99",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "cash",
+          "section": "13.2 Element 17",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-FUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-NONFUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-TAX-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-GAP-CASH-AMOUNT",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07",
+        "MC-L08"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-012.V1",
+      "ts": "TS-012",
+      "text": "Fuel amount contains total fuel purchase value",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 41 is the total dollar amount of all fuel sold; when discounts or coupons apply it is the net amount after them. Mastercard maximum is 7 digits with two assumed decimals.",
+      "correction": "Element 41 = total fuel sold, net of fuel discounts and coupons; up to 7 digits, 2 implied decimals.",
+      "evidence": [
+        {
+          "sourceId": "fuelPurpose",
+          "section": "13.2 Element 41",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20384,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "fuel",
+          "section": "13.2 Element 41",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20376,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-FUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-045",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-013.V1",
+      "ts": "TS-013",
+      "text": "Amount numeric; >=0",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 58 is the amount that is not fuel, tax or cash: N, up to 7 digits for Mastercard, two assumed decimals. The cell combines two checks, and an omitted field must be distinguished from a zero value.",
+      "correction": "Element 58: numeric, up to 7 digits, 2 implied decimals; state whether zero is sent or the field is omitted.",
+      "evidence": [
+        {
+          "sourceId": "nonfuel",
+          "section": "13.2 Element 58",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20713,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-NONFUEL-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-046",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-014.V1",
+      "ts": "TS-014",
+      "text": "Tax numeric",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Segment 100 Tax Amount is Element 99, character type N (not purchase-card tax Element 74).",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "tax",
+          "section": "13.2 Element 99",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-TAX-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-047",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-014.V2",
+      "ts": "TS-014",
+      "text": "valid precision",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Precision is two assumed decimal places, up to 7 digits for Mastercard; the line does not say so.",
+      "correction": "Element 99: up to 7 digits with 2 implied decimals.",
+      "evidence": [
+        {
+          "sourceId": "tax",
+          "section": "13.2 Element 99",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21703,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-TAX-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-047",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L07"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-015.V1",
+      "ts": "TS-015",
+      "text": "Numeric value",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 17 Cash Amount (cash back) is N, up to 8 digits, valid values 1-99999999.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "cash",
+          "section": "13.2 Element 17",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-CASH-AMOUNT",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-048",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L08"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-015.V2",
+      "ts": "TS-015",
+      "text": "business rules met",
+      "verdict": "NOT_TESTABLE_AS_WRITTEN",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED",
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "No rule is named. Element 17 is cash back, and whether cash back is allowed on a Mastercard credit purchase is product policy, not ATL105.",
+      "correction": "Name the cash-back eligibility rule for Mastercard credit, or remove cash from this scenario.",
+      "evidence": [
+        {
+          "sourceId": "cash",
+          "section": "13.2 Element 17",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19943,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L08"
+      ],
+      "questions": [
+        "MC-Q05"
+      ]
+    },
+    {
+      "id": "TS-016.V1",
+      "ts": "TS-016",
+      "text": "Element 80 present",
+      "verdict": "CONTRADICTED",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 80 is Purchase Code. Sequence Number is Element 86.",
+      "correction": "Element 86 Sequence Number present.",
+      "evidence": [
+        {
+          "sourceId": "element80",
+          "section": "13.2 Element 80",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21127,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E86-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-019",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L04"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-016.V2",
+      "ts": "TS-016",
+      "text": "length=6",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "Element 86 is six digits (000001-999999).",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E86-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-019",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L04"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-016.V3",
+      "ts": "TS-016",
+      "text": "unique value",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Unrelated new transactions get a new sequence, but associated follow-ups (completion, reversal, void, TOR) must reuse the original, so 'unique' needs scoping. No Test Solution chain checks sequence generation across transactions.",
+      "correction": "Each new, unrelated transaction from a device gets a new Sequence Number; associated follow-up legs reuse the original.",
+      "evidence": [
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L04"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-017.V1",
+      "ts": "TS-017",
+      "text": "Purchase, response, reversal, settlement retain same sequence",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "ATL105 requires associated lifecycle legs (completion, reversal, void, TOR) to reuse the original Sequence Number. ATL105 does not define settlement correlation.",
+      "correction": "Associated follow-up legs reuse the original Element 86; settlement correlation needs the settlement contract.",
+      "evidence": [
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E86-002",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-037",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-LIFE-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-LIFE-AUTH-COMPLETE",
+          "state": "REVIEW_QUEUE"
+        },
+        {
+          "id": "BR-SEG100-LIFE-SALE-VOID",
+          "state": "REVIEW_QUEUE"
+        },
+        {
+          "id": "BR-SEG100-LIFE-AUTH-VOID",
+          "state": "REVIEW_QUEUE"
+        },
+        {
+          "id": "BR-SEG100-LIFE-REFUND-VOID",
+          "state": "REVIEW_QUEUE"
+        },
+        {
+          "id": "BR-SEG100-LIFE-TIMEOUT-TOR",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L04"
+      ],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-018.V1",
+      "ts": "TS-018",
+      "text": "Network=Mastercard",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "The ATL105 purchase request has no network or brand field, and Prompt Code 0020 does not prove Mastercard. Brand needs trusted BIN evidence.",
+      "correction": "Establish the Mastercard brand from the BA-approved BIN/brand source.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        },
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L03"
+      ],
+      "questions": [
+        "MC-Q01"
+      ]
+    },
+    {
+      "id": "TS-018.V2",
+      "ts": "TS-018",
+      "text": "Card Program=Credit",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Credit is expressed by Appendix E financial card type 020 in Element 78 positions 2-4; there is no 'Card Program' field.",
+      "correction": "Element 78 card-type portion = 020 (credit).",
+      "evidence": [
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "promptKnowledge",
+          "section": "Prompt Code decision examples",
+          "path": "docs/specs/kb/segment-100/prompt-code-sme-tba-note.md",
+          "line": 46,
+          "sha256": "0e73a8530dd3e11422735614658068b6927d3068b15dac8a0fbbe8b6c9f54243"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-APPE-FINANCIAL-CARD-TYPES",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-SEC5-LEAF-CREDIT-NONPROPRIETARY",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E78-002",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L03"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-018.V3",
+      "ts": "TS-018",
+      "text": "Transaction Type=Purchase",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Purchase/Capture is Appendix G transaction type 0 in Element 78 position 1; this duplicates TS-004.",
+      "correction": "Element 78 position 1 = 0 (Purchase/Capture).",
+      "evidence": [
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-APPG-CODE-0",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E78-001",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L03"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-019.V1",
+      "ts": "TS-019",
+      "text": "Network selection matches Mastercard routing rules",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Routing is host and network policy; ATL105 does not define Mastercard routing.",
+      "correction": "Validate against the BA-supplied routing policy with simulator or trace evidence.",
+      "evidence": [
+        {
+          "sourceId": "network",
+          "section": "Card-Network and Transaction-Flow Validation",
+          "path": "docs/specs/kb/segment-100/payment-network-type-training.md",
+          "line": 81,
+          "sha256": "97a388592c6e4e0605eabfdc8c4a1e656fdbbfefeadd2905e269a3119556f915"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q01",
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-020.V1",
+      "ts": "TS-020",
+      "text": "All mandatory ATL105 elements present",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Not atomic, and it duplicates TS-007.V3. For this purchase the authorization request is the 0020 Purchase/Capture request.",
+      "correction": "List the required fields for the 0020 request (see TS-007.V3).",
+      "evidence": [
+        {
+          "sourceId": "message",
+          "section": "13.2 Element 55",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 20624,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "prompt",
+          "section": "13.2 Element 78",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21051,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-RULE-SEG100-R-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ID-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E55-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-E63-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-007",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-APPG-CODE-0",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [
+        {
+          "id": "BR-APPG-CODE-3",
+          "state": "TRAINED"
+        }
+      ],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L03",
+        "MC-L06"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-021.V1",
+      "ts": "TS-021",
+      "text": "Response message format valid",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Not atomic. Checking a response needs the financial-response layout, correlation to the request, and Element 83 read in context, and no response fixtures exist yet.",
+      "correction": "Parse the financial response, correlate it to the request, and interpret Element 83 for the 0020 context.",
+      "evidence": [
+        {
+          "sourceId": "response",
+          "section": "13.2 Element 83",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21186,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-RULE-SEG100-R-063",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-066",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ANN-H",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L09"
+      ],
+      "questions": [
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-022.V1",
+      "ts": "TS-022",
+      "text": "Element 6 received for approval",
+      "verdict": "CONTRADICTED",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 6 is Approved Amount. The approval identifier is Element 5 Approval Number (six alphanumeric characters).",
+      "correction": "Element 5 Approval Number received in the approved response.",
+      "evidence": [
+        {
+          "sourceId": "approvedAmount",
+          "section": "13.2 Element 6",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19636,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "approval",
+          "section": "13.2 Element 5",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19617,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-GAP-APPROVAL",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-049",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L05"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-023.V1",
+      "ts": "TS-023",
+      "text": "Available for settlement and reversals",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "ATL105 requires the original Approval Number only in specific follow-ups (an authorization-only reversal needs the original Approval Number and Sequence Number). ATL105 does not define its use in settlement.",
+      "correction": "Keep Element 5 for the follow-ups that require it; settlement use needs the settlement contract.",
+      "evidence": [
+        {
+          "sourceId": "approval",
+          "section": "13.2 Element 5",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19617,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-LIFE-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-023",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-018",
+          "section": "10.1.2.2",
+          "title": "Authorization-only reversal matches original approval and sequence"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L05"
+      ],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-024.V1",
+      "ts": "TS-024",
+      "text": "Response code indicates approval",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 83 must be read in context: 0 approves a Purchase/Capture, and F is a partial approval. The line names no code.",
+      "correction": "Element 83 = 0 for a full Purchase/Capture approval; handle F (partial) separately.",
+      "evidence": [
+        {
+          "sourceId": "response",
+          "section": "13.2 Element 83",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21186,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "partial",
+          "section": "10.1.2.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3903,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-RC-APPROVED-PURCHASE",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-063",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L09",
+        "MC-L10"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-025.V1",
+      "ts": "TS-025",
+      "text": "Response code indicates decline",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Decline codes must be read in the financial context (code 1 approves only communications tests), and a decline must be kept distinct from a timeout or malformed response.",
+      "correction": "Element 83 decline code for the 0020 context, distinguished from timeout.",
+      "evidence": [
+        {
+          "sourceId": "response",
+          "section": "13.2 Element 83",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21186,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-RC-DECLINED",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-066",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-SEG100-ANN-H",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L09"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-026.V1",
+      "ts": "TS-026",
+      "text": "Partial approval indicator present",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Element 121 Partial Approval Indicator: value 1 signals support, and value 5 is Amex prepaid only. Partial approval applies to POS Purchase, POS Authorization Only and CAT Authorization Only.",
+      "correction": "Element 121 = 1 in a supported partial-approval context.",
+      "evidence": [
+        {
+          "sourceId": "indicator",
+          "section": "13.2 Element 121",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 22824,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "partial",
+          "section": "10.1.2.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3903,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-E121-001",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-020",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [
+        {
+          "id": "BR-SEG100-E121-002",
+          "state": "NOT_IN_MC_CONTEXT"
+        }
+      ],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-011",
+          "section": "10.1.2.1",
+          "title": "Partial approval applies only to the documented POS and CAT transaction contexts"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L10"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-026.V2",
+      "ts": "TS-026",
+      "text": "merchant enabled",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Whether the merchant is enabled for partial approval is configuration, not part of the request.",
+      "correction": "Use BA-supplied merchant and network partial-approval configuration.",
+      "evidence": [
+        {
+          "sourceId": "partial",
+          "section": "10.1.2.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3903,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q03",
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-027.V1",
+      "ts": "TS-027",
+      "text": "Requested amount vs approved amount calculated",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "With indicator 1, response code F and Element 6 Approved Amount identify a partial approval; the remaining balance is requested minus approved, and any issuer-returned balance is in Segment 112.",
+      "correction": "On response F, remaining balance = requested amount - Element 6.",
+      "evidence": [
+        {
+          "sourceId": "partial",
+          "section": "10.1.2.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3903,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "approvedAmount",
+          "section": "13.2 Element 6",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19636,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-RC-PARTIAL",
+          "state": "TRAINED"
+        },
+        {
+          "id": "BR-RULE-SEG100-R-065",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-010",
+          "section": "10.1.2.1",
+          "title": "Partial approval response identifies the approved amount and remaining balance"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L10"
+      ],
+      "questions": [
+        "MC-Q06"
+      ]
+    },
+    {
+      "id": "TS-028.V1",
+      "ts": "TS-028",
+      "text": "30-second timer initiated",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [],
+      "assessment": "Section 2.3.1 defines the customer's 30-second response interval. No Test Solution chain checks it yet.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "timeout",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 1990,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L11"
+      ],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-029.V1",
+      "ts": "TS-029",
+      "text": "No response before timer expiry",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Section 2.3.1 also treats a response received after the 30 seconds as a timeout, and the late response is ignored.",
+      "correction": "Timeout = no response within 30 seconds, or a late response; ignore the late response.",
+      "evidence": [
+        {
+          "sourceId": "timeout",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 1990,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "lateResponse",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 1994,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L11"
+      ],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-030.V1",
+      "ts": "TS-030",
+      "text": "Original transaction timed out",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED",
+        "CHAIN_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "A TOR applies only to eligible originals (Purchase/Capture 0, CAT purchase 4, mail/phone 6 to Z); an authorization-only hold is released by cancellation (S), not a TOR. Route, retry and timing policy remain open.",
+      "correction": "Generate a TOR only for an eligible timed-out original, keeping its amount and Sequence Number.",
+      "evidence": [
+        {
+          "sourceId": "timeout",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 1990,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "torQueue",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 2002,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-LIFE-TIMEOUT-TOR",
+          "state": "REVIEW_QUEUE"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-013",
+          "section": "10.1.2.1",
+          "title": "Partial-approval timeout reversal preserves original requested amount and sequence"
+        }
+      ],
+      "coverage": "REVIEW_QUEUE_ONLY",
+      "lessons": [
+        "MC-L11",
+        "MC-L12"
+      ],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-031.V1",
+      "ts": "TS-031",
+      "text": "TOR uses original sequence number",
+      "verdict": "SUPPORTED",
+      "severity": "NONE",
+      "classes": [],
+      "curatedClasses": [],
+      "assessment": "An eligible TOR reuses the original Element 86 Sequence Number.",
+      "correction": "",
+      "evidence": [
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-LIFE-TIMEOUT-TOR",
+          "state": "REVIEW_QUEUE"
+        },
+        {
+          "id": "BR-SEG100-E86-002",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-013",
+          "section": "10.1.2.1",
+          "title": "Partial-approval timeout reversal preserves original requested amount and sequence"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L04",
+        "MC-L11"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-032.V1",
+      "ts": "TS-032",
+      "text": "TOR queue priority enforced",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "LOW",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "Section 2.3.1: the TOR is sent from the same device, ahead of that device's next financial request, or just before settlement if none follows. It is not a global queue.",
+      "correction": "Send the queued TOR before the next financial request from the same device, or before settlement.",
+      "evidence": [
+        {
+          "sourceId": "torQueue",
+          "section": "2.3.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 2002,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [
+        "MC-L12"
+      ],
+      "questions": [
+        "MC-Q07"
+      ]
+    },
+    {
+      "id": "TS-033.V1",
+      "ts": "TS-033",
+      "text": "Authorization result available",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "MEDIUM",
+      "classes": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT"
+      ],
+      "assessment": "A credit receipt has source-required content: merchant name and address, transaction type, account masked to the last four digits, suppressed expiry, date, time, Sequence Number, product details, approval code or decline message, partial-approval balance, and card type ID MC.",
+      "correction": "Check the Section 10.1.7 receipt content, including card type ID MC, masked account and suppressed expiry.",
+      "evidence": [
+        {
+          "sourceId": "receipt",
+          "section": "10.1.7",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 4189,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "receiptPan",
+          "section": "10.1.7.4",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 4229,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "receiptExpiry",
+          "section": "10.1.7.5",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 4240,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [
+        {
+          "id": "BR-SEG100-RECEIPT-CARDTYPE-MASTERCARD",
+          "state": "TRAINED"
+        }
+      ],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-042",
+          "section": "10.1.7.1",
+          "title": "Credit-card receipt prints merchant name and address"
+        },
+        {
+          "id": "BR-DRAFT-10-1-043",
+          "section": "10.1.7.2",
+          "title": "Credit-card receipt prints the transaction type"
+        },
+        {
+          "id": "BR-DRAFT-10-1-044",
+          "section": "10.1.7.4",
+          "title": "Credit-card receipt masks the account number to its last four digits"
+        },
+        {
+          "id": "BR-DRAFT-10-1-045",
+          "section": "10.1.7.5",
+          "title": "Credit-card receipt suppresses the expiration date"
+        },
+        {
+          "id": "BR-DRAFT-10-1-046",
+          "section": "10.1.7.6",
+          "title": "Credit-card receipt prints the transaction date"
+        },
+        {
+          "id": "BR-DRAFT-10-1-047",
+          "section": "10.1.7.7",
+          "title": "Credit-card receipt prints the transaction time"
+        },
+        {
+          "id": "BR-DRAFT-10-1-048",
+          "section": "10.1.7.8",
+          "title": "Credit-card receipt prints the transaction Sequence Number"
+        },
+        {
+          "id": "BR-DRAFT-10-1-052",
+          "section": "10.1.7.11",
+          "title": "Credit-card receipt shows approval code or decline message according to device context"
+        }
+      ],
+      "coverage": "TRAINED_CHAIN",
+      "lessons": [
+        "MC-L13"
+      ],
+      "questions": []
+    },
+    {
+      "id": "TS-034.V1",
+      "ts": "TS-034",
+      "text": "Approved transaction captured",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Clearing records are outside ATL105. ATL105 only requires approved authorizations to be cleared or reversed within 24 hours (card present) or 72 hours (card absent), and a 0020 Purchase/Capture is already a capture.",
+      "correction": "Use the clearing contract, and check the Section 10.1.2.2 clear-or-reverse window.",
+      "evidence": [],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-014",
+          "section": "10.1.2.2",
+          "title": "Approved authorizations are cleared or reversed within applicable timeframes"
+        }
+      ],
+      "coverage": "DRAFT_ONLY",
+      "lessons": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-035.V1",
+      "ts": "TS-035",
+      "text": "Approval data and amounts retained",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Settlement preparation is outside ATL105. Any retention must respect Section 10.1.8.1: no stored card-read data except account number, expiry and cardholder name, and never full magnetic-stripe data.",
+      "correction": "Use the settlement contract and retain only permitted data.",
+      "evidence": [
+        {
+          "sourceId": "approval",
+          "section": "13.2 Element 5",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19617,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-054",
+          "section": "10.1.8.1",
+          "title": "Credit processing restricts card-read data displayed or stored at point of interaction"
+        },
+        {
+          "id": "BR-DRAFT-10-1-056",
+          "section": "10.1.8.1,10.1.8.2",
+          "title": "Credit clearing data is not reconstructed from previously captured full track data"
+        }
+      ],
+      "coverage": "DRAFT_ONLY",
+      "lessons": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-036.V1",
+      "ts": "TS-036",
+      "text": "Approval number, sequence number, amounts present",
+      "verdict": "EXTERNAL_POLICY",
+      "severity": "MEDIUM",
+      "classes": [
+        "REVIEW_REQUIRED"
+      ],
+      "curatedClasses": [
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Settlement reporting is outside the ATL105 purchase message set; the report format must come from the settlement contract.",
+      "correction": "Define the settlement report fields in the settlement contract.",
+      "evidence": [
+        {
+          "sourceId": "approval",
+          "section": "13.2 Element 5",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 19617,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "sequence",
+          "section": "13.2 Element 86",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 21458,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [],
+      "coverage": "NONE",
+      "lessons": [],
+      "questions": [
+        "MC-Q08"
+      ]
+    },
+    {
+      "id": "TS-037.V1",
+      "ts": "TS-037",
+      "text": "Request, response, timestamps, approvals retained",
+      "verdict": "SUPPORTED_WITH_CORRECTION",
+      "severity": "HIGH",
+      "classes": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED",
+        "TEST_SOLUTION_GAP"
+      ],
+      "curatedClasses": [
+        "AI_ARTIFACT_DEFECT",
+        "REVIEW_REQUIRED"
+      ],
+      "assessment": "Retaining full requests would store card-read data that Section 10.1.8.1 prohibits (only account number, expiry and cardholder name may be stored, and never full magnetic-stripe data). BUYPASS provides no electronic journal (Section 9.1); audit design is the customer's.",
+      "correction": "Log events with masked or permitted fields only, per the BA-approved audit and security policy.",
+      "evidence": [
+        {
+          "sourceId": "journal",
+          "section": "9.1",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 3303,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        },
+        {
+          "sourceId": "receiptPan",
+          "section": "10.1.7.4",
+          "path": "docs/specs/extracted_text.txt",
+          "line": 4229,
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+        }
+      ],
+      "testSolutionBrs": [],
+      "relatedBrs": [],
+      "draftBrs": [
+        {
+          "id": "BR-DRAFT-10-1-054",
+          "section": "10.1.8.1",
+          "title": "Credit processing restricts card-read data displayed or stored at point of interaction"
+        },
+        {
+          "id": "BR-DRAFT-10-1-055",
+          "section": "10.1.8.1",
+          "title": "Permitted research records are limited and securely maintained"
+        }
+      ],
+      "coverage": "DRAFT_ONLY",
+      "lessons": [],
+      "questions": [
+        "MC-Q09"
+      ]
+    }
+  ],
+  "elementCheck": [
+    {
+      "line": "TS-002.V1",
+      "text": "Element 51 present for manual entry",
+      "subject": "card expiration date for manual entry",
+      "citedElement": 51,
+      "citedName": "Mail Text Data",
+      "citedSpecLine": 20557,
+      "correctElement": 12,
+      "correctName": "Card Discretionary",
+      "correctSpecLine": 19751,
+      "result": "MISMATCH"
+    },
+    {
+      "line": "TS-007.V1",
+      "text": "Element 55 populated",
+      "subject": "message format version identifier",
+      "citedElement": 55,
+      "citedName": "Message Format",
+      "citedSpecLine": 20624,
+      "correctElement": 55,
+      "correctName": "Message Format",
+      "correctSpecLine": 20624,
+      "result": "MATCH"
+    },
+    {
+      "line": "TS-008.V1",
+      "text": "Element 63 populated; ",
+      "subject": "number of segments",
+      "citedElement": 63,
+      "citedName": "Number of Segments",
+      "citedSpecLine": 20807,
+      "correctElement": 63,
+      "correctName": "Number of Segments",
+      "correctSpecLine": 20807,
+      "result": "MATCH"
+    },
+    {
+      "line": "TS-010.V1",
+      "text": "Element 24 present",
+      "subject": "account number",
+      "citedElement": 24,
+      "citedName": "Data Type Indicator",
+      "citedSpecLine": 20052,
+      "correctElement": 2,
+      "correctName": "Account Number",
+      "correctSpecLine": 19397,
+      "result": "MISMATCH"
+    },
+    {
+      "line": "TS-016.V1",
+      "text": "Element 80 present",
+      "subject": "sequence number",
+      "citedElement": 80,
+      "citedName": "Purchase Code",
+      "citedSpecLine": 21127,
+      "correctElement": 86,
+      "correctName": "Sequence Number",
+      "correctSpecLine": 21458,
+      "result": "MISMATCH"
+    },
+    {
+      "line": "TS-022.V1",
+      "text": "Element 6 received for approval",
+      "subject": "approval number",
+      "citedElement": 6,
+      "citedName": "Approved Amount",
+      "citedSpecLine": 19636,
+      "correctElement": 5,
+      "correctName": "Approval Number",
+      "correctSpecLine": 19617,
+      "result": "MISMATCH"
+    }
+  ],
+  "transcriptionDifferences": [
+    {
+      "ts": "TS-001",
+      "workbookText": "PAN present",
+      "baClaimExcerpt": null,
+      "difference": "Validation line is missing from the BA review's screenshot transcription.",
+      "impact": "No disposition change; Element 2 presence is covered by trained Test Solution chains.",
+      "baReferenceClaim": "PAN numeric; Mastercard BIN valid; length valid; Luhn passes; card active; proceeds to authorization.",
+      "verified": true
+    },
+    {
+      "ts": "TS-034",
+      "workbookText": "Approved transaction captured",
+      "baClaimExcerpt": "Approval number captured",
+      "difference": "Transcribed as 'Approval number captured'; the workbook says 'Approved transaction captured'.",
+      "impact": "No disposition change; clearing remains an external contract.",
+      "baReferenceClaim": "Approval number captured; transaction available for clearing.",
+      "verified": true
+    },
+    {
+      "ts": "TS-035",
+      "workbookText": "Approval data and amounts retained",
+      "baClaimExcerpt": "Transaction data and amounts retained",
+      "difference": "Transcribed as 'Transaction data and amounts retained'; the workbook says 'Approval data and amounts retained'.",
+      "impact": "No disposition change; settlement remains an external contract.",
+      "baReferenceClaim": "Transaction data and amounts retained; settlement ready.",
+      "verified": true
+    },
+    {
+      "ts": "TS-036",
+      "workbookText": "Approval number, sequence number, amounts present",
+      "baClaimExcerpt": null,
+      "difference": "Validation line is missing from the transcription; the BA claim restates only the acceptance criteria and expected result.",
+      "impact": "No disposition change; settlement reporting remains an external contract.",
+      "baReferenceClaim": "Settlement reporting supported; settled successfully.",
+      "verified": true
+    }
+  ],
+  "baFidelityChecks": [],
+  "structure": [
+    {
+      "check": "LEADING_OR_TRAILING_WHITESPACE",
+      "cell": "B3",
+      "text": " Mastercard credit financial purchase transaction processing",
+      "line": "BR-01"
+    },
+    {
+      "check": "LEADING_OR_TRAILING_WHITESPACE",
+      "cell": "H6",
+      "text": " PAN length valid",
+      "line": "TS-001.V4"
+    },
+    {
+      "check": "LEADING_OR_TRAILING_WHITESPACE",
+      "cell": "H7",
+      "text": " Luhn check passed",
+      "line": "TS-001.V5"
+    },
+    {
+      "check": "LEADING_OR_TRAILING_WHITESPACE",
+      "cell": "H8",
+      "text": " Card status active",
+      "line": "TS-001.V6"
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H17",
+      "line": "TS-005.V1",
+      "text": "Swipe, EMV, Contactless, Manual Entry, E-Commerce values allowed"
+    },
+    {
+      "check": "LEADING_OR_TRAILING_WHITESPACE",
+      "cell": "H24",
+      "text": "Element 63 populated; ",
+      "line": "TS-008.V1"
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H24",
+      "line": "TS-008.V1",
+      "text": "Element 63 populated; "
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H36",
+      "line": "TS-013.V1",
+      "text": "Amount numeric; >=0"
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H44",
+      "line": "TS-017.V1",
+      "text": "Purchase, response, reversal, settlement retain same sequence"
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H66",
+      "line": "TS-036.V1",
+      "text": "Approval number, sequence number, amounts present"
+    },
+    {
+      "check": "MULTIPLE_CHECKS_IN_ONE_CELL",
+      "cell": "H67",
+      "line": "TS-037.V1",
+      "text": "Request, response, timestamps, approvals retained"
+    },
+    {
+      "check": "NO_VALIDATION_LINE_IDS",
+      "cell": "column H",
+      "text": "Validation lines have no IDs; this review assigns <TS ID>.V<n> in sheet order."
+    }
+  ],
+  "multiSegmentScopeExclusions": [
+    {
+      "id": "BR-RULE-SEG115-R-011",
+      "segments": [
+        "115,120,131"
+      ],
+      "title": "In the EMV Financial Transaction Response specifically, Segment 115 may co-occur with Segment 120 (Print Data 2 Segment) at Field 17/18/19, immediately followed by Segment 131 (EMV Response Data Segment) at Field 17/18/19/20"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-009",
+      "segments": [
+        "100,130"
+      ],
+      "title": "EMV chip values such as authorized amount, transaction type, currency, and terminal country shall agree with the Segment 100 transaction context"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-012",
+      "segments": [
+        "112,130"
+      ],
+      "title": "Element 118 is reused across segments: it is 'Additional Information' in Segment 112 (max 984, single occurrence) and 'EMV Additional Information' in Segment 130 (variable length, repeating). Do not assume element numbers are globally unique or that the two fields share business meaning"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-015",
+      "segments": [
+        "130,131"
+      ],
+      "title": "CA Public Key File Checksum (Element 187) is echoed by Segment 131 (EMV Response Data Segment, Field 3, Required, Host-sourced) \u2014 a request/response handshake pattern used to detect when the device needs a new CA Public Key File download"
+    },
+    {
+      "id": "BR-RULE-SEG131-R-007",
+      "segments": [
+        "130,131"
+      ],
+      "title": "CA Public Key File Checksum (Element 187) is required and is explicitly echoed from the Request (Segment 130's CA Public Key File Checksum)"
+    },
+    {
+      "id": "BR-RULE-SEG131-R-010",
+      "segments": [
+        "112,130,131"
+      ],
+      "title": "Element 118 is reused across three segments now documented in this KB: Segment 112 ('Additional Information', single occurrence), Segment 130 ('EMV Additional Information', repeating, request-side), and Segment 131 ('EMV Additional Information', repeating, response-side)"
+    },
+    {
+      "id": "BR-RULE-SEG131-R-012",
+      "segments": [
+        "112,115,120,131"
+      ],
+      "title": "In the EMV Financial Transaction Response, Segment 131 always follows Segment 130's response counterpart context \u2014 i.e., it appears after Segments 112 (Field 16/17/18) and 115/120 (Field 17/18/19) when those are also present"
+    },
+    {
+      "id": "BR-RULE-SEG157-R-005",
+      "segments": [
+        "100,157"
+      ],
+      "title": "The total of Adjusted Product Amounts in the segment must equal the total of Element 41 (Fuel Purchase Amount) + Element 58 (Nonfuel Amount) + Element 99 (Tax Amount) + Element 17 (Cash Amount) in Segment 100"
+    },
+    {
+      "id": "BR-SEG100-APPS-CA-EMV-LINK",
+      "segments": [
+        "100,130"
+      ],
+      "title": "An EMV Segment 100/130 transaction shall use CA key configuration consistent with the applicable EMV AID and public-key data."
+    },
+    {
+      "id": "BR-SEG100-ANN-L",
+      "segments": [
+        "100,111"
+      ],
+      "title": "Currency values in Segment 100-related transaction and variable data use valid Appendix L currency codes."
+    },
+    {
+      "id": "BR-SEG100-ANN-O",
+      "segments": [
+        "100,111"
+      ],
+      "title": "Tokenized Segment 100 transactions use Appendix O token account, expiration, cryptogram, and presentment concepts where applicable."
+    }
+  ],
+  "findings": [
+    {
+      "id": "MCV-A01",
+      "class": "PROVENANCE_OR_VERSION_GAP",
+      "severity": "MEDIUM",
+      "title": "Workbook does not identify its ATL105 version, producer, date or document ID",
+      "detail": "The single sheet has no version, owner, date or source column. This validation assumes ATL105 2026-3, the version of the Test Solution oracle.",
+      "affected": [
+        "MC-FR-MATRIX-WORKBOOK"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Add specification version, producer, date and an ATL105 section/element reference column.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A02",
+      "class": "AI_ARTIFACT_DEFECT",
+      "severity": "HIGH",
+      "title": "Field mappings that contradict ATL105",
+      "detail": "5 lines would test the wrong field: TS-002.V1 'Element 51 present for manual entry' -> Element 12 carries the MMYY expiry for a manually entered account; TS-004.V1 'Processing Code = Purchase/Capture (020)' -> Element 78 Prompt Code = 0020 (transaction type 0, card type 020); 0020 alone does not prove Mastercard; TS-010.V1 'Element 24 present' -> Element 2 Account Number present; TS-016.V1 'Element 80 present' -> Element 86 Sequence Number present; TS-022.V1 'Element 6 received for approval' -> Element 5 Approval Number received in the approved response. 4 of 6 element citations name the wrong Chapter 13 element.",
+      "affected": [
+        "TS-002.V1",
+        "TS-004.V1",
+        "TS-010.V1",
+        "TS-016.V1",
+        "TS-022.V1"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Correct the field mapping before any test is derived.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A03",
+      "class": "AI_ARTIFACT_DEFECT",
+      "severity": "HIGH",
+      "title": "Lines whose intent is supported but whose wording, scope or field must be corrected",
+      "detail": "29 lines need the correction recorded in line-validation.csv (over-general rules, labels instead of encoded values, non-atomic checks, missing context). HIGH: TS-037.V1 'Request, response, timestamps, approvals retained' - Log events with masked or permitted fields only, per the BA-approved audit and security policy.",
+      "affected": [
+        "TS-001.V2",
+        "TS-002.V4",
+        "TS-003.V3",
+        "TS-005.V1",
+        "TS-006.V1",
+        "TS-007.V2",
+        "TS-007.V3",
+        "TS-010.V2",
+        "TS-010.V3",
+        "TS-011.V4",
+        "TS-012.V1",
+        "TS-013.V1",
+        "TS-014.V2",
+        "TS-016.V3",
+        "TS-017.V1",
+        "TS-018.V2",
+        "TS-018.V3",
+        "TS-020.V1",
+        "TS-021.V1",
+        "TS-023.V1",
+        "TS-024.V1",
+        "TS-025.V1",
+        "TS-026.V1",
+        "TS-027.V1",
+        "TS-029.V1",
+        "TS-030.V1",
+        "TS-032.V1",
+        "TS-033.V1",
+        "TS-037.V1"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Apply the corrected requirement for each line.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A04",
+      "class": "REVIEW_REQUIRED",
+      "severity": "MEDIUM",
+      "title": "Checks that depend on contracts outside ATL105 or are not testable as written",
+      "detail": "14 lines need issuer, BIN, merchant, routing, clearing, settlement or audit contracts; 3 name no testable field or rule. Open questions: MC-Q01, MC-Q02, MC-Q03, MC-Q05, MC-Q06, MC-Q08.",
+      "affected": [
+        "TS-001.V3",
+        "TS-001.V4",
+        "TS-001.V5",
+        "TS-001.V6",
+        "TS-003.V1",
+        "TS-003.V2",
+        "TS-006.V2",
+        "TS-006.V3",
+        "TS-011.V1",
+        "TS-011.V3",
+        "TS-015.V2",
+        "TS-018.V1",
+        "TS-019.V1",
+        "TS-026.V2",
+        "TS-034.V1",
+        "TS-035.V1",
+        "TS-036.V1"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Supply the contract or rule named in each open question.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A05",
+      "class": "REVIEW_REQUIRED",
+      "severity": "MEDIUM",
+      "title": "Expected results need execution or external evidence",
+      "detail": "37 of 37 expected results are device, host, issuer or settlement outcomes that message-level validation cannot confirm. The workbook has no test data, actual-result or evidence columns.",
+      "affected": [
+        "TS-001",
+        "TS-002",
+        "TS-003",
+        "TS-004",
+        "TS-005",
+        "TS-006",
+        "TS-007",
+        "TS-008",
+        "TS-009",
+        "TS-010",
+        "TS-011",
+        "TS-012",
+        "TS-013",
+        "TS-014",
+        "TS-015",
+        "TS-016",
+        "TS-017",
+        "TS-018",
+        "TS-019",
+        "TS-020",
+        "TS-021",
+        "TS-022",
+        "TS-023",
+        "TS-024",
+        "TS-025",
+        "TS-026",
+        "TS-027",
+        "TS-028",
+        "TS-029",
+        "TS-030",
+        "TS-031",
+        "TS-032",
+        "TS-033",
+        "TS-034",
+        "TS-035",
+        "TS-036",
+        "TS-037"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Add test data references, actual results and evidence per scenario.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A06",
+      "class": "AI_ARTIFACT_DEFECT",
+      "severity": "LOW",
+      "title": "Structure: no line IDs, stray whitespace, several checks in one cell",
+      "detail": "LEADING_OR_TRAILING_WHITESPACE: 5; MULTIPLE_CHECKS_IN_ONE_CELL: 6; NO_VALIDATION_LINE_IDS: 1.",
+      "affected": [
+        "BR-01",
+        "TS-001.V4",
+        "TS-001.V5",
+        "TS-001.V6",
+        "TS-005.V1",
+        "TS-008.V1",
+        "TS-013.V1",
+        "TS-017.V1",
+        "TS-036.V1",
+        "TS-037.V1"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Give each validation an ID, trim whitespace and keep one check per cell.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-A07",
+      "class": "AI_ARTIFACT_DEFECT",
+      "severity": "LOW",
+      "title": "Duplicated or overlapping checks across scenarios",
+      "detail": "Card status appears in TS-001.V6 and TS-003; expiry appears in TS-002.V4 and TS-003.V3; required request fields appear in TS-007.V3 and TS-020.V1; transaction type appears in TS-004.V1 and TS-018.V3.",
+      "affected": [
+        "TS-001.V6",
+        "TS-003.V1",
+        "TS-002.V4",
+        "TS-003.V3",
+        "TS-007.V3",
+        "TS-020.V1",
+        "TS-004.V1",
+        "TS-018.V3"
+      ],
+      "owner": "BA (SEG100-SME-003 questionnaire)",
+      "disposition": "Keep each check in one scenario and reference it from the other.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-T01",
+      "class": "TEST_SOLUTION_GAP",
+      "severity": "MEDIUM",
+      "title": "Source-supported checks without a trained Test Solution chain",
+      "detail": "TS-002.V4 (DRAFT_ONLY: BR-DRAFT-10-1-001); TS-003.V3 (DRAFT_ONLY: BR-DRAFT-10-1-001); TS-010.V4 (NONE); TS-016.V3 (NONE); TS-028.V1 (NONE); TS-029.V1 (NONE); TS-032.V1 (NONE); TS-037.V1 (DRAFT_ONLY: BR-DRAFT-10-1-054, BR-DRAFT-10-1-055).",
+      "affected": [
+        "TS-002.V4",
+        "TS-003.V3",
+        "TS-010.V4",
+        "TS-016.V3",
+        "TS-028.V1",
+        "TS-029.V1",
+        "TS-032.V1",
+        "TS-037.V1"
+      ],
+      "owner": "Test Solution team",
+      "disposition": "Derive canonical BR -> TS -> TC -> TD chains (promote the Section 10.1 drafts where they exist).",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-T02",
+      "class": "CHAIN_GAP",
+      "severity": "MEDIUM",
+      "title": "Cited Test Solution BRs that are still in the Mastercard review queue",
+      "detail": "BR-SEG100-ANN-H: TS-SEG100-ANNEXURE-APPLICABILITY: TS shares no ATL105 anchor with the BR; BR-SEG100-ANN-J: TS-SEG100-ANNEXURE-APPLICABILITY: TS shares no ATL105 anchor with the BR; BR-SEG100-LIFE-AUTH-COMPLETE: TC-SEG100-LIFE-AUTH-COMPLETE-PASS: TC no sourceAnchor; BR-SEG100-LIFE-AUTH-VOID: TC-SEG100-LIFE-AUTH-VOID-PASS: TC no sourceAnchor; BR-SEG100-LIFE-REFUND-VOID: TC-SEG100-LIFE-REFUND-VOID-PASS: TC no sourceAnchor; BR-SEG100-LIFE-SALE-VOID: TC-SEG100-LIFE-SALE-VOID-PASS: TC no sourceAnchor; BR-SEG100-LIFE-TIMEOUT-TOR: TC-SEG100-LIFE-TIMEOUT-TOR-PASS: TC no sourceAnchor.",
+      "affected": [
+        "TS-005.V1",
+        "TS-017.V1",
+        "TS-021.V1",
+        "TS-025.V1",
+        "TS-030.V1",
+        "TS-031.V1"
+      ],
+      "owner": "Test Solution team",
+      "disposition": "Close the review-queue items (anchor or split the shared scenarios) and retrain the context.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-T03",
+      "class": "TEST_SOLUTION_GAP",
+      "severity": "MEDIUM",
+      "title": "Multi-segment anchors are excluded from the Mastercard context scope",
+      "detail": "The context scope compares the whole segment string, so anchors such as '100,111' never match (handbook L22). 11 BRs would enter scope if segments were split on ',': BR-RULE-SEG115-R-011, BR-RULE-SEG130-R-009, BR-RULE-SEG130-R-012, BR-RULE-SEG130-R-015, BR-RULE-SEG131-R-007, BR-RULE-SEG131-R-010, BR-RULE-SEG131-R-012, BR-RULE-SEG157-R-005, BR-SEG100-APPS-CA-EMV-LINK, BR-SEG100-ANN-L, BR-SEG100-ANN-O.",
+      "affected": [
+        "BR-RULE-SEG115-R-011",
+        "BR-RULE-SEG130-R-009",
+        "BR-RULE-SEG130-R-012",
+        "BR-RULE-SEG130-R-015",
+        "BR-RULE-SEG131-R-007",
+        "BR-RULE-SEG131-R-010",
+        "BR-RULE-SEG131-R-012",
+        "BR-RULE-SEG157-R-005",
+        "BR-SEG100-APPS-CA-EMV-LINK",
+        "BR-SEG100-ANN-L",
+        "BR-SEG100-ANN-O"
+      ],
+      "owner": "Test Solution team",
+      "disposition": "Split segment strings on ',' in in_mc_scope, then retrain and re-run this validation.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-T04",
+      "class": "TEST_SOLUTION_GAP",
+      "severity": "MEDIUM",
+      "title": "Template TS-020 is mapped to the Authorization Only transaction type",
+      "detail": "build-mastercard-fr-matrix.py maps TS-020 to BR-APPG-CODE-3 (Authorization Only). The template's purchase flow ('Sale completed') uses transaction type 0, so TS-020 should map to BR-APPG-CODE-0 and the Segment 100 request-structure BRs.",
+      "affected": [
+        "TS-020"
+      ],
+      "owner": "Test Solution team",
+      "disposition": "Remap TS-020 in TEMPLATE_MAP and retrain the Mastercard context.",
+      "status": "OPEN"
+    },
+    {
+      "id": "MCV-T05",
+      "class": "PROVENANCE_OR_VERSION_GAP",
+      "severity": "LOW",
+      "title": "The BA reference review is not bound to this workbook",
+      "detail": "The BA review was transcribed from a screenshot (originalFileInRepository=False, originalFileHash=None) although the workbook is in the repository. 4 transcription differences were verified (TS-001, TS-034, TS-035, TS-036); none changes a disposition. Automated name/FR/element fidelity mismatches: 0.",
+      "affected": [
+        "TS-001",
+        "TS-034",
+        "TS-035",
+        "TS-036"
+      ],
+      "owner": "Test Solution team",
+      "disposition": "Bind the BA review to the workbook hash and correct the four transcribed claims.",
+      "status": "OPEN"
+    }
+  ]
+}

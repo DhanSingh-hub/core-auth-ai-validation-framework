@@ -431,13 +431,22 @@ Subject to Fiserv Leadership approval, the Test Solution would report each dimen
 
 For a business transaction context, the Test Solution validates in this order:
 
-1. **Template conformance:** every template scenario is classified `MAPPED`, `PARTIAL` or `NOT_IN_TEST_SOLUTION` against Test Solution BRs, with the gap stated; Test Solution BRs with no template scenario are `TEST_SOLUTION_ONLY`.
+1. **Template conformance:** every template scenario is classified `MAPPED`, `PARTIAL` or `NOT_IN_TEST_SOLUTION` against Test Solution BRs, with the gap stated; Test Solution BRs with no template scenario are `TEST_SOLUTION_ONLY`. The template workbook itself is validated line by line against the oracle before its claims are used. The workbook is bound to its SHA-256, and every element citation is checked against Chapter 13.
 2. **Scope:** in-scope BRs are selected by an explicit, versioned rule (template mapping, brand naming, or segment anchor without another product or brand). Keyword-derived FR placement is a grouping aid and stays `REVIEW_REQUIRED`.
 3. **Canonical chain:** each in-scope BR is trained only when a BR -> TS -> TC -> TD chain passes `CanonicalTraceabilityValidator`. Failing BRs go to an explicit review queue with the reason and required evidence; they are never counted as covered.
 4. **Independence and freshness:** trained records must equal the Test Solution source apart from logged link, status and anchor-field normalizations, and must match the source package hash. AI artifacts are not inputs.
 5. **Status:** the context is `IN_PROGRESS` until the review queue is closed, SME/TBA certification is recorded, and AI intake and execution readiness gates have evidence.
 
 The Mastercard Credit Purchase result is published in the [context BR coverage report](../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md). On 2026-10-26 (retrained on Develop): 168 of 189 in-scope BRs (88.9%) trained, 21 in review, and 9 of 37 template scenarios have no Test Solution evidence (card status, routing, timeout timer/detection, TOR ordering, clearing, settlement and audit logging).
+
+The [template workbook validation](../../test-output/test-solution-independent-review/mc-fr-matrix-validation-v1/README.md) rates the original FR matrix `REJECTED_NOT_INTAKE_READY` as a test oracle:
+
+- 5 of its 65 validation lines name the wrong ATL105 field (Elements 51, 24, 80 and 6, and "Processing Code 020").
+- 29 need correction.
+- 17 need an external contract or a testable definition.
+- None of its 37 expected results can be confirmed without execution evidence.
+
+Its BR/FR/scenario structure remains the business layer of the context.
 
 ### SME Availability Dependency
 
