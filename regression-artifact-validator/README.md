@@ -37,6 +37,30 @@ The [2026-10-05 completeness and optimization review](specifications/ATL105/repo
 
 ## Current validation state
 
+The additional [Petroleum Industry Processing specification, 2025-1](specifications/ATL105/docs/specs/BUYPASS_Platform_Petroleum_Industry_Processing_Specifications__2025-1.pdf)
+is ingested alongside both ATL105 releases. Its
+[knowledge pack](specifications/ATL105/docs/specs/kb/00-index.md#supplemental-petroleum-source-2025-1)
+provides 226 source pages, bookmarks and 13 source-quoted draft lessons.
+`petroleum-ingest-build`, `petroleum-ingest-check` and `petroleum-ingest-test`
+are reproducible launcher tasks. This is supplemental source-grounded knowledge,
+not model-weight training, complete Petroleum rule implementation or SME approval;
+ATL105 baseline versions and executable coverage remain unchanged.
+The [ATL105-to-Petroleum reference map](specifications/ATL105/docs/specs/kb/petroleum-2025-1/atl105-petroleum-cross-references.md)
+records 13 direct referral locations in each ATL105 release; it preserves fleet-only scope and ATL105 field-format rules.
+Training follows an [11-phase plan](specifications/ATL105/docs/specs/kb/petroleum-2025-1/training-plan.json);
+the [MasterCard Fleet pilot](specifications/ATL105/docs/specs/kb/petroleum-2025-1/mastercard-fleet/training-report.md)
+has phases 0 to 7 drafted (24 draft BRs, 60 draft TS/TC/TD, Petroleum Appendices A and B reconciled) and phase 8 partial, all pending SME review;
+draft chains are not independent Test Solution evidence or executed tests
+(`petroleum-train-build`, `-check`, `-test`, `petroleum-chain-test`). The second context,
+[Visa Fleet](specifications/ATL105/docs/specs/kb/petroleum-2025-1/visa-fleet/training-report.md),
+has the same phase status with 26 draft BRs and 62 draft TS/TC/TD (`petroleum-visa-train-build`, `-check`, `-test`).
+The [Voyager Fleet chapter 9 context](specifications/ATL105/docs/specs/kb/petroleum-2025-1/voyager-fleet/training-report.md)
+has phases 0 to 7 drafted, including a 60-item source inventory, 35 draft BRs and 53 draft TS/TC/TD chains;
+phase 8 is partial: the Java compile blocker is fixed, but no producer-compatible Segment 100/101 wire serialization
+has been demonstrated from these logical fixtures.
+The chains remain draft-only pending SME review, and phases 9 and 10 are blocked on an AI package and host execution
+(`petroleum-voyager-train-build`, `-check`, `-test`).
+
 The [segment training report](specifications/ATL105/docs/specs/kb/SEGMENT-TRAINING-EXECUTION-REPORT.md) reconciles rule catalogs with [training gate decisions](specifications/ATL105/training-status.json). At the current snapshot, 49 segments are in progress with 601 catalogued rules; none is certified for independent AI-artifact intake. The first business transaction context, Mastercard Credit Purchase, is `IN_PROGRESS` with 168 of 189 in-scope BRs trained through canonical BR -> TS -> TC -> TD chains; see its [BR coverage report](specifications/ATL105/test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md) and regenerate it with `python scripts/train-mastercard-credit-purchase.py`. Its source FR-matrix workbook is validated line by line by `python scripts/validate-mastercard-fr-matrix.py` (current verdict `REJECTED_NOT_INTAKE_READY`; see the [workbook validation](specifications/ATL105/test-output/test-solution-independent-review/mc-fr-matrix-validation-v1/README.md)). The [element chain report](specifications/ATL105/test-output/test-solution-independent-review/atl105-element-chain-coverage.md) counts 539 placeholder-generated structural links and 0 executable links; structural completion is not SME approval or executable BR-to-test-data coverage. See the [remaining limitations](specifications/ATL105/test-output/test-solution-independent-review/atl105-remaining-limitations-status.md) for the separate approval and execution measures.
 
 The [source-backed rule gate](specifications/ATL105/test-output/test-solution-independent-review/atl105-source-backed-rule-gate.md) tracks all 601 rules with source-body navigation, and separately reports resolvable citations, curated assertions, draft cases and SME approval. Body locations are reference-only. Its Element 83 examples remain review-required and are not inserted into the execution package.

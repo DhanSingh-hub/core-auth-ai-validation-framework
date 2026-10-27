@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "contextId": "VOYAGER_FLEET",
+  "program": "VOYAGER_FLEET",
+  "planId": "PETRO-2025-1-TRAINING-PLAN",
+  "sourceVersion": "2025-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "approvals": [],
+  "scope": {
+    "chapter": "9",
+    "title": "Voyager Fleet Card Processing",
+    "pdfPageRange": [72, 92],
+    "appendixPages": [
+      {"appendix": "B", "bookmark": "Appendix B. Valid Payment Systems Product Codes", "pdfPages": [148, 168]}
+    ],
+    "supportedTransactions": {
+      "pdfPage": 72,
+      "quote": "The following transactions are supported for the Voyager fleet card:",
+      "values": [
+        "POS Purchase/Capture Transaction",
+        "POS Authorization Only Transaction",
+        "CAT Purchase/Capture Transaction",
+        "CAT Authorization Only Transaction",
+        "POS Return/Refund Transaction",
+        "POS Reversal/Void Transaction"
+      ]
+    },
+    "entryModes": [
+      {"mode": "TRACK_2_DEFAULT", "pdfPage": 75, "quote": "The default track that is sent to BUYPASS on an original transaction should be Track 2."},
+      {"mode": "MANUAL_ENTRY", "pdfPage": 73, "quote": "Manual entry is allowed on Voyager fleet card transactions."},
+      {"mode": "FOLLOW_ON_PARTIAL_TRACK_2", "pdfPage": 75, "quote": "Card data provided in a follow-on transaction must be partial Track 2 Data."}
+    ],
+    "exclusions": [
+      "Generic Voyager payment processing does not inherit Voyager Fleet rules.",
+      "The separate Voyager EMV terminal Specifications v1.5 is not present; its Truck Class details remain review-required.",
+      "Petroleum Appendices I-L are referenced by chapter 9 but belong to the later appendix rollout; their requirements are not treated as independently validated here.",
+      "Other fleet programs, including MasterCard Fleet and Visa Fleet, do not inherit Voyager-specific track, restriction-code or EMV rules."
+    ]
+  },
+  "inventory": [
+    {"id": "VYR-I01", "bookmark": "9. Voyager Fleet Card Processing", "classification": "OVERVIEW", "pdfPage": 72, "quote": "9. Voyager Fleet Card Processing"},
+    {"id": "VYR-I02", "bookmark": "9.1. Processing Requirements", "classification": "OVERVIEW", "pdfPage": 72, "quote": "9.1. Processing Requirements"},
+    {"id": "VYR-I03", "bookmark": "9.1.1. Supported Transactions", "classification": "RULE", "pdfPage": 72, "quote": "The following transactions are supported for the Voyager fleet card:"},
+    {"id": "VYR-I04", "bookmark": "9.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 73, "quote": "the Merchant Profile at BUYPASS must have Terminal Special Code 073 enabled."},
+    {"id": "VYR-I05", "bookmark": "9.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 73, "quote": "The POS application must be able to read the Card Type code 060 sent in the Table Load response."},
+    {"id": "VYR-I06", "bookmark": "9.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 73, "quote": "the application must provide a method to determine whether Voyager fleet cards are allowed."},
+    {"id": "VYR-I07", "bookmark": "9.1.2. Terminal Special/Prompt Codes", "classification": "CROSS_REFERENCE", "pdfPage": 73, "quote": "Please refer to the applicable message format specifications for information about valid Prompt Codes for the Voyager fleet card.", "crossReferences": ["ATL105 message formats"]},
+    {"id": "VYR-I08", "bookmark": "9.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 73, "quote": "If it is required, it can have a length of 1–6 digits. It should be unencrypted in the message format for BUYPASS."},
+    {"id": "VYR-I09", "bookmark": "9.1.3. Manual Entry", "classification": "RULE", "pdfPage": 73, "quote": "If unable to read the magnetic stripe after three attempts, the device should prompt for manual entry of the 19-digit Voyager fleet card Account Number."},
+    {"id": "VYR-I10", "bookmark": "9.1.3. Manual Entry", "classification": "RULE", "pdfPage": 73, "quote": "The Restriction Code value must follow the Expiration Date in the Discretionary Data Field sent to the host."},
+    {"id": "VYR-I11", "bookmark": "9.1.3. Manual Entry", "classification": "RULE", "pdfPage": 73, "quote": "this fact is indicated on the receipt and journal by an asterisk (*) before the Account Number."},
+    {"id": "VYR-I12", "bookmark": "9.1.3. Manual Entry", "classification": "RULE", "pdfPage": 73, "quote": "the ISO Number is prompted for and is prefixed to the Account Number."},
+    {"id": "VYR-I13", "bookmark": "9.1.4. Expiration Date", "classification": "RULE", "pdfPage": 73, "quote": "The device must perform an expiration date validation on all Voyager fleet card transactions."},
+    {"id": "VYR-I14", "bookmark": "9.1.5. Check Digit Calculation", "classification": "RULE", "pdfPage": 74, "quote": "Perform a Mod 10 Check Digit evaluation on the Account Number Check Digit"},
+    {"id": "VYR-I15", "bookmark": "9.1.5. Check Digit Calculation", "classification": "RULE", "pdfPage": 74, "quote": "Perform a Mod 10 Check Digit evaluation on the Super Check Digit"},
+    {"id": "VYR-I16", "bookmark": "9.1.6. Odometer Reading", "classification": "RULE", "pdfPage": 74, "quote": "If it is required, the odometer reading can have a length of 1–8 digits."},
+    {"id": "VYR-I17", "bookmark": "9.1.7. Vehicle Number", "classification": "RULE", "pdfPage": 74, "quote": "For Magstripe transactions, there is no Vehicle Number for the Voyager fleet card."},
+    {"id": "VYR-I18", "bookmark": "9.1.8. Restriction Code", "classification": "RULE", "pdfPage": 74, "quote": "the device must interpret the value of the Restriction Code—in the Track 1 or Track 2 data—to see whether the transaction is for “fuel and other products” or “fuel only.”"},
+    {"id": "VYR-I19", "bookmark": "9.1.8. Restriction Code", "classification": "RULE", "pdfPage": 74, "quote": "A unique Product Code must be sent for each type of fuel purchase."},
+    {"id": "VYR-I20", "bookmark": "9.1.9. Authorization Amount", "classification": "RULE", "pdfPage": 75, "quote": "The approved maximum dollar amount will be less than or equal to the amount in the Authorization Request."},
+    {"id": "VYR-I21", "bookmark": "9.1.9. Authorization Amount", "classification": "RULE", "pdfPage": 75, "quote": "approval/denial is based on the actual amount sent in the Authorization Request."},
+    {"id": "VYR-I22", "bookmark": "9.1.10. Product Code Data", "classification": "RULE", "pdfPage": 75, "quote": "The Product Code Data must be sent in all fleet transactions. The sum of all the products in the product segment must equal the total transaction amount."},
+    {"id": "VYR-I23", "bookmark": "9.1.11. Track Support Requirements", "classification": "RULE", "pdfPage": 75, "quote": "The default track that is sent to BUYPASS on an original transaction should be Track 2."},
+    {"id": "VYR-I24", "bookmark": "9.1.11. Track Support Requirements", "classification": "RULE", "pdfPage": 75, "quote": "Card data provided in a follow-on transaction must be partial Track 2 Data."},
+    {"id": "VYR-I25", "bookmark": "9.1.11. Track Support Requirements", "classification": "NOTE", "pdfPage": 75, "quote": "This does not apply to the TransArmor-VeriFone Edition processing when sending full Track 2 Data."},
+    {"id": "VYR-I26", "bookmark": "9.2. EMV Processing Requirements", "classification": "OVERVIEW", "pdfPage": 76, "quote": "9.2. EMV Processing Requirements"},
+    {"id": "VYR-I27", "bookmark": "9.2.1. Chip Card Requirements", "classification": "OVERVIEW", "pdfPage": 76, "quote": "This section contains the following Voyager Chip requirements information:"},
+    {"id": "VYR-I28", "bookmark": "9.2.1.1. Technology Selection", "classification": "RULE", "pdfPage": 76, "quote": "terminals must check position 31 (Track2) or position 58 (track1) to determine if the service code begins with a ‘2’ or ‘6’."},
+    {"id": "VYR-I29", "bookmark": "9.2.1.1. Technology Selection", "classification": "CROSS_REFERENCE", "pdfPage": 76, "quote": "Please see Voyager EMV terminal Specifications v1.5 for more details.", "crossReferences": ["Voyager EMV terminal Specifications v1.5; Truck Class field"]},
+    {"id": "VYR-I30", "bookmark": "9.2.1.2. Application Selection", "classification": "RULE", "pdfPage": 77, "quote": "Voyager requires that the Voyager Fleet Card payment application will be priority 1."},
+    {"id": "VYR-I31", "bookmark": "9.2.1.3. Voyager Data Elements", "classification": "TABLE", "pdfPage": 77, "quote": "Voyager Proprietary Third Party Data Layout"},
+    {"id": "VYR-I32", "bookmark": "9.2.1.4. Prompting", "classification": "RULE", "pdfPage": 79, "quote": "A value of ‘0003’ or ‘8003’ in the Unique Identifier of the Third Party Data (9F6E) indicates that Enhanced Fleet Prompting is supported by the card product."},
+    {"id": "VYR-I33", "bookmark": "9.2.1.4. Prompting", "classification": "RULE", "pdfPage": 79, "quote": "These fields must be prompted in the order of the highest order bit defined (bit 4, then bit 3, etc.)."},
+    {"id": "VYR-I34", "bookmark": "9.2.1.4. Prompting", "classification": "CROSS_REFERENCE", "pdfPage": 79, "quote": "See ‘Appendix I, “Voyager Chip-Specific POS Prompt Codes.’ for specifics on Enhanced prompts.", "crossReferences": ["Petroleum Appendix I"]},
+    {"id": "VYR-I35", "bookmark": "9.2.1.5. Restriction Code", "classification": "RULE", "pdfPage": 80, "quote": "For EMV transactions, the device must interpret the value of the Restriction Code—from Tag 9F6E Third Part Data —to see whether the transaction is for “fuel and other products” or “fuel only.”"},
+    {"id": "VYR-I36", "bookmark": "9.2.1.6. Card Removal", "classification": "RULE", "pdfPage": 80, "quote": "When the card is removed from the chip reader before a “card removal request” from the terminal, the transaction must be aborted."},
+    {"id": "VYR-I37", "bookmark": "9.2.1.6. Card Removal", "classification": "RULE", "pdfPage": 80, "quote": "If the terminal has already received an authorization response from the Voyager Authorization Host, the terminal must send a reversal message to the Voyager Authorization Host."},
+    {"id": "VYR-I38", "bookmark": "9.2.1.7. Troubleshooting", "classification": "RULE", "pdfPage": 80, "quote": "The terminal should support a maintenance function allowing to print or to display the information stored."},
+    {"id": "VYR-I39", "bookmark": "9.2.1.8. Exception Processing", "classification": "RULE", "pdfPage": 80, "quote": "Before the 1st GENERATE AC command, the card may be simply powered off."},
+    {"id": "VYR-I40", "bookmark": "9.2.2. Terminal Configuration", "classification": "OVERVIEW", "pdfPage": 82, "quote": "This section describes the following terminal configuration requirements for Voyager Chip:"},
+    {"id": "VYR-I41", "bookmark": "9.2.2.1. Voyager AID Values", "classification": "RULE", "pdfPage": 82, "quote": "Voyager AID: A0000000049999C00016"},
+    {"id": "VYR-I42", "bookmark": "9.2.2.2. EMV Terminal Parameters", "classification": "OVERVIEW", "pdfPage": 82, "quote": "This section contains information on the following EMV terminal parameters:"},
+    {"id": "VYR-I43", "bookmark": "9.2.2.2.1. Common to All Applications", "classification": "NOTE", "pdfPage": 82, "quote": "Voyager has no specific requirements related to the values in the following table. The values are defined according to Payment Industry standard."},
+    {"id": "VYR-I44", "bookmark": "9.2.2.2.2. Compliant with Possible Values Defined by Voyager", "classification": "RULE", "pdfPage": 83, "quote": "Must be online capable (either online-only or offline with online capability)."},
+    {"id": "VYR-I45", "bookmark": "9.2.2.2.2. Compliant with Possible Values Defined by Voyager", "classification": "CROSS_REFERENCE", "pdfPage": 83, "quote": "See Appendix J, “Voyager Terminal Capabilities (9F33)”", "crossReferences": ["Petroleum Appendix J"]},
+    {"id": "VYR-I46", "bookmark": "9.2.2.2.2. Compliant with Possible Values Defined by Voyager", "classification": "CROSS_REFERENCE", "pdfPage": 83, "quote": "See Appendix K, “Voyager Additional Terminal Capabilities (9F40)”", "crossReferences": ["Petroleum Appendix K"]},
+    {"id": "VYR-I47", "bookmark": "9.2.2.2.3. Common to Voyager Applications", "classification": "RULE", "pdfPage": 84, "quote": "A terminal supporting Voyager Chip must support the following terminal parameters valid for all the Voyager AIDS."},
+    {"id": "VYR-I48", "bookmark": "9.2.2.3. Cardholder Verification Method", "classification": "RULE", "pdfPage": 85, "quote": "Support of ‘No CVM Required’ is mandatory"},
+    {"id": "VYR-I49", "bookmark": "9.2.2.4. Offline Card Authentication Methods", "classification": "RULE", "pdfPage": 85, "quote": "An offline capable terminal must support both DDA and CDA (SDA is optional)"},
+    {"id": "VYR-I50", "bookmark": "9.2.3. POS Requirements", "classification": "OVERVIEW", "pdfPage": 86, "quote": "This section contains the following EMV POS requirements information:"},
+    {"id": "VYR-I51", "bookmark": "9.2.3.1. Prompting", "classification": "RULE", "pdfPage": 86, "quote": "Third Party Data (9F6E) should be used to determine prompting requirements."},
+    {"id": "VYR-I52", "bookmark": "9.2.3.2. Online Purchase Restrictions and Validation", "classification": "RULE", "pdfPage": 86, "quote": "The POS must review the purchase restrictions on the chip and reject the transaction if it contains products that are not allowed."},
+    {"id": "VYR-I53", "bookmark": "9.2.3.3. POS Receipts", "classification": "RULE", "pdfPage": 86, "quote": "Voyager Chip transactions must also include the following items on all approved fleet card receipts:"},
+    {"id": "VYR-I54", "bookmark": "9.2.3.4. Offline Processing", "classification": "RULE", "pdfPage": 86, "quote": "The POS device is permitted to support offline processing for Voyager Chip cards in the following manner:"},
+    {"id": "VYR-I55", "bookmark": "9.2.3.5. Offline Purchase Restrictions", "classification": "RULE", "pdfPage": 87, "quote": "Tag ‘DF32’ : Offline Purchase Restrictions"},
+    {"id": "VYR-I56", "bookmark": "9.3. Card Layout", "classification": "OVERVIEW", "pdfPage": 88, "quote": "9.3. Card Layout"},
+    {"id": "VYR-I57", "bookmark": "9.3.1. Track 1 Format", "classification": "CARD_LAYOUT", "pdfPage": 88, "quote": "The following table contains Track 1 card layout information for Voyager fleet cards:"},
+    {"id": "VYR-I58", "bookmark": "9.3.2. Track 2 Format", "classification": "CARD_LAYOUT", "pdfPage": 90, "quote": "The following table contains Track 2 card layout information for Voyager fleet cards:"},
+    {"id": "VYR-I59", "bookmark": "9.4. Embossing Standards", "classification": "RULE", "pdfPage": 92, "quote": "Voyager’s Account Numbers start with 85, 86, 87, 88, or 89."},
+    {"id": "VYR-I60", "bookmark": "Appendix B. Valid Payment Systems Product Codes", "classification": "TABLE", "pdfPage": 148, "quote": "Appendix B. Valid Payment Systems Product Codes"}
+  ],
+  "reconciliation": [
+    {"id": "VYR-R01", "topic": "Supported transaction mappings", "inventoryRefs": ["VYR-I03"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm the six Petroleum transaction names map to the drafted ATL105 transaction types."},
+    {"id": "VYR-R02", "topic": "Voyager enablement and card type", "inventoryRefs": ["VYR-I04", "VYR-I05", "VYR-I06"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm Terminal Special Code 073, Table Load card type 060 and the non-Table-Load detection method for the deployed application."},
+    {"id": "VYR-R03", "topic": "Prompt Code message mapping", "inventoryRefs": ["VYR-I07"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm the complete ATL105 Prompt Code mapping for Voyager fleet."},
+    {"id": "VYR-R04", "topic": "Magstripe driver prompting", "inventoryRefs": ["VYR-I08"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm the Restriction Code to Driver ID prompt mapping and unencrypted message treatment."},
+    {"id": "VYR-R05", "topic": "Manual-entry behavior", "inventoryRefs": ["VYR-I09", "VYR-I10", "VYR-I11", "VYR-I12"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm retry count, 19-digit keyed number formation, Restriction Code placement, receipt marking and ISO Number entry."},
+    {"id": "VYR-R06", "topic": "Expiration and Mod 10 checks", "inventoryRefs": ["VYR-I13", "VYR-I14", "VYR-I15"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm separate account and super check-digit calculations, including the manual-entry data spans."},
+    {"id": "VYR-R07", "topic": "Odometer and Vehicle Number", "inventoryRefs": ["VYR-I16", "VYR-I17"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm how magstripe restriction flags drive odometer prompting and how the absence of a Vehicle Number is handled."},
+    {"id": "VYR-R08", "topic": "Restriction Code and allowed products", "inventoryRefs": ["VYR-I18", "VYR-I19"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm fuel-only and fuel-plus-other-product values and the unique Product Code requirement."},
+    {"id": "VYR-R09", "topic": "Authorization amount processing", "inventoryRefs": ["VYR-I20", "VYR-I21"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm CAT pump-limit precedence, POS authorization amount behavior and ATL100/ATL101 response handling."},
+    {"id": "VYR-R10", "topic": "Product Code Data", "inventoryRefs": ["VYR-I22"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm all Voyager fleet transactions require Product Code Data and exact sum reconciliation."},
+    {"id": "VYR-R11", "topic": "Track support and TransArmor exception", "inventoryRefs": ["VYR-I23", "VYR-I24", "VYR-I25"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm original Track 2 default, follow-on partial Track 2 and the stated TransArmor-VeriFone exception."},
+    {"id": "VYR-R12", "topic": "Chip technology selection and Truck Class", "inventoryRefs": ["VYR-I28", "VYR-I29"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Supply or confirm Voyager EMV terminal Specifications v1.5 for Truck Class field semantics."},
+    {"id": "VYR-R13", "topic": "Application selection", "inventoryRefs": ["VYR-I30"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm AID priority and automatic selection behavior against the approved Voyager terminal baseline."},
+    {"id": "VYR-R14", "topic": "Voyager Third Party Data layout", "inventoryRefs": ["VYR-I31"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm Tag 9F6E parsing, byte lengths and issuer-specific data handling."},
+    {"id": "VYR-R15", "topic": "Enhanced Fleet and terminal prompts", "inventoryRefs": ["VYR-I32", "VYR-I33", "VYR-I34"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm Enhanced Fleet qualification, prompt bit order and Appendix I prompt script behavior."},
+    {"id": "VYR-R16", "topic": "Chip Restriction Code", "inventoryRefs": ["VYR-I35"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm Tag 9F6E Restriction Code interpretation and product eligibility."},
+    {"id": "VYR-R17", "topic": "Card removal and reversal", "inventoryRefs": ["VYR-I36", "VYR-I37"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm abort, driver notification and reversal lifecycle on premature chip removal."},
+    {"id": "VYR-R18", "topic": "Troubleshooting evidence", "inventoryRefs": ["VYR-I38"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm which chip and terminal action data must be retained and how long it is retained."},
+    {"id": "VYR-R19", "topic": "EMV exception processing", "inventoryRefs": ["VYR-I39"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm cancellation behavior across GENERATE AC stages and void processing."},
+    {"id": "VYR-R20", "topic": "Voyager AID", "inventoryRefs": ["VYR-I41"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm the deployed Voyager AID and matching policy."},
+    {"id": "VYR-R21", "topic": "Terminal configuration", "inventoryRefs": ["VYR-I42", "VYR-I43", "VYR-I44", "VYR-I45", "VYR-I46", "VYR-I47"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm all required terminal parameter values and Appendix J/K/L tables before implementation."},
+    {"id": "VYR-R22", "topic": "Cardholder verification and offline authentication", "inventoryRefs": ["VYR-I48", "VYR-I49"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm attended/unattended CVM behavior and supported offline CAM modes for each terminal profile."},
+    {"id": "VYR-R23", "topic": "EMV POS prompting and purchase restriction", "inventoryRefs": ["VYR-I51", "VYR-I52"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm chip prompting and online purchase restriction behavior."},
+    {"id": "VYR-R24", "topic": "Chip receipts", "inventoryRefs": ["VYR-I53"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm receipt fields and interaction with the chapter 4 fleet receipt requirements."},
+    {"id": "VYR-R25", "topic": "Offline processing and purchase limits", "inventoryRefs": ["VYR-I54", "VYR-I55"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm Chip Limit and call-for-authorization paths, fuel/non-fuel cap handling and tags DF32/DF34/DF35."},
+    {"id": "VYR-R26", "topic": "Voyager track layouts and embossing", "inventoryRefs": ["VYR-I56", "VYR-I57", "VYR-I58", "VYR-I59"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true, "question": "Confirm source-image layouts, 19-digit account structure, check-digit spans and embossing interpretation."}
+  ],
+  "catalog": {
+    "accountPrefixes": ["85", "86", "87", "88", "89"],
+    "enumerations": {
+      "promptRestrictionCode": {
+        "values": {
+          "0": {"pdfPage": 89, "quote": "0 No Driver ID and no Odometer Reading", "meaning": "No Driver ID and no odometer reading"},
+          "1": {"pdfPage": 89, "quote": "1 Driver ID only", "meaning": "Driver ID only"},
+          "2": {"pdfPage": 89, "quote": "2 Odometer Reading only", "meaning": "Odometer reading only"},
+          "3": {"pdfPage": 89, "quote": "3 Driver ID and Odometer Reading", "meaning": "Driver ID and odometer reading"}
+        }
+      },
+      "fuelRestrictionCode": {
+        "values": {
+          "0": {"pdfPage": 89, "quote": "0 Fuel and other products", "meaning": "Fuel and other products"},
+          "1": {"pdfPage": 89, "quote": "1 Fuel only", "meaning": "Fuel only"}
+        }
+      }
+    },
+    "promptDataLengths": [
+      {"field": "DRIVER_ID", "min": 1, "max": 6, "pdfPage": 73, "quote": "it can have a length of 1–6 digits"},
+      {"field": "ODOMETER", "min": 1, "max": 8, "pdfPage": 74, "quote": "the odometer reading can have a length of 1–8 digits"}
+    ],
+    "trackLayouts": {
+      "TRACK_1": {
+        "totalLength": 68,
+        "fields": [
+          {"no": 1, "name": "START_SENTINEL", "pdfPage": 88, "quote": "1 Start Sentinel 1 1 Value: %"},
+          {"no": 2, "name": "FORMAT_CODE", "pdfPage": 88, "quote": "2 Format Code 2 1 Value: 0"},
+          {"no": 3, "name": "ISO_NUMBER", "pdfPage": 88, "quote": "3 ISO Number 3 4 Value: 7088"},
+          {"no": 4, "name": "ACCOUNT_NUMBER", "pdfPage": 88, "quote": "4 Account Number 7 8 Account number"},
+          {"no": 5, "name": "ACCOUNT_CHECK_DIGIT", "pdfPage": 88, "quote": "5 Account Number Check Digit 15 1 Account Number Check Digit"},
+          {"no": 6, "name": "CARD_IDENTIFIER", "pdfPage": 88, "quote": "6 Card Identifier 16 5 Card Identifier"},
+          {"no": 7, "name": "SUPER_CHECK_DIGIT", "pdfPage": 88, "quote": "7 Super Check Digit 21 1 Super Check Digit"},
+          {"no": 8, "name": "FIELD_SEPARATOR", "pdfPage": 88, "quote": "8 Field Separator 22 1 Value: ^"},
+          {"no": 9, "name": "CARDHOLDER_NAME", "pdfPage": 88, "quote": "9 Cardholder’s Name 23 25 Cardholder’s Name"},
+          {"no": 10, "name": "FIELD_SEPARATOR", "pdfPage": 88, "quote": "10 Field Separator 48 1 Value: ^"},
+          {"no": 11, "name": "EXPIRATION_DATE", "pdfPage": 88, "quote": "11 Expiration Date 49 4 Format: YYMM"},
+          {"no": 12, "name": "RESTRICTION_CODE", "pdfPage": 89, "quote": "12 Restriction Code 53 2 Prompt restriction values:"},
+          {"no": 13, "name": "DISCRETIONARY_DATA", "pdfPage": 89, "quote": "13 Discretionary Data 55 13 Discretionary Data"},
+          {"no": 14, "name": "END_SENTINEL", "pdfPage": 89, "quote": "14 End Sentinel 68 1 Value: ?"}
+        ]
+      },
+      "TRACK_2": {
+        "totalLength": 39,
+        "fields": [
+          {"no": 1, "name": "START_SENTINEL", "pdfPage": 90, "quote": "1 Start Sentinel 1 1 Value: ;"},
+          {"no": 2, "name": "ISO_NUMBER", "pdfPage": 90, "quote": "2 ISO Number 2 4 Value: 7088"},
+          {"no": 3, "name": "ACCOUNT_NUMBER", "pdfPage": 90, "quote": "3 Account Number 6 8 Account Number"},
+          {"no": 4, "name": "ACCOUNT_CHECK_DIGIT", "pdfPage": 90, "quote": "4 Account Number Check Digit 14 1 Account Number Check Digit"},
+          {"no": 5, "name": "CARD_IDENTIFIER", "pdfPage": 90, "quote": "5 Card Identifier 15 5 Card Identifier"},
+          {"no": 6, "name": "SUPER_CHECK_DIGIT", "pdfPage": 90, "quote": "6 Super Check Digit 20 1 Super Check Digit"},
+          {"no": 7, "name": "FIELD_SEPARATOR", "pdfPage": 90, "quote": "7 Field Separator 21 1 Value: ="},
+          {"no": 8, "name": "EXPIRATION_DATE", "pdfPage": 90, "quote": "8 Expiration Date 22 4 Format: YYMM"},
+          {"no": 9, "name": "RESTRICTION_CODE", "pdfPage": 90, "quote": "9 Restriction Code 26 2 Prompt restriction values:"},
+          {"no": 10, "name": "DISCRETIONARY_DATA", "pdfPage": 90, "quote": "10 Discretionary Data 28 11 Discretionary Data"},
+          {"no": 11, "name": "END_SENTINEL", "pdfPage": 90, "quote": "11 End Sentinel 39 1 Value: ?"}
+        ]
+      }
+    },
+    "examples": [
+      {"layout": "TRACK_1", "pdfPage": 89, "quote": "%07088859990004000016^nnnn^2509311232010060000?"},
+      {"layout": "TRACK_2", "pdfPage": 91, "quote": "Sample String: ; 7088859990004000016=25093112320100600?"}
+    ],
+    "embossing": {
+      "note": "The embossed ISO Number, cardholder account data, ID line, and two-digit Restriction Code plus MMYY expiry have distinct layouts; do not infer keyed-track serialization without review.",
+      "evidence": [
+        {"pdfPage": 92, "quote": "Box 1 contains the unembossed Voyager ISO Number."},
+        {"pdfPage": 92, "quote": "Box 5 contains the 2-digit Restriction Code and the 4-digit Expiration Date (MMYY)."}
+      ]
+    },
+    "emvEvidence": {
+      "serviceCodeSelection": {"pdfPage": 76, "quote": "terminals must check position 31 (Track2) or position 58 (track1) to determine if the service code begins with a ‘2’ or ‘6’."},
+      "enhancedFleetIdentifier": {"pdfPage": 79, "quote": "A value of ‘0003’ or ‘8003’ in the Unique Identifier of the Third Party Data (9F6E) indicates that Enhanced Fleet Prompting is supported by the card product."},
+      "fleetProductIdentifier": {"pdfPage": 79, "quote": "The Product Identifier within the Proprietary Data component of the Third Party Data must be set to ‘0001’ to indicate Enhanced Fleet Support."},
+      "aid": {"pdfPage": 82, "quote": "Voyager AID: A0000000049999C00016"},
+      "offlineLimits": {"pdfPage": 87, "quote": "Tag ‘DF34’ : Offline Purchase Restrictions Amount for Fuel purchase"}
+    },
+    "productCodes": {
+      "pdfPages": [148, 168],
+      "categoryPage": 148,
+      "minimumRows": 370,
+      "fuelCategories": ["Motor fuel codes", "Aviation fuel codes", "Marine fuel codes", "Other fuel codes"],
+      "fuelInterpretation": "The restriction code's fuel-only behavior is modeled using the Petroleum Appendix B fuel categories, but Voyager-specific acceptance of every listed fuel category needs SME confirmation.",
+      "atl105": {
+        "2026-3": {"appendix": "F", "pages": [516, 537]},
+        "2026-4": {"appendix": "F", "pages": [523, 544]}
+      },
+      "expectedDifferences": {"onlyPetroleum": [], "onlyAtl105": ["541-549"]}
+    }
+  },
+  "openQuestions": [
+    {"id": "VYR-Q-SCOPE", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED", "question": "Approve the Voyager chapter scope and exclusions, including the deferral of appendices I-L."},
+    {"id": "VYR-Q-EXAMPLES", "owner": "Source reviewer", "status": "REVIEW_REQUIRED", "question": "Review both Voyager track examples against the rendered PDF and source card-validation method."},
+    {"id": "VYR-Q-EMV-SPEC", "owner": "BUYPASS representative", "status": "REVIEW_REQUIRED", "question": "Provide Voyager EMV terminal Specifications v1.5 or confirm the Truck Class details from an authoritative source."},
+    {"id": "VYR-Q-APPENDICES", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED", "question": "Complete the later independent validation of Petroleum Appendices I-L referenced for Voyager EMV prompt and terminal parameters."}
+  ]
+}

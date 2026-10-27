@@ -9,6 +9,92 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 > and spot-checked, but not every boundary was individually verified). Use them as a starting
 > point and refine with `grep_search`/`read_file` on `extracted_text.txt` if a lookup seems off.
 
+## Supplemental Petroleum source (2025-1)
+
+The [Petroleum Industry Processing specification](../BUYPASS_Platform_Petroleum_Industry_Processing_Specifications__2025-1.pdf)
+is stored beside the ATL105 2026-3 and 2026-4 PDFs, not substituted for either version.
+The complete 226-page document is available as [page-level retrieval evidence](petroleum-2025-1/pages.json),
+with a [bookmark index](petroleum-2025-1/source-index.json) covering 17 chapters and 13 appendices.
+Use [13 curated draft lessons](petroleum-2025-1/training-lessons.json) for source-grounded
+review, with [authoring input and open questions](petroleum-2025-1/training-input.json)
+and a [fingerprinted ingestion manifest](petroleum-2025-1/ingestion-manifest.json).
+
+The document covers AFP configuration and controller activities, POS/CAT transaction flows,
+receipts, Fleet One, Fuelman/Fleetwide, MasterCard Fleet, Visa Fleet, Voyager, WEX,
+COMDATA and WEX OTR processing, EMV and product/prompt code appendices. Full ingestion
+does not mean every rule is derived, taught or executable. Lessons remain
+`DRAFT_REVIEW_REQUIRED`; no canonical BR/TS/TC/TD records or certification gates are promoted.
+Petroleum appendix letters are document-local and must not be aliased to ATL105 appendices.
+Cross-version/card/flow reconciliation remains open, including the Introduction's
+Voyager section-10 references versus the chapter-9 bookmarks.
+
+Rebuild/check/test through `petroleum-ingest-build`, `petroleum-ingest-check` and
+`petroleum-ingest-test` in the framework task launcher. For read-only lexical retrieval:
+`python scripts/ingest-petroleum-spec.py --query "MasterCard expiration"` from the module root.
+Results are source candidates with physical PDF pages and printed page labels, not approved rules.
+
+ATL105 2026-3 and 2026-4 explicitly refer fleet processing to Petroleum in section 10.6
+(printed page 10-44), the fleet-card branch of Element 2, and issuer-rule notes for Elements 31,
+40, 47, 64, 108 and 158-163. The [cross-reference map](petroleum-2025-1/atl105-petroleum-cross-references.md)
+records all 13 occurrences per release with physical/printed pages, source quotes and fingerprints.
+It trains a bounded routing rule: use Petroleum for applicable fleet issuer requirements; retain
+ATL105 message, field, encoding and segment rules; do not broaden fleet-specific rules to credit,
+debit or EBT. All mapped entries remain draft/review-required.
+
+### Petroleum training plan and Mastercard Fleet pilot
+
+The [11-phase training plan](petroleum-2025-1/training-plan.json) defines steps, deliverables and
+acceptance criteria for phases 0 to 10, maps each framework gate exactly once and orders eight
+card or flow contexts covering chapters 2 to 17 and appendices A to M. The pilot,
+[MasterCard Fleet (chapter 7)](petroleum-2025-1/mastercard-fleet/training-report.md), has phases 0 to 7
+drafted and phase 8 partial. Phases 0 to 3 come from its [curated input](petroleum-2025-1/mastercard-fleet/context-input.json)
+in the [training package](petroleum-2025-1/mastercard-fleet/training-package.json): scope, a 36-item
+inventory covering all 17 chapter bookmarks plus the MasterCard Fleet row of Petroleum Appendix A and
+Petroleum Appendix B, 22 reconciliations against ATL105 2026-3 and 2026-4, source-verified Track 1/Track 2
+layouts, BIN ranges and example checks, and 377 Appendix B product-code rows compared row by row with
+ATL105 Appendix F (identical codes except ATL105-only 541-549). Two source conflicts are recorded: the
+odometer maximum (7 digits in Appendix A, 8 in chapter 7 and ATL105) and Product Restriction Codes other
+than 1 or 2. Phases 4 to 8 come from the
+[chain input](petroleum-2025-1/mastercard-fleet/chain-input.json) in the
+[chain package](petroleum-2025-1/mastercard-fleet/chain-package.json): a transaction by entry-mode
+matrix mapped to ATL105 Appendix G codes and Prompt Codes, 24 draft BRs, 60 TS/TC/TD chains whose
+expected outcomes are confirmed by a rule validator (three oracles flagged as conflicting), 8 covered flow
+transitions and 360 caught mutations.
+These draft chains are authored from source text, are not independent Test Solution evidence until SME
+review, and have not been executed. ATL105 message serialization is blocked by the existing Java compile
+error; phase 9 needs an AI package and phase 10 needs host execution and SME approval. The printed
+Track 1 example is one character short of its layout and is routed to source review. Rebuild/check/test
+through `petroleum-train-build`, `petroleum-train-check`, `petroleum-train-test` and `petroleum-chain-test`.
+
+The second context, [Visa Fleet (chapter 8)](petroleum-2025-1/visa-fleet/training-report.md), reuses the
+generic chain with a Visa plug-in (`scripts/petroleum_visa_fleet.py`) and has the same phase status. Its
+[curated input](petroleum-2025-1/visa-fleet/context-input.json) yields a 51-item inventory covering all 18
+chapter bookmarks plus the Visa Fleet rows of Appendices A and B, and 28 reconciliations. Its
+[chain input](petroleum-2025-1/visa-fleet/chain-input.json) yields card type 020 Prompt Codes, Service
+Prompt and Service Enhancement Indicator rules, 26 draft BRs, 62 TS/TC/TD chains (six oracles cite source
+conflicts), 10 covered flow transitions and 455 caught mutations. Recorded conflicts: the chapter 8 BIN list
+and Appendix A ranges differ (3 chapter-only BINs, many Appendix-only BINs), Service Enhancement Indicator
+values 3 to 9, and the 6-digit versus maximum-6-digit ID. Both printed track examples fail the BIN and
+Mod 10 checks and are routed to source review. Rebuild/check/test through `petroleum-visa-train-build`,
+`petroleum-visa-train-check` and `petroleum-visa-train-test`.
+
+The third rollout context, [Voyager Fleet (chapter 9)](petroleum-2025-1/voyager-fleet/training-report.md),
+covers pages 72-92, including magstripe, EMV, POS restrictions, terminal configuration and embossing.
+The [context input](petroleum-2025-1/voyager-fleet/context-input.json)
+and [training package](petroleum-2025-1/voyager-fleet/training-package.json) record 60 inventory items covering
+all 41 chapter bookmarks plus Appendix B, 26 reconciliations remain review-required, Appendix B's 377
+product-code rows are compared with ATL105 Appendix F, and both printed track examples remain review-required.
+Phases 4-7 are now drafted: the matrix, 35 BRs, 53 TS/TC/TD chains and 10 covered transitions are recorded
+in the [chain input](petroleum-2025-1/voyager-fleet/chain-input.json) and generated package. The Java compile
+blocker is fixed, but phase 8 is partial because the logical fixtures have not been serialized to actual
+Segment 100/101 wire; the available payload adapter validates observed wire rather than generating it.
+Phases 9 and 10 remain blocked
+pending an AI package, host execution and SME approval. These draft chains are not independent Test Solution evidence.
+The separate Voyager EMV terminal
+Specifications v1.5 is missing, so Truck Class details are explicitly open. Appendices I-L are referenced
+but deferred to the planned appendix rollout. Rebuild/check/test with `petroleum-voyager-train-build`,
+`petroleum-voyager-train-check` and `petroleum-voyager-train-test`.
+
 ## Chapters
 
 | Chapter | Title | Purpose | Approx. Line Range |
