@@ -392,3 +392,12 @@ capture pair, request-bound hashes, converter identity, framing manifest,
 line-bound source quotes and complete request context. It retains the Segment 100
 82-versus-78 source conflict as open SME item SEG111-SME-121 and does not synthesize
 captures or infer host acceptance.
+
+## 2026-10-27 Conexxus PSPC reference ingested
+
+The Conexxus Payment System Product Codes document cited by Appendix K-27 for Table 049 Sub Table 18's
+host-based restriction output (Appendix K Table 034) is now ingested as version 4.1. Register item
+`SEG111-SME-012` is `ANSWERED`. The PSPC version binding and the `ans32` packing format remain open SME confirmations.
+`SEG111-SME-003` (Visa versus MasterCard Enhanced Fleet scope) is unchanged. See the
+[PSPC training](../../../test-validation-strategy/pspc-payment-system-product-codes/README.md) and its
+[Validation Strategy](../../../test-validation-strategy/pspc-payment-system-product-codes/Validation%20Strategy.md).

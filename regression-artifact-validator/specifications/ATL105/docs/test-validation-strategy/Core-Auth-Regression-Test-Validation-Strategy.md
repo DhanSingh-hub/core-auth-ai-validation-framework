@@ -13,18 +13,20 @@
 2. Introduction
 3. Test Objective
 4. Project Testing Approach
-5. Test Phases
-6. Test Data
-7. Test Tools
-8. Test Schedule
-9. Sign-off Criteria
-10. Test Governance Process
-11. Defect Management Process
-12. Testing Deliverables
-13. Test Environments
-14. Roles and Responsibilities/RACI
-15. Risks and Issues
-16. Appendix A: ATL105 Demonstration
+5. Test Solution Training Procedure and Memory
+6. Test Phases
+7. Test Data
+8. Test Tools
+9. Test Schedule
+10. Sign-off Criteria
+11. Test Governance Process
+12. Defect Management Process
+13. Testing Deliverables
+14. Test Environments
+15. Roles and Responsibilities/RACI
+16. Risks and Issues
+17. Appendix A: ATL105 Demonstration
+18. Appendix B: All-Specification End State
 
 ## Version History and Approvals
 
@@ -36,6 +38,7 @@
 =======
 | 0.3 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
 >>>>>>> origin/Dhan_Singh_HTML
+| 0.4 | 2026-10-27 | Core Auth Test Validation Team | Ingested the missing ATL105 external reference Conexxus Payment System Product Codes v4.1 (Appendix K-27 Table 034), with an Element 77 crosswalk, PSPC BR/Test Coverage and Validation Strategy | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -255,6 +258,25 @@ BR-01 Mastercard credit financial purchase transaction processing
 
 The business BR stays at business level; segment-level Test Solution BRs are traceability evidence under each scenario. The context's trained package, review queue and gates are defined in the [training handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#transaction-context-training-mastercard-credit-purchase) and tracked under `transactionContextTraining` in `training-status.json`. AI artifacts for this context are validated against that package once an AI package is provisioned.
 
+### Application Functional Scope - External Reference Documents
+
+Some ATL105 rules delegate their value lists to documents outside the specification. Each external document is treated as a source. It is line-anchored, carries its own oracle, generator, chain package and tests, and has its own BR coverage, test coverage and validation strategy:
+
+| External reference | ATL105 2026-4 dependency | Authority | Training package |
+| --- | --- | --- | --- |
+| Conexxus Payment System Product Codes (PSPC) v4.1, 2022-05-12 | Appendix K-27: Table ID 034 Host-based Purchase Restriction values; gated by Appendix I-46 Table 049 Sub Table 18 | Normative for Table 034 values. Informative only for Element 77, which stays governed by Appendix F. | [README](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md) |
+
+The PSPC package contains:
+
+- 420 BRs and 2,032 executable TS/TC/TD chains.
+- Classification of all 1,000 codes.
+- A 1,000-code Element 77 crosswalk with 142 divergent codes flagged `REVIEW_REQUIRED`.
+- 21 Table 034 gating, structure and value cases.
+
+The open SME items are the PSPC version binding and Table 034 packing (SEG111-SME-012, `ANSWERED`), and Visa applicability (SEG111-SME-003).
+
+AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-14.
+
 ### Out of Scope
 
 - Auto-approval based only on AI claims.
@@ -349,6 +371,183 @@ SME/TBA availability is a required dependency for business approval. If no SME i
 - No unresolved traceability or semantic blockers remain.
 - Manual-review decisions are recorded.
 - Reports are published against exact package and specification-pack versions.
+
+## Test Solution Training Procedure and Memory
+
+This section is the single record of **how** the Test Solution is trained and **where** its trained memory lives. Anyone can use it to resume, reproduce, audit or extend training without relying on chat history.
+
+The [ATL105 Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) is the mandatory detailed standard. This section summarizes it, and it records the complete worked record for each external reference ingested.
+
+### Training Principles (apply to every step)
+
+1. **Source-only truth.** Every rule comes from an authoritative specification or reference document. It is cited by version, section/page and line. AI Solution artifacts are inputs under test and are never copied into training truth.
+2. **Fact, interpretation and open question are kept apart.** An instruction or derived interpretation is not silently converted into an approved rule.
+3. **No self-certification.** Agent- or automation-derived rules stay `REVIEW_REQUIRED` (or `DRAFT_REVIEW_REQUIRED`) until an SME/TBA signs off. `smeApproved` stays `false` until then.
+4. **Conflicts are preserved, not resolved by guessing.** Both claims are kept, the verdict is `REVIEW_REQUIRED`, and the question goes to the communication register.
+5. **Independent expected labels.** Expected results come from a generator that parses the source transcription. Verdicts come from a separately implemented validator. Tests fail if they disagree.
+6. **Classification is not eligibility.** A code or value being listed in a table never implies that a transaction is accepted, that a merchant is configured for it, or what the host will return.
+7. **Automatic update.** Every training-relevant decision updates the handbook, this strategy, the knowledge base, `training-status.json` and the register in the same change.
+
+### Standard Training Steps
+
+| Step | Activity | Gate in `training-status.json` | Output (memory) |
+| --- | --- | --- | --- |
+| 0 | Start from up-to-date `Develop`, run the existing test suite, and record pre-existing failures | — | Baseline failure list in the change notes |
+| 1 | **Source inventory.** Extract the PDF to page-marked text (`--- PAGE N ---`). Record version, section, page, line, applicability and ambiguity. Create canonical source anchors. | `SOURCE_INVENTORY` | `docs/specs/extracted_text*.txt`, anchors |
+| 2 | **Knowledge model.** Fields, order, type, length, valid values, message family, request/response role, external dependencies. | `SEGMENT_KNOWLEDGE_MODEL` | `docs/specs/kb/<area>/README.md`, rule catalogs |
+| 3 | **Context matrix.** Transaction type, card/network, entry mode, lifecycle role, companion segments, appendix and external-reference dependencies. | `CONTEXT_MATRIX` | Context envelopes in the KB |
+| 4 | **Independent BR derivation.** Condition, behavior, valid and invalid representation, expected result, boundary, anchor and review status. | `INDEPENDENT_BR_DERIVATION` | BR catalog / package `businessRequirements[]` |
+| 5 | **TS/TC/TD chain.** Given/When/Then, a concrete JSON TD per TC, and positive, negative, boundary, conditional and review cases. | `TS_TC_TEST_DATA_CHAIN` | `test-output/test-json/*-package.json` |
+| 6 | **Lifecycle and specialized flows.** | `LIFECYCLE_AND_SPECIALIZED_FLOWS` | Flow notes, lifecycle chains |
+| 7 | **Serialization and mutation.** Standard mutations MUT-001..010; at least 85% detection, and 100% for source-critical mutations. | `SERIALIZATION_AND_MUTATION` | Mutation results |
+| 8 | **Independent AI intake.** Normalize, match on canonical anchors, crosswalk only with evidence. | `INDEPENDENT_AI_ARTIFACT_INTAKE` | `test-output/ai-solution-independent-review/` |
+| 9 | **Converter and execution readiness.** | `CONVERTER_AND_EXECUTION_READINESS` | Execution evidence |
+| 10 | **Java proof (8-item framework).** Validator, comparison, independence, traceability, mutation definition and execution, enhancement, consolidated report. | — | `src/main/java/com/coreauth/validator/**`, `src/test/java/**` |
+| 11 | **Register and status.** Record open questions and answers in the communication register, regenerate the views, and update `training-status.json`. | — | Register JSON + generated views |
+| 12 | **Completion gate and sign-off checklist**, then commit to a branch and merge to `Develop`. | — | Commit |
+
+For every new or changed rule, the trainer records the handbook's **Required Training Record**:
+
+- source, version, page and section
+- segment, element and applicability
+- canonical anchor
+- condition, behavior and representations
+- the BR → TS → TC → TD links
+- positive, negative and boundary evidence
+- the validation result, reviewer, date and open items
+
+### Where the Trained Memory Lives
+
+| Memory store | Location | What it holds |
+| --- | --- | --- |
+| Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` (Conexxus PSPC) | Line-anchored text that every rule cites |
+| Knowledge base | `specifications/ATL105/docs/specs/kb/` ([index](../specs/kb/00-index.md)) | Segment, element and appendix training notes, rule catalogs, SME/TBA notes |
+| Training handbook | [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) | Mandatory process, gates, rules and lessons learned |
+| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, and per-reference BR/Test Coverage and Validation Strategy |
+| Executable oracles | `src/main/resources/atl105/*.json` | Machine-readable source oracles (for example the Appendix F and PSPC product-code oracles) |
+| Validators and generators | `src/main/java/com/coreauth/validator/canonical/`, `.../coverage/` | Independent verdict logic and expected-label generators |
+| Tests | `src/test/java/com/coreauth/validator/` | Replay of every TD; source-fidelity checks |
+| Chain packages | `specifications/ATL105/test-output/test-json/` | BR/TS/TC/TD packages and crosswalks |
+| Contract extensions | `specifications/ATL105/contract/` | Aliases and crosswalks. These are never authoritative coverage. |
+| Communication register | [atl105-communication-register.json](../../registers/atl105-communication-register.json) and the generated `registers/views/` and `kb/segment-*/…-sme-tba-input-register.md` | SME questions, answers, test-team items and AI feedback |
+| Training status | [training-status.json](../../training-status.json) | Gate status per segment, appendix, transaction context and external reference |
+
+### External Reference Document Training Procedure
+
+Use this procedure whenever ATL105 delegates values or rules to a document outside the specification. Examples are "refer to the … reference document" and "see the … specification".
+
+1. **Locate every dependency.** Search both ATL105 versions for the reference name and its synonyms. Record each anchor: section, page, line, and the field or table.
+2. **Confirm whether ATL105 already carries a copy.** For example, Appendix F is a copy of the product-code list. Decide which source is authoritative per field, and record that authority hierarchy.
+3. **Check version drift.** Diff the relevant ATL105 sections between the baseline (2026-3) and the current release (2026-4). Reuse existing oracles only when they are identical.
+4. **Store the source.** Copy the supplied file into `docs/specs/` under a versioned name, record its SHA-256, and extract it to page-marked `extracted_text_<ref>_v<version>.txt`.
+5. **Build the source oracle.** Generate the oracle with a parser that:
+   - preserves every row, verbatim description, range, page and line;
+   - asserts complete, non-overlapping coverage of the value space;
+   - throws on any unclassified source phrasing rather than guessing.
+6. **Implement an independent validator** with explicit modes for each ATL105 use of the reference.
+7. **Generate the chain package.** Create one BR per source row plus one BR per ATL105 usage rule. Give every BR at least one TS → TC → TD with concrete payloads and explicit expected outcomes, including FAIL and REVIEW_REQUIRED cases.
+8. **Crosswalk against any ATL105 copy.** Classify every value by relation. Divergent values are REVIEW_REQUIRED; never substitute one source for another.
+9. **Write the tests:**
+   - source fidelity (each row appears on its anchored lines);
+   - ATL105 anchors re-read from the current extract;
+   - handpicked boundaries and exceptions;
+   - a full replay of every TD;
+   - committed outputs equal to regenerated outputs.
+10. **Write the coverage and strategy documents.** In `docs/test-validation-strategy/<reference>/`, write a training README (memory), `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md`.
+11. **Link the knowledge base and record status.**
+    - Link from the KB index and every affected KB note.
+    - Answer or raise register items, then regenerate the register views.
+    - Add a `referenceTraining.<name>` entry to `training-status.json`.
+12. **Run the related regression tests.** Record any failure that predates the change.
+
+### Worked Training Record: Conexxus Payment System Product Codes (PSPC) v4.1
+
+**Trigger.** ATL105 was trained before this external reference was available. ATL105 2026-4 Appendix K-27 says: "For a full list of values supported in this field, please refer to the Conexxus PSPC reference document." The gap was open as `SEG111-SME-012` (training issue `APPI-T049-Q010`). The user supplied `private___resources_PaymentSystemProductCodes.pdf` on 2026-10-27 and asked for it to be ingested and trained.
+
+**Steps executed (2026-10-27):**
+
+| # | Step | Result / evidence |
+| --- | --- | --- |
+| 1 | Identified the document | Conexxus Payment System Product Codes **v4.1**, May 12 2022, 18 pages. Conexxus is the Registration Authority for the ASC X9.104 Part 2 product codes. SHA-256 `D2FB4F47D2C3AD3D77FBAA2FAF19FB15148799BDEC3B968E05D57ADDA15C1C19`. |
+| 2 | Searched ATL105 2026-3 and 2026-4 for `PSPC`, `Conexxus`, `PCATS`, `Payment System Product`, `Purchase Restriction` | Six dependencies found and anchored (next table). |
+| 3 | Diffed Appendix F 2026-3 vs 2026-4 (521 normalized body lines) | Identical, so the existing 2026-3 Appendix F oracle stays valid for 2026-4. Table 034 and Sub Table 18 text are also unchanged; only the line numbers moved. |
+| 4 | Stored the source | `docs/specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf`; extracted with `pypdf` to `docs/specs/extracted_text_pspc_v4.1.txt` (728 lines, page-marked). |
+| 5 | Prototyped the parser (Python), then implemented it in Java | 413 source rows, every code `000`-`999` exactly once. Handled: the `000` row layout quirk, wrapped rows `333`/`338`, the `∗` footnote on `032`/`033`, and category header ranges that are not rows. |
+| 6 | Classified assignment states | `ASSIGNED`, `DEPRECATED` (`<Deprecated>` marker), `RESERVED_CONEXXUS`, `RESERVED_PROPRIETARY`, `RESERVED_PREAUTHORIZATION` (`071`-`075`), `UNUSED` (`000`). |
+| 7 | Fixed two classifier defects found by fail-fast guards | "POS/Loyalty Reserved Discount 1-5" (`920`-`924`) and "Proprietary Prepaid Card Activate/Reload" (`568`/`569`) are **assigned** product names, not reservations. The guard now matches only "Undefined", "Reserved for…", "Proprietary Use" and "Proprietary Future". |
+| 8 | Captured the v4.1 release notes | Added codes `052`, `053`, `054`, `061`, `333`-`338` (flag `addedInV41`); these reuse codes deprecated in v3.7. |
+| 9 | Built `PaymentSystemProductCodeOracle` | Three modes: `CLASSIFICATION`, `ELEMENT_77_CROSSWALK`, `HOST_PURCHASE_RESTRICTION`. `transactionEligibility` is always `NOT_EVALUATED`. |
+| 10 | Generated the crosswalk of all 1,000 codes against Appendix F | 221 match, 621 neither assigned, 17 BUYPASS proprietary assignments, 1 both unused. **142 REVIEW_REQUIRED**: 83 description differs, 38 PSPC-only assigned, 13 Appendix F-only assigned, 6 PSPC deprecated. |
+| 11 | Generated the chain package | 420 BRs, 2,032 TS/TC/TD: 1,000 classification, 11 format, 1,000 crosswalk and 21 Table 034 TDs. |
+| 12 | Wrote `PaymentSystemProductCodeOracleTest` (6 tests) | Source fidelity, 2026-4 anchors, classification examples, crosswalk, Table 034 gating, full replay of 2,032 TDs. All pass. |
+| 13 | Updated the register | `SEG111-SME-012` → `ANSWERED` with resolution and evidence; regenerated the 54 register views. `SEG111-SME-003` is unchanged. |
+| 14 | Updated status and the knowledge base | Added `training-status.json` → `referenceTraining.conexxusPaymentSystemProductCodes`. Linked from the KB index, Appendix I/K overview, Appendix I README, Appendix F training note, appendix gap-closure register, and Segment 112 BR `AI-112-001-034`. |
+| 15 | Ran the regression tests | Green: PSPC (6), Appendix F (5), Appendix K catalog (3), communication register (8), repository structure (4), training-status consistency (1), canonical denominator (9). `AppendixCoverageConsistencyTest` already failed before this change on unrelated Appendix R/AE counts. |
+
+**ATL105 2026-4 dependencies on PSPC (memory):**
+
+| Anchor | Lines | Rule learned | Authority |
+| --- | --- | --- | --- |
+| Appendix K-27, Table 034 note | 36323-36324 | Table 034 value list = Conexxus PSPC | PSPC (normative) |
+| Appendix K-26, Table 034 layout | 36291-36310 | Table ID n3 `034`; Table Data `ans32`, 1-32 bytes; received only when the request sent Purchase Restriction Method `2` or `3` and the network returned a value; Visa Fleet EMV 2.0 and MC Enhanced Fleet EMV only | ATL105 |
+| Appendix I-46, Table 049 Sub Table 18 | 31849-31882 | `0` none, `1` chip only, `2` host only, `3` both. Mandatory for MC Enhanced Fleet (MCF/MGF) auth, pre-auth and completion. If absent, BUYPASS defaults to no restrictions. | ATL105 |
+| Appendix I-47 notice | 31895-31898 | MC Enhanced not in First Data production before June 2026 | ATL105 |
+| Section 13.2, Element 118 | 24752-24754 | Element 116 = `034` carries Host-based Purchase Restriction | ATL105 |
+| Appendix F-1 | 28593-28612 | Appendix F codes are the valid Element 77 entries | ATL105 Appendix F (PSPC informative only) |
+
+**Decisions recorded (memory):**
+
+- **Element 77 (Segments 102/157)** is validated against Appendix F only. PSPC v4.1 divergence is flagged, never substituted.
+- **Material meaning collisions** for Element 77. An AI artifact that applies the PSPC name to one of these codes goes to review:
+  - `006`-`010`, `016`-`018`, `025`, `033`, `035`, `037`-`040`
+  - `052`-`054`, `060`, `061`: Appendix F Ultra Low Sulfur products vs PSPC B1, Additized and Renewable Diesel
+  - `055`-`059`, `151`-`153`, `303`
+- **Table 034 values:**
+  - Assigned PSPC code → PASS.
+  - `000` → FAIL.
+  - Deprecated or any reserved code → REVIEW_REQUIRED.
+  - No explicit code list → REVIEW_REQUIRED. ATL105 does not define how codes are packed in `ans32`.
+- **Visa Fleet EMV 2.0 Table 034** → REVIEW_REQUIRED (`SEG111-SME-003`). MC Enhanced Fleet → evaluated. Any other program → FAIL.
+- **Range `800`-`899`** is PSPC "Reserved for Proprietary Use". BUYPASS uses `800`-`809` (debit surcharge) and `890`-`896` (FSA/HRA). The Appendix F `895`/`896` overview-versus-detail conflict stays REVIEW_REQUIRED.
+- **Assigned codes whose names contain "Reserved" or "Proprietary"** (`568`, `569`, `920`-`924`) are assigned products, not reservations.
+- **Validation rules VR-PSPC-01 to VR-PSPC-14** govern AI artifacts that cite PSPC. See [PSPC Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md).
+
+**Memory artifacts:**
+
+| Artifact | Path |
+| --- | --- |
+| Training memory | [pspc-payment-system-product-codes/README.md](pspc-payment-system-product-codes/README.md) |
+| BR coverage | [pspc-payment-system-product-codes/BR Coverage.md](pspc-payment-system-product-codes/BR%20Coverage.md) |
+| Test coverage | [pspc-payment-system-product-codes/Test Coverage.md](pspc-payment-system-product-codes/Test%20Coverage.md) |
+| Validation strategy | [pspc-payment-system-product-codes/Validation Strategy.md](pspc-payment-system-product-codes/Validation%20Strategy.md) |
+| Source PDF / extract | [PDF](../specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf), [extract](../specs/extracted_text_pspc_v4.1.txt) |
+| Source oracle | [pspc-product-code-oracle.json](../../../../src/main/resources/atl105/pspc-product-code-oracle.json) |
+| Validator | [PaymentSystemProductCodeOracle.java](../../../../src/main/java/com/coreauth/validator/canonical/PaymentSystemProductCodeOracle.java) |
+| Generator | [GeneratePaymentSystemProductCodeCoverage.java](../../../../src/main/java/com/coreauth/validator/coverage/GeneratePaymentSystemProductCodeCoverage.java) |
+| Test | [PaymentSystemProductCodeOracleTest.java](../../../../src/test/java/com/coreauth/validator/PaymentSystemProductCodeOracleTest.java) |
+| Chain package | [pspc-product-code-chain-package.json](../../test-output/test-json/pspc-product-code-chain-package.json) |
+| Crosswalk | [pspc-appendix-f-crosswalk.csv](../../test-output/test-json/pspc-appendix-f-crosswalk.csv) |
+| Status entry | `training-status.json` → `referenceTraining.conexxusPaymentSystemProductCodes` |
+| Register | `SEG111-SME-012` (ANSWERED), `SEG111-SME-003` (OPEN) |
+
+**Open items:**
+
+- SME confirmation that PSPC v4.1 is the version the networks apply.
+- The Table 034 `ans32` packing format.
+- Visa Fleet scope.
+- Element 77 rulings if PSPC names are ever accepted.
+- Merchant Dynamic Card Table eligibility.
+- Comparison of AI Solution artifacts once they are delivered.
+
+**Reproduce or retrain** (from `regression-artifact-validator`):
+
+```powershell
+mvn -q -DskipTests compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GeneratePaymentSystemProductCodeCoverage'
+mvn -q -DskipTests compile exec:java '-Dexec.mainClass=com.coreauth.validator.register.GenerateCommunicationRegisterViews'
+mvn '-Dtest=PaymentSystemProductCodeOracleTest,AppendixFProductCodeOracleTest,AppendixKTableCatalogTest,CommunicationRegisterTest' test
+```
+
+For a new PSPC version, follow steps 4-12 of the External Reference Document Training Procedure. Pay particular attention to the crosswalk diff for codes Conexxus has reused.
 
 ## Test Phases
 

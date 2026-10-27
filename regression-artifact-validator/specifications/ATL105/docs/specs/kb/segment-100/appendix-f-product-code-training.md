@@ -77,6 +77,20 @@ mvn '-Dtest=AppendixFProductCodeOracleTest' test
 
 The generator rewrites only the source oracle and its dedicated chain package. Any changed source row, gap, overlap or unexpected wrapped reservation text must be reviewed before accepting regenerated evidence.
 
+## Conexxus PSPC Cross-Reference (ATL105 2026-4)
+
+Appendix F is titled "Valid Payment Systems Product Codes" and is a BUYPASS/PCATS-era copy of the industry list. The industry list itself, Conexxus Payment System Product Codes v4.1 (2022-05-12), is now ingested. See the [PSPC training](../../../test-validation-strategy/pspc-payment-system-product-codes/README.md), [BR Coverage](../../../test-validation-strategy/pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](../../../test-validation-strategy/pspc-payment-system-product-codes/Test%20Coverage.md) and [Validation Strategy](../../../test-validation-strategy/pspc-payment-system-product-codes/Validation%20Strategy.md).
+
+- **Element 77 stays governed by Appendix F.** ATL105 2026-4 Appendix F-1 still says its codes are the valid Element 77 entries, and the Appendix F body is verified identical between 2026-3 and 2026-4. PSPC is normative only for Appendix K Table ID 034 (Host-based Purchase Restriction).
+- **The per-code crosswalk** ([CSV](../../../../test-output/test-json/pspc-appendix-f-crosswalk.csv)) finds 221 matching descriptions, 621 codes unassigned in both, and 17 BUYPASS proprietary assignments (`800`-`809`, `890`-`896`) inside the PSPC proprietary range `800`-`899`. It flags 142 divergent codes for review.
+- **Material collisions to guard against.** If an AI artifact uses a PSPC name for one of these codes in Element 77, route it to review:
+  - `006`-`010`, `016`-`018`, `025`, `033`, `035`, `037`-`040`
+  - `052`-`054`, `060`, `061`: Appendix F Ultra Low Sulfur products, which PSPC v4.1 reused for B1, Additized and Renewable Diesel
+  - `055`-`059`: Ultra Low Sulfur Biodiesel blends in Appendix F; reserved in PSPC
+  - `151`-`153`, `303`
+- **PSPC-only assignments** (`004`, `005`, `021`, `030`, `031`, `034`, `156`, `157`, `231`, `325`-`338`, `658`, `659`, `700`, `915`-`924`, `971`, `972`) remain Appendix F undefined or reserved entries for Element 77.
+- **The PSPC position on `800`-`899`** confirms that the FSA/HRA rows are BUYPASS proprietary assignments. It does not resolve the Appendix F `895`/`896` overview-versus-detail conflict, which stays `REVIEW_REQUIRED`.
+
 ## Source References
 
 - [ATL105 2026-3 Appendix F and Element 77](../../extracted_text.txt)

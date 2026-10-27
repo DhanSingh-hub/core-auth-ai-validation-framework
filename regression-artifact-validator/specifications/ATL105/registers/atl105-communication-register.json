@@ -1835,12 +1835,20 @@
       "channel": "SME_QUERY",
       "segments": ["111"],
       "subject": "Which version of Conexxus PSPC defines the host-restriction values and semantics referenced by these fleet layouts?",
-      "context": "Appendix K-26 lines 34007-34025 and K-27 lines 34038-34040, referenced by Appendix I Table 049. Training issue APPI-T049-Q010.",
+      "context": "Appendix K-26 lines 34007-34025 and K-27 lines 34038-34040 (2026-3; 2026-4 lines 36291-36310 and 36323-36324), referenced by Appendix I Table 049. Training issue APPI-T049-Q010.",
       "impact": "External host-restriction meaning is not inferred from numeric formatting.",
-      "status": "OPEN",
+      "status": "ANSWERED",
       "owner": "SME/TBA",
       "raisedOn": "2026-10-06",
-      "raisedBy": "Test Solution training assistant"
+      "raisedBy": "Test Solution training assistant",
+      "resolution": "The missing reference was supplied to the Test Team: Conexxus Payment System Product Codes Version 4.1 (May 12, 2022; X9.104 Part 2 registration authority list). It is ingested as the PSPC source oracle (413 rows, codes 000-999) and applied to Appendix K Table 034 value semantics: assigned codes PASS, code 000 FAIL, deprecated or reserved codes REVIEW_REQUIRED. ATL105 2026-4 still names no PSPC version, and does not define how codes are packed into the ans32 Table Data; both remain REVIEW_REQUIRED until an SME confirms. Element 77 stays governed by ATL105 Appendix F.",
+      "evidence": [
+        "specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf",
+        "specifications/ATL105/docs/specs/extracted_text_pspc_v4.1.txt",
+        "src/main/resources/atl105/pspc-product-code-oracle.json",
+        "specifications/ATL105/test-output/test-json/pspc-product-code-chain-package.json",
+        "specifications/ATL105/docs/test-validation-strategy/pspc-payment-system-product-codes/README.md"
+      ]
     },
     {
       "id": "SEG111-SME-013",
