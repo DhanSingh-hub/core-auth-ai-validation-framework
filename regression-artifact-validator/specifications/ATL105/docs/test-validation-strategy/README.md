@@ -8,7 +8,7 @@
 - [RAID Log](RAID-Log.md)
 - [Expected Questions and Answers](Expected-Questions-and-Answers.md)
 - [Core Auth Regression Test Validation Strategy](Core-Auth-Regression-Test-Validation-Strategy.md), including the Test Solution training procedure and memory record
-- External reference: Conexxus Payment System Product Codes (PSPC) v4.1. [Training memory](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md)
+- External reference: Conexxus Payment System Product Codes (PSPC) v3.7 and v4.1. [Training record](Conexxus-PSPC-Training-Record.md), [training memory](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md)
 - [Browser Presentation](presentations/AI-Generation-Output-Validation-Presentation.html)
 - [PDF Presentation](presentations/AI-Generation-Output-Validation-Presentation.pdf)
 

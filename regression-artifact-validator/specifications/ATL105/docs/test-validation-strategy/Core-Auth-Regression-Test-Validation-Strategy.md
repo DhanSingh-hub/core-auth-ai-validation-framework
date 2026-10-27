@@ -39,6 +39,7 @@
 | 0.3 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
 >>>>>>> origin/Dhan_Singh_HTML
 | 0.4 | 2026-10-27 | Core Auth Test Validation Team | Ingested the missing ATL105 external reference Conexxus Payment System Product Codes v4.1 (Appendix K-27 Table 034), with an Element 77 crosswalk, PSPC BR/Test Coverage and Validation Strategy | Working review |
+| 0.5 | 2026-10-27 | Core Auth Test Validation Team | Ingested Conexxus PSPC v3.7 (`PaymentSystemProductCodes_3.pdf`). Trained both versions with a v3.7 → v4.1 diff (62 version-sensitive codes). Unbound Table 034 codes are judged against both versions. Recorded the Appendix F lineage and the [PSPC training record](Conexxus-PSPC-Training-Record.md). | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -264,18 +265,19 @@ Some ATL105 rules delegate their value lists to documents outside the specificat
 
 | External reference | ATL105 2026-4 dependency | Authority | Training package |
 | --- | --- | --- | --- |
-| Conexxus Payment System Product Codes (PSPC) v4.1, 2022-05-12 | Appendix K-27: Table ID 034 Host-based Purchase Restriction values; gated by Appendix I-46 Table 049 Sub Table 18 | Normative for Table 034 values. Informative only for Element 77, which stays governed by Appendix F. | [README](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md) |
+| Conexxus Payment System Product Codes (PSPC) v3.7 (2015-09-04) and v4.1 (2022-05-12) | Appendix K-27: Table ID 034 Host-based Purchase Restriction values; gated by Appendix I-46 Table 049 Sub Table 18. ATL105 names no PSPC version. | Normative for Table 034 values; an unbound code must hold in both versions. Informative only for Element 77, which stays governed by Appendix F. | [Training record](Conexxus-PSPC-Training-Record.md), [README](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md) |
 
-The PSPC package contains:
+The PSPC packages contain:
 
-- 420 BRs and 2,032 executable TS/TC/TD chains.
-- Classification of all 1,000 codes.
-- A 1,000-code Element 77 crosswalk with 142 divergent codes flagged `REVIEW_REQUIRED`.
-- 21 Table 034 gating, structure and value cases.
+- 817 BRs and 5,043 executable TS/TC/TD chains: the v4.1 package has 421 BRs and 2,043 chains; the v3.7 package has 396 BRs and 3,000 chains.
+- Classification of all 1,000 codes in each version.
+- Element 77 crosswalks: 142 (v4.1) and 104 (v3.7) divergent codes flagged `REVIEW_REQUIRED`.
+- A 1,000-code v3.7 → v4.1 diff with 62 version-sensitive codes.
+- 32 Table 034 gating, structure, version and value cases.
 
 The open SME items are the PSPC version binding and Table 034 packing (SEG111-SME-012, `ANSWERED`), and Visa applicability (SEG111-SME-003).
 
-AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-14.
+AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-15.
 
 ### Out of Scope
 
@@ -420,10 +422,10 @@ For every new or changed rule, the trainer records the handbook's **Required Tra
 
 | Memory store | Location | What it holds |
 | --- | --- | --- |
-| Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` (Conexxus PSPC) | Line-anchored text that every rule cites |
+| Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` and `extracted_text_pspc_v3.7.txt` (Conexxus PSPC) | Line-anchored text that every rule cites |
 | Knowledge base | `specifications/ATL105/docs/specs/kb/` ([index](../specs/kb/00-index.md)) | Segment, element and appendix training notes, rule catalogs, SME/TBA notes |
 | Training handbook | [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) | Mandatory process, gates, rules and lessons learned |
-| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, and per-reference BR/Test Coverage and Validation Strategy |
+| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, per-reference training records (for example [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md)), and per-reference BR/Test Coverage and Validation Strategy |
 | Executable oracles | `src/main/resources/atl105/*.json` | Machine-readable source oracles (for example the Appendix F and PSPC product-code oracles) |
 | Validators and generators | `src/main/java/com/coreauth/validator/canonical/`, `.../coverage/` | Independent verdict logic and expected-label generators |
 | Tests | `src/test/java/com/coreauth/validator/` | Replay of every TD; source-fidelity checks |
@@ -460,7 +462,7 @@ Use this procedure whenever ATL105 delegates values or rules to a document outsi
     - Add a `referenceTraining.<name>` entry to `training-status.json`.
 12. **Run the related regression tests.** Record any failure that predates the change.
 
-### Worked Training Record: Conexxus Payment System Product Codes (PSPC) v4.1
+### Worked Training Record: Conexxus Payment System Product Codes (PSPC) v4.1 and v3.7
 
 **Trigger.** ATL105 was trained before this external reference was available. ATL105 2026-4 Appendix K-27 says: "For a full list of values supported in this field, please refer to the Conexxus PSPC reference document." The gap was open as `SEG111-SME-012` (training issue `APPI-T049-Q010`). The user supplied `private___resources_PaymentSystemProductCodes.pdf` on 2026-10-27 and asked for it to be ingested and trained.
 
@@ -475,7 +477,7 @@ Use this procedure whenever ATL105 delegates values or rules to a document outsi
 | 5 | Prototyped the parser (Python), then implemented it in Java | 413 source rows, every code `000`-`999` exactly once. Handled: the `000` row layout quirk, wrapped rows `333`/`338`, the `∗` footnote on `032`/`033`, and category header ranges that are not rows. |
 | 6 | Classified assignment states | `ASSIGNED`, `DEPRECATED` (`<Deprecated>` marker), `RESERVED_CONEXXUS`, `RESERVED_PROPRIETARY`, `RESERVED_PREAUTHORIZATION` (`071`-`075`), `UNUSED` (`000`). |
 | 7 | Fixed two classifier defects found by fail-fast guards | "POS/Loyalty Reserved Discount 1-5" (`920`-`924`) and "Proprietary Prepaid Card Activate/Reload" (`568`/`569`) are **assigned** product names, not reservations. The guard now matches only "Undefined", "Reserved for…", "Proprietary Use" and "Proprietary Future". |
-| 8 | Captured the v4.1 release notes | Added codes `052`, `053`, `054`, `061`, `333`-`338` (flag `addedInV41`); these reuse codes deprecated in v3.7. |
+| 8 | Captured the v4.1 release notes | Added codes `052`, `053`, `054`, `061`, `333`-`338` (oracle field `releaseNoteAddedCodes`, row flag `addedInRelease`); these reuse codes deprecated in v3.7. |
 | 9 | Built `PaymentSystemProductCodeOracle` | Three modes: `CLASSIFICATION`, `ELEMENT_77_CROSSWALK`, `HOST_PURCHASE_RESTRICTION`. `transactionEligibility` is always `NOT_EVALUATED`. |
 | 10 | Generated the crosswalk of all 1,000 codes against Appendix F | 221 match, 621 neither assigned, 17 BUYPASS proprietary assignments, 1 both unused. **142 REVIEW_REQUIRED**: 83 description differs, 38 PSPC-only assigned, 13 Appendix F-only assigned, 6 PSPC deprecated. |
 | 11 | Generated the chain package | 420 BRs, 2,032 TS/TC/TD: 1,000 classification, 11 format, 1,000 crosswalk and 21 Table 034 TDs. |
@@ -510,29 +512,51 @@ Use this procedure whenever ATL105 delegates values or rules to a document outsi
 - **Visa Fleet EMV 2.0 Table 034** → REVIEW_REQUIRED (`SEG111-SME-003`). MC Enhanced Fleet → evaluated. Any other program → FAIL.
 - **Range `800`-`899`** is PSPC "Reserved for Proprietary Use". BUYPASS uses `800`-`809` (debit surcharge) and `890`-`896` (FSA/HRA). The Appendix F `895`/`896` overview-versus-detail conflict stays REVIEW_REQUIRED.
 - **Assigned codes whose names contain "Reserved" or "Proprietary"** (`568`, `569`, `920`-`924`) are assigned products, not reservations.
-- **Validation rules VR-PSPC-01 to VR-PSPC-14** govern AI artifacts that cite PSPC. See [PSPC Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md).
+- **Validation rules VR-PSPC-01 to VR-PSPC-15** govern AI artifacts that cite PSPC. See [PSPC Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md).
+
+**Addendum: PSPC v3.7 ingestion (2026-10-27).** The user supplied `PaymentSystemProductCodes_3.pdf` with the same request: ingest it wherever ATL105 needs it, fill the missing details and train the Test Solution. It is Conexxus PSPC **v3.7** (September 4, 2015, 15 pages, SHA-256 `3BFE56DAF181CD25661787CDD61BFE921A89DDE68B179EAB13CFEC32FB0F4B21`), the release before v4.x reused deprecated codes. The full step-by-step record is in [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md).
+
+| # | Step | Result / evidence |
+| --- | --- | --- |
+| 16 | Identified the second document | PSPC v3.7, not a copy of v4.1. ATL105 2026-4 still names no version, so both versions are trained. |
+| 17 | Stored the source | `docs/specs/Conexxus_Payment_System_Product_Codes_Version_3.7_2015-09-04.pdf`; `docs/specs/extracted_text_pspc_v3.7.txt` (596 lines) |
+| 18 | Made the generator version-aware | `Source` records (`V37`, `V41`) with per-version paths and ID prefixes. Handles wrapped lone-code rows (v3.7 `179`). v3.7 reserves `700`-`799` (no Cannabinoids table). Release-note codes parsed generically (`325`-`332` in v3.7). |
+| 19 | Parsed v3.7 | 394 rows; codes `000`-`999` exactly once; 312 assigned, 25 deprecated |
+| 20 | Diffed v3.7 → v4.1 | 905 unchanged, 33 renamed, **62 version-sensitive**: 24 newly assigned, 12 reused after deprecation, 13 deprecated → reserved, 6 newly deprecated, 7 state changes |
+| 21 | Crosswalked v3.7 against Appendix F | 104 REVIEW_REQUIRED; **no** Appendix F-only assignments. Appendix F follows the numbering from before the v3.5 deprecations: 14 of the 25 deprecated v3.7 rows match Appendix F exactly, 10 differ in wording, and only `035` differs in product. |
+| 22 | Extended the validator | `referenceVersion` (`3.7`/`4.1`); `VERSION_DIFF` mode; unbound Table 034 codes judged against both versions, with disagreement → REVIEW_REQUIRED and `versionSensitive: true` |
+| 23 | Extended the chain packages | v4.1: 421 BRs, 2,043 TDs (new `BR-PSPC-T034-VERSION`, 32 Table 034 cases). New v3.7 package: 396 BRs, 3,000 TDs (classification, crosswalk, diff). |
+| 24 | Rewrote the test | `PaymentSystemProductCodeOracleTest` 7/7, replaying all 5,043 TDs (4,704 PASS, 320 REVIEW_REQUIRED, 19 FAIL as expected) |
+| 25 | Updated memory | SEG111-SME-012 resolution and evidence; `training-status.json` (`suppliedVersions`, `versionSensitiveCodeCount` 62); PSPC README, BR/Test Coverage, Validation Strategy (VR-PSPC-15); this strategy; the handbook; KB notes |
+
+**Additional decisions (v3.7):**
+
+- **Unbound Table 034 codes** must hold in v3.7 *and* v4.1. For example, `052` is deprecated Ultra Low Sulfur #1 in v3.7 but B1 Diesel in v4.1, so it is REVIEW_REQUIRED unless a version is stated. `001` and `062` are assigned in both, so they PASS.
+- **Element 77** keeps the old Appendix F meaning for every code v4.1 reused after deprecation (`016`-`018`, `037`-`040`, `052`-`054`, `060`, `061`).
+- **Classification** without a stated version defaults to v4.1, the latest supplied version. It never implies eligibility.
 
 **Memory artifacts:**
 
 | Artifact | Path |
 | --- | --- |
+| Training record | [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md) |
 | Training memory | [pspc-payment-system-product-codes/README.md](pspc-payment-system-product-codes/README.md) |
 | BR coverage | [pspc-payment-system-product-codes/BR Coverage.md](pspc-payment-system-product-codes/BR%20Coverage.md) |
 | Test coverage | [pspc-payment-system-product-codes/Test Coverage.md](pspc-payment-system-product-codes/Test%20Coverage.md) |
 | Validation strategy | [pspc-payment-system-product-codes/Validation Strategy.md](pspc-payment-system-product-codes/Validation%20Strategy.md) |
-| Source PDF / extract | [PDF](../specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf), [extract](../specs/extracted_text_pspc_v4.1.txt) |
-| Source oracle | [pspc-product-code-oracle.json](../../../../src/main/resources/atl105/pspc-product-code-oracle.json) |
+| Source PDFs / extracts | v4.1: [PDF](../specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf), [extract](../specs/extracted_text_pspc_v4.1.txt); v3.7: [PDF](../specs/Conexxus_Payment_System_Product_Codes_Version_3.7_2015-09-04.pdf), [extract](../specs/extracted_text_pspc_v3.7.txt) |
+| Source oracles | [v4.1](../../../../src/main/resources/atl105/pspc-product-code-oracle.json), [v3.7](../../../../src/main/resources/atl105/pspc-product-code-oracle-v3.7.json) |
 | Validator | [PaymentSystemProductCodeOracle.java](../../../../src/main/java/com/coreauth/validator/canonical/PaymentSystemProductCodeOracle.java) |
 | Generator | [GeneratePaymentSystemProductCodeCoverage.java](../../../../src/main/java/com/coreauth/validator/coverage/GeneratePaymentSystemProductCodeCoverage.java) |
 | Test | [PaymentSystemProductCodeOracleTest.java](../../../../src/test/java/com/coreauth/validator/PaymentSystemProductCodeOracleTest.java) |
-| Chain package | [pspc-product-code-chain-package.json](../../test-output/test-json/pspc-product-code-chain-package.json) |
-| Crosswalk | [pspc-appendix-f-crosswalk.csv](../../test-output/test-json/pspc-appendix-f-crosswalk.csv) |
+| Chain packages | [v4.1](../../test-output/test-json/pspc-product-code-chain-package.json), [v3.7](../../test-output/test-json/pspc-v3.7-product-code-chain-package.json) |
+| Crosswalks and diff | [v4.1 vs Appendix F](../../test-output/test-json/pspc-appendix-f-crosswalk.csv), [v3.7 vs Appendix F](../../test-output/test-json/pspc-v3.7-appendix-f-crosswalk.csv), [v3.7 → v4.1](../../test-output/test-json/pspc-version-diff-v3.7-v4.1.csv) |
 | Status entry | `training-status.json` → `referenceTraining.conexxusPaymentSystemProductCodes` |
 | Register | `SEG111-SME-012` (ANSWERED), `SEG111-SME-003` (OPEN) |
 
 **Open items:**
 
-- SME confirmation that PSPC v4.1 is the version the networks apply.
+- SME confirmation of which PSPC version (v3.7, v4.1 or later) the networks apply. This would resolve the 62 version-sensitive codes.
 - The Table 034 `ans32` packing format.
 - Visa Fleet scope.
 - Element 77 rulings if PSPC names are ever accepted.
@@ -547,7 +571,7 @@ mvn -q -DskipTests compile exec:java '-Dexec.mainClass=com.coreauth.validator.re
 mvn '-Dtest=PaymentSystemProductCodeOracleTest,AppendixFProductCodeOracleTest,AppendixKTableCatalogTest,CommunicationRegisterTest' test
 ```
 
-For a new PSPC version, follow steps 4-12 of the External Reference Document Training Procedure. Pay particular attention to the crosswalk diff for codes Conexxus has reused.
+For a new PSPC version, follow steps 4-12 of the External Reference Document Training Procedure and section 6 of the PSPC Validation Strategy (add a `Source` entry). Pay particular attention to the version diff for codes Conexxus has reused.
 
 ## Test Phases
 

@@ -8,52 +8,62 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Evaluates Conexxus Payment System Product Codes (PSPC) referenced by ATL105 2026-4:
- * CLASSIFICATION of a PSPC code, ELEMENT_77_CROSSWALK against ATL105 Appendix F, and
- * HOST_PURCHASE_RESTRICTION for Appendix K Table ID 034.
+ * CLASSIFICATION of a PSPC code, ELEMENT_77_CROSSWALK against ATL105 Appendix F,
+ * VERSION_DIFF between the supplied PSPC versions, and HOST_PURCHASE_RESTRICTION
+ * for Appendix K Table ID 034. ATL105 names no PSPC version, so an unbound Table 034
+ * code is judged against every supplied version.
  */
 public final class PaymentSystemProductCodeOracle {
     public static final String VISA_FLEET = "VISA_FLEET_EMV_2_0";
     public static final String MASTERCARD_ENHANCED_FLEET = "MASTERCARD_ENHANCED_FLEET_EMV";
+    public static final String LATEST_VERSION = "4.1";
+    public static final String EARLIER_VERSION = "3.7";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final int MAX_TABLE_DATA = 32;
     private static final Set<String> CONSISTENT = Set.of("BOTH_UNUSED", "DESCRIPTION_MATCH", "NEITHER_ASSIGNED", "APPENDIX_F_PROPRIETARY_ASSIGNMENT");
-    private final Map<String, JsonNode> pspc;
+    private final Map<String, Map<String, JsonNode>> pspc = new LinkedHashMap<>();
     private final Map<String, JsonNode> appendixF;
     private final Set<String> appendixFConflicts = new HashSet<>();
-    private final String version;
 
     public PaymentSystemProductCodeOracle() throws IOException {
-        JsonNode source = load("/atl105/pspc-product-code-oracle.json");
+        pspc.put(EARLIER_VERSION, index(load("/atl105/pspc-product-code-oracle-v3.7.json"), EARLIER_VERSION));
+        pspc.put(LATEST_VERSION, index(load("/atl105/pspc-product-code-oracle.json"), LATEST_VERSION));
         JsonNode appendix = load("/atl105/appendix-f-product-code-oracle.json");
-        pspc = index(source, "PSPC");
         appendixF = index(appendix, "Appendix F");
         appendix.path("sourceConflict").path("codes").forEach(code -> appendixFConflicts.add(code.asText()));
-        version = source.path("version").asText();
     }
 
     public ObjectNode evaluate(JsonNode payload) {
         ObjectNode result = MAPPER.createObjectNode();
         result.put("outcome", "FAIL");
-        result.put("referenceVersion", version);
         result.put("transactionEligibility", "NOT_EVALUATED");
         if (payload == null || !payload.isObject()) return result.put("reason", "Payload must be an object");
-        return switch (payload.path("mode").asText()) {
-            case "CLASSIFICATION" -> classification(payload.path("ProductCode"), result);
-            case "ELEMENT_77_CROSSWALK" -> crosswalk(payload.path("ProductCode"), result);
-            case "HOST_PURCHASE_RESTRICTION" -> hostPurchaseRestriction(payload, result);
+        String mode = payload.path("mode").asText();
+        if ("VERSION_DIFF".equals(mode)) return versionDiff(payload.path("ProductCode"), result);
+        JsonNode requested = payload.path("referenceVersion");
+        String version = requested.isMissingNode() || requested.isNull() ? null : requested.asText();
+        if (version != null && !pspc.containsKey(version)) {
+            return result.put("reason", "Unsupported PSPC referenceVersion; supplied versions are " + pspc.keySet());
+        }
+        return switch (mode) {
+            case "CLASSIFICATION" -> classification(payload.path("ProductCode"), version == null ? LATEST_VERSION : version, result);
+            case "ELEMENT_77_CROSSWALK" -> crosswalk(payload.path("ProductCode"), version == null ? LATEST_VERSION : version, result);
+            case "HOST_PURCHASE_RESTRICTION" -> hostPurchaseRestriction(payload, version, result);
             default -> result.put("reason", "Unsupported assertion mode");
         };
     }
 
-    private ObjectNode classification(JsonNode input, ObjectNode result) {
+    private ObjectNode classification(JsonNode input, String version, ObjectNode result) {
+        result.put("referenceVersion", version);
         if (!wellFormed(input)) return result.put("reason", "ProductCode must be a string of exactly three ASCII digits");
-        JsonNode row = pspc.get(input.textValue());
+        JsonNode row = pspc.get(version).get(input.textValue());
         result.put("outcome", "PASS");
         for (String field : new String[]{"category", "assignment", "description", "deprecated", "sourceRange", "sourceAnchor"}) {
             result.set(field, row.path(field).deepCopy());
@@ -61,10 +71,11 @@ public final class PaymentSystemProductCodeOracle {
         return result;
     }
 
-    private ObjectNode crosswalk(JsonNode input, ObjectNode result) {
+    private ObjectNode crosswalk(JsonNode input, String version, ObjectNode result) {
+        result.put("referenceVersion", version);
         if (!wellFormed(input)) return result.put("reason", "ProductCode must be a string of exactly three ASCII digits");
         String code = input.textValue();
-        JsonNode p = pspc.get(code);
+        JsonNode p = pspc.get(version).get(code);
         JsonNode a = appendixF.get(code);
         String pAssignment = p.path("assignment").asText();
         String aAssignment = a.path("assignment").asText();
@@ -96,7 +107,36 @@ public final class PaymentSystemProductCodeOracle {
         return result;
     }
 
-    private ObjectNode hostPurchaseRestriction(JsonNode payload, ObjectNode result) {
+    private ObjectNode versionDiff(JsonNode input, ObjectNode result) {
+        if (!wellFormed(input)) return result.put("reason", "ProductCode must be a string of exactly three ASCII digits");
+        JsonNode older = pspc.get(EARLIER_VERSION).get(input.textValue());
+        JsonNode newer = pspc.get(LATEST_VERSION).get(input.textValue());
+        String before = older.path("assignment").asText();
+        String after = newer.path("assignment").asText();
+        boolean reserved = before.startsWith("RESERVED_");
+        String relation;
+        if (before.equals(after) && (reserved || comparable(older.path("description").asText()).equals(comparable(newer.path("description").asText())))) {
+            relation = "UNCHANGED";
+        } else if ("ASSIGNED".equals(before) && "ASSIGNED".equals(after)) {
+            relation = "RENAMED";
+        } else if ("ASSIGNED".equals(after)) {
+            relation = "DEPRECATED".equals(before) ? "REUSED_AFTER_DEPRECATION" : reserved ? "NEWLY_ASSIGNED" : "STATE_CHANGED";
+        } else if ("DEPRECATED".equals(after)) {
+            relation = "ASSIGNED".equals(before) ? "NEWLY_DEPRECATED" : "STATE_CHANGED";
+        } else {
+            relation = "DEPRECATED".equals(before) && after.startsWith("RESERVED_") ? "DEPRECATED_TO_RESERVED" : "STATE_CHANGED";
+        }
+        boolean sensitive = !"UNCHANGED".equals(relation) && !"RENAMED".equals(relation);
+        result.put("outcome", sensitive ? "REVIEW_REQUIRED" : "PASS");
+        result.put("relation", relation);
+        result.put("versionSensitive", sensitive);
+        result.putObject("v" + EARLIER_VERSION).put("assignment", before).put("description", older.path("description").asText());
+        result.putObject("v" + LATEST_VERSION).put("assignment", after).put("description", newer.path("description").asText());
+        return result;
+    }
+
+    private ObjectNode hostPurchaseRestriction(JsonNode payload, String version, ObjectNode result) {
+        result.put("referenceVersion", version == null ? "UNBOUND" : version);
         ArrayNode checks = result.putArray("checks");
         check(checks, "TABLE_ID", "034".equals(payload.path("tableId").asText()) && payload.path("tableId").isTextual() ? "PASS" : "FAIL",
                 "Appendix K-26: Table ID n3 fixed value 034");
@@ -130,25 +170,42 @@ public final class PaymentSystemProductCodeOracle {
                 if (!wellFormed(code)) {
                     outcome = "FAIL";
                     entry.put("reason", "PSPC code must be three ASCII digits");
+                } else if (version != null) {
+                    outcome = valueOutcome(pspc.get(version).get(code.textValue()), entry.putObject("v" + version));
                 } else {
-                    JsonNode row = pspc.get(code.textValue());
-                    String assignment = row.path("assignment").asText();
-                    entry.put("assignment", assignment).put("description", row.path("description").asText());
-                    outcome = switch (assignment) {
-                        case "ASSIGNED" -> "PASS";
-                        case "UNUSED" -> "FAIL";
-                        default -> "REVIEW_REQUIRED";
-                    };
+                    String first = null;
+                    boolean agree = true;
+                    for (var byVersion : pspc.entrySet()) {
+                        String perVersion = valueOutcome(byVersion.getValue().get(code.textValue()), entry.putObject("v" + byVersion.getKey()));
+                        if (first == null) first = perVersion;
+                        else if (!first.equals(perVersion)) agree = false;
+                    }
+                    entry.put("versionSensitive", !agree);
+                    outcome = agree ? first : "REVIEW_REQUIRED";
+                    if (!agree) entry.put("reason", "PSPC version is not bound by ATL105 and the supplied versions disagree for this code (SEG111-SME-012)");
                 }
                 entry.put("outcome", outcome);
                 worst = worse(worst, outcome);
             }
-            check(checks, "VALUE_SEMANTICS", worst, "Each code is resolved against Conexxus PSPC v" + version
-                    + "; deprecated and reserved codes are not defined products in this version");
+            check(checks, "VALUE_SEMANTICS", worst, version == null
+                    ? "Each code is resolved against every supplied PSPC version " + pspc.keySet() + "; disagreement between versions is REVIEW_REQUIRED"
+                    : "Each code is resolved against Conexxus PSPC v" + version + "; deprecated and reserved codes are not defined products");
         }
         String overall = "PASS";
         for (JsonNode item : checks) overall = worse(overall, item.path("outcome").asText());
         return result.put("outcome", overall);
+    }
+
+    private static String valueOutcome(JsonNode row, ObjectNode target) {
+        String assignment = row.path("assignment").asText();
+        target.put("assignment", assignment).put("description", row.path("description").asText());
+        String outcome = switch (assignment) {
+            case "ASSIGNED" -> "PASS";
+            case "UNUSED" -> "FAIL";
+            default -> "REVIEW_REQUIRED";
+        };
+        target.put("outcome", outcome);
+        return outcome;
     }
 
     private static ObjectNode check(ArrayNode checks, String name, String outcome, String reason) {

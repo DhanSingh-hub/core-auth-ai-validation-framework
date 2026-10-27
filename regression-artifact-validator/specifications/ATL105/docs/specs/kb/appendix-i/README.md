@@ -396,7 +396,7 @@ captures or infer host acceptance.
 ## 2026-10-27 Conexxus PSPC reference ingested
 
 The Conexxus Payment System Product Codes document cited by Appendix K-27 for Table 049 Sub Table 18's
-host-based restriction output (Appendix K Table 034) is now ingested as version 4.1. Register item
+host-based restriction output (Appendix K Table 034) is now ingested in versions 4.1 and 3.7 (62 codes differ between them; unbound codes must agree in both). Register item
 `SEG111-SME-012` is `ANSWERED`. The PSPC version binding and the `ans32` packing format remain open SME confirmations.
 `SEG111-SME-003` (Visa versus MasterCard Enhanced Fleet scope) is unchanged. See the
 [PSPC training](../../../test-validation-strategy/pspc-payment-system-product-codes/README.md) and its

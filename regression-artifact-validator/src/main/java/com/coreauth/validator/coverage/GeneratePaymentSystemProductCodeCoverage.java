@@ -13,37 +13,64 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Ingests the Conexxus Payment System Product Codes (PSPC) reference that ATL105 2026-4 Appendix K-27
- * (Table ID 034) points to, and cross-references it with ATL105 Appendix F (Element 77).
+ * (Table ID 034) points to, and cross-references it with ATL105 Appendix F (Element 77). ATL105 does not
+ * name a PSPC version, so every supplied version is ingested and compared.
  */
 public final class GeneratePaymentSystemProductCodeCoverage {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final JsonNodeFactory NODES = JsonNodeFactory.instance;
-    public static final String PSPC_VERSION = "4.1";
     public static final String ATL105_VERSION = "2026-4";
-    public static final Path SOURCE = Path.of("specifications/ATL105/docs/specs/extracted_text_pspc_v4.1.txt");
-    public static final Path SOURCE_PDF = Path.of("specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf");
     public static final Path ATL105_2026_4 = Path.of("specifications/ATL105/docs/specs/extracted_text_new.txt");
     public static final Path ATL105_2026_3 = Path.of("specifications/ATL105/docs/specs/extracted_text.txt");
     public static final Path APPENDIX_F_ORACLE = Path.of("src/main/resources/atl105/appendix-f-product-code-oracle.json");
-    public static final Path ORACLE = Path.of("src/main/resources/atl105/pspc-product-code-oracle.json");
-    public static final Path CHAINS = Path.of("specifications/ATL105/test-output/test-json/pspc-product-code-chain-package.json");
-    public static final Path CROSSWALK = Path.of("specifications/ATL105/test-output/test-json/pspc-appendix-f-crosswalk.csv");
+
+    public record Source(String version, String date, Path text, Path pdf, Path oracle, Path chains, Path crosswalk, String idPrefix) {
+    }
+
+    public static final Source V41 = new Source("4.1", "2022-05-12",
+            Path.of("specifications/ATL105/docs/specs/extracted_text_pspc_v4.1.txt"),
+            Path.of("specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf"),
+            Path.of("src/main/resources/atl105/pspc-product-code-oracle.json"),
+            Path.of("specifications/ATL105/test-output/test-json/pspc-product-code-chain-package.json"),
+            Path.of("specifications/ATL105/test-output/test-json/pspc-appendix-f-crosswalk.csv"),
+            "PSPC");
+    public static final Source V37 = new Source("3.7", "2015-09-04",
+            Path.of("specifications/ATL105/docs/specs/extracted_text_pspc_v3.7.txt"),
+            Path.of("specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_3.7_2015-09-04.pdf"),
+            Path.of("src/main/resources/atl105/pspc-product-code-oracle-v3.7.json"),
+            Path.of("specifications/ATL105/test-output/test-json/pspc-v3.7-product-code-chain-package.json"),
+            Path.of("specifications/ATL105/test-output/test-json/pspc-v3.7-appendix-f-crosswalk.csv"),
+            "PSPC37");
+    public static final List<Source> SOURCES = List.of(V37, V41);
+    public static final Path VERSION_DIFF = Path.of("specifications/ATL105/test-output/test-json/pspc-version-diff-v3.7-v4.1.csv");
+
+    /** Latest supplied version; retained names used by existing callers. */
+    public static final String PSPC_VERSION = V41.version();
+    public static final Path SOURCE = V41.text();
+    public static final Path SOURCE_PDF = V41.pdf();
+    public static final Path ORACLE = V41.oracle();
+    public static final Path CHAINS = V41.chains();
+    public static final Path CROSSWALK = V41.crosswalk();
 
     private static final Pattern PAGE = Pattern.compile("^--- PAGE (\\d+) ---$");
     private static final Pattern ROW = Pattern.compile("^(.*?\\S)\\s+(\\d{3})(?:\\s*-\\s*(\\d{3}))?$");
-    private static final Pattern RELEASE_NOTE = Pattern.compile("^\u2022 (\\d{3}):\\s+.+$");
+    private static final Pattern LONE_CODE = Pattern.compile("^(\\d{3})(?:\\s*-\\s*(\\d{3}))?$");
+    private static final Pattern NOTE_CODE = Pattern.compile("(\\d{3})(?:-(\\d{3}))?(?=[:)])");
     private static final Pattern APPENDIX_F_NOISE = Pattern.compile("^(--- PAGE.*|BUYPASS.*|Software Version.*|Specification Release.*|\\w+ \\d\\d, 20\\d\\d|Appendix F-\\d+)$");
     private static final Set<String> CATEGORY_HEADERS = Set.of("001-099", "100-149", "150-174", "175-224", "225-249", "250-299",
             "300-399", "400-599", "560-590", "600-624", "650-699", "700-719", "900-949", "950-999");
+    private static final Set<String> STABLE_RELATIONS = Set.of("UNCHANGED", "RENAMED");
     private static final String FOOTNOTE_MARKER = "\u2217";
     private static final String FOOTNOTE_032_033 = "Code 032 and 033 should only be used by existing implementations that limit fuel to codes 001-099. "
             + "The preferred codes are 311-320, which provide more granularity. 032 and 033 are likely to be deprecated in the future.";
@@ -52,31 +79,54 @@ public final class GeneratePaymentSystemProductCodeCoverage {
     }
 
     public static void main(String[] args) throws Exception {
-        ObjectNode oracle = sourceOracle(SOURCE);
-        Files.createDirectories(ORACLE.getParent());
-        MAPPER.writerWithDefaultPrettyPrinter().writeValue(ORACLE.toFile(), oracle);
         JsonNode appendixF = MAPPER.readTree(APPENDIX_F_ORACLE.toFile());
-        Map<String, ObjectNode> crosswalk = crosswalk(oracle, appendixF);
+        Map<String, ObjectNode> oracles = new LinkedHashMap<>();
+        for (Source source : SOURCES) {
+            ObjectNode oracle = sourceOracle(source);
+            oracles.put(source.version(), oracle);
+            Files.createDirectories(source.oracle().getParent());
+            MAPPER.writerWithDefaultPrettyPrinter().writeValue(source.oracle().toFile(), oracle);
+            Map<String, ObjectNode> crosswalk = crosswalk(oracle, appendixF);
+            Files.writeString(source.crosswalk(), crosswalkCsv(crosswalk), StandardCharsets.UTF_8);
+            System.out.printf("PSPC v%s rows=%d codes=1000 crosswalk=%s%n", source.version(), oracle.path("rows").size(), relationCounts(crosswalk));
+        }
+        Map<String, ObjectNode> diff = versionDiff(oracles.get(V37.version()), oracles.get(V41.version()));
+        Files.writeString(VERSION_DIFF, versionDiffCsv(diff), StandardCharsets.UTF_8);
+        System.out.printf("Version diff v3.7->v4.1=%s%n", diffCounts(diff));
         Files.createDirectories(CHAINS.getParent());
-        MAPPER.writerWithDefaultPrettyPrinter().writeValue(CHAINS.toFile(), chains(oracle, crosswalk));
-        Files.writeString(CROSSWALK, crosswalkCsv(crosswalk), StandardCharsets.UTF_8);
-        System.out.printf("PSPC v%s rows=%d codes=1000 crosswalk=%s%n", PSPC_VERSION, oracle.path("rows").size(), relationCounts(crosswalk));
+        MAPPER.writerWithDefaultPrettyPrinter().writeValue(V41.chains().toFile(), chains(oracles.get(V41.version()), crosswalk(oracles.get(V41.version()), appendixF)));
+        MAPPER.writerWithDefaultPrettyPrinter().writeValue(V37.chains().toFile(),
+                legacyChains(oracles.get(V37.version()), crosswalk(oracles.get(V37.version()), appendixF), diff));
     }
 
-    public static ObjectNode sourceOracle(Path source) throws Exception {
-        List<String> lines = Files.readAllLines(source, StandardCharsets.UTF_8);
+    public static Source source(Path text) {
+        for (Source source : SOURCES) {
+            if (source.text().equals(text)) return source;
+        }
+        throw new IllegalArgumentException("Unknown PSPC source " + text);
+    }
+
+    public static ObjectNode sourceOracle(Path text) throws Exception {
+        return sourceOracle(source(text));
+    }
+
+    public static ObjectNode sourceOracle(Source source) throws Exception {
+        List<String> lines = Files.readAllLines(source.text(), StandardCharsets.UTF_8);
         ObjectNode oracle = MAPPER.createObjectNode();
         oracle.put("reference", "Conexxus Payment System Product Codes (PSPC)");
         oracle.put("publisher", "Conexxus, Inc. (Registration Authority for ASC X9.104 Part 2 product codes)");
-        oracle.put("version", PSPC_VERSION);
-        oracle.put("versionDate", "2022-05-12");
+        oracle.put("version", source.version());
+        oracle.put("versionDate", source.date());
         oracle.put("scope", "SOURCE_CLASSIFICATION_ONLY_NOT_TRANSACTION_ACCEPTANCE");
-        oracle.put("source", path(source));
-        oracle.put("sourcePdf", path(SOURCE_PDF));
-        oracle.put("versionBinding", "ATL105 2026-4 Appendix K-27 names the Conexxus PSPC document without a version. Version 4.1 is the copy supplied to the Test Team; see register item SEG111-SME-012.");
+        oracle.put("source", path(source.text()));
+        oracle.put("sourcePdf", path(source.pdf()));
+        oracle.put("versionBinding", "ATL105 2026-4 Appendix K-27 names the Conexxus PSPC document without a version. Versions 3.7 and 4.1 were supplied to the Test Team; "
+                + "codes whose meaning differs between them stay REVIEW_REQUIRED unless a version is bound (register item SEG111-SME-012).");
+        ArrayNode suppliedVersions = oracle.putArray("suppliedVersions");
+        SOURCES.forEach(item -> suppliedVersions.add(item.version()));
         oracle.set("atl105References", atl105References());
         oracle.set("appendixFVersionCheck", appendixFVersionCheck());
-        oracle.set("releaseNotesV41Codes", releaseNotes(lines));
+        oracle.set("releaseNoteAddedCodes", releaseNotes(lines, source.version()));
         ArrayNode rows = oracle.putArray("rows");
         boolean[] seen = new boolean[1000];
         boolean started = false;
@@ -93,14 +143,31 @@ public final class GeneratePaymentSystemProductCodeCoverage {
                 continue;
             }
             if (!started || line.isEmpty()) continue;
-            var row = ROW.matcher(line);
-            if (!row.matches()) continue;
-            int start = Integer.parseInt(row.group(2));
-            int end = row.group(3) == null ? start : Integer.parseInt(row.group(3));
-            String range = row.group(3) == null ? code(start) : code(start) + "-" + code(end);
-            String description = row.group(1).strip();
+            Matcher row = ROW.matcher(line);
+            Matcher lone = LONE_CODE.matcher(line);
+            String startText;
+            String endText;
+            String description;
             int firstLine = index + 1;
             String sourceNote = null;
+            if (lone.matches()) {
+                int previous = index - 1;
+                while (previous >= 0 && lines.get(previous).isBlank()) previous--;
+                startText = lone.group(1);
+                endText = lone.group(2);
+                description = lines.get(previous).strip();
+                firstLine = previous + 1;
+                sourceNote = "The PDF text layer wraps this row: the description and the code are on separate lines.";
+            } else if (row.matches()) {
+                startText = row.group(2);
+                endText = row.group(3);
+                description = row.group(1).strip();
+            } else {
+                continue;
+            }
+            int start = Integer.parseInt(startText);
+            int end = endText == null ? start : Integer.parseInt(endText);
+            String range = endText == null ? code(start) : code(start) + "-" + code(end);
             if (line.equals("Fuel and Fuel-Related Services 000")) {
                 description = lines.get(index - 1).strip();
                 firstLine = index;
@@ -108,13 +175,13 @@ public final class GeneratePaymentSystemProductCodeCoverage {
             } else if (description.startsWith("(")) {
                 description = lines.get(index - 1).strip() + " " + description;
                 firstLine = index;
-            } else if (CATEGORY_HEADERS.contains(range)) {
+            } else if (!lone.matches() && CATEGORY_HEADERS.contains(range)) {
                 continue;
             }
             boolean footnote = description.endsWith(FOOTNOTE_MARKER);
             if (footnote) description = description.substring(0, description.length() - 1).strip();
-            String category = category(start);
-            if (!category.equals(category(end))) throw new IllegalStateException("Row spans categories " + range);
+            String category = category(start, source.version());
+            if (!category.equals(category(end, source.version()))) throw new IllegalStateException("Row spans categories " + range);
             String assignment = assignment(start, description);
             ObjectNode entry = rows.addObject();
             entry.put("startCode", code(start));
@@ -124,23 +191,23 @@ public final class GeneratePaymentSystemProductCodeCoverage {
             entry.put("category", category);
             entry.put("assignment", assignment);
             entry.put("deprecated", "DEPRECATED".equals(assignment));
-            entry.put("addedInV41", false);
+            entry.put("addedInRelease", false);
             if (footnote) entry.put("sourceFootnote", FOOTNOTE_032_033);
             if (sourceNote != null) entry.put("sourceNote", sourceNote);
-            entry.set("sourceAnchor", pspcAnchor(page, "pspc-row-" + code(start), firstLine, index + 1));
+            entry.set("sourceAnchor", pspcAnchor(source.version(), page, "pspc-row-" + code(start), firstLine, index + 1));
             for (int value = start; value <= end; value++) {
-                if (seen[value]) throw new IllegalStateException("Overlapping PSPC code " + code(value));
+                if (seen[value]) throw new IllegalStateException("Overlapping PSPC v" + source.version() + " code " + code(value));
                 seen[value] = true;
             }
         }
         for (int value = 0; value < 1000; value++) {
-            if (!seen[value]) throw new IllegalStateException("Missing PSPC code " + code(value));
+            if (!seen[value]) throw new IllegalStateException("Missing PSPC v" + source.version() + " code " + code(value));
         }
         Set<String> added = new HashSet<>();
-        oracle.path("releaseNotesV41Codes").forEach(node -> added.add(node.asText()));
+        oracle.path("releaseNoteAddedCodes").forEach(node -> added.add(node.asText()));
         for (JsonNode row : rows) {
             if (added.contains(row.path("startCode").asText()) && row.path("startCode").equals(row.path("endCode"))) {
-                ((ObjectNode) row).put("addedInV41", true);
+                ((ObjectNode) row).put("addedInRelease", true);
             }
         }
         return oracle;
@@ -163,7 +230,7 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         return result;
     }
 
-    static String category(int code) {
+    static String category(int code, String version) {
         if (code == 0) return "UNUSED";
         if (code <= 99) return "DISPENSED_MOTOR_FUEL";
         if (code <= 149) return "VEHICLE_PRODUCT_SERVICE";
@@ -177,25 +244,36 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         if (code <= 624) return "PACKAGED_FUEL";
         if (code <= 649) return "RESERVED_CONEXXUS_TABLE";
         if (code <= 699) return "VEHICLE_PRODUCT_SERVICE";
-        if (code <= 719) return "CANNABINOID";
+        // The Cannabinoids table (700-719) first appears in version 4.0; earlier versions reserve 700-799.
+        if (code <= 719) return "3.7".equals(version) ? "RESERVED_CONEXXUS_TABLE" : "CANNABINOID";
         if (code <= 799) return "RESERVED_CONEXXUS_TABLE";
         if (code <= 899) return "RESERVED_PROPRIETARY_TABLE";
         if (code <= 949) return "NEGATIVE";
         return "ADMINISTRATIVE";
     }
 
-    private static ArrayNode releaseNotes(List<String> lines) {
-        ArrayNode codes = MAPPER.createArrayNode();
-        int page = 0;
+    private static ArrayNode releaseNotes(List<String> lines, String version) {
+        StringBuilder block = new StringBuilder();
+        boolean inBlock = false;
         for (String raw : lines) {
             String line = raw.strip();
-            var pageMatch = PAGE.matcher(line);
-            if (pageMatch.matches()) page = Integer.parseInt(pageMatch.group(1));
-            var note = RELEASE_NOTE.matcher(line);
-            if (page == 6 && note.matches()) codes.add(note.group(1));
+            if (line.startsWith("Release Notes for Version " + version)) inBlock = true;
+            if (line.equals("DESCRIPTION CODE")) break;
+            if (inBlock && !PAGE.matcher(line).matches()) block.append(' ').append(line);
         }
-        if (codes.size() != 10) throw new IllegalStateException("Expected ten v4.1 release-note codes, found " + codes.size());
-        return codes;
+        if (block.isEmpty()) throw new IllegalStateException("Release notes for version " + version + " not found");
+        Set<String> codes = new LinkedHashSet<>();
+        Matcher matcher = NOTE_CODE.matcher(block);
+        while (matcher.find()) {
+            int start = Integer.parseInt(matcher.group(1));
+            int end = matcher.group(2) == null ? start : Integer.parseInt(matcher.group(2));
+            for (int value = start; value <= end; value++) codes.add(code(value));
+        }
+        int expected = "4.1".equals(version) ? 10 : "3.7".equals(version) ? 8 : -1;
+        if (codes.size() != expected) throw new IllegalStateException("Unexpected v" + version + " release-note codes " + codes);
+        ArrayNode result = MAPPER.createArrayNode();
+        codes.forEach(result::add);
+        return result;
     }
 
     private static ArrayNode atl105References() throws Exception {
@@ -301,6 +379,43 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         return result;
     }
 
+    /** Classifies how each code changed between an older and a newer PSPC version. */
+    public static Map<String, ObjectNode> versionDiff(JsonNode older, JsonNode newer) {
+        Map<String, JsonNode> before = expand(older);
+        Map<String, JsonNode> after = expand(newer);
+        Map<String, ObjectNode> result = new TreeMap<>();
+        for (int value = 0; value < 1000; value++) {
+            String product = code(value);
+            JsonNode o = before.get(product);
+            JsonNode n = after.get(product);
+            String oa = o.path("assignment").asText();
+            String na = n.path("assignment").asText();
+            boolean sameDescription = sameText(o.path("description").asText(), n.path("description").asText());
+            String relation;
+            if (oa.equals(na) && (sameDescription || oa.startsWith("RESERVED_"))) relation = "UNCHANGED";
+            else if ("ASSIGNED".equals(oa) && "ASSIGNED".equals(na)) relation = "RENAMED";
+            else if ("DEPRECATED".equals(oa) && "ASSIGNED".equals(na)) relation = "REUSED_AFTER_DEPRECATION";
+            else if (oa.startsWith("RESERVED_") && "ASSIGNED".equals(na)) relation = "NEWLY_ASSIGNED";
+            else if ("ASSIGNED".equals(oa) && "DEPRECATED".equals(na)) relation = "NEWLY_DEPRECATED";
+            else if ("DEPRECATED".equals(oa) && na.startsWith("RESERVED_")) relation = "DEPRECATED_TO_RESERVED";
+            else relation = "STATE_CHANGED";
+            boolean sensitive = !STABLE_RELATIONS.contains(relation);
+            ObjectNode entry = MAPPER.createObjectNode();
+            entry.put("code", product);
+            entry.put("relation", relation);
+            entry.put("versionSensitive", sensitive);
+            entry.put("outcome", sensitive ? "REVIEW_REQUIRED" : "PASS");
+            entry.put("olderVersion", older.path("version").asText());
+            entry.put("olderAssignment", oa);
+            entry.put("olderDescription", o.path("description").asText());
+            entry.put("newerVersion", newer.path("version").asText());
+            entry.put("newerAssignment", na);
+            entry.put("newerDescription", n.path("description").asText());
+            result.put(product, entry);
+        }
+        return result;
+    }
+
     private static boolean sameText(String left, String right) {
         return normalize(left).equals(normalize(right));
     }
@@ -326,11 +441,23 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         return counts;
     }
 
+    public static Map<String, Integer> diffCounts(Map<String, ObjectNode> diff) {
+        return relationCounts(diff);
+    }
+
     public static String crosswalkCsv(Map<String, ObjectNode> crosswalk) {
-        String[] columns = {"code", "relation", "outcome", "element77Authority", "appendixFSourceConflict", "pspcAssignment", "pspcCategory",
-                "pspcDescription", "appendixFTable", "appendixFAssignment", "appendixFDescription"};
+        return csv(crosswalk, "code", "relation", "outcome", "element77Authority", "appendixFSourceConflict", "pspcAssignment", "pspcCategory",
+                "pspcDescription", "appendixFTable", "appendixFAssignment", "appendixFDescription");
+    }
+
+    public static String versionDiffCsv(Map<String, ObjectNode> diff) {
+        return csv(diff, "code", "relation", "versionSensitive", "outcome", "olderVersion", "olderAssignment", "olderDescription",
+                "newerVersion", "newerAssignment", "newerDescription");
+    }
+
+    private static String csv(Map<String, ObjectNode> entries, String... columns) {
         StringBuilder csv = new StringBuilder(String.join(",", columns)).append('\n');
-        for (ObjectNode entry : crosswalk.values()) {
+        for (ObjectNode entry : entries.values()) {
             List<String> cells = new ArrayList<>();
             for (String column : columns) cells.add(csvCell(entry.path(column).asText()));
             csv.append(String.join(",", cells)).append('\n');
@@ -342,45 +469,13 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         return value.matches(".*[,\"\\n].*") ? '"' + value.replace("\"", "\"\"") + '"' : value;
     }
 
+    /** Latest-version package: classification, Element 77 crosswalk, format and Table 034 chains. */
     public static ObjectNode chains(JsonNode oracle, Map<String, ObjectNode> crosswalk) {
-        ObjectNode pack = MAPPER.createObjectNode();
-        pack.putObject("manifest").put("packageId", "ATL105-PSPC-PRODUCT-CODE-REFERENCE").put("specification", "ATL105")
-                .put("specificationVersion", ATL105_VERSION).put("reference", "Conexxus PSPC").put("referenceVersion", PSPC_VERSION);
-        pack.put("scope", "PSPC classification, Element 77 crosswalk and Appendix K Table 034 host purchase restriction harness; not merchant eligibility, network packing, converter or SME certification");
-        pack.put("status", "PARTIALLY_COVERED");
-        pack.putArray("businessRequirements");
-        pack.putArray("testScenarios");
-        pack.putArray("testCases");
-        pack.putArray("testData");
-        Map<String, JsonNode> anchors = new LinkedHashMap<>();
-        oracle.path("atl105References").forEach(ref -> anchors.put(ref.path("id").asText(), ref));
-
-        int classification = 0;
-        for (JsonNode row : oracle.path("rows")) {
-            String br = "BR-PSPC-ROW-" + row.path("startCode").asText();
-            addRequirement(pack, br, "Preserve PSPC v" + PSPC_VERSION + " row " + row.path("sourceRange").asText() + " (" + row.path("description").asText() + ") with its category and assignment state.",
-                    "SOURCE_CLASSIFICATION_ONLY", row.path("sourceAnchor"));
-            for (int value = Integer.parseInt(row.path("startCode").asText()); value <= Integer.parseInt(row.path("endCode").asText()); value++) {
-                String product = code(value);
-                ObjectNode expected = MAPPER.createObjectNode().put("outcome", "PASS")
-                        .put("category", row.path("category").asText()).put("assignment", row.path("assignment").asText())
-                        .put("description", row.path("description").asText()).put("deprecated", row.path("deprecated").asBoolean());
-                ObjectNode payload = MAPPER.createObjectNode().put("mode", "CLASSIFICATION").put("ProductCode", product);
-                addChain(pack, br, "CLASSIFY-" + product, payload, expected, row.path("sourceAnchor"));
-                classification++;
-            }
-        }
-
-        JsonNode element77 = anchors.get("APPX-F-ELEMENT-77-AUTHORITY");
-        addRequirement(pack, "BR-PSPC-XWALK-E77", "Element 77 values remain governed by ATL105 Appendix F; PSPC v" + PSPC_VERSION + " divergence is flagged for review and never substituted.",
-                "ELEMENT_77_CROSSWALK", element77);
-        int review = 0;
-        for (ObjectNode entry : crosswalk.values()) {
-            ObjectNode expected = MAPPER.createObjectNode().put("outcome", entry.path("outcome").asText()).put("relation", entry.path("relation").asText());
-            if ("REVIEW_REQUIRED".equals(entry.path("outcome").asText())) review++;
-            ObjectNode payload = MAPPER.createObjectNode().put("mode", "ELEMENT_77_CROSSWALK").put("ProductCode", entry.path("code").asText());
-            addChain(pack, "BR-PSPC-XWALK-E77", "XWALK-" + entry.path("code").asText(), payload, expected, element77);
-        }
+        ObjectNode pack = newPackage("ATL105-PSPC-PRODUCT-CODE-REFERENCE", oracle.path("version").asText(),
+                "PSPC classification, Element 77 crosswalk and Appendix K Table 034 host purchase restriction harness; not merchant eligibility, network packing, converter or SME certification");
+        Map<String, JsonNode> anchors = anchors(oracle);
+        int classification = classificationChains(pack, oracle, V41.idPrefix(), false);
+        int review = crosswalkChains(pack, crosswalk, V41.idPrefix(), anchors.get("APPX-F-ELEMENT-77-AUTHORITY"), null);
 
         addRequirement(pack, "BR-PSPC-FORMAT", "A PSPC product code is a string of exactly three ASCII digits.", "FORMAT_ONLY", anchors.get("APPX-F-ELEMENT-77-AUTHORITY"));
         JsonNode[] inputs = {NODES.textNode("001"), NODES.textNode("999"), NODES.textNode("000"), NODES.textNode("1"), NODES.textNode("0001"),
@@ -388,7 +483,7 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         for (int index = 0; index < inputs.length; index++) {
             ObjectNode payload = MAPPER.createObjectNode().put("mode", "CLASSIFICATION");
             payload.set("ProductCode", inputs[index]);
-            addChain(pack, "BR-PSPC-FORMAT", "FORMAT-" + index, payload, MAPPER.createObjectNode().put("outcome", index < 3 ? "PASS" : "FAIL"), anchors.get("APPX-F-ELEMENT-77-AUTHORITY"));
+            addChain(pack, V41.idPrefix(), "BR-PSPC-FORMAT", "FORMAT-" + index, payload, MAPPER.createObjectNode().put("outcome", index < 3 ? "PASS" : "FAIL"), anchors.get("APPX-F-ELEMENT-77-AUTHORITY"));
         }
 
         int hostCases = hostRestrictionChains(pack, anchors);
@@ -403,6 +498,92 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         return pack;
     }
 
+    /** Earlier-version package: classification, Element 77 crosswalk and the version-to-version diff. */
+    public static ObjectNode legacyChains(JsonNode oracle, Map<String, ObjectNode> crosswalk, Map<String, ObjectNode> diff) {
+        String version = oracle.path("version").asText();
+        ObjectNode pack = newPackage("ATL105-PSPC-V" + version + "-PRODUCT-CODE-REFERENCE", version,
+                "PSPC v" + version + " classification, Element 77 crosswalk and v" + version + " to v" + V41.version() + " version diff; not merchant eligibility, network packing, converter or SME certification");
+        Map<String, JsonNode> anchors = anchors(oracle);
+        int classification = classificationChains(pack, oracle, V37.idPrefix(), true);
+        int review = crosswalkChains(pack, crosswalk, V37.idPrefix(), anchors.get("APPX-F-ELEMENT-77-AUTHORITY"), version);
+        JsonNode pointer = anchors.get("APPX-K-034-PSPC-REFERENCE");
+        addRequirement(pack, "BR-PSPC-VERSION-DIFF", "Every code whose assignment state or meaning changed between PSPC v" + version + " and v" + V41.version()
+                + " is version-sensitive and stays REVIEW_REQUIRED unless the PSPC version is bound.", "VERSION_DIFF", pointer);
+        int sensitive = 0;
+        for (ObjectNode entry : diff.values()) {
+            if (entry.path("versionSensitive").asBoolean()) sensitive++;
+            ObjectNode payload = MAPPER.createObjectNode().put("mode", "VERSION_DIFF").put("ProductCode", entry.path("code").asText());
+            ObjectNode expected = MAPPER.createObjectNode().put("outcome", entry.path("outcome").asText())
+                    .put("relation", entry.path("relation").asText()).put("versionSensitive", entry.path("versionSensitive").asBoolean());
+            addChain(pack, V37.idPrefix(), "BR-PSPC-VERSION-DIFF", "DIFF-" + entry.path("code").asText(), payload, expected, pointer);
+        }
+        ObjectNode summary = pack.putObject("coverageSummary");
+        summary.put("pspcSourceRows", oracle.path("rows").size()).put("classificationTestData", classification)
+                .put("crosswalkTestData", crosswalk.size()).put("crosswalkReviewRequired", review).put("crosswalkConsistent", crosswalk.size() - review)
+                .put("versionDiffTestData", diff.size()).put("versionSensitiveCodes", sensitive).put("versionStableCodes", diff.size() - sensitive)
+                .put("transactionEligibilityCertified", false).put("smeApproved", false);
+        ObjectNode relations = summary.putObject("crosswalkRelations");
+        relationCounts(crosswalk).forEach(relations::put);
+        ObjectNode diffRelations = summary.putObject("versionDiffRelations");
+        diffCounts(diff).forEach(diffRelations::put);
+        return pack;
+    }
+
+    private static ObjectNode newPackage(String id, String version, String scope) {
+        ObjectNode pack = MAPPER.createObjectNode();
+        pack.putObject("manifest").put("packageId", id).put("specification", "ATL105")
+                .put("specificationVersion", ATL105_VERSION).put("reference", "Conexxus PSPC").put("referenceVersion", version);
+        pack.put("scope", scope);
+        pack.put("status", "PARTIALLY_COVERED");
+        pack.putArray("businessRequirements");
+        pack.putArray("testScenarios");
+        pack.putArray("testCases");
+        pack.putArray("testData");
+        return pack;
+    }
+
+    private static Map<String, JsonNode> anchors(JsonNode oracle) {
+        Map<String, JsonNode> anchors = new LinkedHashMap<>();
+        oracle.path("atl105References").forEach(ref -> anchors.put(ref.path("id").asText(), ref));
+        return anchors;
+    }
+
+    private static int classificationChains(ObjectNode pack, JsonNode oracle, String prefix, boolean explicitVersion) {
+        String version = oracle.path("version").asText();
+        int count = 0;
+        for (JsonNode row : oracle.path("rows")) {
+            String br = "BR-" + prefix + "-ROW-" + row.path("startCode").asText();
+            addRequirement(pack, br, "Preserve PSPC v" + version + " row " + row.path("sourceRange").asText() + " (" + row.path("description").asText() + ") with its category and assignment state.",
+                    "SOURCE_CLASSIFICATION_ONLY", row.path("sourceAnchor"));
+            for (int value = Integer.parseInt(row.path("startCode").asText()); value <= Integer.parseInt(row.path("endCode").asText()); value++) {
+                String product = code(value);
+                ObjectNode expected = MAPPER.createObjectNode().put("outcome", "PASS")
+                        .put("category", row.path("category").asText()).put("assignment", row.path("assignment").asText())
+                        .put("description", row.path("description").asText()).put("deprecated", row.path("deprecated").asBoolean());
+                ObjectNode payload = MAPPER.createObjectNode().put("mode", "CLASSIFICATION").put("ProductCode", product);
+                if (explicitVersion) payload.put("referenceVersion", version);
+                addChain(pack, prefix, br, "CLASSIFY-" + product, payload, expected, row.path("sourceAnchor"));
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private static int crosswalkChains(ObjectNode pack, Map<String, ObjectNode> crosswalk, String prefix, JsonNode anchor, String version) {
+        String br = "BR-" + prefix + "-XWALK-E77";
+        addRequirement(pack, br, "Element 77 values remain governed by ATL105 Appendix F; PSPC v" + (version == null ? V41.version() : version)
+                + " divergence is flagged for review and never substituted.", "ELEMENT_77_CROSSWALK", anchor);
+        int review = 0;
+        for (ObjectNode entry : crosswalk.values()) {
+            ObjectNode expected = MAPPER.createObjectNode().put("outcome", entry.path("outcome").asText()).put("relation", entry.path("relation").asText());
+            if ("REVIEW_REQUIRED".equals(entry.path("outcome").asText())) review++;
+            ObjectNode payload = MAPPER.createObjectNode().put("mode", "ELEMENT_77_CROSSWALK").put("ProductCode", entry.path("code").asText());
+            if (version != null) payload.put("referenceVersion", version);
+            addChain(pack, prefix, br, "XWALK-" + entry.path("code").asText(), payload, expected, anchor);
+        }
+        return review;
+    }
+
     private static int hostRestrictionChains(ObjectNode pack, Map<String, JsonNode> anchors) {
         JsonNode layout = anchors.get("APPX-K-034-LAYOUT");
         JsonNode pointer = anchors.get("APPX-K-034-PSPC-REFERENCE");
@@ -412,30 +593,43 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         addRequirement(pack, "BR-PSPC-T034-PROGRAM", "Table 034 applies only to Visa Fleet EMV 2.0 and MasterCard Enhanced Fleet EMV; Visa applicability stays REVIEW_REQUIRED under SEG111-SME-003.", "HOST_PURCHASE_RESTRICTION", layout, method);
         addRequirement(pack, "BR-PSPC-T034-VALUES", "Product codes carried by Table 034 are Conexxus PSPC codes: assigned PASS, unused FAIL, deprecated or reserved REVIEW_REQUIRED.", "HOST_PURCHASE_RESTRICTION", pointer);
         addRequirement(pack, "BR-PSPC-T034-PACKING", "ATL105 does not define how PSPC codes are packed in the ans32 Table Data; value semantics without explicit codes stay REVIEW_REQUIRED.", "HOST_PURCHASE_RESTRICTION", layout, pointer);
+        addRequirement(pack, "BR-PSPC-T034-VERSION", "ATL105 does not name a PSPC version. Without a bound version a code is judged against every supplied version (3.7 and 4.1); "
+                + "if their verdicts differ the result is REVIEW_REQUIRED. A stated version is judged against that version only.", "HOST_PURCHASE_RESTRICTION", pointer);
         String mc = "MASTERCARD_ENHANCED_FLEET_EMV";
         String visa = "VISA_FLEET_EMV_2_0";
         Object[][] cases = {
-                {"T034-MC-HOST-ONLY", "BR-PSPC-T034-VALUES", "034", "001002", "2", mc, new String[]{"001", "002"}, "PASS"},
-                {"T034-MC-CHIP-AND-HOST", "BR-PSPC-T034-VALUES", "034", "062", "3", mc, new String[]{"062"}, "PASS"},
-                {"T034-MAX-32", "BR-PSPC-T034-STRUCTURE", "034", "001".repeat(10) + "00", "2", mc, new String[]{"001"}, "PASS"},
-                {"T034-V41-ADDED-338", "BR-PSPC-T034-VALUES", "034", "338", "2", mc, new String[]{"338"}, "PASS"},
-                {"T034-CBD-700", "BR-PSPC-T034-VALUES", "034", "700", "2", mc, new String[]{"700"}, "PASS"},
-                {"T034-VISA-FLEET", "BR-PSPC-T034-PROGRAM", "034", "001", "2", visa, new String[]{"001"}, "REVIEW_REQUIRED"},
-                {"T034-PACKING-UNSPECIFIED", "BR-PSPC-T034-PACKING", "034", "001002", "2", mc, null, "REVIEW_REQUIRED"},
-                {"T034-DEPRECATED-011", "BR-PSPC-T034-VALUES", "034", "011", "2", mc, new String[]{"011"}, "REVIEW_REQUIRED"},
-                {"T034-RESERVED-CONEXXUS-006", "BR-PSPC-T034-VALUES", "034", "006", "2", mc, new String[]{"006"}, "REVIEW_REQUIRED"},
-                {"T034-RESERVED-PREAUTH-071", "BR-PSPC-T034-VALUES", "034", "071", "2", mc, new String[]{"071"}, "REVIEW_REQUIRED"},
-                {"T034-RESERVED-PROPRIETARY-850", "BR-PSPC-T034-VALUES", "034", "850", "2", mc, new String[]{"850"}, "REVIEW_REQUIRED"},
-                {"T034-UNUSED-000", "BR-PSPC-T034-VALUES", "034", "000", "2", mc, new String[]{"000"}, "FAIL"},
-                {"T034-BAD-CODE-FORMAT", "BR-PSPC-T034-VALUES", "034", "1", "2", mc, new String[]{"1"}, "FAIL"},
-                {"T034-PRM-0", "BR-PSPC-T034-OPT-IN", "034", "001", "0", mc, new String[]{"001"}, "FAIL"},
-                {"T034-PRM-1", "BR-PSPC-T034-OPT-IN", "034", "001", "1", mc, new String[]{"001"}, "FAIL"},
-                {"T034-PRM-ABSENT", "BR-PSPC-T034-OPT-IN", "034", "001", null, mc, new String[]{"001"}, "FAIL"},
-                {"T034-NON-FLEET-PROGRAM", "BR-PSPC-T034-PROGRAM", "034", "001", "2", "AMEX_CREDIT", new String[]{"001"}, "FAIL"},
-                {"T034-WRONG-TABLE-ID", "BR-PSPC-T034-STRUCTURE", "035", "001", "2", mc, new String[]{"001"}, "FAIL"},
-                {"T034-OVER-32", "BR-PSPC-T034-STRUCTURE", "034", "001".repeat(11), "2", mc, new String[]{"001"}, "FAIL"},
-                {"T034-EMPTY", "BR-PSPC-T034-STRUCTURE", "034", "", "2", mc, new String[]{"001"}, "FAIL"},
-                {"T034-NON-PRINTABLE", "BR-PSPC-T034-STRUCTURE", "034", "001\t002", "2", mc, new String[]{"001"}, "FAIL"}
+                {"T034-MC-HOST-ONLY", "BR-PSPC-T034-VALUES", "034", "001002", "2", mc, new String[]{"001", "002"}, null, "PASS"},
+                {"T034-MC-CHIP-AND-HOST", "BR-PSPC-T034-VALUES", "034", "062", "3", mc, new String[]{"062"}, null, "PASS"},
+                {"T034-MAX-32", "BR-PSPC-T034-STRUCTURE", "034", "001".repeat(10) + "00", "2", mc, new String[]{"001"}, null, "PASS"},
+                {"T034-V41-ADDED-338", "BR-PSPC-T034-VERSION", "034", "338", "2", mc, new String[]{"338"}, "4.1", "PASS"},
+                {"T034-V37-338", "BR-PSPC-T034-VERSION", "034", "338", "2", mc, new String[]{"338"}, "3.7", "REVIEW_REQUIRED"},
+                {"T034-UNBOUND-338", "BR-PSPC-T034-VERSION", "034", "338", "2", mc, new String[]{"338"}, null, "REVIEW_REQUIRED"},
+                {"T034-CBD-700", "BR-PSPC-T034-VERSION", "034", "700", "2", mc, new String[]{"700"}, "4.1", "PASS"},
+                {"T034-UNBOUND-700", "BR-PSPC-T034-VERSION", "034", "700", "2", mc, new String[]{"700"}, null, "REVIEW_REQUIRED"},
+                {"T034-V41-052", "BR-PSPC-T034-VERSION", "034", "052", "2", mc, new String[]{"052"}, "4.1", "PASS"},
+                {"T034-V37-052", "BR-PSPC-T034-VERSION", "034", "052", "2", mc, new String[]{"052"}, "3.7", "REVIEW_REQUIRED"},
+                {"T034-UNBOUND-052", "BR-PSPC-T034-VERSION", "034", "052", "2", mc, new String[]{"052"}, null, "REVIEW_REQUIRED"},
+                {"T034-V37-325", "BR-PSPC-T034-VERSION", "034", "325", "2", mc, new String[]{"325"}, "3.7", "PASS"},
+                {"T034-UNBOUND-325", "BR-PSPC-T034-VERSION", "034", "325", "2", mc, new String[]{"325"}, null, "PASS"},
+                {"T034-V37-041", "BR-PSPC-T034-VERSION", "034", "041", "2", mc, new String[]{"041"}, "3.7", "PASS"},
+                {"T034-V41-041", "BR-PSPC-T034-VERSION", "034", "041", "2", mc, new String[]{"041"}, "4.1", "REVIEW_REQUIRED"},
+                {"T034-UNSUPPORTED-VERSION", "BR-PSPC-T034-VERSION", "034", "001", "2", mc, new String[]{"001"}, "9.9", "FAIL"},
+                {"T034-VISA-FLEET", "BR-PSPC-T034-PROGRAM", "034", "001", "2", visa, new String[]{"001"}, null, "REVIEW_REQUIRED"},
+                {"T034-PACKING-UNSPECIFIED", "BR-PSPC-T034-PACKING", "034", "001002", "2", mc, null, null, "REVIEW_REQUIRED"},
+                {"T034-DEPRECATED-011", "BR-PSPC-T034-VALUES", "034", "011", "2", mc, new String[]{"011"}, "4.1", "REVIEW_REQUIRED"},
+                {"T034-RESERVED-CONEXXUS-006", "BR-PSPC-T034-VALUES", "034", "006", "2", mc, new String[]{"006"}, null, "REVIEW_REQUIRED"},
+                {"T034-RESERVED-PREAUTH-071", "BR-PSPC-T034-VALUES", "034", "071", "2", mc, new String[]{"071"}, null, "REVIEW_REQUIRED"},
+                {"T034-RESERVED-PROPRIETARY-850", "BR-PSPC-T034-VALUES", "034", "850", "2", mc, new String[]{"850"}, null, "REVIEW_REQUIRED"},
+                {"T034-UNUSED-000", "BR-PSPC-T034-VALUES", "034", "000", "2", mc, new String[]{"000"}, null, "FAIL"},
+                {"T034-BAD-CODE-FORMAT", "BR-PSPC-T034-VALUES", "034", "1", "2", mc, new String[]{"1"}, null, "FAIL"},
+                {"T034-PRM-0", "BR-PSPC-T034-OPT-IN", "034", "001", "0", mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-PRM-1", "BR-PSPC-T034-OPT-IN", "034", "001", "1", mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-PRM-ABSENT", "BR-PSPC-T034-OPT-IN", "034", "001", null, mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-NON-FLEET-PROGRAM", "BR-PSPC-T034-PROGRAM", "034", "001", "2", "AMEX_CREDIT", new String[]{"001"}, null, "FAIL"},
+                {"T034-WRONG-TABLE-ID", "BR-PSPC-T034-STRUCTURE", "035", "001", "2", mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-OVER-32", "BR-PSPC-T034-STRUCTURE", "034", "001".repeat(11), "2", mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-EMPTY", "BR-PSPC-T034-STRUCTURE", "034", "", "2", mc, new String[]{"001"}, null, "FAIL"},
+                {"T034-NON-PRINTABLE", "BR-PSPC-T034-STRUCTURE", "034", "001\t002", "2", mc, new String[]{"001"}, null, "FAIL"}
         };
         for (Object[] example : cases) {
             ObjectNode payload = MAPPER.createObjectNode().put("mode", "HOST_PURCHASE_RESTRICTION").put("tableId", (String) example[2]).put("tableData", (String) example[3]);
@@ -445,7 +639,8 @@ public final class GeneratePaymentSystemProductCodeCoverage {
                 ArrayNode codes = payload.putArray("productCodes");
                 for (String value : (String[]) example[6]) codes.add(value);
             }
-            addChain(pack, (String) example[1], (String) example[0], payload, MAPPER.createObjectNode().put("outcome", (String) example[7]), layout);
+            if (example[7] != null) payload.put("referenceVersion", (String) example[7]);
+            addChain(pack, V41.idPrefix(), (String) example[1], (String) example[0], payload, MAPPER.createObjectNode().put("outcome", (String) example[8]), layout);
         }
         return cases.length;
     }
@@ -457,10 +652,10 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         for (JsonNode anchor : anchors) sources.add(anchor.deepCopy());
     }
 
-    private static void addChain(ObjectNode pack, String br, String suffix, ObjectNode payload, ObjectNode expected, JsonNode anchor) {
-        String tsId = "TS-PSPC-" + suffix;
-        String tcId = "TC-PSPC-" + suffix;
-        String tdId = "TD-PSPC-" + suffix;
+    private static void addChain(ObjectNode pack, String prefix, String br, String suffix, ObjectNode payload, ObjectNode expected, JsonNode anchor) {
+        String tsId = "TS-" + prefix + "-" + suffix;
+        String tcId = "TC-" + prefix + "-" + suffix;
+        String tdId = "TD-" + prefix + "-" + suffix;
         ObjectNode ts = ((ArrayNode) pack.path("testScenarios")).addObject();
         ts.put("id", tsId).put("status", "REVIEW_REQUIRED");
         ts.putArray("requirementIds").add(br);
@@ -477,8 +672,8 @@ public final class GeneratePaymentSystemProductCodeCoverage {
         for (ObjectNode artifact : new ObjectNode[]{ts, tc, td}) artifact.putArray("sourceAnchors").add(anchor.deepCopy());
     }
 
-    private static ObjectNode pspcAnchor(int page, String rule, int start, int end) {
-        return MAPPER.createObjectNode().put("document", "Conexxus PSPC").put("version", PSPC_VERSION).put("page", page)
+    private static ObjectNode pspcAnchor(String version, int page, String rule, int start, int end) {
+        return MAPPER.createObjectNode().put("document", "Conexxus PSPC").put("version", version).put("page", page)
                 .put("rule", rule).put("startLine", start).put("endLine", end);
     }
 
