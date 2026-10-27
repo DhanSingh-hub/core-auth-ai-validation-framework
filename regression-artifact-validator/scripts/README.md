@@ -272,6 +272,23 @@ supplement) measures are reported separately and are structural candidates only.
 the pending pairs. TransArmor key-load layouts (11.7.5) live in a separate
 document and remain out of scope.
 
+POS Entry Mode supplement: `build-pos-entry-mode-supplement.py` derives a
+source-pinned package at
+`test-output/test-solution-independent-review/pos-entry-mode-supplement-v1`.
+It adds atomic BRs for Segment 111 Table 005 format, Appendix J PAN/capability
+code values, lifecycle persistence/exception handling, COF/Discover constraints,
+capability hierarchy, RFID/gift/fallback behavior and token-entry-mode review
+boundaries. It also emits network-scoped scenarios for seven networks plus
+generic Debit and EBT, and includes positive/negative/review TC+TD payloads.
+Every BR quote is page-checked against the pinned 2026-3 source and every test
+payload is self-validated by a reference oracle (build fails on mismatch). The
+package includes a supersession overlay that:
+- decomposes composite `BR-SEG100-ANN-J` into atomic `BR-POSEM-*` requirements,
+- narrows `BR-SEG100-APPO-ENTRY-MODE` to review-only semantics (`BR-POSEM-045`)
+  until token code mapping is source-approved, and
+- supersedes the defective `TD-SEG100-APPO-ENTRY-MODE` fixture.
+Frozen canonical packages are not edited by this builder.
+
 The shared candidate matcher is captured as `crosswalk-implementation.py` in
 each output directory and that exact snapshot is executed/hash-verified; edits
 to the working exporter cannot silently change the matching policy mid-run.

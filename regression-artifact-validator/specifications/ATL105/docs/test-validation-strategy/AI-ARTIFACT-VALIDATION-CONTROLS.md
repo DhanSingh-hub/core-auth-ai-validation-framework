@@ -124,6 +124,17 @@ candidates only and semantic coverage stays null until authorized pair decisions
 exist. Regression: `scripts/test_location_scoped_requirements.py` and the auditor
 `--self-test`.
 
+POS Entry Mode control supplement: `build-pos-entry-mode-supplement.py` produces
+`pos-entry-mode-supplement-v1/pos-entry-mode-supplement.json` from the pinned
+2026-3 source and keeps frozen canonical packages unchanged. It decomposes
+composite `BR-SEG100-ANN-J` into atomic format/value/lifecycle rules, narrows
+`BR-SEG100-APPO-ENTRY-MODE` to review-only token semantics until source-approved
+code mapping exists, and supersedes the defective
+`TD-SEG100-APPO-ENTRY-MODE` payload with a Segment-111/Table-005 fixture. It
+adds network-scoped (7 + Debit + EBT) positive/negative/review BR→TS→TC→TD
+chains and code-table checks. Regression: `scripts/test_pos_entry_mode_supplement.py`
+and `build-pos-entry-mode-supplement.py --check`.
+
 For `AIV-009`, `AIV-010`, `AIV-012` and `AIV-013`, Java
 `SemanticEvidenceValidator` adds complete declared structured-claim comparison,
 isolated control/mutant predicates, independently profiled companion checks,
