@@ -152,7 +152,7 @@ selector-only chains and the still-deferred Element 118 layouts.
 | 030 | Merchant Advice Code | 33880 | Merchant advice code from authorizer |
 | 031 | DAF Indicator | 33947 | Digital Authentication Framework indicator |
 | 032 | Agreement ID | 33989 | Visa agreement identifier |
-| 034 | Host-based Purchase Restriction | 34011 | Purchase restriction data |
+| 034 | Host-based Purchase Restriction | 34011 | Purchase restriction data; values per Conexxus PSPC — see [PSPC training](../../test-validation-strategy/pspc-payment-system-product-codes/README.md) (2026-4 lines 36291-36324) |
 | 035 | Cardholder Additional Information Result Code | 34044 | Result code |
 | 036 | Account Type | 34161 | Account type from authorizer (Visa) |
 | 037 | Account Funding Source | 34184 | Funding source type (Visa) |
