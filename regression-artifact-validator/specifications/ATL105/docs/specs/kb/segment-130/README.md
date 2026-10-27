@@ -7,6 +7,21 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+> **EMV companion-reference update (2026-10-27):** The "First Data EMV Implementation Guide" that §10.14
+> requires has been ingested as the Fiserv EMV and Chip Implementation Guide v2025.RG20; see the
+> [EMV companion knowledge](../../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md).
+>
+> It supplies companion evidence for:
+> - `SEG130-SME-003`: cross-field formulas
+> - `SEG130-SME-008/012`: AID-based EMV product eligibility instead of Appendix E codes
+> - `SEG130-SME-009/013`: candidate Generic Proprietary AIDs
+> - `SEG130-SME-004`: cryptogram authenticity confirmed external
+> - `SEG130-R-017`: EMV data on reversals is still not required; when present, it follows guide Table 10 and RQ4600
+>
+> It also adds an ATL105-sourced check: Element 188 must mirror Tag 5F34.
+>
+> Register statuses are unchanged until the communication register is updated (backlog B-10). `SEG130-SME-007`, `-010` and `-011` are not addressed by the guide.
+
 ## Independent Chapter 12 observed CAPK event ordering
 
 The existing observed-session oracle now supplements checksum/device/exchange

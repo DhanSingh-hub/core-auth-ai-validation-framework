@@ -11,6 +11,21 @@ in-repo test fixtures, including a genuine SHA-1 checksum recomputation against 
 EMV AID-to-key configuration consistency stays `REVIEW_REQUIRED` by design, same bounding used
 throughout this appendix family.
 
+> **EMV companion-reference update (2026-10-27):** The Fiserv EMV and Chip Implementation Guide
+> v2025.RG20 (Tables 14/15), which ATL105 §10.14 requires, defines the 6-character exponent as hex
+> **`010001`** (2^16+1). ATL105's "216+1" lost its superscript in extraction. The current
+> `BR-SEG100-APPS-EXPONENT-VALUE` value `065537` and its hex-decoded checksum fixture are therefore
+> incorrect; this is a false-pass risk (strategy risk R010, backlog B-01).
+>
+> The guide also gives:
+> - RID exactly 10 characters
+> - Modulus of at most 496 hex characters
+> - At most 6 active keys per RID
+> - An AID-to-key formula: key = (RID of the selected AID, CA PK Index tag 8F)
+>
+> See [EMV companion knowledge §12](../../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md#12-ca-public-key-capk-rules).
+> This module's BR statuses are unchanged until the code follow-up is implemented.
+
 ## Why this appendix was rebuilt rather than extended
 
 Appendix S already had an evidence file in the repo before this training pass

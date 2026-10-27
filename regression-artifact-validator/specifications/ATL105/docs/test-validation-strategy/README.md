@@ -7,6 +7,8 @@
 - [PDF Presentation](presentations/AI-Generation-Output-Validation-Presentation.pdf)
 - [RAID Log](RAID-Log.md)
 - [Expected Questions and Answers](Expected-Questions-and-Answers.md)
+- [Core Auth Regression Test Validation Strategy](Core-Auth-Regression-Test-Validation-Strategy.md)
+- [ATL105 EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md): hash-pinned ingestion of the Fiserv EMV and Chip Implementation Guide v2025.RG20, which ATL105 §10.14 requires. It is the persistent EMV training memory.
 - [Browser Presentation](presentations/AI-Generation-Output-Validation-Presentation.html)
 - [PDF Presentation](presentations/AI-Generation-Output-Validation-Presentation.pdf)
 
