@@ -249,6 +249,29 @@ candidate reach, semantic confirmation and execution are separate measures;
 the latter two stay null without qualified evidence. Auxiliary matrices, archives
 and other formats receive explicit unassessed validation dispositions.
 
+Segment-free requirements: ATL105 places some fields outside any data segment
+(Data Section 1 of requests/responses and positional totals, mail, comm-test,
+download and key-load layouts) and defines every element in the segment-agnostic
+Chapter 13 dictionary. `build-location-scoped-requirement-inventory.py` derives
+`location-scoped-requirement-inventory.json` from the pinned 2026-3 source text:
+131 `MESSAGE_LOCATION` rules from 28 Chapter 11 layouts and 232
+`ELEMENT_DEFINITION` rules (Element 118's two definitions are kept and flagged).
+It supplements, and never modifies, the frozen 601-rule baseline; run `--check`
+to detect drift. When that file is present in `--test-solution-directory`, the
+auditor also matches AI BRs that have element anchors but no lookup-eligible
+segment by element number against baseline pseudo-location rules
+(`DATA-SECTION-1`, `FINANCIAL-RESPONSE`) and the supplement, and links every
+element-anchored BR to its dictionary rule. Each BR gets a
+`locationAwareAssessment` resolution: `NON_SEGMENT_LOCATION_CANDIDATE`,
+`SEGMENT_SCOPED_ELEMENT_SEGMENT_OMITTED` (an AI defect candidate listed in
+`segment-omission-findings.jsonl`), `ELEMENT_DEFINITION_ONLY_LOCATION_UNKNOWN` or
+`ELEMENT_NOT_IN_TEST_INVENTORY`. Original measures are unchanged; the
+`locationAware*` (601 denominator), `supplement*` and `extended*` (601 +
+supplement) measures are reported separately and are structural candidates only.
+`location-aware-review-queue.jsonl` and `supplement-test-br-ledger.jsonl` carry
+the pending pairs. TransArmor key-load layouts (11.7.5) live in a separate
+document and remain out of scope.
+
 The shared candidate matcher is captured as `crosswalk-implementation.py` in
 each output directory and that exact snapshot is executed/hash-verified; edits
 to the working exporter cannot silently change the matching policy mid-run.
