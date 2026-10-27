@@ -3,6 +3,8 @@
 **Template basis:** TFF Test Strategy Document - June 19_comments.docx  
 **Audience:** AI Solution Team, Test Validation Team, Fiserv Business/Development Team  
 **Current foundation specification:** BUYPASS Platform ATL105 Message Format Specification 2026-3  
+**Current input release:** BUYPASS Platform ATL105 Message Format Specifications 2026-4 (October 09, 2026), ingested as hash-pinned overlays; the core segment rule catalogs remain pinned to 2026-3  
+**Companion EMV reference:** Fiserv EMV and Chip Implementation Guide v2025.RG20, which ATL105 §10.14 requires to be used with ATL105; ingested 2026-10-27 (see [EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md))  
 **Current foundation implementation:** ATL105 validation platform, first proven with Segment 100  
 **Current ATL105 delivery target:** All ATL105 segments, message categories, transaction flows, and appendices  
 **End goal:** A reusable Core Auth Test Solution that generates and validates test artifacts for any specification
@@ -27,19 +29,18 @@
 16. Risks and Issues
 17. Appendix A: ATL105 Demonstration
 18. Appendix B: All-Specification End State
+19. Appendix C: EMV Companion Reference Summary
 
 ## Version History and Approvals
 
 | Version | Date | Author/Owner | Change | Status |
 | --- | --- | --- | --- | --- |
 | 0.2 | 2026-09-16 | Core Auth Test Validation Team | Added Test Team solution design, AI artifact validation value, and risk-based manual testing | Working review |
-<<<<<<< HEAD
 | 0.3 | 2026-10-17 | Core Auth Test Validation Team | Trained QE-Fiserv SME feedback as 33 enforced rules (AIV-025) and applied them to the full 10 October AI delivery | Working review |
-=======
-| 0.3 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
->>>>>>> origin/Dhan_Singh_HTML
-| 0.4 | 2026-10-27 | Core Auth Test Validation Team | Ingested the missing ATL105 external reference Conexxus Payment System Product Codes v4.1 (Appendix K-27 Table 034), with an Element 77 crosswalk, PSPC BR/Test Coverage and Validation Strategy | Working review |
-| 0.5 | 2026-10-27 | Core Auth Test Validation Team | Ingested Conexxus PSPC v3.7 (`PaymentSystemProductCodes_3.pdf`). Trained both versions with a v3.7 → v4.1 diff (62 version-sensitive codes). Unbound Table 034 codes are judged against both versions. Recorded the Appendix F lineage and the [PSPC training record](Conexxus-PSPC-Training-Record.md). | Working review |
+| 0.4 | 2026-10-26 | Core Auth Test Validation Team | Added business transaction-context validation and coverage (Mastercard Credit Purchase), the training gate, merchant test-data evidence rule, deliverable TD09 and risk R008 | Working review |
+| 0.5 | 2026-10-27 | Core Auth Test Validation Team | Ingested the missing ATL105 external reference Conexxus Payment System Product Codes v4.1 (Appendix K-27 Table 034), with an Element 77 crosswalk, PSPC BR/Test Coverage and Validation Strategy | Working review |
+| 0.6 | 2026-10-27 | Core Auth Test Validation Team | Ingested Conexxus PSPC v3.7 (`PaymentSystemProductCodes_3.pdf`). Trained both versions with a v3.7 → v4.1 diff (62 version-sensitive codes). Unbound Table 034 codes are judged against both versions. Recorded the Appendix F lineage and the [PSPC training record](Conexxus-PSPC-Training-Record.md). | Working review |
+| 0.7 | 2026-10-27 | Core Auth Test Validation Team | Ingested the EMV and Chip Implementation Guide v2025.RG20, the companion document that ATL105 2026-4 §10.14 refers to and that was missing in earlier training. Added the EMV companion intake section and precedence rules; guide-derived tag, cross-field, lifecycle, AID, fallback, response and CAPK rules; the Appendix S exponent correction; EMV scope, data, tools and environment notes; deliverable TD10; risks R009 and R010; and Appendix C. Merged with Develop: removed the merge-conflict markers committed in this table and renumbered the PSPC rows from 0.4/0.5 to 0.5/0.6. | Working review |
 
 | Role | Reviewer/Approver | Status |
 | --- | --- | --- |
@@ -195,6 +196,82 @@ The workbook's September counts (including 3,072/6,291 and the reported scenario
 
 **Implementation (2026-10-17):** the feedback is trained as 33 rules `QEF-001`-`QEF-033` in [`contract/qe-feedback-rule-catalog.json`](../../contract/qe-feedback-rule-catalog.json), executed by `scripts/apply-qe-feedback-rules.py` (control `AIV-025`). The 10 October AI delivery was preserved unchanged at `test-input/ai-solution/runs/2026-10-17/Run1/` and verified file by file (35,564 files, all SHA-256 matches). The engine validated 6,880 BRs, 12,254 scenarios, 21,254 test cases and all 17,769 payload legs and published the [QE feedback validation report](../../test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/QE-FEEDBACK-VALIDATION-REPORT.md) with readable per-segment traceability, 8-column manual tables and Test Case Cards. Headline results: 29 of 33 rules found defects (QEF-002, 008 and 011 passed; QEF-032 had no applicable transactions); every payload lacks Segment Length, uses `NumberofSegments` and a `TC-` data ID; every financial request serializes 19 segments; 9,979 payloads carry a wrong Segment Type; 3,171 scenarios and 2,806 BRs have no test case; 3,970 test cases lack physical test data; 5,443 test cases have no concrete expected response code. Rule-level counts are in the [training handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#training-run-result--10-october-ai-delivery-2026-10-17). These are feedback-conformance results; semantic coverage stays `NOT_ASSESSED` and host execution `NOT_EXECUTED`.
 
+### EMV Companion Reference Intake (October 2026)
+
+ATL105 2026-4 §10.14 (EMV Processing Requirements, p.10-80; the same note is at 2026-3 p.10-79) says:
+
+> "Refer to First Data EMV Implementation Guide ... The EMV Implementation Guide must be used in conjunction with the ATL105 Message Format Specifications."
+
+Appendix R also defers the complete EMV tag list to "your BUYPASS representative". The document was not available in earlier training. The affected chip-data rules were held as `REVIEW_REQUIRED` or "no formula stated".
+
+On 2026-10-27 the Test Team ingested the document under its current name:
+
+- **Document:** Fiserv *EMV and Chip Implementation Guide*, Generic Edition, v2025.RG20 (12 August 2025, 212 pages), file `Fiserv_Generic_EMV_Implementation_Guide_v2025_RG20_081225.pdf`. The PDF is a local copy and is **not committed**, because this repository is public. Get it from the Fiserv Direct Platform Specifications portal.
+- **SHA-256:** `A79B133C950CA2A0734E8D38D07AAE140A254E0069A4FC3F61D653CCC1489EF4`
+- **Ingested as:** a separately hash-pinned **companion overlay**
+
+The complete trained knowledge is the persistent memory for this topic: [ATL105 EMV Companion Reference Training Knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md). It contains:
+
+- gap register and tag catalog
+- rules: 14 tag, 11 cross-field, 17 lifecycle, 10 AID, 7 fallback, 6 response and 8 CAPK
+- RQ traceability index and 53 scenarios
+- conflicts, SME queries and implementation backlog
+
+**Precedence and evidence rules (mandatory):**
+
+| Topic | Rule |
+| --- | --- |
+| Precedence | ATL105 governs. The guide itself states that the message specification overrides it and that it "is not a specification". Guide content fills only what ATL105 delegates to it. Conflicts are logged and ATL105 is enforced (`SPEC_PRECEDENCE`). |
+| Provenance | Guide rules carry a companion anchor (`FISERV-EMV-IG` / `2025.RG20` / section / RQ / page), never an ATL105 `sourceAnchor`. AI-to-Test matching stays keyed on ATL105 anchors. |
+| Status | The existing statuses do not change. Guide-derived rules are `PROVISIONAL`. They run as findings: **FAIL-candidate** for message-observable `RQ` "must" rules not contradicted by ATL105; **REVIEW** for best practices, illustrative tables and brand-dependent tags; **INFO** for device, kernel, receipt and certification rules. They never count as certified Rule Coverage until SME/TBA confirms BuyPass applicability. ATL105-stated rules that the guide corroborates stay `SOURCE_VERIFIED`. |
+| Scope | The guide is Fiserv-generic across five front ends (Nashville, Cardnet, North, BuyPass, Omaha). Tag meanings vary by brand. Table 25 is an expectation, not a mandatory list: v2019.RG1 removed "mandatory tags". |
+
+**What the guide fills for the Test Solution:**
+
+| ATL105 gap | Guide content applied | Result |
+| --- | --- | --- |
+| Appendix R "complete list of EMV tags" | Table 25 (tags expected in authorization, reversal, settlement/completion and response) and Table 26 (formats and lengths) | Tag catalog for Element 190 (Segment 130 request, Segment 131 response) |
+| `BR-SEG100-APPR-CROSS-FIELD` / `SEG130-SME-003` (no chip-to-Segment 100 formula) | RQ3400/3500 (9F02 includes cash back; 9F03 = cash back), RQ4200 (5F2A), Table 28 (9C values), RQ1400 (5F24), §4.8 (9A) | Candidate formulas: 9F02 = Elements 41+58+99+17; 9F03 = Element 17; 5F2A = Element 20; 9C from the Appendix G Prompt Code; and others. Run as `REVIEW_REQUIRED` until SME confirmation. |
+| §10.14.2.4 "EMV data is not required on Reversal transactions" | Table 10 and RQ4600 (1st or 2nd Generate AC data by reversal reason; same tag list as the original) | Absence stays valid. When EMV data is present, its content is validated. |
+| Lifecycle | §5.10-5.20: completion reuses the original chip data and entry mode; partial approval (8A `10`, reversal on cardholder decline, settle at the partial amount); incremental authorization keyed without EMV data; SAF uses 1st Generate AC data; refunds; balance inquiry is never reversed | Lifecycle rules EMVIG-LC-001 to LC-017 |
+| `SEG130-SME-008/012` (no card-type codes for the §10.14.2.3 brands) | Tables 4, 12, 13 and 63 (AIDs, US Common Debit AIDs, message type by AID type) | Proposed AID-based EMV eligibility; product-to-AID bridge; PIN-bypass and cash-back rules by AID |
+| §10.14.4 fallback "80/90 or spec equivalent" | RQ4300-RQ4500, §5.8.1 (fallback not allowed), Discover empty-candidate-list rule | Appendix J `80`/`79`/`90` confirmed; fallback-eligibility checks |
+| Appendix S CA Public Key file | Tables 14 and 15, §6 | **Correction:** the 6-character exponent is hex `010001`, not `065537`. RID is exactly 10 characters; modulus is at most 496 hex characters; at most 6 active keys per RID. Element 30 = `9` and "RQST/CURRENT HASH MATCH" map to the guide's update / no-update status. |
+| Segment 131 response chip data | Table 7 (8A values), §4.12.2 (never both 71 and 72; scripts up to 128 bytes), RQ5500 (routing disclosure) | Response rules; candidate mapping from Element 83 to 8A |
+
+**Still open after ingestion:**
+
+- `SEG130-SME-010` (Element 187 echo)
+- Appendix T CARC request legality (`SEG130-SME-007/011`)
+- Segment 131/132 wire questions (`SEG131-SME-001/002/004`, `SEG132-SME-001`-`006`)
+- Cryptogram and CAPK authenticity (external by design; brand L3 certification on ICCSimTMat)
+- The new SME queries `Q-EMV-01` to `Q-EMV-11`
+- Three further external references named by the guide and not supplied: BuyPass Petroleum Industry Specifications, Petroleum Implementation Guide (WEX DF30/DF31), and USPF AFD Chip Fallback Best Practices
+
+These are listed in the knowledge file and must not be invented.
+
+**Implementation status:** the knowledge, rules and scenarios are documented. No validator code was changed in this intake. The highest-priority code follow-ups are:
+
+- B-01: Appendix S exponent value domain and checksum fixtures (a false-pass risk; see R010)
+- B-02: AID RID agreement across 84, 9F06 and 4F. The Appendix R example itself pairs a Visa Common Debit 9F06 with a Mastercard 84.
+- B-03: Element 188 equals 5F34, an ATL105-sourced deterministic check
+- B-10: communication-register updates
+
+**Progress against the [External Reference Document Training Procedure](#external-reference-document-training-procedure):**
+
+| Step | Status |
+| --- | --- |
+| 1. Locate every dependency | Done: §10.14 (2026-3 p.10-79; 2026-4 p.10-80) and Appendix R |
+| 2. Authority | Done: ATL105 governs, and the guide is companion guidance |
+| 3. Version drift | Partial: the §10.14 reference note is present in both releases; a full Appendix R/S/T release diff is pending |
+| 4. Store the source | Partial: SHA-256 recorded. The PDF and its text extraction are not committed because this repository is public. |
+| 5-9. Oracle, validator, chain package, crosswalk, tests | Pending (backlog B-01 to B-09) |
+| 10. Coverage and strategy documents | Partial: one training-memory file. The per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md` are pending (B-11). |
+| 11. KB links, register, training status | Partial: the KB index and affected notes are linked. The register (B-10) and the `referenceTraining` entry (B-11) are pending. |
+| 12. Regression tests | Not yet applicable: no code changed |
+
+Each code change must follow the handbook's Automatic Update Rule.
+
 ### Proposed Coverage and Reporting Model (Pending Fiserv Leadership Approval)
 
 The following coverage and reporting model is a proposal for review. It is not an approved Fiserv governance policy until Fiserv Leadership accepts it. The current implementation can produce evidence using this model, but the acceptance denominator, mandatory gates, and final status rules remain subject to approval.
@@ -231,6 +308,7 @@ Data coverage         = accepted cases with executable test data / accepted case
 - Source-anchor traceability and coverage.
 - Field, dependency, lifecycle, serialization, and compatibility rules.
 - Request and response validation where the specification pack defines both.
+- Companion-reference rules from the EMV and Chip Implementation Guide (required by ATL105 §10.14) for EMV chip data, lifecycle and CA public key files, applied under ATL105 precedence.
 - Manual-review workflow for unknown or ambiguous interpretations.
 - JSON and Markdown decision reporting.
 
@@ -245,6 +323,8 @@ Segment 130: EMV Request Data Segment
 ```
 
 It demonstrates Sale and Void messages, raw AI JSON assessment, canonical normalization, traceability, compatibility checks, lifecycle correlation, and coverage reporting.
+
+Segment 130 EMV chip data (Element 190) is also checked against the EMV companion tag catalog and the candidate chip-to-Segment 100 cross-field rules. Those checks remain `REVIEW_REQUIRED` until SME confirmation (see [EMV Companion Reference Intake](#emv-companion-reference-intake-october-2026)).
 
 ### Application Functional Scope - Business Transaction Contexts
 
@@ -266,6 +346,7 @@ Some ATL105 rules delegate their value lists to documents outside the specificat
 | External reference | ATL105 2026-4 dependency | Authority | Training package |
 | --- | --- | --- | --- |
 | Conexxus Payment System Product Codes (PSPC) v3.7 (2015-09-04) and v4.1 (2022-05-12) | Appendix K-27: Table ID 034 Host-based Purchase Restriction values; gated by Appendix I-46 Table 049 Sub Table 18. ATL105 names no PSPC version. | Normative for Table 034 values; an unbound code must hold in both versions. Informative only for Element 77, which stays governed by Appendix F. | [Training record](Conexxus-PSPC-Training-Record.md), [README](pspc-payment-system-product-codes/README.md), [BR Coverage](pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](pspc-payment-system-product-codes/Validation%20Strategy.md) |
+| Fiserv EMV and Chip Implementation Guide v2025.RG20 (2025-08-12), formerly the "First Data EMV Implementation Guide" | §10.14 EMV Processing Requirements: "must be used in conjunction with the ATL105 Message Format Specifications". Also the Appendix R full tag list ("contact your BUYPASS representative"), Segments 130/131/132 and Appendices R/S/T. | Companion guidance. ATL105 overrides it on any conflict, as the guide itself states. Guide-derived rules stay `PROVISIONAL`. | [Training memory](ATL105-EMV-Implementation-Guide-Training-Knowledge.md), documentation level only. Oracle, chain package, tests and per-reference coverage documents are pending (backlog B-04, B-05, B-07, B-11). |
 
 The PSPC packages contain:
 
@@ -279,6 +360,8 @@ The open SME items are the PSPC version binding and Table 034 packing (SEG111-SM
 
 AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-15.
 
+The EMV guide training is documentation level so far: 73 guide-derived rules and 53 scenarios, each with an expected outcome and readiness. It has no oracle, chain package or tests yet, so it adds no executable coverage. The guide PDF is not stored in `docs/specs/` because this repository is public. Progress against the procedure is listed in [EMV Companion Reference Intake](#emv-companion-reference-intake-october-2026).
+
 ### Out of Scope
 
 - Auto-approval based only on AI claims.
@@ -286,6 +369,7 @@ AI artifacts that cite PSPC are validated under rules VR-PSPC-01 to VR-PSPC-15.
 - Client approval without recorded evidence.
 - Host certification without an approved integration contract.
 - Security, penetration, regulatory, localization, accessibility, and mobile certification unless separately commissioned.
+- EMV kernel and brand L1/L2/L3 certification; cryptogram (ARQC/TC/ARPC) and CA public key authenticity; issuer-script execution on the card; device receipts, prompts and reports (EMV guide Chapters 3, 7, 8 and 13). These remain external certification evidence, produced through the Fiserv-mandated ICCSimTMat and t3:Cert process.
 
 ### Test Case Design Process
 
@@ -301,7 +385,14 @@ Approved specification rule
 
 Required design types are positive, negative, boundary, conditional, lifecycle, serialization, compatibility, and review-required cases.
 
-Candidate scenarios are generated from valid combinations of transaction type, card type, entry mode, feature settings, and specification constraints. The Test Validation Team independently derives and baselines the required rule/scenario set from the specification pack. AI-reported scenario counts and coverage percentages are evidence under test, not the certification denominator.
+Candidate scenarios are generated from valid combinations of transaction type, card type, entry mode, feature settings, and specification constraints. For EMV, the combinations also include:
+
+- AID type: Global Credit, Global Debit or Common Debit, with its message type, PIN-bypass and cash-back eligibility
+- CVM
+- Interface: contact, contactless or fallback
+- Lifecycle role: original, reversal reason, completion, partial approval or SAF
+
+These dimensions are listed in the [EMV scenario catalog](ATL105-EMV-Implementation-Guide-Training-Knowledge.md#14-emv-test-scenario-catalog). The Test Validation Team independently derives and baselines the required rule/scenario set from the specification pack. AI-reported scenario counts and coverage percentages are evidence under test, not the certification denominator.
 
 #### Independent Test Coverage Model
 
@@ -425,7 +516,7 @@ For every new or changed rule, the trainer records the handbook's **Required Tra
 | Source transcriptions | `specifications/ATL105/docs/specs/extracted_text.txt` (2026-3), `extracted_text_new.txt` (2026-4), `extracted_text_pspc_v4.1.txt` and `extracted_text_pspc_v3.7.txt` (Conexxus PSPC) | Line-anchored text that every rule cites |
 | Knowledge base | `specifications/ATL105/docs/specs/kb/` ([index](../specs/kb/00-index.md)) | Segment, element and appendix training notes, rule catalogs, SME/TBA notes |
 | Training handbook | [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) | Mandatory process, gates, rules and lessons learned |
-| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, per-reference training records (for example [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md)), and per-reference BR/Test Coverage and Validation Strategy |
+| Strategy and coverage documents | `specifications/ATL105/docs/test-validation-strategy/` (this folder) | Strategy, validation plan, controls, per-reference training records (for example [Conexxus-PSPC-Training-Record.md](Conexxus-PSPC-Training-Record.md) and [ATL105-EMV-Implementation-Guide-Training-Knowledge.md](ATL105-EMV-Implementation-Guide-Training-Knowledge.md)), and per-reference BR/Test Coverage and Validation Strategy |
 | Executable oracles | `src/main/resources/atl105/*.json` | Machine-readable source oracles (for example the Appendix F and PSPC product-code oracles) |
 | Validators and generators | `src/main/java/com/coreauth/validator/canonical/`, `.../coverage/` | Independent verdict logic and expected-label generators |
 | Tests | `src/test/java/com/coreauth/validator/` | Replay of every TD; source-fidelity checks |
@@ -696,6 +787,14 @@ Business identifiers in test data are reported only where Test Solution evidence
 
 The AI team must provide JSON schemas, metadata, source-reference conventions, expected-outcome semantics, lifecycle representation, serialization rules, and known limitations.
 
+EMV test data follows these rules from the [EMV companion knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md#15-synthetic-test-data-guidance):
+
+- Use synthetic chip data only. Never use real PANs, track data, PIN blocks, cryptograms, or production CA public keys. The test and production CAPK sets are never interchangeable.
+- Element 190 never carries Tag 5A or 57.
+- AID tags (84, 9F06, 4F) share one RID.
+- Element 188 mirrors Tag 5F34.
+- Do not use the ATL105 Appendix R example as a positive oracle for AID or currency consistency.
+
 ## Test Phases - Out of Scope
 
 Unless separately commissioned: production testing, penetration testing, regulatory certification, full host authorization certification, and client UAT execution.
@@ -711,6 +810,7 @@ Unless separately commissioned: production testing, penetration testing, regulat
 | JSON Schema Validator | Structural contract validation |
 | JSON/Markdown | Audit and approval reporting |
 | CI workflow | Repeatable validation gates |
+| ICCSimTMat for Fiserv / t3:Cert (external, Fiserv-mandated) | Brand L3 EMV certification evidence: card logs, traces and test plans. Not part of this platform; consumed as evidence only. |
 
 ## Test Schedule
 
@@ -736,6 +836,7 @@ Each specification pack has its own release version, baseline, schedule, and cov
 - Manual-review findings are dispositioned.
 - Reports are reproducible for the approved package.
 - Fiserv Business/Development Team accepts the evidence.
+- EMV companion-reference rules are dispositioned. Guide-derived `PROVISIONAL` rules and open `Q-EMV-*` queries are not counted as certified coverage.
 
 ### Testing Sign-off Criteria
 
@@ -809,6 +910,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | TD07 | Defect/Review Report | Open defects, manual-review decisions, and dispositions |
 | TD08 | Test Summary Report | Phase outcome, metrics, risks, and sign-off status |
 | TD09 | Transaction-Context Training Package | Business BR/FR/scenario matrix, canonical trained chains, review queue, context BR coverage report and training gate (first: Mastercard Credit Purchase) |
+| TD10 | EMV Companion Reference Training Knowledge | [Hash-pinned ingestion of the EMV and Chip Implementation Guide](ATL105-EMV-Implementation-Guide-Training-Knowledge.md): gap register, tag catalog, guide-derived rules, scenario catalog, conflicts, SME queries and implementation backlog |
 
 ## Test Environments
 
@@ -820,6 +922,7 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | Test-output repository | Generated reports and evidence |
 | Integration environment | Approved API/host contract testing |
 | Performance environment | Package-volume and throughput testing |
+| Fiserv host simulators / certification environment (external) | Brand certification and TOR testing. Test CAPK set only; it is never interchangeable with production CAPK. Production CAPK is loaded only at go-live. |
 
 ## Roles and Responsibilities / RACI Matrix
 
@@ -847,10 +950,17 @@ The Test Validation Lead owns technical triage. The AI Solution Team owns candid
 | R006 | Test Solution baseline omits a source-supported requirement found in AI output | A valid AI BR may be mislabeled AI-only, or coverage may use an incomplete denominator | Record a Test Solution omission candidate; independently re-derive from ATL105 without copying AI wording; keep coverage `NOT_CALCULABLE` for an incomplete eligible baseline | Test/TBA/SME |
 | R007 | Validator logic or rule catalog has a false-pass defect | Invalid AI behavior may pass the checks and appear covered | Bind validators to source-anchored rules; test positive, negative, boundary, and applicability cases; mutation-test wrong values, omitted checks, and context changes; report validator effectiveness separately from AI outcome; require independent review for unresolved semantics | Test/TBA/SME |
 | R008 | A business transaction context's scope or FR placement is heuristic, or its scenarios are shared by BRs with different anchors | Business coverage is over- or understated; shared scenarios silently fail canonical traceability | Versioned scope rule; keyword FR placement kept `REVIEW_REQUIRED`; only canonically valid chains counted; failing BRs listed in the review queue with reasons; split shared scenarios per BR | Test/TBA/SME |
+| R009 | The EMV companion guide is guidance-only and Fiserv-generic across five front ends. Tag meanings vary by brand. It has internal inconsistencies (for example 9F5B, 9F66, the TVR byte 5 table) and names further documents that were not supplied (BuyPass Petroleum Industry Specifications, Petroleum Implementation Guide, USPF AFD fallback best practices). | Guide-derived rules could be over-enforced on BuyPass, or applied with the wrong brand meaning | ATL105 precedence; companion provenance anchors; guide rules stay `PROVISIONAL` (FAIL-candidate or REVIEW) and outside certified coverage until SME confirmation (`Q-EMV-01` to `Q-EMV-11`); missing documents recorded, not inferred | Test/TBA/SME |
+| R010 | The Appendix S CAPK oracle accepts exponent `065537` and computes SHA-1 over its hex-decoded bytes, while the guide defines the 6-character exponent as hex `010001` | False pass on synthetic CAPK fixtures and false fail on genuine key records | Correct the value domain and checksum fixtures (backlog B-01) with negative tests; record the ATL105 "216+1" rendering as a specification defect (`Q-EMV-03`) | Test |
 
 ## Appendix A: ATL105 Demonstration
 
-The current demonstration uses ATL105 Segment 100 with related Segments 111 and 130, including Sale and Void examples. See [ATL105-Segment100-Demo-Runbook.md](ATL105-Segment100-Demo-Runbook.md).
+The current demonstration uses ATL105 Segment 100 with related Segments 111 and 130, including Sale and Void examples. See [ATL105-Segment100-Demo-Runbook.md](ATL105-Segment100-Demo-Runbook.md). EMV demonstration scenarios are catalogued in the [EMV companion knowledge](ATL105-EMV-Implementation-Guide-Training-Knowledge.md#14-emv-test-scenario-catalog). Examples:
+
+- EMV-TS-006: Element 190 without Tag 84 or 9F06
+- EMV-TS-012: Element 188 does not match Tag 5F34
+- EMV-TS-017 / 018: fallback entry mode `80` with and without Segment 130
+- EMV-TS-024: reversal without EMV data
 
 ```text
 AI JSON
@@ -878,3 +988,17 @@ Any specification
 ```
 
 A new specification shall be integrated through a specification pack without changing the reusable Core Auth validation engine.
+
+## Appendix C: EMV Companion Reference Summary
+
+| Item | Value |
+| --- | --- |
+| Companion document | Fiserv EMV and Chip Implementation Guide, Generic Edition v2025.RG20 (12 August 2025), formerly the "First Data EMV Implementation Guide" named in ATL105 §10.14 |
+| Binding | SHA-256 `A79B133C950CA2A0734E8D38D07AAE140A254E0069A4FC3F61D653CCC1489EF4`; ingested 2026-10-27 against ATL105 2026-4 (SHA-256 `568C04D3081CAC6C5CC545ADEE9C6F8F3A34334E788FDF5EE0260FFEF57C77AF`) |
+| ATL105 scope served | §10.14; Segments 130, 131, 132; Appendices R, S, T; Elements 30, 83, 187-194 in EMV contexts |
+| Persistent knowledge (memory) | [ATL105-EMV-Implementation-Guide-Training-Knowledge.md](ATL105-EMV-Implementation-Guide-Training-Knowledge.md) |
+| Rule families | Tag catalog (EMVIG-TAG, 14), cross-field (EMVIG-XF, 11), lifecycle (EMVIG-LC, 17), AID/brand/routing (EMVIG-AID, 10), fallback (EMVIG-FB, 7), response (EMVIG-RSP, 6), CAPK (EMVIG-CAPK, 8) |
+| Scenarios | EMV-TS-001 to EMV-TS-053, with expected outcomes and readiness (`EXECUTABLE`, `REVIEW_REQUIRED`, `EXTERNAL_FIXTURE_REQUIRED`) |
+| Corrections identified | Appendix S exponent `010001` (not `065537`); RID exactly 10 characters; modulus at most 496 hex characters; the Appendix R example is not a valid AID or currency consistency oracle |
+| Open items | `Q-EMV-01` to `Q-EMV-11`; `SEG130-SME-010`, `-007`, `-011`; Segment 131/132 wire questions; three further external documents named by the guide but not supplied |
+| Governance | ATL105 precedence; guide-derived rules stay `PROVISIONAL` and outside certified coverage until SME/TBA confirmation; code follow-ups B-01 to B-11 must follow the handbook Automatic Update Rule |

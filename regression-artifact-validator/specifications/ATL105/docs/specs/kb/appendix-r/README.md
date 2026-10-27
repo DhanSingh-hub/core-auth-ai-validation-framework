@@ -9,6 +9,22 @@ Name, PAN, Track 2 equivalent data<br>
 and cross-field agreement with Segment 100 remain `REVIEW_REQUIRED`. In-repo tests include a golden
 fixture transcribed byte-for-byte from the Appendix R-1 worked example.
 
+> **EMV companion-reference update (2026-10-27):** The tag list that Appendix R defers to "your BUYPASS
+> representative" is now available from the Fiserv EMV and Chip Implementation Guide v2025.RG20
+> (Table 25 for authorization, reversal, settlement and response tags; Table 26 for formats). The guide also supplies
+> candidate cross-field formulas for `BR-SEG100-APPR-CROSS-FIELD`, for example:
+> - 9F02 = Elements 41 + 58 + 99 + 17
+> - 9F03 = Element 17
+> - 5F2A = Element 20
+> - 9C from the Appendix G Prompt Code
+>
+> Both run as `REVIEW_REQUIRED` until SME confirmation.
+>
+> **Caution:** the Appendix R example pairs 9F06 = A0000000980840 (Visa Common Debit) with
+> 84 = A0000000041010 (Mastercard), and 5F2A = 0978 with 9F1A = 0840. Keep the golden fixture for TLV decoding
+> only, not as a positive oracle for AID or currency consistency. See
+> [EMV companion knowledge §6-§7](../../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md#6-emv-tag-catalog-for-element-190).
+
 ## Why this appendix was rebuilt rather than extended
 
 Appendix R already had an evidence file in the repo before this training pass
