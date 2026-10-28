@@ -1,0 +1,46 @@
+{
+  "reviewId": "ATL105-SEG100-NONFUEL-AMOUNT-RANGE-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroupId": "OBL-0950FCA3707C",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:1810",
+  "sourceFinding": {
+    "aiClaim": "Nonfuel Amount valid values range from 1 to 99999999.",
+    "assessment": "Partially aligned but incomplete: Element 58 is numeric, uses two assumed decimal places, and allows up to eight digits for American Express only; other card types are limited to seven digits. The general valid-values range is 1-99999999. The AI statement omits representation and card-brand distinctions.",
+    "sourceEvidenceIds": ["ATL105-2026-3-E58-NUMERIC-MAX", "ATL105-2026-3-E58-DECIMALS", "ATL105-2026-3-E58-CARD-WIDTHS", "ATL105-2026-3-E58-VALID-RANGE"]
+  },
+  "independentTestAssessment": {
+    "existingRule": "SEG100-R-046",
+    "existingRuleScope": "Net nonfuel amount semantics; not a range/width rule.",
+    "chainState": "DRAFT_REVIEW_REQUIRED_PLACEHOLDER",
+    "candidateDraft": "segment-100-nonfuel-amount-range-test-chain-package-v1.json",
+    "candidateDesign": "Separate Amex and non-Amex width boundaries. No net amount calculation or execution is claimed.",
+    "status": "REVIEW_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 6,
+    "cases": [
+      {"caseId": "TC-008862", "payloadSha256": "0815e1802ae2250540cce4843e63714172bf78fc1c14735cdcc56004cda450c1", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008863", "payloadSha256": "c64d6eeded4a3bdddc066cebd2bd313c09b0e1bde3591b881bde1d52267d99ad", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008864", "payloadSha256": "8fc5f6d57dcf586ac860d15fb9cce5dd10dcb6b6fbc6b3df85b863d6b4fcb2a2", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008865", "payloadSha256": "a235d0159e69329bd9eb6a21eca2db8f4c70bebb1606688b09c30168dc92c581", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008866", "payloadSha256": "d9dcde45c625d2bbdf44eecfab4b91f8fa5bd1f1b12a890ed1c5b9407355ce66", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-008867", "payloadSha256": "dcfecdba70437d07fee7aa06245ea2c6bb496408089caf1833bd47a052371bdf", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD"}
+    ],
+    "conclusion": "All six frozen candidate payload observations declare Segment 100 Element 58 omitted. None demonstrates a valid or invalid amount, the card-specific width rule, or net amount semantics."
+  },
+  "adjudicationGaps": [
+    "Confirm card-brand/type context and how the Amex eight-digit exception is selected.",
+    "Confirm decimal and currency interpretation for complete Segment 100 fixtures.",
+    "Review candidate width-boundary vectors and expected outcomes with the authorized Test owner.",
+    "Keep the Element 58 net-amount semantic oracle distinct from these range/width vectors."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

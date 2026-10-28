@@ -1,0 +1,47 @@
+{
+  "artifact": "ATL105-SEG100-OBSERVED-PROMPT-CODE-PAIRS-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "authority": "INDEPENDENT_TEST_SOLUTION_EXECUTION_EVIDENCE",
+  "status": "OBSERVED_EXECUTION_EVIDENCE_NOT_EXHAUSTIVE_RULE",
+  "sourceArtifact": {
+    "file": "Evidences/ATL105_CH_toBuyPass_CertScenarios_qa_May (1).xls",
+    "sha256": "35daf162109d4ab6110ad7abc38bb141b09f34ecf3a760b96c4d2189f4e77cee",
+    "evidenceDate": "2023-04-18",
+    "testCaseCount": 46,
+    "harnessAssertionPassCount": 46,
+    "assertionMeaning": "The workbook's runner assertion passed; this does not mean every financial transaction was approved or that every possible Prompt Code pair is valid."
+  },
+  "field": {
+    "element": "78",
+    "name": "Prompt Code",
+    "financialShape": "one Appendix G transaction-type character followed by one three-digit Appendix E financial card type"
+  },
+  "observedPairCount": 16,
+  "observedCaseCount": 46,
+  "pairs": [
+    { "promptCode": "0011", "transactionType": "0", "transactionMeaning": "POS Purchase/Capture or preauthorized completion", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "POSCompletion", "caseCount": 2 },
+    { "promptCode": "0020", "transactionType": "0", "transactionMeaning": "POS Purchase/Capture or preauthorized completion", "cardType": "020", "cardMeaning": "Credit", "scenario": "POSCompletion", "caseCount": 6 },
+    { "promptCode": "3011", "transactionType": "3", "transactionMeaning": "POS Authorization Only", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "POSAuth", "caseCount": 2 },
+    { "promptCode": "3020", "transactionType": "3", "transactionMeaning": "POS Authorization Only", "cardType": "020", "cardMeaning": "Credit", "scenario": "POSAuth", "caseCount": 5 },
+    { "promptCode": "4011", "transactionType": "4", "transactionMeaning": "Customer-activated Purchase/Capture", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "CACompletion", "caseCount": 1 },
+    { "promptCode": "4020", "transactionType": "4", "transactionMeaning": "Customer-activated Purchase/Capture", "cardType": "020", "cardMeaning": "Credit", "scenario": "CACompletion", "caseCount": 3 },
+    { "promptCode": "5011", "transactionType": "5", "transactionMeaning": "Customer-activated Authorization Only", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "CAAuth", "caseCount": 2 },
+    { "promptCode": "5020", "transactionType": "5", "transactionMeaning": "Customer-activated Authorization Only", "cardType": "020", "cardMeaning": "Credit", "scenario": "CAAuth", "caseCount": 7 },
+    { "promptCode": "7011", "transactionType": "7", "transactionMeaning": "Merchandise return/refund", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "Refund", "caseCount": 1 },
+    { "promptCode": "7020", "transactionType": "7", "transactionMeaning": "Merchandise return/refund", "cardType": "020", "cardMeaning": "Credit", "scenario": "Refund", "caseCount": 3 },
+    { "promptCode": "8011", "transactionType": "8", "transactionMeaning": "Purchase reversal/void", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "Reversal", "caseCount": 1 },
+    { "promptCode": "8020", "transactionType": "8", "transactionMeaning": "Purchase reversal/void", "cardType": "020", "cardMeaning": "Credit", "scenario": "Reversal", "caseCount": 3 },
+    { "promptCode": "S011", "transactionType": "S", "transactionMeaning": "Cancellation, including authorization-only cancellation", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "Cancel", "caseCount": 2 },
+    { "promptCode": "S020", "transactionType": "S", "transactionMeaning": "Cancellation, including authorization-only cancellation", "cardType": "020", "cardMeaning": "Credit", "scenario": "Cancel", "caseCount": 4 },
+    { "promptCode": "U011", "transactionType": "U", "transactionMeaning": "Void of a merchandise return", "cardType": "011", "cardMeaning": "Debit checking", "scenario": "VoidOfRefund", "caseCount": 1 },
+    { "promptCode": "U020", "transactionType": "U", "transactionMeaning": "Void of a merchandise return", "cardType": "020", "cardMeaning": "Credit", "scenario": "VoidOfRefund", "caseCount": 3 }
+  ],
+  "interpretationBoundaries": [
+    "The 16 pairs were present in actual processed test requests in this one certification workbook; they are positive execution observations, not a complete ATL105 code-pair allowlist.",
+    "A passing harness assertion does not establish that the host approved the transaction or that all response/business assertions passed.",
+    "A Prompt Code identifies transaction and card context; each operation still requires its applicable lifecycle, amount, account-entry, companion-segment, and response rules.",
+    "Unobserved transaction-type/card-type pairs remain REVIEW_REQUIRED; do not generate or approve the 13-by-36 cross product.",
+    "Do not use these request observations as response-code or card-network applicability evidence."
+  ]
+}

@@ -34,6 +34,12 @@ transaction role
 | eWIC Voucher Clear | Required | Voucher and WIC data; Prompt Code `0086` |
 | eWIC Return | Prohibited | ATL105 Section 10.5.5.1 does not support eWIC Return |
 
+## Request Count Crosscheck
+
+Element 63 counts the BUYPASS-defined segments actually included in the request; it is not a fixed eWIC constant. A card-present eWIC request containing only Standard Segment 100 declares one segment (`01`). If an optional Segment 103 is present, the count increases accordingly. Purchase Completion and Voucher Clear require Segment 103 under the matrix above; Authorization, Authorization Cancellation, Balance Inquiry, and Purchase Reversal/Void may omit it on the request side. The validator checks the count against segment objects present in its supported request shape.
+
+The external translator tickets mention Segment 100, Segment 103, and a "Variable Data Segment 111". That composition is integration-test evidence, not a universal requirement from the ATL105 eWIC prompt table; resolve the exact Segment 111 mapping and operation-specific contract before requiring it for all eWIC flows.
+
 ## TBA Rule Pattern
 
 ```text

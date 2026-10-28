@@ -1,0 +1,59 @@
+{
+  "id" : "TD-APPI-C048-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C048-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C048-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-38",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t048-r002-APPI-C048-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C048-01",
+        "tableId" : "048",
+        "ruleIds" : [ "APPI-T048-R001", "APPI-T048-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-38",
+          "startLine" : 29168,
+          "endLine" : 29176
+        }, {
+          "section" : "Appendix I-39",
+          "startLine" : 29187,
+          "endLine" : 29200
+        } ],
+        "logicalFields" : {
+          "programProtocol" : "2",
+          "directoryServerIdPresent" : false,
+          "payloadCharacterCount" : 1,
+          "context" : {
+            "protocolVersion" : "EMV3DS2.2"
+          }
+        },
+        "clearScope" : [ "Concrete protocol-only branch and one-character count", "Printed2 maps2.2" ],
+        "excludedClaims" : [ "Operational EMV version support", "Serialized header" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Version2.2 maps protocol2",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "programProtocol",
+          "value" : "1",
+          "targetedNegative" : "Version2.1 code with unchanged2.2 fixture"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

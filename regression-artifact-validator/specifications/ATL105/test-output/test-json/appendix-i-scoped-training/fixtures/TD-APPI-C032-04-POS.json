@@ -1,0 +1,55 @@
+{
+  "id" : "TD-APPI-C032-04-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-04-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-04-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-23",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r004-APPI-C032-04"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-04",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R004" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-23",
+          "startLine" : 28372,
+          "endLine" : 28383
+        } ],
+        "logicalFields" : {
+          "subTableId" : "04",
+          "subTableLength" : "001",
+          "value" : "1",
+          "context" : {
+            "gateway" : "FD uComm"
+          }
+        },
+        "clearScope" : [ "Printed gateway mapping and widths" ],
+        "excludedClaims" : [ "Other gateway codes", "Enclosing example correction" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "FD uComm mapping1 and one-character width",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "11",
+          "targetedNegative" : "Two-character payload"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

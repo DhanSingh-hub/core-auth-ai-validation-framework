@@ -1,0 +1,103 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG151-INCOMM-OTC-LENGTH-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Scope to request Segment 151 in InComm OTC Market Basket Data input context. Use the field-2 R marker and its four-character length-indicator definition.",
+      "dataPolicy": "Symbolic field design only. No complete market-basket dataset or computed length is fabricated because the full format is external to the cited ATL105 excerpt.",
+      "baselinePolicy": "References BR-RULE-SEG151-R-005 placeholder; no official Test record is modified.",
+      "promotionGate": "Authorized Test review must supply the applicable InComm market-basket format, complete dataset, computed length, framing, and expected validation before execution or promotion."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG151-SEGMENT-LENGTH-PRESENCE-DRAFT",
+      "title": "Request Segment 151 field 2 / Element 84 Segment Length Indicator is required and four characters.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.36", "segment": "151", "element": "84", "rule": "segment-length-indicator-required"}
+    },
+    {
+      "id": "BR-RULE-SEG151-R-005",
+      "title": "Segment Length is 4 digits (not 3), max 2300 characters; full InComm Market Basket Data format has external specification.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.36", "segment": "151", "element": "84", "rule": "market-basket-data-external-format-doc"},
+      "relationship": "REFERENCE_ONLY; no external format document ingested in this review"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG151-INPUT-CONTEXT",
+      "sourcePage": "12-91",
+      "startLine": 16177,
+      "quote": "This section describes Data Segment No. 151, Incomm OTC Market Basket Data (Input) Segment.",
+      "interpretation": "Segment 151 is an Input/request segment; response-side and unrelated financial request cases do not automatically establish applicability."
+    },
+    {
+      "id": "ATL105-2026-3-SEG151-FIELD2-E84",
+      "sourcePage": "12-91",
+      "startLine": 16187,
+      "quote": "4 R Indicates the data segment length including the Segment Type length",
+      "interpretation": "Request Segment 151 field 2 / Element 84 is required and has a four-character indicator that includes the Segment Type length."
+    },
+    {
+      "id": "ATL105-2026-3-SEG151-DATASET-FIELD3",
+      "sourcePage": "12-92",
+      "startLine": 16205,
+      "quote": "See Buypass Incomm Market Basket Data format document for format details of the Market Basket Data.",
+      "interpretation": "The data field is required but its full serialization details are referred to an external format document not reviewed here, so the total length cannot be independently computed in this draft."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-082DF01C844D",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3571",
+    "linkedCases": [
+      {"caseId": "TC-002728", "transaction": "EMV Financial Transaction Request", "marketBasketFieldNamed": true, "segment151Element84": "DECLARED_OMISSION_NO_EXACT_FIELD", "segmentTypeValue": "100_UNRESOLVED_CONTAINER", "payloadSha256": "4c83b55490cba06b518f1758699590043d883ebf79f030f8081b06b56200bd5d"},
+      {"caseId": "TC-003505", "transaction": "Financial Transaction Request", "marketBasketFieldNamed": true, "segment151Element84": "DECLARED_OMISSION_NO_EXACT_FIELD", "segmentTypeValue": "100_UNRESOLVED_CONTAINER", "payloadSha256": "2998a5b827d10a69b9acde4b182d66575d0e7b08c1f5328e4d19d0e1333df945"},
+      {"caseId": "TC-003739", "transaction": "Financial Transactions (Data Section No. 3)", "marketBasketFieldNamed": true, "segment151Element84": "DECLARED_OMISSION_NO_EXACT_FIELD", "segmentTypeValue": "100_UNRESOLVED_CONTAINER", "payloadSha256": "b5751c30445b7e5b7a6bcf9b877d0154903afe07a30da4b73a2b392bedfe7b63"},
+      {"caseId": "TC-013090", "transaction": "ECA/TeleCheck Service Transaction", "marketBasketFieldNamed": false, "segment151Element84": "NO_EXACT_OBSERVATION", "payloadSha256": "a1ea77f8e49cedd84931b044437c43cc4dcfb96296ec5a8dbd91c6c59a8ed6b5"},
+      {"caseId": "TC-013091", "transaction": "ECA/TeleCheck Service Transaction Request", "marketBasketFieldNamed": false, "segment151Element84": "NO_EXACT_OBSERVATION", "payloadSha256": "80001880163127b2fbeb0d67c92d94865706a55bf7d0d97bd78dfb5cdd3afa24"},
+      {"caseId": "TC-013092", "transaction": "EMV Financial Transaction Request", "marketBasketFieldNamed": true, "segment151Element84": "DECLARED_OMISSION_NO_EXACT_FIELD", "segmentTypeValue": "100_UNRESOLVED_CONTAINER", "payloadSha256": "961558e7ae4972762d53479f7adc781be392a36e0a6238d014f5d3c4f16ad9f5"},
+      {"caseId": "TC-013093", "transaction": "EMV Request Transaction", "marketBasketFieldNamed": false, "segment151Element84": "NO_EXACT_OBSERVATION", "payloadSha256": "31ab0676ec8137eddd0dd94eca1d11af3f82d90726f3b1f0e1f160f0fbc2edd3"},
+      {"caseId": "TC-013094", "transaction": "Electronic Mail", "marketBasketFieldNamed": false, "segment151Element84": "NO_EXACT_OBSERVATION", "payloadSha256": "1c73154a33401c5dda000575ce5e23b091f2a30c7c08af145a0ffa917b026093", "approvedPayloadCopiesMissing": 2}
+    ],
+    "assessment": "Four cases name InComm OTC Market Basket Data, but their screened Segment Type observation is 100 with container identity unresolved and Segment 151 Element 84 is only a declared omission. Four other cases do not name the market-basket segment; three have no exact Segment 151 observation, and the Electronic Mail case has two approved payload copies missing.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG151-E84-REQUEST-PRESENCE", "requirementIds": ["BR-RULE-SEG151-SEGMENT-LENGTH-PRESENCE-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-SEG151-INPUT-CONTEXT", "ATL105-2026-3-SEG151-FIELD2-E84", "ATL105-2026-3-SEG151-DATASET-FIELD3"], "intent": "For an authorized InComm OTC Market Basket request that includes Segment 151, verify required field 2 / Element 84 is present as a four-character indicator. Full length calculation is deferred until the referenced external data format is available.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG151-E84-PRESENT", "scenarioIds": ["TS-DRAFT-SEG151-E84-REQUEST-PRESENCE"], "testDataIds": ["TD-DRAFT-SEG151-E84-PRESENT"], "assertion": "Applicable request Segment 151 includes field 2 / Element 84 with a four-character source-derived length value to be calculated from the reviewed complete request.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG151-E84-OMITTED", "scenarioIds": ["TS-DRAFT-SEG151-E84-REQUEST-PRESENCE"], "testDataIds": ["TD-DRAFT-SEG151-E84-OMITTED"], "assertion": "Applicable request Segment 151 omits required field 2 / Element 84.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG151-E84-PRESENT", "testCaseIds": ["TC-DRAFT-SEG151-E84-PRESENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "151", "field": "2", "element": "84", "value": "<4-character computed value>", "segmentType": "151", "marketBasketDataset": "<complete DV plus up to 10 PI datasets required>"}},
+    {"id": "TD-DRAFT-SEG151-E84-OMITTED", "testCaseIds": ["TC-DRAFT-SEG151-E84-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "151", "field": "2", "element": "84", "omitted": true, "segmentType": "151", "marketBasketDataset": "<complete DV plus up to 10 PI datasets required>"}}
+  ],
+  "openQuestions": [
+    "Confirm the actual InComm OTC transaction/market-basket condition for including Segment 151; four named AI cases still show Segment Type 100 with container unresolved.",
+    "Obtain the referenced Buypass Incomm Market Basket Data format document and define complete dataset sizing before computing Segment Length.",
+    "Bind Segment 151's source-specified host origin with the independent Test harness's request construction and response behavior.",
+    "Re-open the two approved TC-013094 payload copies if available; they are absent from frozen inventory."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

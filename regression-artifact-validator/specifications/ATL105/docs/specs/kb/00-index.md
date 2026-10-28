@@ -1,6 +1,6 @@
 # BUYPASS ATL105 Specification Knowledge Base Index
 
-Navigation index for BUYPASS Platform ATL105 Message Format Specification, Version 2026-3
+This navigation index is primarily based on BUYPASS Platform ATL105 Message Format Specification, Version 2026-3
 (722 pages). Source: `docs/specs/BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-3.pdf`,
 extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is marked with a
 `--- PAGE N ---` line).
@@ -8,6 +8,92 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 > Line numbers below are approximate (derived from an automated pass over `extracted_text.txt`
 > and spot-checked, but not every boundary was individually verified). Use them as a starting
 > point and refine with `grep_search`/`read_file` on `extracted_text.txt` if a lookup seems off.
+
+## Supplemental Petroleum source (2025-1)
+
+The [Petroleum Industry Processing specification](../BUYPASS_Platform_Petroleum_Industry_Processing_Specifications__2025-1.pdf)
+is stored beside the ATL105 2026-3 and 2026-4 PDFs, not substituted for either version.
+The complete 226-page document is available as [page-level retrieval evidence](petroleum-2025-1/pages.json),
+with a [bookmark index](petroleum-2025-1/source-index.json) covering 17 chapters and 13 appendices.
+Use [13 curated draft lessons](petroleum-2025-1/training-lessons.json) for source-grounded
+review, with [authoring input and open questions](petroleum-2025-1/training-input.json)
+and a [fingerprinted ingestion manifest](petroleum-2025-1/ingestion-manifest.json).
+
+The document covers AFP configuration and controller activities, POS/CAT transaction flows,
+receipts, Fleet One, Fuelman/Fleetwide, MasterCard Fleet, Visa Fleet, Voyager, WEX,
+COMDATA and WEX OTR processing, EMV and product/prompt code appendices. Full ingestion
+does not mean every rule is derived, taught or executable. Lessons remain
+`DRAFT_REVIEW_REQUIRED`; no canonical BR/TS/TC/TD records or certification gates are promoted.
+Petroleum appendix letters are document-local and must not be aliased to ATL105 appendices.
+Cross-version/card/flow reconciliation remains open, including the Introduction's
+Voyager section-10 references versus the chapter-9 bookmarks.
+
+Rebuild/check/test through `petroleum-ingest-build`, `petroleum-ingest-check` and
+`petroleum-ingest-test` in the framework task launcher. For read-only lexical retrieval:
+`python scripts/ingest-petroleum-spec.py --query "MasterCard expiration"` from the module root.
+Results are source candidates with physical PDF pages and printed page labels, not approved rules.
+
+ATL105 2026-3 and 2026-4 explicitly refer fleet processing to Petroleum in section 10.6
+(printed page 10-44), the fleet-card branch of Element 2, and issuer-rule notes for Elements 31,
+40, 47, 64, 108 and 158-163. The [cross-reference map](petroleum-2025-1/atl105-petroleum-cross-references.md)
+records all 13 occurrences per release with physical/printed pages, source quotes and fingerprints.
+It trains a bounded routing rule: use Petroleum for applicable fleet issuer requirements; retain
+ATL105 message, field, encoding and segment rules; do not broaden fleet-specific rules to credit,
+debit or EBT. All mapped entries remain draft/review-required.
+
+### Petroleum training plan and Mastercard Fleet pilot
+
+The [11-phase training plan](petroleum-2025-1/training-plan.json) defines steps, deliverables and
+acceptance criteria for phases 0 to 10, maps each framework gate exactly once and orders eight
+card or flow contexts covering chapters 2 to 17 and appendices A to M. The pilot,
+[MasterCard Fleet (chapter 7)](petroleum-2025-1/mastercard-fleet/training-report.md), has phases 0 to 7
+drafted and phase 8 partial. Phases 0 to 3 come from its [curated input](petroleum-2025-1/mastercard-fleet/context-input.json)
+in the [training package](petroleum-2025-1/mastercard-fleet/training-package.json): scope, a 36-item
+inventory covering all 17 chapter bookmarks plus the MasterCard Fleet row of Petroleum Appendix A and
+Petroleum Appendix B, 22 reconciliations against ATL105 2026-3 and 2026-4, source-verified Track 1/Track 2
+layouts, BIN ranges and example checks, and 377 Appendix B product-code rows compared row by row with
+ATL105 Appendix F (identical codes except ATL105-only 541-549). Two source conflicts are recorded: the
+odometer maximum (7 digits in Appendix A, 8 in chapter 7 and ATL105) and Product Restriction Codes other
+than 1 or 2. Phases 4 to 8 come from the
+[chain input](petroleum-2025-1/mastercard-fleet/chain-input.json) in the
+[chain package](petroleum-2025-1/mastercard-fleet/chain-package.json): a transaction by entry-mode
+matrix mapped to ATL105 Appendix G codes and Prompt Codes, 24 draft BRs, 60 TS/TC/TD chains whose
+expected outcomes are confirmed by a rule validator (three oracles flagged as conflicting), 8 covered flow
+transitions and 360 caught mutations.
+These draft chains are authored from source text, are not independent Test Solution evidence until SME
+review, and have not been executed. ATL105 message serialization is blocked by the existing Java compile
+error; phase 9 needs an AI package and phase 10 needs host execution and SME approval. The printed
+Track 1 example is one character short of its layout and is routed to source review. Rebuild/check/test
+through `petroleum-train-build`, `petroleum-train-check`, `petroleum-train-test` and `petroleum-chain-test`.
+
+The second context, [Visa Fleet (chapter 8)](petroleum-2025-1/visa-fleet/training-report.md), reuses the
+generic chain with a Visa plug-in (`scripts/petroleum_visa_fleet.py`) and has the same phase status. Its
+[curated input](petroleum-2025-1/visa-fleet/context-input.json) yields a 51-item inventory covering all 18
+chapter bookmarks plus the Visa Fleet rows of Appendices A and B, and 28 reconciliations. Its
+[chain input](petroleum-2025-1/visa-fleet/chain-input.json) yields card type 020 Prompt Codes, Service
+Prompt and Service Enhancement Indicator rules, 26 draft BRs, 62 TS/TC/TD chains (six oracles cite source
+conflicts), 10 covered flow transitions and 455 caught mutations. Recorded conflicts: the chapter 8 BIN list
+and Appendix A ranges differ (3 chapter-only BINs, many Appendix-only BINs), Service Enhancement Indicator
+values 3 to 9, and the 6-digit versus maximum-6-digit ID. Both printed track examples fail the BIN and
+Mod 10 checks and are routed to source review. Rebuild/check/test through `petroleum-visa-train-build`,
+`petroleum-visa-train-check` and `petroleum-visa-train-test`.
+
+The third rollout context, [Voyager Fleet (chapter 9)](petroleum-2025-1/voyager-fleet/training-report.md),
+covers pages 72-92, including magstripe, EMV, POS restrictions, terminal configuration and embossing.
+The [context input](petroleum-2025-1/voyager-fleet/context-input.json)
+and [training package](petroleum-2025-1/voyager-fleet/training-package.json) record 60 inventory items covering
+all 41 chapter bookmarks plus Appendix B, 26 reconciliations remain review-required, Appendix B's 377
+product-code rows are compared with ATL105 Appendix F, and both printed track examples remain review-required.
+Phases 4-7 are now drafted: the matrix, 35 BRs, 53 TS/TC/TD chains and 10 covered transitions are recorded
+in the [chain input](petroleum-2025-1/voyager-fleet/chain-input.json) and generated package. The Java compile
+blocker is fixed, but phase 8 is partial because the logical fixtures have not been serialized to actual
+Segment 100/101 wire; the available payload adapter validates observed wire rather than generating it.
+Phases 9 and 10 remain blocked
+pending an AI package, host execution and SME approval. These draft chains are not independent Test Solution evidence.
+The separate Voyager EMV terminal
+Specifications v1.5 is missing, so Truck Class details are explicitly open. Appendices I-L are referenced
+but deferred to the planned appendix rollout. Rebuild/check/test with `petroleum-voyager-train-build`,
+`petroleum-voyager-train-check` and `petroleum-voyager-train-test`.
 
 ## Chapters
 
@@ -28,6 +114,9 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | 13 | Data Element Descriptions | Detailed descriptions of data elements (13.1 alphabetical, 13.2 by number) | 17700-25439 |
 | 14 | Support, Testing, and Certification | Project management, development support, testing, certification | 25440-25504 |
 
+See the [chapter-family coverage gap register](chapter-coverage-gap-register.md) for the
+current implementation status of Chapters 1-14 and the planned execution order.
+
 ## Appendices
 
 | Appendix | Title | Purpose | Approx. Line Range |
@@ -45,24 +134,32 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 | K | Additional Information Data Layouts | Table IDs 001-047 for Element 116/118 | 32577-34456 |
 | L | Valid Currency Codes | Currencies with ISO codes, Visa/MasterCard support (Element 20) | 34457-34890 |
 | M | Element Format Examples for EBT Program Data | Format examples for Element 164 (EBT Program Data) | 34891-35045 |
-| N | First Data Premium Gift Card Magnetic Stripe Data Layout | Track II layout for First Data Premium Gift Card | 35046-35090 |
-| O | Payment Token Terminologies | Tokenization terminology | 35091-35141 |
+| N | [First Data Premium Gift Card Magnetic Stripe Data Layout training](appendix-n/README.md) | Track II layout for First Data Premium Gift Card; all 6 BRs independently implemented, PARTIALLY_COVERED | 35046-35090 |
+| O | [Payment Token Terminology training](appendix-o/README.md) | Tokenization glossary; all 7 BRs independently implemented, PARTIALLY_COVERED | 35089-35126 |
 | P | TransArmor VeriFone Edition: Responses to Administrative Commands | External spec reference | 35142-35157 |
-| Q | Valid National Point-of-Service Condition Codes | POS condition codes (Element 111 Table 030) | 35158-35406 |
-| R | EMV Chip Data Example | Example EMV chip data packet structure | 35407-35449 |
-| S | Valid CA Public Key File Record Layout | CA Public Key File record layout for EMV | 35450-35558 |
-| T | EMV Additional Information Data Layouts | EMV Table Data and CARC layouts | 35559-35625 |
-| U | Visa Digital Wallet | Visa Pass-through and Staged Digital Wallet | 35626-35662 |
-| V | Moneris Data Layout | Moneris request/response message data layout | 35663-35815 |
-| W | Download Data Layout | Download data layout for Supplemental Terminal Data Segment | 35816-35840 |
-| X | Online Refund/Refund Authorization | Merchandise return processing | 35841-36049 |
-| Y | 3-D Secure | 3-D Secure authentication | 36050-36265 |
-| Z | Stored Credential | Stored credential transactions | 36266-36595 |
-| AA | TransArmor Processing Considerations | TransArmor PKI encryption/tokenization | 36596-36611 |
-| AB | Purchase Repayment | Purchase repayment transaction processing | 36612-36806 |
-| AC | Valid Country Codes | Country codes list | 36807-36840 |
-| AD | Real Time Account Updater | Real Time Account Updater request data | 36841-36872 |
-| AE | Visa Estimated and Incremental Authorization Transactions | Estimated/incremental authorization details | 36873-end |
+| Q | [Valid National Point-of-Service Condition Codes training](appendix-q/README.md) | POS condition codes (Element 111 Table 030); all 5 BRs independently implemented, PARTIALLY_COVERED | 35158-35406 |
+| R | [EMV Chip Data training](appendix-r/README.md) | Elements 189/190 EMV Chip Data (Length + TLV); all 7 BRs independently implemented, PARTIALLY_COVERED | 35407-35449 |
+| S | [CA Public Key File training](appendix-s/README.md) | CA Public Key File record layout for EMV (standalone, via Segment 132); 9 of 10 BRs independently implemented including real SHA-1 checksum verification, PARTIALLY_COVERED | 35450-35558 |
+| T | [EMV Additional Information Data Layouts training](appendix-t/README.md) | Elements 191/192/118 EMV Table Data (001) and CARC (002) layouts; 5 of 7 BRs independently implemented, PARTIALLY_COVERED | 35559-35625 |
+| U | [Visa Digital Wallet training](appendix-u/README.md) | Wallet Method Indicator (Sub Table ID 10) format + category classification independently implemented; 6 business-process BRs PARTIALLY_COVERED | 35626-35662 |
+| V | [Moneris Data Layout training](appendix-v/README.md) | Segment 135/136 Moneris request/response tables; bounded layouts implemented, cross-message/security claims review-gated | 35663-35815 |
+| W | [Download Data Layout training](appendix-w/README.md) | Site Language and Postal Code tables for Segment DL7; source `an1` width conflict remains review-gated | 35816-35840 |
+| X | [Online Refund/Refund Authorization training](appendix-x/README.md) | Merchandise Return indicator in Table 32 Sub-Table 11, lifecycle carry-forward, and review-gated program/issuer context | 35841-36049 |
+| Y | [3-D Secure training](appendix-y/README.md) | ECI/brand mapping, bounded Visa CAVV/TAVV matrix, Amex SafeKey, MasterCard UCAF/DSRP + MPI; protocol, merchant availability and cryptogram authenticity remain external/review-gated | 36050-36265 |
+| Z | [Stored Credential training](appendix-z/README.md) | Initial/CIT/MIT profiles, reference/amount reuse, Discover installments/India, MasterCard categories and Visa India recurring; source conflicts/external evidence remain review-gated | 36048-36257 |
+| AA | [TransArmor Processing Considerations training](appendix-aa/README.md) | TAP/EDATA method matrix, token/expiry reuse, Key Load/refresh and PKI prefix; subsequent Key ID conflict and external cryptography/protocols review-gated | 36264-36584 |
+| AB | [Purchase Repayment training](appendix-ab/README.md) | Third-party installment definition, MasterCard IR/I/provider descriptor, opt-in advice 22 and no-retry; CB remains Visa Consumer Bill Payment | 36594-36602 |
+| AC | [Valid Country Codes training](appendix-ac/README.md) | All four pages: 254 source rows, 248 unique numeric codes; 840 ambiguity and Table 059 acquirer/merchant role conflict remain reviewed | 36609-36810 |
+| AD | [Real Time Account Updater training](appendix-ad/README.md) | Participation, Table 060 Y/I/O, Segment 155 response gates and all VAU results, original/updated credential pairing and unchanged retries | 36805-36830 |
+| AE | [Visa Estimated and Incremental Authorization training](appendix-ae/README.md) | Special MCC restrictions, initial/incremental indicators, series continuity, Table 063, completion, 7/14-day windows and complete-then-restart | 36839-36877 |
+| AF | [Estimated and Incremental Authorization training](appendix-af-estimated-incremental-training.md) | 2026-4 release overlay: four IA roles, Discover Table 82 mandate, Appendix I fixed Table 82 layout, Terminal Transaction Number series rules; field-name mapping and execution remain review-gated | PDF 636-637, 730 |
+
+## External reference documents
+
+| Reference | Referenced by | Training | Source |
+|-----------|---------------|----------|--------|
+| Conexxus Payment System Product Codes (PSPC) v4.1 (2022-05-12) and v3.7 (2015-09-04); ATL105 names no version | Appendix K-27 Table ID 034 (Host-based Purchase Restriction) "refer to the Conexxus PSPC reference document"; informative crosswalk for Appendix F / Element 77 | [PSPC training](../../test-validation-strategy/pspc-payment-system-product-codes/README.md), [BR Coverage](../../test-validation-strategy/pspc-payment-system-product-codes/BR%20Coverage.md), [Test Coverage](../../test-validation-strategy/pspc-payment-system-product-codes/Test%20Coverage.md), [Validation Strategy](../../test-validation-strategy/pspc-payment-system-product-codes/Validation%20Strategy.md) | `docs/specs/extracted_text_pspc_v4.1.txt`, `docs/specs/extracted_text_pspc_v3.7.txt`; [training record](../../test-validation-strategy/Conexxus-PSPC-Training-Record.md) (ATL105 2026-4 anchors in `docs/specs/extracted_text_new.txt`) |
+| Fiserv EMV and Chip Implementation Guide v2025.RG20 (2025-08-12), formerly the "First Data EMV Implementation Guide" | §10.14 EMV Processing Requirements: "Refer to First Data EMV Implementation Guide ... must be used in conjunction with the ATL105 Message Format Specifications". Also the Appendix R full tag list. | [EMV training memory](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md), documentation level. Oracle, chain package and per-reference coverage documents are pending. | Local PDF, SHA-256 `A79B133C…89EF4`. Not committed because the repository is public. ATL105 anchors are in `docs/specs/extracted_text_new.txt`. |
 
 ## Related files in this knowledge base
 
@@ -90,6 +187,7 @@ extracted to `docs/specs/extracted_text.txt` (36,873 lines; each PDF page is mar
 - [COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md](COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) - **ATL105 Segment Training Handbook**: the single strategy, rules, 8-item framework, and lessons learned for training every ATL105 segment, with segment-specific addenda for specialized behavior
 - Placeholder modules: Segments 110, 111, 114, 115, 118, 119, 120, 123, 130, 131, 132, 134, 135, 136, 139, 140, 141, 142, 143, 145, 146, 148, 149, 150, 151, 152, 153, 155, 156, 157, and DL1-DL8. Each placeholder README records the segment name and planned knowledge-base contents.
 - [Test Validation Strategy Package](../../test-validation-strategy/README.md) - complete ATL105 validation strategy and Segment 100 descriptive business requirements
+- [ATL105 EMV Companion Reference Training Knowledge](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md) - ingestion of the Fiserv EMV and Chip Implementation Guide v2025.RG20, which §10.14 and Appendix R refer to. Contains the tag catalog, cross-field, lifecycle, AID, fallback, response and CAPK rules, the scenario catalog, and the corrections (Appendix S exponent `010001`).
 - [segment-compatibility-matrix.md](segment-compatibility-matrix.md) - conditional compatibility of Segment 100 with currently mapped Section 3 segments
 - [13-data-elements.md](13-data-elements.md) - data dictionary from chapter 13.2 (elements 1-99 fully transcribed; 100-228 not yet done)
 - [appendix-code-tables.md](appendix-code-tables.md) - flat ENUM-style code tables (Appendices C, D, E, F, G, J, L)

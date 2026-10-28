@@ -21,6 +21,52 @@ Multi-sub-segment structure, mutual exclusion with Segment 101, Prompt-Table-onl
 
 See [SME/TBA Input Register](segment-145-sme-tba-input-register.md).
 
+## Executed Chapter 12 continuation
+
+[Chapter12ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12ActualPayloadAdapter.java)
+accepts actual `EnhancedFleetData` as repeated N3 tag/N3 length/value entries,
+or an actual `Tables` array, never both. Missing values cannot be supplied by
+metadata. Truncated headers/values, representation ambiguity and malformed
+context/history are explicit invalid findings.
+
+The shared fleet validator executes authorizer prompt enumerations and value
+caps, Voyager future tags DF32-DF6F, the Visa shared GEN/VHI/DRI restriction,
+nonfuel quantity/currency sublayouts and category aggregation. Observed
+`history.fleet.nonfuelProducts` contains text `category`, `quantity`, `amount`;
+an absent mapped category uses MERC. Explicit boolean
+`nonfuelProductsComplete` is required. Complete observations are compared to
+actual category totals; incomplete observations cannot certify equality.
+Observed category assignments do not authenticate the Dynamic Card Table.
+The WEX OTR category/token lists are applied only to an explicit `WEX_OTR`
+observation; a generic `WEX` brand label does not establish that subtype.
+
+Request Table 004 values are the actual sent values. They are checked against
+matched `history.fleet.promptFormats`, not replaced by metadata captures.
+Parent-envelope history is authoritative and contradictory child history is
+invalid. The
+[canonical executions](../../../../test-output/test-json/chapter-12-training-evidence.json)
+retain whole-status and target-predicate expectations separately.
+The generic cap20/token-specific cap25 conflict, host/configuration provenance,
+production enablement, complete lifecycle correlation and outer wire placement
+are not certified. These changes do not resolve the open SME approvals or
+establish complete segment/chapter coverage.
+
+## Matched actual prompt and purchase observations
+
+Source15363–15380/15782–15804 now binds effective prompt masks to measured
+captured Host Table004, and actual145 Table004 entries to observed subsequent
+sent responses. Three independently captured chronological edges are checked;
+equal precision remains review. Z uses captured values and must be absent
+from actual sent tokens even when metadata claims omission.
+
+Source15280–15303/15716–15753 category/limit execution now binds its purchased
+inventory and completeness flag to `history.fleet.purchaseObservation` and
+actual current86/102. Existing PRODUCTS/default-MERC/sum/limit helpers remain
+the oracle. Projection equality is not raw table decoding or authentication.
+Canonical positive/negative/boundary/missing probes execute in
+`Chapter12FleetDiscountLoadIntegrationTest`; complete outer wire and full
+merchant/configuration/application provenance remain unfinished.
+
 ## Do-Not-Assume Rules
 
 1. Do not combine Segment 145 with Segment 101 — explicitly prohibited.

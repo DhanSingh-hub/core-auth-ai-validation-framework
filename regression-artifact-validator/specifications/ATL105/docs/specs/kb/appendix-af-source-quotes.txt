@@ -1,0 +1,12 @@
+This functionality is mandatory for Discover and is not limited by MCC.
+For Visa, Mastercard, and American Express, the use of this functionality is strongly recommended in addition to populating the Estimated and Incremental Authorization fields for the applicable lodging and EV transactions.
+The Incremental Auth (IA) product supports four transaction types:
+Original Auth (aka Estimated Auth)
+Incremental Auth
+Partial Reversal (aka IA Reversal)
+Incremental Auth Completion (aka IA Completion)
+All IA transaction types should contain Incremental Auth Data (Variable Information segment 111 Table 82). This is mandatory for Discover.
+Incremental Auth Data contains the Transaction ID which must be unique (per terminal) to any open Incremental Auth purchase.
+Incremental Auths, IA Reversals, and IA Completions are all subsequent transactions, and must be preceded by an Original Auth.
+Subsequent IA transactions must contain the Approval Code (DE 39) that was received on the approved Original Auth.
+Once an IA Completion is received, the IA is closed, and no more subsequent transactions will be approved for that Terminal Transaction ID.

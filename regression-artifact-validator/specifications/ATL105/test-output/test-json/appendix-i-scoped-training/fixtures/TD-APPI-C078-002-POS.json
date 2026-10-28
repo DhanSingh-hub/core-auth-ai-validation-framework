@@ -1,0 +1,91 @@
+{
+  "id" : "TD-APPI-C078-002-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-002-POS.json",
+  "testCaseIds" : [ "TC-APPI-C078-002-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-82",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r006-APPI-C078-002"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-002",
+        "tableId" : "078",
+        "nestedSelector" : "structure-78",
+        "ruleIds" : [ "APPI-T078-R006" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-82",
+          "startLine" : 32050,
+          "endLine" : 32068
+        }, {
+          "section" : "Appendix I-83",
+          "startLine" : 32081,
+          "endLine" : 32097
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "describedStructureIdentifier" : "78",
+            "logicalLineItems" : [ {
+              "productCode" : "001",
+              "subTables" : [ {
+                "id" : "01",
+                "declaredValueLength" : "04",
+                "data" : "FLSV"
+              } ]
+            } ],
+            "wireGate" : "unresolved wrapper and lengths"
+          },
+          "negative" : {
+            "describedStructureIdentifier" : "79",
+            "logicalLineItems" : [ {
+              "productCode" : "001",
+              "subTables" : [ {
+                "id" : "01",
+                "declaredValueLength" : "04",
+                "data" : "FLSV"
+              } ]
+            } ],
+            "wireGate" : "unresolved wrapper and lengths"
+          }
+        },
+        "clearScope" : "Only the literal structure identifier in the source note and logical containment of a defined sub-table. Candidate is partial; no disputed length supplied.",
+        "excludedClaims" : [ "Structure identifier duplication versus outer 078", "Encoded totalLength", "Array-length field", "Product-length count basis", "Complete wire grammar", "Tag-order requirements" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "describedStructureIdentifier matches source note literal 78",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "whole blob serialization can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ],
+          "negative" : [ {
+            "predicate" : "describedStructureIdentifier matches source note literal 78",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "whole blob serialization can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "describedStructureIdentifier",
+          "from" : "78",
+          "to" : "79",
+          "unchanged" : "logical contained item and wire gate",
+          "targetedFailure" : "note identifier mismatch only, not a claimed serialized-selector validation"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

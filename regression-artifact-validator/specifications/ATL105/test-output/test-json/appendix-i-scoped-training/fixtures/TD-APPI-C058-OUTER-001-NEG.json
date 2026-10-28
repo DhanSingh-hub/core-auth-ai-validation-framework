@@ -1,0 +1,110 @@
+{
+  "id" : "TD-APPI-C058-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C058-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C058-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-64",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t058-r001-APPI-C058-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C058-OUTER-001",
+        "tableId" : "058",
+        "ruleIds" : [ "APPI-T058-R001" ],
+        "syntheticData" : {
+          "logicalTableIdentity" : "058",
+          "merchantState" : "MA",
+          "context" : {
+            "cardBrand" : "Discover",
+            "merchantRole" : "third-party payment provider",
+            "providerState" : "MA",
+            "underlyingRetailerState" : "CO"
+          }
+        },
+        "clearScope" : "Retailer-state identity only; source statesn2/058,length02,dataAn3.",
+        "excludedClaims" : [ "Resolved selectorwidth", "Fixed02versusAn3", "Padding imported from064", "External statevalidation asTable058 requirement" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Retailerstate identity",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Contradictory fieldwidths",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "merchantState",
+            "replacement" : "MA",
+            "expected" : "FAIL retailerstate identity"
+          }, {
+            "path" : "logicalTableIdentity",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "unpaddedLogicalValue" : "CO",
+          "paddedObservation" : "CO ",
+          "outcome" : "Both serializationforms REVIEW_REQUIRED; no defaultpadding"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30794,
+          "section" : "Appendix I-64",
+          "endLine" : 30815
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n2",
+          "sourceLength" : "source fixed value 058, a three-digit value despite n2",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30802,
+            "section" : "Appendix I-64",
+            "endLine" : 30804
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n2",
+          "sourceLength" : "source fixed value 02",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30805,
+            "section" : "Appendix I-64",
+            "endLine" : 30808
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "An3",
+          "sourceLength" : "source attribute 3 while length is fixed 02",
+          "coverage" : "LOGICAL_IDENTITY_ONLY_WIDTH_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Fixed02 versusAn3,padding unresolved",
+          "sourceEvidence" : [ {
+            "startLine" : 30809,
+            "section" : "Appendix I-64",
+            "endLine" : 30815
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

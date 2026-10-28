@@ -1,0 +1,66 @@
+{
+  "id" : "TD-APPI-C032-10-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-10-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-10-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-27",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r015-APPI-C032-10"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-10",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R015" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-27",
+          "startLine" : 28547,
+          "endLine" : 28565
+        }, {
+          "section" : "Appendix U-1",
+          "startLine" : 35630,
+          "endLine" : 35653
+        } ],
+        "logicalFields" : {
+          "subTableId" : "10",
+          "subTableLength" : "001",
+          "value" : "S",
+          "context" : {
+            "storedCredentialTransferredToMerchant" : true,
+            "fundsFlowInterrupted" : false
+          },
+          "stagedExample" : {
+            "method" : "S",
+            "purchaseAccount" : "SYN-WALLET-01",
+            "fundingAccount" : "SYN-FUND-01",
+            "purchaseAndFundingAreSeparate" : true
+          }
+        },
+        "clearScope" : [ "Concrete P pass-through and S staged logical classifications" ],
+        "excludedClaims" : [ "Actual account/token", "Operator consent documentation", "Network enrollment" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Pass-through context usesP",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "S",
+          "targetedNegative" : "Staged classification without staged context"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

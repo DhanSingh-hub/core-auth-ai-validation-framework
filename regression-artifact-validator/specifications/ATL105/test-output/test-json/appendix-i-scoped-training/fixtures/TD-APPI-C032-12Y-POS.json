@@ -1,0 +1,62 @@
+{
+  "id" : "TD-APPI-C032-12Y-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-12Y-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-12Y-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-28",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r019-APPI-C032-12Y"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-12Y",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R019" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-28",
+          "startLine" : 28621,
+          "endLine" : 28627
+        }, {
+          "section" : "Appendix I-28",
+          "startLine" : 28633,
+          "endLine" : 28643
+        } ],
+        "logicalFields" : {
+          "subTableId" : "12",
+          "subTableLength" : "001",
+          "value" : "Y",
+          "context" : {
+            "debitCNP" : true,
+            "ecommerce" : true,
+            "debitRouteAvailable" : false,
+            "creditFallbackAllowed" : true
+          }
+        },
+        "clearScope" : [ "ExplicitY permits fallback; no default inferred by fixture" ],
+        "excludedClaims" : [ "Fallback approval", "Actual routing availability", "Omission default not exercised" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Indicator permits declared credit fallback",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "N",
+          "targetedNegative" : "Debit-only choice contradicts allowed fallback"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

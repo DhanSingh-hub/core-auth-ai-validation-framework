@@ -1,0 +1,4521 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-012-EMPLOYEE-NUMBER",
+  "reviewDate": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:039",
+    "statement": "Employee Number must be numeric and must not exceed 4 bytes.",
+    "scenarioIds": [
+      "SC-3034",
+      "SC-3053",
+      "SC-3054",
+      "SC-3089",
+      "SC-3108",
+      "SC-3109",
+      "SC-3292",
+      "SC-3430",
+      "SC-3431",
+      "SC-3768",
+      "SC-3832",
+      "SC-3833",
+      "SC-4199",
+      "SC-4218",
+      "SC-4219",
+      "SC-4397",
+      "SC-4421",
+      "SC-4422",
+      "SC-4483",
+      "SC-4507",
+      "SC-4508",
+      "SC-5222",
+      "SC-5236",
+      "SC-5282",
+      "SC-5364",
+      "SC-5468",
+      "SC-5499",
+      "SC-5517"
+    ],
+    "caseIds": [
+      "TC-002876",
+      "TC-002895",
+      "TC-002896",
+      "TC-002931",
+      "TC-002950",
+      "TC-002951",
+      "TC-003134",
+      "TC-003272",
+      "TC-003273",
+      "TC-003538",
+      "TC-003602",
+      "TC-003603",
+      "TC-003969",
+      "TC-003988",
+      "TC-003989",
+      "TC-004069",
+      "TC-004093",
+      "TC-004094",
+      "TC-004141",
+      "TC-004165",
+      "TC-004166",
+      "TC-004870",
+      "TC-004884",
+      "TC-004930",
+      "TC-005005",
+      "TC-005109",
+      "TC-005132",
+      "TC-005148"
+    ],
+    "physicalCompleteCaseIds": [
+      "TC-003134",
+      "TC-003272",
+      "TC-003273",
+      "TC-003538",
+      "TC-003602",
+      "TC-003603",
+      "TC-004069",
+      "TC-004093",
+      "TC-004094",
+      "TC-004141",
+      "TC-004165",
+      "TC-004166",
+      "TC-004930",
+      "TC-005005",
+      "TC-005132",
+      "TC-005148"
+    ],
+    "segments": [
+      "105",
+      "109",
+      "119"
+    ],
+    "elements": [
+      "32"
+    ],
+    "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE",
+    "physicalPayloadPathCount": 80
+  },
+  "registeredArtifactScope": {
+    "payloadPathCount": 80,
+    "candidatePathCount": 56,
+    "approvedPathCount": 24,
+    "missingApprovedPathsRecordedInIntake": 24,
+    "labelCaveat": "Folder labels 'approved' and 'candidates' are source-corpus states, not semantic approval."
+  },
+  "sourceRule": {
+    "id": "ENT-ELEM-32",
+    "element": "32",
+    "name": "Employee Number",
+    "characterType": "N",
+    "maximumLengthBytes": 4,
+    "representation": "Fixed length of four digits",
+    "validValues": "Valid employee numbers; exhaustive value domain is not defined here",
+    "specialSourceNote": "Use 1111 if no employee numbers are assigned.",
+    "purpose": "Identifies the employee who performs a utility transaction; reporting purposes only.",
+    "alignment": "AI numeric/maximum-four claim is partially aligned but omits fixed N4 representation and value-domain qualification.",
+    "sourceEvidence": [
+      {
+        "sourcePage": 374,
+        "startLine": 20225,
+        "quote": "Number: 32 Name: Employee Number"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20226,
+        "quote": "Character Type: N Maximum Length: 4 bytes"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20228,
+        "quote": "Representation: Fixed length of four digits"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20229,
+        "quote": "Purpose: Identifies the employee who performs a utility transaction."
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20230,
+        "quote": "Note: Used for reporting purposes only."
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20232,
+        "quote": "Valid Codes/Values: Valid employee numbers."
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20233,
+        "quote": "Note: Use 1111 if no employee numbers are assigned."
+      }
+    ],
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "testCrosswalk": {
+    "exactAnchorCandidates": [
+      "SEG105-R-006",
+      "SEG109-R-013",
+      "SEG119-R-013"
+    ],
+    "rankedCandidatesAreLeadsOnly": true,
+    "rankedCandidates": [
+      {
+        "candidateId": "SEG119-R-013",
+        "packageId": "BR-RULE-SEG119-R-013",
+        "title": "Employee Number is conditional",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "section": "12.17",
+            "segment": "119",
+            "element": "32",
+            "rule": "employee-number-conditional",
+            "specification": "ATL105",
+            "version": "2026-3"
+          }
+        ],
+        "disposition": "Conditional-presence candidate; does not establish Element 32 numeric format or valid values.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG119-R-013"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-013"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-013"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG109-R-013",
+        "packageId": "BR-RULE-SEG109-R-013",
+        "title": "Employee Number, when populated, is numeric with maximum length four",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.8",
+            "segment": "109",
+            "element": "32",
+            "rule": "employee-number"
+          }
+        ],
+        "disposition": "Numeric maximum-four format candidate; fixed four-digit representation remains omitted.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG109-R-013"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-013"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-013"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG105-R-006",
+        "packageId": "BR-RULE-SEG105-R-006",
+        "title": "Employee Number follows approved authorization policy when present",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.6",
+            "segment": "105",
+            "element": "32",
+            "rule": "employee-number"
+          }
+        ],
+        "disposition": "Authorization-policy applicability when present; not an Element 32 N4 format oracle.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG105-R-006"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-006"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-006"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG109-R-009",
+        "packageId": "BR-RULE-SEG109-R-009",
+        "title": "Information Byte is required and one numeric character",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.8",
+            "segment": "109",
+            "element": "44",
+            "rule": "information-byte"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG109-R-009"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-009"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-009"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG109-R-012",
+        "packageId": "BR-RULE-SEG109-R-012",
+        "title": "Block Number is required and three numeric characters",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.8",
+            "segment": "109",
+            "element": "11",
+            "rule": "block-number"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG109-R-012"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-012"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-012"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG105-R-003",
+        "packageId": "BR-RULE-SEG105-R-003",
+        "title": "Information Byte is required",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.6",
+            "segment": "105",
+            "element": "44",
+            "rule": "information-byte"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-003"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG119-R-010",
+        "packageId": "BR-RULE-SEG119-R-010",
+        "title": "Information Byte is required",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "section": "12.17",
+            "segment": "119",
+            "element": "44",
+            "rule": "information-byte",
+            "specification": "ATL105",
+            "version": "2026-3"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-010"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG109-R-015",
+        "packageId": "BR-RULE-SEG109-R-015",
+        "title": "Sequence Number is required and six numeric characters",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.8",
+            "segment": "109",
+            "element": "86",
+            "rule": "sequence-number"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG109-R-015"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-015"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG109-R-015"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG101-R-013",
+        "packageId": "BR-RULE-SEG101-R-013",
+        "title": "Fleet Employee Number, when populated, is alphanumeric with maximum length 10",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "element": "40",
+            "rule": "fleet-employee-number"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "packageId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "title": "Non-TransArmor request Element 2 does not exceed 24 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "disposition": "Ranked candidate lead only; scope requires independent review.",
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-REQUEST-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-REQUEST-LENGTH-24",
+            "TC-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-REQUEST-LENGTH-24",
+            "TD-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      }
+    ],
+    "segmentCandidateDispositions": {
+      "SEG105-R-006": "Authorization-policy applicability when present; not an Element 32 N4 format oracle.",
+      "SEG109-R-013": "Numeric maximum-four format candidate; fixed four-digit representation remains omitted.",
+      "SEG119-R-013": "Conditional-presence candidate; does not establish Element 32 numeric format or valid values."
+    }
+  },
+  "cases": [
+    {
+      "caseId": "TC-002876",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002876.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002876.meta.json",
+          "payloadSha256": "6ae30132b45613d66dffe9e54374aa64551d75a907e98961fb90ea2ae50e3c56",
+          "sidecarSha256": "1f0c3fc18b16a483133ea0ed5cb74a94c3a45dc005417d49fcc2b1f8dfd544eb",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002876.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002876.meta.json",
+          "payloadSha256": "6ae30132b45613d66dffe9e54374aa64551d75a907e98961fb90ea2ae50e3c56",
+          "sidecarSha256": "1f0c3fc18b16a483133ea0ed5cb74a94c3a45dc005417d49fcc2b1f8dfd544eb",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-002895",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002895.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002895.meta.json",
+          "payloadSha256": "774a2a7b57619b55198225213f9d745772c1a6ec3642286c2eea187d5029b29c",
+          "sidecarSha256": "08f6f1c64a710e410745a2d9f8f4e57065762d027c18ed3957fcc5db1e79a8d6",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002895.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002895.meta.json",
+          "payloadSha256": "774a2a7b57619b55198225213f9d745772c1a6ec3642286c2eea187d5029b29c",
+          "sidecarSha256": "08f6f1c64a710e410745a2d9f8f4e57065762d027c18ed3957fcc5db1e79a8d6",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-002896",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002896.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002896.meta.json",
+          "payloadSha256": "94e2625d80acb38353ebb6ec0e263318d918bd22c1b8bc9dd719ac8ab8c6d65d",
+          "sidecarSha256": "caa829a01c14267147229f19e1b6bf1475a593249e65478efabf33b5918fc0e2",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002896.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002896.meta.json",
+          "payloadSha256": "94e2625d80acb38353ebb6ec0e263318d918bd22c1b8bc9dd719ac8ab8c6d65d",
+          "sidecarSha256": "caa829a01c14267147229f19e1b6bf1475a593249e65478efabf33b5918fc0e2",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-002931",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002931.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002931.meta.json",
+          "payloadSha256": "d4169755f948d6635d5cfdb899e056446d2e1fa73cc6ace0c61dc80b51d846a8",
+          "sidecarSha256": "9276ce3b03a3629fe67d1fe50dc255a9cdfd9c684a72913878a44b072b780114",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002931.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002931.meta.json",
+          "payloadSha256": "d4169755f948d6635d5cfdb899e056446d2e1fa73cc6ace0c61dc80b51d846a8",
+          "sidecarSha256": "9276ce3b03a3629fe67d1fe50dc255a9cdfd9c684a72913878a44b072b780114",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-002950",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002950.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002950.meta.json",
+          "payloadSha256": "2cd3ba2442aa240ac9f3a902fd77f920c7ac19ef9dedff6cf4801410df36cbaa",
+          "sidecarSha256": "b57b177dd1713bd2eee0ce7a78b50bc6be79420b243d9b1aacb81bf3ff1dad48",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002950.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002950.meta.json",
+          "payloadSha256": "2cd3ba2442aa240ac9f3a902fd77f920c7ac19ef9dedff6cf4801410df36cbaa",
+          "sidecarSha256": "b57b177dd1713bd2eee0ce7a78b50bc6be79420b243d9b1aacb81bf3ff1dad48",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-002951",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002951.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002951.meta.json",
+          "payloadSha256": "7dc5009170be207f0d1d3307ccc63eac94f84a9e53bc673b779d0e5fa2209881",
+          "sidecarSha256": "71d530daefce2375da50a46bac3325ba940eee0c1479cd246ae9f2d500c88e55",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002951.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002951.meta.json",
+          "payloadSha256": "7dc5009170be207f0d1d3307ccc63eac94f84a9e53bc673b779d0e5fa2209881",
+          "sidecarSha256": "71d530daefce2375da50a46bac3325ba940eee0c1479cd246ae9f2d500c88e55",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003134",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003134.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003134.meta.json",
+          "payloadSha256": "ba51137bb02c063f323bcf62bfc2ec40996ef2220476fe09439c177719120642",
+          "sidecarSha256": "898bf4c9ac1e72729c091d1a5516e215bd1107ba656aab01d7c75cc3cfe31bc4",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003134.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003134.meta.json",
+          "payloadSha256": "ba51137bb02c063f323bcf62bfc2ec40996ef2220476fe09439c177719120642",
+          "sidecarSha256": "898bf4c9ac1e72729c091d1a5516e215bd1107ba656aab01d7c75cc3cfe31bc4",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P1",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003272",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003272.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003272.meta.json",
+          "payloadSha256": "e880999c1b83753918cbad9336c655a9a593c6e3624000da06913790bcbc49c9",
+          "sidecarSha256": "7e27d407a0e86b056942822e30e71cf1a544696270e11f70538e483d3bd09f7a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003272.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003272.meta.json",
+          "payloadSha256": "e880999c1b83753918cbad9336c655a9a593c6e3624000da06913790bcbc49c9",
+          "sidecarSha256": "7e27d407a0e86b056942822e30e71cf1a544696270e11f70538e483d3bd09f7a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P1",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003273",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003273.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003273.meta.json",
+          "payloadSha256": "24fa9ef8ff28161f0aaa4bf723034192f96a5298369248f8bfbf4c345bf4a90d",
+          "sidecarSha256": "035f0e38a26f0493dbf0fa7e1cdca2f073eb7a9dc01d2a83550ecc557fe398ae",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003273.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003273.meta.json",
+          "payloadSha256": "24fa9ef8ff28161f0aaa4bf723034192f96a5298369248f8bfbf4c345bf4a90d",
+          "sidecarSha256": "035f0e38a26f0493dbf0fa7e1cdca2f073eb7a9dc01d2a83550ecc557fe398ae",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P1",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P1",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003538",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003538.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003538.meta.json",
+          "payloadSha256": "aa438cbfb16724f839f29fa2f0fbb77d0f1e80218dfce6ce0131ee881f2bb802",
+          "sidecarSha256": "ffffce59cc50a5272cabfa6462658ae0fb414661cd49f798250b02e32620714d",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003538.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003538.meta.json",
+          "payloadSha256": "aa438cbfb16724f839f29fa2f0fbb77d0f1e80218dfce6ce0131ee881f2bb802",
+          "sidecarSha256": "ffffce59cc50a5272cabfa6462658ae0fb414661cd49f798250b02e32620714d",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003602",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003602.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003602.meta.json",
+          "payloadSha256": "97a38e2cf3f2a51128bc6996d4a7587c5a3eecbd396bcea38bbf45aaee315299",
+          "sidecarSha256": "c93ae8394cd60a5e56505d8d411b28fcc0ad40c298bd77aec6dc03e4bd105636",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003602.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003602.meta.json",
+          "payloadSha256": "97a38e2cf3f2a51128bc6996d4a7587c5a3eecbd396bcea38bbf45aaee315299",
+          "sidecarSha256": "c93ae8394cd60a5e56505d8d411b28fcc0ad40c298bd77aec6dc03e4bd105636",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003603",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003603.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003603.meta.json",
+          "payloadSha256": "9309dcff8892f93092884fbdac60c8888c68ce84c3a8bf72f6c81ac9a24a861a",
+          "sidecarSha256": "156b821d116b4811b990e85bd6b1c104f8d425ad559fb852eb024d64841bab4d",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003603.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003603.meta.json",
+          "payloadSha256": "9309dcff8892f93092884fbdac60c8888c68ce84c3a8bf72f6c81ac9a24a861a",
+          "sidecarSha256": "156b821d116b4811b990e85bd6b1c104f8d425ad559fb852eb024d64841bab4d",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003969",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003969.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003969.meta.json",
+          "payloadSha256": "fbfa7fadb98863ecee0a4c87c37a23148ae025cb8c830f0578067febf200ceb6",
+          "sidecarSha256": "772e1ddc51b5e79db4000e2214352a920753e07a35a35d9123f20b1b9e1bb9ee",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003969.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003969.meta.json",
+          "payloadSha256": "fbfa7fadb98863ecee0a4c87c37a23148ae025cb8c830f0578067febf200ceb6",
+          "sidecarSha256": "772e1ddc51b5e79db4000e2214352a920753e07a35a35d9123f20b1b9e1bb9ee",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003988",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003988.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003988.meta.json",
+          "payloadSha256": "4aa3e8d2c66ed3ec70e62830b406a34d38c0fbec95c0dccd0243765846d47143",
+          "sidecarSha256": "e92e1b7d255452f3b092dc263953044682627d0a533960296eb2154f080c0f87",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003988.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003988.meta.json",
+          "payloadSha256": "4aa3e8d2c66ed3ec70e62830b406a34d38c0fbec95c0dccd0243765846d47143",
+          "sidecarSha256": "e92e1b7d255452f3b092dc263953044682627d0a533960296eb2154f080c0f87",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-003989",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003989.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003989.meta.json",
+          "payloadSha256": "fb0dcd1b78ea3f3b896df626e91937085b1f869c6923b1a44c2113de29b23f6c",
+          "sidecarSha256": "d756f29f02c6f541d1b10afd2e3184970403c7a6ab2fe7f53c5b282aeefd2d01",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003989.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003989.meta.json",
+          "payloadSha256": "fb0dcd1b78ea3f3b896df626e91937085b1f869c6923b1a44c2113de29b23f6c",
+          "sidecarSha256": "d756f29f02c6f541d1b10afd2e3184970403c7a6ab2fe7f53c5b282aeefd2d01",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004069",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004069.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004069.meta.json",
+          "payloadSha256": "945c2fdb68daa40a9ffe33e7c734a59336dae5f305ebd7a13968ae884f54eb57",
+          "sidecarSha256": "c6c695f3532ab01985f9dc26220661e151b0bcd539b78764d0b13a82f5ad3cad",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004069.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004069.meta.json",
+          "payloadSha256": "945c2fdb68daa40a9ffe33e7c734a59336dae5f305ebd7a13968ae884f54eb57",
+          "sidecarSha256": "c6c695f3532ab01985f9dc26220661e151b0bcd539b78764d0b13a82f5ad3cad",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004093",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004093.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004093.meta.json",
+          "payloadSha256": "b4ac80cf427ceaeb0b2b4d254f6e2bcc89fd924983bb4923afa516d5dbf33e3e",
+          "sidecarSha256": "ecb35b7613cb199e4c39aeb82db5f7b6a9d6194edd10465e559ab74cd68dab21",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004093.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004093.meta.json",
+          "payloadSha256": "b4ac80cf427ceaeb0b2b4d254f6e2bcc89fd924983bb4923afa516d5dbf33e3e",
+          "sidecarSha256": "ecb35b7613cb199e4c39aeb82db5f7b6a9d6194edd10465e559ab74cd68dab21",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004094",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004094.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004094.meta.json",
+          "payloadSha256": "53dfa8341b72eff0a8420e17f0b378e3a957b9359a1e8bfb48abacd3a77bcdca",
+          "sidecarSha256": "984e12e3af48e22b4ffdec50feb77713f8423d97cd4020713288e285515b6c84",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004094.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004094.meta.json",
+          "payloadSha256": "53dfa8341b72eff0a8420e17f0b378e3a957b9359a1e8bfb48abacd3a77bcdca",
+          "sidecarSha256": "984e12e3af48e22b4ffdec50feb77713f8423d97cd4020713288e285515b6c84",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004141",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004141.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004141.meta.json",
+          "payloadSha256": "7982763af0b73fb93687d9fd55d4c23d7638fa5980dec841769677a63200d9a0",
+          "sidecarSha256": "e327f2678c83c68c48215ca796008b11fcfdb9e2a1e550bf467dee56c83b6b50",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004141.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004141.meta.json",
+          "payloadSha256": "7982763af0b73fb93687d9fd55d4c23d7638fa5980dec841769677a63200d9a0",
+          "sidecarSha256": "e327f2678c83c68c48215ca796008b11fcfdb9e2a1e550bf467dee56c83b6b50",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_FIXED_WIDTH",
+              "characterCount": 5,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "length_exceeded",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_FIXED_WIDTH",
+        "INVALID_FIXED_WIDTH"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "length_exceeded",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004165",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004165.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004165.meta.json",
+          "payloadSha256": "b96171b13a0b806325134ad244a8a44aa286a18134d753069459a847f4458f2f",
+          "sidecarSha256": "a300263c56697d79762dd4b908f87b36122b1387477e5cd84a2134f3c0c1171d",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004165.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004165.meta.json",
+          "payloadSha256": "b96171b13a0b806325134ad244a8a44aa286a18134d753069459a847f4458f2f",
+          "sidecarSha256": "a300263c56697d79762dd4b908f87b36122b1387477e5cd84a2134f3c0c1171d",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_NONNUMERIC",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "charset_invalid",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_NONNUMERIC",
+        "INVALID_NONNUMERIC"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "charset_invalid",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004166",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004166.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004166.meta.json",
+          "payloadSha256": "77c8f38dfc069428daf69a382ad575354376b73db1e4d3444ccaa70b0f70181f",
+          "sidecarSha256": "961156807ccf3d8f6afcae136b8d552b5aeef7b69b76764fcfba7d3443a8f219",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004166.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004166.meta.json",
+          "payloadSha256": "77c8f38dfc069428daf69a382ad575354376b73db1e4d3444ccaa70b0f70181f",
+          "sidecarSha256": "961156807ccf3d8f6afcae136b8d552b5aeef7b69b76764fcfba7d3443a8f219",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "INVALID_EMPTY_WHEN_PRESENT",
+              "characterCount": 0,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "negative",
+            "negativeClass": "empty_value",
+            "priority": "P2",
+            "violatedElementName": "Employee Number"
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "INVALID_EMPTY_WHEN_PRESENT",
+        "INVALID_EMPTY_WHEN_PRESENT"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "negative",
+        "negativeClass": "empty_value",
+        "priority": "P2",
+        "violatedElementName": "Employee Number"
+      }
+    },
+    {
+      "caseId": "TC-004870",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004870.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004870.meta.json",
+          "payloadSha256": "758337d3c6de7a689fcd5cef69fe9f6a612f37f6b17faa2dfa3f7add8123d6ed",
+          "sidecarSha256": "579243cbb2c9c5ab7277f8e4780bab7355178f7605612834e0ef40f7671ff72f",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004870.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004870.meta.json",
+          "payloadSha256": "758337d3c6de7a689fcd5cef69fe9f6a612f37f6b17faa2dfa3f7add8123d6ed",
+          "sidecarSha256": "579243cbb2c9c5ab7277f8e4780bab7355178f7605612834e0ef40f7671ff72f",
+          "messageFamily": "Electronic Mail",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-004884",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004884.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004884.meta.json",
+          "payloadSha256": "d08d32035847ed24ce6a46fb74c3f41481bc852ae56980f7a581f71e517e873a",
+          "sidecarSha256": "e030e052fbe7e7e557e341efd43f338ed2c22cd4476d405d20d2fdd8fcf48893",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004884.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004884.meta.json",
+          "payloadSha256": "d08d32035847ed24ce6a46fb74c3f41481bc852ae56980f7a581f71e517e873a",
+          "sidecarSha256": "e030e052fbe7e7e557e341efd43f338ed2c22cd4476d405d20d2fdd8fcf48893",
+          "messageFamily": "Electronic Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Electronic Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-004930",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004930.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004930.meta.json",
+          "payloadSha256": "2cd08b790609f17b7cf9913713cce208acf78d4fc4a8db7297c0745b351aeef3",
+          "sidecarSha256": "d763b1cbf65528608561f79bde8ce493cc61977f2b7ef2b094a483a4d09da88a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P2",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004930.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004930.meta.json",
+          "payloadSha256": "2cd08b790609f17b7cf9913713cce208acf78d4fc4a8db7297c0745b351aeef3",
+          "sidecarSha256": "d763b1cbf65528608561f79bde8ce493cc61977f2b7ef2b094a483a4d09da88a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P2",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [
+            "146"
+          ],
+          "presenceUnknownSegments": [
+            "108",
+            "110",
+            "113",
+            "114",
+            "119",
+            "123",
+            "135",
+            "143",
+            "145",
+            "151",
+            "153",
+            "156"
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P2",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-005005",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005005.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005005.meta.json",
+          "payloadSha256": "ed04322549839f93761d80c8d558d8f64b6655ae9d99b64c114139f4aa6882b7",
+          "sidecarSha256": "39853210f36392d4816cfc55bf364f088e1a5196c56c9bb47082884aed6954bc",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005005.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005005.meta.json",
+          "payloadSha256": "ed04322549839f93761d80c8d558d8f64b6655ae9d99b64c114139f4aa6882b7",
+          "sidecarSha256": "39853210f36392d4816cfc55bf364f088e1a5196c56c9bb47082884aed6954bc",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-005109",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005109.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005109.meta.json",
+          "payloadSha256": "f10481e97ae9a20349b15e4da6d15ecd38e5735e13d8d03d2e07294cbb77254f",
+          "sidecarSha256": "b8a19552152587c72afdfc0d226bc17a29b8beaf963512da54d2a461060af8b9",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005109.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005109.meta.json",
+          "payloadSha256": "f10481e97ae9a20349b15e4da6d15ecd38e5735e13d8d03d2e07294cbb77254f",
+          "sidecarSha256": "b8a19552152587c72afdfc0d226bc17a29b8beaf963512da54d2a461060af8b9",
+          "messageFamily": "Mail Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Mail Request/Electronic Mail Data Segment/EmployeeNumber",
+              "segment": "109",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "109"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-005132",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005132.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005132.meta.json",
+          "payloadSha256": "528655a1d640b08a4dff9fb6622c3792295e58cb46c2d752b0bcba89672b0e70",
+          "sidecarSha256": "2f55e900992e2b47002fe6b1850f38845d9d9e1934f102472502e4fb8f8f89c6",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005132.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005132.meta.json",
+          "payloadSha256": "528655a1d640b08a4dff9fb6622c3792295e58cb46c2d752b0bcba89672b0e70",
+          "sidecarSha256": "2f55e900992e2b47002fe6b1850f38845d9d9e1934f102472502e4fb8f8f89c6",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals Request/Totals Data Segment/SegmentType",
+              "segment": "105"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals Request/Totals Data Segment/EmployeeNumber",
+              "segment": "105",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "105"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    },
+    {
+      "caseId": "TC-005148",
+      "copies": [
+        {
+          "sourceTree": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005148.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005148.meta.json",
+          "payloadSha256": "a6d4b482ba99fe59202f0ad54a7fac513c5b91d9e159cb23aaec6315c7d256c7",
+          "sidecarSha256": "f93aba9d0903e74cb3f2811a8a59f402080357805695b75be92dac18d9d6968f",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        },
+        {
+          "sourceTree": "test_generation/test_generation/candidates/qe_shaped_test_data",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005148.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005148.meta.json",
+          "payloadSha256": "a6d4b482ba99fe59202f0ad54a7fac513c5b91d9e159cb23aaec6315c7d256c7",
+          "sidecarSha256": "f93aba9d0903e74cb3f2811a8a59f402080357805695b75be92dac18d9d6968f",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            }
+          ],
+          "targetOccurrences": [
+            {
+              "path": "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/EmployeeNumber",
+              "segment": "119",
+              "classification": "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+              "characterCount": 4,
+              "rawValueWritten": false
+            }
+          ],
+          "sidecarTargetCount": 1,
+          "sidecarTargetValuesMatchPayload": true,
+          "unavailableEmployeeNumber": [],
+          "producerDeclaredIntent": {
+            "scenarioType": "boundary",
+            "negativeClass": "boundary_at_limit",
+            "priority": "P3",
+            "violatedElementName": null
+          },
+          "unavailableSegments": [],
+          "presenceUnknownSegments": [],
+          "observedSegmentTypes": [
+            "119"
+          ],
+          "rawEmployeeNumberWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "employeeNumberObserved": true,
+      "observedClassifications": [
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED",
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED"
+      ],
+      "producerDeclaredIntent": {
+        "scenarioType": "boundary",
+        "negativeClass": "boundary_at_limit",
+        "priority": "P3",
+        "violatedElementName": null
+      }
+    }
+  ],
+  "summary": {
+    "caseCount": 28,
+    "physicalCompleteCaseCountInRoster": 16,
+    "caseIdsWithEmployeeNumber": [
+      "TC-002876",
+      "TC-002895",
+      "TC-002896",
+      "TC-002931",
+      "TC-002950",
+      "TC-002951",
+      "TC-003134",
+      "TC-003272",
+      "TC-003273",
+      "TC-003538",
+      "TC-003602",
+      "TC-003603",
+      "TC-003969",
+      "TC-003988",
+      "TC-003989",
+      "TC-004069",
+      "TC-004093",
+      "TC-004094",
+      "TC-004141",
+      "TC-004165",
+      "TC-004166",
+      "TC-004870",
+      "TC-004884",
+      "TC-004930",
+      "TC-005005",
+      "TC-005109",
+      "TC-005132",
+      "TC-005148"
+    ],
+    "caseIdsWithoutEmployeeNumber": [],
+    "candidateCopyCount": 56,
+    "allDuplicateCandidateCopiesIdentical": true,
+    "uniqueFormatObservationCount": 28,
+    "formatClassCounts": {
+      "INVALID_FIXED_WIDTH": 7,
+      "INVALID_NONNUMERIC": 7,
+      "INVALID_EMPTY_WHEN_PRESENT": 7,
+      "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED": 7
+    },
+    "formatClassCountsBySegment": {
+      "109": {
+        "INVALID_FIXED_WIDTH": 4,
+        "INVALID_NONNUMERIC": 4,
+        "INVALID_EMPTY_WHEN_PRESENT": 4,
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED": 4
+      },
+      "119": {
+        "INVALID_FIXED_WIDTH": 2,
+        "INVALID_NONNUMERIC": 2,
+        "INVALID_EMPTY_WHEN_PRESENT": 2,
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED": 2
+      },
+      "105": {
+        "INVALID_FIXED_WIDTH": 1,
+        "INVALID_NONNUMERIC": 1,
+        "INVALID_EMPTY_WHEN_PRESENT": 1,
+        "SOURCE_FORMAT_VALID_SEMANTIC_VALUE_UNVERIFIED": 1
+      }
+    },
+    "producerDeclaredIntentCounts": {
+      "length_exceeded": 7,
+      "charset_invalid": 7,
+      "empty_value": 7,
+      "boundary_at_limit": 7
+    },
+    "segmentBoundCaseCounts": {
+      "105": 4,
+      "109": 16,
+      "119": 8
+    },
+    "missingApprovedReferences": 24,
+    "coverageCredit": 0,
+    "semanticMatchesConfirmed": 0,
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "sourceAlignment": "PARTIAL_FORMAT_ALIGNMENT_FIXED_N4_DETAIL_OMITTED",
+    "caseEvidence": "Candidate payloads and sidecars were inspected; approved-path references absent from the frozen source were not substituted.",
+    "testCounterparts": "SEG109-R-013 is the closest format lead but omits fixed width; SEG105-R-006 and SEG119-R-013 concern policy/applicability. All three chains remain REVIEW_REQUIRED.",
+    "overall": "PRELIMINARY_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "rawEmployeeNumberValuesWritten": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

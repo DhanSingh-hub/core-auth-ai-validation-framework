@@ -1,0 +1,144 @@
+{
+  "artifact": "SEG130_SYNTHETIC_FIXTURE_AND_MUTATION_REVIEW",
+  "reviewId": "ATL105-SEG130-EMV-CHIP-LENGTH-REVIEW-002",
+  "reviewDate": "2026-10-16",
+  "status": "REVIEW_REQUIRED",
+  "technicalReadiness": "LOCAL_SYNTHETIC_FIXTURE_AND_MUTATION_TESTS_PASS",
+  "obligationGroupId": "OBL-ACB52512D020",
+  "sourceFacts": [
+    {
+      "sourceEvidenceId": "ATL105-2026-3-CH12-SEGMENT-130",
+      "fact": "Segment 130 Element 84 is four digits and identifies the segment length including Segment Type and Field Separators."
+    },
+    {
+      "sourceEvidenceId": "ATL105-2026-3-CH13-E188",
+      "fact": "Element 188 is three characters; when chip Tag 5F34 is present, its supplied sequence is represented zero-padded, and when absent the field is three spaces."
+    },
+    {
+      "sourceEvidenceId": "ATL105-2026-3-CH13-E189",
+      "fact": "Element 189 is required, fixed three numeric digits, valid 000-999, and identifies the following Element 190 length."
+    },
+    {
+      "sourceEvidenceId": "ATL105-2026-3-CH13-E190",
+      "fact": "Element 190 is required, has a maximum length of 999 bytes, and follows a three-digit length indicator."
+    },
+    {
+      "sourceEvidenceId": "ATL105-2026-3-CH11-E63",
+      "fact": "Element 63 Number of Segments is two bytes on the serialized message; converter JSON preflight accepts one- or two-digit logical values."
+    }
+  ],
+  "lengthUnit": {
+    "localOracle": "Count decoded packed bytes from the even-length hex representation, not hex characters.",
+    "syntheticPositiveEvidence": "The fixture's 14 encoded Element 190 bytes pass with Element 189 equal to 014.",
+    "syntheticMutationEvidence": "Element 189 values 000 and 015 fail the length/data relation while the serialized wire and segment byte count remain valid.",
+    "testOwnerConfirmation": "REQUIRED_NOT_RECEIVED"
+  },
+  "fixture": {
+    "path": "regression-artifact-validator/src/test/resources/atl105/segment-130-synthetic-request.json",
+    "synthetic": true,
+    "fullRequestSegmentCount": 3,
+    "serializedSegment130WireIncluded": true,
+    "sensitiveAuthorizationDataIncluded": false
+  },
+  "aiCaseEvidenceReview": {
+    "status": "ANALYST_PAYLOAD_AND_SIDECAR_REVIEW_COMPLETE_AUTHORIZED_DECISION_PENDING",
+    "stagedRun": "regression-artifact-validator/specifications/ATL105/test-input/ai-solution/runs/2026-10-16/Run1",
+    "sourceDelivery": "AI Solutions Output/10_oct_artifacts 3/10_oct_artifacts",
+    "copyCount": 2,
+    "duplicatePayloadAndSidecarCopiesHashIdentical": true,
+    "allPayloadsAndSidecarsParsed": true,
+    "cases": [
+      {
+        "caseId": "TC-007688",
+        "payloadSha256": "93446785cc4008b3afbfad403fa38c49bc63792b970942015b700605da987610",
+        "sidecarSha256": "dfe346052676da51a3b7b009aff2d7bbacdb735d8b73fc3dd86bbe71df511786",
+        "sidecarTestCaseIdMatches": true,
+        "sidecarFieldMapEntries": 54,
+        "sidecarElement189And190MatchPayload": true,
+        "element189Value": "000",
+        "element190Present": true,
+        "element190CharacterCount": 999,
+        "element190EvenLengthHex": false,
+        "element190MetadataSource": "platform_default",
+        "element190MetadataProvisional": true,
+        "sidecarSourceBatchSha256Present": false,
+        "assessment": "Value-domain evidence only; this pair cannot demonstrate a valid length/data relationship or packed-byte outcome."
+      },
+      {
+        "caseId": "TC-010223",
+        "payloadSha256": "fffa5682189dcf98bc1a36bd9cd43a4a373062e93e4157ac6342d88003dcce4c",
+        "sidecarSha256": "d3d5e386ce1356df4e1cd5c546c395e92dcd1a79faeaacc886f95119d3a44b22",
+        "sidecarTestCaseIdMatches": true,
+        "sidecarFieldMapEntries": 54,
+        "sidecarElement189And190MatchPayload": true,
+        "element189Value": "000",
+        "element190Present": true,
+        "element190CharacterCount": 999,
+        "element190EvenLengthHex": false,
+        "element190MetadataSource": "platform_default",
+        "element190MetadataProvisional": true,
+        "sidecarSourceBatchSha256Present": false,
+        "assessment": "Value-domain evidence only; this pair cannot demonstrate a valid length/data relationship or packed-byte outcome."
+      }
+    ]
+  },
+  "localCases": [
+    {
+      "id": "SEG130-SYNTH-POSITIVE",
+      "assertions": ["THREE_SEGMENT_OBJECTS_MATCH_NUM_SEGMENTS_VALUE", "SEGMENT_130_N4_MATCHES_WIRE_BYTES", "ELEMENT_189_014_MATCHES_14_PACKED_BYTES", "ELEMENT_188_MATCHES_SINGLE_TAG_5F34"],
+      "localResult": "PASS_WITH_REVIEW_GATES_RETAINED"
+    },
+    {
+      "id": "SEG130-E189-ZERO-MISMATCH",
+      "mutation": "Element 189 changed to 000; Element 190 and matching serialized wire unchanged except the indicator bytes.",
+      "localResult": "LENGTH_RELATION_INVALID; WIRE_AND_SEGMENT_LENGTH_PASS"
+    },
+    {
+      "id": "SEG130-E189-PLUS-ONE-MISMATCH",
+      "mutation": "Element 189 changed to 015; Element 190 and matching serialized wire unchanged except the indicator bytes.",
+      "localResult": "LENGTH_RELATION_INVALID; WIRE_AND_SEGMENT_LENGTH_PASS"
+    },
+    {
+      "id": "SEG130-E188-5F34-MISMATCH",
+      "mutation": "Element 188 changed to 025 while the one-byte 5F34 value remains unchanged.",
+      "localResult": "CARD_SEQUENCE_INVALID; WIRE_PASS"
+    },
+    {
+      "id": "SEG130-ELEMENT-63-COUNT-MISMATCH",
+      "mutation": "NumSegments changed to 02 while the full request contains three segment objects.",
+      "localResult": "FULL_REQUEST_PREFLIGHT_INVALID"
+    },
+    {
+      "id": "SEG130-SEGMENT-LENGTH-WIDTH",
+      "mutation": "Segment 130 Element 84 changed from four digits to three digits; serialized wire follows the mutation.",
+      "localResult": "BINARY_LENGTH_INVALID; WIRE_MATCHES_MUTATED_FIELDS"
+    },
+    {
+      "id": "SEG130-SEGMENT-LENGTH-VALUE",
+      "mutation": "Four-digit Element 84 changed to a value one byte below the measured wire; serialized wire follows the mutation.",
+      "localResult": "BINARY_LENGTH_INVALID; WIRE_MATCHES_MUTATED_FIELDS"
+    }
+  ],
+  "validation": {
+    "command": "mvn.cmd '-Dtest=Chapter12EmvWireTest,Segment100AiJsonCompatibilityValidatorTest' test",
+    "testsRun": 12,
+    "failures": 0,
+    "errors": 0,
+    "localValidatorTestsExecuted": true,
+    "testSolutionExecutionCertified": false
+  },
+  "openGates": [
+    "Authorized Test-owner confirmation of Element 189's byte/count unit and the applicable request fixture.",
+    "Authorized reviewer adjudication of the AI/Test relation; the reviewed AI cases do not exercise a valid Element 189/190 pair.",
+    "Independent authorized expected-outcome ruling; no host response is inferred from a local validator result.",
+    "Authorized readiness and Test Solution execution evidence."
+  ],
+  "guardrails": {
+    "semanticMatchApproved": false,
+    "coverageCredit": 0,
+    "aiCasesAdjudicated": 0,
+    "externalAuthorizationCopiedOrStored": false,
+    "officialBaselineModified": false,
+    "canonicalTestPackageModified": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "artifact": "PRELIMINARY_AI_TO_INDEPENDENT_TEST_SEQUENCE_NUMBER_REVIEW",
+  "reviewDate": "2026-10-16",
+  "reviewStatus": "PRELIMINARY_REVIEW_OPEN",
+  "authorizedSemanticDecision": false,
+  "semanticMatchesConfirmed": 0,
+  "executionPerformed": false,
+  "hostExecuted": false,
+  "aiScenarioApprovalRequired": false,
+  "scope": {"aiBrs": ["REQ-SRC-ATL105-PDF-001:3251", "REQ-SRC-ATL105-PDF-001:6098", "REQ-SRC-ATL105-PDF-001:1937"], "linkedUniqueAiCases": 25, "aiCaseCatalogOccurrences": 66, "hashVerifiedPayloadAndMetadataFiles": 88, "declaredPathsAbsentFromFrozenInventory": 44, "note": "The 44 absent paths are route declarations absent from the frozen inventory and are not credited; they are not 44 unique missing Test Cases."},
+  "sourceInterpretation": [
+    {"obligation": "Segment 100 presence", "sourcePage": 221, "sourceLines": "11339-11344", "finding": "Field 14 / Element 86 is marked 6 R in the Segment 100 field table.", "status": "SOURCE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"},
+    {"obligation": "Numeric six-character representation and range", "sourcePage": 402, "sourceLines": "21458, 21487", "finding": "Element 86 is N, fixed length six digits, valid 000001-999999.", "status": "SOURCE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"},
+    {"obligation": "Lifecycle correlation", "sourcePage": 402, "sourceLines": "21470-21475", "finding": "Preauthorized Purchase/Capture reuses its Authorization Only Sequence Number; purchase reversal/void and TOR retain the original.", "status": "SOURCE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"},
+    {"obligation": "A separately forwarded financial request receives a new Sequence Number", "sourceSection": "2.3.1", "sourceLines": "2009-2013", "status": "SOURCE_VERIFIED_APPLICABILITY_REVIEW_REQUIRED"},
+    {"obligation": "Approval Number context in SEG100-R-037", "sourceEvidence": "NOT_ESTABLISHED_IN_THIS_REVIEW", "status": "UNRESOLVED_SOURCE_CLAUSE_REQUIRED"}
+  ],
+  "aiBrFindings": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:3251",
+      "claim": "Sequence Number is required and must be present in Segment 100.",
+      "preliminaryRelation": "PARTIAL_ALIGNMENT_PROPOSED",
+      "aiChain": {"scenarios": 8, "cases": 13, "caseIds": ["TC-002307", "TC-002428", "TC-002678", "TC-002853", "TC-003426", "TC-003851", "TC-003956", "TC-011908", "TC-011909", "TC-011910", "TC-011911", "TC-011912", "TC-011913"], "declaredSegment100OmissionCases": ["TC-002307", "TC-002428", "TC-002678", "TC-002853", "TC-003426", "TC-003851", "TC-003956"], "segment100MetadataPayloadValueMatches": ["TC-011908", "TC-011909", "TC-011910", "TC-011911"], "additionalSegment109Cases": ["TC-011912", "TC-011913"], "caseRecordConflictIds": ["TC-003851", "TC-003956", "TC-011912", "TC-011913"]},
+      "testBrCandidates": ["SEG100-R-019", "SEG100-R-037", "BR-SEG100-E86-001"],
+      "rationale": "The source table explicitly marks Segment 100 Element 86 required. AI chain contains omission mutations and Segment 100 positive cases, but the producer's expected rejection code is not independently validated. Segment 109 examples do not prove the narrower Segment 100 claim; Sequence Number values in other segments do not replace Segment 100.",
+      "chainAdequacy": "PARTIAL_REVIEW_REQUIRED",
+      "status": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:6098",
+      "claim": "Sequence Number is fixed-length six-digit numeric and identifies a transaction for its lifetime.",
+      "preliminaryRelation": "STRONG_FIELD_DEFINITION_OVERLAP_SEGMENT_SCOPE_UNRESOLVED",
+      "aiChain": {"scenarios": 1, "cases": ["TC-019856", "TC-019857", "TC-019858", "TC-019859", "TC-019860", "TC-019861"], "segment100Cases": 4, "segment109Cases": 2, "distinctSequenceValues": ["000001"], "boundaryOrInvalidCases": 0, "caseRecordConflictIds": ["TC-019860", "TC-019861"]},
+      "testBrCandidates": ["SEG100-R-019", "SEG109-R-015", "SEG118-R-008", "BR-SEG100-E86-001"],
+      "rationale": "The statement follows the source Element 86 definition. Six linked cases use 000001; four locate it in Segment 100 and two in Segment 109. The producer anchor proposes several segments, while SEG100-R-019 is Segment 100 scoped and SEG109-R-015 is Segment 109 scoped.",
+      "chainAdequacy": "FORMAT_EXAMPLES_ONLY_LIFETIME_NOT_DEMONSTRATED",
+      "status": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1937",
+      "claim": "Sequence Number must persist in subsequent transactions associated with the initial authorization request.",
+      "preliminaryRelation": "STRONG_SOURCE_CLAUSE_OVERLAP_AI_CHAIN_DOES_NOT_DEMONSTRATE_LIFECYCLE",
+      "aiChain": {"scenarios": 1, "cases": ["TC-009202", "TC-009203", "TC-009204", "TC-009205", "TC-009206", "TC-009207"], "segment100Cases": 4, "segment109Cases": 2, "distinctSequenceValues": ["000001"], "linkedInitialFollowupComparisons": 0, "caseRecordConflictIds": ["TC-009206", "TC-009207"]},
+      "testBrCandidates": ["SEG100-R-019", "SEG100-R-037", "BR-SEG100-LIFE-AUTH-COMPLETE", "BR-SEG100-LIFE-AUTH-VOID", "BR-SEG100-LIFE-SALE-VOID", "BR-SEG100-LIFE-TIMEOUT-TOR"],
+      "rationale": "The source statement closely matches the AI BR. The six AI cases are individual records with a repeated value, not an initial authorization paired to its follow-up. Authored independent Test chains contain same-sequence PASS and mismatch FAIL fixtures for several lifecycle flows, but their TD readiness remains REVIEW_REQUIRED and they are unexecuted.",
+      "chainAdequacy": "MISSING_LINKED_LIFECYCLE_ASSERTION_IN_AI_CHAIN_TEST_COUNTERPARTS_DRAFT",
+      "status": "OPEN_REVIEW_REQUIRED"
+    }
+  ],
+  "testChainUpdate": {"draftPackage": "sequence-number-test-chain-package-v2.json", "newDraftGraph": {"scenarios": 3, "cases": 8, "testData": 8, "allStatuses": "REVIEW_REQUIRED"}, "intent": "Add boundary, omission and distinct-new-request probes; reuse existing authored lifecycle chains by reference rather than duplicate them.", "existingAuthoredTestChains": ["BR-SEG100-E86-001", "BR-SEG100-LIFE-AUTH-COMPLETE", "BR-SEG100-LIFE-AUTH-VOID", "BR-SEG100-LIFE-SALE-VOID", "BR-SEG100-LIFE-TIMEOUT-TOR", "BR-SEG100-LIFE-REFUND-VOID"], "officialBaselineModified": false, "coverageCredit": 0, "executionCertified": false},
+  "existingAuthoredLifecycleFixtureEvidence": [
+    {"brId": "BR-SEG100-LIFE-AUTH-COMPLETE", "passFixtureSequenceEqual": true, "mismatchFixtureSequenceEqual": false, "transactionTypes": ["3", "0"], "fixtureHashesBoundInDraftPackage": true, "testDataReadiness": "REVIEW_REQUIRED", "executed": false},
+    {"brId": "BR-SEG100-LIFE-AUTH-VOID", "passFixtureSequenceEqual": true, "mismatchFixtureSequenceEqual": false, "transactionTypes": ["3", "8"], "fixtureHashesBoundInDraftPackage": true, "testDataReadiness": "REVIEW_REQUIRED", "executed": false},
+    {"brId": "BR-SEG100-LIFE-SALE-VOID", "passFixtureSequenceEqual": true, "mismatchFixtureSequenceEqual": false, "transactionTypes": ["0", "8"], "fixtureHashesBoundInDraftPackage": true, "testDataReadiness": "REVIEW_REQUIRED", "executed": false},
+    {"brId": "BR-SEG100-LIFE-TIMEOUT-TOR", "passFixtureSequenceEqual": true, "syntheticFixture": true, "testDataReadiness": "REVIEW_REQUIRED", "executed": false},
+    {"brId": "BR-SEG100-LIFE-REFUND-VOID", "passFixtureSequenceEqual": true, "mismatchFixtureSequenceEqual": false, "transactionTypes": ["7", "U"], "testDataReadiness": "REVIEW_REQUIRED", "sourceApplicability": "UNRESOLVED", "executed": false}
+  ],
+  "unresolvedItems": ["Reconcile approved/candidate content conflicts for eight linked AI case IDs.", "Validate producer-generated expected responses independently; no source-bound response oracle was found for invalid field cases.", "Resolve multi-segment applicability for AI :6098 and :1937 before applying segment-specific Test rules.", "Source and review the approval-context component in SEG100-R-037.", "Review the 14 linked Test Data readiness states; no test was executed."]
+}

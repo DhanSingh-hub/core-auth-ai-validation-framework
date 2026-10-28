@@ -1,0 +1,87 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG104-DIRECT-MARKETING-INVOICE-CONDITION-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the Segment 104 C marker and Element 29's stated Direct Marketing/AVS use. The exact activation condition and off-context omission policy remain open.",
+      "dataPolicy": "Symbolic field-level design only. Invoice value is synthetic and must not be treated as a real merchant invoice or complete Purchase Card Data Segment.",
+      "baselinePolicy": "References SEG104-R-014 format scope; this draft addresses conditional applicability only and does not modify the official baseline.",
+      "promotionGate": "Authorized Test review must define the Direct Marketing/AVS trigger, transaction context, authorized invoice fixture, off-context handling, and readiness before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG104-DMI-APPLICABILITY-DRAFT",
+      "title": "Segment 104 Element 29 Direct Marketing Invoice Number is conditionally used in Direct Marketing/Address Verification System Requests.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.5,Chapter 13-Element 29", "segment": "104", "element": "29", "rule": "direct-marketing-invoice-number-applicability"}
+    },
+    {
+      "id": "BR-RULE-SEG104-R-014",
+      "title": "Direct Marketing Invoice Number is alphanumeric, max 10 characters, when populated.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.5", "segment": "104", "element": "29", "rule": "direct-marketing-invoice-number-format"},
+      "relationship": "FORMAT_RULE_REFERENCE_ONLY_NOT_ADJUDICATED_BY_CONDITION_DRAFT"
+    }
+  ],
+  "sourceEvidence": [
+    {"id": "ATL105-2026-3-SEG104-FIELD10-E29-C", "sourcePage": 231, "startLine": 11905, "quote": "10 29 Direct Marketing Invoice Number 10 C Identifies the invoice number in a direct marketing transaction.", "interpretation": "Segment 104 field 10 / Element 29 is marked Conditional and identifies an invoice number in a direct marketing transaction."},
+    {"id": "ATL105-2026-3-E29-PURPOSE", "sourcePage": 387, "startLine": 20164, "quote": "Purpose: Identifies the invoice number in a Direct Marketing/Address Verification System Request.", "interpretation": "The element definition names Direct Marketing/AVS requests as its purpose context."},
+    {"id": "ATL105-2026-3-E29-PROCESSING", "sourcePage": 391, "startLine": 20942, "quote": "Processing Rules: Used in Direct Marketing/Address Verification System Request.", "interpretation": "The source states the field is used in DM/AVS requests but does not define the upstream transaction indicator or enumerate every context where omission is permitted."}
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-076522023EAB",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3302",
+    "linkedCases": [
+      {"caseId": "TC-012104", "transaction": "EMV Financial Transaction Request", "segment104Element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "pcAmounts72to74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f3e7f7df1b62f3c88287dfa1335808752700be114a487bf6ed2b3dba01bf8a4d"},
+      {"caseId": "TC-012105", "transaction": "Financial Transaction Request", "segment104Element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "pcAmounts72to74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "99b21e86907f0dcf116612db14e3426f2a8e316fd0ad686dbee7f96ee380d231"},
+      {"caseId": "TC-012106", "transaction": "Financial Transactions", "segment104Element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "pcAmounts72to74": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "bc77017b3e6d7497c6302b48a44e12971be9d59fcfbefbd70dce468350ce315d"}
+    ],
+    "assessment": "All three payloads contain a Segment 104 container declaration but Element 29, Purchase Code, and PC amount fields are declared omitted. The payload metadata does not demonstrate a Direct Marketing/AVS trigger; the field omission cannot be adjudicated against the conditional rule."
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG104-R-014",
+    "scenario": "TS-REVIEW-BR-RULE-SEG104-R-014",
+    "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-014",
+    "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-014",
+    "status": "REVIEW_REQUIRED",
+    "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG104-E29-DMI-CONDITION", "requirementIds": ["BR-RULE-SEG104-DMI-APPLICABILITY-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-SEG104-FIELD10-E29-C", "ATL105-2026-3-E29-PURPOSE", "ATL105-2026-3-E29-PROCESSING"], "intent": "In a reviewed-valid Segment 104 request, compare a confirmed Direct Marketing/AVS context with Element 29 present against a confirmed non-DM/AVS context with Element 29 omitted. The activation and omission rules remain under review.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG104-E29-DMI-PRESENT", "scenarioIds": ["TS-DRAFT-SEG104-E29-DMI-CONDITION"], "testDataIds": ["TD-DRAFT-SEG104-E29-DMI-PRESENT"], "assertion": "In an authorized Direct Marketing/AVS request context, Element 29 contains a synthetic invoice number.", "expectedOutcome": "REVIEW_REQUIRED_CONDITION_UNRESOLVED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG104-E29-NON-DMI-OMITTED", "scenarioIds": ["TS-DRAFT-SEG104-E29-DMI-CONDITION"], "testDataIds": ["TD-DRAFT-SEG104-E29-NON-DMI-OMITTED"], "assertion": "In a separately authorized non-Direct-Marketing/AVS context, Element 29 is omitted.", "expectedOutcome": "REVIEW_REQUIRED_CONDITION_UNRESOLVED", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG104-E29-DMI-PRESENT", "testCaseIds": ["TC-DRAFT-SEG104-E29-DMI-PRESENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "104", "field": "10", "element": "29", "value": "INV123", "invoiceValueSynthetic": true}},
+    {"id": "TD-DRAFT-SEG104-E29-NON-DMI-OMITTED", "testCaseIds": ["TC-DRAFT-SEG104-E29-NON-DMI-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "104", "field": "10", "element": "29", "omitted": true}}
+  ],
+  "openQuestions": [
+    "What specific transaction/purchase condition makes a request Direct Marketing/AVS for purposes of Element 29?",
+    "Does source or approved policy require omission when that condition is false, or is the C marker broader?",
+    "Which independent fixture proves the request context without relying on the Element 29 value itself?",
+    "Review and authorize the complete Segment 104 request and expected outcomes before execution."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

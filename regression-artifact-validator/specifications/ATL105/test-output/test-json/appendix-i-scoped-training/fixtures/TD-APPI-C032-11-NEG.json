@@ -1,0 +1,63 @@
+{
+  "id" : "TD-APPI-C032-11-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-11-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-11-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-27",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r018-APPI-C032-11"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-11",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R017", "APPI-T032-R018" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-27",
+          "startLine" : 28566,
+          "endLine" : 28595
+        }, {
+          "section" : "Appendix X-1",
+          "startLine" : 35851,
+          "endLine" : 35860
+        } ],
+        "logicalFields" : {
+          "subTableId" : "11",
+          "subTableLength" : "001",
+          "value" : "Y",
+          "originalReturnIndicator" : "Y",
+          "followUpIndicator" : "Y",
+          "timeoutReversalIndicatorPresent" : false,
+          "context" : {
+            "brand" : "Visa",
+            "onlineRefundProgramParticipation" : true
+          }
+        },
+        "clearScope" : [ "Participating returnY and follow-up/timeout retention" ],
+        "excludedClaims" : [ "Actual enablement", "Issuer approval", "Historical rollout interpreted as current availability" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "OriginalY retained on timeout reversal",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "timeoutReversalIndicatorPresent",
+          "value" : false,
+          "targetedNegative" : "Timeout follow-up loses indicator"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

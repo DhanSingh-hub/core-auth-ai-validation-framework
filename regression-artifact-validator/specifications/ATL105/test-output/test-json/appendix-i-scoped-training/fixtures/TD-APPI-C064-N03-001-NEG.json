@@ -1,0 +1,175 @@
+{
+  "id" : "TD-APPI-C064-N03-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C064-N03-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C064-N03-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-73",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t064-r005-APPI-C064-N03-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C064-N03-001",
+        "tableId" : "064",
+        "nestedSelector" : "03",
+        "ruleIds" : [ "APPI-T064-R002", "APPI-T064-R005" ],
+        "syntheticData" : {
+          "selector" : "03",
+          "logicalLength" : 3,
+          "countryCode" : " 04",
+          "context" : {
+            "cardBrand" : "Maestro",
+            "paymentType" : "Debit",
+            "acceptorCountry" : "840",
+            "serviceCountryName" : "Afghanistan"
+          }
+        },
+        "clearScope" : "Three-digitnumeric,rightjustifiedleadingzeros,AppendixAC004,requiredwhenservicecountrydiffers.",
+        "excludedClaims" : [ "ResolutionACcountrycontext", "ExternalISOcorrection", "Countrycodefinancialrouting" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Listed004zero-paddednumericform",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Requiredcountrydifference",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "ACsemanticcontextconflict",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "countryCode",
+            "replacement" : " 04",
+            "expected" : "FAIL numericzero-fill"
+          }, {
+            "path" : "countryCode",
+            "replacement" : "AFG",
+            "expected" : "FAIL n3"
+          }, {
+            "path" : "countryCode",
+            "operation" : "remove",
+            "expected" : "FAIL different-countryrequired"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed3"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "twoDigitInvalid" : "04",
+          "fourDigitInvalid" : "0004"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31447,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31483
+        }, {
+          "startLine" : 31352,
+          "section" : "Appendix I-72",
+          "endLine" : 31378
+        }, {
+          "startLine" : 31402,
+          "section" : "Appendix I-73",
+          "endLine" : 31412
+        }, {
+          "startLine" : 31431,
+          "section" : "Appendix I-73",
+          "endLine" : 31441
+        }, {
+          "startLine" : 31459,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31478
+        }, {
+          "startLine" : 31495,
+          "section" : "Appendix I-74",
+          "endLine" : 31505
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "section" : "Appendix AC-1",
+          "startLine" : 36612,
+          "endLine" : 36618
+        }, {
+          "startLine" : 36612,
+          "section" : "Appendix AC-1",
+          "endLine" : 36658
+        }, {
+          "startLine" : 36659,
+          "section" : "Appendix AC-2",
+          "endLine" : 36704
+        }, {
+          "startLine" : 36705,
+          "section" : "Appendix AC-3",
+          "endLine" : 36752
+        }, {
+          "startLine" : 36753,
+          "section" : "Appendix AC-4",
+          "endLine" : 36797
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.03.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 03",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31459,
+            "section" : "Appendix I-73",
+            "endLine" : 31461
+          } ]
+        }, {
+          "path" : "113.03.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 3 bytes; logical 003",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31471,
+            "section" : "Appendix I-74",
+            "endLine" : 31474
+          } ]
+        }, {
+          "path" : "113.03.Sub-Table Data",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; right justified; leading zeros",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31475,
+            "section" : "Appendix I-74",
+            "endLine" : 31483
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "reviewId": "ATL105-SEG100-NONFUEL-TAX-AMOUNT-FORMAT-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroups": ["OBL-05C7A1288388", "OBL-A2A87EE1F583"],
+  "aiBrs": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element": "58", "claim": "Nonfuel Amount max length is 8 bytes for American Express cards only; 7 bytes for all other card types.", "assessment": "Matches the Element 58 card-width note."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element": "58", "claim": "Nonfuel Amount has maximum length 8.", "assessment": "Incomplete: the eight-byte maximum applies only to Amex; other card types are limited to seven bytes."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element": "99", "claim": "Tax Amount maximum length is 8 bytes for American Express cards only; 7 bytes for all other card types.", "assessment": "Matches the Element 99 card-width note."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element": "99", "claim": "Tax Amount has maximum length 8.", "assessment": "Incomplete: the eight-byte maximum applies only to Amex; other card types are limited to seven bytes."}
+  ],
+  "sourceNuance": {
+    "element58": "Element 58 is numeric, has two assumed decimal places, valid values 1-99999999, and allows 8 bytes only for Amex / 7 for other card types.",
+    "element99": "Element 99 is numeric, has two assumed decimal places, permits 8 bytes only for Amex / 7 for other card types, but its valid values end at 9999999. The Amex capacity does not itself establish an eight-digit valid value.",
+    "independentSemantics": "SEG100-R-046 (net Nonfuel Amount) and SEG100-R-047 (total Tax Amount) are separate semantic rules, not format or width oracles.",
+    "sourceEvidenceIds": ["ATL105-2026-3-E58-NUMERIC-MAX", "ATL105-2026-3-E58-DECIMALS", "ATL105-2026-3-E58-CARD-WIDTHS", "ATL105-2026-3-E58-RANGE", "ATL105-2026-3-E99-NUMERIC-MAX", "ATL105-2026-3-E99-DECIMALS", "ATL105-2026-3-E99-CARD-WIDTHS", "ATL105-2026-3-E99-RANGE"]
+  },
+  "independentTestAssessment": {
+    "candidateDraft": "segment-100-nonfuel-tax-amount-format-test-chain-package-v1.json",
+    "scenarioCount": 2,
+    "caseCount": 8,
+    "testDataDesignCount": 8,
+    "chainState": "DRAFT_REVIEW_REQUIRED_PLACEHOLDERS",
+    "status": "REVIEW_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 24,
+    "allPayloadHashesBoundToFrozenScreen": true,
+    "allRelevantFieldsDeclaredOmitted": true,
+    "caseIds": ["TC-008826", "TC-008827", "TC-008828", "TC-008829", "TC-008830", "TC-008831", "TC-010401", "TC-010402", "TC-010403", "TC-010404", "TC-010405", "TC-010406", "TC-009260", "TC-009261", "TC-009262", "TC-009263", "TC-009264", "TC-009265", "TC-010407", "TC-010408", "TC-010409", "TC-010410", "TC-010411", "TC-010412"],
+    "conclusion": "Each of the 24 frozen candidate observations declares its relevant Segment 100 Element 58 or Element 99 omitted. None demonstrates the relevant width, valid-value ceiling, or assumed-decimal representation. Individual case-to-AI-BR associations and SHA-256 values are in the linked package."
+  },
+  "adjudicationGaps": [
+    "Confirm Amex/non-Amex card-brand selection and field encoding in complete fixtures.",
+    "For Element 99, resolve how the eight-byte Amex representation relates to its seven-digit valid-value ceiling; do not assume an extra valid digit.",
+    "Confirm assumed-decimal serialization and amount context for both elements.",
+    "Review complete Segment 100 fixtures and expected outcomes with the authorized Test owner before promotion or execution."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

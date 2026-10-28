@@ -1,0 +1,152 @@
+{
+  "name": "Flow — EMV Authorization followed by Cancellation (EMV Financial Transaction Request → Financial Transaction Request) [maximal-multi-brand]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Point-of-Service Entry Mode": "80",
+    "Terminal PIN Entry Capability": "1"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        1,
+        2
+      ],
+      "table_data_length": 3,
+      "axis": "entry_mode",
+      "value": "80",
+      "parameter": "Point-of-Service Entry Mode"
+    },
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        3,
+        3
+      ],
+      "table_data_length": 3,
+      "axis": "pin_entry_capability",
+      "value": "1",
+      "parameter": "Terminal PIN Entry Capability"
+    }
+  ],
+  "flow_id": "FLOW-EMV-AUTH-CANCELLATION",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "emv_authorization",
+      "transaction": "EMV Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "cancellation",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "S"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-97-7",
+          "source_page": 83,
+          "rule": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S'.",
+          "spec_anchor": {
+            "keywords": [
+              "element no.86",
+              "sequence number",
+              "authorization only reversal transaction"
+            ],
+            "page_hint": 97
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "EMV Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-97-7",
+  "source_page": 83,
+  "business_rule_assertion": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S'.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "17b257557ad426295da562307b6756af0d85cf8cc77653302985e8b3f39bc514",
+  "dedup_key": "22ee72f90bfd91054c82b459dfd27cb646f489bcbd739b95b589bd98f6b2d361",
+  "inclusion_profile": "maximal",
+  "flow_variant_id": "maximal-multi-brand",
+  "flow_variant_name": "Maximal profile across card brands, EMV chip entry modes",
+  "flow_axis_values": {
+    "card_brand": "MC",
+    "entry_mode": "80",
+    "field_profile": "maximal",
+    "pin_entry_capability": "1"
+  },
+  "flow_axis_provenance": {
+    "card_brand": {
+      "source": "test_axes",
+      "applied_as": "card_profile"
+    },
+    "entry_mode": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Point-of-Service Entry Mode"
+    },
+    "field_profile": {
+      "source": "field_inclusion_profiles",
+      "applied_as": "inclusion_profile"
+    },
+    "pin_entry_capability": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Terminal PIN Entry Capability"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:592",
+      "rule_id": "BR-97-7",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:592"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2735",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

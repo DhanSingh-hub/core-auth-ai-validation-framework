@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "title": "BUYPASS Platform Petroleum Industry Processing Specifications",
+  "version": "2025-1",
+  "releaseDate": "2025-04-10",
+  "sourceSha256": "deb5def8085dbaddd8ebc87792e4712ddbc89bb7a591ff8f4c81112319f50404",
+  "pageCount": 226,
+  "coverMarkers": ["BUYPASS", "Petroleum Industry", "Processing Specifications", "April 10, 2025", "Version 2025-1"],
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "lessons": [
+    {
+      "id": "PETRO-2025-1-L001",
+      "scope": "Document purpose; not universal card or network eligibility",
+      "statement": "Use the Petroleum specification as a separately versioned source for fleet card processing on BUYPASS.",
+      "evidence": [{"pdfPage": 13, "quote": "This document provides information about fleet card processing with the BUYPASS"}]
+    },
+    {
+      "id": "PETRO-2025-1-L002",
+      "scope": "AFP controller responsibilities, Chapter 2",
+      "statement": "AFP controller context includes card type, intended purchase or authorization amount, and whether the request is customer-activated.",
+      "evidence": [{"pdfPage": 15, "quote": "The following information is determined at the controller of the AFP system:"}, {"pdfPage": 15, "quote": "Intended purchase amount or authorization amount"}, {"pdfPage": 15, "quote": "Indication whether payment request is from a customer-activated device"}]
+    },
+    {
+      "id": "PETRO-2025-1-L003",
+      "scope": "Offline AFP controller receipts, section 2.2; not online approval numbering",
+      "statement": "For the described offline mode, controller-generated receipt numbers start at LA0001 and increment by one per transaction.",
+      "evidence": [{"pdfPage": 17, "quote": "If transactions go into off-line mode, the numbers for controller-generated receipts must start with LA0001 and be incremented by 1 for each transaction."}]
+    },
+    {
+      "id": "PETRO-2025-1-L004",
+      "scope": "AFP resubmission, section 2.2; do not generalize across unrelated retries",
+      "statement": "A transaction declined by BUYPASS cannot be resubmitted under the described AFP configuration requirements.",
+      "evidence": [{"pdfPage": 17, "quote": "A transaction that has been declined by BUYPASS cannot be resubmitted."}]
+    },
+    {
+      "id": "PETRO-2025-1-L005",
+      "scope": "AFP debit completion retry, section 2.3.1; requires lifecycle and independent clock evidence before execution",
+      "statement": "If an AFP debit completion receives no response, resend on the next connection attempt or within 15 minutes after the transaction, whichever occurs first.",
+      "evidence": [{"pdfPage": 18, "quote": "In the event that the device sends a debit card completion to BUYPASS and does not receive a response, the device must resend the request on the next connection attempt or within 15 minutes after the transaction took place, whichever occurs first."}]
+    },
+    {
+      "id": "PETRO-2025-1-L006",
+      "scope": "POS purchase/capture inside-purchase activity, section 3.2; not all completion flows",
+      "statement": "An inside purchase is one activity supported by POS Purchase/Capture and is not dependent on another transaction.",
+      "evidence": [{"pdfPage": 24, "quote": "A POS Purchase/Capture transaction originates at a POS device."}, {"pdfPage": 24, "quote": "This activity is not dependent upon any other transaction."}]
+    },
+    {
+      "id": "PETRO-2025-1-L007",
+      "scope": "POS and CAT time-out reversals, sections 3.7 and 3.8",
+      "statement": "Resolve time-out reversal rules through the applicable current ATL105 or ISO 8583 message-format specification, rather than inventing a Petroleum timeout threshold.",
+      "evidence": [{"pdfPage": 31, "quote": "Please refer to the current version of the appropriate message format specifications for rules and definitions for POS time-out reversal processing."}, {"pdfPage": 31, "quote": "Please refer to the current version of the appropriate message format specifications for rules and definitions for CAT time-out reversal processing."}]
+    },
+    {
+      "id": "PETRO-2025-1-L008",
+      "scope": "Fleet card receipt PAN printing, section 4.4.1; journal access/security requires separate review",
+      "statement": "Printed receipt PANs retain only the last four digits, with X masking of preceding digits to the original account-number width.",
+      "evidence": [{"pdfPage": 33, "quote": "In cases where the PAN is printed on transaction receipts, it must be truncated to its last four digits."}, {"pdfPage": 33, "quote": "A series of X's equal to the number of truncated digits precedes these four digits for a field length equal to the original Account Number's length."}]
+    },
+    {
+      "id": "PETRO-2025-1-L009",
+      "scope": "Fleet One product data, section 5.1.10; amount interpretation remains review-gated",
+      "statement": "Fleet One requires product data in fleet transactions and reconciliation of the sum of product amounts to the total transaction amount.",
+      "evidence": [{"pdfPage": 38, "quote": "The Product Code Data must be sent in all fleet transactions."}, {"pdfPage": 38, "quote": "The sum of all the products in the product segment must equal the total transaction amount."}]
+    },
+    {
+      "id": "PETRO-2025-1-L010",
+      "scope": "MasterCard fleet, section 7.1.5; do not apply fleet eligibility to all Mastercard credit purchases",
+      "statement": "MasterCard fleet processing requires expiration validation and suppression on the cardholder receipt; authorization transmission must still include an expiry value for expired cards.",
+      "evidence": [{"pdfPage": 52, "quote": "The device must perform an expiration date validation on all MasterCard fleet card transactions."}, {"pdfPage": 52, "quote": "The MasterCard fleet card expiration date is suppressed on the cardholder"}, {"pdfPage": 52, "quote": "For all authorizations, merchants must send a value even for expired cards."}]
+    },
+    {
+      "id": "PETRO-2025-1-L011",
+      "scope": "MasterCard fleet, section 7.1.6; issuer acceptance and live BIN eligibility are not asserted",
+      "statement": "MasterCard fleet uses a Mod 10 check-digit evaluation on the full account number.",
+      "evidence": [{"pdfPage": 52, "quote": "For MasterCard fleet cards, a Mod 10 Check Digit evaluation is performed on the full Account Number."}]
+    },
+    {
+      "id": "PETRO-2025-1-L012",
+      "scope": "Visa fleet, section 8.1.5; distinguish issuer eligibility from expiration transmission",
+      "statement": "For Visa fleet authorizations, expired cards still require an expiration value to be sent.",
+      "evidence": [{"pdfPage": 61, "quote": "For all authorizations, merchants must send a value even for expired cards."}]
+    },
+    {
+      "id": "PETRO-2025-1-L013",
+      "scope": "Voyager fleet product data, section 9.1.10; not automatic eligibility for other card programs",
+      "statement": "Voyager requires product data in fleet transactions and the sum of product amounts must equal the total transaction amount.",
+      "evidence": [{"pdfPage": 75, "quote": "The Product Code Data must be sent in all fleet transactions."}, {"pdfPage": 75, "quote": "The sum of all the products in the product segment must equal the total transaction amount."}]
+    }
+  ],
+  "openQuestions": [
+    {"id": "PETRO-Q001", "owner": "BUYPASS SME", "question": "Reconcile Petroleum 2025-1 by card program and flow against ATL105 2026-3 and 2026-4; which source controls any conflicting rule?", "status": "REVIEW_REQUIRED"},
+    {"id": "PETRO-Q002", "owner": "Fleet processing SME", "question": "Confirm monetary components, units, precision, rounding, taxes and discounts before implementing product-total reconciliation.", "status": "REVIEW_REQUIRED"},
+    {"id": "PETRO-Q003", "owner": "Test Solution owner", "question": "Derive approved card-specific BR/TS/TC/TD chains and independent oracles; preserve generic Mastercard credit versus fleet applicability.", "status": "REVIEW_REQUIRED"},
+    {"id": "PETRO-Q004", "owner": "Source reviewer", "question": "Review extracted tables, track layouts and diagrams against the original PDF; text extraction is not layout certification.", "status": "REVIEW_REQUIRED"},
+    {"id": "PETRO-Q005", "owner": "BUYPASS SME", "question": "Resolve the Introduction's Voyager section-10 references against the version's chapter-9 bookmarks before using section identities as rule anchors.", "status": "REVIEW_REQUIRED"}
+  ]
+}

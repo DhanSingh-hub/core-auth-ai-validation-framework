@@ -1,0 +1,82 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG146-SEGMENT-TYPE-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the response Segment 146 table's field 1 / Element 85 required marker and fixed value 146. Do not generalize to request Segment 145 or unrelated response containers.",
+      "dataPolicy": "Symbolic response-segment design only; Segment Length, response context, and serialized framing remain open.",
+      "baselinePolicy": "References BR-RULE-SEG146-R-001; no official Test baseline record is modified.",
+      "promotionGate": "Authorized Test review must establish the response applicability, Segment 146 container binding, length/encoding, and independent outcome before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG146-R-001",
+      "title": "Segment Type fixed 146, Segment Length includes Segment Type's length; both Device-sourced",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.32", "segment": "146", "element": "85,84", "rule": "segment-type-length-device-sourced"}
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG146-FIELD1-E85",
+      "sourcePage": 295,
+      "startLine": 15652,
+      "quote": "1 85 Segment Type 3 R Indicates the type of data segment being formatted. Fixed Value 146 Source: Device",
+      "interpretation": "Segment 146 field 1 / Element 85 is required and has fixed value 146."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-070D91E60EA0",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3551",
+    "cases": [
+      {"caseId": "TC-002724", "transaction": "EMV Financial Transaction Request", "scenarioType": "negative/missing_mandatory", "element85Observation": "IDENTITY_FIELD_REQUIRES_CONTAINER_BINDING", "expectedResponseListsSegmentType": true, "payloadSha256": "d91597fc3cdda9f6e625afa87b2a15d1b957d47ff8ca6cf1b3949e00e962854d"},
+      {"caseId": "TC-003501", "transaction": "Financial Transaction Request", "scenarioType": "negative/missing_mandatory", "element85Observation": "IDENTITY_FIELD_REQUIRES_CONTAINER_BINDING", "expectedResponseListsSegmentType": true, "payloadSha256": "98980288a5e1d24d558aa724a3eaad2d3b768314d7b8f4d75e56b36838d8698b"},
+      {"caseId": "TC-013003", "transaction": "ECA/TeleCheck Service Transaction", "scenarioType": "field_constraint", "element85Observation": "NO_EXACT_SEGMENT146_OBSERVATION", "payloadSha256": "859081a01f550dc76993f42bd19cc87d4948873e766a4c0ca0909cbd094bbc40"},
+      {"caseId": "TC-013004", "transaction": "ECA/TeleCheck Service Transaction Request", "scenarioType": "field_constraint", "element85Observation": "NO_EXACT_SEGMENT146_OBSERVATION", "payloadSha256": "4d19267bd8be6a101a9d2570ae9a8779e10afdcee365e4560fa02dddce7c0f3a"},
+      {"caseId": "TC-013005", "transaction": "EMV Financial Transaction Request", "scenarioType": "field_constraint", "element85Observation": "IDENTITY_FIELD_REQUIRES_CONTAINER_BINDING", "candidateUnresolvedValue": "100", "expectedResponseListsSegmentType": true, "payloadSha256": "7d196b493be0f865311e0707039de293633ff8e1d4635ba3d934217d49d9feaf"},
+      {"caseId": "TC-013006", "transaction": "EMV Request Transaction", "scenarioType": "field_constraint", "element85Observation": "NO_EXACT_SEGMENT146_OBSERVATION", "payloadSha256": "71b677c9886f63ce5f9022a0b8ca879f797fe11515e9ee3230306d1046759168"},
+      {"caseId": "TC-013007", "transaction": "Electronic Mail", "scenarioType": "field_constraint", "element85Observation": "NO_EXACT_SEGMENT146_OBSERVATION", "expectedResponseListsSegmentType": false, "payloadSha256": "f3405c7c5a4325e8ba9adb48a2bef3d14768b1db5f61ab8310504573d9986bf5", "approvedPayloadCopiesMissing": 2}
+    ],
+    "assessment": "Four expected-response catalogs list Segment Type, while the bounded Element 85 observations are container-unresolved in three cases and absent in four. TC-013005's candidate value 100 remains unbound to the response Segment 146 container. The two negative cases are not independent structural results."
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG146-E85-REQUIRED-FIXED", "requirementIds": ["BR-RULE-SEG146-R-001"], "sourceEvidenceIds": ["ATL105-2026-3-SEG146-FIELD1-E85"], "intent": "For an authorized Enhanced Fleet Response context, verify Segment 146 field 1 is present and exactly 146; compare with omission and wrong-value mutations.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG146-E85-PRESENT-146", "scenarioIds": ["TS-DRAFT-SEG146-E85-REQUIRED-FIXED"], "testDataIds": ["TD-DRAFT-SEG146-E85-PRESENT-146"], "assertion": "Response Segment 146 field 1 / Element 85 is present with value 146.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG146-E85-OMITTED", "scenarioIds": ["TS-DRAFT-SEG146-E85-REQUIRED-FIXED"], "testDataIds": ["TD-DRAFT-SEG146-E85-OMITTED"], "assertion": "Response Segment 146 field 1 / Element 85 is omitted.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG146-E85-WRONG-145", "scenarioIds": ["TS-DRAFT-SEG146-E85-REQUIRED-FIXED"], "testDataIds": ["TD-DRAFT-SEG146-E85-WRONG-145"], "assertion": "The response container is Segment 146 but field 1 / Element 85 contains 145.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG146-E85-PRESENT-146", "testCaseIds": ["TC-DRAFT-SEG146-E85-PRESENT-146"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_DESIGN_NOT_CONVERTER_READY", "segment": "146", "field": "1", "element": "85", "value": "146"}},
+    {"id": "TD-DRAFT-SEG146-E85-OMITTED", "testCaseIds": ["TC-DRAFT-SEG146-E85-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_DESIGN_NOT_CONVERTER_READY", "segment": "146", "field": "1", "element": "85", "omitted": true}},
+    {"id": "TD-DRAFT-SEG146-E85-WRONG-145", "testCaseIds": ["TC-DRAFT-SEG146-E85-WRONG-145"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_DESIGN_NOT_CONVERTER_READY", "segment": "146", "field": "1", "element": "85", "value": "145"}}
+  ],
+  "openQuestions": [
+    "Confirm which host response contexts are required to include Enhanced Fleet Response Segment 146.",
+    "Resolve Element 85 container binding and expected-response field-catalog differences across the seven AI cases.",
+    "Confirm full response Segment 146 length and wire framing before generating converter-ready fixtures.",
+    "Review outcomes for the missing-field and wrong-fixed-value mutations; no host response is inferred."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

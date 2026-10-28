@@ -1,0 +1,36 @@
+{
+  "artifact": "ATL105-APPENDIX-AE-TRAINING-RULE-CATALOG",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+  "source": "docs/specs/extracted_text.txt",
+  "sourcePage": 722,
+  "sourceSection": "Appendix AE-1",
+  "executionCertified": false,
+  "countsExcludedFromSegmentCatalogSummary": true,
+  "validator": "VisaEstimatedIncrementalAuthorizationValidator",
+  "representation": "LOGICAL_LIFECYCLE_OBSERVATIONS_NOT_WIRE_PAYLOADS",
+  "rules": [
+    {"ruleId":"AE-CNP","requirement":"MCC 4121 and 5411 estimated/incremental authorizations require card-not-present context.","sourceQuote":"Estimated and Incremental authorizations are allowed for Card Not Present","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-EV","requirement":"MCC 5552 estimated/incremental authorizations apply to EV transactions.","sourceQuote":"Estimated and Incremental authorizations for EV transactions.","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-PERMISSION","requirement":"Merchant permission must be established independently; the three listed MCC restrictions are not an exhaustive eligibility list.","sourceQuote":"For permitted merchants","enforcement":"REVIEW_GATE","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-ESTIMATE","requirement":"Use estimated/initial authorization when the final amount is unknown. The example uses estimated indicator 1 in Acquirer Trace Data Sub Table 09 on the initial request.","sourceQuote":"must be used when the final amount is unknown.","boundedProfile":"Initial indicator 1 follows the Appendix AE example; universal placement and field representation require the applicable Appendix I layout.","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-PREDECESSOR","requirement":"Incremental authorization only follows an estimated/initial authorization.","sourceQuote":"Only follows an estimated / initial authorization.","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-APPROVAL","requirement":"The host identifies incremental authorization using the returned approval code in Authorization Identification Response, then supplies the incremental indicator to Visa. Do not require a merchant-created incremental indicator.","sourceQuote":"Host will send out the incremental indicator on behalf of the merchant to Visa.","enforcement":"APPROVAL_REFERENCE_PRESENT_HOST_BEHAVIOR_REVIEW_REQUIRED","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-SEQUENCE","requirement":"Incremental requests preserve the initial request Sequence Number.","sourceQuote":"Contains the same Sequence Number as the estimated or initial transaction request.","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-TRANSACTION-ID","requirement":"Incremental requests preserve the initial Transaction Identifier; Appendix AE leaves the segment number blank.","sourceQuote":"Contains the same Transaction Identifier in Segment  as the estimated or initial","enforcement":"LOGICAL_EQUALITY_ONLY_SEGMENT_PLACEMENT_UNRESOLVED","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-TABLE63","requirement":"Incremental requests preserve Terminal Transaction Number in Table ID 63, Segment 111.","sourceQuote":"Contains the same Terminal transaction number (Table ID 63 in Segment 111)","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-NO-REESTIMATE","requirement":"Subsequent transactions do not resend estimated authorization indicator in Sub Table 09.","sourceQuote":"The subsequent transactions must not","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-FINAL-AMOUNT","requirement":"Completion sends the final amount; do not infer whether incremental amounts are deltas or accumulated amounts.","sourceQuote":"Merchants must send the","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-WINDOW","requirement":"Initial and incremental approvals expire from the original initial estimate: 14 days for cruise/lodging/car or vehicle rental; seven days for other rental merchants. Incrementals do not reset that origin.","sourceQuote":"incremental authorization will expire seven days after the initial estimated authorization.","boundedProfile":"ISO LocalDate calendar-day observations; timezone, timestamp cutoff and settlement interpretation remain unresolved.","status":"REVIEW_REQUIRED"},
+    {"ruleId":"AE-ROLLOVER","requirement":"For stays/rentals exceeding the window, complete the first transaction and initiate the second on or before day 14 or seven, as applicable.","sourceQuote":"unless they complete the first transaction and then initiate the second transaction","status":"REVIEW_REQUIRED"}
+  ],
+  "unresolved": [
+    "Authoritative permitted-merchant eligibility and mapping from MCC to expiry category.",
+    "Transaction Identifier hosting segment is omitted in the Appendix AE sentence.",
+    "Approval-code provenance and host-created Visa incremental indicator require request/response evidence.",
+    "Acquirer Trace Data Sub Table 09 parent table, packing, and Table 63 field validation require Appendix I layout integration.",
+    "Calendar-day boundaries are a logical test profile, not a certified timezone/timestamp policy.",
+    "Chargeback and authorizer response outcomes are not generated by this training validator."
+  ]
+}

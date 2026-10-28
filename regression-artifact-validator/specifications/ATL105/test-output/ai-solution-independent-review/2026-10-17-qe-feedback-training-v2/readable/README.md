@@ -1,0 +1,57 @@
+# Readable Traceability Index
+
+| Segment | BRs | Linked | No scenario | No test case | No test data | Test cases | Views |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 100 | 629 | 620 | 0 | 9 | 0 | 4885 | [trace](traceability/segment-100.md) · [manual table](manual-test-tables/segment-100.md) · [cards](test-case-cards/segment-100.md) |
+| 101 | 119 | 100 | 0 | 19 | 0 | 386 | [trace](traceability/segment-101.md) · [manual table](manual-test-tables/segment-101.md) · [cards](test-case-cards/segment-101.md) |
+| 102 | 315 | 244 | 0 | 71 | 0 | 1319 | [trace](traceability/segment-102.md) · [manual table](manual-test-tables/segment-102.md) · [cards](test-case-cards/segment-102.md) |
+| 103 | 130 | 94 | 0 | 36 | 0 | 414 | [trace](traceability/segment-103.md) · [manual table](manual-test-tables/segment-103.md) · [cards](test-case-cards/segment-103.md) |
+| 104 | 57 | 50 | 0 | 7 | 0 | 214 | [trace](traceability/segment-104.md) · [manual table](manual-test-tables/segment-104.md) · [cards](test-case-cards/segment-104.md) |
+| 105 | 295 | 264 | 0 | 31 | 0 | 1268 | [trace](traceability/segment-105.md) · [manual table](manual-test-tables/segment-105.md) · [cards](test-case-cards/segment-105.md) |
+| 106 | 1 | 0 | 0 | 1 | 0 | 0 | [trace](traceability/segment-106.md) · [manual table](manual-test-tables/segment-106.md) · [cards](test-case-cards/segment-106.md) |
+| 107 | 1 | 0 | 0 | 1 | 0 | 0 | [trace](traceability/segment-107.md) · [manual table](manual-test-tables/segment-107.md) · [cards](test-case-cards/segment-107.md) |
+| 108 | 190 | 182 | 0 | 8 | 0 | 1436 | [trace](traceability/segment-108.md) · [manual table](manual-test-tables/segment-108.md) · [cards](test-case-cards/segment-108.md) |
+| 109 | 86 | 77 | 0 | 9 | 0 | 561 | [trace](traceability/segment-109.md) · [manual table](manual-test-tables/segment-109.md) · [cards](test-case-cards/segment-109.md) |
+| 110 | 96 | 91 | 0 | 5 | 0 | 513 | [trace](traceability/segment-110.md) · [manual table](manual-test-tables/segment-110.md) · [cards](test-case-cards/segment-110.md) |
+| 111 | 1024 | 943 | 0 | 81 | 0 | 5992 | [trace](traceability/segment-111.md) · [manual table](manual-test-tables/segment-111.md) · [cards](test-case-cards/segment-111.md) |
+| 112 | 449 | 14 | 0 | 435 | 0 | 51 | [trace](traceability/segment-112.md) · [manual table](manual-test-tables/segment-112.md) · [cards](test-case-cards/segment-112.md) |
+| 113 | 66 | 65 | 0 | 1 | 0 | 238 | [trace](traceability/segment-113.md) · [manual table](manual-test-tables/segment-113.md) · [cards](test-case-cards/segment-113.md) |
+| 114 | 14 | 14 | 0 | 0 | 0 | 93 | [trace](traceability/segment-114.md) · [manual table](manual-test-tables/segment-114.md) · [cards](test-case-cards/segment-114.md) |
+| 115 | 39 | 7 | 0 | 32 | 0 | 19 | [trace](traceability/segment-115.md) · [manual table](manual-test-tables/segment-115.md) · [cards](test-case-cards/segment-115.md) |
+| 116 | 22 | 18 | 0 | 4 | 0 | 40 | [trace](traceability/segment-116.md) · [manual table](manual-test-tables/segment-116.md) · [cards](test-case-cards/segment-116.md) |
+| 118 | 126 | 119 | 0 | 7 | 0 | 285 | [trace](traceability/segment-118.md) · [manual table](manual-test-tables/segment-118.md) · [cards](test-case-cards/segment-118.md) |
+| 119 | 40 | 40 | 0 | 0 | 0 | 166 | [trace](traceability/segment-119.md) · [manual table](manual-test-tables/segment-119.md) · [cards](test-case-cards/segment-119.md) |
+| 120 | 13 | 3 | 0 | 10 | 0 | 15 | [trace](traceability/segment-120.md) · [manual table](manual-test-tables/segment-120.md) · [cards](test-case-cards/segment-120.md) |
+| 123 | 130 | 118 | 0 | 12 | 0 | 282 | [trace](traceability/segment-123.md) · [manual table](manual-test-tables/segment-123.md) · [cards](test-case-cards/segment-123.md) |
+| 130 | 105 | 88 | 0 | 17 | 0 | 121 | [trace](traceability/segment-130.md) · [manual table](manual-test-tables/segment-130.md) · [cards](test-case-cards/segment-130.md) |
+| 131 | 27 | 12 | 0 | 15 | 0 | 25 | [trace](traceability/segment-131.md) · [manual table](manual-test-tables/segment-131.md) · [cards](test-case-cards/segment-131.md) |
+| 132 | 64 | 64 | 0 | 0 | 0 | 118 | [trace](traceability/segment-132.md) · [manual table](manual-test-tables/segment-132.md) · [cards](test-case-cards/segment-132.md) |
+| 134 | 130 | 29 | 0 | 101 | 0 | 64 | [trace](traceability/segment-134.md) · [manual table](manual-test-tables/segment-134.md) · [cards](test-case-cards/segment-134.md) |
+| 135 | 45 | 41 | 0 | 4 | 0 | 118 | [trace](traceability/segment-135.md) · [manual table](manual-test-tables/segment-135.md) · [cards](test-case-cards/segment-135.md) |
+| 136 | 9 | 7 | 0 | 2 | 0 | 33 | [trace](traceability/segment-136.md) · [manual table](manual-test-tables/segment-136.md) · [cards](test-case-cards/segment-136.md) |
+| 139 | 41 | 20 | 0 | 21 | 0 | 37 | [trace](traceability/segment-139.md) · [manual table](manual-test-tables/segment-139.md) · [cards](test-case-cards/segment-139.md) |
+| 140 | 37 | 4 | 0 | 33 | 0 | 21 | [trace](traceability/segment-140.md) · [manual table](manual-test-tables/segment-140.md) · [cards](test-case-cards/segment-140.md) |
+| 141 | 19 | 17 | 0 | 2 | 0 | 34 | [trace](traceability/segment-141.md) · [manual table](manual-test-tables/segment-141.md) · [cards](test-case-cards/segment-141.md) |
+| 142 | 18 | 10 | 0 | 8 | 0 | 27 | [trace](traceability/segment-142.md) · [manual table](manual-test-tables/segment-142.md) · [cards](test-case-cards/segment-142.md) |
+| 143 | 150 | 125 | 0 | 25 | 0 | 368 | [trace](traceability/segment-143.md) · [manual table](manual-test-tables/segment-143.md) · [cards](test-case-cards/segment-143.md) |
+| 145 | 71 | 21 | 0 | 50 | 0 | 59 | [trace](traceability/segment-145.md) · [manual table](manual-test-tables/segment-145.md) · [cards](test-case-cards/segment-145.md) |
+| 146 | 26 | 14 | 0 | 12 | 0 | 45 | [trace](traceability/segment-146.md) · [manual table](manual-test-tables/segment-146.md) · [cards](test-case-cards/segment-146.md) |
+| 148 | 26 | 3 | 0 | 23 | 0 | 15 | [trace](traceability/segment-148.md) · [manual table](manual-test-tables/segment-148.md) · [cards](test-case-cards/segment-148.md) |
+| 149 | 14 | 4 | 0 | 10 | 0 | 21 | [trace](traceability/segment-149.md) · [manual table](manual-test-tables/segment-149.md) · [cards](test-case-cards/segment-149.md) |
+| 150 | 57 | 15 | 0 | 42 | 0 | 45 | [trace](traceability/segment-150.md) · [manual table](manual-test-tables/segment-150.md) · [cards](test-case-cards/segment-150.md) |
+| 151 | 30 | 20 | 0 | 10 | 0 | 80 | [trace](traceability/segment-151.md) · [manual table](manual-test-tables/segment-151.md) · [cards](test-case-cards/segment-151.md) |
+| 152 | 16 | 8 | 0 | 8 | 0 | 24 | [trace](traceability/segment-152.md) · [manual table](manual-test-tables/segment-152.md) · [cards](test-case-cards/segment-152.md) |
+| 153 | 32 | 17 | 0 | 15 | 0 | 49 | [trace](traceability/segment-153.md) · [manual table](manual-test-tables/segment-153.md) · [cards](test-case-cards/segment-153.md) |
+| 155 | 60 | 9 | 0 | 51 | 0 | 48 | [trace](traceability/segment-155.md) · [manual table](manual-test-tables/segment-155.md) · [cards](test-case-cards/segment-155.md) |
+| 156 | 66 | 38 | 0 | 28 | 0 | 126 | [trace](traceability/segment-156.md) · [manual table](manual-test-tables/segment-156.md) · [cards](test-case-cards/segment-156.md) |
+| 157 | 26 | 12 | 0 | 14 | 0 | 48 | [trace](traceability/segment-157.md) · [manual table](manual-test-tables/segment-157.md) · [cards](test-case-cards/segment-157.md) |
+| 206 | 9 | 0 | 0 | 9 | 0 | 0 | [trace](traceability/segment-206.md) · [manual table](manual-test-tables/segment-206.md) · [cards](test-case-cards/segment-206.md) |
+| DL1 | 85 | 3 | 0 | 82 | 0 | 14 | [trace](traceability/segment-DL1.md) · [manual table](manual-test-tables/segment-DL1.md) · [cards](test-case-cards/segment-DL1.md) |
+| DL2 | 69 | 0 | 0 | 69 | 0 | 0 | [trace](traceability/segment-DL2.md) · [manual table](manual-test-tables/segment-DL2.md) · [cards](test-case-cards/segment-DL2.md) |
+| DL3 | 56 | 4 | 0 | 52 | 0 | 8 | [trace](traceability/segment-DL3.md) · [manual table](manual-test-tables/segment-DL3.md) · [cards](test-case-cards/segment-DL3.md) |
+| DL4 | 51 | 2 | 0 | 49 | 0 | 2 | [trace](traceability/segment-DL4.md) · [manual table](manual-test-tables/segment-DL4.md) · [cards](test-case-cards/segment-DL4.md) |
+| DL5 | 25 | 0 | 0 | 25 | 0 | 0 | [trace](traceability/segment-DL5.md) · [manual table](manual-test-tables/segment-DL5.md) · [cards](test-case-cards/segment-DL5.md) |
+| DL6 | 18 | 2 | 0 | 16 | 0 | 4 | [trace](traceability/segment-DL6.md) · [manual table](manual-test-tables/segment-DL6.md) · [cards](test-case-cards/segment-DL6.md) |
+| DL7 | 22 | 3 | 0 | 19 | 0 | 7 | [trace](traceability/segment-DL7.md) · [manual table](manual-test-tables/segment-DL7.md) · [cards](test-case-cards/segment-DL7.md) |
+| DL8 | 35 | 5 | 0 | 30 | 0 | 9 | [trace](traceability/segment-DL8.md) · [manual table](manual-test-tables/segment-DL8.md) · [cards](test-case-cards/segment-DL8.md) |
+| UNATTRIBUTED | 1599 | 414 | 0 | 1185 | 0 | 1507 | [trace](traceability/segment-UNATTRIBUTED.md) · [manual table](manual-test-tables/segment-UNATTRIBUTED.md) · [cards](test-case-cards/segment-UNATTRIBUTED.md) |

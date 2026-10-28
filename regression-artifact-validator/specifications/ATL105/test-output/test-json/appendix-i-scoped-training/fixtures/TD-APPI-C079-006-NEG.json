@@ -1,0 +1,97 @@
+{
+  "id" : "TD-APPI-C079-006-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-006-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C079-006-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-87",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r007-APPI-C079-006"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-006",
+        "tableId" : "079",
+        "nestedSelector" : "08",
+        "ruleIds" : [ "APPI-T079-R007" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-87",
+          "startLine" : 32411,
+          "endLine" : 32427
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "08",
+            "declaredValueLength" : "12",
+            "data" : "000000000475",
+            "logicalAmount" : "4.75",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag07" : "1"
+            }
+          },
+          "negative" : {
+            "id" : "08",
+            "declaredValueLength" : "12",
+            "data" : "000000000475",
+            "logicalAmount" : "0.0475",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag07" : "1"
+            }
+          },
+          "positiveVariants" : [ {
+            "data" : "000000000001",
+            "logicalAmount" : "0.01",
+            "logicalPremise" : {
+              "tag07" : "1"
+            }
+          } ],
+          "active" : {
+            "id" : "08",
+            "declaredValueLength" : "12",
+            "data" : "000000000475",
+            "logicalAmount" : "0.0475",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag07" : "1"
+            }
+          }
+        },
+        "clearScope" : "Defined 079 aggregate other-tax n12 and two-decimal scale under 07=1 premise.",
+        "excludedClaims" : [ "Missing-tag rejection", "Equivalent selector 08 in 078", "Tax calculation", "Real national/other-tax classification" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalAmount equals data divided by 100",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalAmount equals data divided by 100",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "n12 value and premise remain valid",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalAmount",
+          "from" : "4.75",
+          "to" : "0.0475",
+          "unchanged" : "encoded value, length and premise",
+          "targetedFailure" : "four-decimal interpretation rather than two"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

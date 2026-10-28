@@ -1,8 +1,12 @@
 # Segment 111 Coverage Closure
 
-This folder defines the Segment 111 work package: turning the current test
-artifacts into an auditable coverage decision, scoped to the envelope-only
-rule catalog (`SEG111-R-001` through `SEG111-R-007`).
+This folder defines the Segment 111 work package: turning the envelope and
+selected Appendix I predicate results into an auditable coverage decision.
+The Segment 111 rule catalog remains scoped to envelope rules
+(`SEG111-R-001` through `SEG111-R-007` plus provisional `SEG111-R-008`);
+the combined flow separately invokes bounded Appendix I predicates for Tables
+001-009 and selected rules for Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062. This is not
+exhaustive table or context coverage.
 
 ## Work Package
 
@@ -27,10 +31,10 @@ Authoritative rule catalog (segment-111-rule-catalog.json)
 
 Before implementation, confirm:
 
-1. The rule catalog represents the intended Segment 111 scope: the envelope
-   only. The approximately 400 Appendix I Table-ID business rules for
-   elements 111 and 113 are explicitly out of scope and must not be silently
-   marked `COVERED`.
+1. The rule catalog represents the intended Segment 111 envelope scope.
+   Appendix I has 78 defined tables; Tables 001-009 have bounded predicates,
+   with selected additional rules from Tables 010-015, 017-022, 024-051, 053-055, 057-059, and 062. The remaining table semantics,
+   nested layouts and contextual rules must not be silently marked `COVERED`.
 2. `COVERED`, `PARTIALLY_COVERED`, `REVIEW_REQUIRED`, and `MISSING` are
    sufficient statuses.
 3. A rule is not `COVERED` unless BR, scenario, test case, and test data all
@@ -44,7 +48,9 @@ Before implementation, confirm:
 
 ## Current Status Snapshot
 
-Per the latest consolidated report:
+The prior consolidated report snapshot below has not yet been regenerated after
+the combined-flow implementation; use it as historical AI-intake evidence,
+not as the current Segment 111 predicate count:
 
 | Item | Result |
 | --- | --- |

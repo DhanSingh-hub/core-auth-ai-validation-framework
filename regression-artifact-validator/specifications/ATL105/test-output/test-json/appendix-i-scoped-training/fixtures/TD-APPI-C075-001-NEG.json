@@ -1,0 +1,149 @@
+{
+  "id" : "TD-APPI-C075-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C075-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t075-r001-APPI-C075-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-001",
+        "tableId" : "075",
+        "ruleIds" : [ "APPI-T075-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31902,
+          "endLine" : 31912
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "075",
+            "logicalContext" : {
+              "network" : "Visa",
+              "merchantProgram" : "Visa Merchant Discount Program",
+              "enrollment" : "synthetic premise, not verified"
+            },
+            "orderedTagModel" : [ {
+              "tag" : "01",
+              "valueLength" : 1,
+              "value" : "2"
+            }, {
+              "tag" : "02",
+              "valueLength" : 1,
+              "value" : "M"
+            }, {
+              "tag" : "03",
+              "valueLength" : 4,
+              "value" : "P123"
+            }, {
+              "tag" : "04",
+              "valueLength" : 15,
+              "value" : "CLIENT000000001"
+            }, {
+              "tag" : "05",
+              "valueLength" : 12,
+              "value" : "000000012345"
+            } ]
+          },
+          "negative" : {
+            "tableId" : "074",
+            "logicalContext" : {
+              "network" : "Visa",
+              "merchantProgram" : "Visa Merchant Discount Program",
+              "enrollment" : "synthetic premise, not verified"
+            },
+            "orderedTagModel" : [ {
+              "tag" : "01",
+              "valueLength" : 1,
+              "value" : "2"
+            }, {
+              "tag" : "02",
+              "valueLength" : 1,
+              "value" : "M"
+            }, {
+              "tag" : "03",
+              "valueLength" : 4,
+              "value" : "P123"
+            }, {
+              "tag" : "04",
+              "valueLength" : 15,
+              "value" : "CLIENT000000001"
+            }, {
+              "tag" : "05",
+              "valueLength" : 12,
+              "value" : "000000012345"
+            } ]
+          },
+          "active" : {
+            "tableId" : "074",
+            "logicalContext" : {
+              "network" : "Visa",
+              "merchantProgram" : "Visa Merchant Discount Program",
+              "enrollment" : "synthetic premise, not verified"
+            },
+            "orderedTagModel" : [ {
+              "tag" : "01",
+              "valueLength" : 1,
+              "value" : "2"
+            }, {
+              "tag" : "02",
+              "valueLength" : 1,
+              "value" : "M"
+            }, {
+              "tag" : "03",
+              "valueLength" : 4,
+              "value" : "P123"
+            }, {
+              "tag" : "04",
+              "valueLength" : 15,
+              "value" : "CLIENT000000001"
+            }, {
+              "tag" : "05",
+              "valueLength" : 12,
+              "value" : "000000012345"
+            } ]
+          }
+        },
+        "clearScope" : "Fixed 075 selector and a populated logical model of the five listed discount tags. Model ordering follows source presentation only.",
+        "excludedClaims" : [ "Serialized TLV", "Computed outer length or compliance with 53-byte cap for this model", "Mandatory tag set/order", "Real program enrollment", "Definition of table 074", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "selector for this discount-program layout is 075",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "logical values have the stated individual value lengths",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "selector for this discount-program layout is 075",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "logical values have the stated individual value lengths",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "tableId",
+          "from" : "075",
+          "to" : "074",
+          "unchanged" : "all logical tags and context",
+          "targetedFailure" : "wrong selector; 074 is only a negative mutation, never a defined layout"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

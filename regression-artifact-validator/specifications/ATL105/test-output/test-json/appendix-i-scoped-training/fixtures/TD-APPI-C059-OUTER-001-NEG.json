@@ -1,0 +1,147 @@
+{
+  "id" : "TD-APPI-C059-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C059-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C059-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-64",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t059-r001-APPI-C059-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C059-OUTER-001",
+        "tableId" : "059",
+        "ruleIds" : [ "APPI-T059-R001" ],
+        "syntheticData" : {
+          "logicalTableIdentity" : "059",
+          "merchantCountry" : "840",
+          "context" : {
+            "cardBrand" : "Discover",
+            "merchantRole" : "third-party payment provider",
+            "providerCountry" : "840",
+            "underlyingRetailerCountry" : "124",
+            "underlyingRetailerCountryName" : "Canada"
+          }
+        },
+        "clearScope" : "Retailer-country identity; numericcodes explicitly referenced inAC,Canada124.",
+        "excludedClaims" : [ "n2selector/length resolution", "AC acquiring-country versusretailer semantics resolution", "External ISO corrections" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Retailercountry notprovidercountry",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "ListedAC numericvalue",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Wirewidth/context conflict",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "merchantCountry",
+            "replacement" : "840",
+            "expected" : "FAIL specified Canadianretailer identity"
+          }, {
+            "path" : "merchantCountry",
+            "replacement" : "CAN",
+            "expected" : "FAIL referencedAC numericcode representation despiteAn3"
+          }, {
+            "path" : "logicalTableIdentity",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "leadingZeroSourceCode" : "004",
+          "nonnumericAcEntry" : "N/A",
+          "outcome" : "004 islisted;N/A isnot ann3wirevalue"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30816,
+          "section" : "Appendix I-64",
+          "endLine" : 30838
+        }, {
+          "startLine" : 30839,
+          "section" : "Appendix I-65",
+          "endLine" : 30847
+        }, {
+          "startLine" : 30816,
+          "section" : "Appendix I-64",
+          "endLine" : 30847
+        }, {
+          "section" : "Appendix AC-1",
+          "startLine" : 36612,
+          "endLine" : 36627
+        }, {
+          "startLine" : 36612,
+          "section" : "Appendix AC-1",
+          "endLine" : 36658
+        }, {
+          "startLine" : 36659,
+          "section" : "Appendix AC-2",
+          "endLine" : 36704
+        }, {
+          "startLine" : 36705,
+          "section" : "Appendix AC-3",
+          "endLine" : 36752
+        }, {
+          "startLine" : 36753,
+          "section" : "Appendix AC-4",
+          "endLine" : 36797
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed source value 059 despite n2",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30824,
+            "section" : "Appendix I-64",
+            "endLine" : 30826
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed source value 03",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30827,
+            "section" : "Appendix I-64",
+            "endLine" : 30830
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "An3",
+          "sourceLength" : "3 bytes; Appendix AC codes are numeric",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30840,
+            "section" : "Appendix I-65",
+            "endLine" : 30847
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

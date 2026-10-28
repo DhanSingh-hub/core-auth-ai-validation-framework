@@ -1,0 +1,60 @@
+{
+  "id" : "TD-APPI-C032-14-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-14-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-14-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-29",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r023-APPI-C032-14"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-14",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R023" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-29",
+          "startLine" : 28687,
+          "endLine" : 28704
+        }, {
+          "section" : "Appendix I-30",
+          "startLine" : 28715,
+          "endLine" : 28717
+        } ],
+        "logicalFields" : {
+          "subTableId" : "14",
+          "subTableLength" : "001",
+          "value" : "Y",
+          "subTablePresent" : false,
+          "context" : {
+            "merchantOptsToReceivePAR" : true
+          }
+        },
+        "clearScope" : [ "Y request recommendation when merchant opts in" ],
+        "excludedClaims" : [ "Guaranteed returnedPAR", "Reserved-byte fill" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Opt-in fixture includes PAR request indicator",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "subTablePresent",
+          "value" : false,
+          "targetedNegative" : "Opt-in request omitted"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

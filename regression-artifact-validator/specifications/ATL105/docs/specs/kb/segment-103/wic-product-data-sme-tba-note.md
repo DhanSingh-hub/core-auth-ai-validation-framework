@@ -14,7 +14,7 @@ Element 154 carries eWIC product and benefit information. It is structured data,
 | `PS` | WIC UPC Exception/Denial Information | Up to 47 bytes; internal bitmap selects layout |
 | `PS` | WIC UPC Purchase Information | Up to 34 bytes; same identifier, purchase bitmap selects layout |
 
-The shared `PS` identifier is intentional. Structural validation can enforce the identifier and maximum bound; the internal bitmap determines whether the record is an exception/denial or purchase record.
+The shared `PS` identifier is intentional. Structural validation can enforce the identifier and maximum bound; the internal bitmap determines whether the record is an exception/denial or purchase record. External QA evidence for UPC/PLU parsing is summarized in [MCH-44658 execution evidence](wic-upc-plu-execution-evidence.md); it does not add bitmap parsing to this repository's structural validator.
 
 ## Context Rules
 
@@ -34,4 +34,4 @@ TD: EF20270101, EA..., PS... with expected PASS/FAIL outcomes.
 
 ## Validator Boundary
 
-`Segment103PayloadValidator` validates Total Length, aggregate bounds, EF/EA/PS identifiers, EF length, and granular data bounds. Internal PS bit-map semantics require a separate converter-level test when raw wire samples are available.
+`Segment103PayloadValidator` validates Total Length, aggregate bounds, EF/EA/PS identifiers, EF length, and granular data bounds. The supplied MCH-44658 export provides external integration logs and QA comments, but its PS/Bit 11 wording is internally inconsistent; a converter-level test still needs an approved bit-count interpretation and controlled, sanitized wire fixtures. This evidence does not close P-07 or P-08.

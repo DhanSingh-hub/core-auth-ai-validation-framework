@@ -31,9 +31,19 @@ This folder is the focused learning and analysis module for the ATL105 Standard 
 - [Final Closure Flow](final-closure-flow.md)
 - [Response Code (Element 83) Training](response-code-training.md)
 - [Payment-Network Type Training (Section 5, 16 leaf BRs)](payment-network-type-training.md)
+- [Mastercard BA reference review and draft teaching pack](../../../../test-output/test-solution-independent-review/mastercard-ba-reference-review-v1/README.md): all 37 reference scenarios corrected or question-gated against independent evidence; no certification or BR-count change.
+- [Network-first requirements and lifecycle review](../../../../test-output/test-solution-independent-review/all-network-requirements-review-v1/NETWORK-REVIEW.md): seven named networks plus generic Debit/EBT; BA business hierarchy, conditional contextual BR/TS records, all 145 shared requirements retained, explicit TC/TD gaps and ten BA/SME questions. Classification dimensions are secondary and no eligibility policy is implied.
 - [Appendix E Card Type Training (three separate code families)](appendix-e-card-type-training.md)
 - [Appendix F Product Code Training (table classification and transaction context)](appendix-f-product-code-training.md)
 - [Appendix G Transaction Type Training (code classification and flow boundaries)](appendix-g-transaction-type-training.md)
+- [Appendix K Additional Information Training (Segment 112 Element 118 table layouts)](appendix-k-additional-information-training.md)
+- [Appendix N Premium Gift Card Training (Track II magnetic-stripe layout)](../appendix-n/README.md)
+- [Appendix O Payment Token Terminology Training (tokenization glossary + cryptogram/entry-mode checks)](../appendix-o/README.md)
+- [Appendix Q National POS Condition Code Training (ten-digit composite code: terminal class/type, presentation, security)](../appendix-q/README.md)
+- [Appendix R EMV Chip Data Training (Elements 189/190 TLV decoding, mandatory/prohibited tags)](../appendix-r/README.md)
+- [Appendix S CA Public Key File Training (record layout + real SHA-1 checksum verification)](../appendix-s/README.md)
+- [Appendix T EMV Additional Information Data Layouts Training (Elements 191/192/118, EMV Table Data + CARC)](../appendix-t/README.md)
+- [Appendix U Visa Digital Wallet Training (Wallet Method Indicator format + category classification)](../appendix-u/README.md)
 - [Appendix Family Gap Closure Register (A-AE)](appendix-family-gap-closure-register.md)
 - [Receipt Card Type ID BRs (7 named labels + 2 generic categories)](card-type-id-business-requirements.md)
 

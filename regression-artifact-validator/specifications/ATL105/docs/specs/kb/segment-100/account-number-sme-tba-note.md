@@ -52,10 +52,10 @@ A requirement such as “Account Number is valid” is too vague. A useful requi
 Example:
 
 ```text
-For a Track 2 transaction, Element 2 shall contain the Track 2 account
-representation required by the flow, including its separator and required
-discretionary data; a plain PAN without Track 2 context shall not pass
-Track 2 validation.
+For a Track 2 transaction, Element 2 contains the source data before '='
+and Element 12 contains the source data after '='. The separator joins
+these fields on the wire instead of a Field Separator; it is not part of
+the independently represented Element 2 value. Track 1 splits at the first '^'.
 ```
 
 ## Security and Test-Data Guidance
@@ -68,14 +68,43 @@ Track 2 validation.
 
 ## Current Validator Boundary
 
-The current validator checks declared dependency evidence for:
+The local AccountNumberEntryValidator checks explicitly selected predicates for:
 
 - Manual alphanumeric account representation
-- Track 1/Track 2 separator presence
-- EMV context not using discretionary track data as a chip-data substitute
-- Explicit token/TransArmor representation
+- Non-TransArmor request Element 2 maximum of 24 bytes
+- Track 1/Track 2 source separator and the exact split into Elements 2 and 12
+- Supplied Element 12 maximum of 51 bytes
+- Manual-card expiration MMYY representation, without rejecting an expired date merely for being expired
+- Skipped Element 12 for request card types 093, 095 and 096
+- Element 12 expiration-data presence for declared TransArmor context
+- Accel/STAR e-commerce and one-time-bill-payment expiration presence, and the post-May-2025 internal-database COF recurring omission context
+- Explicit token/TransArmor fixture context (a metadata check only, not validation of token authenticity or encrypted representation)
 
-It does not yet validate complete Track 1/2 grammar, Luhn behavior, full EMV TLV content, or all Appendix J entry-mode combinations. Those belong to dedicated modules.
+The focused [execution package](../../../../test-output/test-json/segment-100-elements-2-and-12-execution-package.json)
+contains 13 source-hash-bound atomic BR chains and 42 synthetic fixtures. Its strict
+execution-readiness gate and local assertions pass; this does not approve source
+interpretations or certify transactions. See the [coverage report](../../../../test-output/test-solution-independent-review/segment-100-elements-2-and-12-coverage.md).
+
+This validator does not cover complete Track 1/2 grammar and combined track limits,
+token BIN/Luhn qualification, TransArmor header/EDATA decoding, full EMV TLV content,
+all Appendix J entry-mode combinations, Real Time Account Updater history,
+Certegy/SCAN identity formats, wire serialization, or host outcomes. Other modules
+may cover some of these separately; this package does not claim that coverage.
+Unknown entry modes fail closed in opted-in account-entry validation. No converter
+mapping is inferred for producer aliases such as TrackData or a ':' separator.
+
+## Producer JSON Mapping Boundary
+
+A logical JSON property such as `TrackData` is not an ATL105 element name. Before
+validating or converting it, the producer and consumer must agree on a versioned
+mapping that declares the POS entry method and explains whether the property is raw
+track input or already normalized Element 2/12 content. For Track 2, normalization
+must follow the source `=` split; for Track 1, the first `^` split applies. Do not
+assume a different delimiter is equivalent, reconstruct a source field from an
+example, or infer the entry method from the presence of Segment 130. Keep EMV data
+mapped to Segment 130 independently. Until that mapping is agreed, preserve the
+input and classify adapter/semantic validation as `REVIEW_REQUIRED` rather than
+declaring the request invalid. See open developer discussion [AID-0005](../../../../registers/views/ai-dev-discussion.md#aid-0005).
 
 ## Review Checklist
 

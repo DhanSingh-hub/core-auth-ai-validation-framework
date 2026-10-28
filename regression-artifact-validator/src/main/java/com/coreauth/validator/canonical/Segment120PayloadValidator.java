@@ -107,7 +107,17 @@ public final class Segment120PayloadValidator {
         return r;
     }
 
+    public ValidationResult validateActualPayload(JsonNode payload) {
+        ValidationResult result = new ValidationResult("segment-120-actual-payload");
+        validatePayload(payload, result, true);
+        return result;
+    }
+
     private void validatePayload(JsonNode payload, ValidationResult r) {
+        validatePayload(payload, r, false);
+    }
+
+    private void validatePayload(JsonNode payload, ValidationResult r, boolean actualSemantics) {
         if (payload == null || !payload.isObject()) {
             r.addError(SOURCE, "AI JSON root must be an object");
             return;
@@ -145,16 +155,25 @@ public final class Segment120PayloadValidator {
             r.addError(SOURCE, "SEG120-R-004 printData must not exceed 999 characters; found " + printDataLength);
         }
 
-        int computedLength = SEGMENT_LENGTH_FIELD_OVERHEAD + printDataLength;
+        int computedLength = (actualSemantics ? 9 : SEGMENT_LENGTH_FIELD_OVERHEAD) + printDataLength;
         int totalSerialized = 3 + 4 + 2 + printDataLength; // segmentType(3) + segmentLength(4) + 2 separators + printData
         if (totalSerialized > MAX_TOTAL_SEGMENT) {
             r.addError(SOURCE, "SEG120-R-004 total serialized Segment 120 length must not exceed 1009 characters; computed " + totalSerialized);
         }
-        if (declared != null && SEGMENT_LENGTH_PATTERN.matcher(declared).matches() && Integer.parseInt(declared) != computedLength) {
+        boolean measurableLength = !actualSemantics || printData == null || printData.chars().allMatch(c -> c <= 127);
+        if (measurableLength && declared != null && SEGMENT_LENGTH_PATTERN.matcher(declared).matches() && Integer.parseInt(declared) != computedLength) {
             r.addError(SOURCE, "SEG120-R-002 segmentLength must equal computed structural length " + computedLength + "; found " + declared);
         }
 
         validateSeparators(segment, r);
+        if (actualSemantics) {
+            JsonNode raw = segment.get("wireFormat");
+            if (raw == null) r.addWarning("REVIEW_REQUIRED: SEG120-R-005 actual wire required; field lengths do not prove delimiters");
+            else if (!raw.isTextual() || !raw.textValue().equals(type + "\u001c" + declared + "\u001c" + printData))
+                r.addError(SOURCE, "SEG120-R-005 observed wire must equal actual type, length and print data with source Field Separators");
+            else if (!raw.textValue().chars().allMatch(c -> c <= 127))
+                r.addWarning("REVIEW_REQUIRED: SEG120-R-002 non-ASCII wire encoding is not supplied; byte length is not certified");
+        }
         // SEG120-R-008 (P-03 open): printData may legitimately contain literal '\' Blackhawk line
         // delimiters (BR-263-5). Content is intentionally treated as opaque text and is NOT parsed
         // or rejected here; that is out of Item 1 envelope-validator scope pending SME resolution.

@@ -58,9 +58,38 @@ class Atl105ElementValueValidatorTest {
     }
 
     @Test
+    void optionalSegment101OdometerChecksOnlySuppliedNumericValues() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var valid = observation("Financial Transaction Request", "101", "64", "12345678");
+        ((ObjectNode) valid.path("elements")).put("84", "061").put("85", "101");
+        assertThat(validator.validate(valid).findings())
+            .anySatisfy(finding -> assertThat(finding.ruleId()).isEqualTo("SEG101-R-009"));
+        assertThat(validator.validate(valid).status()).isEqualTo(Status.CHECKS_PASSED);
+
+        for (String value : new String[]{"123456789", "12A"}) {
+            var invalid = observation("Financial Transaction Request", "101", "64", value);
+            ((ObjectNode) invalid.path("elements")).put("84", "061").put("85", "101");
+            assertThat(validator.validate(invalid).findings())
+                .anySatisfy(finding -> {
+                    assertThat(finding.ruleId()).isEqualTo("SEG101-R-009");
+                    assertThat(finding.status()).isEqualTo(Status.INVALID);
+                });
+        }
+
+        var omitted = observation("Financial Transaction Request", "101", "55", "ATL105");
+        ((ObjectNode) omitted.path("elements")).put("84", "061").put("85", "101");
+        assertThat(validator.validate(omitted).findings())
+            .noneSatisfy(finding -> assertThat(finding.ruleId()).isEqualTo("SEG101-R-009"));
+    }
+
+    @Test
     void segmentCountMustEqualSuppliedSegmentsAndRequiredSegmentsMustBePresent() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var input = message("2", "2");
+        input.putArray("segmentsPresent").add("100").add("101");
+        var inputQualifiers = (ObjectNode) input.path("qualifiers");
+        inputQualifiers.putObject("segmentOccurrenceCounts").put("100", 1).put("101", 1);
+        inputQualifiers.put("untypedSegmentObjectCount", 0);
         assertThat(validator.validate(input).status()).isEqualTo(Status.CHECKS_PASSED);
         assertThat(validator.validate(message("3", "2")).status()).isEqualTo(Status.INVALID);
         assertThat(validator.validate(message("0", "0")).status()).isEqualTo(Status.INVALID);
@@ -68,10 +97,74 @@ class Atl105ElementValueValidatorTest {
         noCount.remove("qualifiers");
         assertThat(validator.validate(noCount).status()).isEqualTo(Status.REVIEW_REQUIRED);
         input.putArray("segmentsPresent").add("101").add("102");
+        inputQualifiers.putObject("segmentOccurrenceCounts").put("101", 1).put("102", 1);
         assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
         var unlisted = message("2", "2");
         unlisted.putArray("segmentsPresent").add("100").add("130");
         assertThat(validator.validate(unlisted).status()).isEqualTo(Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void missingSegment100UsesSourceRuleIdWithoutClaimingDuplicateCoverage() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var input = message("1", "1");
+        input.putArray("segmentsPresent");
+        var result = validator.validate(input);
+        assertThat(result.findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.INVALID);
+            assertThat(finding.reason()).contains("Required Segment 100 absent");
+        });
+        var present = message("1", "1");
+        present.putArray("segmentsPresent").add("100");
+        ((ObjectNode) present.path("qualifiers")).putObject("segmentOccurrenceCounts").put("100", 1);
+        assertThat(validator.validate(present).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.CHECKS_PASSED);
+            assertThat(finding.reason()).contains("occurs exactly once");
+        });
+    }
+
+    @Test
+    void companionSegment101DuplicateRuleUsesOccurrenceEvidence() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var input = message("2", "2");
+        input.putArray("segmentsPresent").add("100").add("101");
+        var qualifiers = (ObjectNode) input.path("qualifiers");
+        qualifiers.putObject("segmentOccurrenceCounts").put("100", 1).put("101", 1);
+        qualifiers.put("untypedSegmentObjectCount", 0);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.CHECKS_PASSED);
+        });
+
+        ((ObjectNode) qualifiers.path("segmentOccurrenceCounts")).put("101", 2);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.INVALID);
+            assertThat(finding.reason()).contains("occurs 2 times");
+        });
+
+        ((ObjectNode) qualifiers.path("segmentOccurrenceCounts")).put("101", 1);
+        qualifiers.put("untypedSegmentObjectCount", 1);
+        assertThat(validator.validate(input).findings()).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
+    }
+
+    @Test
+    void missingStructureEvidenceReviewsBothRequiredAndDuplicateRules() throws Exception {
+        var validator = new Atl105ElementValueValidator(PACK);
+        var findings = validator.validate(message("1", "1")).findings();
+        assertThat(findings).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-001");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
+        assertThat(findings).anySatisfy(finding -> {
+            assertThat(finding.ruleId()).isEqualTo("SEG100-R-008");
+            assertThat(finding.status()).isEqualTo(Status.REVIEW_REQUIRED);
+        });
     }
 
     @Test
@@ -99,7 +192,12 @@ class Atl105ElementValueValidatorTest {
     void verifiesKnownValueAndRejectsInvalidAndMissingRequiredValue() throws Exception {
         var validator = new Atl105ElementValueValidator(PACK);
         var input = message("1", "1");
-        assertThat(validator.validate(input).status()).isEqualTo(Status.CHECKS_PASSED);
+        input.putArray("segmentsPresent").add("100");
+        ObjectNode qualifiers = (ObjectNode) input.path("qualifiers");
+        qualifiers.putObject("segmentOccurrenceCounts").put("100", 1);
+        qualifiers.put("untypedSegmentObjectCount", 0);
+        var inputResult = validator.validate(input);
+        assertThat(inputResult.status()).as("findings: %s", inputResult.findings()).isEqualTo(Status.CHECKS_PASSED);
         ((ObjectNode) input.path("elements")).put("55", "ATL999");
         assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
         ((ObjectNode) input.path("elements")).remove("55");

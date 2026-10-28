@@ -239,7 +239,7 @@ _No open provisional items are linked to these rules._
 
 ## Current Validator Boundary
 
-No `Segment112PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
+`Segment112PayloadValidator` now enforces the Segment 112 header and shared Element 116/117/118 triad structure. Appendix K layout checks are implemented only for bounded Tables 001, 003, and 004; all other assigned table contents remain `NOT_ASSERTABLE` pending their independent layout rules. See the [combined supplemental-information flow](../supplemental-information-111-112-flow.md).
 
 ## Review Checklist
 

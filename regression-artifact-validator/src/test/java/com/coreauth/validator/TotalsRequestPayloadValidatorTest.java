@@ -1,6 +1,8 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.TotalsRequestPayloadValidator;
+import com.coreauth.validator.canonical.Segment119ActualPayloadAdapter;
+import com.coreauth.validator.paths.Atl105Paths;
 import com.coreauth.validator.validation.ValidationError;
 import com.coreauth.validator.validation.ValidationResult;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -79,6 +81,152 @@ class TotalsRequestPayloadValidatorTest {
 
         assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
                 .anyMatch(error -> error.reason().contains("SEG105-R-021"));
+    }
+
+    @Test
+    void rejectsAnIncorrectSegment105PromptCode() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ((ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST)
+                .path("Totals Data Segment")).put("PromptCode", "991");
+
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("SEG105-R-005"));
+    }
+
+    @Test
+    void acceptsEveryTotalsDateSpecialCodeAndRejectsAnArbitraryOne() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ObjectNode segment = (ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST)
+                .path("Totals Data Segment");
+        for (String code : new String[]{"111111", "222222", "333333", "444444", "555555", "999999", "010125"}) {
+            segment.put("TotalsDate", code);
+            assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                    .as(code).noneMatch(error -> error.reason().contains("SEG105-R-008"));
+        }
+        segment.put("TotalsDate", "131325");
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("SEG105-R-008"));
+    }
+
+    @Test
+    void rejectsDuplicateOrOversizedCategoryTotals() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ObjectNode segment = (ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST)
+                .path("Totals Data Segment");
+        var duplicate = MAPPER.createArrayNode();
+        duplicate.addObject().put("CardLabel", "CC").put("CardTypeTotalCount", "00001").put("CardTypeTotalAmount", "00000100");
+        duplicate.addObject().put("CardLabel", "CC").put("CardTypeTotalCount", "00001").put("CardTypeTotalAmount", "00000100");
+        segment.set("CategoryTotals", duplicate);
+
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(error -> error.reason().contains("appears more than once") && error.reason().contains("SEG105-R-015"));
+    }
+
+    @Test
+    void requiresEverySegment105FieldLevelElement() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ObjectNode segment = (ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST)
+                .path("Totals Data Segment");
+        for (String field : new String[]{"InformationByte", "TerminalID", "HardwareVersion",
+                "SoftwareVersion", "FirmwareVersion", "SequenceNumber", "GrandTotal"}) {
+            ObjectNode mutated = payload.deepCopy();
+            ((ObjectNode) mutated.path(TotalsRequestPayloadValidator.TOTALS_REQUEST)
+                    .path("Totals Data Segment")).put(field, "");
+            assertThat(new TotalsRequestPayloadValidator().validatePayload(mutated).errors())
+                    .as(field).isNotEmpty();
+        }
+    }
+
+    @Test
+    void rejectsInvalidCalendarDatesZeroCountsAndZeroSequence() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ObjectNode segment = (ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST).path("Totals Data Segment");
+        for (String date : List.of("020025", "023025", "022925")) {
+            segment.put("TotalsDate", date);
+            assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                    .anyMatch(e -> e.reason().contains("SEG105-R-008"));
+        }
+        segment.put("TotalsDate", "333333").put("SequenceNumber", "000000");
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(e -> e.reason().contains("SEG105-R-013"));
+        segment.put("SequenceNumber", "000123");
+        ((ObjectNode) segment.path("CategoryTotals").get(0)).put("CardTypeTotalCount", "00000");
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(e -> e.reason().contains("SEG105-R-015"));
+    }
+
+    @Test
+    void validatesCardTypeTotalCountSourceBoundariesInSegments105And119() throws IOException {
+        ObjectMapper inventoryMapper = MAPPER;
+        var inventory = inventoryMapper.readTree(Atl105Paths.testOutput().resolve("test-solution-independent-review")
+                .resolve("all-element-inventory.json").toFile());
+        var segment119Adapter = new Segment119ActualPayloadAdapter(inventory);
+        for (boolean withPdl : new boolean[]{false, true}) {
+            String messageName = withPdl ? TotalsRequestPayloadValidator.TOTALS_WITH_PDL_REQUEST
+                    : TotalsRequestPayloadValidator.TOTALS_REQUEST;
+            String segmentName = withPdl ? "Totals with Proprietary Data Load Data Segment" : "Totals Data Segment";
+            String ruleId = withPdl ? "SEG119-R-025" : "SEG105-R-015";
+            Path fixture = TEST_DATA.resolve(withPdl
+                    ? Paths.get("segment-119", "message", "totals-pdl-request.valid.json")
+                    : Paths.get("segment-105", "message", "totals-request.valid.json"));
+            ObjectNode payload = (ObjectNode) MAPPER.readTree(fixture.toFile());
+            ObjectNode segment = (ObjectNode) payload.path(messageName).path(segmentName);
+            ObjectNode firstBucket = (ObjectNode) segment.path("CategoryTotals").get(0);
+
+            for (String value : new String[]{"00001", "99999"}) {
+                firstBucket.put("CardTypeTotalCount", value);
+                if (withPdl) {
+                    assertThat(segment119Adapter.validate(segment, messageName, MAPPER.createObjectNode()).findings())
+                            .as("%s count %s", segmentName, value)
+                            .noneMatch(finding -> finding.ruleId().equals(ruleId)
+                                    && finding.scope().equals("bucket-count-width")
+                                    && finding.status().name().equals("INVALID"));
+                } else {
+                    assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                            .as("%s count %s", segmentName, value)
+                            .noneMatch(error -> error.reason().contains(ruleId)
+                                    && error.reason().contains("CardTypeTotalCount"));
+                }
+            }
+            for (String value : new String[]{"00000", "100000", "12A45", ""}) {
+                firstBucket.put("CardTypeTotalCount", value);
+                if (withPdl) {
+                    assertThat(segment119Adapter.validate(segment, messageName, MAPPER.createObjectNode()).findings())
+                            .as("%s invalid count shape %s", segmentName, value.isEmpty() ? "empty" : "nonempty")
+                            .anyMatch(finding -> finding.ruleId().equals(ruleId)
+                                    && finding.scope().equals("bucket-count-width")
+                                    && finding.status().name().equals("INVALID"));
+                } else {
+                    assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                            .as("%s invalid count shape %s", segmentName, value.isEmpty() ? "empty" : "nonempty")
+                            .anyMatch(error -> error.reason().contains(ruleId)
+                                    && error.reason().contains("CardTypeTotalCount"));
+                }
+            }
+        }
+    }
+
+    @Test
+    void checksComputedLengthVersionWidthsAndCardBucketOrder() throws IOException {
+        ObjectNode payload = (ObjectNode) MAPPER.readTree(TEST_DATA.resolve(
+                Paths.get("segment-105", "message", "totals-request.valid.json")).toFile());
+        ObjectNode segment = (ObjectNode) payload.path(TotalsRequestPayloadValidator.TOTALS_REQUEST).path("Totals Data Segment");
+        segment.put("SegmentLength", "105");
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(e -> e.reason().contains("SEG105-R-002"));
+        segment.put("SegmentLength", "106").put("HardwareVersion", "HW001");
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(e -> e.reason().contains("SEG105-R-010"));
+        segment.put("HardwareVersion", "HW01");
+        var reordered = MAPPER.createArrayNode().add(segment.path("CategoryTotals").get(1)).add(segment.path("CategoryTotals").get(0));
+        segment.set("CategoryTotals", reordered);
+        assertThat(new TotalsRequestPayloadValidator().validatePayload(payload).errors())
+                .anyMatch(e -> e.reason().contains("source order"));
     }
 
     private static List<Path> fixtures() throws IOException {

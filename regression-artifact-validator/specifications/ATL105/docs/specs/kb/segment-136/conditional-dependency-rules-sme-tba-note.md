@@ -47,7 +47,6 @@ A requirement such as "the field is valid" is untestable. A useful requirement n
 
 - **P-01** (SEG136-R-002): Confirm whether Segment Type/Segment Length Source 'Device' is intentional for this Moneris response segment or a transcription error (mirrors the Segment 131 pattern).
 - **P-02** (SEG136-R-004): Confirm whether Field Separators also appear between fields 1-2 and 2-3 in Segment 136, or only as a single trailing separator after the whole segment.
-- **P-03** (SEG136-R-005): Is Appendix V (Moneris Data layouts) in scope for this training pass?
 - **P-04** (AI-artifacts, test-data): No dedicated Segment 136 AI or Test Team package was located. Provide one, or approve synthesized fixtures.
 
 ## Security and Test-Data Guidance

@@ -1,0 +1,320 @@
+# October 7 Run4 | Independent Extensive Review
+
+Disposition: REVIEW_REQUIRED. This is graph, physical-file, metadata and producer-claim reconciliation; not semantic coverage or host certification.
+
+## Verified Intake
+
+129,764 files / 3,158,902,761 bytes; all source/archive relative-path SHA-256 hashes agree. Original Downloads source and prior runs remain unchanged.
+
+## Inventory and graph
+
+| Measure | Latest verified count |
+|---|---:|
+| AI BRs | 5,153 |
+| AI TSs | 14,297 |
+| AI TC candidates | 21,531 |
+| AI BRs directly linked to candidate TCs (internal graph) | 3,719 |
+| TSs with TC | 12,860 |
+| TSs without TC | 1,437 |
+| Unique physical request filenames | 21,621 |
+| Physical request copies across candidate/reporting locations | 23,271 |
+| Logical TCs with verified physical metadata | 21,507 |
+| Missing declared TD files | 24 |
+| Empty request bodies (physical copies) | 764 |
+
+## Independent Test Solution BR coverage
+
+Formula: confirmed common Test Solution BRs / independent Test Solution BRs. Run4 has 0/601 confirmed common matches recorded (0.00% confirmed evidence); status: NOT_ASSESSED. A Run4-specific source-anchor candidate crosswalk now covers all 5,153 AI BRs; its candidates are not semantic confirmations. All 601 Test Solution BRs remain NOT_ASSESSED pending review. This is not evidence that no equivalent AI BRs exist.
+
+The 6,473-entry decision register is tied to September Run2 and contains 6,473 pending decisions; it is not applied to Run4. The old crosswalk cannot transfer by reused BR ID.
+
+Separate AI-internal diagnostic: 3,719/5,153 AI BRs directly linked to candidate TCs (72.17%). The producer matrix shows 3,720/5,153 (72.19%) with 62 proposed, unconfirmed relink edges. These are not Test Solution BR coverage.
+
+[Independent Test Solution BR inventory](../../../test-solution-independent-review/source-derived-requirement-inventory.json) | [Run4 coverage evidence](test-solution-br-coverage.json)
+
+## AI-internal BR-to-TC linkage (not Test Solution coverage)
+
+Direct structural linkage: 3,719/5,153 AI BRs (72.17%). The matrix claims 3,720/5,153 (72.19%), including 62 proposed source-rule relink edges that are not confirmed direct TC links. The matrix has one additional unique BR ID (REQ-SRC-ATL105-PDF-001:748); validate before accepting it. These are structural rates only: semantic coverage remains NOT_CALCULABLE.
+
+| Measure | AI BRs | Rate | Status |
+|---|---:|---:|---|
+| Direct TC-linked BRs | 3,719/5,153 | 72.17% | Recounted internal links |
+| Matrix-linked BRs | 3,720/5,153 | 72.19% | Includes proposed links; review required |
+
+## Multi-leg package audit
+
+ZIP: 406 members; manifest: 89 logical flow cases / 406 files. CRC failure: None; unsafe paths: 0; missing candidate members: 0; content differences: 0. This verifies package/file integrity, not lifecycle behavior or host outcomes.
+
+## October 5 comparison
+
+| Metric | October 5 | October 7 Run4 | Delta |
+|---|---:|---:|---:|
+| BR inventory | 6,887 | 5,153 | -1,734 |
+| TS inventory | 12,679 | 14,297 | +1,618 |
+| TC candidates | 21,123 | 21,531 | +408 |
+| Scenarios without TC | 3,732 | 1,437 | -2,295 |
+| Cases with empty expected response | 21,123 | 0 | -21,123 |
+| Logical cases with physical outputs | 21,096 | 21,507 | +411 |
+
+## Expected-response evidence
+
+Counts overlap across tiers within a TC; presence of a tier is not a qualified outcome oracle.
+
+| Tier | Distinct cases | Nodes |
+|---|---:|---:|
+| INFER | 21,531 | 195,182 |
+| GROUNDED_SECONDARY | 4,683 | 4,683 |
+| ASSERT | 8,637 | 37,497 |
+| FLAG | 18,277 | 28,451 |
+
+## Payload/metadata agreement scope
+
+Direct scalar correspondence was audited separately from the existing Java adapter. Matching metadata values to actual JSON values does not validate source business rules, field presence, wire bytes or expected host outcomes. Composite values and fields without direct physical paths remain unassessed.
+
+```json
+{
+  "DIRECT_VALUE_AGREEMENT": 537403,
+  "COMPOSITE_VALUE_UNASSESSED": 18739,
+  "NO_DIRECT_PHYSICAL_PATH_UNASSESSED": 35868
+}
+```
+
+Disagreements: 0; replica content conflicts: 0; audited JSON errors: 0.
+
+## Full matrix audit
+
+The complete JSON contains 5,153 requirement records and 65,989 flat leaves. Producer test_cases_with_data_file=64,528 is a leaf-occurrence count, not a unique TC count. The direct and proposed attribution graphs remain distinct.
+
+```json
+{
+  "rowsWithTestCase": 64552,
+  "rowsDeclaringTd": 64528,
+  "fullyTracedRowsWithoutTdDeclaration": 28,
+  "matrixBrEdgeNotDirectInCase": 62,
+  "brsLinkedByMatrixRows": 3720,
+  "uniqueCasesDeclaringDataPath": 21376,
+  "matrixOnlyLinkedBrIds": [
+    "REQ-SRC-ATL105-PDF-001:748"
+  ],
+  "proposedRelinkUniqueCases": 62,
+  "matrixMissingDataUniqueCases": 0
+}
+```
+
+Changes in BR count are not missing-rule conclusions: derive by source/business identity, not local ID. Reused IDs changed extensively.
+
+## Detailed Findings and SME Questions
+
+### SME-RUN4-TD_EMPTY | 764 empty request bodies counted across physical copies
+
+This is a candidate/reporting copy count, not 764 distinct TCs. A present file is not a populated executable request; TC-000001 is an Auth Completion (0220) empty object.
+
+Required action: Resolve message-family/template grounding or classify blocked; do not call empty bodies real executable data.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-TD_MISSING | 24 declared request-data files are missing
+
+Catalog declares physical files not found; complete affected-case list is exported.
+
+Required action: Producer supplies corrected payload/metadata pairs with declared case links.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-ADAPTER_SCOPE | Existing independent Java adapter cannot map current payload roots
+
+21,621 metadata records were read; element observations and field mappings are empty. All records remain REVIEW_REQUIRED.
+
+Required action: Review a run-versioned root-family crosswalk and exact field identities before rerunning value rules; no implicit alias promotion.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-APPROVAL_PROVENANCE | 1,650 producer approvals are automated-batch-nonSME
+
+Approval audit count/reviewer identity verified; source report also cautions that approval is demo/sample rather than real SME approval.
+
+Required action: Do not claim SME-approved or execution-ready suite; retain reviewer provenance and review required status.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-ID_DRIFT | Reused IDs contain materially changed content
+
+5,141 of 5,153 reused BR statements changed; all 21,123 reused TC fingerprints changed compared with October 5.
+
+Required action: Do not migrate older matches by ID; remap by version/source/context and business meaning.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-AUDIT_ZERO | TC audit reports zero cases
+
+The actual catalog contains 21,531 TCs; the TC audit summary is not a reliable coverage gate.
+
+Required action: Regenerate the audit from the final case catalog and pin hashes/timestamps.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-ASSERT_COUNTS | ASSERT figures use conflicting or unexplained counting units
+
+Run report says 516; TD audit says 3,476; 8,637 cases contain ASSERT-tier nodes, with 37,497 ASSERT nodes and 6,710 cases carrying explicit assertion/value evidence under the analyzer's disclosed criterion.
+
+Required action: Separate node counts, case counts and grounded/qualified assertions; do not sum overlapping tiers or treat ASSERT labels as certified oracles.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-MATRIX_RELINK | Matrix proposes 62 BR edges absent from direct TC links
+
+Full JSON has 65,989 leaves; 3,720 matrix-linked BRs versus 3,719 direct-linked BRs. Matrix-only BR is :748; relinks remain producer candidates.
+
+Required action: Review each source-rule relink against underlying BR/scenario/context; preserve direct graph and proposed graph separately.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-MATRIX_LABEL | 28 FULLY_TRACED leaves have no TD declaration
+
+Status may be propagated from a BR with another complete chain; individual leaves are not proven complete.
+
+Required action: Emit leaf-level and BR-level trace states separately; no automatic semantic or readiness pass.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-SCENARIO_BACKLOG | 1,437 scenarios have no TC
+
+Generation backlog improves from 3,732 but remains in the denominator; no approved exclusion is established.
+
+Required action: Use exported backlog for grounded regeneration or explicit reviewed scope decisions.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-UNMAPPED_BR | 193 cases have no direct BR attribution
+
+Matrix reports 131 orphan scenarios and documents 62 source-rule relinks; this is a proposed attribution distinction, not confirmed semantic matching.
+
+Required action: Validate source/context justification for proposed edges and disclose residual unattributed artifacts.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+### SME-RUN4-SEMANTIC_HOST | Business equivalence and host readiness remain unqualified
+
+Expected-response structures now exist but contain INFER/GROUNDED_SECONDARY/FLAG claims; Judge bridge caveat, partial templates and root-mapping limitations remain.
+
+Required action: Independently qualify rule interpretations, assertions, applicable data/wire and authorized host/state/response evidence; record SME questions without granting approval.
+
+Status: OPEN_REVIEW_REQUIRED; approval not granted.
+
+## Assurance boundaries
+
+- Structural linkage percentages do not measure independent semantic coverage.
+- Physical copy counts include reporting duplicates; unique request filenames include flow legs, not one-to-one TC artifacts.
+- Expected response tiers overlap within a case. ASSERT presence is not proof of a source-backed outcome oracle.
+- A negative invalid value is not automatically a defective test; valid controls and isolated intended-rule detection are required.
+- Raw R/O/C template labels are not adjudicated mandatory/conditional/optional business logic.
+- The existing Java report records unsupported input mappings, not successful field checks.
+- Confirmed semantic coverage remains NOT_CALCULABLE; execution certification false.
+
+[Filterable HTML](LATEST-RUN-INDEPENDENT-REVIEW.html) | [Case CSV](case-register.csv) | [Physical CSV](physical-file-register.csv) | [SME queries](latest-run-findings-and-sme-queries.csv)
+
+## Complete Run4 AI BR Chain and Test Solution Candidate Crosswalk
+
+All 5,153 AI BRs were included without an approval filter. The full matrix contains 65,989 flat leaves: 64,552 with TC, 64,528 with a TD declaration, and 28 producer-labeled FULLY_TRACED without a TD declaration. Matrix-to-catalog validation found 62 BR-to-TS rows not present as direct scenario requirement links and 0 TS-to-TC scenario disagreements.
+Composed from direct AI catalogs, 5,153 BRs link to TS; 3,719 reach a TC through those TSs; 3,719 reach a physically present candidate TD. TD metadata joins are reported separately per BR in the complete export.
+
+| Test Solution source-anchor candidate disposition | AI BR count |
+|---|---:|
+| NOT_MATCHABLE_NO_NUMERIC_ELEMENT_ANCHOR | 2,883 |
+| NOT_MATCHABLE_SEGMENT_UNRESOLVED | 1,500 |
+| NO_EXACT_SOURCE_ANCHOR_CANDIDATE_REVIEW_REQUIRED | 208 |
+| REVIEW_REQUIRED_AMBIGUOUS_OR_COMPOSITE_CANDIDATE | 277 |
+| REVIEW_REQUIRED_EXACT_SOURCE_ANCHOR_CANDIDATE | 285 |
+
+562 AI BRs have source-anchor candidates covering 270 distinct Test Solution BRs. All candidates remain REVIEW_REQUIRED; no title or text-similarity matching is used. `NO_EXACT_SOURCE_ANCHOR_CANDIDATE_REVIEW_REQUIRED`, unresolved segment, and unsupported element statuses are not `AI_ONLY` findings.
+
+- [Complete one-row-per-AI-BR CSV](run4-independent-br-crosswalk-v2/run4-ai-br-chain-crosswalk.csv)
+- [Structured one-row-per-AI-BR JSONL](run4-independent-br-crosswalk-v2/run4-ai-br-chain-crosswalk.jsonl)
+- [Crosswalk and chain summary JSON](run4-independent-br-crosswalk-v2/run4-ai-br-chain-crosswalk-summary.json)
+
+## Semantic confirmation workflow
+
+The source-backed review packet contains 1,950 AI/Test BR candidate pairs across 270 independent Test BRs; 331 Test BRs require manual search across all 5,153 AI BRs. The separate pair decision register contains 1,950 PENDING events and no reviewer decisions. No coverage credit is issued.
+
+Example review evidence (not a decision): AI `REQ-SRC-ATL105-PDF-001:004` states Address Line 2 is alphanumeric and at most 21 bytes. Candidate Test BR `SEGDL1-R-010` and the cited Section 13.2 source quote specify the 21-position city/space/state/space/ZIP layout. The reviewer must decide whether the AI statement is equivalent, partial, or otherwise; the shared element anchor is insufficient by itself.
+
+- [Reviewer instructions and Java recorder commands](run4-semantic-review-v2/README.md)
+- [One row per independent Test BR](run4-semantic-review-v2/run4-test-br-semantic-review.csv)
+- [Source-quoted AI/Test BR candidate pairs](run4-semantic-review-v2/run4-ai-test-br-semantic-review-pairs.jsonl)
+- [Run4-only pending decision register](run4-semantic-review-v2/run4-semantic-decision-register.json)
+- [Review packet summary](run4-semantic-review-v2/run4-semantic-review-summary.json)
+
+## Test Team Interpretation - Element 4
+
+Both BRs are correct and semantically aligned. The AI BR states the alphanumeric character type and 21-byte maximum; the Test BR adds the city/state/ZIP positional layout, which is compatible specificity, not a contradiction.
+
+Element 4 is Address Line 2, character type AN, fixed width 21 bytes, carrying city/state/ZIP content. The ATL105 Section 13.2 positional detail is compatible specificity, not a contradiction. Formal pair decision remains PENDING until an authorized reviewer records it; this interpretation alone issues no coverage credit.
+
+[Dated interpretation JSON](test-team-interpretation-2026-10-08.json)
+
+## Section 10.1 Independent Test Solution Draft Chains
+
+The independent Test Solution source catalog has one BR with a primary source anchor inside Section 10.1; its existing complete-chain package also has 10 unique direct Section 10.1 rule anchors plus 3 related partial-approval chains. The additive review supplement reuses those references and adds 59 source-quoted draft BRs, each linked to one TS, TC, and TD design file.
+New draft chains: 59 BR / 59 TS / 59 TC / 59 TD design records. All remain REVIEW_REQUIRED; TDs are non-converter-ready placeholders; official 601-rule baseline unchanged; coverage credit 0; execution certification false.
+
+- [Section 10.1 draft chain package](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/section-10-1-br-ts-tc-td-draft-package.json)
+- [Topic-level coverage assessment and reused rules](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/section-10-1-coverage-assessment.json)
+- [Review instructions](../../../test-solution-independent-review/section-10-1-credit-card-processing-review-v4/README.md)
+
+## Section 10.2 Debit Card Processing Draft Chains
+
+The additive independent Test Solution supplement contains 29 debit-specific source-quoted draft BRs with matching TS, TC, and TD design records, plus 42 unique references to shared Section 10.1 review drafts and 3 existing independent-baseline chains. Every parsed source heading is mapped below to a draft/reused chain or an explicit child grouping. All references remain REVIEW_REQUIRED; TDs are non-executable designs. The official 601-rule baseline remains unchanged, with no coverage credit or execution certification.
+
+| Source heading | Debit draft BR IDs | Reused Section 10.1 chains (BR / TS / TC / TD) | Existing baseline chains (BR / TS / TC / TD) | Grouped children |
+|---|---|---|---|---|
+| 10.2 | - | - | - | 10.2.1, 10.2.2, 10.2.3, 10.2.4, 10.2.5 |
+| 10.2.1 | - | - | - | 10.2.1.1, 10.2.1.2, 10.2.1.3, 10.2.1.4 |
+| 10.2.1.1 | BR-DRAFT-10-2-001 | - | - | - |
+| 10.2.1.2 | BR-DRAFT-10-2-002, BR-DRAFT-10-2-003, BR-DRAFT-10-2-004, BR-DRAFT-10-2-005 | - | - | - |
+| 10.2.1.3 | BR-DRAFT-10-2-006, BR-DRAFT-10-2-007 | - | - | - |
+| 10.2.1.4 | BR-DRAFT-10-2-008, BR-DRAFT-10-2-009 | - | - | - |
+| 10.2.2 | BR-DRAFT-10-2-010, BR-DRAFT-10-2-011 | - | - | - |
+| 10.2.2.1 | BR-DRAFT-10-2-012, BR-DRAFT-10-2-013, BR-DRAFT-10-2-014, BR-DRAFT-10-2-015, BR-DRAFT-10-2-016, BR-DRAFT-10-2-017 | PARTIAL_APPROVAL_RESPONSE: BR-DRAFT-10-1-010 / TS=SCN-DRAFT-10-1-010 / TC=TC-DRAFT-10-1-010 / TD=TD-DRAFT-10-1-010; PARTIAL_APPROVAL_CONTEXTS: BR-DRAFT-10-1-011 / TS=SCN-DRAFT-10-1-011 / TC=TC-DRAFT-10-1-011 / TD=TD-DRAFT-10-1-011; PARTIAL_REVERSAL_AMOUNT: BR-DRAFT-10-1-012 / TS=SCN-DRAFT-10-1-012 / TC=TC-DRAFT-10-1-012 / TD=TD-DRAFT-10-1-012 | SEG100-R-020: BR-RULE-SEG100-R-020 / TS=TS-REVIEW-BR-RULE-SEG100-R-020 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020; SEG100-R-039: BR-RULE-SEG100-R-039 / TS=TS-REVIEW-BR-RULE-SEG100-R-039 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-039 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-039; SEG100-R-065: BR-RULE-SEG100-R-065 / TS=TS-REVIEW-BR-RULE-SEG100-R-065 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-065 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-065 | - |
+| 10.2.2.2 | BR-DRAFT-10-2-018 | AUTH_REVERSAL_TIMELINES: BR-DRAFT-10-1-014 / TS=SCN-DRAFT-10-1-014 / TC=TC-DRAFT-10-1-014 / TD=TD-DRAFT-10-1-014; AUTH_REVERSAL_ISSUER_RELEASE: BR-DRAFT-10-1-015 / TS=SCN-DRAFT-10-1-015 / TC=TC-DRAFT-10-1-015 / TD=TD-DRAFT-10-1-015; AUTH_REVERSAL_TYPES: BR-DRAFT-10-1-017 / TS=SCN-DRAFT-10-1-017 / TC=TC-DRAFT-10-1-017 / TD=TD-DRAFT-10-1-017; AUTH_REVERSAL_MATCHING: BR-DRAFT-10-1-018 / TS=SCN-DRAFT-10-1-018 / TC=TC-DRAFT-10-1-018 / TD=TD-DRAFT-10-1-018 | - | - |
+| 10.2.3 | BR-DRAFT-10-2-019 | HEALTHCARE_SERVICE_SCOPE: BR-DRAFT-10-1-024 / TS=SCN-DRAFT-10-1-024 / TC=TC-DRAFT-10-1-024 / TD=TD-DRAFT-10-1-024 | - | 10.2.3.1, 10.2.3.2, 10.2.3.3, 10.2.3.4, 10.2.3.5 |
+| 10.2.3.1 | - | - | - | 10.2.3.1.1, 10.2.3.1.2, 10.2.3.1.3, 10.2.3.1.4 |
+| 10.2.3.1.1 | - | HEALTHCARE_BENEFIT_BIN: BR-DRAFT-10-1-025 / TS=SCN-DRAFT-10-1-025 / TC=TC-DRAFT-10-1-025 / TD=TD-DRAFT-10-1-025 | - | - |
+| 10.2.3.1.2 | - | HEALTHCARE_PARTIAL_SPLIT_TENDER: BR-DRAFT-10-1-026 / TS=SCN-DRAFT-10-1-026 / TC=TC-DRAFT-10-1-026 / TD=TD-DRAFT-10-1-026 | - | - |
+| 10.2.3.1.3 | - | HEALTHCARE_PARTIAL_SPLIT_TENDER: BR-DRAFT-10-1-026 / TS=SCN-DRAFT-10-1-026 / TC=TC-DRAFT-10-1-026 / TD=TD-DRAFT-10-1-026 | - | - |
+| 10.2.3.1.4 | - | HEALTHCARE_QHP_890: BR-DRAFT-10-1-027 / TS=SCN-DRAFT-10-1-027 / TC=TC-DRAFT-10-1-027 / TD=TD-DRAFT-10-1-027; HEALTHCARE_QHP_891: BR-DRAFT-10-1-028 / TS=SCN-DRAFT-10-1-028 / TC=TC-DRAFT-10-1-028 / TD=TD-DRAFT-10-1-028; HEALTHCARE_QHP_892: BR-DRAFT-10-1-029 / TS=SCN-DRAFT-10-1-029 / TC=TC-DRAFT-10-1-029 / TD=TD-DRAFT-10-1-029; HEALTHCARE_QHP_893: BR-DRAFT-10-1-030 / TS=SCN-DRAFT-10-1-030 / TC=TC-DRAFT-10-1-030 / TD=TD-DRAFT-10-1-030; HEALTHCARE_QHP_894: BR-DRAFT-10-1-031 / TS=SCN-DRAFT-10-1-031 / TC=TC-DRAFT-10-1-031 / TD=TD-DRAFT-10-1-031; HEALTHCARE_QHP_895: BR-DRAFT-10-1-032 / TS=SCN-DRAFT-10-1-032 / TC=TC-DRAFT-10-1-032 / TD=TD-DRAFT-10-1-032; HEALTHCARE_QHP_896: BR-DRAFT-10-1-033 / TS=SCN-DRAFT-10-1-033 / TC=TC-DRAFT-10-1-033 / TD=TD-DRAFT-10-1-033 | - | - |
+| 10.2.3.2 | BR-DRAFT-10-2-020 | HEALTHCARE_REQUEST_FIELDS: BR-DRAFT-10-1-034 / TS=SCN-DRAFT-10-1-034 / TC=TC-DRAFT-10-1-034 / TD=TD-DRAFT-10-1-034 | SEG100-R-020: BR-RULE-SEG100-R-020 / TS=TS-REVIEW-BR-RULE-SEG100-R-020 / TC=TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 / TD=TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-020 | - |
+| 10.2.3.3 | BR-DRAFT-10-2-021 | HEALTHCARE_RESPONSE_STANDARD: BR-DRAFT-10-1-035 / TS=SCN-DRAFT-10-1-035 / TC=TC-DRAFT-10-1-035 / TD=TD-DRAFT-10-1-035 | - | - |
+| 10.2.3.4 | BR-DRAFT-10-2-022 | HEALTHCARE_TRANSACTION_TYPES: BR-DRAFT-10-1-036 / TS=SCN-DRAFT-10-1-036 / TC=TC-DRAFT-10-1-036 / TD=TD-DRAFT-10-1-036 | - | 10.2.3.4.1, 10.2.3.4.2, 10.2.3.4.3, 10.2.3.4.4 |
+| 10.2.3.4.1 | - | HEALTHCARE_PURCHASE_TOTALS: BR-DRAFT-10-1-037 / TS=SCN-DRAFT-10-1-037 / TC=TC-DRAFT-10-1-037 / TD=TD-DRAFT-10-1-037 | - | - |
+| 10.2.3.4.2 | - | HEALTHCARE_PURCHASE_REVERSAL_TOTALS: BR-DRAFT-10-1-038 / TS=SCN-DRAFT-10-1-038 / TC=TC-DRAFT-10-1-038 / TD=TD-DRAFT-10-1-038 | - | - |
+| 10.2.3.4.3 | - | HEALTHCARE_RETURN_TOTALS: BR-DRAFT-10-1-039 / TS=SCN-DRAFT-10-1-039 / TC=TC-DRAFT-10-1-039 / TD=TD-DRAFT-10-1-039 | - | - |
+| 10.2.3.4.4 | - | HEALTHCARE_TOR_TOTALS: BR-DRAFT-10-1-040 / TS=SCN-DRAFT-10-1-040 / TC=TC-DRAFT-10-1-040 / TD=TD-DRAFT-10-1-040 | - | - |
+| 10.2.3.5 | BR-DRAFT-10-2-023 | HEALTHCARE_RECEIPT_ADDITIONS: BR-DRAFT-10-1-041 / TS=SCN-DRAFT-10-1-041 / TC=TC-DRAFT-10-1-041 / TD=TD-DRAFT-10-1-041 | - | - |
+| 10.2.4 | BR-DRAFT-10-2-024, BR-DRAFT-10-2-025 | CREDIT_RECEIPT_MERCHANT_INFO: BR-DRAFT-10-1-042 / TS=SCN-DRAFT-10-1-042 / TC=TC-DRAFT-10-1-042 / TD=TD-DRAFT-10-1-042; CREDIT_RECEIPT_TRANSACTION_TYPE: BR-DRAFT-10-1-043 / TS=SCN-DRAFT-10-1-043 / TC=TC-DRAFT-10-1-043 / TD=TD-DRAFT-10-1-043; CREDIT_RECEIPT_MASK_ACCOUNT: BR-DRAFT-10-1-044 / TS=SCN-DRAFT-10-1-044 / TC=TC-DRAFT-10-1-044 / TD=TD-DRAFT-10-1-044; CREDIT_RECEIPT_SUPPRESS_EXPIRATION: BR-DRAFT-10-1-045 / TS=SCN-DRAFT-10-1-045 / TC=TC-DRAFT-10-1-045 / TD=TD-DRAFT-10-1-045; CREDIT_RECEIPT_TRANSACTION_DATE: BR-DRAFT-10-1-046 / TS=SCN-DRAFT-10-1-046 / TC=TC-DRAFT-10-1-046 / TD=TD-DRAFT-10-1-046; CREDIT_RECEIPT_TRANSACTION_TIME: BR-DRAFT-10-1-047 / TS=SCN-DRAFT-10-1-047 / TC=TC-DRAFT-10-1-047 / TD=TD-DRAFT-10-1-047; CREDIT_RECEIPT_SEQUENCE_NUMBER: BR-DRAFT-10-1-048 / TS=SCN-DRAFT-10-1-048 / TC=TC-DRAFT-10-1-048 / TD=TD-DRAFT-10-1-048; CREDIT_RECEIPT_FUEL_PRODUCT: BR-DRAFT-10-1-049 / TS=SCN-DRAFT-10-1-049 / TC=TC-DRAFT-10-1-049 / TD=TD-DRAFT-10-1-049; CREDIT_RECEIPT_NONFUEL_PRODUCT: BR-DRAFT-10-1-050 / TS=SCN-DRAFT-10-1-050 / TC=TC-DRAFT-10-1-050 / TD=TD-DRAFT-10-1-050; CREDIT_RECEIPT_BALANCE_FIELDS: BR-DRAFT-10-1-051 / TS=SCN-DRAFT-10-1-051 / TC=TC-DRAFT-10-1-051 / TD=TD-DRAFT-10-1-051; CREDIT_RECEIPT_APPROVAL_DECLINE: BR-DRAFT-10-1-052 / TS=SCN-DRAFT-10-1-052 / TC=TC-DRAFT-10-1-052 / TD=TD-DRAFT-10-1-052; CREDIT_RECEIPT_SIGNATURE: BR-DRAFT-10-1-053 / TS=SCN-DRAFT-10-1-053 / TC=TC-DRAFT-10-1-053 / TD=TD-DRAFT-10-1-053 | - | - |
+| 10.2.5 | - | - | - | 10.2.5.1, 10.2.5.2 |
+| 10.2.5.1 | BR-DRAFT-10-2-026 | REGULATORY_CARD_DATA_DISPLAY: BR-DRAFT-10-1-054 / TS=SCN-DRAFT-10-1-054 / TC=TC-DRAFT-10-1-054 / TD=TD-DRAFT-10-1-054; REGULATORY_RESEARCH_STORAGE: BR-DRAFT-10-1-055 / TS=SCN-DRAFT-10-1-055 / TC=TC-DRAFT-10-1-055 / TD=TD-DRAFT-10-1-055; REGULATORY_CLEARING_SOURCE: BR-DRAFT-10-1-056 / TS=SCN-DRAFT-10-1-056 / TC=TC-DRAFT-10-1-056 / TD=TD-DRAFT-10-1-056 | - | - |
+| 10.2.5.2 | BR-DRAFT-10-2-027, BR-DRAFT-10-2-028, BR-DRAFT-10-2-029 | REGULATORY_CLEARING_SOURCE: BR-DRAFT-10-1-056 / TS=SCN-DRAFT-10-1-056 / TC=TC-DRAFT-10-1-056 / TD=TD-DRAFT-10-1-056; REGULATORY_IN_FLIGHT_EXCEPTION: BR-DRAFT-10-1-059 / TS=SCN-DRAFT-10-1-059 / TC=TC-DRAFT-10-1-059 / TD=TD-DRAFT-10-1-059 | - | - |
+
+- [Section 10.2 debit draft package](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-br-ts-tc-td-draft-package.json)
+- [Complete heading-to-chain assessment](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/section-10-2-coverage-assessment.json)
+- [Debit review gates](../../../test-solution-independent-review/section-10-2-debit-card-processing-review-v2/README.md)
+
+## Manual corpus search findings
+
+9 manual-search finding(s) are recorded. Run1, Run2, Run3, and Run4 from the same date are mutually exclusive evidence populations; this review uses only the Run4 crosswalk, case register, and physical-file register, with no cross-run joins by reused ID. Findings and AI-team feedback are not global absence claims or formal approvals. All formal statuses remain PENDING_SEMANTIC_REVIEW; feedback remains queued for sharing, and no coverage credit is issued.
+
+| Test Solution BR | Finding | Formal status | Credit | AI team feedback |
+|---|---|---|---|---|
+| SEG100-R-009 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR for Segment 100 field order. The generic Communications Test order statements have no segment assignment; the Totals card-type ordering BR is a different behavior. Please add or identify an explicit BR and executable order assertion for Segment 100 fields 1-17, respecting permitted omission of trailing optional fields. |
+| SEG100-R-010 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length. Please add or identify a BR and test that calculate the two-byte header value from the following payload, including TPDU bytes but excluding the two-byte length field. |
+| SEG100-R-011 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 manual search found no equivalent BR or executable test for TCP/IP Message Length byte order. Please add or identify the explicit byte-order requirement and test. The source itself conflicts (table and example indicate big-endian; following prose says little-endian), so confirm the intended behavior with the specification owner before asserting it. |
+| SEG100-R-014 | AI_BR_CANDIDATES_FOUND_CHAIN_GAP | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 contains relevant Data Section 1 separator BR statements (:1511 and :1674), but the generated chains are mislinked to neighboring scenario requirements and the linked JSON cases do not carry the matching Data Section 1 content. Please correct the BR-to-scenario links and ensure the JSON carries the appropriate Data Section 1 field values. Do not place literal Field Separator bytes in the AI JSON; verify separator encoding separately at the converter boundary, preserving separators for empty fields and the source-permitted trailing-omission rule. |
+| SEG100-R-016 | AI_BR_CANDIDATES_FOUND_CHAIN_GAP | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 includes a source-text candidate (:5036) stating the Segment Length calculation, but its inferred Element 84 mapping spans 42 segment contexts and its six linked cases are unapproved with no specific assertions. The :090 requirement only checks numeric/maximum-width formatting; none of its 16 producer-approved cases has a targeted assertion, and the expected Segment Length responses are INFER/format_only. Please scope an approved BR and test chain to Segment 100 and validate that the AI JSON SegmentLength value equals the derived length of its represented Segment 100 content, logically counting each required Field Separator without embedding literal separator bytes in JSON. Add a wrong-length value mutation. Test actual separator-byte encoding separately at the converter boundary; do not treat a calculation placeholder as execution evidence. |
+| SEG100-R-021 | CONVERTER_VALIDATION_OUTSIDE_AI_JSON_OUTPUT_SCOPE | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 BR :1709 states the separator rule, but its six linked cases are unapproved and converter-side wire behavior is not established. The AI JSON is message content, not a wire message, so do not add literal Field Separators to the AI output or treat their absence as a defect. Preserve valid field values and empty/omitted-field semantics in JSON; validate separator encoding at the converter boundary with an approved wire fixture and targeted assertion. |
+| RUN4-FLOW-COVERAGE-01 | RUN4_AI_FLOW_CANDIDATES_FOUND_WITH_COVERAGE_GAPS | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-09): Please add or identify explicit Run4 BR -> TS -> TC -> TD chains for standalone Authorization and Sale, and for the exact Authorization -> Completion -> Timeout sequence if supported by ATL105. The Segment 100 suite catalog says 16 flows were declared, 0 generated and 16 skipped; all 1,650 generated cases are single-leg. An exhaustive scan of 4,844 Segment 100 TC cards found no expected response code 2 or 3, which ATL105 defines as Approved Authorization Only and Approved Authorization Only with AVS. Separately, the byte-identical Run2, Run3, and Run4 scenario catalogs each assign expected_response_code 2 to 4,224 negative scenarios (82 target Auth Completion), assign code 3 to none, and label the oracle authority Level C/chatbot-sourced. These unvalidated scenario defaults conflict with the TC-card expected-response rows and must not be counted as approved Authorization Only cases; please review and correct the expected-response assignments. Code 0 means Approved Purchase/Capture, not Authorization Only. The independent Test Solution response-code package has one BR covering both codes, but only a ResponseCode 2 fixture; its outcome is REVIEW, not PASS, and there is no separate code-3 TD. Please add source-grounded positive Authorization Only cases for code 2 and code 3-with-AVS, plus appropriate negative cases, and link them through BR -> TS -> TC -> TD. Add a COF/MIT flow only with its stored-credential context and source-backed behavior. Unclassified is a report fallback label, not a defined transaction flow; map its underlying case to a real flow or keep it out of the flow inventory. For existing multi-leg candidates, add direct BR attribution and leg-specific TD/assertion evidence. In particular, either specialize TC-006478 to prove Sale -> Timeout or label it as a generic financial transaction -> Time-out Reversal case. Do not count starter Test Solution mappings or Run4 structural verification status as AI flow coverage. |
+| SEG101-R-007 | NO_EQUIVALENT_AI_BR_FOUND | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Manual Run4 search found no AI BR that states the Segment 101 field order (base fields 1-13, then Fleet Tags 1-5 at fields 14-18 in Auth Completion). Nearby BRs cover separators, tag presence/applicability, or tag-code values, not order; their cases do not assert field sequence. Please add or identify an independently grounded BR and a test chain that checks the Segment 101 field order and Auth Completion tag extension. Do not use JSON property ordering as proof of serialized wire order; validate converter wire order separately if the converter is in scope. |
+| SEG101-R-008 | CONVERTER_VALIDATION_OUTSIDE_AI_JSON_OUTPUT_SCOPE | PENDING_SEMANTIC_REVIEW | None | PENDING_SHARE (2026-10-07): Run4 BR :1737 states the Fleet separator rule, but all six linked cases are unapproved and their JSON payloads are structured content, not wire bytes. Literal Field Separator bytes are converter responsibility and should not be added to the AI JSON. Keep checking the JSON field values and empty-field representation for correctness; validate the emitted separators separately in the converter with a captured or independently derived wire expectation. |
+
+[Manual-search findings JSON](run4-semantic-review-v2/run4-manual-search-findings.json)
+[Detailed AI Team Feedback Report](run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.md)
+[AI Team Feedback CSV](run4-semantic-review-v2/AI-TEAM-FEEDBACK-REPORT.csv)

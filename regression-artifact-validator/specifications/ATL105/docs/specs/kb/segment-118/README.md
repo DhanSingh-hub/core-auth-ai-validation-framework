@@ -7,6 +7,71 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed-history continuation
+
+The opt-in actual bridge now executes Element 177/174/178/11 echo clauses
+(source 13104/13111/13117/13157) through the existing 118 helper. Evidence is
+`history.proprietaryLoad {currentRequest, previousHostResponse}`. The current
+capture supplies TerminalIdentifier, SequenceNumber and requestedAt; the
+preceding Host118 supplies SegmentType, TerminalIdentifier, receivedAt and
+the four received values. Identities bind to actual current fields, not metadata
+replacements. Offset-bearing capture instants establish source-stated
+subsequent ordering; equal instants leave order unproven. Missing observations
+are review, malformed/contradictory observations invalid. Echo is equality,
+not an invented block increment, retry allowance or proof of authenticated
+latest/complete load state. Full multiblock workflow remains ordinary
+source-local backlog. Canonical and actual intake probes are
+in `Chapter12LegacyWireMicrIntegrationTest`; see the current
+[gap register](../chapter-coverage-gap-register.md).
+
+The subsequent actual-only continuation executes source-ordered901 and904
+response bodies, withoutFS or manufactured padding. Receipt repeated bytes
+cap220 excludes the preceding26-byte date/count header;220/221 are measured.
+Receipt text1–20 is bounded,21–40 retains the explicit length conflict,41 is
+invalid. Host discount records require distinct received field14 timestamp,
+N2 count and observed81-byte records;44/45 records measure3564/3645 repeated
+bytes. Element183 numeric-versus-space-fill remains a conflict. Actual missing
+conditional fields are review rather than legacy format failures; legacy
+default validation is unchanged. Raw equality andN4 measurement are independent.
+
+Actual176 binds seven source-ordered five-digit current components to
+`history.proprietaryLoad.deviceState {TerminalIdentifier, SequenceNumber,
+components}`. Prefix99999 checks an observed Boolean `cardTableUsed=false`,
+never inferred trusted configuration. Missing current actual fields are not
+filled from component captures. `Chapter12FleetDiscountLoadIntegrationTest`
+executes these predicates through canonical replay and opt-in actual intake.
+The actual903 bridge now reuses the final-change/no-change business-day oracle,
+bound to current actual118 identity and captured `requestBlocks`. Source
+13287-13290 executes001 start, per-data-block increment and final000 empty body;
+13291-13294 executes final changed configuration and no-change/no-send checks.
+Measured3600/3601 data-body boundaries are separate from whole-segment caps.
+Missing captured evidence remains review; malformed observations survive missing
+evidence. No request fields are filled from captured metadata. The supplied ISO
+business day does not establish merchant timezone or authenticated day completeness.
+T/U response binding now executes current sequence, approval/decline, no-pending
+and captured send/receive ordering (13295-13297). Actual901 received text binds
+independent received/retained/printed lines and local use-window evidence through
+the existing retention and window helpers. Missing evidence reviews; malformed
+observed evidence remains invalid even beside a missing value. Endpoints,2400
+and timezone conversion are not invented. Independent raw118 caps measure
+3800/3801; a3800 cap pass alone does not prove valid logical wire grammar.
+Positive message-absence execution and complete902/904 received/stored/application
+chains remain ordinary work; captured receipt equality does not certify physical
+printer output or complete/latest usage.
+
+The [atomic source-clause prefix](../chapter-12-atomic-clause-definitions.json)
+records explicit source ranges and bounded/open/conflict/external distinctions.
+Its executed BR/TS/TC/TD links are generated in `chapter-12-training-evidence.json`.
+Neither the prefix nor the seven-category planning matrix certifies section closure.
+
+Fourteen `SCALAR7-*` executions separately measure902 CardTableData and905
+FuelVolumeData3600/3601 boundaries through the existing scalar helpers, with
+source response noFS/request trailingFS and missing/malformed raw/body evidence.
+Actual-only missing bodies remain review; a unit test proves legacy required-field
+validation stays invalid. Malformed later fields/raw are not hidden by earlier
+missing fields. These scalar boundaries do not decode internal table contents or
+prove received/stored/application completeness.
+
 Unlike Segment 116 (whose sections were stubs), Segment 118's specification sections are **fully documented** in this workspace's source: a complete request/response envelope (11.7.6/11.7.7), a complete 13-field core layout (12.16), and five complete conditional payload layouts, one per Prompt Code (12.16.1-12.16.5). This module is therefore comparable in depth to Segment 109/110, not to Segment 116.
 
 ## Learning Module Index

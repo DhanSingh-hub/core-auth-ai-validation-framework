@@ -15,7 +15,7 @@ Carries Moneris-authorizer-specific data (`<tag><len><data>` TLV format, Appendi
 
 ## Rule Set (5 rules — see [rule catalog](coverage/segment-135-rule-catalog.json))
 
-Applicability (Moneris-destined only), Segment Type fixed 135, Segment Length (separator-inclusion provisional), separator behavior (per-field + internal TLV exception), Moneris Data TLV field (Appendix V scope provisional).
+Applicability (Moneris-destined only), Segment Type fixed 135, Segment Length (separator-inclusion provisional), separator behavior (per-field + internal TLV exception), and Moneris Data TLV field. Appendix V's request-table layouts are trained in the [Appendix V module](../appendix-v/README.md); this does not resolve Segment 135's separate routing, separator, or segment-length questions.
 
 ## `[PROVISIONAL]` Items — All 3 Open
 
@@ -25,7 +25,7 @@ See [SME/TBA Input Register](segment-135-sme-tba-input-register.md).
 
 1. Do not treat Segment 135 as universally required — it is Moneris-destination-conditional.
 2. Do not insert Field Separators inside the Moneris Data TLV sub-structure.
-3. Do not fabricate Appendix V tag/length/data sub-field rules without SME confirmation.
+3. Use the bounded [Appendix V oracle](../appendix-v/README.md) for the published Moneris table layouts; do not infer additional Moneris implementation rules from those layouts.
 
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index

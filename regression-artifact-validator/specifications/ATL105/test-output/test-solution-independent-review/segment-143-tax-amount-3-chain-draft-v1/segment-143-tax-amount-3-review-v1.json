@@ -1,0 +1,81 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG143-TAX3-N-OMISSION-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-A898CD314C09",
+  "aiBrRecords": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2334", "sourcePage": 487, "sourceRuleId": "BR-487-1", "caseIds": ["TC-010319", "TC-010320", "TC-010321", "TC-010322", "TC-010323", "TC-010324"]},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2338", "sourcePage": 488, "sourceRuleId": "BR-488-1", "caseIds": ["TC-010335", "TC-010336", "TC-010337", "TC-010338", "TC-010339", "TC-010340"]}
+  ],
+  "aiStatement": "If the Inclusive/Exclusive flag is 'N', the Tax Amount 3 field should be omitted.",
+  "independentTestBrId": "BR-RULE-SEG143-R-006",
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_CONDITIONAL_CLAIM",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG143-E229", "ATL105-2026-3-SEG143-E230-N", "ATL105-2026-3-SEG143-E231-N"],
+    "facts": [
+      "For Segment 143 Tax 3, Element 229 value N means the tax is not applicable to the product amount.",
+      "When the flag is N, both Tax Type 3 (Element 230) and Tax Amount 3 (Element 231) are omitted/skipped.",
+      "The AI BR accurately states the Element 231 omission but does not separately claim the coupled Element 230 omission."
+    ],
+    "scopeNote": "The source-derived Test BR SEG143-R-006 spans the inclusive/exclusive flags for all three taxes; this review covers only the AI BRs' Tax 3 N branch."
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG143-R-006",
+    "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+    "testScenario": "TS-REVIEW-BR-RULE-SEG143-R-006",
+    "scenarioStatus": "REVIEW_REQUIRED",
+    "scenarioDefinitionStatus": "DRAFT_FROM_TEST_BR_TITLE_AND_SOURCE_ANCHOR",
+    "scenarioDefinitionGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+    "testCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG143-R-006",
+    "testData": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG143-R-006",
+    "testDataReadiness": "REVIEW_REQUIRED",
+    "fixtureStatus": "SME_FIXTURE_REQUIRED"
+  },
+  "aiChainReview": {
+    "linkedCaseCount": 12,
+    "casesWithDeclaredOmissionOfElements229To231": [
+      {"caseId": "TC-010321", "aiBrId": "REQ-SRC-ATL105-PDF-001:2334", "payloadSha256": "17513667adfa80ff7506819456f1d3400637c04c6a753b441524471da5143587"},
+      {"caseId": "TC-010323", "aiBrId": "REQ-SRC-ATL105-PDF-001:2334", "payloadSha256": "a62c4ac984db1222eeaac942e7b1d5d7c29f6d5b08a38ce858d27f1364e77cc9"},
+      {"caseId": "TC-010337", "aiBrId": "REQ-SRC-ATL105-PDF-001:2338", "payloadSha256": "d609d72f73748492c3390c30dff8e23c8a6ba53516beed92dce99c00ddf94828"},
+      {"caseId": "TC-010339", "aiBrId": "REQ-SRC-ATL105-PDF-001:2338", "payloadSha256": "a61d36aeef1af74f987b3c78d71724efcc32c007ac8a3ffd591a58f670932ac7"}
+    ],
+    "allFourOmissionRecordsLackFlagValue": true,
+    "remainingCasesWithoutExactSegment143229To231Observation": ["TC-010319", "TC-010320", "TC-010322", "TC-010324", "TC-010335", "TC-010336", "TC-010338", "TC-010340"],
+    "approvedPayloadMissingCases": ["TC-010324", "TC-010340"],
+    "assessment": "Four hash-verified candidate payloads declare all three tax-3 fields omitted, but the bounded observations do not establish Element 229 = N. The other eight cases have no exact observation for these fields. None proves the condition-to-omission chain.",
+    "limits": [
+      "A declared omission of Elements 229, 230, and 231 does not establish that the condition flag was N.",
+      "The approved payload paths for TC-010324 and TC-010340 are absent from the frozen inventory; only candidate paths are present.",
+      "Physical payload declarations and hashes are not independent semantic validation, and response outcomes were not reviewed."
+    ]
+  },
+  "supplementalDraft": {
+    "path": "segment-143-tax-amount-3-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 3,
+    "testDataDesignCount": 3,
+    "scope": "N branch only; paired omission and separate field-present mutations",
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Re-open and verify all twelve AI payloads and sidecars from the frozen source, including approved copies TC-010324 and TC-010340 if available.",
+    "Verify the actual Element 229 value and container binding in every case before considering any condition match.",
+    "Authorized Test-owner review of full Segment 143 context, omission encoding, and source-conformance expectations for the three draft vectors.",
+    "Test readiness and execution evidence after fixture approval."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

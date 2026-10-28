@@ -1,0 +1,179 @@
+{
+  "id" : "TD-APPI-C066-N01-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C066-N01-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C066-N01-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-75",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t066-r002-APPI-C066-N01-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C066-N01-001",
+        "tableId" : "066",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T066-R001", "APPI-T066-R002", "APPI-T066-R005" ],
+        "syntheticData" : {
+          "selector" : "01",
+          "logicalLength" : 1,
+          "domain" : "2",
+          "context" : {
+            "cardBrand" : "Maestro",
+            "program02" : "5",
+            "phase" : "Auth"
+          },
+          "completionDomainRecordPresent" : true
+        },
+        "clearScope" : "0Multi-Domain/2Acquirer;expected2for4/5/6,0for0;brandonly;completionpresence.",
+        "excludedClaims" : [ "Domainforbiometric3", "Guaranteedrejectionforfor-referencepairing", "Equalitynotstated" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Listedonedigitdomain",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "ExpectedPayByLink/domain2",
+          "positive" : "PASS",
+          "negative" : "FAIL departure"
+        }, {
+          "predicate" : "Completionrecordpresence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "domain",
+            "replacement" : "1",
+            "expected" : "FAIL domaincode"
+          }, {
+            "path" : "domain",
+            "replacement" : "0",
+            "expected" : "FAIL expected5/2pair"
+          }, {
+            "path" : "completionDomainRecordPresent",
+            "replacement" : false,
+            "expected" : "FAIL continuationpresence"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed001"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "pairCases" : [ {
+            "program" : "0",
+            "domain" : "0"
+          }, {
+            "program" : "4",
+            "domain" : "2"
+          }, {
+            "program" : "5",
+            "domain" : "2"
+          }, {
+            "program" : "6",
+            "domain" : "2"
+          } ],
+          "biometricDomainOutcome" : "REVIEW_REQUIRED"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31586,
+          "section" : "Appendix I-75",
+          "endLine" : 31617
+        }, {
+          "startLine" : 31618,
+          "section" : "Appendix I-76",
+          "endLine" : 31624
+        }, {
+          "startLine" : 31563,
+          "section" : "Appendix I-75",
+          "endLine" : 31595
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31599,
+          "section" : "Appendix I-75",
+          "endLine" : 31608
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31624
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31656
+        }, {
+          "startLine" : 31686,
+          "section" : "Appendix I-77",
+          "endLine" : 31688
+        }, {
+          "startLine" : 31709,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31619
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31654
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.01.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31589,
+            "section" : "Appendix I-75",
+            "endLine" : 31591
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed001",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31592,
+            "section" : "Appendix I-75",
+            "endLine" : 31595
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Data",
+          "sourceType" : "n1",
+          "sourceLength" : "one digit; 2 Acquirer,0 Multi-Domain",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31596,
+            "section" : "Appendix I-75",
+            "endLine" : 31617
+          }, {
+            "startLine" : 31618,
+            "section" : "Appendix I-76",
+            "endLine" : 31624
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

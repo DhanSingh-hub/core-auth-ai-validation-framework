@@ -1,0 +1,102 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-001-REQ-020",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "queue": "2026-10-19-all-ai-br-chain-test-br-review-v3",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:020",
+    "sourceRuleId": "ENT-ELEM-17",
+    "obligation": "Cash Amount must be numeric and must not exceed 8 bytes.",
+    "aiCaseCount": 30
+  },
+  "provenanceInputs": {
+    "specificationTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedTestBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "currentTestPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewQueueAiChainEvidenceSha256": "357c33401508000602b91dda69a3798315c463185fa162aba4115abdf394ee53",
+    "reviewQueueRankedCandidatesSha256": "2302f5cff2c529d48e0b0f3e70ff011ec462103e4407fd8010b7e03a31a2d4cf",
+    "automatedScreenManifestSha256": "e28df1dcad8a6a371f28f0d1a065ccd4a2d7681dc6c2e5da533dfe46bde78d1e",
+    "caseFieldObservationsSha256": "6dd2c5b79f99dbd5ad1fa9968acd276c89f1ac4557f5c5ba1f490c84b9cc3a2b"
+  },
+  "sourceAssessment": {
+    "disposition": "ALIGNED_TO_ATL105_2026_3",
+    "reason": "The source defines Element 17 as numeric with a maximum length of 8 bytes and a variable representation up to eight digits with two assumed decimal places. The AI statement's numeric/eight-byte claim is accurate, but it does not include the assumed-decimal detail.",
+    "sourceEvidence": [
+      {"sourceSection": "11.3", "startLine": 11336, "quote": "13 17 Cash Amount 8 C Identifies the total dollar amount of all cash amounts.", "note": "The Section 11 field marker C is conditional; this claim is format-only and does not establish when Element 17 must be present."},
+      {"sourcePage": 368, "startLine": 19943, "quote": "Number: 17 Name: Cash Amount Character Type: N Maximum Length: 8 bytes"},
+      {"sourcePage": 368, "startLine": 19946, "quote": "Representation: Variable length of up to eight digits with two assumed decimal places"},
+      {"sourcePage": 368, "startLine": 19952, "quote": "Valid Codes/Values: 1–99999999"},
+      {"sourcePage": 368, "startLine": 19949, "quote": "Processing Rules: If a merchant chooses to support Interlink’s Optional Cash Back Fee, this field includes the total of the cash back amount and the cash back fee.", "note": "Fee aggregation is a separate semantic rule, not established by this format claim."}
+    ]
+  },
+  "testModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "exactSegment100Element17AnchoredRecords": [
+      {"testBrId": "BR-RULE-SEG100-R-048", "title": "Cash Amount follows the total cash amount rule", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Total cash semantics, not numeric format/length."},
+      {"testBrId": "BR-RULE-SEG130-R-009", "title": "EMV chip values such as authorized amount, transaction type, currency, and terminal country shall agree with the Segment 100 transaction context", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Cross-field context, not numeric format/length."},
+      {"testBrId": "BR-RULE-SEG157-R-005", "title": "The total of Adjusted Product Amounts in the segment must equal the total of Elements 41, 58, 99, and 17 in Segment 100", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Amount reconciliation, not numeric format/length."},
+      {"testBrId": "BR-SEG100-APPR-CROSS-FIELD", "title": "EMV chip values shall agree with the Segment 100 transaction context", "status": "REVIEW_REQUIRED", "scope": "Cross-field context, not numeric format/length."},
+      {"testBrId": "BR-SEG100-GAP-CASH-AMOUNT", "title": "Cash Amount shall represent the total cash amount when cash data applies", "status": "NOT_SET", "scope": "Conditional total-cash semantics, not numeric format/length."}
+    ],
+    "formatCounterpartFound": false,
+    "coverageDisposition": "POTENTIAL_INDEPENDENT_TEST_FORMAT_GAP_REQUIRES_AUTHORIZED_REVIEW",
+    "note": "The five exact Segment 100/Element 17 anchored BRs do not provide a numeric/length oracle. The ranked leads are retrieval candidates, not semantic matches."
+  },
+  "caseReview": {
+    "all30CasesBoundToRefreshedHashVerifiedScreen": true,
+    "screenFile": "2026-10-19-all-ai-br-chain-test-br-review-v3/automated-chain-screen-v1/case-field-observations.jsonl.gz",
+    "caseIdsByIntent": {
+      "lengthExceeded": ["TC-002208", "TC-002329", "TC-002450", "TC-002756", "TC-003128", "TC-003761", "TC-003866"],
+      "invalidCharacterSet": ["TC-002253", "TC-002374", "TC-002556", "TC-002799", "TC-003266", "TC-003799", "TC-003904"],
+      "emptyString": ["TC-002254", "TC-002375", "TC-002557", "TC-002800", "TC-003267", "TC-003800", "TC-003905"],
+      "multiLegFlow": ["TC-004376", "TC-004408"],
+      "labeledBoundaryAtLimit": ["TC-004736", "TC-004761", "TC-004786", "TC-004845", "TC-004927", "TC-005061", "TC-005085"]
+    },
+    "observedElement17Values": {
+      "000000000": {"caseCount": 7, "intent": "Nine-digit length-exceeded probes; also zero-valued and therefore not an isolated width-only mutation."},
+      "0000000#": {"caseCount": 7, "intent": "Eight-character nonnumeric probes."},
+      "": {"caseCount": 7, "intent": "Zero-length string values; not proof of field absence or conditional-field omission."},
+      "00000000": {"caseCount": 7, "intent": "Eight-digit zero values labeled boundary_at_limit; these are below the source valid-value minimum 1 and do not probe the upper limit."}
+    },
+    "declaredOutcomes": {
+      "responseCode1": {"caseCount": 21, "oracleTier": "ASSERT", "authority": "AI candidate declaration, not independently validated"},
+      "responseCode0": {"caseCount": 7, "oracleTier": "ASSERT", "authority": "AI candidate declaration, not independently validated"},
+      "noResponseCode": {"caseCount": 2, "oracleTier": "FLAG", "caseIds": ["TC-004376", "TC-004408"]}
+    },
+    "flowStepBindings": {
+      "TC-004376": {"stepCount": 2, "steps": ["authorization", "partial-completion"], "element17Observation": "UNRESOLVED_PER_STEP_BINDING"},
+      "TC-004408": {"stepCount": 3, "steps": ["authorization", "completion", "duplicate-completion"], "element17Observation": "UNRESOLVED_PER_STEP_BINDING"}
+    },
+    "approvedCopiesAbsent": {"caseCount": 8, "missingApprovedPayloadCopies": 16, "caseIds": ["TC-003761", "TC-003799", "TC-003800", "TC-003866", "TC-003904", "TC-003905", "TC-005061", "TC-005085"]},
+    "assessment": "The 28 non-flow cases have exact Segment 100 Element 17 observations. The two flows have no step-bound Element 17 observation. The screen hash-binds candidate paths; absent approved copies are not hash failures."
+  },
+  "analystDisposition": {
+    "sourceClaimAlignment": "ALIGNED",
+    "chainAdequacy": "PARTIAL",
+    "fieldMutationCoverage": "INVALID_LENGTH_AND_NONNUMERIC_CASES_PRESENT; NO_VALID_POSITIVE_OR_MAXIMUM_VALUE_CASE; ZERO_CASES_MISLABELED_AS_VALID_BOUNDARY",
+    "expectedOutcomeAdequacy": "UNRESOLVED; DECLARED RESPONSE CODES ARE PRODUCER ASSERTIONS, NOT INDEPENDENT ORACLES",
+    "multilegAdequacy": "UNRESOLVED",
+    "overall": "PRELIMINARY_SOURCE_ALIGNMENT_WITH_PARTIAL_CHAIN_AND_POTENTIAL_TEST_FORMAT_GAP",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Authorized Test owner to determine whether a numeric/length BR should be added to the independent Test model, separately from total-cash semantics.",
+    "Review the seven zero boundary cases: source valid values begin at 1, but each currently declares response code 0; do not infer a contradiction until the per-case response oracle and transaction context are independently established.",
+    "Add or identify an approved valid positive value and true maximum value case if the format rule is accepted; specify decimal scaling and expected outcome.",
+    "Bind Element 17 to each step of both flows or leave those steps unresolved.",
+    "Resolve the 16 missing approved payload-copy references if approved evidence is required; retain candidate hash evidence separately."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

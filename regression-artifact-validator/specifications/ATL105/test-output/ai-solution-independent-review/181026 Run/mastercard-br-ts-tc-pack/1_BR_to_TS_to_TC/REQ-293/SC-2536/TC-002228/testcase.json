@@ -1,0 +1,1328 @@
+{
+  "id": "TC-002228",
+  "name": "Flow — Original request, Time-out Reversal, then next financial transaction (Financial Transaction Request → Time-out Reversal → Financial Transaction Request) [maximal-multi-brand]",
+  "scenario_id": "SC-2536",
+  "scenario_type": "flow",
+  "transaction_type": "Financial Transaction Request → Time-out Reversal → Financial Transaction Request",
+  "is_flow": true,
+  "is_negative": false,
+  "negative_class": null,
+  "flow_id": "FLOW-TIMEOUT-NEXT-TRANSACTION",
+  "flow_variant_id": "maximal-multi-brand",
+  "flow_variant_name": "Maximal profile across card brands",
+  "flow_axis_values": {
+    "card_brand": "MC",
+    "entry_mode": "90",
+    "field_profile": "maximal",
+    "pin_entry_capability": "2"
+  },
+  "steps": [
+    {
+      "step": 1,
+      "role": "original_transaction",
+      "transaction_type": "Financial Transaction Request",
+      "lead_segment_number": "100",
+      "physical_transaction_type": "Financial Transaction Request",
+      "runtime_substitutions": [],
+      "expected_response": {
+        "structural": {
+          "tier": "INFER",
+          "assertions": [
+            "response message is well-formed per spec segment structure",
+            "every field satisfies its documented character-type and length"
+          ],
+          "grounding": "steps 1-2 extracted constraints"
+        },
+        "response_code": {
+          "tier": "FLAG",
+          "field": "ResponseCode",
+          "value": null,
+          "flags": [
+            "NEEDS_AUTHORIZER_DOC",
+            "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type '0' has no Appendix G meaning"
+          ]
+        },
+        "step_role": "original_transaction",
+        "outcome_note": null,
+        "response_message": {
+          "available": true,
+          "response_transaction_type": "Financial Transaction Response",
+          "grounding": "assembled/output/atl105_complete_templates.json paired response template",
+          "tier_counts": {
+            "ASSERT": 9,
+            "INFER": 26,
+            "FLAG": 10
+          },
+          "comparison_note": "Compare field-by-field. 'exact' must match the documented value; 'format_only' must satisfy character_type/length but its value is runtime-determined; 'ignore' is processor-generated and not assertable from ATL105.",
+          "data_section_1": {
+            "Response Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "83",
+              "character_type": "AN",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "1",
+              "length": "1",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Download Indicator": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "30",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "2",
+              "length": "1",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Initiation Date": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "45",
+              "character_type": "N",
+              "max_length_bytes": 6,
+              "presence": "R",
+              "position": "3",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Initiation Time": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "46",
+              "character_type": "N",
+              "max_length_bytes": 4,
+              "presence": "R",
+              "position": "9",
+              "length": "4",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Sequence Number": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "86",
+              "character_type": "N",
+              "max_length_bytes": 6,
+              "presence": "R",
+              "position": "13",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Approved Amount": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "6",
+              "character_type": "N",
+              "max_length_bytes": 9,
+              "presence": "C",
+              "position": "19",
+              "length": "9",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Approval Number": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "5",
+              "character_type": "AN",
+              "max_length_bytes": 6,
+              "presence": "C",
+              "position": "28",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Account Number": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "2",
+              "character_type": "ANS",
+              "max_length_bytes": 24,
+              "presence": "R",
+              "position": "34",
+              "length": "25",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Decline Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "26",
+              "character_type": "AN",
+              "max_length_bytes": 2,
+              "presence": "C",
+              "position": "59",
+              "length": "2",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Authorizer Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "7",
+              "character_type": "N",
+              "max_length_bytes": 2,
+              "presence": "R",
+              "position": "61",
+              "length": "2",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Authorizer Response Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "8",
+              "character_type": "AN",
+              "max_length_bytes": 2,
+              "presence": "R",
+              "position": "63",
+              "length": "2",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Settlement Date": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "119",
+              "character_type": "N",
+              "max_length_bytes": 4,
+              "presence": "R",
+              "position": "65",
+              "length": "4",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Additional Information Data Segment Flag": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "115",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "69",
+              "length": "1",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Number of Print Lines": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "61",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "70",
+              "length": "1",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Terminal Display /Printer Message": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "101",
+              "character_type": "AN",
+              "max_length_bytes": 31,
+              "presence": "R",
+              "position": "71",
+              "length": "31",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            }
+          },
+          "data_section_1_source": "ENT-MSG-FINANCIAL_TRANSACTION_RESPONSE",
+          "flags": [],
+          "segments": {
+            "Additional Information Data Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "112",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "116",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "117",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "118",
+                "character_type": "AN",
+                "max_length_bytes": 984,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Print Data Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "115",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              },
+              "Print Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "152",
+                "character_type": "ANS",
+                "max_length_bytes": 900,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Print Data 2 Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "120",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              },
+              "Print Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "152",
+                "character_type": "ANS",
+                "max_length_bytes": 900,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Transaction Attributes Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "134",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Settlement Type": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "198",
+                "character_type": "AN",
+                "max_length_bytes": 1,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Signature Required": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "199",
+                "character_type": "AN",
+                "max_length_bytes": 1,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Receipt Card Description": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "200",
+                "character_type": "AN",
+                "max_length_bytes": 10,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Moneris Data Segment (Response)": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "136",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              },
+              "Moneris Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "213",
+                "character_type": "AN",
+                "max_length_bytes": 100,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Enhanced Fleet Data Segment (Response)": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "146",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              },
+              "Enhanced Fleet Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "239",
+                "character_type": "AN",
+                "max_length_bytes": 999,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "WEX Available Product Fleet Information": {
+              "Segme nt Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "148",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 301,
+                "tolerance_source": "heuristic"
+              },
+              "Segme nt Length Indicat or": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 301,
+                "tolerance_source": "heuristic"
+              },
+              "Availab le Produc t informa tion": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "240",
+                "character_type": "AN Variable Length: 17 bytes",
+                "max_length_bytes": null,
+                "presence": "R",
+                "source_page": 302,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Response InComm OTC Market Basket Data": {
+              "Segme nt Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "152",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              },
+              "Segme nt Length Indicat or": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              },
+              "Market Basket Data": {
+                "tier": "FLAG",
+                "tolerance": "ignore",
+                "value": null,
+                "element_no": "",
+                "character_type": null,
+                "max_length_bytes": null,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Real Time Account Updater Response Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "155",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 310,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 310,
+                "tolerance_source": "heuristic"
+              }
+            }
+          }
+        }
+      },
+      "expected_outcome_note": null
+    },
+    {
+      "step": 2,
+      "role": "timeout_reversal",
+      "transaction_type": "Time-out Reversal",
+      "lead_segment_number": "100",
+      "physical_transaction_type": "Financial Transaction Request",
+      "runtime_substitutions": [],
+      "expected_response": {
+        "structural": {
+          "tier": "INFER",
+          "assertions": [
+            "response message is well-formed per spec segment structure",
+            "every field satisfies its documented character-type and length"
+          ],
+          "grounding": "steps 1-2 extracted constraints"
+        },
+        "response_code": {
+          "tier": "FLAG",
+          "field": "ResponseCode",
+          "value": null,
+          "flags": [
+            "NEEDS_AUTHORIZER_DOC",
+            "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type 'Z' has no Appendix G meaning"
+          ]
+        },
+        "step_role": "timeout_reversal",
+        "outcome_note": null,
+        "response_message": {
+          "available": false,
+          "response_transaction_type": null,
+          "flags": [
+            "NO_RESPONSE_TEMPLATE: no paired response template for 'Time-out Reversal' in the assembled catalog; expected response message cannot be constructed"
+          ],
+          "segments": {}
+        }
+      },
+      "expected_outcome_note": null
+    },
+    {
+      "step": 3,
+      "role": "next_transaction",
+      "transaction_type": "Financial Transaction Request",
+      "lead_segment_number": "100",
+      "physical_transaction_type": "Financial Transaction Request",
+      "runtime_substitutions": [],
+      "expected_response": {
+        "structural": {
+          "tier": "INFER",
+          "assertions": [
+            "response message is well-formed per spec segment structure",
+            "every field satisfies its documented character-type and length"
+          ],
+          "grounding": "steps 1-2 extracted constraints"
+        },
+        "response_code": {
+          "tier": "FLAG",
+          "field": "ResponseCode",
+          "value": null,
+          "flags": [
+            "NEEDS_AUTHORIZER_DOC",
+            "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type '0' has no Appendix G meaning"
+          ]
+        },
+        "step_role": "next_transaction",
+        "outcome_note": "TOR must be sent before the next financial transaction from the same device (QE feedback) — sequencing is not asserted here, only the Sequence Number relationship.",
+        "response_message": {
+          "available": true,
+          "response_transaction_type": "Financial Transaction Response",
+          "grounding": "assembled/output/atl105_complete_templates.json paired response template",
+          "tier_counts": {
+            "ASSERT": 9,
+            "INFER": 26,
+            "FLAG": 10
+          },
+          "comparison_note": "Compare field-by-field. 'exact' must match the documented value; 'format_only' must satisfy character_type/length but its value is runtime-determined; 'ignore' is processor-generated and not assertable from ATL105.",
+          "data_section_1": {
+            "Response Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "83",
+              "character_type": "AN",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "1",
+              "length": "1",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Download Indicator": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "30",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "2",
+              "length": "1",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Initiation Date": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "45",
+              "character_type": "N",
+              "max_length_bytes": 6,
+              "presence": "R",
+              "position": "3",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Initiation Time": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "46",
+              "character_type": "N",
+              "max_length_bytes": 4,
+              "presence": "R",
+              "position": "9",
+              "length": "4",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Sequence Number": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "86",
+              "character_type": "N",
+              "max_length_bytes": 6,
+              "presence": "R",
+              "position": "13",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Approved Amount": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "6",
+              "character_type": "N",
+              "max_length_bytes": 9,
+              "presence": "C",
+              "position": "19",
+              "length": "9",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Approval Number": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "5",
+              "character_type": "AN",
+              "max_length_bytes": 6,
+              "presence": "C",
+              "position": "28",
+              "length": "6",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Account Number": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "2",
+              "character_type": "ANS",
+              "max_length_bytes": 24,
+              "presence": "R",
+              "position": "34",
+              "length": "25",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Decline Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "26",
+              "character_type": "AN",
+              "max_length_bytes": 2,
+              "presence": "C",
+              "position": "59",
+              "length": "2",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Authorizer Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "7",
+              "character_type": "N",
+              "max_length_bytes": 2,
+              "presence": "R",
+              "position": "61",
+              "length": "2",
+              "source_page": 168,
+              "tolerance_source": "heuristic"
+            },
+            "Authorizer Response Code": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "8",
+              "character_type": "AN",
+              "max_length_bytes": 2,
+              "presence": "R",
+              "position": "63",
+              "length": "2",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Settlement Date": {
+              "tier": "FLAG",
+              "tolerance": "ignore",
+              "value": null,
+              "element_no": "119",
+              "character_type": "N",
+              "max_length_bytes": 4,
+              "presence": "R",
+              "position": "65",
+              "length": "4",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Additional Information Data Segment Flag": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "115",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "69",
+              "length": "1",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Number of Print Lines": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "61",
+              "character_type": "N",
+              "max_length_bytes": 1,
+              "presence": "R",
+              "position": "70",
+              "length": "1",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            },
+            "Terminal Display /Printer Message": {
+              "tier": "INFER",
+              "tolerance": "format_only",
+              "value": null,
+              "element_no": "101",
+              "character_type": "AN",
+              "max_length_bytes": 31,
+              "presence": "R",
+              "position": "71",
+              "length": "31",
+              "source_page": 169,
+              "tolerance_source": "heuristic"
+            }
+          },
+          "data_section_1_source": "ENT-MSG-FINANCIAL_TRANSACTION_RESPONSE",
+          "flags": [],
+          "segments": {
+            "Additional Information Data Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "112",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "116",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "117",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              },
+              "Additional Information": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "118",
+                "character_type": "AN",
+                "max_length_bytes": 984,
+                "presence": "R",
+                "source_page": 245,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Print Data Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "115",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              },
+              "Print Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "152",
+                "character_type": "ANS",
+                "max_length_bytes": 900,
+                "presence": "R",
+                "source_page": 249,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Print Data 2 Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "120",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              },
+              "Print Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "152",
+                "character_type": "ANS",
+                "max_length_bytes": 900,
+                "presence": "R",
+                "source_page": 263,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Transaction Attributes Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "134",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Settlement Type": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "198",
+                "character_type": "AN",
+                "max_length_bytes": 1,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Signature Required": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "199",
+                "character_type": "AN",
+                "max_length_bytes": 1,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              },
+              "Receipt Card Description": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "200",
+                "character_type": "AN",
+                "max_length_bytes": 10,
+                "presence": "R",
+                "source_page": 273,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Moneris Data Segment (Response)": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "136",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              },
+              "Moneris Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "213",
+                "character_type": "AN",
+                "max_length_bytes": 100,
+                "presence": "R",
+                "source_page": 275,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Enhanced Fleet Data Segment (Response)": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "146",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length Indicator": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              },
+              "Enhanced Fleet Data": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "239",
+                "character_type": "AN",
+                "max_length_bytes": 999,
+                "presence": "R",
+                "source_page": 295,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "WEX Available Product Fleet Information": {
+              "Segme nt Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "148",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 301,
+                "tolerance_source": "heuristic"
+              },
+              "Segme nt Length Indicat or": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 301,
+                "tolerance_source": "heuristic"
+              },
+              "Availab le Produc t informa tion": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "240",
+                "character_type": "AN Variable Length: 17 bytes",
+                "max_length_bytes": null,
+                "presence": "R",
+                "source_page": 302,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Response InComm OTC Market Basket Data": {
+              "Segme nt Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "152",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              },
+              "Segme nt Length Indicat or": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              },
+              "Market Basket Data": {
+                "tier": "FLAG",
+                "tolerance": "ignore",
+                "value": null,
+                "element_no": "",
+                "character_type": null,
+                "max_length_bytes": null,
+                "presence": "R",
+                "source_page": 306,
+                "tolerance_source": "heuristic"
+              }
+            },
+            "Real Time Account Updater Response Segment": {
+              "Segment Type": {
+                "tier": "ASSERT",
+                "tolerance": "exact",
+                "value": "155",
+                "element_no": "85",
+                "character_type": "N",
+                "max_length_bytes": 3,
+                "presence": "R",
+                "source_page": 310,
+                "tolerance_source": "heuristic"
+              },
+              "Segment Length": {
+                "tier": "INFER",
+                "tolerance": "format_only",
+                "value": null,
+                "element_no": "84",
+                "character_type": "N",
+                "max_length_bytes": 4,
+                "presence": "R",
+                "source_page": 310,
+                "tolerance_source": "heuristic"
+              }
+            }
+          }
+        }
+      },
+      "expected_outcome_note": "TOR must be sent before the next financial transaction from the same device (QE feedback) — sequencing is not asserted here, only the Sequence Number relationship."
+    }
+  ],
+  "priority": "P2",
+  "priority_score": 0.63,
+  "requirement_id": null,
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:288",
+    "REQ-SRC-ATL105-PDF-001:293"
+  ],
+  "violated_element_name": null,
+  "completeness_status": "INCOMPLETE_SPEC_GAP",
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "business_rule_assertion": "The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed.; A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.; QE feedback: the next financial transaction uses a new Sequence Number.",
+  "source_rule_id": "BR-38-9",
+  "source_page": 38,
+  "inclusion_profile": "maximal",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "FLAG",
+      "field": "ResponseCode",
+      "value": null,
+      "flags": [
+        "NEEDS_AUTHORIZER_DOC",
+        "SPEC_RESPONSE_CODE_UNRESOLVED: no response code rule for scenario type 'flow'"
+      ]
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'Financial Transaction Request → Time-out Reversal → Financial Transaction Request' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "confidence_score": 0.5,
+  "confidence_pct": 0,
+  "confidence_band": "LOW",
+  "test_data_file": "qe_shaped_test_data/TD-TC-002228.step1.original-transaction.json",
+  "test_data_leg_files": [
+    "qe_shaped_test_data/TD-TC-002228.step1.original-transaction.json",
+    "qe_shaped_test_data/TD-TC-002228.step2.timeout-reversal.json",
+    "qe_shaped_test_data/TD-TC-002228.step3.next-transaction.json"
+  ],
+  "verification": {
+    "status": "PASS",
+    "reasons": []
+  },
+  "test_data": [
+    {
+      "step": 1,
+      "role": "original_transaction",
+      "transaction_type": "Sale",
+      "prompt_code": "0020",
+      "file": "TD-TC-002228.step1.original-transaction.json"
+    },
+    {
+      "step": 2,
+      "role": "timeout_reversal",
+      "transaction_type": "Timeout Reversal",
+      "prompt_code": "Z020",
+      "file": "TD-TC-002228.step2.timeout-reversal.json"
+    },
+    {
+      "step": 3,
+      "role": "next_transaction",
+      "transaction_type": "Sale",
+      "prompt_code": "0020",
+      "file": "TD-TC-002228.step3.next-transaction.json"
+    }
+  ]
+}

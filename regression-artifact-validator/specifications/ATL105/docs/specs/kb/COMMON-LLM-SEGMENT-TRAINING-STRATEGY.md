@@ -1,6 +1,6 @@
 # ATL105 Segment Training Handbook
 
-**Specification:** BUYPASS ATL105 2026-3
+**Training baseline:** BUYPASS ATL105 2026-3<br>
 **Applies to:** Every ATL105 data segment, numbered segment, and download segment (`DL1`-`DL8`)
 **System under test:** AI Solution artifacts
 **Independent oracle:** Core Auth Test Solution rules derived from the specification
@@ -10,7 +10,7 @@
 ## Contents
 
 1. [How to Train a Segment (Start Here)](#how-to-train-a-segment-start-here)
-2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
+2. Governance: [Purpose](#purpose), [Standard Ownership](#standard-ownership-and-mandatory-use), [Automatic Update Rule](#automatic-update-rule), [SME Decision Persistence](#sme-decision-persistence), [QE-Fiserv Feedback Overlay](#qe-fiserv-feedback-training-overlay-october-2026), [EMV Companion Reference Overlay](#emv-companion-reference-overlay-october-2026), [Communication Register](#communication-register), [Required Training Record](#required-training-record), [Controlled Improvement](#controlled-improvement), [Matching Responsibility](#matching-responsibility)
 3. Method: [Artifact Chain](#common-artifact-chain), [LLM Training Rules](#common-llm-training-rules), [Source Anchors](#canonical-source-anchors), [Data Sections](#request-data-section-convention), [BR Taxonomy](#canonical-br-taxonomy), [Nine-Phase Strategy](#common-nine-phase-strategy), [Independent Review Process](#independent-review-process)
 4. Build: [8-Item Framework](#test-solution-implementation-8-item-framework), [Field-Name Conformance](#segment-package-field-name-conformance), [Coverage Denominator](#coverage-denominator)
 5. Deliver: [Segment Addendum](#segment-specific-training-addendum), [Training Outputs](#common-training-outputs), [Completion Gate](#completion-gate), [Sign-Off Checklist](#sign-off-checklist)
@@ -45,7 +45,22 @@ Coverage dashboards must distinguish producer-internal links, physical payload p
 
 For TC-to-BR semantic assessment, verify the supported interpretation before judging objectives, then inspect intended negative mutations, source-backed expected outcomes and applicable payload validators. A shared BR ID or preserved invalid-looking value is not proof of semantic alignment or effectiveness. Use valid controls and isolated source-supported mutations; report unrelated confounders separately. Bounded source predicates must state what they do not prove (for example six-digit Sequence Number format is not lifecycle correctness). A deterministic first batch is not a statistical sample; missing composite/absence mappings or processor oracles stay `NOT_ASSESSED` / `REVIEW_REQUIRED`.
 
+Distinguish resolved preservation from certified negative objectives. Exact composite agreement and source-required physical absence can be checked without promoting a whole message. Do not infer a universal enumeration from an application-dependent field. Keep missing flow BR links unchanged; sequence agreement is candidate context evidence only. A review-status response matrix that omits a code/family pair can disagree with a broader source clause; record that concern, not automatic invalidity. Predicate-scoped valid controls must never be presented as valid full-message fixtures or host-response oracles.
+
 An agent or automation may perform Phases 1-4 (Source Inventory through Independent BR Derivation) directly from the ATL105 specification text without human involvement, as long as it reads only the specification and cites exact section/page/line evidence; this does not require human assistance. It may not certify its own output: a rule produced this way is `DRAFT_REVIEW_REQUIRED` until an SME/TBA (or formally delegated business approver) reviews and signs off, per the Required Training Record below. Segment training status must reflect this distinction (`IN_PROGRESS` with a `sme-tba-certification-pending` blocker, not `TRAINED_FOR_INTAKE`).
+
+For automated delivery validation, `scripts/validate-ai-delivery-evidence.py`
+extends the completed delivery audit with nested/flat JSON matrix edge reconciliation
+and a hash-bound ledger for **every physical TD**, including orphans. It reuses
+existing QE payload-leg checks only; per-rule observations retain source conflicts,
+and unevaluated rules/unsupported or ambiguous identities remain explicit. No raw
+payload values are published. Optional exact-file Chapter 13 intake evidence remains
+bounded. Neither feedback conformance nor a structurally consistent matrix certifies
+source meaning, complete allowed values/conditions/dependencies, negative-objective
+isolation, lifecycle behavior or host outcomes. The gate keeps full semantic acceptance
+blocked; set equality does not certify matrix row counts or producer coverage claims.
+See [AI validation Gate 8 and Gate 11](../../test-validation-strategy/AI-Solution-Output-Validation-Plan.md)
+and [controls AIV-023, AIV-025 and AIV-026](../../test-validation-strategy/AI-ARTIFACT-VALIDATION-CONTROLS.md).
 
 ## Automatic Update Rule
 
@@ -61,7 +76,7 @@ Keep unresolved or blocked BRs in a separately identified blocked/review collect
 
 When aggregating existing Test Solution evidence, standalone `testDataId`/`testCaseId`/`scenarioId` inventories may be normalized into canonical `testData[]` plus review-required TS/TC placeholders. This normalization may not fabricate a BR, source anchor, execution status, or segment identity: derive the segment only from an unambiguous payload `segmentType`; otherwise retain `CONTEXT_REVIEW_REQUIRED` and preserve the original file as provenance.
 
-Knowledge-base verification must run against the ATL105 2026-3 extracted specification text. The automated gate must report catalog count, rule count, version consistency, complete anchors, duplicate anchors, and source-section presence. Passing this gate proves structural/source-address integrity, not business semantic correctness; composite section labels and appendix/title aliases remain `REVIEW_REQUIRED` until SME/TBA confirms the source mapping.
+The existing core segment rule catalogs are pinned to the ATL105 2026-3 extracted specification text. A later release must be ingested as a separately hash-pinned source overlay with release-specific source anchors; do not silently relabel 2026-3 rules or replace historical evidence. The automated gate must report catalog count, rule count, version consistency, complete anchors, duplicate anchors, and source-section presence for the exact release being checked. Passing this gate proves structural/source-address integrity, not business semantic correctness; composite section labels and appendix/title aliases remain `REVIEW_REQUIRED` until SME/TBA confirms the source mapping. The initial 2026-4 Appendix AF overlay is tracked separately in `appendix-af-rule-catalog.json`, `appendix-af-segment-100-coverage.json`, and `training-status.json`; it does not update the 2026-3 segment denominator or certify the rest of the 2026-4 specification.
 
 Knowledge-base BR coverage must preserve composite evidence as multiple `sourceEvidenceSections`, resolve only unambiguous title aliases (for example `Totals Request` to ATL105 11.4.1.1), and retain appendix references as explicit evidence. The independent BR package may be generated before TS/TC/TD derivation, but it remains `REVIEW_REQUIRED` until semantic review and the complete BR -> TS -> TC -> request Test Data chain are present.
 
@@ -84,6 +99,95 @@ The curated `chapter-13-rule-evidence.json` register and `GenerateAtl105Chapter1
 Route each SME outcome to its subject register: AI-to-Test crosswalk decisions go in `test-output/test-solution-independent-review/semantic-br-decision-register.json`; AI-only BR triage goes in `test-output/ai-solution-independent-review/ai-only-sme-decision-register.json`. Keep both registers append-only. Resolve an existing pending subject by appending a revision with an explicit `supersedesDecisionId`; never edit or delete the pending event. Decisions must not modify immutable AI input files.
 
 Use the [SME Decision and Promotion Workflow](../../test-validation-strategy/SME-DECISION-AND-PROMOTION-WORKFLOW.md) for the structured decision input and promotion gates. `ValidateSmeDecisionRegister` checks unique event IDs, linear revisions, reviewer evidence, and outcome-specific requirements. `NEW_RULE` additionally requires independently authored rule text, an explicit independence attestation, and a segment-matching ATL105 source anchor. Promotion uses only each subject's latest effective decision; it creates a BR candidate for chain derivation, not execution-ready coverage. Heuristic similarity, AI confidence, or a generated chain never substitutes for SME/TBA approval.
+
+## QE-Fiserv Feedback Training Overlay (October 2026)
+
+Use the [QE-Fiserv feedback workbook](../../../../../QE-Fiserv.xlsx) as a training input. Its feedback is enforced as Test Solution rules (see [Trained Rule Catalog and Engine](#trained-rule-catalog-and-engine)); it does not amend ATL105 itself, and a feedback rule that differs from the bound source keeps a recorded source conflict. Apply the following controls when training or reviewing a delivery:
+
+| Training focus | Required behavior |
+| --- | --- |
+| Segment attribution and chain integrity | Derive segment/message-family scope from cited source evidence. Validate segment identity continuously from BR through scenario, case, and request data; reject mismatches such as a segment-132 BR chain whose case data contains only segments 101/111. Keep unresolved attribution and BRs without downstream cases visible rather than inventing links. |
+| BR, scenario, and case quality | Keep BRs atomic and source-anchored; scenarios express higher-level functional intent; cases define detailed preconditions, steps, assertions, and expected outcomes. Detect duplicate cases, include meaningful negative/boundary cases, and expose each BR -> scenario -> case -> data path. |
+| Readable review artifacts | Generate a segment-filterable Markdown traceability view and risk-focused case cards from canonical JSON. The requested manual table uses the workbook's eight columns in order: Test Case ID, TC Name, Description, Test Steps, Expected Result, Actual Result, Priority, Feature Name (Endpoint). Keep actual results `Not Executed`; use only functional coverage in that table. Case cards include source statement/page, preconditions, input-generation method, expected outcome/oracle tier, linked IDs, and reviewer questions. |
+| Request-data fidelity | Confirm every declared segment and field is actually serialized with the source-defined segment type, canonical name, valid nonzero calculated length where required, correct transaction context, and no duplicate aliases. Preserve complete BR/case intent in the payload; do not accept empty or partial data as complete. Per the QE feedback, every serialized segment carries its full field set (empty values allowed); ATL105 required/optional/conditional presence is still not SME-adjudicated, so this is enforced as a feedback rule with a recorded source conflict. |
+| Oracle and verdict quality | Expected response values require an approved source-backed oracle. Null or unsupported response codes, unresolved advisories, and incomplete payloads cannot receive a success verdict; retain `NOT_ASSESSED`, `REVIEW_REQUIRED`, or the appropriate blocked state. |
+| Specification currency | Bind training to an explicit ATL105 release and hash-pinned source set. The workbook's requests to ingest additional documents or change the version require source ownership and applicability review; never silently replace the current release or hard-code a new version. |
+
+### Workbook Disposition (forced enforcement)
+
+By Test Team instruction (2026-10-17), every workbook feedback item is trained and enforced as a Test Solution rule **regardless of its status column** (`Fixed`, `Pending`, or blank). Status is kept only as history; a rule is closed by a passing rerun against a new frozen delivery, not by the workbook label. Where a feedback rule differs from the bound ATL105 2026-3 text, the rule still runs and the difference is recorded as a `sourceConflict` for SME confirmation (Terminal ID 13-22 vs Element 102's 22 bytes; Token PAN Suffix as a request field vs Element 197's response-only text; `NumSegments` vs Element 63's name; the 17-segment maximum; the 3-character special Prompt Code vs Element 182's 4-digit codes; empty-field Approval Number presence). The `Oct-10 AutoRun-FB` decision columns are empty, so its candidate anchor/segment rows still receive no SME approval or coverage credit.
+
+### Trained Rule Catalog and Engine
+
+The feedback is encoded as the versioned rule catalog [`contract/qe-feedback-rule-catalog.json`](../../../contract/qe-feedback-rule-catalog.json) (`QEF-001`-`QEF-033`, each mapped to its workbook IDs) and executed by `scripts/apply-qe-feedback-rules.py`. Run it against a preserved, hash-verified delivery and write to a new versioned folder:
+
+```text
+python scripts/verify-ai-delivery-intake.py --source <delivery> --copy <runs/<date>/Run<n>/...> --manifest <runs/<date>/Run<n>/intake-manifest.json>
+python scripts/apply-qe-feedback-rules.py --self-test
+python scripts/apply-qe-feedback-rules.py --delivery <runs/<date>/Run<n>/10_oct_artifacts> --output test-output/ai-solution-independent-review/<date>-qe-feedback-training-v<n>
+```
+
+| Level | Rules | What the Test Solution now checks |
+| --- | --- | --- |
+| Catalog | QEF-001, 002, 003, 006, 007, 008, 009, 010, 012, 013, 014 | Segment attribution per BR; BR→TS and TS→TC gaps; scenario not a verbatim BR copy; TC name present; duplicate TCs; concrete expected response code; negative coverage per BR; `{specification, version, segment, rule}` anchor on BR/TS/TC; presence-only BRs; PASS verdict with unresolved advisories |
+| Chain | QEF-004, 005 | Every TC has existing payload + metadata for every leg; the BR's segment is serialized in the test data |
+| Payload (every leg) | QEF-011, 015-028, 030-032 | Segment identity TC↔TD; empty payloads; composed segments/fields serialized; Approval Number by context (empty for sale/auth/refund, 6-char value for completion/void/void-of-return); Segment Length present, non-zero, Element 84 width; Segment 100 field set; Terminal ID 13-22; Segment Type equals segment number; TD ID ≠ TC ID; `NumSegments` name and count; Segment 123 Token PAN Suffix; CAVV alphanumeric; Track Data = Account Number + discretionary data (≤75); Segment 111 indicator/information fields; no numbered field aliases; 1-17 financial segments; Prompt Code shape by family; TransArmor expiration |
+| Delivery | QEF-029, 033 | Source set/version (2014-1 Dynamic Card Table Addendum, 2024-2 TransArmor updates, no `2025-3`); readable review outputs |
+
+The engine also generates the readable outputs the feedback requested, from canonical JSON on every run: per-segment BR → TS → TC → TD traceability with `GAP` rows and clickable `pdf#page=` source links, per-segment 8-column manual test tables (`Actual Result` = `Not Executed`), and per-TC Test Case Cards with purpose, derivation path, preconditions, flagged inputs, expected outcome/oracle tier, traceability, Test Solution findings and a five-question SME checklist.
+
+### Training Run Result — 10 October AI Delivery (2026-10-17)
+
+Input: `10_oct_artifacts` preserved at `test-input/ai-solution/runs/2026-10-17/Run1/` (35,564 files, 2,656,275,370 bytes; every file SHA-256 matched the source). Output: [`2026-10-17-qe-feedback-training-v2`](../../../test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/QE-FEEDBACK-VALIDATION-REPORT.md) (card input values longer than 12 characters or account/track/token/key-like fields are masked). Population: 6,880 BRs, 12,254 scenarios, 21,254 test cases (387 flows), all 17,769 payloads validated, 0 unreferenced payloads.
+
+| Rule | Feedback | Applicable | Fail | Observation |
+| --- | --- | ---: | ---: | --- |
+| QEF-001 | Def_SepRun01/04 | 6,880 | 1,599 | plus 893 LLM-proposed segments held for review |
+| QEF-003 | Def_SepRun02/05 | 12,254 | 3,171 | scenarios with no test case |
+| QEF-004 | Def_SepRun02/21 | 21,254 | 3,970 | 27 declare no data; the rest reference absent payload/metadata (from `TC-017312`) |
+| QEF-005 | Def_SepRun15/20 | 16,325 | 3,105 | BR segment not serialized (e.g. segment 123 BR, payload without 123) |
+| QEF-006 | Def_Sep30Run04 | 12,254 | 6,654 | scenario repeats BR text or has no parameters/target |
+| QEF-007 | Oct10Run_D007 | 21,254 | 21,254 | no TC name/description |
+| QEF-009 | Def_Sep30Run03 | 21,254 | 5,443 | null expected response code |
+| QEF-010 | Def_Sep30Run05 | 4,074 | 3,763 | BRs whose test cases are all positive |
+| QEF-012 | Def_Sep30Run07 | 40,388 | 32,644 | anchor lacks version (BR/TC) or rule (TS/TC) |
+| QEF-013 | Def_Sep30Run08 | 6,880 | 421 | presence-only BRs |
+| QEF-014 | Def_Sep30Run09 | 21,237 | 18,830 | PASS with KB-gap advisories |
+| QEF-015 | Def_Sep30Run02 | 17,769 | 9 | empty payloads, 7 reported COMPLETE/PASS |
+| QEF-016 | D004/D014 | 17,769 | 17,746 | composer-omitted fields; Type-only Fleet/EBT/Purchase Card segments |
+| QEF-017 | D001/D002 | 3,438 | 3,211 | Approval Number absent on sale/auth/refund (3,018), non-empty on sale/auth/refund (172), missing/invalid on completion/void (21) |
+| QEF-018 | D003 | 17,762 | 17,762 | Segment Length missing on every segment |
+| QEF-019 | D012 | 3,594 | 3,202 | Segment 100 field set incomplete |
+| QEF-020 | D005 | 23,100 | 28 | Terminal ID 23 characters |
+| QEF-021 | D006/D015 | 17,762 | 9,979 | Moneris/Enhanced Fleet/InComm/Network Token/SKU typed 100/105 |
+| QEF-022 | D008 | 17,769 | 17,769 | TD named `TC-nnnn` |
+| QEF-023 | D009 | 17,769 | 17,769 | `NumberofSegments`, not `NumSegments` |
+| QEF-024 | D010 | 3,650 | 3,090 | Segment 123 without Token PAN Suffix |
+| QEF-025 | D011 | 3,650 | 280 | CAVV = literal `Position` |
+| QEF-026 | D013 | 3,594 | 3,090 | separate AccountNumber, no TrackData |
+| QEF-027 | D016 | 13,272 | 13,272 | Segment 111 indicator/information fields missing |
+| QEF-028 | D017 | 17,762 | 13,242 | `VariableInformationLength2` alias |
+| QEF-030 | D020 | 3,594 | 3,594 | every financial request serializes 19 segments |
+| QEF-031 | Action Items#1 | 5,301 | 1,709 | empty `{}` Prompt Code in Email/Totals requests |
+| QEF-029/033 | D018/D019, Def_SepRun03-10 | 1 each | 1 each | addenda not ingested; no 8-column table, cards, or page links delivered |
+
+QEF-002 (BR→TS), QEF-008 (duplicates), QEF-011 (unresolved segment names) had no failures; QEF-032 found no TransArmor/token transactions. The September-cited IDs `TC-022807`, `TC-022843`, `TC-045587` are not in this delivery; `TC-004348` and `TC-001329` reproduce the October findings. Results are feedback conformance only: semantic coverage stays `NOT_ASSESSED` and host execution `NOT_EXECUTED`.
+
+## EMV Companion Reference Overlay (October 2026)
+
+ATL105 §10.14 (2026-4 p.10-80; 2026-3 p.10-79) requires the "First Data EMV Implementation Guide" to be used with ATL105. Appendix R defers the full EMV tag list to BUYPASS. That document was missing during earlier training.
+
+It is now ingested as a **separately hash-pinned companion overlay**: Fiserv *EMV and Chip Implementation Guide* v2025.RG20, SHA-256 `A79B133C...489EF4`. The full training record is [ATL105 EMV Companion Reference Training Knowledge](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md). Apply these rules whenever a segment, appendix or transaction context touches EMV (Segments 130/131/132, Appendices R/S/T, Elements 30, 83 and 187-194):
+
+| Training focus | Required behavior |
+| --- | --- |
+| Precedence | ATL105 governs. The guide says it is "not a specification" and that the message specification overrides it. Guide content fills only what ATL105 delegates. Conflicts are logged as `SPEC_PRECEDENCE`, and ATL105 is enforced. |
+| Anchors | A guide rule carries a companion anchor (`FISERV-EMV-IG` / `2025.RG20` / section / RQ / page) in addition to the related ATL105 anchor. Never write it into an ATL105 `sourceAnchor`. Never relabel a 2026-3 rule. |
+| Status | Guide-derived rules are `PROVISIONAL`. They are FAIL-candidate (message-observable `RQ`), REVIEW (best practice, illustrative or brand-dependent) or INFO (device or certification). They are never certified coverage until SME/TBA confirms BuyPass applicability (`Q-EMV-01` to `Q-EMV-11`, to be added to the communication register under backlog B-10). |
+| Brand-dependent tags | Do not assume a single meaning for 9F5B, 9F66, 9F67, 9F69, 9F6C, 9F6D, 9F6E or `DFxx`. Table 25 is a tag *expectation*; v2019.RG1 removed "mandatory tags". |
+| Known corrections | Appendix S exponent is `010001`, not `065537` (B-01). The Appendix R example is not a positive AID or currency consistency oracle. Element 188 must mirror Tag 5F34. |
+| Missing references | The guide itself names documents that were not supplied (BuyPass Petroleum Industry Specifications, Petroleum Implementation Guide, USPF AFD Chip Fallback Best Practices). Record them; never infer their content. |
+| Remaining steps | Complete the strategy's [External Reference Document Training Procedure](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md#external-reference-document-training-procedure): oracle, validator, chain package and tests; per-reference `BR Coverage.md`, `Test Coverage.md` and `Validation Strategy.md`; register; and the `referenceTraining` entry. Keep the PDF out of this public repository. |
 
 ## Communication Register
 
@@ -214,10 +318,21 @@ Synthetic appendix fixture drafts may be generated from source-defined structura
 
 ## Common LLM Training Rules
 
+Delivery-wide coverage includes approved and candidate occurrences, retains
+producer status without granting acceptance, and blocks conflicting IDs from
+structural metrics. `audit-ai-delivery-coverage.py` supplies inventory, explicit
+declared-path/metadata checks, full-baseline ledgers and typed-anchor review
+queues. Do not fabricate element numbers for process/lifecycle/response rules.
+Missing quotes, unresolved mappings and pair decisions remain unassessed or
+pending authorized review. Recheck input hashes before publication. Physical
+completeness, semantic coverage and execution remain distinct. Auxiliary files
+are inventoried, not automatically format- or semantic-validated.
+
 The LLM shall:
 
 - Emit the declared producer/schema/contract version, generator version, specification version, and run ID. Do not silently change JSON/workbook shape between runs; publish a versioned schema/adapter contract for any breaking format change.
 - Preserve stable local IDs within a run, source fields, approval claims, flags, and links. Never present an automated batch as SME approval; producer approval/verdict fields remain claims for independent validation.
+- Preserve each producer field and its original value separately from any normalized ATL105 element; record the adapter version and mapping disposition. Never silently rewrite a composite alias or delimiter.
 - Include all generated records and declare counts and link totals from the serialized output. If a record cannot be represented in the supported contract, emit an explicit unsupported/review disposition rather than silently omitting or reshaping it.
 - Use the exact specification version and source page/section for every rule.
 - Preserve segment identity, message family, request/response role, and applicability.
@@ -227,6 +342,7 @@ The LLM shall:
 - Separate source-confirmed behavior from derived interpretation and SME/TBA assumptions.
 - Generate request Test Data JSON only with synthetic or approved masked values.
 - Preserve lifecycle relationships between original and follow-up requests.
+- Apply companion-segment presence by source-defined lifecycle role; for eWIC, do not require Segment 103 on every request, and calculate Element 63 from the BUYPASS-defined segments actually included. Shared prompt codes still require operation/lifecycle context.
 - Avoid treating AI confidence, generated counts, or AI coverage as approval.
 - Mark unsupported or ambiguous behavior for review instead of inventing values.
 
@@ -316,6 +432,15 @@ Produce a machine-readable field inventory with one row for every ordered field:
 
 Take each element's format (type, length, padding) from its Chapter 13 definition, then cross-check the §11 layout table, the §12 segment section, and the Chapter 12 segment/transaction matrix. Record any disagreement as `PROVISIONAL` (see [L7](#lessons-learned) and [L8](#lessons-learned)).
 
+Keep producer JSON and wire identities separate. A logical alias such as `TrackData` is not an ATL105 wire element; require an explicit, versioned adapter mapping, declared entry method, and a deterministic synthetic round-trip before normalizing it. Track 2 splits into Elements 2/12 at `=`; Track 1 splits at the first `^`. A Segment 130 EMV object remains distinct and does not, by itself, prove the POS entry method. Unknown alias, delimiter, mode, or cross-segment mapping stays `REVIEW_REQUIRED`; never infer it from a sample or copy sensitive values into training fixtures. See [AID-0005](../../../registers/views/ai-dev-discussion.md#aid-0005).
+
+For PAR, validate the request opt-in and response value as separate assertions:
+ATL105 Appendix I-30 defines Table 032/Sub-Table 14 with fixed length `001`
+and request value `Y`; Appendix K-24 defines response Table 029 as a fixed
+29-character alphanumeric value returned only when requested. Do not infer that
+every authorizer must return PAR, or that an absent response is invalid, from the
+request indicator alone.
+
 ### Phase 3: Context Matrix
 
 Record the dimensions that change segment behavior:
@@ -369,6 +494,16 @@ Preserve original AI files and metadata. Normalize them into canonical models, t
 BR -> TS -> TC -> request Test Data JSON
 ```
 
+BR coverage is an intermediate milestone, not Phase 8 completion. After the BR crosswalk is built, enumerate and validate the full in-scope producer population: approved and candidate BR/TS/TC catalogs, every scenario/case/flow step, every declared payload and metadata file, response expectations, traceability matrices, run reports, and supported auxiliary artifacts. Do not validate only the BRs that already have Test BR leads or only a sample of linked cases.
+
+A standalone request or response sample without a frozen delivery inventory and explicit BR -> TS -> TC -> TD identity is field-level evidence only. Do not count it as a BR match, infer a coverage percentage from it, or use its presence to close a lifecycle rule. Keep the sample disposition separate from delivery-level coverage until its producer IDs, context, physical payload, and traceability links are established.
+
+For every artifact occurrence, record its source path/hash, stable ID, parent/child links, category/context, validator disposition, and unresolved reason. Reconcile catalogs to physical files and metadata; detect conflicting ID variants, missing/orphan links, unsafe paths, missing or duplicate payloads, step-role mismatches, and artifacts omitted from reports. Run the applicable schema, structural, field, lifecycle, oracle, serialization, and mutation checks. Unsupported formats and rules without authoritative validators remain explicitly `NOT_ASSESSED`; no-artifact/zero-match is not a PASS.
+
+For binary or packed-BCD fields, identify the source-defined field boundary before parsing the payload. Record the declared outer-field byte count, any internal prefix and its encoded count, and the remaining data length separately. If the producer adapter's inclusion/stripping rule is unknown, keep the parse `REVIEW_REQUIRED`; do not call the bytes malformed by feeding a length prefix into a value-only parser, and do not silently strip the prefix to claim PASS.
+
+For lifecycle groups, teach each request/response or original/follow-up relationship separately: verify source-defined transaction-code paths and correlation IDs, bind response-origin values to actual response evidence, require host-approved amount context where relevant, and preserve per-step Test Data and metadata identity. Never promote synthetic host responses, retrieval leads, producer statuses, or segment presence observations to confirmed business relationships.
+
 Report missing, duplicate, unsupported, malformed, contradictory, and review-required artifacts. AI-produced coverage is a claim under test, not the denominator.
 
 Source locations and the required AI package layout are in [AI-ARTIFACT-INTAKE.md](../../test-validation-strategy/AI-ARTIFACT-INTAKE.md). Specialized appendix artifacts must declare a domain such as `MONERIS`, `DIGITAL_WALLET`, `PAYMENT_TOKEN`, `TRANSARMOR_ADMIN`, `CA_PUBLIC_KEYS`, or `PREMIUM_GIFT_CARD`. The intake gate must reject undeclared domains and must not certify generic segment JSON as specialized coverage.
@@ -402,6 +537,8 @@ source anchor -> BR -> TS -> TC -> physical TD -> mapping to Test Solution rule
 For every link, verify identity and cardinality: all BR IDs referenced by each TS; all TS IDs referenced by each TC; all TC IDs resolved to physical TD files; and every mapping resolved against an independently owned rule. Check request/response roles, message family, transaction context, segment set/order, Element 63 where applicable, version continuity, and source-anchor identity. Record orphan, duplicate, fan-out, many-to-many, and missing links rather than silently repairing them.
 
 Open physical payloads. Validate their root/envelope, fields, segment composition, values, lengths, encoding, and conditional/lifecycle rules. Run the relevant Test Solution validator when one exists. A producer `PASS` does not substitute for executing the independent validator.
+
+For a complete delivery, run the delivery-wide structural audit in addition to segment-level checks. Preserve every approved and candidate catalog occurrence; reconcile file hashes, unique IDs, content conflicts, declared TD paths, payload/metadata identity, and the independent Test BR ledger. Keep candidate reach and complete physical-route reach as structural-only metrics. Semantic-confirmed coverage remains `NOT_ASSESSED` until authorized source review; executed-validation coverage remains `NOT_ASSESSED` until execution evidence exists. Producer `APPROVED` labels never establish SME approval. Inventory/hash auxiliary archives unless a supported parser validates their contents. Retain the audit summary and row-level conflict, chain-gap, candidate-pair, and anchor-review ledgers with the delivery's input hashes.
 
 Before SME approval, the Run2 segment evidence writer reports technical validation separately from certification. A complete technical assessment is `PRE_SME_TECHNICAL_CHECKS_PASSED_REVIEW_REQUIRED`, with `executionCertified: false` and SME approval `NOT_ESTABLISHED_BY_THIS_REPORT`; a failed assessment remains `REVIEW_REQUIRED`. Payload compliance requires a segment-owned validator, at least one linked physical payload containing that segment, a recorded validation outcome for every applicable file, and no invalid or unreadable linked files. An empty batch or a linked file for another segment must not pass. These technical checks do not establish business equivalence or remove the SME sign-off gate.
 
@@ -543,6 +680,22 @@ A coverage percentage is meaningless without a stated denominator. Each segment 
 
 The denominator comes from the Test Solution rule catalog, never from AI output. AI requirements with no Test Solution anchor are reported as `AI_ONLY` and enter the denominator only through a `NEW_RULE` decision in the SME decision register.
 
+For each delivery, confirmed Test Solution BR coverage uses `distinct independent Test Solution BRs with a delivery-bound, evidence-supported CONFIRMED match / in-scope independent Test Solution BRs`. Keep AI-internal BR-to-TC linkage on the separate AI-BR denominator. Missing or stale crosswalks, pending decisions, and reused IDs do not count as matches and must not be labeled `AI_ONLY`; mark those independent rules `NOT_ASSESSED`. Report confirmed-evidence count and assessment status separately: `0/N` confirmed evidence with `NOT_ASSESSED` means no matches are yet validated, not that no equivalent AI rules exist. Never reuse a prior delivery's mapping without revalidating exact source/business identity.
+
+The candidate-discovery population includes **all** AI BR records, regardless of AI producer or SME approval state; approval is not a discovery filter. For a complete delivery, trace each AI BR through BR -> TS -> TC -> TD using the source catalogs and full matrix, validate every hop and physical TD separately, and retain proposed/matrix-only edges as unresolved. Exact shared source-anchor candidates (for ATL105, normalized segment + explicit numeric element source ID) may identify Test Solution rules for review, but are not confirmed business-equivalent matches. Preserve one row per AI BR, including incomplete/unmatchable anchors; only delivery-bound, evidence-reviewed dispositions can contribute to confirmed independent BR coverage.
+
+### Automated Technical Observation
+
+Use `scripts/summarize-ai-technical-validation-coverage.py` only with a stable byte-bound runner report, the AI-excluded independent Test BR baseline, and the hash-verified delivery-wide physical-chain ledgers. The report keeps separate denominators for limited/partial executor bindings, decisive rule outcomes, runner-scope decisive outcomes, cases with any decisive predicate, and AI BRs with a linked candidate-rule observation. A case with one observed predicate is not a case pass; a candidate rule observation is not semantic confirmation. Profile values are metadata-derived and physical checks are bounded. Treat `FAIL` as an observed predicate outcome, not automatically an AI defect; a failure may be an intended negative target. Semantic-confirmed coverage requires authorized source/business review, and host-executed coverage requires host evidence; leave both `NOT_ASSESSED` / `NOT_EXECUTED` rather than inferring them from offline results. The output `manifest.json` binds the report and ledgers by SHA-256 and excludes only itself.
+
+### Execution-Ready BR-to-Test Evidence
+
+An execution-ready model must state one BR obligation, preserve its source anchor, declare an `ATOMIC` disposition, and provide a source citation with a trusted-root path, SHA-256, locator, and exact quote. This technical gate verifies file containment, integrity, and literal presence, but cannot decide whether the rule is truly atomic or correctly interpreted. Each ready scenario declares intent and preconditions; each ready test case includes an independently checkable assertion and expected result for every BR reached through its linked scenarios. Assertion anchors must match the BR. Missing or unresolved model evidence blocks execution readiness; do not fill gaps with inferred expected outcomes or promote AI producer statuses. SME decisions and host results remain separate.
+
+This is the AIV-018 quality gate. It is mandatory for `validateForExecution`; legacy and draft packages may omit the new fields while they remain non-executable. A technically complete record is still not an authorized semantic decision.
+
+The complete package generator also creates one source-anchored `REVIEW_REQUIRED` scenario proposal for each BR that otherwise lacks a TS link. It restates the BR title as draft intent and lists the missing scenario context, but deliberately does not fabricate preconditions, test partitions, or expected outcomes. Treat these as the scenario-definition backlog, not completed scenarios; execution remains blocked until those fields are independently derived and reviewed.
+
 ## Segment-Specific Training Addendum
 
 Each segment addendum should contain only behavior that is different or additional for that segment:
@@ -573,6 +726,7 @@ Every segment should eventually produce:
 - Test Case catalog
 - Request Test Data JSON catalog
 - Aggregate independent BR -> TS -> TC -> TD training package with source-file provenance
+- For a trained transaction context: a business BR/FR/scenario matrix, a canonical training package, a review queue and a context BR coverage report (see [Transaction-Context Training](#transaction-context-training-mastercard-credit-purchase))
 - Traceability matrix
 - Independent coverage report
 - Field-alias crosswalk (evidence-based, may be partial or empty; never fabricated)
@@ -675,6 +829,26 @@ Chapter 13 is authoritative for an element's format. Where sources still conflic
 
 **L22. Encode multi-element anchors as a list, not a delimited string.** Rule catalogs store multi-element anchors as a comma-separated string, for example `SEGDL1-R-002` `element: "24,34"` and `SEGDL1-R-003` `element: "53,98,3,4,54"`, while `canonical-anchor.schema.json` types `element` as a single string. Any consumer doing an equality lookup silently fails: a search for `24` does not match `24,34`. This produced a false unmatched verdict for DL1 and Segment 157, and a false matched verdict for Segments 151 and 152 whose rules carry no element at all. Until the encoding is fixed (`TT-0013`), split on `,` before comparing, and never treat an empty `element` as a wildcard.
 
+**L23. Separate execution outcomes from embedded reference text.** User-supplied processed-and-tested reports are legitimate independent Test Solution evidence, but an embedded code-description row is not proof that the execution returned that code. Preserve source hashes, classify actual response fields separately from descriptions and harness status, and keep the field-to-element mapping `REVIEW_REQUIRED` when labels or widths conflict. In particular, ATL105 Element 83 is one byte while Element 8 Authorizer Response Code is two bytes; never train a two-byte `Response Code` report field as Element 83 without source-backed identification. Mask production values, and do not infer universal transaction/card/entry-mode or field-presence rules from a finite run.
+
+**L24. A producer alias is not an ATL105 element mapping.** The 2026-10-16 Authorization sample uses a logical `TrackData` property alongside Segment 130, but no converter contract establishes the alias meaning or delimiter conversion. Track 2 source parsing splits Elements 2/12 at `=`; Track 1 splits at the first `^`. Record the mapping question as `AID-0005`, preserve the input, and require explicit entry mode plus versioned adapter and synthetic round-trip evidence. Do not echo account, track, or chip values; do not infer that Segment 130 proves entry mode or that an unfamiliar delimiter is invalid.
+
+**L25. Train feedback as executable rules, and check the whole delivery.** QE feedback written as prose drifted between reviews and was re-checked by hand on a few cited cases. Encode each item as a catalog rule with its workbook IDs, run it on every BR, scenario, test case and payload leg of a hash-verified delivery, and publish the counts. Cited IDs from an earlier run may not exist in the next one (the September `TC-022807`/`TC-045587` are absent from the October delivery); always re-find the defect pattern rather than the ID. Multi-step payload names exceed 260 characters inside the run folder, so read them with the `\\?\` extended-path prefix.
+**L26. Keep the business BR at business level.** The first Mastercard Credit Purchase matrix put one segment-level Test Solution BR in each BR row, so the business view became a list of Segment 100 rules. The template's BR column holds the business requirement (`BR-01 Mastercard credit financial purchase transaction processing`); segment-level BRs are evidence under its FRs and scenarios. Restricting a business context to segment-wise BRs also hides cross-segment scope such as Segments 111, 123, 130 and 131.
+
+**L27. A scenario shared by BRs with different anchors cannot form a canonical chain.** `TS-SEG100-APPO-TOKEN-ACCOUNT`, `TS-SEG100-APPO-TOKEN-CONTEXT` and `TS-SEG100-APPR-CHIP-DATA` each link several BRs, but each test data record carries only one BR's anchor. The canonical validator checks every reachable BR -> TS -> TC -> TD combination, so the shared scenario fails for the other BRs. Split such scenarios per BR, or give the chain a genuinely common anchor; do not add anchors to make a chain pass.
+
+**L28. Check anchors exactly as the canonical model reads them.** After Develop updated the Test Solution source, two BRs (`BR-SEG100-APPE-PROMPT-COMPOSITION`, `BR-SEG100-APPE-FINANCIAL-CARD-TYPES`) carried their anchor only in a singular `sourceAnchor` field. The training script merged singular and plural anchors, so it accepted them, but `CanonicalArtifactPackage` reads only `sourceAnchors`, and `CanonicalTraceabilityValidator` failed with a `NullPointerException` instead of a traceability error. Evaluate anchors from the canonical field, and either make a singular anchor explicit as `sourceAnchors` with a logged normalization or queue the BR for review.
+
+**L29. Validate the original artifact, not a transcription.** The Mastercard BA reference review was transcribed from a screenshot and was not bound to a file. Checking the actual workbook line by line showed four differences:
+
+- TS-001 "PAN present" had been dropped.
+- TS-034's validation was transcribed as "Approval number captured".
+- TS-035's validation was transcribed as "Transaction data and amounts retained".
+- TS-036's only validation line was missing.
+
+Bind every review to the original file's SHA-256 and give each validation line exactly one assessment, so a changed or partially transcribed artifact fails the check instead of passing silently.
+
 The evidence for L6-L13 is in [TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md](../../test-validation-strategy/TESTER-NOTE-2026-09-29-STALE-SNAPSHOTS-AND-SPEC-CROSS-CHECKS.md).
 
 ## Segment 100 Reference Implementation
@@ -709,7 +883,20 @@ Do not derive a direct Authorization Only -> code `8` flow. ATL105 specifies `S`
 
 For TOR timing and retries, distinguish the 30-second response interval from the source recommendation to forward a TOR at least 30 seconds after the original transaction has timed out. The retry limit is three unsuccessful attempts on each available connection route, not a global three-attempt cap. Partial-approval amount rules are card/product-specific; do not assert universal amount equality. Debit POS/CAT capture TORs are unsupported.
 
-Do not treat current validator acceptance as source approval: the validator and lifecycle catalog still accept or record invalid direct Authorization Only -> `8`, cross-paired purchase reversal codes, overly broad TOR originals, and blanket TerminalID equality. Check the relevant ATL105 clauses in the [extracted specification](../extracted_text.txt) and keep unresolved cases review-required.
+Do not treat current validator acceptance as source approval. `Segment100MultiStepCoverageValidator` now limits same-TerminalID enforcement to Timeout Reversal; the ATL105 Authorization-to-Completion source does not establish Terminal-ID equality as a universal rule. The validator/lifecycle catalog still need source-aligned handling for direct Authorization Only -> `8` and cross-paired purchase-reversal codes. Keep unsupported combinations `REVIEW_REQUIRED` until corrected and covered by regression tests. Check the relevant ATL105 clauses in the [extracted specification](../extracted_text.txt).
+
+#### Authorization-to-Completion chain acceptance
+
+For an Authorization Only -> Purchase/Capture flow, validate the complete message chain, not only each JSON object:
+
+- Confirm an eligible authorization transaction code (`3`, `5`, or `B`) followed by Purchase/Capture code `0`.
+- Preserve the original six-digit Element 86 Sequence Number through the completion.
+- Obtain Approval Number from the actual Authorization response and bind that exact value into the completion. A value marked `flow_response_runtime_value` or `FLOW_RESPONSE_SHAPE_FILLED_VIA` is a placeholder, not host evidence; it cannot establish an executable completion.
+- Compare completion amounts with the host-approved amount and applicable partial/final-amount rules. Amount equality is not universal, and Partial Approval Indicator `1` alone does not authorize a higher completion amount.
+- Do not require Terminal ID equality as a universal Authorization-to-Completion rule unless the applicable ATL105 source or authorized SME decision says so. Validate each identifier's source/provisioning and component format separately. Same-device constraints remain applicable only to source-defined flows such as TOR.
+- Link every flow case to its BR(s), scenario, each transaction step, declared payload, and matching metadata. Missing BR-to-scenario links remain an explicit review gap; do not infer a lifecycle BR from shared transaction labels.
+
+The current bounded Oct 10 flow screen (2026-10-16) found 138 Authorization-to-Completion cases: 124 have no direct AI BR link, 133 completion approvals are runtime placeholders, 5 are missing, 35 cases have amount fields needing host-response review, and all 337 declared step-data files passed hash and case/scenario metadata identity checks. No semantic or host outcome is established. See the [case register](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-case-register.csv), [BR/TS/TC/TD matrix](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-br-ts-tc-td-matrix.csv), and [host-evidence queue](../../../test-output/ai-solution-independent-review/2026-10-16-ai-auth-completion-chain-review-v6/authorization-completion-amount-review.csv).
 
 ### Payment-Network Type Training
 
@@ -719,7 +906,59 @@ Receipt Card Type IDs are a separate namespace: ATL105 §10.1.7.3 lists seven na
 
 Appendix E has three distinct families: 56 Table Load Response entries, 36 financial Prompt Code card types, and 11 special Prompt Codes. Keep their message roles and validators separate. Financial and Table Load allowlist checks are implemented; nine special prompts have validator-harness chains, while `900` and `997` remain review-blocked. Feature effects, production configuration, full special-operation behavior, converter readiness, and AI coverage remain separate gates. See the [Appendix E training note](segment-100/appendix-e-card-type-training.md) and [special-prompt chain package](../../../test-output/test-json/appendix-e-special-prompt-chain-package.json).
 
+For AI delivery intake, inspect actual Prompt Code card values against the 36-code financial set independently of `flow_axis_values.card_brand`. Require declared card metadata to match the physical request; do not infer coverage from scenario tags or require an unsupported brand-by-card Cartesian product. The 2026-10-16 audit found 1/36 card codes and 4/4 observed producer brand-axis labels; upstream correction is tracked as `AIF-0020`. Presence remains separate from semantics, authorization, and host execution.
+
 For family-wise Test Solution backlog across Appendix A-AE, use the [Appendix Family Gap Closure Register](segment-100/appendix-family-gap-closure-register.md). It distinguishes resolvable BR -> TS -> TC -> independent TD work from SME, configuration, external-spec, and external-fixture blockers. Do not claim an appendix is `COVERED` from source BR counts or metadata-only TD placeholders.
+
+### Transaction-Context Training: Mastercard Credit Purchase
+
+A transaction context trains a business flow that crosses segments. It reuses segment-trained Test Solution records instead of deriving new rules, so it adds no catalog rules and its counts stay outside the segment totals. The first context is `MASTERCARD_CREDIT_PURCHASE`, recorded under `transactionContextTraining` in [training-status.json](../../../training-status.json).
+
+**Business layer.** The business BR is the template's single `BR-01 Mastercard credit financial purchase transaction processing`; it is never replaced by segment-level BRs ([L26](#lessons-learned)). It has eight template FRs (`FR-001` Card Validation to `FR-008` Post Authorization) and business scenarios `TS-001`-`TS-037` from the approved template, followed by `TS-038` onward, one per Test Solution scenario name. Segment-level Test Solution BR/TS/TC/TD IDs are traceability evidence under each business scenario, shown in the [FR matrix workbook](../../../test-output/test-solution-fr-matrix/Mastercard_Credit_Purchase_Test_Solution_FR_Matrix.xlsx) columns J-P.
+
+**Scope.** A Test Solution BR is in scope when it is mapped to a template scenario, names Mastercard, is a Section 5 credit/network classification BR, or is anchored to Segment 100, the financial response, or Segments 111, 123, 130 or 131 without being specific to another product or brand (EBT/eWIC, fleet, check/ECA, loyalty, stored value, Visa, Amex, Appendix G special flows). Template-mapped BRs keep the template FR. Every other BR receives a keyword-derived FR, which is a grouping aid and stays `REVIEW_REQUIRED` (blocker `keyword-derived-fr-assignment-review`).
+
+**Training run.** From the validator module:
+
+```powershell
+python scripts/build-mastercard-fr-matrix.py          # business FR matrix workbook
+python scripts/train-mastercard-credit-purchase.py    # canonical training package + BR coverage report
+mvn -q compile exec:java '-Dexec.mainClass=com.coreauth.validator.coverage.GenerateAtl105TrainingReport'
+mvn '-Dtest=MastercardCreditPurchaseTrainingTest,TestSolutionJsonFormatTest,TrainingStatusConsistencyTest' test
+```
+
+`train-mastercard-credit-purchase.py` selects every in-scope BR -> TS -> TC -> TD chain that satisfies the `CanonicalTraceabilityValidator` contract: complete ATL105 2026-3 anchors (read from `sourceAnchors`, exactly as the canonical model reads them; [L28](#lessons-learned)), one common anchor through every reachable BR -> TS -> TC -> TD combination, a TD payload and expected validation, and no orphans. When a scenario is shared by BRs whose test data carry different anchors, it keeps the best-supported BR and prunes the others ([L27](#lessons-learned)). Records are copied verbatim. The only permitted normalizations are trimming link arrays to in-package IDs, turning a singular `scenarioId` into `scenarioIds` or a singular `sourceAnchor` into `sourceAnchors`, and mapping a non-canonical TS status to `REVIEW_REQUIRED` with the original kept in the normalization log (and in `sourceStatus` when the record has none); each one is logged in `provenance.normalizations` and every pruned link in `provenance.prunedLinks`. A BR without a valid chain goes to `reviewQueue` with its reasons and required evidence. No BR, anchor, status or test data is fabricated.
+
+**Training gate.** `MastercardCreditPurchaseTrainingTest` proves that the [training package](../../../test-output/test-json/mc-credit-purchase-training-package.json):
+
+- passes canonical traceability, which `TestSolutionJsonFormatTest` also enforces for every `test-json` package;
+- contains only records equal to the Test Solution source apart from logged normalizations, with links taken only from the source;
+- matches the source package SHA-256, so a changed Test Solution fails the gate until the context is retrained;
+- maps every in-scope BR to a business scenario, with no BR both trained and queued;
+- agrees with `training-status.json`, the training report and the [BR coverage report](../../../test-output/test-solution-independent-review/mc-credit-purchase-br-coverage.md); and
+- cannot be `TRAINED_FOR_INTAKE` while review items or SME/TBA certification remain.
+
+**Current result (2026-10-26, retrained on Develop).** 168 of 189 in-scope BRs (88.9%) are trained through 189 TS, 226 TC and 230 TD. 21 BRs are in the review queue: 8 annexure BRs whose shared annexure scenario has no common anchor with them, 2 scenarios and 5 lifecycle test cases without source anchors, and 6 BRs on shared token/chip scenarios. Nine template scenarios (`TS-003`, `TS-019`, `TS-028`, `TS-029`, `TS-032`, `TS-034`-`TS-037`) have no Test Solution evidence. Only 68 of the 230 TDs declare `EXECUTABLE`. Status is `IN_PROGRESS`; serialization/mutation, AI intake and execution readiness have not started for this context. Retrain whenever the Test Solution source package changes: the training test compares its SHA-256 and fails until the context is retrained.
+
+**Merchant data.** Merchant ID is evidenced only as the BUYPASS Merchant Number component of Segment 100 Element 102 (`123456` in `TD-SEG100-E102-004`/`-005`, template `TS-006`). No Test Solution evidence carries a Merchant Name: Appendix I Table 047 has no scoped evidence, and DL1 Element 53 is a host download field. Keep Merchant Name `NO_EVIDENCE` rather than inventing a value.
+
+**Template workbook validation.** The template itself is validated before its claims are taught. `scripts/validate-mastercard-fr-matrix.py` hash-binds the original workbook (`Mastercard_Credit_Purchase_FR_Matrix (1) 1.xlsx`) and requires exactly one curated assessment per validation line and expected result in [mastercard-fr-matrix-validation.json](segment-100/mastercard-fr-matrix-validation.json). It then:
+
+- resolves every source anchor and section-absence claim;
+- checks every `Element N` citation against its Chapter 13 name;
+- reads each cited BR's live Mastercard training status, plus the Section 10.1 drafts and the BA review's lessons and questions;
+- computes outcomes with the [Independent Review Process](#independent-review-process).
+
+It refuses to run if the workbook, a line, an element definition, an anchor or a cited BR changes ([L29](#lessons-learned)). Run it with `--check` to detect stale outputs, and keep `scripts/test_validate_mastercard_fr_matrix.py` passing.
+
+The 2026-10-26 result is `REJECTED_NOT_INTAKE_READY`. Of 65 lines, 14 are supported as written and 29 once corrected. Five contradict ATL105: Element 51, 24, 80 and 6 are cited for expiry, account number, sequence number and approval number, and "Processing Code 020" stands in for Prompt Code 0020. Another 14 depend on external contracts and 3 are not testable. None of the 37 expected results can be confirmed from the message alone. The run also found two Test Solution defects:
+
+- Multi-segment anchors are excluded from the context scope (11 BRs, L22).
+- TS-020 is mapped to Authorization Only.
+
+See the [validation report](../../../test-output/test-solution-independent-review/mc-fr-matrix-validation-v1/README.md).
+
+To train another context, copy this pattern: a template business BR/FR/TS layer, an explicit scope rule, a generator that copies Test Solution records and logs every normalization, a review queue, a `transactionContextTraining` entry and a regression test with the same assertions.
 
 The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-Regression-Test-Validation-Strategy.md](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md). It describes the programme; this handbook describes how to train a segment.
 
@@ -727,6 +966,9 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
+| 2026-10-27 | Ingested a second external-reference version: Conexxus PSPC v3.7 alongside v4.1. When ATL105 names an external document without a version and more than one version is supplied, train every version. Add a per-code version diff, and judge unbound values against all versions; disagreement is `REVIEW_REQUIRED` with `versionSensitive: true`. The PSPC v3.7 → v4.1 diff has 62 sensitive codes, and Appendix F follows the numbering from before the v3.5 deprecations. Record: [Conexxus-PSPC-Training-Record.md](../../test-validation-strategy/Conexxus-PSPC-Training-Record.md). |
+| 2026-10-27 | Added external-reference document training. When ATL105 delegates values to an outside document, follow the 12-step procedure in the [strategy's Test Solution Training Procedure and Memory section](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md#test-solution-training-procedure-and-memory). Steps: anchor every dependency, check ATL105 version drift, store and extract the source, build a fail-fast oracle, write an independent validator, generate the chain package and crosswalk, and record the documents under `test-validation-strategy/<reference>/`. First applied to Conexxus PSPC v4.1 (Appendix K-27 Table 034). Element 77 stays governed by Appendix F. Assigned product names containing "Reserved" or "Proprietary" are not reservations. |
+| 2026-10-17 | Trained the Test Solution on the QE-Fiserv feedback workbook: 33 rules (`QEF-001`-`QEF-033`) in `contract/qe-feedback-rule-catalog.json`, enforced regardless of workbook status, executed by `scripts/apply-qe-feedback-rules.py` on the hash-verified 10 October delivery (6,880 BR / 12,254 TS / 21,254 TC / 17,769 payloads). Added readable per-segment traceability, 8-column manual tables and Test Case Cards, recorded source conflicts for SME confirmation, and L25. || 2026-10-16 | Added P2 Authorization-to-Completion training and post-BR whole-delivery validation guidance. Enforce transaction-code and Sequence Number rules, bind completion approvals to actual host responses, keep amount changes evidence-gated, and do not make Terminal-ID equality a universal auth-completion requirement. Added L24 and the producer-JSON mapping boundary for Segment 100 Elements 2/12 and Segment 130. `AID-0005` records the unresolved TrackData alias/delimiter contract; samples do not establish entry mode, converter behavior, semantic approval, or host validity. Added the independent 36-code AI coverage check and `AIF-0020`; brand-axis values remain a separate dimension. |
 | 2026-10-01 | Added the versioned Element 83 source-backed assertion manifest and fail-closed source gate. Separated citation resolution, literal assertion backing, draft case derivation and SME approval; no new certification gate or executable coverage claim. |
 | 2026-10-05 | Added Segment 100 single-/multi-step BR traceability and source cross-check findings; clarified authorization cancellation, TOR scope, retry/timing rules, review-required completion-to-void behavior, trainer-led LLM questionnaire use, and the 16-leaf Section 5 payment-network taxonomy. |
 | 2026-10-01 | Added conservative body-location triage for all catalog rules; TOC entries and ambiguous chapter/appendix references cannot promote review-only locations into assertions. |
@@ -757,3 +999,7 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 | 2026-09-30 | Started code-by-code Element 83 response training with code `0` (Approved Purchase/Capture). Added a dedicated family/segment coverage module and clarified that transaction-type compatibility is a Test Solution rule rather than an explicit ATL105 cross-product; Segment 100 Approval Number remains conditional on lifecycle context. |
 | 2026-09-30 | Expanded Element 83 training to all 31 source-defined code values and seven message families; added 35 source-defined code/family BR meanings and exhaustive validation of all 217 code/family pairs (35 valid, 182 invalid for the selected family). This does not claim the source defines every transaction/card cross-product or that BRs are business-approved. |
 | 2026-09-30 | Reviewed the AI `phase_1_single_leg` delivery (2026-09-29): first five-leg delivery, 37 full chains, perfect referential integrity, but 51.5% of composed segments lost in serialization, three empty test-data files reported `PASS`, no expected outcomes and no negative cases. Verdict `CHAIN_STRUCTURE_SOUND_EXECUTION_EVIDENCE_INSUFFICIENT`. A second check retracted six claimed Test Solution coverage gaps as anchoring gaps (zero coverage gaps found) and corrected `TT-0011`/`TT-0012`. Added L21 and L22; raised `TT-0013` and `AIF-0013`. Report: [reports/ai-feedback/](../../../reports/ai-feedback/). |
+| 2026-10-26 | Trained the first transaction context, `MASTERCARD_CREDIT_PURCHASE`: business BR-01/FR/scenario layer, canonical training package from verbatim Test Solution records, review queue, context BR coverage report, `transactionContextTraining` status entry, training-report section and `MastercardCreditPurchaseTrainingTest`. Result 153/176 BRs trained, 23 queued, `IN_PROGRESS`. Added L26 and L27. |
+| 2026-10-26 | Retrained `MASTERCARD_CREDIT_PURCHASE` after Develop updated the Test Solution source package (the training test's source-hash check failed as designed): 168/189 BRs trained (88.9%), 21 queued, 189 TS / 226 TC / 230 TD, 68 executable TD. Gates and blockers unchanged. Anchors are now read from the canonical `sourceAnchors` field, with singular `sourceAnchor` made explicit by logged normalization; added L28. |
+| 2026-10-26 | Validated the original Mastercard Credit Purchase FR-matrix workbook (hash-bound) line by line against the Test Solution with `scripts/validate-mastercard-fr-matrix.py` and its regression test. Result `REJECTED_NOT_INTAKE_READY`: 5 contradicted field mappings, 29 lines needing correction, 17 needing external contracts or definitions, 0 of 37 expected results confirmable from the message alone. Recorded Test Solution findings MCV-T01 to MCV-T05 (including multi-segment scope exclusion and the TS-020 mapping); added L29. |
+| 2026-10-27 | Ingested the EMV companion reference that ATL105 §10.14 requires and that was missing in earlier training: Fiserv EMV and Chip Implementation Guide v2025.RG20, as a hash-pinned companion overlay. Added the [EMV Companion Reference Overlay](#emv-companion-reference-overlay-october-2026) rules (ATL105 precedence, companion anchors, `PROVISIONAL` guide rules, brand-dependent tags, known corrections, missing references) and the [training knowledge record](../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md): 17 gap dispositions; 73 guide-derived rules; 53 scenarios; 11 SME queries; backlog B-01 to B-11, including the Appendix S exponent `010001` correction. No validator code changed. |

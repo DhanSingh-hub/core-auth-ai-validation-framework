@@ -125,7 +125,7 @@ Any alpha-numeric characters, formatted in <tag><len><data> format.
 ## Catalog Notes
 
 - `SEG135-R-003` — PROVISIONAL: the wording difference ('including Segment Type's length' vs the usual 'including Segment Type's length and Field Separators') may be intentional or a drafting inconsistency. Pending SME confirmation (SEG135-SME-001).
-- `SEG135-R-005` — PROVISIONAL: Appendix V (Moneris Data layouts) has not been transcribed into this KB pass. Pending SME confirmation (SEG135-SME-002) on scope.
+- `SEG135-R-005` — Appendix V request tables are transcribed in the [Appendix V training module](../appendix-v/README.md); conflicting Table 004/005 data-width descriptions remain review-gated.
 
 ## SME Reasoning
 
@@ -160,7 +160,6 @@ Segment Type is fixed value 135, sourced at the Device
 ## Open Provisional Items
 
 - **P-01** (SEG135-R-003): Does Segment 135's Segment Length Indicator include Field Separators in its count, or only Segment Type's length as literally stated?
-- **P-02** (SEG135-R-005): Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass?
 
 ## Security and Test-Data Guidance
 

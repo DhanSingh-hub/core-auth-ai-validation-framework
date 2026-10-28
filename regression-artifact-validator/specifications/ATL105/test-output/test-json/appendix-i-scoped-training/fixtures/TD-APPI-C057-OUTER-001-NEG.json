@@ -1,0 +1,114 @@
+{
+  "id" : "TD-APPI-C057-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C057-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C057-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-64",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t057-r001-APPI-C057-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C057-OUTER-001",
+        "tableId" : "057",
+        "ruleIds" : [ "APPI-T057-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "057",
+          "merchantCity" : "BOSTON",
+          "context" : {
+            "cardBrand" : "Discover",
+            "merchantRole" : "third-party payment provider",
+            "providerCity" : "BOSTON",
+            "underlyingRetailerCity" : "DENVER"
+          }
+        },
+        "clearScope" : "Logical merchant city must be retailer's,not provider's,for described Discover context.",
+        "excludedClaims" : [ "Fixedversusvariable20", "Padding", "N2versuscommonN3 length", "Otherbrand prohibition" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Underlying retailer city identity",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Wire citywidth andlength-field encoding",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "merchantCity",
+            "replacement" : "BOSTON",
+            "expected" : "FAIL retailer-versusprovider identity"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "twentyCharacterObservation" : "ABCDEFGHIJKLMNOPQRST",
+          "twentyOneObservation" : "ABCDEFGHIJKLMNOPQRSTU",
+          "outcome" : "REVIEW_REQUIRED exactfixed/padded representation; attribute ceiling remains20"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30772,
+          "section" : "Appendix I-64",
+          "endLine" : 30793
+        }, {
+          "section" : "12.10",
+          "startLine" : 12603,
+          "endLine" : 12620
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "N3",
+          "sourceLength" : "fixed 057",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30780,
+            "section" : "Appendix I-64",
+            "endLine" : 30782
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "N2",
+          "sourceLength" : "source says length 2 bytes; common Element 112 is 3",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 30783,
+            "section" : "Appendix I-64",
+            "endLine" : 30786
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "An20",
+          "sourceLength" : "20 attribute; source does not state fixed/variable or padding",
+          "coverage" : "LOGICAL_IDENTITY_ONLY_WIDTH_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Fixed/variable,padding unresolved",
+          "sourceEvidence" : [ {
+            "startLine" : 30787,
+            "section" : "Appendix I-64",
+            "endLine" : 30793
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

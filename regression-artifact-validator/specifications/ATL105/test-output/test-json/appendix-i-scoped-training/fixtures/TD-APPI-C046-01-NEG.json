@@ -1,0 +1,59 @@
+{
+  "id" : "TD-APPI-C046-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C046-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C046-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-37",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t046-r001-APPI-C046-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C046-01",
+        "tableId" : "046",
+        "ruleIds" : [ "APPI-T046-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-37",
+          "startLine" : 29109,
+          "endLine" : 29111
+        } ],
+        "logicalFields" : {
+          "previousTransactionData" : "S02",
+          "authorizerRequiredData" : "S01",
+          "context" : {
+            "authorizerRequirement" : "Explicit synthetic precondition only",
+            "transactionPhase" : "Follow-up"
+          }
+        },
+        "clearScope" : [ "Concrete three-character intersection of AN3/max16", "Equality to supplied required-data fixture" ],
+        "excludedClaims" : [ "Authorizer applicability certified", "Greater-than3 capacity", "Full follow-up message" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Follow-up preserves required logical data",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Actual authorizer contract established",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "previousTransactionData",
+          "value" : "S02",
+          "targetedNegative" : "Wrong retained data"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

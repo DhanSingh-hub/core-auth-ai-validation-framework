@@ -1,0 +1,120 @@
+{
+  "id" : "TD-APPI-C051-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C051-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C051-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-52",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t051-r001-APPI-C051-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C051-OUTER-001",
+        "tableId" : "051",
+        "ruleIds" : [ "APPI-T051-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "051",
+          "logicalPayloadLength" : 4,
+          "cardId" : "ID07",
+          "context" : {
+            "cardProgram" : "SVS"
+          }
+        },
+        "clearScope" : "Additional Card ID is distinct from Security Code; SVS four-byte exception; otherwise1-16 alphanumeric bytes.",
+        "excludedClaims" : [ "Card ID allocation/uniqueness", "Universal table presence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "SVS ID width",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Length agrees with four-byte ID",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "cardId",
+            "replacement" : "ID0",
+            "expected" : "FAIL SVS exact-four predicate"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 5,
+            "expected" : "FAIL count predicate"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "050",
+            "expected" : "FAIL Additional Card ID selector identity"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "nonSvsMinimum" : "Z",
+          "nonSvsMaximum" : "QRSTUVWXYZABCDEF",
+          "nonSvsOverMaximum" : "QRSTUVWXYZABCDEFG"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30053,
+          "section" : "Appendix I-52",
+          "endLine" : 30066
+        }, {
+          "startLine" : 30057,
+          "section" : "Appendix I-52",
+          "endLine" : 30066
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 051",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30057,
+            "section" : "Appendix I-52",
+            "endLine" : 30059
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte length of Element 113",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30060,
+            "section" : "Appendix I-52",
+            "endLine" : 30062
+          } ]
+        }, {
+          "path" : "113.Card ID",
+          "sourceType" : "an16",
+          "sourceLength" : "1-16 bytes; SVS exactly 4",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30063,
+            "section" : "Appendix I-52",
+            "endLine" : 30066
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

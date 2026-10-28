@@ -1,0 +1,97 @@
+{
+  "id" : "TD-APPI-C068-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C068-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C068-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-78",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t068-r001-APPI-C068-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C068-001",
+        "tableId" : "068",
+        "ruleIds" : [ "APPI-T068-R001", "APPI-T068-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-77",
+          "startLine" : 31746,
+          "endLine" : 31746
+        }, {
+          "section" : "Appendix I-78",
+          "startLine" : 31756,
+          "endLine" : 31764
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "068",
+            "declaredDataLength" : "004",
+            "data" : "1250",
+            "logicalContext" : {
+              "transaction" : "EV charging",
+              "businessRole" : "merchant additional fee 1"
+            }
+          },
+          "negative" : {
+            "tableId" : "068",
+            "declaredDataLength" : "005",
+            "data" : "1250",
+            "logicalContext" : {
+              "transaction" : "EV charging",
+              "businessRole" : "merchant additional fee 1"
+            }
+          },
+          "positiveVariants" : [ {
+            "declaredDataLength" : "012",
+            "data" : "123456789012"
+          } ],
+          "active" : {
+            "tableId" : "068",
+            "declaredDataLength" : "005",
+            "data" : "1250",
+            "logicalContext" : {
+              "transaction" : "EV charging",
+              "businessRole" : "merchant additional fee 1"
+            }
+          }
+        },
+        "clearScope" : "Fixed selector; three-digit data-length field; numeric fee digits up to 12; EV additional-fee role.",
+        "excludedClaims" : [ "Currency scale", "Registered network behavior", "Empty/zero/sign validity", "Full segment or request" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data consists only of ASCII digits and length <= 12",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "integer(declaredDataLength) equals actual data byte count",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "integer(declaredDataLength) equals actual data byte count",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data consists only of ASCII digits and length <= 12",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "declaredDataLength",
+          "from" : "004",
+          "to" : "005",
+          "unchanged" : "data and logical context",
+          "targetedFailure" : "declared length differs from four actual bytes"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

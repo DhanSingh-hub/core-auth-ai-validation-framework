@@ -1,0 +1,36 @@
+{
+  "artifact": "ATL105-APPENDIX-AE-LOGICAL-TRAINING-FIXTURES",
+  "specificationVersion": "2026-3",
+  "producer": "TEST_SOLUTION",
+  "status": "REVIEW_REQUIRED",
+  "scope": "LOGICAL_PREDICATES_NOT_WIRE_OR_HOST_EXECUTION",
+  "executionCertified": false,
+  "baseFlow": {
+    "specificationVersion": "2026-3", "network": "Visa", "mcc": "7011", "merchantCategory": "LODGING",
+    "merchantPermissionEvidence": "synthetic-profile-not-merchant-certification",
+    "stayExceedsWindow": false, "finalAmount": "450.00",
+    "steps": [
+      {"role":"INITIAL","date":"2026-10-01","finalAmountKnown":false,"estimatedAuthIndicator":"1","sequenceNumber":"000123","transactionIdentifier":"txn-1","terminalTransactionNumberTable63":"term-1"},
+      {"role":"INCREMENTAL","date":"2026-10-04","authorizationIdentificationResponse":"APPR01","sequenceNumber":"000123","transactionIdentifier":"txn-1","terminalTransactionNumberTable63":"term-1"},
+      {"role":"COMPLETION","date":"2026-10-15","amount":"450.00"}
+    ]
+  },
+  "cases": [
+    {"id":"AE-TD-001","objective":"Lodging day 14 completion is within the logical window; MCC list is not exclusive","requirement":"AE-WINDOW","expectedRule":"NONE","changes":[]},
+    {"id":"AE-TD-002","objective":"MCC 4121 card-present negative","requirement":"AE-CNP","expectedRule":"AE-CNP","changes":[{"pointer":"/mcc","value":"4121"},{"pointer":"/cardPresent","value":true}]},
+    {"id":"AE-TD-003","objective":"MCC 5411 card-not-present context","requirement":"AE-CNP","expectedRule":"NONE","changes":[{"pointer":"/mcc","value":"5411"},{"pointer":"/cardPresent","value":false}]},
+    {"id":"AE-TD-004","objective":"MCC 5552 non-EV negative","requirement":"AE-EV","expectedRule":"AE-EV","changes":[{"pointer":"/mcc","value":"5552"},{"pointer":"/evTransaction","value":false}]},
+    {"id":"AE-TD-005","objective":"Missing estimate indicator for unknown final amount","requirement":"AE-ESTIMATE","expectedRule":"AE-ESTIMATE","changes":[{"pointer":"/steps/0/estimatedAuthIndicator","remove":true}]},
+    {"id":"AE-TD-006","objective":"Incremental without initial","requirement":"AE-PREDECESSOR","expectedRule":"AE-PREDECESSOR","changes":[{"pointer":"/steps/0","remove":true}]},
+    {"id":"AE-TD-007","objective":"Incremental approval reference missing","requirement":"AE-APPROVAL","expectedRule":"AE-APPROVAL","changes":[{"pointer":"/steps/1/authorizationIdentificationResponse","remove":true}]},
+    {"id":"AE-TD-008","objective":"Sequence Number mismatch","requirement":"AE-SEQUENCE","expectedRule":"AE-SEQUENCE","changes":[{"pointer":"/steps/1/sequenceNumber","value":"000124"}]},
+    {"id":"AE-TD-009","objective":"Transaction Identifier mismatch without guessing its segment","requirement":"AE-TRANSACTION-ID","expectedRule":"AE-TRANSACTION-ID","changes":[{"pointer":"/steps/1/transactionIdentifier","value":"txn-2"}]},
+    {"id":"AE-TD-010","objective":"Segment 111 Table 63 terminal number mismatch","requirement":"AE-TABLE63","expectedRule":"AE-TABLE63","changes":[{"pointer":"/steps/1/terminalTransactionNumberTable63","value":"term-2"}]},
+    {"id":"AE-TD-011","objective":"Incremental resends estimated indicator zero","requirement":"AE-NO-REESTIMATE","expectedRule":"AE-NO-REESTIMATE","changes":[{"pointer":"/steps/1/estimatedAuthIndicator","value":"0"}]},
+    {"id":"AE-TD-012","objective":"Completion does not send final amount","requirement":"AE-FINAL-AMOUNT","expectedRule":"AE-FINAL-AMOUNT","changes":[{"pointer":"/steps/2/amount","value":"400.00"}]},
+    {"id":"AE-TD-013","objective":"Late incremental does not renew day 14 deadline","requirement":"AE-WINDOW","expectedRule":"AE-WINDOW","changes":[{"pointer":"/steps/1/date","value":"2026-10-14"},{"pointer":"/steps/2/date","value":"2026-10-16"}]},
+    {"id":"AE-TD-014","objective":"Other rental completion exactly day 7","requirement":"AE-WINDOW","expectedRule":"NONE","changes":[{"pointer":"/merchantCategory","value":"OTHER_RENTAL"},{"pointer":"/steps/2/date","value":"2026-10-08"}]},
+    {"id":"AE-TD-015","objective":"Other rental completion day 8","requirement":"AE-WINDOW","expectedRule":"AE-WINDOW","changes":[{"pointer":"/merchantCategory","value":"OTHER_RENTAL"},{"pointer":"/steps/2/date","value":"2026-10-09"}]},
+    {"id":"AE-TD-016","objective":"Longer stay has no second initiation","requirement":"AE-ROLLOVER","expectedRule":"AE-ROLLOVER","changes":[{"pointer":"/stayExceedsWindow","value":true}]}
+  ]
+}

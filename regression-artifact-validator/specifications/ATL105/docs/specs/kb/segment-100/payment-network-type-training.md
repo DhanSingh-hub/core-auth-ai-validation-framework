@@ -58,6 +58,28 @@ Every TD is marked `TEST_SOLUTION` and synthetic. Network TDs are minimal oracle
 5. For every proposed compatibility rule, cite the exact ATL105 section/table that joins the two dimensions. Otherwise mark it `REVIEW_REQUIRED`.
 6. Test taxonomy allowlisting independently from semantic compatibility: include one accepted metadata example for each leaf and an unknown-label negative case. Add compatibility tests only after source-backed mappings are documented.
 
+## Card-Network and Transaction-Flow Validation
+
+The [all-network requirements review supplement](../../../../test-output/test-solution-independent-review/all-network-requirements-review-v1/README.md)
+uses seven named network groups and separate generic Debit and EBT groups as the
+primary review structure. These 16 Section 5 categories, the 36 financial card
+codes and other classification dimensions remain secondary shared-library references.
+Conditional BR/TS contexts follow the BA business-navigation hierarchy; presence,
+entry mode and channel are separate and commercial usage is orthogonal to funding.
+Explicit flow selections replace the former mixed-dimension Cartesian matrix.
+All context mappings remain `REVIEW_REQUIRED`, not supported/unsupported policy.
+The original 145 shared IDs are preserved, including explicitly unmapped rows.
+Concrete TC/TD chains are not complete; the gap ledger and questionnaire record
+the missing case/payload, eligibility and independent oracle evidence.
+
+Card-brand transaction validation is a separate scope from the 16-entry Section 5 taxonomy. The card-brand flow validator accepts only an explicit card-network identity produced by both an approved BIN/IIN range service and trusted processor metadata; it rejects disagreement and never reads or logs the PAN. The BIN/IIN resolution must carry a range identifier and range-table version, and processor evidence must identify its source.
+
+Each request or lifecycle leg must be checked against an explicit, versioned eligibility policy keyed by card network, flow ID, ordered step index, transaction type, and Appendix E card type. A rule is executable only when its disposition is explicitly `SUPPORTED` or `NOT_SUPPORTED` and it has complete source anchors. If ATL105 does not answer a compatibility, applicability, or lifecycle question, keep it `REVIEW_REQUIRED` and raise an open questionnaire item to the Business Analyst/SME. Record the question, affected network/flow/step, the requested decision (supported, prohibited, or conditional), and the source or approved processor rule needed to resolve it. Do not turn missing documentation into an assumed negative or positive rule.
+
+The policy must enumerate single-step and multi-step flow shapes with ordered lifecycle roles. Each leg is validated, including its card-type and transaction-type codes, and each step must have an explicit source-backed rule. Multi-step correlation requirements (sequence number, amount, terminal/account identity, approval reference, and response dependencies) remain subject to the applicable flow-specific validators; this network validator does not replace them.
+
+The validator implementation is [Segment100CardNetworkFlowValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment100CardNetworkFlowValidator.java). It consumes resolved BIN/IIN evidence rather than raw PAN, so integration with the approved range source and processor adapter is required. Each `REVIEW_REQUIRED` result exposes an `openQuestions` list assigned to the Business Analyst/ATL105 SME; each item has a stable-in-result question ID, context, reason, and a specific request for clarification. The open questions must be resolved and the approved policy updated before the combination can pass. No compatibility policy is bundled because ATL105 does not define a complete brand × transaction × lifecycle matrix.
+
 ## Sources
 
 - [ATL105 2026-3 extracted source, Section 5](../../extracted_text.txt)

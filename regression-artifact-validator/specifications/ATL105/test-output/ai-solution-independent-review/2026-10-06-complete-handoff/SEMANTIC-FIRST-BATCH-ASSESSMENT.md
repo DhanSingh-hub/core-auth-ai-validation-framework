@@ -1,5 +1,7 @@
 # TC-to-BR Alignment and Negative-Test Effectiveness: First Batch
 
+**Latest bounded-work update:** [Mapping, controls, context and remaining gates](BOUNDED-WORK-UPDATE.md) supersedes the initial seven-unassessed preservation count below. Current evidence is 20 preserved values, four preserved omissions and one orphan-oracle blocker; outcome and full semantic gates remain unresolved. Initial findings below are retained for context; the linked registers and HTML reflect the latest bounded checks.
+
 **Date:** 2026-10-06  
 **Run:** October 5 Run1 supplement; immutable producer input retained  
 **Disposition:** `REVIEW_REQUIRED`; no semantic match, SME approval or execution coverage is certified.

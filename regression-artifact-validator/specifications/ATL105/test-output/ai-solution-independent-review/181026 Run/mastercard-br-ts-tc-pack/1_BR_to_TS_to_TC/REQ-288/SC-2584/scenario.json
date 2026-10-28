@@ -1,0 +1,201 @@
+{
+  "name": "Flow — Time-out Reversal retransmitted up to three times (Time-out Reversal → Time-out Reversal → Time-out Reversal) [maximal-multi-brand]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Point-of-Service Entry Mode": "82",
+    "Terminal PIN Entry Capability": "2"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        1,
+        2
+      ],
+      "table_data_length": 3,
+      "axis": "entry_mode",
+      "value": "82",
+      "parameter": "Point-of-Service Entry Mode"
+    },
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        3,
+        3
+      ],
+      "table_data_length": 3,
+      "axis": "pin_entry_capability",
+      "value": "2",
+      "parameter": "Terminal PIN Entry Capability"
+    }
+  ],
+  "flow_id": "FLOW-TOR-RETRY",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "timeout_reversal_attempt_1",
+      "transaction": "Time-out Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "Z"
+      }
+    },
+    {
+      "step": 2,
+      "role": "timeout_reversal_attempt_2",
+      "transaction": "Time-out Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "Z"
+      },
+      "links": [
+        {
+          "type": "retransmission",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "QE-2026-09-16",
+          "source_page": null,
+          "rule": "QE feedback: TOR retry attempts are retransmissions of the same TOR, not separate business transactions — must preserve the original TOR transaction identity.",
+          "citation_kind": "qe_source"
+        },
+        {
+          "type": "retransmission",
+          "from_step": 1,
+          "element_name": "Terminal Identifier",
+          "source_rule_id": "BR-38-4",
+          "source_page": 38,
+          "rule": "A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.",
+          "spec_anchor": {
+            "keywords": [
+              "sent from the same device",
+              "financial transaction request that resulted"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "timeout_reversal_attempt_3",
+      "transaction": "Time-out Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "Z"
+      },
+      "links": [
+        {
+          "type": "retransmission",
+          "from_step": 2,
+          "element_name": "Sequence Number",
+          "source_rule_id": "QE-2026-09-16",
+          "source_page": null,
+          "rule": "QE feedback: TOR retry attempts are retransmissions of the same TOR, not separate business transactions — must preserve the original TOR transaction identity.",
+          "citation_kind": "qe_source"
+        },
+        {
+          "type": "retransmission",
+          "from_step": 2,
+          "element_name": "Terminal Identifier",
+          "source_rule_id": "BR-38-4",
+          "source_page": 38,
+          "rule": "A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.",
+          "spec_anchor": {
+            "keywords": [
+              "sent from the same device",
+              "financial transaction request that resulted"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Time-out Reversal",
+  "related_entity_ids": [],
+  "source_rule_id": "QE-2026-09-16",
+  "source_page": 38,
+  "business_rule_assertion": "QE feedback: TOR retry attempts are retransmissions of the same TOR, not separate business transactions — must preserve the original TOR transaction identity.; A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.; QE feedback: TOR retry attempts are retransmissions of the same TOR, not separate business transactions — must preserve the original TOR transaction identity.; A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "0e34405b10949045d8745e3da8da5d4bac868822aa7a91d997f14fd94e4ff004",
+  "dedup_key": "1cd774441e4440a79ed636bc36f3d4ea612655e1ed8ea0a2d2356536d15b0573",
+  "inclusion_profile": "maximal",
+  "flow_variant_id": "maximal-multi-brand",
+  "flow_variant_name": "Maximal profile across card brands",
+  "flow_axis_values": {
+    "card_brand": "MC",
+    "entry_mode": "82",
+    "field_profile": "maximal",
+    "pin_entry_capability": "2"
+  },
+  "flow_axis_provenance": {
+    "card_brand": {
+      "source": "test_axes",
+      "applied_as": "card_profile"
+    },
+    "entry_mode": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Point-of-Service Entry Mode"
+    },
+    "field_profile": {
+      "source": "field_inclusion_profiles",
+      "applied_as": "inclusion_profile"
+    },
+    "pin_entry_capability": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Terminal PIN Entry Capability"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:288",
+      "rule_id": "BR-38-4",
+      "basis": "flow_link",
+      "link_type": "retransmission",
+      "step": 2,
+      "element_name": "Terminal Identifier",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:288",
+      "rule_id": "BR-38-4",
+      "basis": "flow_link",
+      "link_type": "retransmission",
+      "step": 3,
+      "element_name": "Terminal Identifier",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:288"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2584",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

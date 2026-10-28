@@ -1,0 +1,59 @@
+{
+  "id" : "TD-APPI-C043-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C043-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C043-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-36",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t043-r002-APPI-C043-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C043-01",
+        "tableId" : "043",
+        "ruleIds" : [ "APPI-T043-R001", "APPI-T043-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-36",
+          "startLine" : 29016,
+          "endLine" : 29020
+        } ],
+        "logicalFields" : {
+          "postalFragment" : "XYZ",
+          "normalAVSAddress" : "SYNTHETIC ROAD 1",
+          "normalAVSAddressPresent" : true,
+          "context" : {
+            "outsideUSCanada" : true
+          }
+        },
+        "clearScope" : [ "Concrete three-character intersection of AN3/max13 only", "Address remains separate normal AVS item" ],
+        "excludedClaims" : [ "Postal validity", "Authorizer format", "Greater-than3 payload capacity", "Normal AVS wire encoding" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Address included in normal AVS item",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Postal/auth-provider validity",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "normalAVSAddressPresent",
+          "value" : false,
+          "targetedNegative" : "Address item omitted while043 retained"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

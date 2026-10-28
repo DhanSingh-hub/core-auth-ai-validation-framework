@@ -4,7 +4,7 @@
 
 Confirmed defects, with evidence, that the AI Solution Team must correct. Each item stays open until a delivery shows it fixed.
 
-**Status:** 17 open (17 total).
+**Status:** 20 open (20 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -25,6 +25,9 @@ Confirmed defects, with evidence, that the AI Solution Team must correct. Each i
 | [AIF-0015](#aif-0015) | Correct the phase-1 Electronic Mail Request payload before claiming verification PASS | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0016](#aif-0016) | Rebuild the Segment 118 BR-to-test-data chain with valid Proprietary Data Load payloads | OPEN | AI Solution Team | 2026-09-30 |
 | [AIF-0017](#aif-0017) | Complete Segment 111 physical length evidence in the immutable TC-000016 representative chain | OPEN | AI Solution Team | 2026-10-06 |
+| [AIF-0018](#aif-0018) | Validate Authorization Only response expectations and missing Credit Visa flows across Run1–Run4 | OPEN | AI Solution Team | 2026-10-09 |
+| [AIF-0019](#aif-0019) | Correct Totals with Proprietary Data Load requirement :1040 to Segment 119 | OPEN | AI Solution Team | 2026-10-16 |
+| [AIF-0020](#aif-0020) | Generate AI test cases for all 36 financial Prompt Code card types | OPEN | AI Solution Team | 2026-10-16 |
 
 <a id="aif-0001"></a>
 ## AIF-0001: Publish one composite delivery manifest
@@ -368,3 +371,69 @@ The chain REQ-SRC-ATL105-PDF-001:0821 -> SC-0018 -> TC-000016 has explicit linke
 - `specifications/ATL105/test-output/ai-solution-independent-review/appendix-i/representative-intake.json`
 - `specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000016.json`
 - `specifications/ATL105/docs/specs/extracted_text.txt section12.10 lines12599-12622`
+
+<a id="aif-0018"></a>
+## AIF-0018: Validate Authorization Only response expectations and missing Credit Visa flows across Run1–Run4
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-10-09 by Test Solution review
+- **Segments:** 100
+- **Target delivery:** Next versioned AI delivery after ATL105-2026-10-07-Run4
+
+Compared the corrected Credit Visa/BuyPass flow list (4 single-step and 10 multi-step shapes) with the 89 Run4 case-register records marked isFlow=true and their sidecar/JSON leg files. No standalone Run4 flow candidate was found for Authorization or Sale; no matching candidate was found for COF/MIT or the report-only Unclassified bucket; and no exact Authorization -> Completion -> Timeout candidate was found. Candidates do exist for Authorization -> Completion (TC-006448), Authorization -> Void (TC-006490), Sale -> Void (TC-006502), Refund -> Void (TC-006472), Authorization -> Cancellation (TC-006484), Authorization -> Partial Completion (TC-006454), Authorization -> Completion -> Void (TC-006496), and Authorization -> Completion -> Duplicate Completion (TC-006460). TC-006478 is Financial Transaction Request -> Time-out Reversal and does not establish Sale -> Timeout. The Segment 100 suite catalog reports 16 flows declared, 0 generated, 16 skipped, 1,650 single-leg cases, and 0 multi-leg cases. TC-card expected responses: all four same-date runs have 4,844 Segment 100 cards and zero expected Response Code 2/3. Scenario expected responses differ: Runs2–4 each contain 4,224 expected_response_code=2 scenarios and zero code-3 scenarios; all 4,224 are typed negative, 82 target Auth Completion (0220), and the scenario oracle authority is Level C (chatbot-sourced). The three scenario catalogs are byte-identical (SHA-256 1be41aff6746cd76cbb9e058ed91443bd717145e8cdfdaaa44f3e5d6f6c9e4f6). Run1 has no standalone scenario catalog. ATL105 defines code 2 as Approved Authorization Only, code 3 as Approved Authorization Only with AVS, and code 0 as Approved Purchase/Capture. Do not count the unvalidated negative scenario defaults as positive Authorization Only coverage or assume they match the TC expected responses. Separately, the independent Test Solution response-code package contains one BR (BR-SEG100-RC-APPROVED-AUTH) covering codes 2 and 3 together, with one TD for code 2 only; that TD has expectedValidation REVIEW, and no separate code-3 TD is present. This independent starter package is not Run4 AI coverage or execution certification. Run4 candidate flow rows have empty requirementIds and NO_BR_ATTRIBUTION; register verificationStatus PASS is not proof of business approval or executed transaction behavior.
+
+**Evidence:**
+
+- `specifications/ATL105/reports/atl105-visa-legacy/ATL105 Visa - Corrected Flow List.html`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run1/pipeline_outputs_2026-10-07/src/pipeline/reporting/output/segment-100-suite-catalog.md`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run2/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run3/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json`
+- `specifications/ATL105/test-output/test-json/atl105-response-code-family-matrix.json`
+- `specifications/ATL105/test-output/test-json/segment-100-response-code-package.json`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/case-register.csv`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/run4-semantic-review-v2/run4-manual-search-findings.json`
+
+<a id="aif-0019"></a>
+## AIF-0019: Correct Totals with Proprietary Data Load requirement :1040 to Segment 119
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-10-16 by GitHub Copilot
+- **Segments:** 105, 116, 119
+- **Target delivery:** Next versioned AI delivery after the 2026-10-16 Amount review
+
+AI BR `REQ-SRC-ATL105-PDF-001:1040` states that a Totals with Proprietary Data Load Request contains Data Segment 116. The source has a conflicting sentence in Section 11.4.1.2 that labels the request segment 116, but the same section's actual layout table identifies Segment 119 in Data Section 3, Field 3; Section 12.17 defines Data Segment 119 as the Totals with Proprietary Data Load Data Segment; and Chapter 13 Element 85 identifies Segment 116 as the TransArmor Load Data Segment and 119 as the Totals with Proprietary Data Load Data Segment. Under the Test Solution's source-precedence rule, correct the AI requirement to Segment 119 and preserve the Section 11 narrative discrepancy as a source note. Do not use the erroneous narrative label as a second segment or infer Segment 116 content. This item covers the AI BR text; AIF-0012 separately covers the missing/malformed Totals test payloads.
+
+**Evidence:**
+
+- `REQ-SRC-ATL105-PDF-001:1040 in specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-all-ai-br-chain-test-br-review-v2/all-ai-br-review-register.csv`
+- `ATL105 2026-3 extracted_text.txt Section 11.4.1.2, page 11-17: layout table identifies Segment 119 in Data Section 3, Field No. 3; preceding narrative label 116 is retained as the source discrepancy`
+- `ATL105 2026-3 extracted_text.txt Section 12.17, page 12-46: defines Data Segment No. 119 as Totals with Proprietary Data Load Data Segment`
+- `ATL105 2026-3 extracted_text.txt Chapter 13, Element 85, page 13-68: Segment 116 is TransArmor Load Data Segment; Segment 119 is Totals with Proprietary Data Load Data Segment`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-amount-test-br-gaps-v1/REPORT.md`
+- `specifications/ATL105/registers/atl105-communication-register.json AIF-0012`
+
+**Related:** [AIF-0012](ai-feedback.md#aif-0012)
+
+<a id="aif-0020"></a>
+## AIF-0020: Generate AI test cases for all 36 financial Prompt Code card types
+
+- **Status:** OPEN
+- **Owner:** AI Solution Team
+- **Raised:** 2026-10-16 by Test Solution validation review
+- **Segments:** 100
+- **Target delivery:** Next versioned AI delivery after the 2026-10-16 card-type coverage audit
+
+The hash-bound 2026-10-16 AI network/brand and card-type audit inspected 21,254 candidate Test Cases and 39,480 physical payload files (39,479 paired; one unpaired), excluded 2,359 conflicted Test Case IDs, and found Prompt Code payloads for only 1 of the 36 ATL105 financial card types. The sole observed code is 001 (BUYPASS Fleet); 35 codes have no non-conflicted case, including 020 (Credit), debit codes 011/012/013 and Loyalty 040. Generate and trace at least one appropriately scoped AI Test Case and physical Test Data payload for every missing financial card type. The actual Segment 100 Prompt Code card-type value must match the declared scenario/test metadata. Keep source-supported transaction/card applicability explicit and use synthetic/approved test fixtures. The audit also observed cases for all four currently declared flow-axis brand labels (VISA, MC, AX, DS); this is a separate producer-declared axis and is not an independent global network denominator. Do not infer or require a network-by-card-type Cartesian product. This audit measures case presence only, not semantic correctness or host execution.
+
+**Evidence:**
+
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/REPORT.md`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/coverage-summary.json`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/financial-card-type-coverage.csv`
+- `specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/manifest.json`
+- `src/main/java/com/coreauth/validator/canonical/Segment100CardTypeOracle.java`
+
+**Related:** [AIF-0018](ai-feedback.md#aif-0018)

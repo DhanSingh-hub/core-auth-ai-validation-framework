@@ -2,7 +2,7 @@
 
 - Composite delivery: **2026-09-23/Run1+Run2**
 - Decision: **REVIEW_REQUIRED**
-- Confirmed weighted independent-rule coverage: **11.2%**
+- Confirmed weighted independent-rule coverage: **11.1%**
 - Weighted full-chain rule coverage: **10.3%**
 - Execution-ready trained segments: **0/10**
 
@@ -10,7 +10,7 @@
 
 | Denominator | Confirmed | Review required | Missing | Full chain |
 |---:|---:|---:|---:|---:|
-|242|27|73|142|25|
+|243|27|73|143|25|
 
 ## Segment summary
 
@@ -20,7 +20,7 @@ AI BR counts below use a separate per-segment AI inventory denominator; they are
 |---|---|---:|---:|---:|---|---:|---:|---:|---|---:|---:|---:|
 |100|REVIEW_REQUIRED|58|NOT_CALCULABLE|10.3%|RECORDED|732|79|503|implemented|1934|1934|0|
 |101|REVIEW_REQUIRED|26|NOT_CALCULABLE|0.0%|RECORDED|85|0|85|implemented|250|0|250|
-|102|REVIEW_REQUIRED|25|NOT_CALCULABLE|0.0%|RECORDED|192|0|192|missing|0|0|0|
+|102|REVIEW_REQUIRED|26|NOT_CALCULABLE|0.0%|RECORDED|192|0|192|missing|0|0|0|
 |103|REVIEW_REQUIRED|24|NOT_CALCULABLE|37.5%|RECORDED|208|93|77|implemented|0|0|0|
 |104|REVIEW_REQUIRED|14|NOT_CALCULABLE|14.3%|RECORDED|123|81|36|implemented|0|0|0|
 |105|REVIEW_REQUIRED|22|NOT_CALCULABLE|0.0%|RECORDED|251|0|238|missing|0|0|0|

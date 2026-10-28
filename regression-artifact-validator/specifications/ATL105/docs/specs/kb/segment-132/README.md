@@ -35,6 +35,45 @@ Segment Type(85), Segment Length(84, 3-digit), Sequence Number(86), Terminal Ide
 
 ## 3. `[PROVISIONAL]` Items — All 5 Open
 
+### Independent Chapter12 observed CAPK lifecycle
+
+`Chapter12LoadLifecycleValidator` now binds actual current132 to a selected
+captured request in `history.capk.exchange {events,currentRequestIndex}`.
+Each event supplies request/response element maps and offset-bearing sent/received
+instants. Echoed86/11 and current device102, sourceK/&/M/L/X and received checksum
+representation are checked; no generic block increment or retry allowance is invented.
+Captured received193/194 blocks bind the existing ordered assembly/replacement
+oracle, including measured whole-file9999/10000 and block000/999 boundaries.
+Missing received data is review, not contradiction with an invented partial file.
+Malformed later blocks remain invalid even when earlier observations are missing.
+Observed numeric length syntax and measured ASCII length contradictions also
+remain invalid alongside missing approval/completeness; those missing contexts
+do not disable independent observed-block validation.
+Missing whole requests/responses remain review; shared identity/order helpers
+still reject any malformed available echo/time value alongside missing paired
+evidence. They do not infer a missing terminalL/X from an earlier capturedM.
+
+Source10753-10758 now executes every supplied
+`history.capk.subsequentEmvTransactions` entry against actual device102,
+received checksum187 and captured receipt/transaction ordering. Explicit Boolean
+`subsequentEmvInventoryComplete` is required; empty/incomplete/missing inventory
+reviews, wrong later checksum/device or malformed later elements invalid even
+when completeness is missing. This is selected captured-load correlation, not
+proof of complete/latest replacement history, cryptographic key authenticity or
+trusted device/kernel state.
+
+Source10808-10811 hash-match X means no file update; both observed stored states
+must match. The two documented X errors remain unsuccessful load dispositions;
+returned/displayed error equality reuses the existing processing helper.
+Element193 N3/999 at24459-24465 contradicts11.9 responseN4/9999 at10786-10794:
+N4 remains review, not invalid solely for its width.
+`Chapter12FleetDiscountLoadIntegrationTest` replays these canonical and actual-intake
+probes. Complete latest-load/all-subsequent-EMV checksum inventory and remaining
+chip/Standard conditional companions remain ordinary source-local work.
+Key authenticity, trusted complete active-key inventory and kernel certification
+remain external. The [atomic prefix](../chapter-12-atomic-clause-definitions.json)
+does not certify full12.22 enumeration or resolve request placement contradictions.
+
 See [SME/TBA Input Register](segment-132-sme-tba-input-register.md): applicability designation, 77-vs-74 byte reconciliation, multi-block transfer protocol scope, undocumented separator behavior for fields 4-10, missing AI/Test artifact package.
 
 ## 4. Do-Not-Assume Rules

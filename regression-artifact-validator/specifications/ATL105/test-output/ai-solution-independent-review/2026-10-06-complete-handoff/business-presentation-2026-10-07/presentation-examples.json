@@ -1,0 +1,123 @@
+{
+  "examples": [
+    {
+      "title": "Sequence format",
+      "disposition": "FIELD_PREDICATE_ALIGNMENT_ONLY",
+      "ai": {
+        "BR": "REQ-SRC-ATL105-PDF-001:097",
+        "brStatement": "Sequence Number must be one of: 000001-999999, 100000-199999, the ATL105 message format.",
+        "TS": "SC-1486",
+        "scenarioClaim": "Positive \u2014 Financial Transaction Request \u2014 Block Number=000, CAVV Revised Format=Position Description, Card Discretionary\nBlock Data=(MMDDYY)., Card Label=AO, Check Type=C, Cryptogram Token\nData=Base64 Data Format Representation, Currency Code=008, EBT Program Data=5-32, Inclusive/Exclusive for\nTax 1=E, Inclusive/Exclusive for\nTax 2=E, Inclusive/Exclusive for\nTax 3=E, Information Byte=0, Load Type=D, Loyalty Information\nVersion=1, Partial Approval\nIndicator=0, Payment Tender Type=CS, Product Code=000, Quantity=00000000. 01-399999999, Safekey Data=Base 64 format., Segment Length=(No. 123), Segment Type=100, Sequence Number=000001-999999, Service Level=F, State Code=001, Tax Type 1=GST, Tax Type 2=GST Goods and Services Tax, Tax Type 3=GST Goods and Services Tax, Token Requestor ID=Position Description, Totals Date=111111, Unit Price=000000.000-999999.999, Unit of Measure=C, Update Code=A, Variable Information=00, Variable Information\nIndicator=001, WIC Discount\nAmount=012",
+        "TC": "TC-001436",
+        "TD": "TC-001436.json",
+        "field": "SequenceNumber",
+        "value": "000001",
+        "expectedResponse": null
+      },
+      "test": {
+        "BR": "BR-SEG100-E86-001",
+        "brStatement": "Sequence Number must be six digits.",
+        "TS": "SCN-SEG100-E86-001",
+        "TC": "TC-SEG100-E86-001",
+        "TD": "TD-SEG100-E86-001",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "86",
+            "rule": "sequence-number"
+          }
+        ],
+        "field": "sequenceNumber",
+        "value": "100001",
+        "expectedValidation": "PASS",
+        "readiness": null
+      },
+      "wholeChainConfirmed": false
+    },
+    {
+      "title": "Segment identity",
+      "disposition": "FIELD_VALUE_ALIGNMENT_ONLY",
+      "ai": {
+        "BR": "REQ-SRC-ATL105-PDF-001:095",
+        "brStatement": "Segment Type must be one of: Segment, Segment, Load Data Segment, Segment, Segment, Segment.",
+        "TS": "SC-1486",
+        "scenarioClaim": "Positive \u2014 Financial Transaction Request \u2014 Block Number=000, CAVV Revised Format=Position Description, Card Discretionary\nBlock Data=(MMDDYY)., Card Label=AO, Check Type=C, Cryptogram Token\nData=Base64 Data Format Representation, Currency Code=008, EBT Program Data=5-32, Inclusive/Exclusive for\nTax 1=E, Inclusive/Exclusive for\nTax 2=E, Inclusive/Exclusive for\nTax 3=E, Information Byte=0, Load Type=D, Loyalty Information\nVersion=1, Partial Approval\nIndicator=0, Payment Tender Type=CS, Product Code=000, Quantity=00000000. 01-399999999, Safekey Data=Base 64 format., Segment Length=(No. 123), Segment Type=100, Sequence Number=000001-999999, Service Level=F, State Code=001, Tax Type 1=GST, Tax Type 2=GST Goods and Services Tax, Tax Type 3=GST Goods and Services Tax, Token Requestor ID=Position Description, Totals Date=111111, Unit Price=000000.000-999999.999, Unit of Measure=C, Update Code=A, Variable Information=00, Variable Information\nIndicator=001, WIC Discount\nAmount=012",
+        "TC": "TC-001436",
+        "TD": "TC-001436.json",
+        "field": "SegmentType",
+        "value": "100",
+        "expectedResponse": null
+      },
+      "test": {
+        "BR": "BR-SEG100-ID-001",
+        "brStatement": "Segment Type must be 100 for the Standard Message Data Segment.",
+        "TS": "SCN-SEG100-ID-001",
+        "TC": "TC-SEG100-ID-001",
+        "TD": "TD-SEG100-ID-001",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "85",
+            "rule": "segment-type"
+          }
+        ],
+        "field": "segmentType",
+        "value": "100",
+        "expectedValidation": "PASS",
+        "readiness": null
+      },
+      "wholeChainConfirmed": false
+    },
+    {
+      "title": "Partial approval context",
+      "disposition": "NOT_EQUIVALENT_CONTEXT_OBLIGATION_NOT_PROVEN",
+      "ai": {
+        "BR": "REQ-SRC-ATL105-PDF-001:142",
+        "brStatement": "Partial Approval\nIndicator must be one of: 0 Not specified (default)/Not supported, This value is the default value., 1 Supported, response., Approval transaction processing., Express prepaid cards., back in response..",
+        "TS": "SC-1486",
+        "scenarioClaim": "Positive \u2014 Financial Transaction Request \u2014 Block Number=000, CAVV Revised Format=Position Description, Card Discretionary\nBlock Data=(MMDDYY)., Card Label=AO, Check Type=C, Cryptogram Token\nData=Base64 Data Format Representation, Currency Code=008, EBT Program Data=5-32, Inclusive/Exclusive for\nTax 1=E, Inclusive/Exclusive for\nTax 2=E, Inclusive/Exclusive for\nTax 3=E, Information Byte=0, Load Type=D, Loyalty Information\nVersion=1, Partial Approval\nIndicator=0, Payment Tender Type=CS, Product Code=000, Quantity=00000000. 01-399999999, Safekey Data=Base 64 format., Segment Length=(No. 123), Segment Type=100, Sequence Number=000001-999999, Service Level=F, State Code=001, Tax Type 1=GST, Tax Type 2=GST Goods and Services Tax, Tax Type 3=GST Goods and Services Tax, Token Requestor ID=Position Description, Totals Date=111111, Unit Price=000000.000-999999.999, Unit of Measure=C, Update Code=A, Variable Information=00, Variable Information\nIndicator=001, WIC Discount\nAmount=012",
+        "TC": "TC-001436",
+        "TD": "TC-001436.json",
+        "field": "PartialApprovalIndicator",
+        "value": "0",
+        "expectedResponse": null
+      },
+      "test": {
+        "BR": "BR-SEG100-E121-002",
+        "brStatement": "Partial Approval Indicator value 5 requires Amex prepaid balance-receipt context.",
+        "TS": "SCN-SEG100-E121-002",
+        "TC": "TC-SEG100-E121-003",
+        "TD": "TD-SEG100-E121-003",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "121",
+            "rule": "partial-approval-context"
+          }
+        ],
+        "field": "partialApprovalIndicator",
+        "value": "5",
+        "expectedValidation": "PASS",
+        "readiness": null
+      },
+      "wholeChainConfirmed": false
+    }
+  ],
+  "inputSha256": {
+    "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\test-output\\test-solution-independent-review\\all-test-solution-br-ts-tc-td-training-package.json": "f94ae125ecbbfb30ea2114a316644df9e2ec14e8c31814387316da26d33185d1",
+    "\\\\?\\C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\test-input\\ai-solution\\runs\\2026-10-05\\Run1\\Pipeline_artifacts_5_oct\\scenerio_req_5_oct\\scenerio_req_5_oct\\step5_requirements\\approved\\requirement_catalog.json": "28f5e1360bc79a0e4ce39c7c68226b6da2cbe55719f35359b656601dc75fee35",
+    "\\\\?\\C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\test-input\\ai-solution\\runs\\2026-10-05\\Run1\\Pipeline_artifacts_5_oct\\scenerio_req_5_oct\\scenerio_req_5_oct\\scenarios\\approved\\approved_scenarios.json": "43977811953d1a3a2ddf0043c8d2affec86e3b7af4116441f54bafd200e20c78",
+    "\\\\?\\C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\test-input\\ai-solution\\runs\\2026-10-05\\Run1\\Pipeline_artifacts_5_oct\\pipeline_run_artifacts\\test_case_candidates.json": "f1d39308520e41eee82656a786f98463977409a9e84050cf52d4ba884aac3560",
+    "\\\\?\\C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\test-input\\ai-solution\\runs\\2026-10-05\\Run1\\Pipeline_artifacts_5_oct\\pipeline_run_artifacts\\qe_shaped_test_data\\TC-001436.json": "a3a4e1827cddc05647f17f24e80670783d74d72c9c3b7267777e935263503ba1"
+  },
+  "scope": "Actual producer/test artifact comparisons; values and links verified, full behavioral equivalence/approval not granted"
+}

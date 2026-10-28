@@ -4,6 +4,21 @@ This folder is the focused learning and analysis module for the ATL105 Totals Da
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed-wire continuation
+
+`TotalsRequestPayloadValidator.validateActualWire` reuses the existing encoder
+without its authored-fixture blank/padding defaults. Actual fields 1–14 each
+retain FS, including the FS after Grand Total; captured four/five/eight-byte
+category triples follow without FS (source 11930–11932). Actual padding must be
+supplied, not generated. Existing source-order/max-18 bucket checks remain the
+semantic oracle. N3 length and 409/410-byte probes measure received bytes.
+`validateActualPayload` avoids executing the legacy implicit-blank wire
+calculation when observations are missing; default legacy validation remains
+unchanged. Missing raw fields are review, malformed observed bytes invalid.
+Settlement authorization and complete totals history remain separate backlog.
+See `Chapter12LegacyWireMicrIntegrationTest` and the current
+[gap register](../chapter-coverage-gap-register.md).
+
 ## Training Status
 
 Phase 1, specification analysis, is in progress. The initial rule catalog is derived from the ATL105 2026-3 Totals Request layout. It is not a production sign-off and does not confirm behavior that needs merchant, terminal, or settlement-policy knowledge.

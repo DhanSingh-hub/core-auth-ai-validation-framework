@@ -3,14 +3,24 @@
 - Composite delivery: `2026-09-23/Run1+Run2`
 - Decision: **REVIEW_REQUIRED**
 - Version resolution: `ATL105-RUN2-SPEC-VERSION-RESOLUTION-001`
-- Confirmed BR coverage: **0.0%**
-- Full-chain coverage: **0.0%**
+- Confirmed independent-rule coverage: **0.0%**
+- Full-chain independent-rule coverage: **0.0%**
 
-## Coverage
+## Independent Test Solution Rule Coverage
 
-| Denominator | Confirmed | Review required | Missing | Unmatched AI | Full chain |
-|---:|---:|---:|---:|---:|---:|
-|25|0|0|25|192|0|
+Denominator type: **independent Test Solution in-scope rules**; structurally valid: **true**; certification: **NOT_ESTABLISHED_BY_STRUCTURAL_ASSESSMENT**.
+
+| Rule denominator | Confirmed rules | Review required | Missing rules | Full-chain rules |
+|---:|---:|---:|---:|---:|
+|26|0|0|26|0|
+
+## AI Business-Requirement Mapping
+
+This denominator is the AI BR inventory, not the independent Test Solution rule catalog. `Unmapped` means no crosswalk disposition; it is not a confirmed AI-only classification.
+
+| AI BR inventory | With crosswalk disposition | Confirmed AI BRs | Review required | Missing mapping | Unmapped | Confirmed / AI BR inventory |
+|---:|---:|---:|---:|---:|---:|---:|
+|192|0|0|0|0|192|0.0%|
 
 ## Artifact chain
 
@@ -53,3 +63,4 @@
 |SEG102-R-023|MISSING||ATL105\|2026-3\|12.3\|102\|null\|max-segment-length|No prior AI requirement was mapped to this independent Test Solution rule.|
 |SEG102-R-024|MISSING||ATL105\|2026-3\|12.3\|102\|77\|multi-fuel-primary-first|No prior AI requirement was mapped to this independent Test Solution rule.|
 |SEG102-R-025|MISSING||ATL105\|2026-3\|12.30\|143\|null\|tax-by-product-order-consistency|No prior AI requirement was mapped to this independent Test Solution rule.|
+|SEG102-R-026|MISSING||ATL105\|2026-3\|Appendix F\|102\|76\|discount-coupon-nonfuel-first|New independent catalog rule; no historical AI match is established by denominator reconciliation.|

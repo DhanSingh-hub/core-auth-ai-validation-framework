@@ -1,0 +1,669 @@
+{
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "modelWeightsUpdated": false,
+  "lessons": [
+    {
+      "version": "2026-3",
+      "rule": "sequence",
+      "claim": {
+        "subject": "Segment100.Element86",
+        "operator": "asciiDigitsRange",
+        "width": 6,
+        "minimum": 1,
+        "maximum": 999999,
+        "modality": "must",
+        "conditions": {
+          "messageFamily": "STANDARD_FINANCIAL_REQUEST"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 402,
+          "startLine": 21438,
+          "endLine": 21489,
+          "quote": "--- PAGE 402 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n13-69 \n157 Data Segment No. 157, Adjusted Product Code Data \nSegment \nDL1 Data Segment No. DL1, Merchant Data Segment. \nDL2 Data Segment No. DL2, Dial String Data Segment \nDL3 Data Segment No. DL3, Date and Time Data Segment \nDL4 Data Segment No. DL4, Software Dial Load Data Segment \nDL5 Data Segment No. DL5, Software IP Load Data Segment \nDL6 Data Segment No.DL6, Store and Forward Data Segment \n \n \nNumber: 86 Name: Sequence Number \nCharacter Type: N Maximum Length: 6 bytes \n \nRepresentation: Fixed length of six digits \nPurpose: Note: Identifies a transaction for the life of the transaction. \nSequence Number must persist in all the subsequent transactions \nthat are associated with the initial authorization request. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture identifies the Sequence Number in the \ntransaction\u2019s Authorization Only request. \nProcessing Rules: Each transaction has a unique Sequence Number.  It is included \non all transaction types, and originates at the device. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture is the same Sequence Number as in the \ntransaction\u2019s Authorization Only request. \n In the case of a purchase reversal/void or time-out reversal \ntransaction, the Sequence Number must be the same as in the \noriginal transaction request. \n In the case of an Authorization Only Reversal, this element\u2014\npresent in the original transaction\u2014must be present and identical \nin the Authorization Only Reversal transaction.  (Note:  The \nAuthorization Only Reversal transaction enables a merchant to \nreverse the following credit card transactions within required \ntimeframes:  POS Authorization Only [Transaction Type code \n\u201c3\u201d]); POS Mail/Phone Authorization Only [Transaction Type code \n\u201cB\u201d]); and CAT Authorization Only [Transaction Type code \u201c5\u201d]). \n For TransArmor PKI Encryption and Tokenization, this element is \nincluded in a new data segment (No. 116 [TransArmor Load Data \nSegment]). \nValid Codes/Values: 000001\u2013999999 \n 100000-199999   \n  ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-3",
+      "rule": "online-refund",
+      "claim": {
+        "subject": "Table032.Subtable11",
+        "operator": "conditionalIndicator",
+        "length": "001",
+        "value": "Y",
+        "modality": "must",
+        "conditions": {
+          "merchantParticipating": true,
+          "onlineApprovalWanted": true,
+          "transactionCategory": "RETURN",
+          "lifecycleRole": "ORIGINAL"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 702,
+          "startLine": 35832,
+          "endLine": 35872,
+          "quote": "--- PAGE 702 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \nAppendix X-1 \n \nAppendix X.  Online Refund/Refund Authorization \nNote: Please contact your First Data representative for availability of this functionality \nToday, cardholders have real-time, 24/7 access to their online banking apps through \nsmartphones and other devices. They are more aware than ever of how quickly purchase \ninformation is updated to their account. However, cardholders also have become increasingly \naware that the same flow of information does not exist on purchase returns. \nTo align the purchase and return processes, an authorization was introduced on credit voucher \n(aka purchase return) transactions. This new credit voucher / purchase return authorization \nmessage will provide issuers with real-time information about returns, similar to that for \npurchases, which they must then provide to their cardholders.  \nMerchants must send the Online Refund/Refund Authorization Indicator in Sub-table ID 11 of \nPOS Additional Data Information (Table ID 32) in Appendix I (Variable Information Data \nLayouts) when participating in Online Refund/Refund Authorization program to get authorization \nfor Merchandise Return transactions. Merchants who do not want Merchandise Return to be \napproved online must not send this field. \nThe value of the Online Refund/Refund Authorization Indicator should be \u2018Y\u2019 for Visa, \nMasterCard, Amex, and Discover. \nWhen the Online Refund/Refund Authorization Indicator is included in a Merchandise Return \ntransaction, this indicator should also be included in the subsequent reversal/follow-up \ntransactions and Timeout reversals. \nStarting October, 2018, for certain merchants Visa will require a \u2018real-time\u2019 message using the \nAuthorization system, prior to an existing Settlement System Refund. Impacted merchants have \nalready been notified. All other merchants are expected to perform Visa online authorization \neffective April, 2020..  \nA \u2018real time\u2019 message (like an Authorization) will advise the issuer and/or cardholder that a \nrefund is pending. This will help to eliminate the delay between the merchant deciding to initiate \na Refund and the visible impact on the cardholder\u2019s account. \nIt is expected that an Online Refund/Refund Authorization will only be declined if the Issuer \ncannot be reached or the cardholder account is not valid; however declining transactions for any \nreason is subject to the Issuer\u2019s discretion. \n. \n ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-3",
+      "rule": "token-request",
+      "claim": {
+        "subject": "Segment153.Tables",
+        "operator": "releaseTableProfile",
+        "profile": "ATL105-2026-3-153",
+        "modality": "must",
+        "conditions": {
+          "direction": "REQUEST"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 307,
+          "startLine": 16297,
+          "endLine": 16362,
+          "quote": "--- PAGE 307 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-93 \n12.38 Network Token Data Request Segment \nThis section describes Data Segment No. 153, Network Token Data Request Segment. \nThe Network Token Data Request Segment contains Network Token Data associated with this \ntransaction. This segment will potentially hold multiple sub-segments, each of which contains \ndifferent network token-related data. The sub-segments will be in the standard TLV format (sub-\nsegment type, sub-segment length, sub-segment value). \nThe following table illustrates the layout of the Network Token Data Request Segment: \n \nNetwork Token Data Request Format \nData Segment No. 153 \n \nField \nNo. \nElement \nNo. \nElemen\nt Name \n \nLen. \nEnt\nry \nis: \nR/O\n/C1 \n \nDescription \n1 85 Segme\nnt Type \n3 R Indicates the type of data segment being formatted \nFixed Value 153 \nSource: Device \n2 84 Segme\nnt \nLength \nIndicat\nor \n3 R Indicates the data segment length including the Segment Type \nlength \nSource: Device \n3 239 Networ\nk \nToken \nData \n999 R All or some of the Network Token sub-segment data is \nspecified below. Data is in <tag><len><data> format. \n1Required/Optional/Conditional \n \nNetwork Token Data Layouts \nNetwork Token \nField Attributes Description \nTable ID n3 Fixed value: 001 \nTable Length n3 Variable Value: 013-018 \nTable Data NA Network Token Data \n \nNetwork Token Data Layouts \nNetwork Token Expiration Date ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 308,
+          "startLine": 16363,
+          "endLine": 16400,
+          "quote": "--- PAGE 308 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-94 \nField Attributes Description \nTable ID n3 Fixed value: 002 \nTable Length n3 Fixed Value: 004 \nTable Data NA Network Token Expiration Date \n \nNetwork Token Data Layouts \nNetwork Token Provisional Fee Indicator \nField Attributes Description \nTable ID n3 Fixed value: 003 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Provisional Fee Indicator \n \nNetwork Token Data Layouts \nNetwork Token Input Indicator \nField Attributes Description \nTable ID n3 Fixed value: 004 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Input Indicator \n \nNetwork Token Data Layouts \nNetwork Token Eligible Indicator \nField Attributes Description \nTable ID n3 Fixed value: 005 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Eligible Indicator \n \nNetwork Token Data Layouts \nNetwork Token PAN Indicator ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 309,
+          "startLine": 16401,
+          "endLine": 16415,
+          "quote": "--- PAGE 309 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-95 \nField Attributes Description \nTable ID n3 Fixed value: 006 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token PAN Indicator \n  ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "sequence",
+      "claim": {
+        "subject": "Segment100.Element86",
+        "operator": "asciiDigitsRange",
+        "width": 6,
+        "minimum": 1,
+        "maximum": 999999,
+        "modality": "must",
+        "conditions": {
+          "messageFamily": "STANDARD_FINANCIAL_REQUEST"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 409,
+          "startLine": 23428,
+          "endLine": 23480,
+          "quote": "--- PAGE 409 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n13-69 \n157 Data Segment No. 157, Adjusted Product Code Data \nSegment \nDL1 Data Segment No. DL1, Merchant Data Segment. \nDL2 Data Segment No. DL2, Dial String Data Segment \nDL3 Data Segment No. DL3, Date and Time Data Segment \nDL4 Data Segment No. DL4, Software Dial Load Data Segment \nDL5 Data Segment No. DL5, Software IP Load Data Segment \nDL6 Data Segment No.DL6, Store and Forward Data Segment \n \n \nNumber: 86 Name: Sequence Number \nCharacter Type: N Maximum Length: 6 bytes \n \nRepresentation: Fixed length of six digits \nPurpose: Note: Identifies a transaction for the life of the transaction. \nSequence Number must persist in all the subsequent transactions \nthat are associated with the initial authorization request. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture identifies the Sequence Number in the \ntransaction\u2019s Authorization Only request. \nProcessing Rules: Each transaction has a unique Sequence Number.  It is included \non all transaction types, and originates at the device. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture is the same Sequence Number as in the \ntransaction\u2019s Authorization Only request. \n In the case of a purchase reversal/void or time-out reversal \ntransaction, the Sequence Number must be the same as in the \noriginal transaction request. \n In the case of an Authorization Only Reversal, this element\u2014\npresent in the original transaction\u2014must be present and identical \nin the Authorization Only Reversal transaction.  (Note:  The \nAuthorization Only Reversal transaction enables a merchant to \nreverse the following credit card transactions within required \ntimeframes:  POS Authorization Only [Transaction Type code \n\u201c3\u201d]); POS Mail/Phone Authorization Only [Transaction Type code \n\u201cB\u201d]); and CAT Authorization Only [Transaction Type code \u201c5\u201d]). \n For TransArmor PKI Encryption and Tokenization, this element is \nincluded in a new data segment (No. 116 [TransArmor Load Data \nSegment]). \nValid Codes/Values: 000001\u2013999999 \n 100000-199999   \n  \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "online-refund",
+      "claim": {
+        "subject": "Table032.Subtable11",
+        "operator": "sourceState",
+        "value": "RESERVED",
+        "modality": "reserved"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 576,
+          "startLine": 30706,
+          "endLine": 30749,
+          "quote": "--- PAGE 576 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-27 \nSub Table ID \u201c10\u201d \nPurpose: Identifies wallet method used for a transaction \nField Attributes Description \nSub-\nTable \nID \nan2 Fixed Value: 10 \nSub-\nTable  \nLength \nan3 Fixed Len.: 001 \nSub-\nTable  \nData   \na Wallet Method Indicator \nValid Codes/Values:  \n\u201cS\u201d = Staged Digital Wallet \n\u201cP\u201d = Pass-through Wallet \nRefer Appendix U for more details on Digital Wallet. \nSub Table ID \u201c11\u201d \nReserved \nSub Table ID \u201c12\u201d \nPurpose:  Identifies the Alternate Routing Fallback Indicator for Debit Card Not Present (CNP) \nEcommerce transactions. \n \nField Attributes Description \nSub-\nTable \nID \nn2 Fixed Value: 12 \nSub-\nTable  \nLength \nn3 Fixed Len.: 001 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 709,
+          "startLine": 38159,
+          "endLine": 38172,
+          "quote": "--- PAGE 709 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \nAppendix X-1 \n \nAppendix X. Reserved \n \n. \n \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "token-request",
+      "claim": {
+        "subject": "Segment153.Tables",
+        "operator": "releaseTableProfile",
+        "profile": "ATL105-2026-4-153",
+        "modality": "must",
+        "conditions": {
+          "direction": "REQUEST"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 310,
+          "startLine": 17997,
+          "endLine": 18067,
+          "quote": "--- PAGE 310 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-93 \n12.38 Network Token Data Request Segment \nThis segment is used to send Network Token transaction information from Ucom to BUYPASS. \nThis section describes Data Segment No. 153, Network Token Data Request Segment. \nThe Network Token Data Request Segment contains Network Token Data associated with this \ntransaction. This segment will potentially hold multiple sub-segments, each of which contains \ndifferent network token-related data. The sub-segments will be in the standard TLV format (sub-\nsegment type, sub-segment length, sub-segment value). There is a Field Separator between \nField Nos. 1 and 2.  Field Separators are not there between the elements in Network Token \nData Layouts. \nWhen a merchant is entitled to use both First Data provisioned Network Tokens and Auth \nOptimization service, the merchant is required to send the same and exact information from the \noriginal transaction request in all the follow-up transactions (Reversals, Completions, \nCancellations, Void of Merchandise Return, Timeout Reversals). This rule applies even when \nthe merchant receives a new Card Number or a new Expiration Date in their original transaction \nresponse. \nThe following table illustrates the layout of the Network Token Data Request Segment: \n \nNetwork Token Data Request Format \nData Segment No. 153 \n \nField \nNo. \nElement \nNo. \nElemen\nt Name \n \nLen. \nEnt\nry \nis: \nR/O\n/C1 \n \nDescription \n1 85 Segme\nnt Type \n3 R Indicates the type of data segment being formatted \nFixed Value 153 \nSource: Device \n2 84 Segme\nnt \nLength \nIndicat\nor \n3 R Indicates the data segment length including the Segment Type \nlength \nSource: Device \n3 239 Networ\nk \nToken \nData \n999 R All or some of the Network Token sub-segment data is \nspecified below. Data is in <tag><len><data> format. \n1Required/Optional/Conditional \n \nNetwork Token Data Layouts \nNetwork Token \nField Attributes Description \nTable ID n3 Fixed value: 001 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 311,
+          "startLine": 18068,
+          "endLine": 18109,
+          "quote": "--- PAGE 311 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-94 \nTable Length n3 Variable \nTable Data n Max. Len.:  19 \nIdentifies the Network Token Data. \n \nNetwork Token Data Layouts \nNetwork Token Expiration Date \nField Attributes Description \nTable ID n3 Fixed value: 002 \nTable Length n3 Fixed Value: 004 \nTable Data n Fixed Len.:  4 \nIdentifies the Network Token Expiration Date. \nFormat: YYMM \n \nNetwork Token Data Layouts \nNetwork Token Provisional Fee Indicator \nField Attributes Description \nTable ID n3 Fixed value: 003 \nTable Length n3 Fixed Value: 001 \nTable Data an Fixed Len.:  1 \nIdentifies the per provision billing indicator of the \nTokenized transaction. \nIt is applicable only to Original (example: Auth, Sale, \nReturn) transactions. \n \nNetwork Token Data Layouts \nNetwork Token Input Indicator \nField Attributes Description \nTable ID n3 Fixed value: 004 \nTable Length n3 Fixed Value: 001 \nTable Data an Network Token Input Indicator \n \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 312,
+          "startLine": 18110,
+          "endLine": 18152,
+          "quote": "--- PAGE 312 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-95 \nIdentifies that the Token or PAN is sent by the merchant  \n \nValid values are: \nY \u2013 Network Token \nN \u2013 Clear PAN \n \nNetwork Token Data Layouts \nNetwork Token Eligible Indicator \nField Attributes Description \nTable ID n3 Fixed value: 005 \nTable Length n3 Fixed Value: 001 \nTable Data an Fixed Len.:  1 \nIdentifies token eligible information. \n \nNetwork Token Data Layouts \nNetwork Token PAN Indicator \nField Attributes Description \nTable ID n3 Fixed value: 006 \nTable Length n3 Fixed Value: 001 \nTable Data an Network Token PAN Indicator \n \nIdentifies that the original transaction is authorized by \neither PAN or Token.  \nThis data is applicable only to subsequent transactions \n(Example: Reversal, Completion, Cancellation).  \nUcom should echo back this data in the response from \noriginal transaction. \n \nNetwork Token Data Layouts \nNetwork Token TransArmor Billing Indicator \nField Attributes Description \nTable ID n3 Fixed value: 007 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 313,
+          "startLine": 18153,
+          "endLine": 18179,
+          "quote": "--- PAGE 313 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-96 \nTable Length n3 Fixed \nTable Data an Fixed Len.:  1 \nThis field contains the TransArmor Billing Indicator \nreceived from the uCom platform. Presence of this field \nindicates that the uCom platform has performed the \nTransArmor tokenization and detokenization of the card \nnumber. \nNote: This field should only be sent in the transaction \nrequest for the First Data Provisioned Network Token \nbased transactions that is also using the TransArmor \ntokenization and detokenization service. \nThis field should be sent for the Original and \nSubsequent transactions. \nValid value:  \nY \u2013 TransArmor is invoked at uCom \n  \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "token-response",
+      "claim": {
+        "subject": "Segment154.Tables",
+        "operator": "releaseTableProfile",
+        "profile": "ATL105-2026-4-154",
+        "modality": "must",
+        "conditions": {
+          "direction": "RESPONSE"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "token-response",
+          "section": "12.50",
+          "segment": "154"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 338,
+          "startLine": 19479,
+          "endLine": 19545,
+          "quote": "--- PAGE 338 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-121 \n12.50 Network Token Data Response Segment \nThis section describes Data Segment No. 154, Network Token Data Response Segment. \nThe Network Token Data Response Segment contains Network Token Data associated with this \ntransaction. This segment will potentially hold multiple sub-segments, each of which contains \ndifferent network token-related data. The sub-segments will be in the standard TLV format (sub-\nsegment type, sub-segment length, sub-segment value). \n \nThe fields are not separated by Field Separators. When a field is not populated, the next field \nimmediately follows. \n \nThe following table illustrates the layout of the Network Token Data Response Segment: \n \nNetwork Token Data Response Format \nData Segment No. 154 \n \nField \nNo. \nElement \nNo. \nElemen\nt Name \n \nLen. \nEnt\nry \nis: \nR/O\n/C1 \n \nDescription \n1 85 Segme\nnt Type \n3 R Identifies the type of data segment being formatted. \nFixed value:  154 \n2 84 Segme\nnt \nLength \n3 R Identifies the data segment\u2019s length, including Segment \nType\u2019s length and Field Separators. \n3 239 Networ\nk \nToken \nData \n999 R All or some of the Network Token sub-segment data is \nspecified below. Data is in <tag><len><data> format. \n1Required/Optional/Conditional \n \nNetwork Token Data Layouts \nNetwork Token \nField Attributes Description \nTable ID N3 Fixed value:  001 \nTable Length N3 Variable \nTable Data an Max. Len.:  19 \nIdentifies the Network Token Data. \nNetwork Token Data Layouts \nNetwork Token/PAN Indicator \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 339,
+          "startLine": 19546,
+          "endLine": 19588,
+          "quote": "--- PAGE 339 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-122 \nField Attributes Description \nTable ID N3 Fixed value:  002 \nTable Length N3 Fixed \nTable Data an Fixed Len.:  1 \nIdentifies that the original transaction is authorized by either \nPAN or Token.  \nValid values are \nT \u2013 Network Token \nP \u2013 Clear PAN \nNetwork Token Data Layouts \nAuth Indicator 1st Try \nField Attributes Description \nTable ID N3 Fixed value:  003 \nTable Length N3 Fixed \nTable Data an Fixed Len.:  1 \nIdentifies the value sent from First Data to network in the first \nauth request as PAN or NT.  \nValid values are \nT \u2013 Network Token \nP \u2013 Clear PAN \nNetwork Token Data Layouts \nAuth Indicator 2nd Try \nField Attributes Description \nTable ID N3 Fixed value:  004 \nTable Length N3 Fixed \nTable Data an Fixed Len.:  1 \nIdentifies the value sent from First Data to network in auth \nrequest for the 2nd try as PAN or NT, if applicable \nValid values are \nT \u2013 Network Token \nP \u2013 Clear PAN \nNetwork Token Data Layouts \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 340,
+          "startLine": 19589,
+          "endLine": 19611,
+          "quote": "--- PAGE 340 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-123 \nAuth Indicator 3rd Try \nField Attributes Description \nTable ID N3 Fixed value:  005 \nTable Length N3 Fixed \nTable Data an Fixed Len.:  1 \nIdentifies the value sent from First Data to network in auth \nrequest for the 3rd try as PAN or NT, if applicable \nValid values are \nT \u2013 Network Token \nP \u2013 Clear PAN \n \n \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "token-carry-forward",
+      "claim": {
+        "subject": "Segment153.FollowupInformation",
+        "operator": "equalsOriginal",
+        "modality": "must",
+        "conditions": {
+          "provisionedNetworkTokens": true,
+          "authOptimization": true
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "token-carry-forward",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 310,
+          "startLine": 17997,
+          "endLine": 18067,
+          "quote": "--- PAGE 310 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n12-93 \n12.38 Network Token Data Request Segment \nThis segment is used to send Network Token transaction information from Ucom to BUYPASS. \nThis section describes Data Segment No. 153, Network Token Data Request Segment. \nThe Network Token Data Request Segment contains Network Token Data associated with this \ntransaction. This segment will potentially hold multiple sub-segments, each of which contains \ndifferent network token-related data. The sub-segments will be in the standard TLV format (sub-\nsegment type, sub-segment length, sub-segment value). There is a Field Separator between \nField Nos. 1 and 2.  Field Separators are not there between the elements in Network Token \nData Layouts. \nWhen a merchant is entitled to use both First Data provisioned Network Tokens and Auth \nOptimization service, the merchant is required to send the same and exact information from the \noriginal transaction request in all the follow-up transactions (Reversals, Completions, \nCancellations, Void of Merchandise Return, Timeout Reversals). This rule applies even when \nthe merchant receives a new Card Number or a new Expiration Date in their original transaction \nresponse. \nThe following table illustrates the layout of the Network Token Data Request Segment: \n \nNetwork Token Data Request Format \nData Segment No. 153 \n \nField \nNo. \nElement \nNo. \nElemen\nt Name \n \nLen. \nEnt\nry \nis: \nR/O\n/C1 \n \nDescription \n1 85 Segme\nnt Type \n3 R Indicates the type of data segment being formatted \nFixed Value 153 \nSource: Device \n2 84 Segme\nnt \nLength \nIndicat\nor \n3 R Indicates the data segment length including the Segment Type \nlength \nSource: Device \n3 239 Networ\nk \nToken \nData \n999 R All or some of the Network Token sub-segment data is \nspecified below. Data is in <tag><len><data> format. \n1Required/Optional/Conditional \n \nNetwork Token Data Layouts \nNetwork Token \nField Attributes Description \nTable ID n3 Fixed value: 001 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "ia-lifecycle",
+      "claim": {
+        "subject": "IncrementalAuthorization",
+        "operator": "orderedLifecycle",
+        "modality": "must",
+        "conditions": {
+          "roles": [
+            "ORIGINAL_AUTH",
+            "INCREMENTAL_AUTH",
+            "IA_REVERSAL",
+            "IA_COMPLETION"
+          ]
+        },
+        "exceptions": [
+          "AF_TRANSACTION_ID_WIRE_MAPPING_UNRESOLVED",
+          "DE39_TO_ATL105_APPROVAL_FIELD_MAPPING_UNRESOLVED"
+        ]
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "ia-lifecycle",
+          "section": "Appendix AF"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 730,
+          "startLine": 39198,
+          "endLine": 39238,
+          "quote": "--- PAGE 730 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \nAppendix AF-1 \n \nAppendix AF. Estimated and Incremental \nAuthorization Transactions \n \nThe Incremental Auth product is a means for a merchant to open an authorization, and modify it \nover time, before eventually submitting the final amount in the form of completion.  This \nfunctionality has typically been used in the lodging and car rental industries, where the Initial \nAuthorization may occur days before the transaction is completed, but is being expanded to \nsupport additional industries.  \n \nThe Incremental Auth (IA) product supports four transaction types: \n\u2022 Original Auth (aka Estimated Auth) \n\u2022 Incremental Auth \n\u2022 Partial Reversal (aka IA Reversal) \n\u2022 Incremental Auth Completion (aka IA Completion) \n \nThis functionality is mandatory for Discover and is not limited by MCC. \nFor Visa, Mastercard, and American Express, the use of this functionality is strongly \nrecommended in addition to populating the Estimated and Incremental Authorization fields for \nthe applicable lodging and EV transactions. \n \nREQUIREMENTS:  \n\u2022 All IA transaction types should contain Incremental Auth Data (Variable Information \nsegment 111 Table 82).  This is mandatory for Discover. \no Incremental Auth Data contains the Transaction ID which must be unique (per \nterminal) to any open Incremental Auth purchase. \n\u2022 Incremental Auths, IA Reversals, and IA Completions are all subsequent transactions, \nand must be preceded by an Original Auth. \n\u2022 Subsequent IA transactions must contain the Approval Code (DE 39) that was received \non the approved Original Auth. \n\u2022 Once an IA Completion is received, the IA is closed, and no more subsequent \ntransactions will be approved for that Terminal Transaction ID. \n ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "ia-table82",
+      "claim": {
+        "subject": "Segment111.IncrementalAuthData",
+        "operator": "tableLayout",
+        "indicator": "082",
+        "tableId": "82",
+        "tableLength": "004",
+        "terminalNumberWidth": 4,
+        "modality": "must",
+        "conditions": {
+          "presenceRequiredForNetwork": "DISCOVER"
+        }
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "ia-table82",
+          "section": "Appendix I",
+          "segment": "111",
+          "table": "82"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 425,
+          "startLine": 24146,
+          "endLine": 24169,
+          "quote": "--- PAGE 425 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n13-85 \n082 Incremental Auth Data \n \nNumber: 112 Name: Variable Information \nLength \nCharacter Type: N Maximum Length: 3 bytes \n \nRepresentation: Fixed length of 3 bytes \nPurpose: Identifies the length of Variable Information (Element No. 113) in the \nVariable Information Data Segment. \nProcessing Rules: Used in the Variable Information Data Segment (No. 111). \nValid Codes/Values: 001\u2013999 \n \n  \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 431,
+          "startLine": 24449,
+          "endLine": 24499,
+          "quote": "--- PAGE 431 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \nOctober 09, 2026 \n13-91 \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 076 (Discount Line-Item Data), the Discount Line-Item \nData is included here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 077 (Discount Amount), the Discount Amount data is \nincluded here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 078 (Line Item), the Line Item data is included here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 079 (Visa Commercial Card Data), the Visa Commercial \nCard Data is included here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 080 (Staged Wallet ID), the Staged Wallet ID Data is \nincluded here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 081 (Visa Gateway ID), the Visa Gateway ID Data is \nincluded here. \n When Element No. 111 (Variable Information Indicator) has a \nvalue of 082 (Incremental Auth Data), the Incremental Auth Data \nis included here. \nValid Codes/Values: 001\u2013982 \n a\u2013z \n A\u2013Z \n For data layout information, please refer to Appendix I.  Variable \nInformation Data Layouts. \n \n \nNumber: 114 Name: Software Load IP/URL \nAddress \nCharacter Type: AN Maximum Length: 30 bytes \n \nRepresentation: Fixed length of 30 alphanumeric characters \nPurpose: Identifies the terminal number used to access the device \nmanagement system. \nProcessing Rules: Used in the Software IP Load Data Segment (No. DL5). \nValid Codes/Values: 01\u2013999 \n a\u2013z \n A\u2013Z \n \n \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 636,
+          "startLine": 34636,
+          "endLine": 34703,
+          "quote": "--- PAGE 636 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-87 \nSub-Table \nData \nn12 Contains the amount of other tax when tag 07 contains a value of 1 \n(True). Two decimal places are implied. \nSub Table ID \u201c09\u201d \nOther Tax Rate \nField \n \nAttributes \n \nDescription \nSub-Table \nID \nan2 Fixed Value: 09 \nSub-Table \nLength \nn2 Fixed Value: 04 \nSub-Table \nData \nn4 Contains other tax rate (in percentage) for fuel purchased. Two \ndecimal places are implied. \nStaged Wallet ID \nField \n \nAttributes \n \nDescription \nTable ID N3 Fixed Value: 080 \nTable \nLength \nN2 Fixed Length: 11 \nTable Data an11 Contains the staged digital wallet ID. Identifies the digital wallet \nprovider that issued the token used in the transaction. \nVisa Gateway ID \nField \n \nAttributes \n \nDescription \nTable ID N3 Fixed Value: 081 \nTable \nLength \nn2 Fixed Value: 11 \nTable Data an11 Indicates whether the transaction was initiated by the merchant or \nby a third-party gateway provider. This field is mandatory for \ntransactions submitted by a gateway service provider (e.g., \nCyberSource) acting on behalf of a merchant. It helps Visa identify \nthe source of the transaction for routing and compliance purposes. \nIncremental Auth Data \nField \n \nAttributes \n \nDescription \nTable ID N2 Fixed Value: 82 \nTable \nLength \nN3 Fixed Length : 004 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 637,
+          "startLine": 34704,
+          "endLine": 34734,
+          "quote": "--- PAGE 637 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-88 \nTerminal \nTransaction \nNumber \nN4 Used for tracking partial reversals and incomplete authorizations.  \nThe Terminal Transaction Number should be unique for each \nOriginal Auth (aka Estimated Auth). This field should be sent with \nthe same value for all subsequent transactions tied to this original \ntransaction (Incremental Auths, Partial or Full Reversals, IA \nCompletions). \nTherefore, when using the same card for Incremental Auth, the \nTerminal Transaction Number should be the same until the \nIncremental Auth series is completed. \n \nDiscover: Mandatory for Original/Estimated Auth and all the \nsubsequent transactions.  \n \nVisa, MasterCard, Amex: This is optional, though highly \nencouraged to be populated along with Visa/MC/Amex Incremental \nAuth Lodging Data in Variable Information Segment 111 table ID \n063. \nNote: <Remaining bytes> are reserved for future use. \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "device022",
+      "claim": {
+        "subject": "Table022.DeviceTypeExtensions",
+        "operator": "releaseValues",
+        "values": {
+          "35": "CHIP_AND_CONTACTLESS_NO_MAGSTRIPE",
+          "36": "CHIP_ONLY_NO_MAGSTRIPE_NO_CONTACTLESS",
+          "37": "CONTACTLESS_ONLY_NO_MAGSTRIPE_NO_CHIP"
+        },
+        "futureRange": [
+          38,
+          99
+        ],
+        "modality": "may"
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "device022",
+          "section": "Appendix I",
+          "segment": "111",
+          "table": "022"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 565,
+          "startLine": 30227,
+          "endLine": 30276,
+          "quote": "--- PAGE 565 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-16 \nVariable Information Data Layouts \nOriginating Device Type Indicator Information(continued) \nField Attributes Description \n  14 = Mobile phone or smartphone with a payment application  \n running in a host processor \n15 = Tablet or E-Book with a payment application running in a host \n processor \n16 = Mobile phone or smartphone with a payment application  \n running in the TEE of a host processor \n17 = Tablet or E-Book with a payment application running in the \n TEE of a host processor \n18 = Watch with a payment application running in the TEE of a  \n host processor \n19 = Watch with a payment application running in a host  \n processor \n20 =  Card \n21 =  Phone \n22 =  Tablet/e-reader \n23 =  Watch/Wristband \n24 =  Sticker \n25 = PC \n26 =  Device Peripheral \n27 =  Tag \n28 =  Jewelry \n29 =  Fashion Accessory \n30 =  Garment \n31 =  Domestic Appliance \n32 =  Vehicle \n33 =  Media/Gaming Device \n34 =  VR Headset \n35 =  Card with contact chip and contactless interfaces; no  \n magnetic stripe \n36 =  Card with contact chip interface only; no magnetic stripe, no \n contactless interface \n37 =   Card with contactless interface only; no magnetic stripe, no \n contact chip interface \n38-99 = Reserved for future  device types. Any value in this range  \n may occur within devices and transaction data without prior \n notice \nManual Check MICR Type \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "discover-india056",
+      "claim": {
+        "subject": "Table056.Subtables01Through07",
+        "operator": "scopedStoredCredentials",
+        "modality": "should",
+        "conditions": {
+          "network": "DISCOVER",
+          "issuerCountry": "INDIA",
+          "paymentTypes": [
+            "RECURRING",
+            "INSTALLMENT"
+          ]
+        },
+        "roles": {
+          "01": [
+            "INITIAL"
+          ],
+          "02": [
+            "INITIAL"
+          ],
+          "03": [
+            "INITIAL",
+            "SUBSEQUENT"
+          ],
+          "04": [
+            "INITIAL",
+            "SUBSEQUENT"
+          ],
+          "05": [
+            "INITIAL"
+          ],
+          "06": [
+            "SUBSEQUENT"
+          ],
+          "07": [
+            "SUBSEQUENT"
+          ]
+        },
+        "exceptions": [
+          "CRYPTOGRAM_AUTHENTICITY_AND_REFERENCE_UNIQUENESS_NOT_ASSESSED"
+        ]
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "discover-india056",
+          "section": "Appendix I",
+          "segment": "111",
+          "table": "056"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 604,
+          "startLine": 32415,
+          "endLine": 32474,
+          "quote": "--- PAGE 604 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-55 \nSub-\nTable \nLength \nn2 Fixed Value :02 \nSub-\nTable \nData \nan2 Total payment count      \n \nIndicates the number of Recurring  \nPayments or Installments per the  \nCardholder Agreement with the Merchant.  \n \nThis is applicable only to Discover and Visa. \n \nFor Discover: \n \nValid Codes/Values:  \n\u2022 02 to 99 \n\u2022 UD - Not Defined \n\u2022 UC - Until Canceled.  \n \nNote:  \nThe field is only used in the first payment transaction for these specific payment \ntypes and should be sent for Discover cards issued in India. \n \nFor Visa: \n \nValid Codes/Values:  \n\u2022 01 to 98 \n\u2022 99 - Not Defined/ Until Canceled. \n \nNote:  \nThis field is required and should be sent only for recurring payments for Visa \ncards issued in India. \n \nIf this field is provided in the initial transaction, the field must be provided in all \nsubsequent transactions, and the value must be either same value as sent in \nthe initial transaction or value used in the last \u201cModification\u201d transaction.  \n \nRefer to Variable Information Data segment 111 Table ID 056 Sub Table ID 12 \n(Recurring Payment Type) for more details. \n \n \nSub Table ID \u201c02\u201d  \nPayment Type \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 02 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 605,
+          "startLine": 32475,
+          "endLine": 32543,
+          "quote": "--- PAGE 605 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-56 \nSub-\nTable \nLength \nn2 Fixed Value :01 \nSub-\nTable \nData \nan1 Payment Type  \n \nThis is applicable only to Discover and Visa. \n \nFor Discover: \n \nIndicates whether a Recurring Payment or Installment is a  \nfixed or variable amount.  \n \nValid Codes/Values:   \n\u2022 F \u2013 Fixed  \n\u2022 V \u2013 Variable                 \n \nNote:  \nThe field is only used in the first payment transaction for these specific payment \ntypes and should be sent for Discover cards issued in India. \n \nFor Visa: \n \nValid Codes/Values:   \n\u2022 F \u2013 Fixed  \n\u2022 V \u2013 Variable                 \n \nNote:  \nThis field is required and should be sent only for recurring payments for Visa \ncards issued in India. \n \nIf this field is provided in the initial transaction, the field must be provided in all \nsubsequent transaction and the value must be either same value as sent in the \ninitial transaction or value used in the last \u201cModification\u201d transaction. \n \nRefer to Variable Information Data segment 111 Table ID 056 Sub Table ID 12 \n(Recurring Payment Type) for more details. \nSub Table ID \u201c03\u201d \nMIT Amount \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 03 \nSub-\nTable \nLength \nn2 Fixed Value : 12 \nSub-\nTable \nData \nn12 MIT Amount \n \nIndicates the amount of the Recurring Payment or Installment, and is in  \nthe same currency as Currency Code of Transaction Amount. \n \nThis amount may be different from Transaction Amount.  \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 606,
+          "startLine": 32544,
+          "endLine": 32608,
+          "quote": "--- PAGE 606 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-57 \n \nThis tag has leading zeros and two decimal places ($50 as 000000005000) \n \nThis is applicable only to Discover and Visa. \n \nFor Discover:  \n \nNote: \nThis field is used in both initial and subsequent payments for these specific \npayment types and should be sent for Discover cards issued in India. \n \nFor Visa:  \n \nNote:  \nThis field is required and should be sent only for recurring payments for Visa \ncards issued in India. \n \nIf this field is provided in the initial transaction, the field must be provided in all \nsubsequent transaction and the value must be either same value as sent in the \ninitial transaction or value used in the last \u201cModification\u201d transaction. \n \nRefer to Variable Information Data segment 111 Table ID 056 Sub Table ID 12 \n(Recurring Payment Type) for more details. \nSub Table ID \u201c04\u201d \nUnique ID \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 04 \nSub-\nTable \nLength \nn2 Fixed Value : 14 \nSub-\nTable \nData \nan14 Unique ID \n \nMerchant provided unique identifier for each Recurring or Installment  \nPayment. \n This ID is used to reference Authorizations and Advice Messages. \nThis is applicable only to Discover. \nNote: \nThis field is used in both initial and subsequent payments for these specific \npayment types and should be sent for Discover cards issued in India. \nSub Table ID \u201c05\u201d \nFrequency of MIT \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 05 \nSub-\nTable \nLength \nn2 Fixed Value : 02 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 607,
+          "startLine": 32609,
+          "endLine": 32671,
+          "quote": "--- PAGE 607 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-58 \nSub-\nTable \nData \nn2 Frequency of MIT \n \nIndicates the frequency of a Recurring Payment or Installment. \n \nThis is applicable only to Discover and Visa. \n \nFor Discover: \n  \nValid Codes/Values:   \n\u2022 01 \u2013 Daily  \n\u2022 02 \u2013 Weekly  \n\u2022 03 \u2013 Biweekly  \n\u2022 04 \u2013 Monthly  \n\u2022 05 \u2013 Quarterly  \n\u2022 06 \u2013 Half-Yearly (Biannually)  \n\u2022 07 \u2013 Annually  \n\u2022 08 \u2013 Unscheduled (Type of MIT) \n \nNote:  \nThe field is only used in the first payment transaction for these specific payment \ntypes and should be sent for Discover cards issued in India. \n \nFor Visa: \n \n\u2022 01 \u2013 Daily  \n\u2022 02 \u2013 Weekly  \n\u2022 03 \u2013 Biweekly  \n\u2022 04 \u2013 Monthly  \n\u2022 05 \u2013 Quarterly  \n\u2022 06 \u2013 Half-Yearly (Biannually)  \n\u2022 07 \u2013 Annually  \n\u2022 08 \u2013 Unscheduled (Type of MIT) \n\u2022 09 \u2013 Ten Days   \n\u2022 10 \u2013 Twice weekly \n\u2022 11 \u2013 Every two months \n\u2022 12 \u2013 Trimester \n \nNote:  \nThis field is required and should be sent only for recurring payments for Visa \ncards issued in India. \n \nIf this field is provided in the initial transaction, the field must be provided in all \nsubsequent transaction and the value must be either same value as sent in the \ninitial transaction or value used in the last \u201cModification\u201d transaction.  \n \nRefer to Variable Information Data segment 111 Table ID 056 Sub Table ID 12 \n(Recurring Payment Type) for more details. \n \nSub Table ID \u201c06\u201d \nValidation Flag \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 608,
+          "startLine": 32672,
+          "endLine": 32733,
+          "quote": "--- PAGE 608 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-59 \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 06 \nSub-\nTable \nLength \nn2 Fixed Value : 01 \nSub-\nTable \nData \nn1 Validation Flag \n \n Indicates whether validation is performed or not. \n \nValid Codes/Values:   \n\u2022 1 \u2013 Validated  \n\u2022 0 \u2013 Not Validated  \nThis is applicable only to Discover and Visa. \n \nFor Discover:  \nNote:  \nThis field indicates if the card transaction is checked against the \nvalidation source or not. The field is used only in the subsequent \npayments for these specific payment types and should be sent for \nDiscover cards issued in India. \n \nFor Visa:  \nNote:  \nThis field indicates if the recurring payment transaction has been \nvalidated offline during registration or not. \n \nThis field is required and should be sent only for recurring payments for \nVisa cards issued in India. \n \nIf this field is provided in the initial transaction, the field must be provided \nin all subsequent transaction and the value must be either same value \nas sent in the initial transaction or value used in the last \u201cModification\u201d \ntransaction.  \n \nRefer to Variable Information Data segment 111 Table ID 056 Sub Table \nID 12 (Recurring Payment Type) for more details. \n \nSub Table ID \u201c07\u201d \nValidation Reference \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 07 \nSub-\nTable \nn2 Fixed Value : 20 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 609,
+          "startLine": 32734,
+          "endLine": 32804,
+          "quote": "--- PAGE 609 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-60 \nLength \nSub-\nTable \nData \nans20 Validation Reference \n \nA cryptogram generated by the validation source for each  \nCardholder Account, for an Issuer to validate a Card Transaction. \nThis is applicable only to Discover. \n \nNote:  \nThe field is used only in the subsequent payments for these specific payment \ntypes and should be sent for Discover cards issued in India. \nSub Table ID \u201c08\u201d \nSequence Indicator \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value : 08 \nSub-\nTable \nLength \nn2 Fixed Value : 02 \nSub-\nTable \nData \nn2 Sequence Indicator \n \nUsed to identify the Sequence of the transactions when multiple  \nInstallment payments are  submitted. Sequence Indicator is populated  \nin ascending order. \nThis is applicable only to Discover. \nSub Table ID \u201c09\u201d \nMIT/CIT Category and Subcategory Data \nField Attributes Description \nSub-\nTable ID \nN2 Fixed Value: 09 \nSub-\nTable \nLength \nN2 Fixed Value: 04 \nSub-\nTable \nData \nAN4 This field will be used to indicate category and subcategory data for \nCardholder initiated transaction (CIT) and Merchant initiated transaction \n(MIT). \n \nCardholder initiated transaction (CIT) \n \nScenario  Valid \nValues  \nCard holder-initiated Credential-on-file (adhoc)  C101 \nCard holder initiated Standing Order (variable amount and \nfixed frequency)  \nC102 \nCard holder-initiated Subscription (fixed amount and fixed \nfrequency)  \nC103 \nCard holder-initiated Installment  C104 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    },
+    {
+      "version": "2026-4",
+      "rule": "ia-table063",
+      "claim": {
+        "subject": "Table063.TerminalTransactionNumber",
+        "operator": "scopedContinuity",
+        "width": 4,
+        "modality": "should",
+        "conditions": {
+          "networks": [
+            "VISA",
+            "MASTERCARD",
+            "AMEX"
+          ],
+          "mandatoryContexts": [
+            "LODGING",
+            "INCREMENTAL_AUTH",
+            "EV"
+          ]
+        },
+        "exceptions": [
+          "RECOMMENDATION_MISMATCH_IS_NOT_A_HOST_REJECTION_ORACLE"
+        ]
+      },
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "rule": "ia-table063",
+          "section": "Appendix I",
+          "segment": "111",
+          "table": "063"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 615,
+          "startLine": 33143,
+          "endLine": 33218,
+          "quote": "--- PAGE 615 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-66 \nTable ID \n \nn3 Fixed Value: 062 \nTable \nLength \n \nn3 Length: 3 bytes \n \nVariable length of up to 150 \nTable \nData \nans150 Indicates whether Cardholder Additional Data is present. \nCardholder Additional Data contains the following sub-table IDs. \nSub Table ID \u201c01\u201d \nCardholder Phone number \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value: 01 \nSub-\nTable \nLength \nn3 Length: 3 bytes \n \nMax. length of up to 16 bytes. \nSub-\nTable \nData \nan16 This field contains the cardholder phone number for account verification \ntransaction. \nExample: 111+030+062015010101234567890+ \nNote:  Applicable only to Visa. \nSub Table ID \u201c02\u201d \nCardholder Email Address \nField Attributes Description \nSub-\nTable ID \nn2  Fixed Value: 02 \nSub-\nTable \nLength \nn3 Length: 3 bytes \n \nMax. length of up to 99 bytes. \nSub-\nTable \nData \nan99 This field contains the cardholder email address for account verification \ntransaction. \nExample: 111+035+06202002013card@holder.com+ \nNote:  Applicable only to Visa. \nVisa\u00ae/MC/AMEX Incremental Auth Lodging Data \nField \n \nAttribute\ns \n \nDescription \n \nTable ID \n \nn3 Fixed Value: 063 \nTable \nLength \n \nn3 Fixed Value:  011 \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text_new.txt",
+          "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+          "pdfPage": 616,
+          "startLine": 33219,
+          "endLine": 33294,
+          "quote": "--- PAGE 616 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-4 \n October 09, 2026 \nAppendix I-67 \nArrival \nDate \nn4 Format: MMDD \n \nThis field must be spaces if not used by merchant. \nDuration n2 Number of days of stay \n \nThis field must be spaces if not used by merchant. \nTerminal \nTransacti\non \nNumber \nn4 Used for tracking partial reversals and incomplete authorizations \n \nMandatory for Lodging, Incremental Auth,  and EV transactions \n \nThis field is used only for Visa/MasterCard/Amex. \n \nThe Terminal Transaction Number should be unique. When using the same \ncard for Incremental Auth, the Terminal Transaction Number should be the \nsame until the Incremental Auth series is complete. \n \nPlease refer to the example below. \nPreferred \nCustomer \nIndicator \nan1 P = Preferred customer \nExamples of Visa Incremental Auth transaction: \nTransacti\non \nRequest Response \nOriginal \nAuth/Esti\nmated  \nAuth \ntransactio\nn PAN  \nused - \n4005XXX\nXXXXX11\n14 \nExample: \n \n063+011+\n03230500\n58P+ \n063 \u2013 \nTable ID \n011 \u2013 \nTable \nlength \n0323 \u2013 \nMMDD \n05 \u2013 No. \nof days \n0058 \u2013 \nTerminal \ntransactio\nn number \nP \u2013 \nPreferred \ncustomer \nindicator \n \nNon \nNot applicable \n",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ],
+      "scope": "SOURCE_DERIVED_SCOPED_LESSON_NOT_APPROVED_TRUTH"
+    }
+  ]
+}

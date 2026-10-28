@@ -1,0 +1,137 @@
+{
+  "artifact": "ATL105_SEQUENCE_NUMBER_INDEPENDENT_TEST_CHAIN_DRAFT",
+  "status": "SUPERSEDED_DRAFT",
+  "supersededBy": "sequence-number-test-chain-package-v2.json",
+  "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+  "aiArtifactsIncluded": false,
+  "officialBaselineModified": false,
+  "executionCertified": false,
+  "coverageCredit": 0,
+  "aiScenarioApprovalRequired": false,
+  "externalAuthorizationFixtureUsed": false,
+  "scope": "Prepare source-grounded scenario, case and data designs for existing independent Test BRs SEG100-R-019 and SEG100-R-037 before semantic pair review.",
+  "sourceEvidence": [
+    {
+      "evidenceId": "ATL105-2026-3-SEG100-E86",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": 402,
+      "startLine": 21458,
+      "quote": "Number: 86 Name: Sequence Number\nCharacter Type: N Maximum Length: 6 bytes\nRepresentation: Fixed length of six digits\nPurpose: Note: Identifies a transaction for the life of the transaction.\nSequence Number must persist in all the subsequent transactions that are associated with the initial authorization request.",
+      "interpretationStatus": "SOURCE_QUOTE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "ATL105-2026-3-SEG100-E86-RANGE",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": 402,
+      "startLine": 21487,
+      "quote": "Valid Codes/Values: 000001–999999",
+      "interpretationStatus": "SOURCE_QUOTE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "ATL105-2026-3-SEG100-E86-PREAUTH-CAPTURE",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": 402,
+      "startLine": 21470,
+      "quote": "In the case of a preauthorized transaction, the Sequence Number in the Purchase/Capture is the same Sequence Number as in the transaction’s Authorization Only request.",
+      "interpretationStatus": "SOURCE_QUOTE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "ATL105-2026-3-SEG100-E86-REVERSAL",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": 402,
+      "startLine": 21473,
+      "quote": "In the case of a purchase reversal/void or time-out reversal transaction, the Sequence Number must be the same as in the original transaction request.",
+      "interpretationStatus": "SOURCE_QUOTE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": "2.3.1",
+      "startLine": 2009,
+      "quote": "The Sequence Number, Account Number, and dollar amount—assigned by the customer’s host/controller/POS system—are the elements used to match a request with its respective response. The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed. Each time any financial transaction request is forwarded to BUYPASS, the financial transaction should be assigned a new Sequence Number by the customer’s host/controller/POS system.",
+      "interpretationStatus": "SOURCE_QUOTE_VERIFIED_INTERPRETATION_REVIEW_REQUIRED"
+    }
+  ],
+  "records": [
+    {
+      "testBrId": "SEG100-R-019",
+      "existingTitle": "Sequence Number is six digits and persists through lifecycle",
+      "existingStatus": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.1", "segment": "100", "element": "86", "rule": "sequence-number"},
+      "proposedScenarios": [
+        {
+          "id": "TS-DRAFT-SEG100-E86-FORMAT",
+          "requirementIds": ["BR-RULE-SEG100-R-019"],
+          "intent": "Sequence Number is present as exactly six numeric characters and lies in 000001-999999.",
+          "status": "REVIEW_REQUIRED",
+          "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86"]
+        },
+        {
+          "id": "TS-DRAFT-SEG100-E86-INVALID-FORMAT",
+          "requirementIds": ["BR-RULE-SEG100-R-019"],
+          "intent": "Distinguish invalid zero, short, long and nonnumeric Sequence Number values; confirm rejection behavior with the independent Test owner.",
+          "status": "REVIEW_REQUIRED",
+          "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86"]
+        },
+        {
+          "id": "TS-DRAFT-SEG100-E86-LIFECYCLE",
+          "requirementIds": ["BR-RULE-SEG100-R-019", "BR-RULE-SEG100-R-037"],
+          "intent": "Track one logical authorization lifecycle across the original Authorization Only request and its associated follow-up transaction.",
+          "status": "REVIEW_REQUIRED",
+          "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"]
+        },
+        {
+          "id": "TS-DRAFT-SEG100-E86-REVERSAL",
+          "requirementIds": ["BR-RULE-SEG100-R-019", "BR-RULE-SEG100-R-037"],
+          "intent": "Compare original transaction Sequence Number with purchase reversal/void and timeout reversal requests.",
+          "status": "REVIEW_REQUIRED",
+          "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"]
+        },
+        {
+          "id": "TS-DRAFT-SEG100-E86-NEW-REQUEST",
+          "requirementIds": ["BR-RULE-SEG100-R-019"],
+          "intent": "Distinguish a new financial transaction request, which receives a new Sequence Number, from a follow-up associated with the original authorization.",
+          "status": "REVIEW_REQUIRED",
+          "sourceEvidenceIds": ["ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"]
+        }
+      ],
+      "proposedCases": [
+        {"id": "TC-DRAFT-SEG100-E86-VALID-MIN", "scenarioId": "TS-DRAFT-SEG100-E86-FORMAT", "sequenceNumber": "000001", "assertion": "Exactly six numeric characters; lower valid boundary.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-VALID-MAX", "scenarioId": "TS-DRAFT-SEG100-E86-FORMAT", "sequenceNumber": "999999", "assertion": "Exactly six numeric characters; upper valid boundary.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-INVALID-ZERO", "scenarioId": "TS-DRAFT-SEG100-E86-INVALID-FORMAT", "sequenceNumber": "000000", "assertion": "Outside the source valid range.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-INVALID-SHORT", "scenarioId": "TS-DRAFT-SEG100-E86-INVALID-FORMAT", "sequenceNumber": "12345", "assertion": "Five digits, not fixed length six.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-INVALID-LONG", "scenarioId": "TS-DRAFT-SEG100-E86-INVALID-FORMAT", "sequenceNumber": "1000000", "assertion": "Seven digits, not fixed length six.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-INVALID-NONNUMERIC", "scenarioId": "TS-DRAFT-SEG100-E86-INVALID-FORMAT", "sequenceNumber": "12A456", "assertion": "Contains a nonnumeric character.", "expectedOutcome": "REVIEW_REQUIRED_RESPONSE_ORACLE_UNSPECIFIED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-AUTH-CAPTURE-SAME", "scenarioId": "TS-DRAFT-SEG100-E86-LIFECYCLE", "transactions": [{"type": "AUTHORIZATION_ONLY", "transactionCode": "3", "sequenceNumber": "000123"}, {"type": "PURCHASE_CAPTURE", "sequenceNumber": "000123"}], "assertion": "Purchase/Capture Sequence Number equals its Authorization Only request.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-TOR-SAME", "scenarioId": "TS-DRAFT-SEG100-E86-REVERSAL", "transactions": [{"type": "ORIGINAL_FINANCIAL_REQUEST", "sequenceNumber": "000456"}, {"type": "TIMEOUT_REVERSAL", "sequenceNumber": "000456"}], "assertion": "TOR Sequence Number equals the financial request being reversed.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-VOID-SAME", "scenarioId": "TS-DRAFT-SEG100-E86-REVERSAL", "transactions": [{"type": "ORIGINAL_FINANCIAL_REQUEST", "sequenceNumber": "000789"}, {"type": "PURCHASE_REVERSAL_OR_VOID", "sequenceNumber": "000789"}], "assertion": "Reversal/void Sequence Number equals original transaction Sequence Number.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+        {"id": "TC-DRAFT-SEG100-E86-NEW-SEQUENCE", "scenarioId": "TS-DRAFT-SEG100-E86-NEW-REQUEST", "transactions": [{"type": "FINANCIAL_REQUEST_1", "sequenceNumber": "000123"}, {"type": "NEW_FINANCIAL_REQUEST_2", "sequenceNumber": "000124"}], "assertion": "A separately forwarded new financial request receives a new Sequence Number.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"}
+      ]
+    },
+    {
+      "testBrId": "SEG100-R-037",
+      "existingTitle": "Lifecycle follow-ups reuse the original Sequence Number and required approval context",
+      "existingStatus": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "10", "segment": "100", "element": "86", "rule": "lifecycle-correlation"},
+      "proposedTestScenarioId": "TS-DRAFT-SEG100-E86-LIFECYCLE",
+      "proposedTestCaseIds": ["TC-DRAFT-SEG100-E86-AUTH-CAPTURE-SAME", "TC-DRAFT-SEG100-E86-TOR-SAME", "TC-DRAFT-SEG100-E86-VOID-SAME"],
+      "approvalNumberContext": {
+        "status": "UNRESOLVED_SOURCE_CLAUSE_REQUIRED",
+        "note": "Do not interpret or test the composite BR's required approval context until its exact source rule and applicability are bound to evidence."
+      },
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testDataDesigns": [
+    {"testCaseIds": ["TC-DRAFT-SEG100-E86-VALID-MIN", "TC-DRAFT-SEG100-E86-VALID-MAX"], "sequenceNumberValues": ["000001", "999999"], "fixtureStatus": "DRAFT_NOT_EXECUTABLE"},
+    {"testCaseIds": ["TC-DRAFT-SEG100-E86-INVALID-ZERO", "TC-DRAFT-SEG100-E86-INVALID-SHORT", "TC-DRAFT-SEG100-E86-INVALID-LONG", "TC-DRAFT-SEG100-E86-INVALID-NONNUMERIC"], "sequenceNumberValues": ["000000", "12345", "1000000", "12A456"], "fixtureStatus": "DRAFT_NOT_EXECUTABLE", "responseOracle": "NOT_PROVIDED_BY_SOURCE"},
+    {"testCaseIds": ["TC-DRAFT-SEG100-E86-AUTH-CAPTURE-SAME", "TC-DRAFT-SEG100-E86-TOR-SAME", "TC-DRAFT-SEG100-E86-VOID-SAME", "TC-DRAFT-SEG100-E86-NEW-SEQUENCE"], "fixtureStatus": "DRAFT_NOT_EXECUTABLE", "multiStepHostOracle": "NOT_PROVIDED"}
+  ],
+  "reviewGaps": [
+    "Existing Test package placeholder chains remain unchanged; this supplement proposes richer chain design only.",
+    "No response/decline code is inferred for invalid Sequence Number cases.",
+    "Approval Number context in SEG100-R-037 needs its own authoritative source clause and applicability review.",
+    "No converter-ready transaction request or metadata sidecar is generated.",
+    "No test execution, host behavior, semantic match or coverage credit is claimed."
+  ]
+}

@@ -1,0 +1,652 @@
+{
+  "id": "TC-001727",
+  "scenario_id": "SC-1751",
+  "scenario_type": "positive",
+  "transaction_type": "Loyalty Card Transaction Request",
+  "priority": "P3",
+  "priority_score": 0.37,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:013",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:013",
+    "REQ-SRC-ATL105-PDF-001:052",
+    "REQ-SRC-ATL105-PDF-001:095",
+    "REQ-SRC-ATL105-PDF-001:142",
+    "REQ-SRC-ATL105-PDF-001:167",
+    "REQ-SRC-ATL105-PDF-001:173",
+    "REQ-SRC-ATL105-PDF-001:176"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "c5addb75507829c2b1c92bb75f3a1849424ac3837ff41b446e32790c15c8fa7c",
+  "request": {
+    "Standard Message Data Segment": {
+      "Segment Type": {
+        "value": "100",
+        "method": "fixed_value",
+        "source_page": 220,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 220,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Information Byte": {
+        "value": "0",
+        "method": "qe_example_value",
+        "source_page": 220,
+        "flags": [
+          "SCENARIO_VALUE_REJECTED: 'Information Byte'/'?' failed character_type/length validation",
+          "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value"
+        ],
+        "element_no": "44",
+        "data_ref": {
+          "segment": "100",
+          "element": "Information Byte",
+          "variant": "valid"
+        }
+      },
+      "Terminal Identifier": {
+        "value": "DNZI941197829190664291",
+        "method": "realistic_terminal_id",
+        "source_page": 220,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "102",
+        "data_ref": {
+          "segment": "100",
+          "element": "Terminal Identifier",
+          "variant": "valid"
+        }
+      },
+      "Prompt Code": {
+        "value": "0001",
+        "method": "composite_from_spec_parts",
+        "source_page": 220,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+          "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+          "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)"
+        ],
+        "element_no": "78",
+        "data_ref": {
+          "segment": "100",
+          "element": "Prompt Code",
+          "variant": "valid"
+        }
+      },
+      "Account Number": {
+        "value": "406782778811261347616329",
+        "method": "realistic_pan",
+        "source_page": 221,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+          "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+          "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "2",
+        "data_ref": {
+          "segment": "100",
+          "element": "Account Number",
+          "variant": "valid"
+        }
+      },
+      "Card Discretionary Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "12",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Card Discretionary Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Encrypted PIN Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "33",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Encrypted PIN Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Pump/Lane Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "79",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Pump/Lane Number",
+          "variant": "omitted"
+        }
+      },
+      "Fuel Purchase Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "41",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Fuel Purchase Amount",
+          "variant": "omitted"
+        }
+      },
+      "Nonfuel Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "58",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Nonfuel Amount",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "99",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "Cash Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "17",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Cash Amount",
+          "variant": "omitted"
+        }
+      },
+      "Sequence Number": {
+        "value": "000001",
+        "method": "qe_example_value",
+        "source_page": 221,
+        "flags": [],
+        "element_no": "86",
+        "data_ref": {
+          "segment": "100",
+          "element": "Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "Approval Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "5",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Approval Number",
+          "variant": "omitted"
+        }
+      },
+      "Local Date and Local Time": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "49",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Local Date and Local Time",
+          "variant": "omitted"
+        }
+      },
+      "Partial Approval Indicator": {
+        "value": "0",
+        "method": "qe_example_value",
+        "source_page": 222,
+        "flags": [],
+        "element_no": "121",
+        "data_ref": {
+          "segment": "100",
+          "element": "Partial Approval Indicator",
+          "variant": "valid"
+        }
+      }
+    },
+    "Loyalty Card Data Segment": {
+      "Segment Type": {
+        "value": "108",
+        "method": "fixed_value",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 235,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Program ID": {
+        "value": "705667",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "138",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Program ID",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Account Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "139",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Account Number",
+          "variant": "omitted"
+        }
+      },
+      "Points to Redeem": {
+        "value": "156203",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "140",
+        "data_ref": {
+          "segment": "108",
+          "element": "Points to Redeem",
+          "variant": "valid"
+        }
+      },
+      "Coupon ID": {
+        "value": "3621381099425063931",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "141",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon ID",
+          "variant": "valid"
+        }
+      },
+      "Coupon Amount": {
+        "value": "36477158",
+        "method": "realistic_amount",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "142",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon Amount",
+          "variant": "valid"
+        }
+      },
+      "Update Code": {
+        "value": "U",
+        "method": "scenario_parameter_literal",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "143",
+        "data_ref": {
+          "segment": "108",
+          "element": "Update Code",
+          "variant": "valid"
+        }
+      },
+      "Street Address": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "144",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Street Address",
+          "variant": "omitted"
+        }
+      },
+      "Phone Number, Loyalty": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "145",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Phone Number, Loyalty",
+          "variant": "omitted"
+        }
+      },
+      "Expiration Date": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "146",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Expiration Date",
+          "variant": "omitted"
+        }
+      },
+      "Payment Tender Type": {
+        "value": "VS",
+        "method": "scenario_parameter_literal",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "148",
+        "data_ref": {
+          "segment": "108",
+          "element": "Payment Tender Type",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Track 2 Data": {
+        "value": "47531120128218270127944427972197691127",
+        "method": "realistic_track2_data",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "147",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Track 2 Data",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Information Version": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "150",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Information Version",
+          "variant": "valid"
+        }
+      },
+      "Unit of Work": {
+        "value": "4531643397883454930",
+        "method": "format_synthesis",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "151",
+        "data_ref": {
+          "segment": "108",
+          "element": "Unit of Work",
+          "variant": "valid"
+        }
+      }
+    },
+    "SKU Data Segment": {
+      "Segment Type": {
+        "value": "101",
+        "method": "scenario_parameter_literal",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 248,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "SKU Data": {
+        "value": "JF5RHCMI4KV6MANBRONS7NIPN26YXP6KOTUGYU0R76BAZZEZFE5X7FW8FM8Y4X59F0U6G13NOMSAS6AM0BK02QUD4H8G18R4VG3GN3XVXAUCJFCEYLHNCJNO2AHENME2Z8FTX7P1YD8MB8Y7RK4AI9NB6V2IZQI85W5T7NPBTYZO2OL2H49KR17D0CRRZJ1IRHRQ7Z19HWPXEKLPMNYLD9VRT51F4Q18KNQT4HYY9DDDDH0501AE9NBB7U2ICPQ903ZPBZXG9RF1P86XXRWQPS1WZEBNIYWCORD1YZP4927U0LE877SL0QX1W10V2MW7WUAUYOYQUT47TG2HKQ2CVUTLMWW7HJBYZQSEIN6IG8X12ZMNVZMWNKVPAASJJVZD2AQOC8LFYAPECOHTWOMAA5F0034TB1XENGPTCQIHYRJM481R9S2NOBNPAWGL6PLTXKSRIWNF2HGACEGS17NTFT8E1KZCOG5I4B9MFRKQ62GA4WKIJB05CT2O8EQVV0CCX28TP5ADL9QO075FZCSM83283MFARUZY6YN0SWVJ1220R45J41S0MCEGYKCMG70G4XSMVA2YRMK25YUE7YDH18XXE1SLFKP0OTY2HPB9O5WOMW65YFJ0XBZ0DJNCDZ5CHFXB6MEOUAOMR6P0TKW5KS5UBPYOORPR8DE8LZD2848JHRCG7RCALLZZ0CMU5T2LTJM249HZTZJDE42ZDXFUT7BB0RZ95VLL76EYJT9UP0KDLXKWM18D9KPUWKOM76N6WEPIGEIQWNDFGNOIPLSNTMBYYVWYDJEI6NS6MRQUB05LYVBKPEMNXGLE4FM04WTO0NF4G0JXK2NU3YGYF2SXGTOS4TOIIJXI52RS7RAADM6AQLQMM11TAHEV5K98RQKMRQH826FWX6WA8I5IPM0CP7ZEVKBU44K8RCCCOPFDBJ0HT82UZ111CH8BPE8OV7IDVUBZJ7RGKKLN4FUQVQE94WSOWF8RGA3SOF65HC8U",
+        "method": "format_synthesis",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "149",
+        "data_ref": {
+          "segment": "114",
+          "element": "SKU Data",
+          "variant": "valid"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "100": "R",
+    "108": "O",
+    "114": "O"
+  },
+  "forced_segments": [],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            209
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        },
+        "field_no": "1",
+        "entry": "R",
+        "position": null,
+        "length": "6",
+        "source_role": null,
+        "layout_page": 172
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        },
+        "field_no": "2",
+        "entry": "R",
+        "position": null,
+        "length": "2",
+        "source_role": null,
+        "layout_page": 172
+      }
+    },
+    "source": "ENT-MSG-LOYALTY_CARD_TRANSACTION_REQUEST"
+  },
+  "flags": [
+    "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+    "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+    "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)",
+    "CONDITIONAL_FIELD_OMITTED",
+    "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+    "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+    "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Card Discretionary Block Data' maps to no catalogued element",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Loyalty Information Version' maps to no catalogued element",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Partial Approval Indicator' maps to no catalogued element",
+    "SCENARIO_VALUE_REJECTED: 'Information Byte'/'?' failed character_type/length validation",
+    "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+  ],
+  "completeness_status": "INCOMPLETE_PARAMETER_NOT_PLACED",
+  "completeness_findings": [
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Card Discretionary Block Data' maps to no catalogued element"
+    },
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Loyalty Information Version' maps to no catalogued element"
+    },
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Partial Approval Indicator' maps to no catalogued element"
+    }
+  ],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) — validate against ATL105 PDF Ch.13 before trusting as ground truth"
+  },
+  "source_rule_id": null,
+  "source_page": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "0",
+      "meaning": "Approved-Purchase/Capture",
+      "source_page": 396,
+      "grounding": "ATL105 Response Code valid values (attribute catalog) + Prompt Code transaction type"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'Loyalty Card Transaction Request' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "confidence_score": 0.9,
+  "confidence_pct": 39,
+  "confidence_band": "LOW",
+  "confidence_factors": [
+    "prior_confidence_score=0.9",
+    "minor_flags=-51"
+  ],
+  "test_data_file": "qe_shaped_test_data/TC-001727.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": [],
+    "advisories": [
+      "CONSTRAINT_NOT_VERIFIABLE: Standard Message Data Segment.Account Number (element 2) has no DEFINED length rule (UNRESOLVED_KB_GAP) — conformance was not verified"
+    ],
+    "attempts": 1
+  }
+}

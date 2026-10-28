@@ -1,0 +1,89 @@
+{
+  "reportId": "ATL105-APPENDIX-I-FULL-MESSAGE-EVIDENCE-GAP-001",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "status": "NOT_ASSESSED_MISSING_RAW_CAPTURE_AND_SOURCE_ADJUDICATION",
+  "payloadScope": "LOGICAL_FRAGMENT_ONLY",
+  "hostExecution": "NOT_EXECUTED_NO_HOST_RESPONSE",
+  "semanticApproval": "NOT_GRANTED",
+  "relatedRun1Comparison": "comparison.json",
+  "existingSourceInspection": {
+    "path": "../../test-json/knowledge/appendix-i-full-message-source-inspection.json",
+    "inspectionId": "APPI-FULL-MESSAGE-SOURCE-001",
+    "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "status": "REVIEW_REQUIRED_SOURCE_DEPENDENCY_INSPECTION_NOT_FULL_REQUEST_CANDIDATE",
+    "knownConflict": {
+      "segment": "100",
+      "fieldCount": 17,
+      "declaredLength": 78,
+      "measuredAsciiLength": 82,
+      "registerId": "SEG111-SME-121",
+      "disposition": "OPEN"
+    }
+  },
+  "currentEvidence": {
+    "logicalCandidatePackage": {
+      "path": "../../test-json/appendix-i-scoped-training/package.json",
+      "reviewOnlyChains": 178,
+      "logicalCases": 372,
+      "completeRequestCount": 0,
+      "certifiedCaseCount": 0
+    },
+    "selectedAiRecords": {
+      "count": 12,
+      "rawWireCaptures": 0,
+      "hostResponses": 0,
+      "captureStatus": "ABSENT_FROM_SELECTED_TD_RECORDS"
+    },
+    "segmentWireValidatorScope": "SEGMENT_111_FRAMING_ONLY_NOT_FULL_MESSAGE"
+  },
+  "requiredEvidenceBeforeOfflineFullMessageValidation": [
+    {
+      "id": "RAW-CAPTURE-PAIR",
+      "requirement": "Two byte-identical raw request captures for the same registered case, each bound to caseId and requestSha256; capture provenance and byte counts must be recorded.",
+      "status": "MISSING"
+    },
+    {
+      "id": "CONVERTER-IDENTITY",
+      "requirement": "Distinct declared converter SHA-256 values and the exact converter/build identity for the two capture paths; no converter authenticity is inferred from a supplied hash alone.",
+      "status": "MISSING"
+    },
+    {
+      "id": "FRAMING-MANIFEST",
+      "requirement": "Hash-verified framing manifest bound to the raw request, covering encoding, field separator, segment identity, segment length, field order, transport length, TPDU, section 1, and segment order as applicable.",
+      "status": "MISSING"
+    },
+    {
+      "id": "SOURCE-QUOTE-SIDECAR",
+      "requirement": "Line-bound ATL105 source quotes for each asserted framing/layout rule, with source hash, section, and exact line span.",
+      "status": "MISSING"
+    },
+    {
+      "id": "COMPLETE-REQUEST-CONTEXT",
+      "requirement": "Source-backed Segment 100 plus applicable companion segments and Sections 1/2/3 context; each field's conditional presence and omission basis must be independently settled.",
+      "status": "MISSING"
+    },
+    {
+      "id": "TABLE-078-079-ADJUDICATION",
+      "requirement": "Authorized resolution of wrapper 78 versus 078, total-length/count basis, nested selector and ordering conflicts, tax scale/terminology examples, and any 078/079 aggregate reconciliation before serializing a complete message.",
+      "status": "OPEN_SME_REVIEW"
+    },
+    {
+      "id": "TABLE-056-LIFECYCLE-ADJUDICATION",
+      "requirement": "Authorized review of source conflicts and lifecycle applicability; current fixture history/reference equality is a bounded synthetic predicate only.",
+      "status": "OPEN_SME_REVIEW"
+    }
+  ],
+  "validationBoundary": {
+    "permittedNow": [
+      "Validate the source-bounded logical predicates in the generated Appendix I package.",
+      "Report missing evidence and candidate traceability without assigning semantic or execution coverage."
+    ],
+    "notPermittedNow": [
+      "Do not synthesize raw wire captures or claim byte-identical capture agreement.",
+      "Do not infer complete request framing, converter provenance, host acceptance, or response behavior.",
+      "Do not resolve source conflicts, conditional field presence, or SME decisions from candidate mappings."
+    ]
+  },
+  "nextGate": "Acquire and hash-bind the required capture pair, framing manifest, source-quote sidecar, and complete request context; keep all SME decisions open until authorized review."
+}

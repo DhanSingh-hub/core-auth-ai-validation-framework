@@ -1,0 +1,76 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-PRODUCT-SEGMENT-HEADER-SEPARATOR-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-DCFBCE194327",
+  "aiStatement": "A Field Separator always follows Segment Type and Segment Length.",
+  "independentTestCandidates": [
+    {"testBrId": "BR-RULE-SEG102-R-022", "sourceScope": "Segment 102 header Field Separators", "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED"},
+    {"testBrId": "BR-RULE-SEG157-R-008", "sourceScope": "Segment 157 dual-delimiter scheme", "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED", "scopeNote": "The candidate includes additional delimiter requirements beyond this AI claim."}
+  ],
+  "decisions": {
+    "brAlignment": "SOURCE_SUPPORTED_WITH_SEGMENT_SCOPE",
+    "chainAdequacy": "UNRESOLVED_NO_WIRE_EVIDENCE",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "perBrFindings": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1197",
+      "sourcePage": 226,
+      "sourceRuleId": "BR-226-14",
+      "sourceScope": "Segment 102 Product Data Segment",
+      "brAlignment": "ALIGNED_TO_SEGMENT_102_SOURCE_NOTE",
+      "chainAdequacy": "UNRESOLVED_NO_WIRE_EVIDENCE",
+      "caseIds": ["TC-007248", "TC-007249", "TC-007250", "TC-007251", "TC-007252"],
+      "casesNamingProductCodeDataSegment": ["TC-007250"],
+      "casesNotExercisingProductCodeSegment": ["TC-007248", "TC-007249", "TC-007251", "TC-007252"],
+      "assessment": "The source note supports the separator rule for Segment 102. Four cases do not name a Product Code Data Segment; the one that does provides JSON-shaped fields, not a serialized wire capture proving either separator position."
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1568",
+      "sourcePage": 320,
+      "sourceRuleId": "BR-320-15",
+      "sourceScope": "Segment 157 Adjusted Product Code Data Segment",
+      "brAlignment": "ALIGNED_TO_SEGMENT_157_SOURCE_NOTE",
+      "chainAdequacy": "UNRESOLVED_NO_WIRE_EVIDENCE",
+      "caseIds": ["TC-008080", "TC-008081", "TC-008082", "TC-008083", "TC-008084"],
+      "casesNamingProductCodeDataSegment": ["TC-008082"],
+      "casesNotExercisingProductCodeSegment": ["TC-008080", "TC-008081", "TC-008083", "TC-008084"],
+      "assessment": "The source note supports the separator rule for Segment 157. Four cases do not name a Product Code Data Segment; the one that does provides JSON-shaped fields for the separate Segment 102 Product Code Data Segment, not Segment 157 wire evidence."
+    }
+  ],
+  "sourceFacts": {
+    "segment102": "Source says a Field Separator always follows Segment Type and Segment Length; it also specifies a conditional trailing separator after Product Amount and separators for unpopulated fields.",
+    "segment157": "Source says a Field Separator always follows Segment Type and Segment Length; it also specifies a conditional trailing separator after Adjusted Product Amount and separators for unpopulated fields.",
+    "notation": "The ▲ glyph is a table notation representing Field Separator. The cited source excerpt does not define the actual wire byte value or converter mapping."
+  },
+  "officialTestChain": {
+    "BR-RULE-SEG102-R-022": {"scenario": "TS-REVIEW-BR-RULE-SEG102-R-022", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-022", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-022", "status": "REVIEW_REQUIRED", "gaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]},
+    "BR-RULE-SEG157-R-008": {"scenario": "TS-REVIEW-BR-RULE-SEG157-R-008", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-008", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-008", "status": "REVIEW_REQUIRED", "gaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]}
+  },
+  "supplementalDraft": {
+    "path": "segment-header-separator-test-chain-package-v1.json",
+    "scope": "Segment 102 and Segment 157 header separator placement only",
+    "scenarioCount": 2,
+    "caseCount": 6,
+    "testDataDesignCount": 6,
+    "testDataEncoding": "SYMBOLIC_NOT_WIRE_BYTES",
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Full converter-ready Segment 102 and Segment 157 requests with exact Field Separator wire encoding and verified byte captures.",
+    "Independent Test-owner confirmation of serializer framing and segment-length calculation for each case.",
+    "Raw wire evidence bound to request hashes; JSON metadata and a table glyph are insufficient to prove separator positions.",
+    "Review all collateral delimiter rules before promoting the broader SEG157-R-008 Test BR."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

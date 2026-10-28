@@ -1,0 +1,690 @@
+{
+  "id": "TC-009514",
+  "name": "Table Field Constraint — ENT-FIELD-TABLE-I-048-3: In TABLE MasterCard Authentication Data (Table ID 048), field 3 (Progra m Protocol) is defined as: Progra m Protocol: Th [EMV Financial Transaction Request]",
+  "scenario_id": "SC-7351",
+  "scenario_type": "table_field_constraint",
+  "transaction_type": "EMV Financial Transaction Request",
+  "priority": "P3",
+  "priority_score": 0.305,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:4465",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:4465"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "completeness_status": "COMPLETE",
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "source_rule_id": "ENT-FIELD-TABLE-I-048-3",
+  "source_page": 580,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "F",
+      "meaning": "approval, partial amount approved",
+      "source_page": [
+        82,
+        95,
+        123
+      ],
+      "grounding": "config/partial_approval_response_code.json (ATL105 SRC-ATL105-PDF-001 pages [82, 95, 123])",
+      "matched_on": "Partial Approval Indicator='1', Prompt Code transaction_type='0'",
+      "scenario_type_basis": "'table_field_constraint' treated as valid, non-violating data (same rule as 'positive')"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "response_message": {
+      "available": true,
+      "response_transaction_type": "EMV Financial Transaction Response",
+      "grounding": "assembled/output/atl105_complete_templates.json paired response template",
+      "tier_counts": {
+        "ASSERT": 10,
+        "INFER": 30,
+        "FLAG": 10
+      },
+      "comparison_note": "Compare field-by-field. 'exact' must match the documented value; 'format_only' must satisfy character_type/length but its value is runtime-determined; 'ignore' is processor-generated and not assertable from ATL105.",
+      "data_section_1": {
+        "Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "83",
+          "character_type": "AN",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Download Indicator": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "30",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "45",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Time": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "46",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Sequence Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "86",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Approved Amount": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "6",
+          "character_type": "N",
+          "max_length_bytes": 9,
+          "presence": "C",
+          "position": null,
+          "length": "9",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Approval Number": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "5",
+          "character_type": "AN",
+          "max_length_bytes": 6,
+          "presence": "C",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Account Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "2",
+          "character_type": "ANS",
+          "max_length_bytes": 24,
+          "presence": "R",
+          "position": null,
+          "length": "25",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Decline Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "26",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "C",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "7",
+          "character_type": "N",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "8",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Settlement Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "119",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Additional Information Data Segment Flag": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "115",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Number of Print Lines": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "61",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Terminal Display /Printer Message": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "101",
+          "character_type": "AN",
+          "max_length_bytes": 31,
+          "presence": "R",
+          "position": null,
+          "length": "31",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        }
+      },
+      "data_section_1_source": "ENT-MSG-EMV_FINANCIAL_TRANSACTION_RESPONSE",
+      "flags": [],
+      "segments": {
+        "Additional Information Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "112",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "116",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "117",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "118",
+            "character_type": "AN",
+            "max_length_bytes": 984,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "115",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data 2 Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "120",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "EMV Response Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "131",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "CA Public Key File Checksum": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "187",
+            "character_type": "N",
+            "max_length_bytes": 25,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "189",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "190",
+            "character_type": "ANSB",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Transaction Attributes Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "134",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Settlement Type": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "198",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Signature Required": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "199",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Receipt Card Description": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "200",
+            "character_type": "AN",
+            "max_length_bytes": 10,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Moneris Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "136",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          },
+          "Moneris Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "213",
+            "character_type": "AN",
+            "max_length_bytes": 100,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Enhanced Fleet Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "146",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          },
+          "Enhanced Fleet Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "239",
+            "character_type": "AN",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "WEX Available Product Fleet Information": {
+          "Segme nt Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "148",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 301,
+            "tolerance_source": "heuristic"
+          },
+          "Segme nt Length Indicat or": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 301,
+            "tolerance_source": "heuristic"
+          },
+          "Availab le Produc t informa tion": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "240",
+            "character_type": "AN Variable Length: 17 bytes",
+            "max_length_bytes": null,
+            "presence": "R",
+            "source_page": 302,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Response InComm OTC Market Basket Data": {
+          "Segme nt Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "152",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          },
+          "Segme nt Length Indicat or": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          },
+          "Market Basket Data": {
+            "tier": "FLAG",
+            "tolerance": "ignore",
+            "value": null,
+            "element_no": "",
+            "character_type": null,
+            "max_length_bytes": null,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Real Time Account Updater Response Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "155",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 310,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 310,
+            "tolerance_source": "heuristic"
+          }
+        }
+      }
+    }
+  },
+  "confidence_score": 0.95,
+  "confidence_pct": 17,
+  "confidence_band": "LOW",
+  "test_data_file": "qe_shaped_test_data/TD-TC-009514.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": []
+  },
+  "test_data": [
+    {
+      "step": 1,
+      "role": "single",
+      "transaction_type": "Sale",
+      "prompt_code": "0020",
+      "file": "TD-TC-009514.json"
+    }
+  ]
+}

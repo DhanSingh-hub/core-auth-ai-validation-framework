@@ -1,0 +1,110 @@
+{
+  "artifact": "PRELIMINARY-AI-BR-TO-TEST-BR-CHAIN-REVIEW",
+  "batchId": "004",
+  "reviewedOn": "2026-10-15",
+  "reviewLevel": "AI_PRELIMINARY_REVIEW_NOT_AUTHORIZED_ADJUDICATION",
+  "scope": "First eight AI BRs assigned to scheduled batch 004.",
+  "aiScenarioApprovalRequired": false,
+  "semanticMatchesConfirmed": 0,
+  "records": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:202",
+      "aiStatement": "EMV Card Sequence Number must be one of: card, chip card.",
+      "aiSourceAnchor": {"segment": "130", "element": "188"},
+      "aiChain": {"scenarioCount": 247, "caseCount": 247, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG130-R-006", "relation": "SAME_FIELD_DESCRIPTION_NOT_ENUMERATION", "rationale": "Same segment/element. Test BR says the optional device-sourced EMV Card Sequence Number identifies the card sequence; it does not define 'card' and 'chip card' as allowed values. The AI statement may have converted source description text into an enum."}
+      ],
+      "preliminaryDisposition": "SAME_FIELD_CANDIDATE_AI_ALLOWED_VALUE_CLAIM_UNSUPPORTED",
+      "testChainStatus": "DRAFT_REVIEW_REQUIRED placeholder chain.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:203",
+      "aiStatement": "EMV Chip Data Length must be numeric and must not exceed 3 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["130", "131"], "element": "189"},
+      "aiChain": {"scenarioCount": 12, "caseCount": 4, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG130-R-007", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP", "rationale": "Same field in Segment 130; Test BR requires a three-digit length and lists 000-999, directly overlapping the AI numeric/three-digit scope."},
+        {"testBrId": "SEG131-R-008", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP_COMPOSITE", "rationale": "Covers the corresponding Segment 131 length field with its related chip data; confirm exact segment-131 source applicability."}
+      ],
+      "preliminaryDisposition": "STRONG_FIELD_CONSTRAINT_CANDIDATES_TEST_RULE_COMPOSITE",
+      "testChainStatus": "Both candidate Test BRs are DRAFT_REVIEW_REQUIRED placeholder chains.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:204",
+      "aiStatement": "EMV Chip Data must be alphanumeric, special, and binary and must not exceed 999 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["130", "131"], "element": "190"},
+      "aiChain": {"scenarioCount": 3, "caseCount": 1, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG130-R-008", "relation": "STRONG_FIELD_AND_STRUCTURE_OVERLAP", "rationale": "Same Segment 130 element; Test BR describes TLV/BCD-packed or hex data and a valid leading length consistent with following chip data. This is related to the AI format/capacity statement but includes structure and does not independently confirm a 999-byte cap."},
+        {"testBrId": "SEG131-R-008", "relation": "COMPOSITE_SEGMENT_131_CANDIDATE", "rationale": "Covers chip length and data together in Segment 131; retain as a separate segment-scoped lead."}
+      ],
+      "excludedLead": {"testBrId": "SEG130-R-010", "reason": "Cryptographic authenticity verification is explicitly out of scope; it is not the AI field-format or capacity obligation."},
+      "preliminaryDisposition": "STRONG_RELATED_RULES_CAPACITY_AND_ENCODING_SCOPE_REVIEW_REQUIRED",
+      "testChainStatus": "Candidate Test BRs are DRAFT_REVIEW_REQUIRED placeholder chains.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:205",
+      "aiStatement": "EMV Additional Information Indicator must be numeric and must not exceed 3 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "191", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioIds": ["SC-5603"], "caseIds": ["TC-020845"], "caseCount": 1, "caseFieldEvidence": [{"path": "NFC Payment Tokenization Data Segment/CAVV, Revised Format", "element": "195", "value": "AJD6HO"}, {"path": "EMV Request Data Segment/CA Public Key File Checksum", "element": "187"}], "claimedElementObservedInCase": false},
+      "testBrCandidates": [],
+      "preliminaryDisposition": "AI_CHAIN_CONTENT_MISMATCH_NO_RELIABLE_TEST_MATCH_CANDIDATE",
+      "reviewAction": "Investigate the requirement-to-scenario/case links and resolve the source segment before searching for Test counterparts; the attached case does not exercise element 191.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:206",
+      "aiStatement": "EMV Additional Information Length must be numeric and must not exceed 3 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "192", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioIds": ["SC-5604"], "caseIds": ["TC-020846"], "caseCount": 1, "caseFieldEvidence": [{"path": "NFC Payment Tokenization Data Segment/CAVV, Revised Format", "element": "195", "value": "O22390"}, {"path": "EMV Request Data Segment/CA Public Key File Checksum", "element": "187"}], "claimedElementObservedInCase": false},
+      "testBrCandidates": [],
+      "preliminaryDisposition": "AI_CHAIN_CONTENT_MISMATCH_NO_RELIABLE_TEST_MATCH_CANDIDATE",
+      "reviewAction": "Investigate the requirement-to-scenario/case links and resolve the source segment before searching for Test counterparts; the attached case does not exercise element 192.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:207",
+      "aiStatement": "CA Public Key File Block Length must be numeric and must not exceed 3 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "193", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioIds": ["SC-5605"], "caseIds": ["TC-005175"], "caseCount": 1, "caseFieldEvidence": [{"path": "NFC Payment Tokenization Data Segment/CAVV, Revised Format", "element": "195", "value": "MCEJWI"}, {"path": "CA Public Key File Data Segment/CA Public Key File Checksum", "element": "187"}], "claimedElementObservedInCase": false},
+      "testBrCandidates": [],
+      "preliminaryDisposition": "AI_CHAIN_CONTENT_MISMATCH_NO_RELIABLE_TEST_MATCH_CANDIDATE",
+      "reviewAction": "Investigate the requirement-to-scenario/case links and resolve the source segment before searching for Test counterparts; the attached case contains the CA-file checksum, not the claimed block-length field 193.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:208",
+      "aiStatement": "CA Public Key File Block must be alphanumeric and must not exceed 999 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "194", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioIds": ["SC-5606"], "caseIds": ["TC-005176"], "caseCount": 1, "caseFieldEvidence": [{"path": "NFC Payment Tokenization Data Segment/CAVV, Revised Format", "element": "195", "value": "U4J3XT"}, {"path": "CA Public Key File Data Segment/CA Public Key File Checksum", "element": "187"}], "claimedElementObservedInCase": false},
+      "testBrCandidates": [],
+      "preliminaryDisposition": "AI_CHAIN_CONTENT_MISMATCH_NO_RELIABLE_TEST_MATCH_CANDIDATE",
+      "reviewAction": "Investigate the requirement-to-scenario/case links and resolve the source segment before searching for Test counterparts; the attached case does not exercise the claimed block field 194.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:209",
+      "aiStatement": "CAVV Revised Format must be one of: Position Description, replaces the need for the XID)., section in Appendix Y (3-D Secure)..",
+      "aiSourceAnchor": {"segment": "123", "element": "195"},
+      "aiChain": {"scenarioCount": 565, "caseCount": 565, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE", "observedExampleValues": ["Position", "AAAAAA", "MCEJWI", "U4J3XT"]},
+      "testBrCandidates": [
+        {"testBrId": "SEG123-R-007", "relation": "STRONG_SAME_FIELD_CANDIDATE_AI_STATEMENT_AND_ORACLES_UNRESOLVED", "rationale": "Same Segment 123 element 195. Test BR describes the CAVV revised-format field, 20-character optional value and relation to VbV/ATN replacing XID. The AI statement appears to have misparsed definition prose as an allowed-value list; observed values such as 'Position' and 'AAAAAA' do not establish the 20-character rule."}
+      ],
+      "preliminaryDisposition": "STRONG_SAME_FIELD_CANDIDATE_AI_SOURCE_EXTRACTION_REVIEW_REQUIRED",
+      "testChainStatus": "SEG123-R-007 and its chain are DRAFT_REVIEW_REQUIRED placeholders.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    }
+  ]
+}

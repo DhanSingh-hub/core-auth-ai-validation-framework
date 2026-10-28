@@ -27,13 +27,15 @@ Compare with Segment 100 and DL1-DL6:
 | Table Length | n3 | `003` | `013` |
 | Table Data | an1 (sic) | ISO 639-2 language code | 13-character international postal code |
 
-The earlier note said Appendix W was "not yet transcribed". It is present in the extracted 2026-3 text and is now catalogued as `SEGDL7-R-004`.
+Appendix W is in scope for this training pass. The two tables now have a bounded oracle in the
+[Appendix W training module](../appendix-w/README.md). The `an1` versus Table Length / described data
+width contradiction remains an open source question (`SEGDL7-SME-003`).
 
 ## Open Questions
 
 | Topic | Item |
 |---|---|
-| Is Appendix W in scope? | `SEGDL7-SME-001` |
+| Is Appendix W in scope? | Resolved for this training pass (`SEGDL7-SME-001`) |
 | `an1` vs Table Length 003/013 | `SEGDL7-SME-003` |
 | Which message carries DL7; can data span several DL7s? | `SEGDL7-SME-004` |
 | Does Segment Length include its own digits; why "Source: Device"? | `SEGDL7-SME-005` |

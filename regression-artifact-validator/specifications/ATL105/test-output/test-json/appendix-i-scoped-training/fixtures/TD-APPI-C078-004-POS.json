@@ -1,0 +1,83 @@
+{
+  "id" : "TD-APPI-C078-004-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-004-POS.json",
+  "testCaseIds" : [ "TC-APPI-C078-004-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-83",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r007-APPI-C078-004"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-004",
+        "tableId" : "078",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T078-R007" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-83",
+          "startLine" : 32098,
+          "endLine" : 32118
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "01",
+            "declaredValueLength" : "04",
+            "data" : "FLSV"
+          },
+          "negative" : {
+            "id" : "01",
+            "declaredValueLength" : "04",
+            "data" : "XXXX"
+          },
+          "positiveVariants" : [ {
+            "data" : "HSDI",
+            "meaning" : "high-speed dispense"
+          }, {
+            "data" : "SLSV",
+            "meaning" : "self-service"
+          }, {
+            "data" : "FLSV",
+            "meaning" : "full service"
+          } ]
+        },
+        "clearScope" : "Defined an2 ID 01, n2 length 04, a4 service type and all three listed codes.",
+        "excludedClaims" : [ "Whole blob", "Mandatory service tag", "Sub-table order", "Actual location service" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data is FLSV/HSDI/SLSV",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "id/length/data widths are 2/2/4",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data is FLSV/HSDI/SLSV",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "id/length/data widths remain 2/2/4",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "FLSV",
+          "to" : "XXXX",
+          "unchanged" : "id and length",
+          "targetedFailure" : "unlisted service code"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

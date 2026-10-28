@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C040-02-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C040-02-POS.json",
+  "testCaseIds" : [ "TC-APPI-C040-02-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-35",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t040-r002-APPI-C040-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C040-02",
+        "tableId" : "040",
+        "ruleIds" : [ "APPI-T040-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-35",
+          "startLine" : 28963,
+          "endLine" : 28965
+        } ],
+        "logicalFields" : {
+          "indicatorPresent" : false,
+          "authorizationMinorUnits" : 4500,
+          "knownFinalSettlementMinorUnits" : 4500
+        },
+        "clearScope" : [ "Known equal amounts require omission" ],
+        "excludedClaims" : [ "Numeric currency conversion or inferred tolerance" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "040 omitted when final amount known equal",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "indicatorPresent",
+          "value" : true,
+          "targetedNegative" : "Indicator introduced despite equal amount"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

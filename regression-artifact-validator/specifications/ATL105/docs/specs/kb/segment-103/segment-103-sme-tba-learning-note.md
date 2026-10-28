@@ -108,7 +108,7 @@ Important POS behavior:
 
 Element 164 is used for EBT program-specific data and supports HIP-related behavior. It has a maximum length of 267 bytes and contains a 3-digit Total Length subelement (max value 264) plus one to six Program Data subelements, with each subelement limited to 44 bytes.
 
-The full positional layout is confirmed against both Appendix M worked examples: for TAG `50`/`51`/`52`, the subelement is TAG(2)+LEN(2)+ACCOUNT TYPE(2, fixed `98`)+AMOUNT TYPE(2, equals the TAG value)+CURRENCY CODE(3, fixed `840`)+AMOUNT DESCRIPTOR(1, `0`/`C`/`D`)+DETAIL(12-digit amount); for TAG `IT`, the subelement is TAG(2)+LEN(2)+ADDRESS(28)+ZIP(9), and ACCOUNT TYPE/AMOUNT TYPE/CURRENCY CODE/AMOUNT DESCRIPTOR are explicitly not required. This resolves P-03 and is enforced by `SEG103-R-022`.
+Section 13.2 and the Appendix M worked strings specify TAG/LEN, fixed ACCOUNT TYPE/CURRENCY/DESCRIPTOR, 12-digit amount details, and an IT address with up-to-9-digit ZIP. However, Appendix M-2/M-4 prose says request TAG `50` AMOUNT TYPE is `40`, while Section 13.2 and both worked strings use `50`. Historical P-03 remains unchanged; new `SEG103-SME-009` keeps both candidates `REVIEW_REQUIRED`. The validator warns for either source-listed TAG 50 candidate and rejects other values.
 
 SME question: Is the program-data payload being validated against the correct state/program layout, or is it only being checked for length?
 

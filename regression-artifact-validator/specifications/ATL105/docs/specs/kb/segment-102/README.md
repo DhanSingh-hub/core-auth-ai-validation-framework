@@ -15,6 +15,37 @@ This folder is the focused learning and analysis module for the ATL105 Product C
 - [Companion-Segment Compatibility Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md)
 - [Serialization Wire-Format Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md)
 
+## Actual matched904 applicability continuation
+
+Actual941/991 entries trigger structured source13348–13491 checks through
+`ProductActualPayloadAdapter` and opt-in actual intake. Observed
+`context.hostDiscount` carries a captured actual904118, successful-load Boolean,
+retained new timestamp, selected record, matched current device/sequence/local
+clock and matched BIN-table entry bound to actual AccountNumber. Received904
+physical checks are reused, not duplicated. Metadata never supplies absent
+current products/identities.
+
+Executed predicates bind successful904/timestamp, received eligible and emitted
+product codes, interior calendar window and observed card type. Missing
+observations remain review; malformed or contradictory evidence is invalid
+even alongside missing identity fields. Exact interval endpoints/2400 and
+merchant timezone conversion remain review. No941/914 arithmetic, generic BIN
+extraction, quantity conversion or rounding formula is invented.26 canonical
+executions are also covered by `Chapter12FleetDiscountLoadIntegrationTest`;
+see the current [gap register](../chapter-coverage-gap-register.md).
+
+The next continuation binds independently observed904 application evidence to
+actual purchased product fields and received eligible product/flat discount.
+For991 prepay, Element172's explicit99v999 representation permits an exact
+before/after unit-price delta check, using the existing ATL105 decimal-prefix
+oracle. Captured applied quantity is bounded by receivedN3 quantity limit only
+when its independently observed limit unit matches the actual purchased unit.
+Unknown/different units remain review; no unit conversion or discount-total
+multiplication is inferred. Missing evidence reviews and malformed observed
+values invalidate even beside missing context. Source13356-13357's941 postpay
+transaction-amount inclusion remains ordinary unreconciled implementation,
+separate from the existing received-load/report-code binding.
+
 ## [PROVISIONAL] Items
 
 - P-01: Appendix F now has a 380-row source oracle and 1,013 independent classification/format TD chains. Codes `895`/`896` remain source-conflicted; transaction eligibility/configuration and full Segment 102 validation remain separate gates (`SEG102-SME-001`). See the linked training note.
@@ -34,6 +65,34 @@ This module covers:
 - Business-requirement, scenario, test-case, and test-data analysis for Segment 102
 
 It does not claim that Segment 102 alone represents every fuel/product transaction. Segment 100 remains the required core; Segment 102 is a conditional Section 3 companion added when the flow requires itemized product data.
+
+## Executable Chapter 12 physical and actual-payload continuation
+
+The shared [product validator](../../../../../../src/main/java/com/coreauth/validator/canonical/ProductSegmentPayloadValidator.java)
+now checks actual optional `SerializedSegment` data: measured ASCII length,
+the 381-character segment/370-character product-body caps, the two header Field
+Separators, literal backslash product delimiters and final Field Separator
+(`0x1C`). It compares wire content against actual logical fields and preserves
+empty fields rather than accepting a reconstructed wire as producer evidence.
+Quantity and Unit Price retain their decimal-prefix checks and nine-character
+caps. Observed `context.primaryFuelCode` and boolean `context.evCharging`
+activate bounded primary/EV-first checks; known nonfuel codes cannot be
+declared primary fuel. Missing merchant/primary provenance remains review.
+
+The [actual payload adapter](../../../../../../src/main/java/com/coreauth/validator/canonical/ProductActualPayloadAdapter.java)
+accepts `Products` arrays or one flat product, including observed spellings
+`NumberofProducts` and `UnitofMeasure`. Conflicting aliases or simultaneous
+flat/array forms are invalid. It normalizes an actual companion
+`NonFuelAmount` spelling without injecting metadata values; actual Comdata
+card identity cannot be overridden by contradictory context.
+
+Semantic AI intake executes every actual 102/157 occurrence, even with no
+metadata field declarations. Five Segment 102 executions persist in the
+[canonical chapter evidence](../../../../test-output/test-json/chapter-12-training-evidence.json):
+one/multiple-product measured wires, wrong delimiter, wrong length and
+ambiguous representations. Full source-facet/merchant applicability and the
+source-example amount-reconciliation conflict are not certified by these
+bounded executions.
 
 ## Authoritative Neighboring Knowledge
 

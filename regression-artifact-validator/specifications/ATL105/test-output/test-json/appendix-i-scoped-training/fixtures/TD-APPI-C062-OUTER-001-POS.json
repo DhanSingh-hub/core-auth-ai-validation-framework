@@ -1,0 +1,135 @@
+{
+  "id" : "TD-APPI-C062-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C062-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C062-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-66",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t062-r001-APPI-C062-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C062-OUTER-001",
+        "tableId" : "062",
+        "ruleIds" : [ "APPI-T062-R001", "APPI-T062-R002" ],
+        "syntheticData" : {
+          "tableSelector" : "062",
+          "logicalPayloadLength" : 15,
+          "records" : [ {
+            "selector" : "01",
+            "logicalLength" : 10,
+            "phone" : "1234567890"
+          } ],
+          "logicalRecordObservation" : "010101234567890",
+          "context" : {
+            "cardBrand" : "Visa",
+            "transactionContext" : "account verification"
+          }
+        },
+        "clearScope" : "n2nestedID/n3count;phone16/email99;Visaaccountverification;aggregate150declared;noall-fields mandate.",
+        "excludedClaims" : [ "E.164", "EmailRFC", "Automaticzeroamountrule", "Emailcharacterconflictresolution" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Visa phone-onlyrecordcount15",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Emailanversuspunctuation",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "records[0].logicalLength",
+            "replacement" : 9,
+            "expected" : "FAIL ten-bytephonecount"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 14,
+            "expected" : "FAIL aggregatecount"
+          }, {
+            "path" : "context.cardBrand",
+            "replacement" : "MasterCard",
+            "expected" : "FAIL Visa-only"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "definedRecordMaximumTotal" : 125,
+          "calculation" : "16+99+two5-byteheaders=125;150allocationdoesnotdefineextraentries",
+          "declaredOuterMaximum" : 150,
+          "oneOverAllocation" : 151
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30947,
+          "section" : "Appendix I-66",
+          "endLine" : 30977
+        }, {
+          "startLine" : 30978,
+          "section" : "Appendix I-67",
+          "endLine" : 31014
+        }, {
+          "startLine" : 30955,
+          "section" : "Appendix I-66",
+          "endLine" : 30977
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30989,
+          "section" : "Appendix I-67",
+          "endLine" : 31014
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 062",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30955,
+            "section" : "Appendix I-66",
+            "endLine" : 30957
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; up to 150",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30958,
+            "section" : "Appendix I-66",
+            "endLine" : 30963
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans150",
+          "sourceLength" : "maximum 150 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30964,
+            "section" : "Appendix I-66",
+            "endLine" : 30967
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

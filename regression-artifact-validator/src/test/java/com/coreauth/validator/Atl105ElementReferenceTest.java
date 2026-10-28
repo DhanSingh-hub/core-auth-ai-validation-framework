@@ -113,6 +113,20 @@ class Atl105ElementReferenceTest {
         return observation;
     }
 
+    @Test
+    void semanticReferenceInheritsParentHistoryAndRejectsContradictoryChildHistory() throws Exception {
+        var validator = new Atl105ElementReferenceValidator(PACK);
+        ObjectNode input = observation("Phone Load Response", "DL1", "98", "********").put("chapter13Semantics", true);
+        var actions = input.putObject("history").putObject("storeNumberActions").put("displayed", true).put("printed", false);
+        var saved = input.deepCopy();
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.ruleId().equals("CH13-E98-PROCESSING-MASKED-ACTIONS") && f.status() == Status.INVALID);
+        assertThat(input).isEqualTo(saved);
+        actions.put("displayed", false);
+        ((ObjectNode) input.path("segments").path(0)).putObject("history").putObject("storeNumberActions")
+                .put("displayed", true).put("printed", false);
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.ruleId().equals("CH13-HISTORY-CONTEXT") && f.status() == Status.INVALID);
+    }
+
     private static JsonNode find(JsonNode matrix, String id) {
         for (JsonNode element : matrix.path("elements")) if (id.equals(element.path("element").asText())) return element;
         throw new AssertionError("Element not found: " + id);

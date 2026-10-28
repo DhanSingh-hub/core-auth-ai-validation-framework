@@ -136,6 +136,50 @@ public final class Segment109PayloadValidator {
         checkTextData(segment, result);
     }
 
+    public ValidationResult validateProcessingObservation(JsonNode observation) {
+        ValidationResult result = new ValidationResult("chapter-10-electronic-mail-observation");
+        if (observation == null || !observation.isObject()) {
+            result.addError(SOURCE, "Chapter 10.11 processing observation must be an object");
+            return result;
+        }
+        String operation = text(observation, "operation");
+        String expectedPrompt;
+        String field;
+        int maximum;
+        String rule;
+        if ("RETRIEVAL".equals(operation) || "PROPRIETARY_RETRIEVAL".equals(operation)) {
+            expectedPrompt = "RETRIEVAL".equals(operation) ? "981" : "996";
+            field = "printData";
+            maximum = 750;
+            rule = "SEG109-R-019";
+        } else if ("SUBMISSION".equals(operation)) {
+            expectedPrompt = "995";
+            field = "submissionData";
+            maximum = 217;
+            rule = "SEG109-R-020";
+        } else {
+            result.addError(SOURCE, "Operation must be RETRIEVAL, PROPRIETARY_RETRIEVAL or SUBMISSION (10.11)");
+            return result;
+        }
+        JsonNode prompt = observation.get("promptCode");
+        if (prompt == null || !prompt.isTextual() || !expectedPrompt.equals(prompt.textValue())) {
+            result.addError(SOURCE, "Prompt Code for " + operation + " must be textual " + expectedPrompt + " (" + rule + ")");
+        }
+        JsonNode data = observation.get(field);
+        if (data == null) {
+            result.addWarning("REVIEW_REQUIRED: " + field + " not observed; Chapter 10 byte limit is not asserted (" + rule + ")");
+        } else if (!data.isTextual()) {
+            result.addError(SOURCE, field + " must be a text-valued logical observation (" + rule + ")");
+        } else if (data.textValue().chars().anyMatch(character -> character > 127)) {
+            result.addWarning("REVIEW_REQUIRED: non-ASCII " + field + " needs transport-encoding evidence before counting bytes (" + rule + ")");
+        } else if (data.textValue().length() > maximum) {
+            result.addError(SOURCE, field + " exceeds " + maximum + " ASCII bytes per request (" + rule + ")");
+        }
+        result.addWarning("REVIEW_REQUIRED: logical Chapter 10.11 observation only; complete wire, retrieval timing, "
+                + "submission confirmation and host storage are not asserted");
+        return result;
+    }
+
     private static void checkTextData(JsonNode segment, ValidationResult result) {
         String textDataLength = text(segment, "TextDataLength");
         String textData = text(segment, "TextData");

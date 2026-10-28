@@ -90,6 +90,17 @@ class SmeDecisionWorkflowTest {
     }
 
     @Test
+    void explicitDecisionRegisterIsScopedBeneathTestOutput() {
+        Path testOutput = directory.resolve("ATL105/test-output");
+        Path run4Register = testOutput.resolve("ai-solution-independent-review/Run4/decisions.json");
+
+        assertThat(RecordSmeDecision.explicitRegisterPath(testOutput, run4Register)).isEqualTo(run4Register);
+        assertThatThrownBy(() -> RecordSmeDecision.explicitRegisterPath(testOutput,
+                directory.resolve("outside/decisions.json")))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("beneath ATL105 test-output");
+    }
+
+    @Test
     void rejectedDuplicateAndConfirmedOutcomesNeedTheirOwnPromotionEvidence() {
         ObjectNode register = register(pending("D-1", "REQ-1", "100"));
         assertThatThrownBy(() -> record(register, "NEW_RULE", "", "rationale", ""))

@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16282d">
+  <title>ATL105 BR Coverage | 181026 Run</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182a2e;
+      --ink-soft: #42565a;
+      --paper: #f2f5f1;
+      --white: #ffffff;
+      --line: #d5dfd9;
+      --teal: #12685f;
+      --teal-light: #d8eee7;
+      --coral: #cf563e;
+      --coral-light: #f8e2d9;
+      --lime: #d5ed59;
+      --blue: #397d92;
+      --blue-light: #dcebf0;
+      --muted: #6c7b7e;
+      --warning: #94502e;
+      --mono: "Cascadia Code", "Consolas", monospace;
+      --display: "Georgia", "Cambria", serif;
+      --body: "Bahnschrift", "Trebuchet MS", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; margin: 0; }
+    body {
+      background: #dfe7e2;
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.48;
+    }
+    button, a { font: inherit; }
+    a { color: var(--teal); text-underline-offset: 3px; }
+    a:hover { color: var(--coral); }
+    .deck-shell { min-height: 100vh; display: grid; grid-template-rows: 54px 1fr 64px; }
+    .topbar, .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: var(--ink);
+      color: #f5f7f3;
+    }
+    .topbar { border-bottom: 1px solid #34494d; }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .brand-mark { width: 12px; height: 12px; background: var(--lime); border-radius: 2px; transform: rotate(45deg); }
+    .top-meta { color: #b8c7c3; font: 12px var(--mono); }
+    .stage { display: grid; place-items: center; padding: 22px; }
+    .slide {
+      width: min(1180px, 100%);
+      min-height: min(700px, calc(100vh - 154px));
+      overflow: auto;
+      position: relative;
+      padding: 54px 64px 52px;
+      background-color: var(--paper);
+      background-image: linear-gradient(rgba(24,42,46,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(24,42,46,.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      box-shadow: 0 18px 55px rgba(24,42,46,.16);
+      border-top: 6px solid var(--teal);
+    }
+    .slide[hidden] { display: none; }
+    .slide.dark { background-color: var(--ink); color: #f6f7f2; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); border-color: var(--lime); }
+    .slide.dark a { color: var(--lime); }
+    .slide-kicker { margin: 0 0 18px; color: var(--teal); font: 700 12px var(--mono); letter-spacing: 1.6px; text-transform: uppercase; }
+    .dark .slide-kicker { color: var(--lime); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: var(--display); font-weight: 500; letter-spacing: 0; }
+    h1 { max-width: 790px; margin-bottom: 22px; font-size: 54px; line-height: 1.03; }
+    h2 { max-width: 900px; margin-bottom: 26px; font-size: 40px; line-height: 1.08; }
+    h3 { margin-bottom: 9px; font-size: 17px; line-height: 1.2; }
+    .lede { max-width: 740px; color: var(--ink-soft); font-size: 19px; line-height: 1.55; }
+    .dark .lede { color: #c2cfca; }
+    .accent { color: var(--coral); }
+    .lime { color: var(--lime); }
+    .micro { color: var(--muted); font: 12px var(--mono); letter-spacing: .3px; }
+    .dark .micro { color: #afc0bc; }
+    .cover-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(270px, .7fr); gap: 40px; align-items: end; margin-top: 66px; }
+    .cover-side { border-left: 2px solid var(--lime); padding: 4px 0 4px 24px; color: #c5d0cc; }
+    .cover-side strong { display: block; margin-bottom: 7px; color: var(--lime); font: 12px var(--mono); letter-spacing: 1px; text-transform: uppercase; }
+    .cover-stamp { display: inline-block; margin-top: 25px; border: 1px solid #607378; padding: 8px 12px; color: #d7e2de; font: 11px var(--mono); text-transform: uppercase; letter-spacing: .8px; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 20px; }
+    .metric { min-height: 148px; padding: 18px; background: var(--white); border-top: 4px solid var(--teal); }
+    .metric.alert { border-color: var(--coral); }
+    .metric.pending { border-color: #a6b0ae; }
+    .metric .value { display: block; margin: 9px 0 5px; font: 700 29px var(--mono); line-height: 1.1; letter-spacing: 0; }
+    .metric .label { color: var(--ink-soft); font-size: 13px; line-height: 1.4; }
+    .metric .tag { color: var(--muted); font: 10px var(--mono); letter-spacing: .6px; text-transform: uppercase; }
+    .callout { display: grid; grid-template-columns: 10px 1fr; gap: 14px; align-items: stretch; margin-top: 18px; padding: 14px 18px; background: var(--teal-light); color: #244541; }
+    .callout::before { content: ""; background: var(--teal); }
+    .callout.warning { background: var(--coral-light); color: #63382d; }
+    .callout.warning::before { background: var(--coral); }
+    .callout p { margin: 0; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+    .edge-list { display: grid; gap: 13px; margin-top: 19px; }
+    .edge-row { display: grid; grid-template-columns: 106px 1fr 90px; gap: 14px; align-items: center; }
+    .edge-name { color: var(--ink-soft); font: 12px var(--mono); }
+    .edge-bar { height: 12px; background: #dbe3de; position: relative; }
+    .edge-bar > span { display: block; height: 100%; background: var(--teal); }
+    .edge-value { text-align: right; font: 12px var(--mono); }
+    .stat-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 18px; }
+    .stat-block { padding: 16px; border-left: 3px solid var(--blue); background: var(--blue-light); }
+    .stat-block strong { display: block; font: 700 23px var(--mono); }
+    .stat-block span { color: var(--ink-soft); font-size: 13px; }
+    .table-wrap { width: 100%; overflow-x: auto; margin: 18px 0; }
+    table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,.78); font-size: 13px; }
+    th, td { padding: 11px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { background: #e5ece7; color: var(--ink); font: 700 11px var(--mono); letter-spacing: .3px; }
+    td.num { width: 110px; white-space: nowrap; font: 12px var(--mono); }
+    .disposition { display: grid; gap: 13px; margin: 20px 0; }
+    .disposition-row { display: grid; grid-template-columns: minmax(175px, 1.1fr) minmax(120px, 2fr) 64px; gap: 12px; align-items: center; }
+    .disposition-label { color: var(--ink-soft); font-size: 13px; }
+    .disposition-track { height: 14px; background: #dce4df; }
+    .disposition-fill { height: 100%; background: var(--blue); }
+    .disposition-row:nth-child(2) .disposition-fill { background: var(--teal); }
+    .disposition-row:nth-child(3) .disposition-fill { background: #899c67; }
+    .disposition-row:nth-child(4) .disposition-fill { background: var(--coral); }
+    .disposition-row:nth-child(5) .disposition-fill { background: #819092; }
+    .disposition-count { text-align: right; font: 12px var(--mono); }
+    .disposition-note { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
+    .path-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0 16px; }
+    .path-box { min-height: 134px; padding: 16px; background: #fff; border-left: 4px solid var(--coral); }
+    .path-box.actual { border-color: var(--teal); }
+    .path-box small { display: block; margin-bottom: 11px; color: var(--muted); font: 11px var(--mono); text-transform: uppercase; }
+    code { font: 12px var(--mono); overflow-wrap: anywhere; }
+    .path-arrow { margin: 0 7px; color: var(--coral); font-weight: 700; }
+    .gate-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 23px; background: var(--line); border: 1px solid var(--line); }
+    .gate { min-height: 112px; padding: 17px; background: var(--paper); }
+    .gate-status { display: inline-block; margin-bottom: 8px; color: var(--warning); font: 700 10px var(--mono); letter-spacing: .8px; text-transform: uppercase; }
+    .gate p { margin: 0; color: var(--ink-soft); font-size: 13px; }
+    .action-list { counter-reset: item; display: grid; gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
+    .action-list li { counter-increment: item; display: grid; grid-template-columns: 35px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .action-list li::before { content: counter(item, decimal-leading-zero); color: var(--coral); font: 700 13px var(--mono); }
+    .talk-track { max-width: 890px; margin: 22px 0; padding: 21px 24px; border-left: 4px solid var(--lime); background: rgba(255,255,255,.08); color: #eff4ef; font: 21px/1.55 var(--display); }
+    .evidence-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; margin: 20px 0; }
+    .evidence-list a { overflow-wrap: anywhere; }
+    .hash-list { color: #bbcac5; font: 10px/1.7 var(--mono); overflow-wrap: anywhere; }
+    .slide-footer { position: absolute; right: 64px; bottom: 23px; left: 64px; display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font: 10px var(--mono); text-transform: uppercase; letter-spacing: .4px; }
+    .dark .slide-footer { color: #aebdb9; }
+    .controls { gap: 20px; border-top: 1px solid #34494d; }
+    .control-group { display: flex; align-items: center; gap: 10px; }
+    .control-button { min-height: 36px; padding: 7px 12px; color: #f5f7f3; background: transparent; border: 1px solid #607378; border-radius: 3px; cursor: pointer; font-size: 12px; }
+    .control-button:hover, .control-button:focus-visible { color: var(--ink); background: var(--lime); border-color: var(--lime); outline: none; }
+    .control-button:disabled { opacity: .4; cursor: default; }
+    .progress { color: #c4d1cd; font: 12px var(--mono); }
+    .keyboard-hint { color: #9eafab; font: 10px var(--mono); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 760px) {
+      .deck-shell { grid-template-rows: 48px 1fr 60px; }
+      .topbar, .controls { padding: 0 12px; }
+      .top-meta { display: none; }
+      .stage { padding: 10px; }
+      .slide { height: calc(100vh - 128px); min-height: 0; overflow-y: auto; padding: 32px 22px 60px; }
+      h1 { font-size: 40px; }
+      h2 { font-size: 31px; }
+      .lede { font-size: 16px; }
+      .cover-grid, .two-col { grid-template-columns: 1fr; gap: 22px; margin-top: 35px; }
+      .metric-grid { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 130px; padding: 13px; }
+      .metric .value { font-size: 23px; }
+      .edge-row { grid-template-columns: 82px 1fr 76px; gap: 8px; }
+      .path-compare, .gate-list, .evidence-list { grid-template-columns: 1fr; }
+      .disposition-row { grid-template-columns: minmax(125px, 1fr) minmax(80px, 1fr) 55px; gap: 8px; }
+      .disposition-label { font-size: 11px; }
+      .slide-footer { right: 22px; left: 22px; }
+      .keyboard-hint { display: none; }
+      .control-button { padding: 6px 9px; }
+    }
+    @media (max-width: 420px) {
+      .brand { font-size: 11px; }
+      .metric-grid { grid-template-columns: 1fr 1fr; }
+      .stat-pair { grid-template-columns: 1fr; }
+      .metric .value { font-size: 20px; }
+      .slide { padding-right: 17px; padding-left: 17px; }
+      .slide-footer { right: 17px; left: 17px; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .slide:not(.dark) { animation: appear .28s ease-out; }
+      @keyframes appear { from { opacity: .72; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    }
+    @media print {
+      @page { size: landscape; margin: 0; }
+      html, body { background: #fff; }
+      .deck-shell { display: block; }
+      .topbar, .controls { display: none !important; }
+      .stage { display: block; padding: 0; }
+      .slide, .slide[hidden] { display: flex !important; flex-direction: column; width: 100%; height: 100vh; min-height: 0; overflow: hidden; padding: 38px 54px; box-shadow: none; border-top-width: 5px; page-break-after: always; break-after: page; }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      h1 { font-size: 45px; }
+      h2 { font-size: 34px; }
+      .metric { min-height: 120px; }
+      .slide-footer { position: static; margin-top: auto; padding-top: 18px; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>ATL105 / BR Coverage</div>
+      <div class="top-meta">181026 RUN - STRUCTURAL REVIEW - 2026-10-19</div>
+    </header>
+
+    <main class="stage" id="presentation" aria-live="polite">
+      <section class="slide dark" aria-labelledby="slide-title-1">
+        <p class="slide-kicker">Business requirement coverage / Run3</p>
+        <div class="cover-grid">
+          <div>
+            <h1 id="slide-title-1">What is covered, what is only linked, and what remains unproven?</h1>
+            <p class="lede">A structural view of the 181026 AI delivery against its own traceability matrix and the independent 601-rule Test Solution baseline.</p>
+            <span class="cover-stamp">Structural inventory - not sign-off</span>
+          </div>
+          <aside class="cover-side">
+            <strong>Executive readout</strong>
+            <p><b class="lime">71.66%</b> producer-reported traceability within the AI catalog.</p>
+            <p><b class="lime">58.74%</b> structural candidate reach against the independent Test BR baseline.</p>
+            <p><b class="accent">Not assessed:</b> semantic approval and executed validation.</p>
+          </aside>
+        </div>
+        <div class="slide-footer"><span>Immutable Run3 intake</span><span>01 / 07</span></div>
+      </section>
+
+      <section class="slide" aria-labelledby="slide-title-2" hidden>
+        <p class="slide-kicker">01 / Coverage scorecard</p>
+        <h2 id="slide-title-2">Two coverage percentages. <span class="accent">Two different questions.</span></h2>
+        <div class="metric-grid">
+          <article class="metric"><span class="tag">AI catalog / producer metric</span><strong class="value">71.66%</strong><span class="label">6,070 of 8,470 candidate BRs marked fully traced in the supplied matrix.</span></article>
+          <article class="metric"><span class="tag">Independent Test baseline</span><strong class="value">58.74%</strong><span class="label">353 of 601 source-derived Test BRs have a structural anchor candidate.</span></article>
+          <article class="metric alert"><span class="tag">Exact physical route</span><strong class="value">0 / 15,625</strong><span class="label">Test cases with a complete, exact declared test-data route.</span></article>
+          <article class="metric pending"><span class="tag">Semantic / execution</span><strong class="value">NOT ASSESSED</strong><span class="label">No authorized semantic decisions or certified run evidence.</span></article>
+        </div>
+        <div class="callout warning"><p><b>Do not compare 71.66% and 58.74% as if they share a denominator.</b> The first is AI-internal traceability; the second is structural candidate reach against an independent baseline.</p></div>
+        <div class="slide-footer"><span>Different denominators, different evidence gates</span><span>02 / 07</span></div>
+      </section>
+
+      <section class="slide" aria-labelledby="slide-title-3" hidden>
+        <p class="slide-kicker">02 / AI matrix reconciliation</p>
+        <h2 id="slide-title-3">The matrix is internally consistent on BR edges, with <span class="accent">144 non-BR-rooted branches.</span></h2>
+        <div class="two-col">
+          <div>
+            <p class="lede">All 8,470 requirement IDs in the catalog are represented in the matrix. BR-to-scenario and BR-to-test-case edge sets reconcile exactly.</p>
+            <div class="edge-list" aria-label="Producer matrix requirement trace counts">
+              <div class="edge-row"><span class="edge-name">BR -> TS</span><div class="edge-bar"><span style="width:100%"></span></div><span class="edge-value">16,715 / 16,715</span></div>
+              <div class="edge-row"><span class="edge-name">BR -> TC</span><div class="edge-bar"><span style="width:100%"></span></div><span class="edge-value">20,812 / 20,812</span></div>
+              <div class="edge-row"><span class="edge-name">TS -> TC</span><div class="edge-bar"><span style="width:99.1%"></span></div><span class="edge-value">15,481 / 15,625</span></div>
+            </div>
+            <div class="stat-pair">
+              <div class="stat-block"><strong>6,070</strong><span>matrix rows marked fully traced</span></div>
+              <div class="stat-block"><strong>2,400</strong><span>matrix rows marked scenario-only</span></div>
+            </div>
+          </div>
+          <div>
+            <h3>What the 144 difference means</h3>
+            <p>144 scenarios and 144 associated test cases occur outside requirement-rooted matrix rows. Their scenario-to-case edge is in the catalog but absent from the matrix's BR-rooted view.</p>
+            <div class="callout"><p>This does not prove those cases are orphaned from scenarios. It means the matrix does not provide them a BR-rooted path.</p></div>
+            <p class="micro" style="margin-top:18px">INTERNAL LINK CONSISTENCY != SOURCE COMPLETENESS != SEMANTIC APPROVAL</p>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Producer-generated matrix; extracted-artifact denominator</span><span>03 / 07</span></div>
+      </section>
+
+      <section class="slide" aria-labelledby="slide-title-4" hidden>
+        <p class="slide-kicker">03 / Independent Test BR comparison</p>
+        <h2 id="slide-title-4">353 of 601 Test BRs have a structural anchor candidate.</h2>
+        <div class="two-col">
+          <div>
+            <div class="metric-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+              <article class="metric" style="border-color:var(--blue)"><span class="tag">Test baseline / triage only</span><strong class="value">353 / 601</strong><span class="label">58.74% have a structural source-anchor candidate.</span></article>
+              <article class="metric pending"><span class="tag">AI catalog / producer metric</span><strong class="value">71.66%</strong><span class="label">6,070 of 8,470 BR candidates marked fully traced in the supplied matrix.</span></article>
+            </div>
+            <div class="stat-pair">
+              <div class="stat-block"><strong>4,191</strong><span>distinct AI BRs with a structural candidate link</span></div>
+              <div class="stat-block"><strong>4,279</strong><span>AI BRs without a candidate link (50.52% of 8,470)</span></div>
+            </div>
+            <div class="callout warning"><p>These percentages use different denominators: 58.74% is structural reach against the independent Test BR baseline; 71.66% is producer-reported traceability inside the AI catalog. Neither confirms semantic equivalence. None of the 353 candidates is confirmed by this assessment.</p></div>
+          </div>
+          <div>
+            <h3>Screening disposition across 8,470 AI BR candidates</h3>
+            <div class="disposition" role="img" aria-label="AI BR anchor screening dispositions: 3166 ambiguous or composite, 1025 unique exact source-anchor candidates, 637 segment unresolved, 201 no exact source-anchor candidate, 3441 no numeric element anchor">
+              <div class="disposition-row"><span class="disposition-label">Ambiguous / composite</span><div class="disposition-track"><div class="disposition-fill" style="width:37.4%"></div></div><span class="disposition-count">3,166</span></div>
+              <div class="disposition-row"><span class="disposition-label">Unique exact anchor</span><div class="disposition-track"><div class="disposition-fill" style="width:12.1%"></div></div><span class="disposition-count">1,025</span></div>
+              <div class="disposition-row"><span class="disposition-label">Segment unresolved</span><div class="disposition-track"><div class="disposition-fill" style="width:7.5%"></div></div><span class="disposition-count">637</span></div>
+              <div class="disposition-row"><span class="disposition-label">No exact candidate</span><div class="disposition-track"><div class="disposition-fill" style="width:2.4%"></div></div><span class="disposition-count">201</span></div>
+              <div class="disposition-row"><span class="disposition-label">No numeric anchor</span><div class="disposition-track"><div class="disposition-fill" style="width:40.6%"></div></div><span class="disposition-count">3,441</span></div>
+            </div>
+            <p class="disposition-note">Disposition counts classify AI BR candidates; 353/601 measures Test BR reach. The denominators differ.</p>
+          </div>
+        </div>
+        <div class="slide-footer"><span>Anchor evidence is review triage only</span><span>04 / 07</span></div>
+      </section>
+
+      <section class="slide" aria-labelledby="slide-title-5" hidden>
+        <p class="slide-kicker">04 / Physical test-data links</p>
+        <h2 id="slide-title-5">Payloads are present. <span class="accent">Declared paths do not resolve.</span></h2>
+        <div class="path-compare">
+          <div class="path-box"><small>Catalog declares</small><code>qe_shaped_test_data/TD-TC-….json</code></div>
+          <div class="path-box actual"><small>Run3 files are under</small><code>qe_shaped_test_data/qe_shaped_test_data/TD-TC-….json</code></div>
+        </div>
+        <div class="metric-grid">
+          <article class="metric alert"><span class="tag">Declared TD references</span><strong class="value">17,193</strong><span class="label">Exact catalog-relative matches: 0.</span></article>
+          <article class="metric"><span class="tag">Physical files</span><strong class="value">16,496 + 16,496</strong><span class="label">Payload JSONs and metadata sidecars; paired on disk.</span></article>
+          <article class="metric alert"><span class="tag">Complete declared TC routes</span><strong class="value">0 / 15,625</strong><span class="label">No route credit via basename or prefix guessing.</span></article>
+          <article class="metric pending"><span class="tag">Extra-directory matches</span><strong class="value">17,193</strong><span class="label">Diagnostic observation only; not exact link resolution.</span></article>
+        </div>
+        <div class="callout warning"><p>Regenerate the catalog with the actual relative paths, or regenerate the delivery with the declared layout. Preserve Run3 and validate any corrected delivery as a new intake.</p></div>
+        <div class="slide-footer"><span>Path mismatch is not proof files are absent</span><span>05 / 07</span></div>
+      </section>
+
+      <section class="slide" aria-labelledby="slide-title-6" hidden>
+        <p class="slide-kicker">05 / Governance and next gates</p>
+        <h2 id="slide-title-6">Candidate labels are not approval gates.</h2>
+        <div class="gate-list">
+          <div class="gate"><span class="gate-status">Candidate</span><h3>8,470 BR records</h3><p>4,886 flagged for review. Approved BR catalog not supplied.</p></div>
+          <div class="gate"><span class="gate-status">Scripted status</span><h3>11,356 scenarios</h3><p>Marked DEV_APPROVED by the producer; approval note says no SME review. 10,003 flagged.</p></div>
+          <div class="gate"><span class="gate-status">Producer classification</span><h3>15,625 test cases</h3><p>13,478 labeled COMPLETE by the producer; not independent acceptance.</p></div>
+          <div class="gate"><span class="gate-status">Not certified</span><h3>Source, wire, host, outcomes</h3><p>No authorized semantic decisions, host run, wire capture, or response oracle certified.</p></div>
+        </div>
+        <ol class="action-list">
+          <li><span><b>Repair exact TD paths</b> and issue a new immutable intake.</span></li>
+          <li><span><b>Review the 144 non-BR-rooted branches</b>; do not infer BR relationships.</span></li>
+          <li><span><b>Obtain approved BR and TC catalogs</b> for approved-tier comparison.</span></li>
+          <li><span><b>Adjudicate semantics and execute approved chains</b> before reporting confirmed coverage.</span></li>
+        </ol>
+        <div class="slide-footer"><span>Keep REVIEW_REQUIRED open until authorized evidence is recorded</span><span>06 / 07</span></div>
+      </section>
+
+      <section class="slide dark" aria-labelledby="slide-title-7" hidden>
+        <p class="slide-kicker">06 / Presenter notes and evidence</p>
+        <h2 id="slide-title-7">The takeaway</h2>
+        <blockquote class="talk-track">“Run3 reports 71.66% traceability inside the AI-produced catalog. An independent structural screen finds candidate anchors for 58.74% of our 601-rule Test baseline, but that is not semantic coverage. Declared test-data paths resolve for 0 of 15,625 cases, despite payloads being present under a different nested path. Semantic and execution coverage are not assessed yet.”</blockquote>
+        <div class="evidence-list">
+          <a href="../2026-10-19-181026-run-complete-analysis-v2/COMPLETE-ANALYSIS.md">Complete structural analysis</a>
+          <a href="../2026-10-19-181026-run-complete-analysis-v2/analysis.json">Structured analysis JSON</a>
+          <a href="../2026-10-19-181026-run-complete-analysis-v2/traceability-matrix-reconciliation.json">Matrix reconciliation</a>
+          <a href="../2026-10-19-181026-run-complete-analysis-v2/manifest.json">Hash manifest</a>
+        </div>
+        <p class="hash-list">INTAKE SHA-256 54ab1b3523fa5e736426d789abf6a6d2ef62b1bd86dc3472b80357565e9e267f<br>MATRIX SHA-256 ec699c8eb5fa0f8e2c1f07363313e3c1f60656b72a692b7a521cd9e7de04ca18<br>TEST BASELINE SHA-256 371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16<br>AUDIT SUMMARY SHA-256 d78d972c902eb26d396d751d8c7e1922b5e58968a3013c83faf124ee3afaefed</p>
+        <div class="slide-footer"><span>Structural presentation - not SME sign-off or execution certification</span><span>07 / 07</span></div>
+      </section>
+    </main>
+
+    <footer class="controls" aria-label="Presentation controls">
+      <div class="control-group">
+        <button class="control-button" id="previous" type="button" aria-label="Previous slide">Previous</button>
+        <button class="control-button" id="next" type="button" aria-label="Next slide">Next</button>
+      </div>
+      <div class="control-group"><span class="progress" id="progress" aria-live="polite">01 / 07</span><span class="keyboard-hint">Arrow keys to navigate</span></div>
+      <button class="control-button" id="print" type="button" aria-label="Print or save as PDF">Print / PDF</button>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const previous = document.getElementById('previous');
+      const next = document.getElementById('next');
+      const progress = document.getElementById('progress');
+      let current = 0;
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(index, slides.length - 1));
+        slides.forEach((slide, position) => {
+          const active = position === current;
+          slide.hidden = !active;
+          slide.setAttribute('aria-hidden', String(!active));
+        });
+        progress.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        previous.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        document.title = `${String(current + 1).padStart(2, '0')} - ATL105 BR Coverage | 181026 Run`;
+      }
+
+      previous.addEventListener('click', () => showSlide(current - 1));
+      next.addEventListener('click', () => showSlide(current + 1));
+      document.getElementById('print').addEventListener('click', () => window.print());
+      document.addEventListener('keydown', event => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+          event.preventDefault();
+          showSlide(current + 1);
+        } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+          event.preventDefault();
+          showSlide(current - 1);
+        } else if (event.key === 'Home') {
+          showSlide(0);
+        } else if (event.key === 'End') {
+          showSlide(slides.length - 1);
+        }
+      });
+      showSlide(0);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{
+  "id" : "TD-APPI-C056-N02-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N02-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C056-N02-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-57",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r004-APPI-C056-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N02-001",
+        "tableId" : "056",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T056-R004", "APPI-T056-R009" ],
+        "syntheticData" : {
+          "selector" : "02",
+          "logicalLength" : 1,
+          "paymentType" : "X",
+          "context" : {
+            "cardBrand" : "Discover",
+            "phase" : "first recurring payment"
+          },
+          "visaHistory" : {
+            "initial" : "F",
+            "lastModification" : "V",
+            "subsequent" : "V",
+            "issuerCountry" : "India",
+            "payment" : "recurring"
+          }
+        },
+        "clearScope" : "F fixed/V variable; Discover first-only and Visa India recurring required; Visa history preserves one of source-permitted values.",
+        "excludedClaims" : [ "Whether monetary contract is actually fixed", "Unspecified brands" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "F/V domain and first-phase scope",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Visa required presence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "paymentType",
+            "replacement" : "X",
+            "expected" : "FAIL code domain"
+          }, {
+            "path" : "context.phase",
+            "replacement" : "subsequent recurring payment",
+            "expected" : "FAIL Discover first-only scope"
+          }, {
+            "path" : "visaHistory.subsequent",
+            "operation" : "remove",
+            "expected" : "FAIL initially supplied field must recur"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL one-byte width"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "fixedValue" : "F",
+          "variableValue" : "V",
+          "twoCharacterInvalid" : "FV"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30306,
+          "section" : "Appendix I-56",
+          "endLine" : 30319
+        }, {
+          "startLine" : 30320,
+          "section" : "Appendix I-57",
+          "endLine" : 30360
+        }, {
+          "startLine" : 30321,
+          "section" : "Appendix I-57",
+          "endLine" : 30360
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30309,
+            "section" : "Appendix I-56",
+            "endLine" : 30311
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30321,
+            "section" : "Appendix I-57",
+            "endLine" : 30324
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "an1",
+          "sourceLength" : "1 byte; F or V",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30325,
+            "section" : "Appendix I-57",
+            "endLine" : 30360
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

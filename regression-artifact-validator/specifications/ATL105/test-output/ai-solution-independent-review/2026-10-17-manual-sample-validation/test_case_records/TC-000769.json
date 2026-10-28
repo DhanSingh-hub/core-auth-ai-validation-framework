@@ -1,0 +1,236 @@
+{
+  "id": "TC-000769",
+  "scenario_id": "SC-0781",
+  "scenario_type": "positive",
+  "transaction_type": "FSA/HRA Purchase/Capture",
+  "priority": "P3",
+  "priority_score": 0.325,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:083",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:083",
+    "REQ-SRC-ATL105-PDF-001:095",
+    "REQ-SRC-ATL105-PDF-001:099",
+    "REQ-SRC-ATL105-PDF-001:121"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "8e5369ebd7c1b11930bd8cb8effa5e8ffa001e515469513f9477fed0e9debded",
+  "request": {
+    "Product Code Data Segment": {
+      "Segment Type": {
+        "value": "102",
+        "method": "fixed_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 227,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Service Level": {
+        "value": "F",
+        "method": "scenario_parameter_literal",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "87",
+        "data_ref": {
+          "segment": "102",
+          "element": "Service Level",
+          "variant": "valid"
+        }
+      },
+      "Number of Products": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "62",
+        "data_ref": {
+          "segment": "102",
+          "element": "Number of Products",
+          "variant": "valid"
+        }
+      },
+      "Product Code": {
+        "value": "560",
+        "method": "scenario_parameter_literal",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "77",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Code",
+          "variant": "valid"
+        }
+      },
+      "Unit of Measure": {
+        "value": "C",
+        "method": "scenario_parameter_literal",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "106",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit of Measure",
+          "variant": "valid"
+        }
+      },
+      "Quantity": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "81",
+        "data_ref": {
+          "segment": "102",
+          "element": "Quantity",
+          "variant": "valid"
+        }
+      },
+      "Unit Price": {
+        "value": "000",
+        "method": "qe_example_value",
+        "source_page": 228,
+        "flags": [],
+        "element_no": "107",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit Price",
+          "variant": "valid"
+        }
+      },
+      "Product Amount": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 228,
+        "flags": [],
+        "element_no": "76",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Amount",
+          "variant": "valid"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "102": "R"
+  },
+  "forced_segments": [],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            209
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        }
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        }
+      }
+    },
+    "source": "universal_request_envelope"
+  },
+  "flags": [
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+  ],
+  "completeness_status": "COMPLETE",
+  "completeness_findings": [],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) — validate against ATL105 PDF Ch.13 before trusting as ground truth"
+  },
+  "source_rule_id": null,
+  "source_page": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "FLAG",
+      "field": "ResponseCode",
+      "value": null,
+      "flags": [
+        "NEEDS_AUTHORIZER_DOC",
+        "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type None has no Appendix G meaning"
+      ]
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'FSA/HRA Purchase/Capture' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "confidence_score": 0.9,
+  "confidence_pct": 87,
+  "confidence_band": "HIGH",
+  "confidence_factors": [
+    "prior_confidence_score=0.9",
+    "minor_flags=-3"
+  ],
+  "test_data_file": "qe_shaped_test_data/TC-000769.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": [],
+    "attempts": 1
+  }
+}

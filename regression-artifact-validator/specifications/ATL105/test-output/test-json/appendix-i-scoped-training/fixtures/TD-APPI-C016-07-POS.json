@@ -1,0 +1,56 @@
+{
+  "id" : "TD-APPI-C016-07-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C016-07-POS.json",
+  "testCaseIds" : [ "TC-APPI-C016-07-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-12",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t016-r003-APPI-C016-07"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C016-07",
+        "tableId" : "016",
+        "ruleIds" : [ "APPI-T016-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-12",
+          "startLine" : 27905,
+          "endLine" : 27911
+        } ],
+        "logicalFields" : {
+          "tag" : "9F10",
+          "lengthField" : "08",
+          "hexadecimalData" : "89ABCDEF"
+        },
+        "clearScope" : [ "9F10 identifier", "N2 length-field syntax", "Issuer application data hexadecimal syntax" ],
+        "excludedClaims" : [ "Hexadecimal length units", "Issuer application semantics", "Cryptographic validity" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Issuer data contains hexadecimal characters",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "08 reflects source data units",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "hexadecimalData",
+          "value" : "89ABCDEQ",
+          "targetedNegative" : "Q is not hexadecimal"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

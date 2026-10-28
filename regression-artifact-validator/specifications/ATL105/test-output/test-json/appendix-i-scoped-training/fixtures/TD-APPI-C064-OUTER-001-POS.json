@@ -1,0 +1,257 @@
+{
+  "id" : "TD-APPI-C064-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C064-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C064-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-72",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t064-r001-APPI-C064-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C064-OUTER-001",
+        "tableId" : "064",
+        "ruleIds" : [ "APPI-T064-R001", "APPI-T064-R002", "APPI-T064-R003", "APPI-T064-R004", "APPI-T064-R005", "APPI-T064-R006" ],
+        "syntheticData" : {
+          "logicalTableIdentity" : "064",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "paymentType" : "Credit",
+            "acceptorCity" : "BOSTON",
+            "serviceCity" : "DENVER",
+            "acceptorSubdivision" : "MA",
+            "serviceSubdivision" : "CO",
+            "acceptorCountry" : "840",
+            "serviceCountry" : "840",
+            "acceptorPostal" : "02108",
+            "servicePostal" : "80202",
+            "countryUsesPostalCodes" : true,
+            "postalStandardApprovalSyntheticPrecondition" : true
+          },
+          "nestedLogicalRecords" : [ {
+            "selector" : "01",
+            "logicalLength" : 6,
+            "value" : "DENVER"
+          }, {
+            "selector" : "02",
+            "logicalLength" : 3,
+            "value" : "CO "
+          }, {
+            "selector" : "04",
+            "logicalLength" : 5,
+            "value" : "80202"
+          } ],
+          "logicalObservedTotal" : 29,
+          "followOn" : {
+            "type" : "Completion",
+            "tablePresent" : true,
+            "recordsEqualOriginal" : true
+          }
+        },
+        "clearScope" : "MCcredit/Maestrodebit,difference-drivenpresence,unchangedfollow-ons,nestedlimits;countryequaldoesnottrigger03alone.",
+        "excludedClaims" : [ "Resolvedn2/064/fixed03versusans49", "USPS/countrypostalapproval", "CNAexampleauthority", "ACacquirerversusservicecountryresolution" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Differingcity/subdivision/postalrecordsandunchangedcompletion",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Observednestedheadersanddata29bytes",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Outerwirewidthconflict",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "followOn.tablePresent",
+            "replacement" : false,
+            "expected" : "FAIL originaltablemustrecur"
+          }, {
+            "path" : "followOn.recordsEqualOriginal",
+            "replacement" : false,
+            "expected" : "FAIL unchangedserviceinfo"
+          }, {
+            "path" : "context.paymentType",
+            "replacement" : "Debit",
+            "expected" : "FAIL declaredMasterCardCreditpair"
+          }, {
+            "path" : "nestedLogicalRecords[0]",
+            "operation" : "remove",
+            "expected" : "FAIL differentservicecityrequired"
+          }, {
+            "path" : "logicalObservedTotal",
+            "replacement" : 28,
+            "expected" : "FAIL logicalaggregation"
+          }, {
+            "path" : "logicalTableIdentity",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "allFourMaximumAggregate" : 49,
+          "calculation" : "13+3+3+10plusfour5-byteheaders=49",
+          "overMaximum" : 50,
+          "definedSelectors" : [ "01", "02", "03", "04" ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31343,
+          "section" : "Appendix I-72",
+          "endLine" : 31391
+        }, {
+          "startLine" : 31392,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31510
+        }, {
+          "startLine" : 31343,
+          "section" : "Appendix I-72",
+          "endLine" : 31376
+        }, {
+          "startLine" : 31352,
+          "section" : "Appendix I-72",
+          "endLine" : 31378
+        }, {
+          "startLine" : 31402,
+          "section" : "Appendix I-73",
+          "endLine" : 31412
+        }, {
+          "startLine" : 31431,
+          "section" : "Appendix I-73",
+          "endLine" : 31441
+        }, {
+          "startLine" : 31459,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31478
+        }, {
+          "startLine" : 31495,
+          "section" : "Appendix I-74",
+          "endLine" : 31505
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31380,
+          "section" : "Appendix I-72",
+          "endLine" : 31391
+        }, {
+          "startLine" : 31392,
+          "section" : "Appendix I-73",
+          "endLine" : 31418
+        }, {
+          "startLine" : 31419,
+          "section" : "Appendix I-73",
+          "endLine" : 31446
+        }, {
+          "section" : "Appendix D-1",
+          "startLine" : 26082,
+          "endLine" : 26100
+        }, {
+          "startLine" : 26070,
+          "section" : "Appendix D-1",
+          "endLine" : 26117
+        }, {
+          "startLine" : 26118,
+          "section" : "Appendix D-2",
+          "endLine" : 26159
+        }, {
+          "startLine" : 26160,
+          "section" : "Appendix D-3",
+          "endLine" : 26201
+        }, {
+          "startLine" : 26202,
+          "section" : "Appendix D-4",
+          "endLine" : 26231
+        }, {
+          "startLine" : 31447,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31483
+        }, {
+          "section" : "Appendix AC-1",
+          "startLine" : 36612,
+          "endLine" : 36618
+        }, {
+          "startLine" : 36612,
+          "section" : "Appendix AC-1",
+          "endLine" : 36658
+        }, {
+          "startLine" : 36659,
+          "section" : "Appendix AC-2",
+          "endLine" : 36704
+        }, {
+          "startLine" : 36705,
+          "section" : "Appendix AC-3",
+          "endLine" : 36752
+        }, {
+          "startLine" : 36753,
+          "section" : "Appendix AC-4",
+          "endLine" : 36797
+        }, {
+          "startLine" : 31484,
+          "section" : "Appendix I-74",
+          "endLine" : 31510
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n2",
+          "sourceLength" : "source fixed 064 despite n2",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 31352,
+            "section" : "Appendix I-72",
+            "endLine" : 31354
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "source fixed value 03; payload declared variable up to 49",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 31355,
+            "section" : "Appendix I-72",
+            "endLine" : 31358
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans49",
+          "sourceLength" : "variable up to 49 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31359,
+            "section" : "Appendix I-72",
+            "endLine" : 31378
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

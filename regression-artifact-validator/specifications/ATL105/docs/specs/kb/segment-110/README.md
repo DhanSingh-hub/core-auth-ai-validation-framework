@@ -9,6 +9,15 @@
 
 ## Learning Module Index
 
+The opt-in actual bridge now executes Section 12.9's ordered interior FS,
+explicit empty fields, measured N3 wire length and 168-byte cap. Independently
+observed raw ASCII MICR is bound to actual Segment 110/113 fields through the
+existing Chapter 13 first-50-byte/full-extension predicates. Actual Standard
+Prompt Code identifies the ECA card type046 trigger; metadata cannot supply
+absent Prompt Code/companions or override observed service. Final-FS convention, account-number representation,
+manual-entry triggers and the scoped Element 239 conflict remain separate.
+See the current [Chapter 12 checkpoint](../chapter-coverage-gap-register.md).
+
 - [Segment 110 Rule Catalog (authoritative)](coverage/segment-110-rule-catalog.json)
 - [Segment 110 SME/TBA Input Register](segment-110-sme-tba-input-register.md)
 - [Segment 110 SME/TBA Learning Note](segment-110-sme-tba-learning-note.md)

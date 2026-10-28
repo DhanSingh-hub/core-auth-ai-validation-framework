@@ -1,0 +1,106 @@
+{
+  "name": "Flow — Authorization followed by Cancellation (Financial Transaction Request → Financial Transaction Request) [boundary-at-limit-sequence-number]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:089",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Sequence Number": "<flow at-limit valid value, exact max length>"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-AUTH-CANCELLATION",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "cancellation",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "S"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-97-7",
+          "source_page": 83,
+          "rule": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S' — verified verbatim against raw/pdf_pages/page_0083.txt and page_0097.txt, 2026-10-01.",
+          "spec_anchor": {
+            "keywords": [
+              "element no.86",
+              "sequence number",
+              "authorization only reversal transaction"
+            ],
+            "page_hint": 97
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.9,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-86",
+  "source_page": 83,
+  "business_rule_assertion": "§10.1.2.2/§10.2.2.2 (p.83/97): 'Element No.86 (Sequence Number)-present in the original transaction-must be present and identical in the Authorization Only Reversal transaction.' Element No. 78 (Prompt Code) must contain Transaction Type code 'S' — verified verbatim against raw/pdf_pages/page_0083.txt and page_0097.txt, 2026-10-01.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "42ab66cec1c6b194282d8a71a30cd63b68b3dd4ecdf52580dbdd9569876e957b",
+  "dedup_key": "abd71f9060da1516e963fc0746365833f91a23582adc4a04a3f195fe4b815298",
+  "flow_variant_id": "boundary-at-limit-sequence-number",
+  "flow_variant_name": "Boundary — Sequence Number at max length (6 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:592"
+  ],
+  "flow_boundary_element": "Sequence Number",
+  "flow_boundary_max_bytes": 6,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:592",
+      "rule_id": "BR-97-7",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2309",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:089",
+      "REQ-SRC-ATL105-PDF-001:592"
+    ],
+    "testCaseIds": [
+      "TC-002001"
+    ],
+    "chainSide": "request",
+    "flowId": "FLOW-AUTH-CANCELLATION"
+  }
+}

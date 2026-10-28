@@ -1,0 +1,65 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG102-UNIT-PRICE-PRESENCE-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-05869590D8DE",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:3282",
+  "aiStatement": "In Product Code Data Segment (Data Segment No. 102), field 8 (Unit Price) is required and must be present.",
+  "independentTestRule": {
+    "testBrId": "BR-RULE-SEG102-R-013",
+    "title": "Unit Price preserves the assumed-decimal-place leading digit",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED",
+    "scopeDifference": "This rule addresses decimal-format semantics; it is not a dedicated field-presence rule."
+  },
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_SOURCE_REQUIRED_MARKER",
+    "chainAdequacy": "PARTIAL_PRODUCER_EVIDENCE_ONLY",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG102-FIELD8-E107-REQUIRED", "ATL105-2026-3-SEG102-E107-DECIMAL-EXAMPLE"],
+    "facts": [
+      "Segment 102 Product Code Data field 8 is Element 107 Unit Price, length 9, marked Required (R).",
+      "The source also describes Unit Price assumed-decimal encoding; its 0.059/three-place example is used only for a populated design vector."
+    ]
+  },
+  "aiCaseReview": {
+    "cases": [
+      {"caseId": "TC-002689", "scenarioType": "negative/missing_mandatory", "element107": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "1ed6310ec562b9f9a7d9e6ed4d0af54f71b5c87269abfd8e5edb7a3fa7387a91"},
+      {"caseId": "TC-003025", "scenarioType": "negative/missing_mandatory", "element107": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "441f55fb87310ef6118d56ebf89b2b4d8ff2b9a8ee468cd0615872ef9e72c481"},
+      {"caseId": "TC-003108", "scenarioType": "negative/missing_mandatory", "element107": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "9c43e0d7f5e1ec1cbfe93d064d64d33c8c484819b5c2effc3837b88062c83063"},
+      {"caseId": "TC-003437", "scenarioType": "negative/missing_mandatory", "element107": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "0d875a6fa3ec3b1ca2707b510cb92094e6eea34cca01eec76881a9dd1b3ac27a"},
+      {"caseId": "TC-012030", "scenarioType": "field_constraint", "element107": "000", "payloadSha256": "ad80631d46f1faa3c77663ee4de3fff5f00cf32fae74d3b1fb3ad71ed56156b8"},
+      {"caseId": "TC-012031", "scenarioType": "field_constraint", "element107": "000", "payloadSha256": "9e027e14ad8e1592535032682e6d641cb1f5457cd5de040969196aede72fed83"},
+      {"caseId": "TC-012032", "scenarioType": "field_constraint", "element107": "000", "payloadSha256": "660e0654151f8f0459dbc9a6e98b68ae909fb66eab9ac782d18bd7aa4bfe0690"},
+      {"caseId": "TC-012033", "scenarioType": "field_constraint", "element107": "000", "payloadSha256": "88dea369c671d77baae275dccfbfb5e0f8a47f60ec382ab6183a4ce1810c1c6d"}
+    ],
+    "commonMetadata": {"segment": "102", "unitOfMeasure": "C", "productCode": "001", "quantity": "01", "productAmount": "1"},
+    "assessment": "Four candidate payloads declare Element 107 omitted; four record exact Unit Price 000. All share the same bounded product-context metadata. These are producer observations only; value 000 has not been authorized as a valid Unit Price oracle for the represented operation."
+  },
+  "supplementalDraft": {
+    "path": "segment-102-unit-price-presence-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 2,
+    "testDataDesignCount": 2,
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Authorized Test-owner confirmation of valid Unit Price values for the product/unit context and when the product record applies.",
+    "Complete Segment 102 request fixtures with source-validated Unit Price presence and omitted-field mutation.",
+    "Independent outcome for the missing required field and execution evidence after fixture review.",
+    "Review the existing SEG102-R-013 decimal-format chain separately; this presence review does not close it."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerExpectedOutcomeAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

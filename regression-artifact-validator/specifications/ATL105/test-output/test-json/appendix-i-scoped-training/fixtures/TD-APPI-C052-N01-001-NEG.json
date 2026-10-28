@@ -1,0 +1,127 @@
+{
+  "id" : "TD-APPI-C052-N01-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C052-N01-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C052-N01-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-53",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t052-r002-APPI-C052-N01-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C052-N01-001",
+        "tableId" : "052",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T052-R001", "APPI-T052-R002" ],
+        "syntheticData" : {
+          "context" : {
+            "encryption" : "TDES"
+          },
+          "selector" : "01",
+          "logicalLength" : 4
+        },
+        "clearScope" : "KSN record ID01,three-character numeric count,alphanumeric data maximum40; required for AES DUKPT,TDES,OnGuard.",
+        "excludedClaims" : [ "Actual key serial-number issuance or encryption validity", "Unknown encryption-type requirements" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "TDES KSN presence and width",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "KSN authenticity",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "ksn",
+            "operation" : "remove",
+            "expected" : "FAIL TDES required KSN"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 3,
+            "expected" : "FAIL four-byte data count"
+          }, {
+            "path" : "selector",
+            "replacement" : "02",
+            "expected" : "FAIL KSN selector identity"
+          }, {
+            "path" : "ksn",
+            "replacement" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNO",
+            "expected" : "FAIL maximum40; replacement has41 characters"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "maximum40" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMN",
+          "scopeVariants" : [ "AES DUKPT", "TDES", "Ingenico OnGuard" ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30095,
+          "section" : "Appendix I-53",
+          "endLine" : 30113
+        }, {
+          "startLine" : 30080,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30108,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.01.Sub-Table ID",
+          "sourceType" : "an2",
+          "sourceLength" : "2 bytes; fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30100,
+            "section" : "Appendix I-53",
+            "endLine" : 30103
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30104,
+            "section" : "Appendix I-53",
+            "endLine" : 30107
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Data",
+          "sourceType" : "an40",
+          "sourceLength" : "variable up to 40 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30108,
+            "section" : "Appendix I-53",
+            "endLine" : 30113
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

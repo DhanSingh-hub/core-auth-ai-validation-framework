@@ -2,6 +2,7 @@
 
 **Platform:** Core Auth Regression Test Solution  
 **Current specification pack:** ATL105 2026-3  
+**Release overlay:** ATL105 2026-4 Appendix AF is modeled separately as review-required; it does not imply full 2026-4 support.  
 **Primary source inspected:** `core-auth-test-generation-platform/src/pipeline`  
 **Purpose:** Define how Test Validation independently validates the AI Solution generation workflow and every outcome artifact
 
@@ -11,15 +12,121 @@
 
 **Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
 
+An isolated request/response sample without a frozen delivery inventory and explicit BR -> TS -> TC -> TD identity is not a coverage population. Record only sample-scoped validator outcomes; do not create a BR-match numerator, classify unseen requirements as `AI_ONLY`, or infer lifecycle coverage from a single leg. For the sanitized 2026-10-16 Authorization sample, the declared segment count and EMV byte count are structurally consistent. The new `AppendixREmvChipDataOracle.assessWithPackedLengthPrefix` candidate path validates the apparent packed-BCD count against the trailing TLV body and parses that body, but returns `REVIEW_REQUIRED` until the producer adapter declares the field boundary. The strict bare-TLV path remains unchanged; no prefix is silently stripped. Element 188 fails its N3 format and does not match the decoded card-sequence tag; the producer track alias is unmapped. No BR coverage percentage is calculable from that sample.
+
+**Execution-ready Test Model quality:** The canonical model carries a requirement `statement` and explicit `atomicity` disposition; a ready BR must be `ATOMIC` and include source evidence bound to a file hash, locator, and literal quote. Ready scenarios declare intent and preconditions. Ready test cases declare per-BR assertions with expected results and anchors shared with each linked requirement; every BR reached through the case's scenarios must be asserted. `CanonicalTraceabilityValidator.validateForExecution` enforces these deterministic contract checks and rejects source paths outside the trusted root, stale hashes, nonliteral quotes, incomplete assertions, and non-atomic dispositions. This is evidence/structure validation only: it does not decide that a rule is semantically atomic or approve the source interpretation. Draft/review packages remain loadable, and execution readiness remains blocked until authorized decisions and host evidence are supplied.
+
 **Coverage presentation (2026-10-06):** The complete-handoff HTML/PDF Coverage view reports producer-internal BR/TS-to-TC linkage, physical-output presence, segment-attributed linkage, exact transaction-target labels, scenario-type inventory and expected response-code declarations. Every percentage names its numerator and denominator. Segment counts overlap; scenario groups inherit linked BR attribution and TC groups use direct BR references. Do not infer normalized transaction-code or code/family coverage from producer labels or code mentions. Catalog rule counts remain a separate inventory; semantic rule coverage is `NOT_CALCULABLE` and code/family validation is `NOT_ASSESSED` until evidence-qualified comparison is performed. Hash-bind the AI inputs, response matrix and catalogs used by the view.
+
+**Independent BR coverage correction (2026-10-08):** The Test Team's BR coverage numerator is the number of distinct, in-scope independent Test Solution BRs with a delivery-bound, evidence-supported `CONFIRMED` match in the AI BR inventory; the denominator is the independent Test Solution BR baseline. Do not use AI BR-to-TC linkage as the BR coverage numerator, and do not transfer historical crosswalk decisions by reused AI ID. For October 7 Run4, the independent baseline has 601 rules and no confirmed semantic crosswalk: report `0/601` confirmed-match evidence (0.00% currently confirmed) with assessment status `NOT_ASSESSED` and all 601 rules unassessed. This is not evidence that no equivalent AI BRs exist. The former 72.17% is only AI-internal BR-to-candidate-TC structural linkage; matrix proposals remain separate. Preserve full-chain semantic coverage as `NOT_CALCULABLE`.
+
+**Complete Run4 BR exercise (2026-10-08):** Include every AI BR regardless of producer/SME approval when building its delivery-bound crosswalk. Reconstruct BR -> TS from scenario `requirement_ids`, TS -> TC from case `scenario_id`, TC -> TD from declared file paths, and separately join declarations to physical payload/metadata evidence. Retain matrix-only/proposed edges as discrepancies. For Run4, all 5,153 BRs were exported across 65,989 matrix leaves; direct catalogs link all 5,153 to a TS, 3,719 through a TC to physical TD, with 62 matrix BR-to-TS rows not matching direct scenario requirement links and 28 matrix leaves marked FULLY_TRACED without a TD declaration. Exact normalized segment + numeric `ENT-ELEM-N` creates only a source-anchor candidate: 562 AI BRs mapped to 270 distinct Test Solution rules (285 exact-single-atomic candidates; 277 ambiguous/composite candidates); none are semantic confirmations. Keep all remaining candidate/unmatchable dispositions explicit and never promote them to `AI_ONLY` without complete baseline review. The row-level CSV/JSONL and hash-bound summary are published with the Run4 report.
 
 **Bounded semantic assessment (2026-10-06):** Assess interpretation, BR objective, negative mutation, expected outcome and broader payload checks in that order. `scripts/assess-ai-semantic-batch.py` records an initial 100-case deterministic batch, explicit metadata-path mappings and two literal source predicates (Segment 100 fixed identity and Sequence Number six-digit format). Distinguish intentional invalid inputs from unexpected failures; preserved mutations and shared BR IDs do not certify negative effectiveness or business equivalence. Composite/absence mappings, valid control fixtures, response-family oracles and full-message validation remain explicit gates. Retain source/physical-file hashes and unassessed cases; never extrapolate a non-random batch to run-wide semantic coverage.
 
+**Bounded follow-up:** Exact account/colon/block agreement may resolve composite preservation, but is not a normative wire delimiter. Required-field absence checks must join one declared omission, one unavailable-field mapping and one explicit physical segment; source requiredness is gated against Section 12.1 rows. Paired controls prove predicates only, not valid full messages. Flow sequence agreement and exact response-heading candidates remain context evidence, not BR mappings or host outcomes. Source/matrix code-family disagreements must remain review-required when the matrix is not adjudicated; unsupported aliases, missing TC oracles, compatibility contracts and wire artifacts cannot yield PASS.
+
+**eWIC Segment 103 applicability crosscheck:** The eWIC intake validator follows the source-derived `Segment103ApplicabilityValidator` matrix. Authorization, Authorization Cancellation, Balance Inquiry, and Purchase Reversal/Void may omit Segment 103 on the request; Purchase Completion and Voucher Clear require it and the applicable WIC data. Element 63 is checked against BUYPASS segment objects actually included. Operation-catalog completeness in AI intake is separate from per-message Segment 103 presence. These checks do not establish Commerce Hub field mapping, support, or host outcome.
+
 **Standard:** This plan is implemented under the [Common LLM Segment Training Strategy](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md). The common strategy is mandatory for every Test Team contributor, agent, and automation. Improvements require evidence, Test Team review, documentation, and regression tests before they become standard.
+
+**2026-4 Appendix AF overlay:** `AppendixAFIncrementalAuthorizationValidator` and the AF test model cover source-quoted logical predicates for IA network applicability, four transaction roles, the Appendix I fixed Table 82 layout, terminal-number series guidance, Original Auth predecessor, approval-code carry-forward, and completion closure. `IA_REVERSAL` is distinct from the legacy partial-approval reversal rule. Per-terminal open-purchase uniqueness uses an explicit Appendix AF `transactionId` observation and a complete synthetic state list; it does not substitute Table 82's Terminal Transaction Number. A source-hash-bound application-payload candidate is available at `appendix-af-physical-wire-candidate-v1.json`: it contains a 110-byte synthetic Financial Transaction Request (Segment 100/111 lengths 081/019) and a 101-byte synthetic Financial Transaction Response layout. Chapter 13.2 source confirms Element 111 value `082` is Incremental Auth Data. The separate AF Transaction ID-to-Table 82 N4 mapping remains `REVIEW_REQUIRED`. The response is layout-only, not a captured host response or expected-outcome oracle; TCP/IP/TPDU framing is excluded. The 21 logical cases and payload pair do not establish host behavior, independent real open-state evidence, or certification of the full 2026-4 release. Discover missing Table 82 is a source-defined failure; missing Table 82 for Visa/Mastercard/American Express remains recommendation-only.
 
 **Proposed coverage policy — pending Fiserv Leadership approval:** Any coverage metric produced by the AI Solution is treated as a claim under test. The Test Validation solution proposes to calculate its own rule, traceability, scenario, test-case, test-data, semantic-execution, and parameter-combination coverage.
 
 ## 1. Understanding of the AI Architecture
+
+**Delivery-wide assessment (2026-10-14, AIV-016):** `audit-ai-delivery-coverage.py`
+includes approved and candidate catalog occurrences, retaining row hashes and
+producer status while blocking conflicting IDs from structural counts. It hashes
+all supplied files and validates explicit catalog-relative TD paths and metadata
+identities. Proposed element/cross-field/process/lifecycle/response/transport
+and message/security/amount/dependency/account-card/cross-segment types derive
+from explicit producer metadata. MESSAGE is not assumed to mean RESPONSE, nor
+CROSS_SEGMENT to mean CROSS_FIELD. Literal quote matches do not adjudicate
+business meaning. All Test
+BRs appear in the baseline ledger; all pair decisions remain pending authorized
+source review. Candidate reach, physical-chain candidate reach, semantic-confirmed
+coverage and executed validation are separate. Auxiliary format validation is
+unassessed. Input populations/hashes must remain stable through publication; the
+hash-bound summary and row-level conflict, chain-gap, candidate-pair and anchor
+queues are the review evidence, not a certification by themselves.
+
+**Bounded technical validation coverage (2026-10-14, AIV-017):**
+`scripts/summarize-ai-technical-validation-coverage.py` joins the stable,
+byte-bound field/structure runner report to the AI-excluded 601-rule baseline
+and the hash-verified delivery-wide chain ledgers. It publishes one row per
+independent Test BR, one row per observed AI-BR/candidate-rule/payload relation,
+explicit metric denominators and a sidecar SHA-256 manifest. The current Run1
+report `Run1-2026-10-14-full-delivery-debug-v3` recursively processes both
+QE-shaped candidate directories: 39,479 metadata messages and paired payloads,
+plus one unpaired payload recorded but not evaluated. It contains 362,963
+evaluation rows across 21,227 distinct case IDs; 58/601 rules have a limited or
+partial executor binding, 41/601 have at least one decisive PASS or FAIL
+predicate result, 14,396/21,227 cases have any decisive result, and 208/6,880
+AI BRs have a candidate rule observed on a clean direct physical chain. The
+runner covers a 326-rule field/structure slice; 275 rules are outside its scope.
+These counts do not certify complete BR validators or complete-case passes.
+Values are metadata-derived with bounded physical envelope/structure checks;
+intended negative-target failures remain possible. Source interpretation,
+authorized semantic decisions, remaining rule execution and host execution are
+distinct gates; semantic-confirmed and host-executed percentages remain null,
+`NOT_ASSESSED` and `NOT_EXECUTED`.
+
+**Execution-ready model quality (2026-10-15, AIV-018):** The canonical Test
+Solution model now carries explicit BR statement/atomicity/source-evidence,
+scenario intent/preconditions, and per-BR TC assertions/expected results.
+Execution gating verifies a supplied trusted-root path, source SHA-256 and
+literal quote; assertion coverage across all BRs linked through the case's
+scenarios; and shared BR/assertion source anchors. This completes the
+deterministic model-integrity improvements from the review plan. It does not
+decide atomicity or business equivalence, authenticate the evidence author,
+substitute for SME adjudication, or produce host execution evidence. Existing
+pending crosswalk decisions and all approval/execution measures stay unchanged.
+
+**Missing-scenario handling (2026-10-15, AIV-019):** The complete Test Solution
+package now emits one source-anchored draft scenario proposal for every
+independent BR without a linked scenario. Each proposal uses only the BR title
+and source anchor, names its unresolved applicability/preconditions, transaction
+context, test partitions, and expected-outcome gaps, and remains
+`REVIEW_REQUIRED`. This closes the scenario-inventory gap without fabricating
+test behavior; authoring complete scenario conditions and outcomes remains a
+source-review/SME task. Draft proposals do not change business coverage or
+execution readiness.
+
+**AI network/card-type test-case completeness (2026-10-16, AIV-020):** The new
+`scripts/audit-ai-network-cardtype-coverage.py` verifies presence of cases for
+the declared `flow_axis_values.card_brand` values and independently for every
+financial card code in `Segment100CardTypeOracle`. It hashes the catalogs and
+checks payload/metadata bytes against the frozen delivery inventory, excluding
+conflicted Test Case IDs. It reports combinations observed but does not require
+unsupported combinations or promote them to semantic matches. Current delivery
+coverage is 4/4 declared brand-axis values and 1/36 card types; status is
+`INCOMPLETE_REQUIRED_DIMENSION_COVERAGE` with 35 missing card codes. The AI
+generator source is outside this repository; the audit is the independent
+acceptance gate and supplies the upstream generation gap list.
+
+The 2026-10-16 audit's 35 missing financial card codes are routed to the AI
+Solution Team as `AIF-0020`. Recheck a corrected, versioned delivery against the
+same 36-code oracle and frozen-payload identity rules. Require the Prompt Code's
+card type in the physical request payload to agree with its scenario/test-case
+metadata. Keep the four observed brand-axis values separate: this feedback does
+not define a global network denominator or a network-by-card-type combination
+matrix, and case-presence checks do not validate semantics or host outcomes.
+
+**Account/track alias and EMV mapping (2026-10-16, AIV-021 / AID-0005):** A
+producer-level property such as `TrackData` is not itself an ATL105 Segment 100
+element. The adapter must declare the POS entry method and a versioned mapping
+from producer fields to Elements 2 and 12. Source-defined Track 2 splitting uses
+`=`; Track 1 splitting uses the first `^`. Segment 130 EMV data remains a separate
+segment and must not be reconstructed from a track alias. The supplied
+Authorization sample establishes only that this mapping question exists: absent
+the producer/converter contract, its alias and delimiter are neither normalized
+nor declared invalid. `AccountNumberEntryValidator` exercises normalized fields
+only; AIV-021 remains partial until an adapter has round-trip, mode, delimiter,
+missing-context, and EMV-coexistence regressions. Preserve the input unchanged,
+use synthetic fixtures, and keep semantic approval, wire validation, and host
+execution separate.
 
 Appendix I training uses a source-only, hash-pinned table inventory and independent
 field/rule batches for Elements 111/112/113. `AppendixILogicalDataValidator` checks
@@ -276,6 +383,19 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 - Lifecycle messages contain original/follow-up relationships.
 - Sensitive values are synthetic or approved masked values.
 - Test data proves the test case objective.
+- Producer-specific composite properties that represent multiple ATL105 elements require a versioned adapter mapping, explicit source/entry context, and round-trip tests. Unknown aliases or delimiters remain `REVIEW_REQUIRED`; do not infer a wire separator from an example or merge separate EMV segment content into track fields.
+
+**Every-TD evidence gate:** `scripts/validate-ai-delivery-evidence.py` consumes a completed,
+hash-bound delivery audit and emits one `test-data-validation.jsonl` row per physical
+payload, including orphans. It checks sidecar/TC/scenario identity and reuses the existing
+QE payload-leg executor with explicit per-rule observations, source conflicts and
+unevaluated rules; ambiguous cases/legs and unsupported shapes remain unassessed.
+Payload values are not exported. These feedback checks are not the full 33-rule
+BR/TS/TC workflow and are not source-semantic approval. Optional hash/identity-bound
+Chapter 13 intake evidence supplies bounded predicates only. Every TD still reports
+unproven complete value semantics, conditional applicability, cross-field/segment
+dependencies, negative-objective isolation and lifecycle context. Expected negative
+violations must not be relabeled as AI defects without an independent objective/oracle.
 
 ### Gate 9: Final serialization
 
@@ -302,6 +422,39 @@ The AI Solution's Approved Scenario Catalog is evidence under test, not automati
 - Review-required items are visible.
 - Report status agrees with rule-level findings.
 - Source pages and artifact IDs are clickable or resolvable.
+
+### Gate 11: Post-BR whole-delivery artifact validation
+
+BR coverage is a milestone, not the final acceptance gate. After the BR crosswalk/coverage pass, enumerate and validate the complete AI-produced artifact population for the frozen delivery, including every approved and candidate BR/TS/TC catalog, every flow step, every declared payload and metadata file, response expectations, traceability matrices, run summaries, and auxiliary outputs that the report claims to cover.
+
+**Required checks:**
+
+- Freeze the exact delivery population and hashes; reconcile artifact counts and duplicate/content-conflict IDs across candidate and approved tiers without treating producer state as approval.
+- Validate each BR -> TS -> TC -> TD edge from explicit identifiers; report dangling, missing, orphaned, duplicate, and conflicting links at row level. Every artifact must be accounted for as validated, review-required, unsupported/unassessed, or explicitly out of scope.
+- For multi-step flows, validate each step's transaction family/code, original/follow-up correlation fields, runtime host-response dependencies, declared TD path, step-specific metadata identity, and expected outcome. Never substitute a synthetic response value for an actual host response.
+- Validate physical payload structure and value bindings with the applicable source-profile validator; compare metadata to physical payload and wire serialization where supported. File presence/hash equality alone is not semantic or wire validity.
+- Validate expected-response oracle tiers, positive/negative/boundary coverage, test determinism, and source-backed assertions. Separate ASSERT, INFER, FLAG, and observed host outcomes.
+- Reconcile validation outputs and manifests to their input hashes. Publish candidate coverage, complete-chain structural coverage, semantic decisions, and executed/host coverage as separate measures.
+
+**Exit condition:** a whole-delivery result is complete only when every in-scope artifact is represented in the inventory and has an explicit disposition. Any unsupported format, missing source binding, unvalidated payload family, pending BR mapping, missing oracle, or unexecuted host outcome remains visible as `REVIEW_REQUIRED`, `NOT_ASSESSED`, or `NOT_EXECUTED`; do not promote the package to fully validated based on BR coverage alone.
+
+**Current boundary:** V6 inventories 79,040 Oct 10 files and checks catalog links and declared physical routes; V6 technical coverage executes bounded predicates on 326/601 Test BR rules. The Authorization-to-Completion review adds step-level checks for 138 flows but still has 124 cases without direct AI BR links, 133 runtime approval placeholders, 5 missing completion approvals, and 35 amount-change cases awaiting host-approved amount evidence. These are not whole-delivery semantic or host certification.
+
+**Additional matrix/every-TD gate:** `scripts/validate-ai-delivery-evidence.py` reconciles
+direct catalog identities and BR-TS, TS-TC, BR-TC and TC-TD edge sets independently
+against both nested and flat representations of `traceability_matrix_full.json`.
+It preserves declared paths rather than guessing basename matches, checks input/output
+hash dependencies and delivery-population stability, and reconciles the TD ledger
+count to the completed audit. Repeated matrix-row counts, coverage/status assertions,
+the Markdown matrix, physical `traceability.json`, archives and auxiliary formats
+are not validated by this set comparison. BR/TS/TC meaning and complete TD semantics
+remain unassessed. The result is deliberately
+`BLOCKED_UNPROVEN_SEMANTIC_CORRECTNESS`, with `fullDeliveryValidated=false`,
+even when all structural comparisons and bounded feedback predicates pass.
+
+**Per-leg lifecycle evidence screen (2026-10-16, AIV-024):** `scripts/build-ai-flow-semantic-review.py` creates a separate, hash-bound ledger for every AI BR and each linked multileg flow step. It records transaction code, step identity, sequence/approval field shape, observed sequence equality, response-object presence, frozen payload copies and BR/Test-BR candidate links without exporting field values. Expected-response declarations are not actual responses; response-shaped producer payloads are not host evidence without independent provenance. Authorization approval binding remains blocked until the actual Authorization response is supplied and provenance reviewed; approval rules for purchase/return/timeout reversal families remain flow-specific `REVIEW_REQUIRED`. Current output `test-output/ai-solution-independent-review/2026-10-16-ai-flow-semantic-review-v3/` carries all 6,880 BRs, 28 flow cases, 67 logical steps and 134 hash-verified payload copies; 26 sequence comparisons match, zero response objects are present, 15 Authorization approval bindings are blocked, 13 reversal approval bindings remain flow-specific review, and semantic review remains 0/6,880. These are evidence observations and review queues, not semantic decisions or execution certification.
+
+**QE-Fiserv feedback rules (2026-10-17, AIV-025):** the QE/SME feedback workbook is trained as 33 enforced rules in `contract/qe-feedback-rule-catalog.json` and executed by `scripts/apply-qe-feedback-rules.py` over every BR, scenario, test case and payload leg of a preserved, per-file hash-verified delivery (`scripts/verify-ai-delivery-intake.py`). Rules are enforced regardless of workbook status; differences from ATL105 2026-3 are kept as source conflicts for SME confirmation. The first run on the 10 October delivery (`test-output/ai-solution-independent-review/2026-10-17-qe-feedback-training-v2/`) validated 17,769/17,769 payloads and found defects for 29 of 33 rules, including missing Segment Length on every payload, 19-segment financial requests, 9,979 wrong Segment Types, 3,171 scenarios and 2,806 BRs without test cases, and 3,970 test cases without physical data. It also publishes readable per-segment traceability, manual test tables and Test Case Cards. Results are feedback conformance, not semantic or host certification.
 
 ## 4. What the Current ATL105 Output Already Provides
 

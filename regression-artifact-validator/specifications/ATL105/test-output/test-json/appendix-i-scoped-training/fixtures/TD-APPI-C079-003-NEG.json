@@ -1,0 +1,97 @@
+{
+  "id" : "TD-APPI-C079-003-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-003-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C079-003-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-86",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r004-APPI-C079-003"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-003",
+        "tableId" : "079",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T079-R004" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-86",
+          "startLine" : 32348,
+          "endLine" : 32364
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "02",
+            "declaredValueLength" : "12",
+            "data" : "000000000325",
+            "logicalAmount" : "3.25",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag01" : "1"
+            }
+          },
+          "negative" : {
+            "id" : "02",
+            "declaredValueLength" : "12",
+            "data" : "000000000325",
+            "logicalAmount" : "0.0325",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag01" : "1"
+            }
+          },
+          "positiveVariants" : [ {
+            "data" : "000000000001",
+            "logicalAmount" : "0.01",
+            "logicalPremise" : {
+              "tag01" : "1"
+            }
+          } ],
+          "active" : {
+            "id" : "02",
+            "declaredValueLength" : "12",
+            "data" : "000000000325",
+            "logicalAmount" : "0.0325",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag01" : "1"
+            }
+          }
+        },
+        "clearScope" : "Aggregate local amount n12, length 12, two decimals and explicit 01=1 context.",
+        "excludedClaims" : [ "Omission rejection", "Tax calculation", "Per-line amount meaning", "Aggregate-to-078 equality" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalAmount equals data divided by 100",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalAmount equals data divided by 100",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "numeric width/header/premise unchanged",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalAmount",
+          "from" : "3.25",
+          "to" : "0.0325",
+          "unchanged" : "encoded value, headers and premise",
+          "targetedFailure" : "wrong decimal interpretation"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

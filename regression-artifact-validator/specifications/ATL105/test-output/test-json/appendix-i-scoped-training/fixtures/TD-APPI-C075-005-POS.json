@@ -1,0 +1,69 @@
+{
+  "id" : "TD-APPI-C075-005-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-005-POS.json",
+  "testCaseIds" : [ "TC-APPI-C075-005-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t075-r005-APPI-C075-005"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-005",
+        "tableId" : "075",
+        "nestedSelector" : "04",
+        "ruleIds" : [ "APPI-T075-R005" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31932,
+          "endLine" : 31935
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tag" : "04",
+            "valueLength" : 15,
+            "value" : "CLIENT000000001",
+            "logicalRole" : "synthetic fleet client"
+          },
+          "negative" : {
+            "tag" : "04",
+            "valueLength" : 15,
+            "value" : "CLIENT00000001",
+            "logicalRole" : "synthetic fleet client"
+          }
+        },
+        "clearScope" : "Fifteen-byte fleet-client identifier, distinct from four-byte plan ID.",
+        "excludedClaims" : [ "Assigned client validity", "Character subset", "Padding policy", "Plan/client enrollment relationship" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "actual client value length equals 15",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "actual client value length equals 15",
+            "outcome" : "FAIL"
+          } ]
+        },
+        "mutation" : {
+          "target" : "value",
+          "from" : "CLIENT000000001",
+          "to" : "CLIENT00000001",
+          "unchanged" : "tag, stated valueLength and role",
+          "targetedFailure" : "fourteen-byte client value"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

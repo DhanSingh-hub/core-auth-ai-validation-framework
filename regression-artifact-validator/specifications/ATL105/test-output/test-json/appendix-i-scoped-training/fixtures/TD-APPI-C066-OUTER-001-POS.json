@@ -1,0 +1,203 @@
+{
+  "id" : "TD-APPI-C066-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C066-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C066-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-76",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t066-r004-APPI-C066-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C066-OUTER-001",
+        "tableId" : "066",
+        "ruleIds" : [ "APPI-T066-R001", "APPI-T066-R002", "APPI-T066-R003", "APPI-T066-R004", "APPI-T066-R005" ],
+        "syntheticData" : {
+          "tableSelector" : "066",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "program" : "NextGen POI"
+          },
+          "records" : [ {
+            "selector" : "01",
+            "logicalLength" : 1,
+            "value" : "2"
+          }, {
+            "selector" : "02",
+            "logicalLength" : 1,
+            "value" : "4"
+          }, {
+            "selector" : "03",
+            "logicalLength" : 10,
+            "value" : "KIOSK SHOP"
+          }, {
+            "selector" : "04",
+            "logicalLength" : 8,
+            "value" : "REF 1234"
+          } ],
+          "logicalPayloadCount" : 40,
+          "authContains" : [ "01", "02", "03", "04" ],
+          "completionContains" : [ "01", "02", "03", "04" ]
+        },
+        "clearScope" : "MasterCard/Maestro;NextGenrequires03/04;expected4pairs2;eachAuthfieldrecurscompletion;aggregate6-200;recordheaders5each.",
+        "excludedClaims" : [ "Internal03/04entity/methodserialization", "Mandatoryversusadvisorypairingenforcement", "Biometric3domain", "Completionbyte-for-byteequality", "Repeatsorallocatedextraentries" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "AllNextGenfields,lengths/logicaltotal40",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Auth-completionpresence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Expected4/domain2pair",
+          "positive" : "PASS",
+          "negative" : "FAIL departurefromexpectedpairing,notguaranteedhostreject"
+        }, {
+          "predicate" : "Internalentity/methodandpairingauthority",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "records[2]",
+            "operation" : "remove",
+            "expected" : "FAIL NextGen03required"
+          }, {
+            "path" : "records[3]",
+            "operation" : "remove",
+            "expected" : "FAIL NextGen04required"
+          }, {
+            "path" : "completionContains[3]",
+            "operation" : "remove",
+            "expected" : "FAIL04Auth-to-completionpresence"
+          }, {
+            "path" : "records[0].value",
+            "replacement" : "0",
+            "expected" : "FAIL expectedNextGenpairingonly"
+          }, {
+            "path" : "logicalPayloadCount",
+            "replacement" : 39,
+            "expected" : "FAIL logicaltotal40"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "singleNumericRecordObservation" : "010012",
+          "singleNumericRecordBytes" : 6,
+          "belowMinimum" : 5,
+          "declaredMaximum" : 200,
+          "overMaximum" : 201,
+          "allDefinedRecordMaxAggregate" : 77,
+          "calculation" : "1+1+15+40+four5-byteheaders=77"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31555,
+          "section" : "Appendix I-75",
+          "endLine" : 31617
+        }, {
+          "startLine" : 31618,
+          "section" : "Appendix I-76",
+          "endLine" : 31683
+        }, {
+          "startLine" : 31684,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        }, {
+          "startLine" : 31563,
+          "section" : "Appendix I-75",
+          "endLine" : 31595
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31599,
+          "section" : "Appendix I-75",
+          "endLine" : 31608
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31624
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31656
+        }, {
+          "startLine" : 31686,
+          "section" : "Appendix I-77",
+          "endLine" : 31688
+        }, {
+          "startLine" : 31709,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        }, {
+          "startLine" : 31625,
+          "section" : "Appendix I-76",
+          "endLine" : 31656
+        }, {
+          "startLine" : 31657,
+          "section" : "Appendix I-76",
+          "endLine" : 31683
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31619
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31654
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 066",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31563,
+            "section" : "Appendix I-75",
+            "endLine" : 31565
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; payload 006-200",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31566,
+            "section" : "Appendix I-75",
+            "endLine" : 31571
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans",
+          "sourceLength" : "minimum006; maximum200 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31572,
+            "section" : "Appendix I-75",
+            "endLine" : 31585
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,1207 @@
+{
+  "artifact": "ELEMENT16_CARD_TYPE_TOTAL_COUNT_FULL_CHAIN_REVIEW",
+  "reviewId": "ATL105-ELEMENT16-CARD-TYPE-TOTAL-COUNT-REVIEW-001",
+  "reviewDate": "2026-10-19",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:019",
+    "statement": "Card Type Total Count must be numeric and must not exceed 5 bytes.",
+    "caseCount": 12
+  },
+  "source": {
+    "specification": "ATL105",
+    "version": "2026-3",
+    "element": "16",
+    "characterType": "N",
+    "representation": "fixed five digits",
+    "minimum": 1,
+    "maximum": 99999,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "valueDomainSha256": "5423708cf9da38f6f97f0fd50bad513d32fe7e8773ecc32cfa70bad9696bbf5d",
+    "sourceRule": "Card Type Total Count in the Totals Response for a card type"
+  },
+  "testCrosswalkCandidates": {
+    "105": {
+      "ruleId": "SEG105-R-015",
+      "scope": "Totals Data Segment bucket count; compound rule also includes Grand Total, label and amount"
+    },
+    "119": {
+      "ruleId": "SEG119-R-025",
+      "scope": "Card Type Total Count required per Segment 119 bucket"
+    },
+    "semanticMappingApproved": false
+  },
+  "chainEvidence": {
+    "aiChainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE",
+    "aiScenarioIds": [
+      "SC-3285",
+      "SC-3422",
+      "SC-3423",
+      "SC-4394",
+      "SC-4417",
+      "SC-4418",
+      "SC-4480",
+      "SC-4503",
+      "SC-4504",
+      "SC-5278",
+      "SC-5497",
+      "SC-5515"
+    ],
+    "aiCaseIds": [
+      "TC-003127",
+      "TC-003264",
+      "TC-003265",
+      "TC-004066",
+      "TC-004089",
+      "TC-004090",
+      "TC-004138",
+      "TC-004161",
+      "TC-004162",
+      "TC-004926",
+      "TC-005130",
+      "TC-005146"
+    ],
+    "physicalPayloadPathCount": 24,
+    "testRuleCandidates": {
+      "SEG105-R-015": {
+        "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+        "scenarioIds": [
+          "TS-REVIEW-BR-RULE-SEG105-R-015"
+        ],
+        "scenarioStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "caseIds": [
+          "TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-015"
+        ],
+        "caseStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataIds": [
+          "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG105-R-015"
+        ],
+        "testDataReadiness": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataExpectedValidation": [
+          "REVIEW_REQUIRED"
+        ],
+        "allRecordsReviewRequired": true
+      },
+      "SEG119-R-025": {
+        "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+        "scenarioIds": [
+          "TS-REVIEW-BR-RULE-SEG119-R-025"
+        ],
+        "scenarioStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "caseIds": [
+          "TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-025"
+        ],
+        "caseStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataIds": [
+          "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG119-R-025"
+        ],
+        "testDataReadiness": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataExpectedValidation": [
+          "REVIEW_REQUIRED"
+        ],
+        "allRecordsReviewRequired": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "caseId": "TC-003127",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003127.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003127.meta.json",
+          "payloadSha256": "6814ebaa3b5fe8134845dcf0e7f0bb6a776122a4887421331f7c3603bd6d021c",
+          "sidecarSha256": "587c0568c0fcb7463779b4eeabb4d407420c3835745769c460cb877673b9c222",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003127.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003127.meta.json",
+          "payloadSha256": "6814ebaa3b5fe8134845dcf0e7f0bb6a776122a4887421331f7c3603bd6d021c",
+          "sidecarSha256": "587c0568c0fcb7463779b4eeabb4d407420c3835745769c460cb877673b9c222",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-003264",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003264.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003264.meta.json",
+          "payloadSha256": "862725f5ec140753d0477cf6e084af558798914e490614f293da2ef558495f1f",
+          "sidecarSha256": "448d1d52a550dbb4d9a7aa94060a5891755ecc04430033e22b7b4885b4fd07eb",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003264.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003264.meta.json",
+          "payloadSha256": "862725f5ec140753d0477cf6e084af558798914e490614f293da2ef558495f1f",
+          "sidecarSha256": "448d1d52a550dbb4d9a7aa94060a5891755ecc04430033e22b7b4885b4fd07eb",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-003265",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003265.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003265.meta.json",
+          "payloadSha256": "c8a1850898f0d949a597f0ccb74ae245df9ae4a0bc7402468230750897ed5dbc",
+          "sidecarSha256": "1ab75608c5b7211ca02cf44d5099e6b1513f65d300e5fd9d1f3aaa193193fb79",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003265.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003265.meta.json",
+          "payloadSha256": "c8a1850898f0d949a597f0ccb74ae245df9ae4a0bc7402468230750897ed5dbc",
+          "sidecarSha256": "1ab75608c5b7211ca02cf44d5099e6b1513f65d300e5fd9d1f3aaa193193fb79",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004066",
+      "observedPayloadSegments": [
+        "105"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004066.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004066.meta.json",
+          "payloadSha256": "d1df16d07b0c5ef4a5d0479e8fdd4250e7ec961cb5e9768676891f70153bfd57",
+          "sidecarSha256": "097641a41c5e3e9cce7454500c32b0b8c7b153ecf41abd647cbaa7a23f0acdb2",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004066.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004066.meta.json",
+          "payloadSha256": "d1df16d07b0c5ef4a5d0479e8fdd4250e7ec961cb5e9768676891f70153bfd57",
+          "sidecarSha256": "097641a41c5e3e9cce7454500c32b0b8c7b153ecf41abd647cbaa7a23f0acdb2",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004089",
+      "observedPayloadSegments": [
+        "105"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004089.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004089.meta.json",
+          "payloadSha256": "cbe2665efcdeb3b1de5575db0fe1b8b5b6eb4a78eaded41d431a66d4334fce8a",
+          "sidecarSha256": "e3e7565dc95a1f808cc9bf9ea61873f7b0ff1f86d8d3782860169fb292b04741",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004089.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004089.meta.json",
+          "payloadSha256": "cbe2665efcdeb3b1de5575db0fe1b8b5b6eb4a78eaded41d431a66d4334fce8a",
+          "sidecarSha256": "e3e7565dc95a1f808cc9bf9ea61873f7b0ff1f86d8d3782860169fb292b04741",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004090",
+      "observedPayloadSegments": [
+        "105"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004090.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004090.meta.json",
+          "payloadSha256": "7a5593f3661b0aa2f3261a1db36bbce86f2e009d1b86a1ab4fba301031d26d70",
+          "sidecarSha256": "7970e6039c9101cdb165e5e54699f5eea975fc6fa632eec1efb91b9ce56adb74",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004090.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004090.meta.json",
+          "payloadSha256": "7a5593f3661b0aa2f3261a1db36bbce86f2e009d1b86a1ab4fba301031d26d70",
+          "sidecarSha256": "7970e6039c9101cdb165e5e54699f5eea975fc6fa632eec1efb91b9ce56adb74",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004138",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004138.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004138.meta.json",
+          "payloadSha256": "f688ecc65bb02946abb4f21aaf1a46c154babbedd4fb1a000d1a1a843d3e5dce",
+          "sidecarSha256": "8a68eed3dc57be776c43015b7e488c4c49092a96f7e005ab22791e823e382b35",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004138.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004138.meta.json",
+          "payloadSha256": "f688ecc65bb02946abb4f21aaf1a46c154babbedd4fb1a000d1a1a843d3e5dce",
+          "sidecarSha256": "8a68eed3dc57be776c43015b7e488c4c49092a96f7e005ab22791e823e382b35",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_WIDTH"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004161",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004161.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004161.meta.json",
+          "payloadSha256": "a442badf59835d90a11e492fc4623bdb42b991dad0285c3f969b316688c4dec3",
+          "sidecarSha256": "ae2cfdc1e3a4275a5cf907097c5b662dc91543cea8023fe5de432e425a334ca7",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004161.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004161.meta.json",
+          "payloadSha256": "a442badf59835d90a11e492fc4623bdb42b991dad0285c3f969b316688c4dec3",
+          "sidecarSha256": "ae2cfdc1e3a4275a5cf907097c5b662dc91543cea8023fe5de432e425a334ca7",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_NONNUMERIC"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004162",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004162.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004162.meta.json",
+          "payloadSha256": "be4e0d7211489cb6c4cd8978c63a496a3c225c38d93e0418ad9fc6f0aa1d9412",
+          "sidecarSha256": "4262de3148f10cde35918a7fe14d77167fa44bc3e2dd5293e75ca7ace1cc0b77",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004162.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004162.meta.json",
+          "payloadSha256": "be4e0d7211489cb6c4cd8978c63a496a3c225c38d93e0418ad9fc6f0aa1d9412",
+          "sidecarSha256": "4262de3148f10cde35918a7fe14d77167fa44bc3e2dd5293e75ca7ace1cc0b77",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_EMPTY_REQUIRED_BUCKET_COUNT"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "deliberate_violation"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "deliberate_violation"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-004926",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004926.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-004926.meta.json",
+          "payloadSha256": "733a9fd2dbeadb3871d22442e5574c65c8abda3e9d4ee64fa2d1c15ca63bf3ad",
+          "sidecarSha256": "156bcebb74993d23a89a7e32163762cf13edb8e8b6530482ea153dc995535d7a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004926.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-004926.meta.json",
+          "payloadSha256": "733a9fd2dbeadb3871d22442e5574c65c8abda3e9d4ee64fa2d1c15ca63bf3ad",
+          "sidecarSha256": "156bcebb74993d23a89a7e32163762cf13edb8e8b6530482ea153dc995535d7a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-005130",
+      "observedPayloadSegments": [
+        "105"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005130.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005130.meta.json",
+          "payloadSha256": "926e74a43ce57479ee3ce9f8a7653caf3f2c532dda45d6c0f04d8732b264c0f4",
+          "sidecarSha256": "d15eb7166803e828d294ce23f8c7a7fbbbbdc85b3de33702479610879a921dd5",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005130.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005130.meta.json",
+          "payloadSha256": "926e74a43ce57479ee3ce9f8a7653caf3f2c532dda45d6c0f04d8732b264c0f4",
+          "sidecarSha256": "d15eb7166803e828d294ce23f8c7a7fbbbbdc85b3de33702479610879a921dd5",
+          "messageFamily": "Totals Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "105",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG105-R-015",
+              "payloadPaths": [
+                "/Totals Request/Totals Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    },
+    {
+      "caseId": "TC-005146",
+      "observedPayloadSegments": [
+        "119"
+      ],
+      "scopeBindingStatus": "SEGMENT_105_OR_119",
+      "candidateCopiesByteIdentical": true,
+      "sidecarCaseIdsMatch": true,
+      "copies": [
+        {
+          "sourceKind": "10_OCT_TEST_DATA_CANDIDATE",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005146.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-005146.meta.json",
+          "payloadSha256": "6e6caa1c1db59bf214b0ba7160a6a38f6ab8752ccb8d717d2229b39602cf8524",
+          "sidecarSha256": "bcea63c7186a463c70236a967b97fa0c4de8f6fbfb859e2e534adf661cbb9a6e",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        },
+        {
+          "sourceKind": "10_OCT_TEST_GENERATION_CANDIDATE",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005146.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-005146.meta.json",
+          "payloadSha256": "6e6caa1c1db59bf214b0ba7160a6a38f6ab8752ccb8d717d2229b39602cf8524",
+          "sidecarSha256": "bcea63c7186a463c70236a967b97fa0c4de8f6fbfb859e2e534adf661cbb9a6e",
+          "messageFamily": "Totals with Proprietary Data Load Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "quantityCountFieldOccurrences": 1,
+          "sidecarElement16Rows": 1,
+          "segmentResults": [
+            {
+              "segment": "119",
+              "payloadOccurrences": 1,
+              "sidecarOccurrences": 1,
+              "bindingStatus": "BOUND_BY_SEGMENT_AND_ORDER",
+              "observedResults": [
+                "INVALID_RANGE"
+              ],
+              "sidecarValuesMatchPayload": true,
+              "sourceRuleCandidate": "SEG119-R-025",
+              "payloadPaths": [
+                "/Totals with Proprietary Data Load Request/Totals with Proprietary Data Load Data Segment/CardTypeTotalCount"
+              ],
+              "sidecarOrigins": [
+                "spec_derived"
+              ]
+            }
+          ],
+          "sidecarTargetOrigins": [
+            "spec_derived"
+          ],
+          "rawCountValuesWritten": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "caseCount": 12,
+    "casesWithSegment105": [
+      "TC-004066",
+      "TC-004089",
+      "TC-004090",
+      "TC-005130"
+    ],
+    "casesWithSegment119": [
+      "TC-003127",
+      "TC-003264",
+      "TC-003265",
+      "TC-004138",
+      "TC-004161",
+      "TC-004162",
+      "TC-004926",
+      "TC-005146"
+    ],
+    "casesOutsideExpectedTotalsSegments": [],
+    "duplicateCopyMismatches": [],
+    "caseIdMismatches": [],
+    "payloadParseFailures": [],
+    "sidecarParseFailures": [],
+    "bucketOccurrences": 12,
+    "observedResultsBySegment": {
+      "105": {
+        "INVALID_WIDTH": 1,
+        "INVALID_NONNUMERIC": 1,
+        "INVALID_EMPTY_REQUIRED_BUCKET_COUNT": 1,
+        "INVALID_RANGE": 1
+      },
+      "119": {
+        "INVALID_WIDTH": 2,
+        "INVALID_NONNUMERIC": 2,
+        "INVALID_EMPTY_REQUIRED_BUCKET_COUNT": 2,
+        "INVALID_RANGE": 2
+      }
+    },
+    "sourceDomainValid": 0,
+    "invalidByFormatOrRange": 12,
+    "sidecarPayloadMismatches": 0,
+    "sidecarsWithoutSourceBatchDigest": [
+      "TC-003127",
+      "TC-003264",
+      "TC-003265",
+      "TC-004066",
+      "TC-004089",
+      "TC-004090",
+      "TC-004138",
+      "TC-004161",
+      "TC-004162",
+      "TC-004926",
+      "TC-005130",
+      "TC-005146"
+    ],
+    "rawElement16ValuesWritten": false
+  },
+  "guardrails": {
+    "producerLabelUsedAsExpectedOutcome": false,
+    "producerResponseOracleAccepted": false,
+    "Segment105And119Conflated": false,
+    "presenceOrApplicabilityPromoted": false,
+    "semanticMatchConfirmed": false,
+    "coverageCredit": 0,
+    "testSolutionExecutionCertified": false,
+    "officialTestBaselineModified": false
+  }
+}

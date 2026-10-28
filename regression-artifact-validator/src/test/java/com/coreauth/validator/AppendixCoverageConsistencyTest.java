@@ -48,6 +48,18 @@ class AppendixCoverageConsistencyTest {
         assertThat(appendixEPackage.path("codeFamilies").path("specialPromptCodes").path("count").asInt()).isEqualTo(11);
         assertThat(appendixEPackage.path("tableLoadCoverageSummary").path("perValueBrTsTcTdChains").asInt()).isEqualTo(56);
         assertTableLoadCodeChains(appendixEPackage);
+
+        JsonNode appendixK = findAppendix(inventory, "K");
+        JsonNode appendixKPackage = MAPPER.readTree(Path.of(
+          "specifications/ATL105/test-output/test-json/appendices/appendix-k-segment-100-coverage.json").toFile());
+        assertThat(appendixK.path("status").asText()).isEqualTo("PARTIALLY_COVERED");
+        assertThat(appendixK.path("brRecords").asInt()).isEqualTo(49);
+        assertThat(appendixKPackage.path("businessRequirements")).hasSize(49);
+        assertThat(appendixKPackage.path("testScenarios")).hasSize(46);
+        assertThat(appendixKPackage.path("testCases")).hasSize(46);
+        assertThat(appendixKPackage.path("testData")).hasSize(47);
+        assertThat(appendixKPackage.path("tableIdCatalog").path("sourceSelectorCount").asInt()).isEqualTo(44);
+        assertThat(appendixKPackage.path("tableIdCatalog").path("assignedSelectorCount").asInt()).isEqualTo(43);
     }
 
       private static JsonNode findAppendix(JsonNode inventory, String id) {

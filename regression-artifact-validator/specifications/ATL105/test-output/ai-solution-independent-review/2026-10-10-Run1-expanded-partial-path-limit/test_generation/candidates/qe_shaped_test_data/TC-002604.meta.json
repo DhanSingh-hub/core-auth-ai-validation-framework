@@ -1,0 +1,1556 @@
+{
+  "configurationVersion": "1.0",
+  "specification": "ATL105",
+  "generatedAt": "2026-10-12T09:58:23.847934+00:00",
+  "testCaseId": "TC-002604",
+  "flowId": null,
+  "step": null,
+  "role": null,
+  "scenarioId": "SC-2708",
+  "requirementId": "REQ-SRC-ATL105-PDF-001:112",
+  "sourceRuleId": "ENT-ELEM-99",
+  "sourcePage": null,
+  "messageFamily": "EMV Financial Transaction Request",
+  "scenarioType": "negative",
+  "priority": "P1",
+  "negativeClass": "charset_invalid",
+  "violatedElementName": "Tax Amount",
+  "qeCoverage": {
+    "qeFields": 0,
+    "totalFields": 53,
+    "ratio": 0.0
+  },
+  "dataSections": {
+    "1": {
+      "elements": [
+        "MessageFormatVersionIdentifier",
+        "NumberofSegments"
+      ]
+    },
+    "2": {
+      "segments": [
+        "100"
+      ],
+      "source": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "position": 0
+      }
+    },
+    "3": {
+      "segments": [
+        "101",
+        "102",
+        "103",
+        "104",
+        "111",
+        "130",
+        "135",
+        "143",
+        "145",
+        "151",
+        "153"
+      ],
+      "source": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "position": 0
+      }
+    },
+    "unresolved": {
+      "segments": [
+        "108",
+        "114",
+        "156"
+      ],
+      "reasons": {
+        "108": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'",
+        "114": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'",
+        "156": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    }
+  },
+  "fields": [
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "InformationByte",
+      "specElementName": "Information Byte",
+      "nameSource": "qe_confirmed",
+      "value": "0",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "TerminalID",
+      "specElementName": "Terminal Identifier",
+      "nameSource": "qe_confirmed",
+      "value": "ICKR069394199389212751",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "PromptCode",
+      "specElementName": "Prompt Code",
+      "nameSource": "derived_stripped",
+      "value": "0001",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "reshapedInto": "PromptCode",
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "AccountNumber",
+      "specElementName": "Account Number",
+      "nameSource": "derived_stripped",
+      "value": "458163778156573449402181",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "mergedInto": "TrackData",
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "TaxAmount",
+      "specElementName": "Tax Amount",
+      "nameSource": "qe_confirmed",
+      "value": "0000000#",
+      "dataSource": "deliberate_violation",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "SequenceNumber",
+      "specElementName": "Sequence Number",
+      "nameSource": "qe_confirmed",
+      "value": "000001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "PartialApprovalIndicator",
+      "specElementName": "Partial Approval Indicator",
+      "nameSource": "qe_confirmed",
+      "value": "0",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 202,
+        "basis": "named in EMV Financial Transaction Request's (p.202) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "101",
+      "segmentFriendlyName": "Fleet Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "101",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "102",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ServiceLevel",
+      "specElementName": "Service Level",
+      "nameSource": "derived_stripped",
+      "value": "F",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "NumberofProducts",
+      "specElementName": "Number of Products",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ProductCode",
+      "specElementName": "Product Code",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "UnitofMeasure",
+      "specElementName": "Unit of Measure",
+      "nameSource": "derived_stripped",
+      "value": "C",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "Quantity",
+      "specElementName": "Quantity",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "UnitPrice",
+      "specElementName": "Unit Price",
+      "nameSource": "derived_stripped",
+      "value": "000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ProductAmount",
+      "specElementName": "Product Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "103",
+      "segmentFriendlyName": "EBT Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "103",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 2
+      }
+    },
+    {
+      "segment": "104",
+      "segmentFriendlyName": "Purchase Card Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "104",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 3
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "108",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyProgramID",
+      "specElementName": "Loyalty Program ID",
+      "nameSource": "derived_stripped",
+      "value": "358553",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "PointstoRedeem",
+      "specElementName": "Points to Redeem",
+      "nameSource": "derived_stripped",
+      "value": "386095",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "CouponID",
+      "specElementName": "Coupon ID",
+      "nameSource": "derived_stripped",
+      "value": "8773716213091655631",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "CouponAmount",
+      "specElementName": "Coupon Amount",
+      "nameSource": "derived_stripped",
+      "value": "98002539",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "PaymentTenderType",
+      "specElementName": "Payment Tender Type",
+      "nameSource": "derived_stripped",
+      "value": "VS",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyTrack2Data",
+      "specElementName": "Loyalty Track 2 Data",
+      "nameSource": "derived_stripped",
+      "value": "44898353660490300831622486430327445898",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyInformationVersion",
+      "specElementName": "Loyalty Information Version",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "UnitofWork",
+      "specElementName": "Unit of Work",
+      "nameSource": "derived_stripped",
+      "value": "4643667190765565815",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "111",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationIndicator",
+      "specElementName": "Variable Information Indicator",
+      "nameSource": "derived_stripped",
+      "value": "005",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationLength",
+      "specElementName": "Variable Information Length",
+      "nameSource": "derived_stripped",
+      "value": "003",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformation",
+      "specElementName": "Variable Information",
+      "nameSource": "derived_stripped",
+      "value": "000",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationIndicator2",
+      "specElementName": "Variable Information Indicator [2]",
+      "nameSource": "derived_stripped",
+      "value": "031",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationLength2",
+      "specElementName": "Variable Information Length [2]",
+      "nameSource": "derived_stripped",
+      "value": "002",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformation2",
+      "specElementName": "Variable Information [2]",
+      "nameSource": "derived_stripped",
+      "value": "00",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "114",
+      "segmentFriendlyName": "SKU Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "114",
+      "segmentFriendlyName": "SKU Data Segment",
+      "element": "SKUData",
+      "specElementName": "SKU Data",
+      "nameSource": "derived_stripped",
+      "value": "JLYM25HBUU9R8S81KOR9PUMOAPA8AF2PA7OKMPW1DN6TRDXXUI1F1V7EOSGMCAK4YZMWNQ2A4OIKPLCCLT6QH4Y46J22D5T7O7YJ09JB5O9OT7FCH6N95ULS6XT8VDLJ9SVF70PV3GFX1OVO8C1QQI4S03AD26NNB3NWPZTZDUC2WA5ZDFETTP1UMWLOASKJTERRPM59OILIMSAUC2HJHY0EJ0J701P65PR6BXSIX0DSWX0CPZ7HHWCNWUE63D6HOWZB8PHPAC6FM8QTXAT8M7F07J9OYO2XC5AFD1L2HZ03ABZ3N8ARB9LN03ITVLTUQPT5C0JVQYZTF72HY3JVBIUMGZM0A981VBO4QBBXLLXNJCXV3NZ3UBF9CTCJSZ0HNYV5GOPVDYDD4CJJPDCSH9I24KBI2F8DSYMUYNHPERVRMPIW8BDEQKKG4D43I4YAHJQUYP3PMKND8291EP2JI43G7SHFHHSHIZ73KT21A8V8PA2QRBPVJK4PWWXUCH0FLFPSOUSVJ0AQ5LNF7Q63BXEZSF2XHOWBZL3SQRVHL3PSSYDPSOC3D4NVY8C2ALBCOSQF4K4U2A77AFJUMMX3ACONMJI5H2WRZKOXZ09H4N28JRNC9SKEEYVJ7PDPUJA8N5TE6V494EAXQZRIYJWHCQ4XS57PCVD7TZY472UDXJFG8QDDMBNIRTCPDH5U7MUMVVHMAG2YTBM69DCXAI3DAMMDW17N7EV6HJHP1TSA2KJTEPXXBN1K3M6UEL2CA55MAJVOUQ9BNLZUPIGBH95QNC3LIT6R9X4BBO04F014BRHWLJKT6AKB9YY8R1SSNZZ6F6PX38C2DDR9DD26ZOBBIMONVL96VEXUADBRYT7PY07R93THMTUPYXET8OVS71Q0063BKOQ5S8AW5BJAS7PP2WT2BP8QNXDINWYOT8N3VJB5WB350SHXZQFO27EOX56U3CAHSDM3L66IZLN2DC4FYIWKTBCT36UYUNQ5CYOG",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "130",
+      "segmentFriendlyName": "EMV Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "130",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "130",
+      "segmentFriendlyName": "EMV Data Segment",
+      "element": "CAPublicKeyFileChecksum",
+      "specElementName": "CA Public Key File Checksum",
+      "nameSource": "qe_confirmed",
+      "value": "3595565865343068525596462",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "130",
+      "segmentFriendlyName": "EMV Data Segment",
+      "element": "EMVChipDataLength",
+      "specElementName": "EMV Chip Data Length",
+      "nameSource": "qe_confirmed",
+      "value": "000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "130",
+      "segmentFriendlyName": "EMV Data Segment",
+      "element": "EMVChipData",
+      "specElementName": "EMV Chip Data",
+      "nameSource": "qe_confirmed",
+      "value": "Q21BSPOZ8KUW482JZ8TCK6S13CEDKQOJXWRWXTKD6TWR558YDXEFLNPU37AUQSXBXC GOSK6ZN12U7MIHDWP0LWVTCK0VYCIACVCFZZ2Z3L8FP1I0R34V3TV KTAAUJCGUIA8C NL8 FWC1I0J43SIQ QJ8 4T01ZE2GQHG 2P5ZZY7UPZMU WWD 1JHF T4DVA2JWBGATVZKGNV1C PHI49Z0RFAMD3LRPE3TYBXHQS91PEQ55L43VO0PLWH9UCW07S6067MPBF24SU9V1RN3UHV7JJ1BSFAHY70SFXJVICCHVA9WE4JU7GAYXGDETSZSQFITITXWDJO9G9Y45APXFHTH4 1T16SD2T3OF2KQZDEAI2KA25 4XS1EDNUGSE5VU4SBFNMEFDFQ2Y4K1J7JH8KMYETX2F25APRLMFE8EZ3Z6MHVJKP4NMKJEGKXRRQ1P5VA6EYH95RSQTSAX4CLO72C2YDCZICP3TCXU5YTIXK16999X JPZ30U S70ENT6KLVR9AGIA20Q08RBWZ0H5L0V39WDOF6KA7TOX759RIUQ 60VFT980E8Z19WNA0BI3DMNRAJOQBGPLCTMKKOW1NUUY4HS66XSRUN KZIPIQDG1 K8SHM3DO4J8EFN 42FUJBBYTR9W1WX3IV0HS PBEOS 0WZTSUP785 BTAOZ1ZCD8WP0VQIGVK3E8Q374BTMW54HL4CF7BBNZLMD7NZ76FO5QKHUMPG75SVLXTK3AODTTL2YZCKB1OB5XLLQAXT2FXGU83XXQ3SKJ7EIB7837JNL9IHPGDU2Y4POK8M WOF4E2XPXZ1 20LDRZ7DGYDTM T 4N7JAPCHXVY6MHXOOP3UVLDY7MADGYSXUG3UOJO3OR42KUNVF4YLA3P1KWTJW0DFW AKPX 3HQNPIWW7A5AFYTMCTP 6XA2I8NFF IHB7 QTS0P6521S9UE7RQTSPMO03XUN90RRGXRD6BQQNGGRV9EZOPX02EIC",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "135",
+      "segmentFriendlyName": "Moneris Data Segment (Request)",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "135",
+      "segmentFriendlyName": "Moneris Data Segment (Request)",
+      "element": "MonerisData",
+      "specElementName": "Moneris Data",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "143",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "NumberofProducts",
+      "specElementName": "Number of Products",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "ProductCode",
+      "specElementName": "Product Code",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "InclusiveExclusiveforTax1",
+      "specElementName": "Inclusive/ Exclusive for Tax 1",
+      "nameSource": "derived_stripped",
+      "value": "I",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "145",
+      "segmentFriendlyName": "Enhanced Fleet Request",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 9
+      }
+    },
+    {
+      "segment": "145",
+      "segmentFriendlyName": "Enhanced Fleet Request",
+      "element": "EnhancedFleetData",
+      "specElementName": "Enhanced Fleet Data",
+      "nameSource": "derived_stripped",
+      "value": "WA30TYW2NTKT8SR99BZXEJWVPGJY873ACDO50P9OBJV9UGHUEPNX32EBUM1C7OIJ4Z4EOJ0R45556ZRYQTIDW407B6EJ8XZ6Y558U9EY3FHCALQAHHCY8BNA0N1D7X3J24JZ3Z33Q2SY6VZMOX3882UR6WDRLE7LLKZDDAOW7T31RRLJFHBC2XTHF0JZCMYIZNXODQCUMXSVF2E0C718FQLJLUIO95UG9UHPANJDNYI5OBKNH66UEPHYS56JUXHMZFTZLHF8B2VHS1YNFJBJ7L3LUF3K9158UE2XNOXY0LOBVH44YE4S0GFREZZ4J4NA2T25HV40KVS8H38OYD11TUG4PK0C7PLTLC3XAB400CWOSV40BIQ3KQA8SEHPUDDN0W8F70REVBPCJ8FWLYN33BZZECMK8U8COYXNYGB5G5V4QZZJXBL3NFZSR2L1H94AUK117OKPAMVO7RMOL3PZFYISB8OHHKL452JM48S59SLLUVOSZ1X82U3RPFZIW1J9SLXLQ3CC8JHW13LYS4CVAKJ8V3HWFL5FAPNKEMYTAPQ1DWB3P5YT2Z6C5K9D82ZFU36YKQ51RWZNTCICV8WX5YBZ6APTG2Z1F34F0KDPJJ10CQHTVSFAELTASS2QX4W3ECP4HUG5682H8OIM72UBLY6BZUI430A84YAPVFD45GDX2EHRL0BRSQRBMPX4ERJWLIDKY8IPW3SP01FKPBSYLVV2DQMCZAU1PJ1N9605YUKY1SH0C21HII6AU3Q3D8JZ8C4Z25KQKYFWPOCVTIMVG5S8WAMXF2ON43RUEMEA5EHCXPOLVCUA0WYAYGYYHNQANDO90GKKU115X17DFJX8T4EBVZPAUKC89LG0ALIRL43QAV0QKEWN0DI2HT9S76QZR46ZK91T4RAECD1JYNEEF6Z1XBHFJ4TN24EPIVPNXMSFSD7GWDMHVSAYD7NVLEOTOKFEAFXUS7OK21RTB40VOOWDP87V2PBQ7E4J13U",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 9
+      }
+    },
+    {
+      "segment": "151",
+      "segmentFriendlyName": "Request InComm OTC Market Basket Data",
+      "element": "SegmentType",
+      "specElementName": "Segme nt Type",
+      "nameSource": "derived_stripped",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 11
+      }
+    },
+    {
+      "segment": "153",
+      "segmentFriendlyName": "Network Token Data Request",
+      "element": "SegmentType",
+      "specElementName": "Segme nt Type",
+      "nameSource": "derived_stripped",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "EMV Financial Transaction Request",
+        "page": 203,
+        "basis": "named in EMV Financial Transaction Request's (p.203) own Data Section No. 3 clause",
+        "position": 13
+      }
+    },
+    {
+      "segment": "156",
+      "segmentFriendlyName": "EV Charging Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "156",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "156",
+      "segmentFriendlyName": "EV Charging Data Segment",
+      "element": "EVChargingData",
+      "specElementName": "EV Charging Data",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'EMV Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "MessageFormatVersionIdentifier",
+      "specElementName": "MessageFormatVersionIdentifier",
+      "nameSource": "spec_element_name",
+      "value": "ATL105",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "ELEMENT-55-PROCESSING-RULES (p.384); value: ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST (p.209)"
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "NumberofSegments",
+      "specElementName": "NumberofSegments",
+      "nameSource": "spec_element_name",
+      "value": "15",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "EMV Financial Transaction Request (p.202); value: EMV Financial Transaction Request (p.202)"
+    }
+  ],
+  "unavailableFields": [
+    {
+      "segment": "100",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "100",
+      "element": "Card Discretionary Block Data",
+      "friendly": "CardDiscretionaryBlockData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry); part of merged field 'TrackData'",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Encrypted PIN Block Data",
+      "friendly": "PINBlockData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Pump/Lane Number",
+      "friendly": "PumpNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Fuel Purchase Amount",
+      "friendly": "FuelPurchaseAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Nonfuel Amount",
+      "friendly": "NonFuelAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Cash Amount",
+      "friendly": "CashAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Approval Number",
+      "friendly": "ApprovalNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Local Date and Local Time",
+      "friendly": "LocalDateTime",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "101",
+      "element": "Odometer",
+      "friendly": "Odometer",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Vehicle Number",
+      "friendly": "VehicleNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Job Number",
+      "friendly": "JobNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Driver /Identification Number",
+      "friendly": "DriverNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Employee Number",
+      "friendly": "FleetEmployeeNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "License #",
+      "friendly": "LicenseNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Job ID",
+      "friendly": "JobID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Department #",
+      "friendly": "DepartmentNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Customer Data",
+      "friendly": "CustomerData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "User ID",
+      "friendly": "UserID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Vehicle ID#",
+      "friendly": "VehicleID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 1",
+      "friendly": "FleetTag1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 2",
+      "friendly": "FleetTag2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 3",
+      "friendly": "FleetTag3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 4",
+      "friendly": "FleetTag4",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 5",
+      "friendly": "FleetTag5",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "102",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "103",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "103",
+      "element": "Clerk ID",
+      "friendly": "ClerkID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "Voucher ID",
+      "friendly": "VoucherID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "WIC Discount Amount",
+      "friendly": "WICDiscountAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "WIC Product Data",
+      "friendly": "WICProductData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "EBT Program Data",
+      "friendly": "EBTProgramData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "104",
+      "element": "Purchase Code",
+      "friendly": "PurchaseCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Tax Amount",
+      "friendly": "PCTaxAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Freight Amount",
+      "friendly": "PCFreightAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Duty Amount",
+      "friendly": "PCDutyAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-to Country Code",
+      "friendly": "ShiptoCountryCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-to Postal Code",
+      "friendly": "ShiptoPostalCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-from Postal Code",
+      "friendly": "ShipfromPostalCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Direct Marketing Invoice Number",
+      "friendly": "DirectMarketingInvoiceNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "108",
+      "element": "Loyalty Account Number",
+      "friendly": "LoyaltyAccountNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Update Code",
+      "friendly": "UpdateCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Street Address",
+      "friendly": "StreetAddress",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Phone Number, Loyalty",
+      "friendly": "PhoneNumberLoyalty",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Expiration Date",
+      "friendly": "ExpirationDate",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "111",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "114",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "130",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "130",
+      "element": "EMV Card Sequence Number",
+      "friendly": "EMVCardSequenceNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "135",
+      "element": "Segment Length Indicator",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "143",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 1",
+      "friendly": "TaxType1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 1",
+      "friendly": "TaxAmount1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Inclusive/ Exclusive for Tax 2",
+      "friendly": "InclusiveExclusiveforTax2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 2",
+      "friendly": "TaxType2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 2",
+      "friendly": "TaxAmount2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Inclusive/ Exclusive for Tax 3",
+      "friendly": "InclusiveExclusiveforTax3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 3",
+      "friendly": "TaxType3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 3",
+      "friendly": "TaxAmount3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "145",
+      "element": "Segment Length Indicator",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "151",
+      "element": "Segme nt Length Indicat or",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "151",
+      "element": "Market Basket Data",
+      "friendly": "MarketBasketData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "TODO_CLIENT_VALUE"
+    },
+    {
+      "segment": "153",
+      "element": "Segme nt Length Indicat or",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "153",
+      "element": "Networ k Token Data",
+      "friendly": "NetworkTokenData",
+      "reason": "no documented character_type or valid_values for this field; composer could not derive a grounded value",
+      "dataSource": "TODO_CLIENT_VALUE"
+    },
+    {
+      "segment": "156",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    }
+  ],
+  "unavailableSegments": [
+    {
+      "segment": "123",
+      "specSegmentName": "NFC Payment Tokenization Data Segment",
+      "fieldCount": 10,
+      "reason": "excluded by segment_render_policy (this segment's presence_in_message did not qualify it for rendering under the active inclusion profile)"
+    },
+    {
+      "segment": "146",
+      "specSegmentName": "Enhanced Fleet Data Segment (Response)",
+      "fieldCount": 3,
+      "reason": "excluded by segment_render_policy (this segment's presence_in_message did not qualify it for rendering under the active inclusion profile)"
+    }
+  ],
+  "presenceUnknownSegments": [
+    {
+      "segment": "108",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "114",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "130",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "135",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "143",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "145",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "151",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "153",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "156",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    }
+  ],
+  "sourceBatch": null,
+  "sourceBatchSha256": null
+}

@@ -1,0 +1,81 @@
+{
+  "id" : "TD-APPI-C078-010-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-010-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-010-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-85",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r013-APPI-C078-010"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-010",
+        "tableId" : "078",
+        "nestedSelector" : "10",
+        "ruleIds" : [ "APPI-T078-R013" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-85",
+          "startLine" : 32227,
+          "endLine" : 32246
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "10",
+            "declaredValueLength" : "01",
+            "data" : "1",
+            "sourceTitle" : "Other Tax Included Indicator",
+            "sourceDescriptionTax" : "national"
+          },
+          "negative" : {
+            "id" : "10",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "sourceTitle" : "Other Tax Included Indicator",
+            "sourceDescriptionTax" : "national"
+          },
+          "active" : {
+            "id" : "10",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "sourceTitle" : "Other Tax Included Indicator",
+            "sourceDescriptionTax" : "national"
+          }
+        },
+        "clearScope" : "Formal 10 selector, one-byte true-only listed indicator, preserved title/description distinction.",
+        "excludedClaims" : [ "National/other tax equivalence", "Sample selectors 07/08/09 in 078", "False/absence policy", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data belongs to source-listed set {1}",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data belongs to source-listed set {1}",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "formal selector and widths preserved",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "1",
+          "to" : "0",
+          "unchanged" : "selector, headers and terminology",
+          "targetedFailure" : "unlisted indicator code"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

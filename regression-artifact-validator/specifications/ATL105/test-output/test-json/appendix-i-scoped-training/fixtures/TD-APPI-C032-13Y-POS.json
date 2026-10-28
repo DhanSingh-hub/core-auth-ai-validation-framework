@@ -1,0 +1,57 @@
+{
+  "id" : "TD-APPI-C032-13Y-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-13Y-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-13Y-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-29",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r021-APPI-C032-13Y"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-13Y",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R021" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-29",
+          "startLine" : 28659,
+          "endLine" : 28680
+        } ],
+        "logicalFields" : {
+          "subTableId" : "13",
+          "subTableLength" : "001",
+          "value" : "Y",
+          "context" : {
+            "brand" : "MasterCard",
+            "purchaseClassification" : "Cryptocurrency",
+            "mcc" : "6051"
+          }
+        },
+        "clearScope" : [ "CryptocurrencyY with explicit classification and MCC6051" ],
+        "excludedClaims" : [ "Actual purchase or merchant registration" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Classified crypto mandate uses MCC6051",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "context.mcc",
+          "value" : "6211",
+          "targetedNegative" : "High-securities MCC substituted"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

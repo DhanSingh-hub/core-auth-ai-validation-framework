@@ -1,0 +1,96 @@
+{
+  "id" : "TD-APPI-C070-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C070-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C070-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-78",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t070-r001-APPI-C070-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C070-001",
+        "tableId" : "070",
+        "ruleIds" : [ "APPI-T070-R001", "APPI-T070-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-78",
+          "startLine" : 31794,
+          "endLine" : 31803
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "070",
+            "declaredDataLength" : "004",
+            "data" : "6000",
+            "logicalContext" : {
+              "card" : "debit",
+              "stage" : "authorization request",
+              "businessRole" : "anticipated completion amount"
+            }
+          },
+          "negative" : {
+            "tableId" : "070",
+            "declaredDataLength" : "004",
+            "data" : "60A0",
+            "logicalContext" : {
+              "card" : "debit",
+              "stage" : "authorization request",
+              "businessRole" : "anticipated completion amount"
+            }
+          },
+          "positiveVariants" : [ {
+            "declaredDataLength" : "012",
+            "data" : "000000006000"
+          } ],
+          "active" : {
+            "tableId" : "070",
+            "declaredDataLength" : "004",
+            "data" : "60A0",
+            "logicalContext" : {
+              "card" : "debit",
+              "stage" : "authorization request",
+              "businessRole" : "anticipated completion amount"
+            }
+          }
+        },
+        "clearScope" : "Variable numeric completion estimate, 12-byte cap, debit-authorization should-send context.",
+        "excludedClaims" : [ "Mandatory all-debit presence", "Currency scale", "Authorizer selected or approval outcome", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "numeric data length <= 12",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "context is the described debit authorization completion-estimate use",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "numeric data length <= 12",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "declared byte count remains correct",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[2]",
+          "from" : "0",
+          "to" : "A",
+          "unchanged" : "width, selector and context",
+          "targetedFailure" : "nonnumeric completion estimate"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

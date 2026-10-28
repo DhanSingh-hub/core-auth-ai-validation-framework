@@ -5,20 +5,28 @@
   "specificationVersion": "2026-3",
   "applicability": "Applies to Currency Code Element 20 and conditional currency subfields in Segment 100-related variable/EBT data.",
   "source": "docs/specs/extracted_text.txt Appendix L-1 onward",
+  "classificationEvidence": {
+    "chainPackage": "../appendix-l-currency-code-chain-package.json",
+    "catalog": "src/main/java/com/coreauth/validator/canonical/AppendixLCurrencyCodeCatalog.java",
+    "validCodeChains": 153,
+    "networkScopeConflictChains": 6,
+    "unknownOrMalformedNegativeChains": 20,
+    "scope": "Three-digit source code recognition and Visa/MC/Both classification only; no per-transaction network/country eligibility, Element 76 implied-decimal, Appendix I Table 006/056, or Appendix M fixed-840 HIP subelement certification."
+  },
   "businessRequirements": [
-    {"id":"BR-SEG100-APPL-CURRENCY-FORMAT","title":"A currency value used by a Segment 100 transaction context shall use a valid three-digit Appendix L Currency Code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix L","segment":"TRANSACTION-CONTEXT","element":"20","rule":"currency-code-format"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPL-CURRENCY-FORMAT","title":"A currency value used by a Segment 100 transaction context shall use a valid three-digit Appendix L Currency Code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix L","segment":"TRANSACTION-CONTEXT","element":"20","rule":"currency-code-format"},"status":"COVERED","coverageNote":"All 153 distinct Appendix L codes and format/unknown-code negatives are covered by the linked classification chain package."},
     {"id":"BR-SEG100-APPL-CURRENCY-CARD","title":"Currency Code usage shall be consistent with the applicable Visa, MasterCard, or both-card-network designation.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix L","segment":"TRANSACTION-CONTEXT","element":"20","rule":"currency-card-network-context"},"status":"REVIEW_REQUIRED"},
     {"id":"BR-SEG100-APPL-WIC-CURRENCY","title":"Currency subfields in eWIC WIC Discount Amount and related variable data shall use a valid Appendix L code.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I","segment":"111","element":"153","rule":"wic-discount-currency-code"},"status":"REVIEW_REQUIRED"}
   ],
   "representativeCodes": ["840 USD","124 CAD","978 EUR","826 GBP"],
   "testScenarios": [
-    {"id":"TS-SEG100-APPL-CURRENCY-FORMAT","covers":["BR-SEG100-APPL-CURRENCY-FORMAT"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPL-CURRENCY-FORMAT","covers":["BR-SEG100-APPL-CURRENCY-FORMAT"],"status":"COVERED"},
     {"id":"TS-SEG100-APPL-CURRENCY-CONTEXT","covers":["BR-SEG100-APPL-CURRENCY-CARD","BR-SEG100-APPL-WIC-CURRENCY"],"status":"REVIEW_REQUIRED"}
   ],
   "testCases": [
-    {"id":"TC-SEG100-APPL-CURRENCY-FORMAT","scenarioId":"TS-SEG100-APPL-CURRENCY-FORMAT","positive":"Valid three-digit currency code such as 840","negative":["Two digits","four digits","unknown code"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPL-CURRENCY-FORMAT","scenarioId":"TS-SEG100-APPL-CURRENCY-FORMAT","positive":"Valid three-digit currency code such as 840","negative":["Two digits","four digits","unknown code"],"status":"COVERED"},
     {"id":"TC-SEG100-APPL-CURRENCY-CONTEXT","scenarioId":"TS-SEG100-APPL-CURRENCY-CONTEXT","positive":"Currency and card-network context agree","negative":["Currency code conflicts with network or eWIC subfield context"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "Currency format is represented in source metadata; dedicated Appendix L enumeration and AI artifact validation remain pending.",
-  "remaining": ["Validate all currency codes used by AI-generated transaction and eWIC artifacts.","Validate network-specific currency applicability when the source flow requires it."]
+  "testDataStatus": "All 153 distinct Appendix L codes (161 source rows), including the six network-scope-conflict codes, plus 10 unknown-but-well-formed and 10 malformed-format negatives, have independent executable classification chains in the linked package. Network-specific/country-specific eligibility, Element 76 implied-decimal, Appendix I Table 006/056, and Appendix M fixed-840 HIP subelement rules remain separate and unresolved.",
+  "remaining": ["Validate all currency codes used by AI-generated transaction and eWIC artifacts against the classification package.","Resolve per-country network-specific currency applicability for codes 230, 356, 578, 710, 840, and 978 through source/client review.","Confirm the Element 76 implied-decimal, Appendix I Table 006 (Currency Code Information) vs. Element 20, Table 056 MIT Amount same-currency, and Appendix M fixed-840 HIP subelement relationships."]
 }

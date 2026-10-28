@@ -1,0 +1,141 @@
+{
+  "artifact": "ATL105-APPENDIX-AF-2026-4-TRAINING-RULE-CATALOG",
+  "appendix": "AF",
+  "specification": "ATL105",
+  "specificationVersion": "2026-4",
+  "status": "SOURCE_DERIVED_REVIEW_REQUIRED",
+  "sourceDocument": "BUYPASS_Platform_ATL105_Message_Format_Specifications_2026-4.pdf",
+  "sourceDocumentSha256": "568c04d3081cac6c5cc545adee9c6f8f3a34334e788fdf5ee0260ffef57c77af",
+  "sourcePdfPage": 730,
+  "sourcePrintedPage": "AF-1",
+  "sourceSection": "Appendix AF",
+  "sourceQuotesFile": "docs/specs/kb/appendix-af-source-quotes.txt",
+  "executionCertified": false,
+  "countsExcludedFromSegmentCatalogSummary": true,
+  "representation": "LOGICAL_LIFECYCLE_OBSERVATIONS_NOT_WIRE_PAYLOADS",
+  "rules": [
+    {
+      "ruleId": "AF-NETWORK-APPLICABILITY",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "Incremental Auth is mandatory for Discover without an MCC restriction; it is strongly recommended for Visa, Mastercard, and American Express alongside applicable existing lodging and EV fields.",
+      "sourceQuotes": [
+        "This functionality is mandatory for Discover and is not limited by MCC.",
+        "For Visa, Mastercard, and American Express, the use of this functionality is strongly recommended in addition to populating the Estimated and Incremental Authorization fields for the applicable lodging and EV transactions."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TRANSACTION-TYPES",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "The supported Incremental Auth types are Original Auth (Estimated Auth), Incremental Auth, Partial Reversal (IA Reversal), and Incremental Auth Completion (IA Completion).",
+      "sourceQuotes": [
+        "The Incremental Auth (IA) product supports four transaction types:",
+        "Original Auth (aka Estimated Auth)",
+        "Incremental Auth",
+        "Partial Reversal (aka IA Reversal)",
+        "Incremental Auth Completion (aka IA Completion)"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TABLE82-PRESENCE",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "All IA transaction types should contain Incremental Auth Data in Segment 111 Table 82; this is mandatory for Discover.",
+      "sourceQuotes": [
+        "All IA transaction types should contain Incremental Auth Data (Variable Information segment 111 Table 82). This is mandatory for Discover."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TRANSACTION-ID-UNIQUENESS",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "interpretationStatus": "REVIEW_REQUIRED",
+      "note": "Appendix AF calls the field Transaction ID; Appendix I calls the Table 82 field Terminal Transaction Number. Their equivalence is not assumed by this catalog.",
+      "requirement": "The Transaction ID in Incremental Auth Data must be unique per terminal among open Incremental Auth purchases.",
+      "sourceQuotes": [
+        "Incremental Auth Data contains the Transaction ID which must be unique (per terminal) to any open Incremental Auth purchase."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-ORIGINAL-PREDECESSOR",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "Incremental Auth, IA Reversal, and IA Completion are subsequent transactions and must be preceded by an Original Auth.",
+      "sourceQuotes": [
+        "Incremental Auths, IA Reversals, and IA Completions are all subsequent transactions, and must be preceded by an Original Auth."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-APPROVAL-CODE",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "Subsequent IA transactions must carry the Approval Code (DE 39) received on the approved Original Auth.",
+      "sourceQuotes": [
+        "Subsequent IA transactions must contain the Approval Code (DE 39) that was received on the approved Original Auth."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-COMPLETION-CLOSED",
+      "sourcePdfPage": 730,
+      "sourcePrintedPage": "AF-1",
+      "sourceSection": "Appendix AF",
+      "requirement": "After IA Completion, the IA is closed and no more subsequent transactions will be approved for that Terminal Transaction ID.",
+      "sourceQuotes": [
+        "Once an IA Completion is received, the IA is closed, and no more subsequent transactions will be approved for that Terminal Transaction ID."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TABLE82-FORMAT",
+      "sourcePdfPages": [426, 636, 637],
+      "sourcePrintedPages": ["13-86", "I-87", "I-88"],
+      "sourceSection": "Chapter 13.2 Element 113 and Appendix I Incremental Auth Data",
+      "sourceQuotesFile": "docs/specs/kb/appendix-af-table82-source-quotes.txt",
+      "requirement": "Table 82 uses Table ID N2 fixed to 82 and Table Length N3 fixed to 004, with an N4 Terminal Transaction Number; Chapter 13.2 explicitly identifies Element 111 value 082 as Incremental Auth Data.",
+      "sourceQuotes": [
+        "N2 Fixed Value: 82",
+        "N3 Fixed Length : 004",
+        "When Element No. 111 (Variable Information Indicator) has a value of 082 (Incremental Auth Data), the Incremental Auth Data is included here.",
+        "Terminal Transaction Number",
+        "N4 Used for tracking partial reversals and incomplete authorizations.",
+        "Discover: Mandatory for Original/Estimated Auth and all the subsequent transactions.",
+        "Visa, MasterCard, Amex: This is optional, though highly encouraged to be populated along with Visa/MC/Amex Incremental Auth Lodging Data in Variable Information Segment 111 table ID 063.",
+        "Note: <Remaining bytes> are reserved for future use."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "ruleId": "AF-TABLE82-TTN-SERIES",
+      "sourcePdfPage": 637,
+      "sourcePrintedPage": "I-88",
+      "sourceSection": "Appendix I, Incremental Auth Data",
+      "sourceQuotesFile": "docs/specs/kb/appendix-af-table82-source-quotes.txt",
+      "requirement": "Terminal Transaction Number should be unique for each Original Auth and retained for subsequent Incremental Auths, Partial or Full Reversals, and IA Completions until the series completes.",
+      "sourceQuotes": [
+        "The Terminal Transaction Number should be unique for each Original Auth (aka Estimated Auth).",
+        "The Terminal Transaction Number should be the same value for all subsequent transactions tied to this original transaction (Incremental Auths, Partial or Full Reversals, IA Completions).",
+        "Therefore, when using the same card for Incremental Auth, the Terminal Transaction Number should be the same until the Incremental Auth series is completed."
+      ],
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "unresolved": [
+    "The Appendix AF Transaction ID to Appendix I Terminal Transaction Number mapping requires SME confirmation.",
+    "A complete synthetic open-purchase fixture exercises the local uniqueness predicate; independently observed open-state evidence is not supplied, so no real-terminal uniqueness result is asserted.",
+    "The source uses should/strongly recommended language except for Discover mandatory presence; do not upgrade recommendations into universal hard failures.",
+    "Approval and completion acceptance are logical source checks only; processor outcomes and host-state behavior are not certified."
+  ]
+}

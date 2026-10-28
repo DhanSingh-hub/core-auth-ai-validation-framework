@@ -1,0 +1,156 @@
+{
+  "id" : "TD-APPI-C056-N06-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N06-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N06-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-59",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r008-APPI-C056-N06-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N06-001",
+        "tableId" : "056",
+        "nestedSelector" : "06",
+        "ruleIds" : [ "APPI-T056-R008", "APPI-T056-R009" ],
+        "syntheticData" : {
+          "selector" : "06",
+          "logicalLength" : 1,
+          "validationFlag" : "1",
+          "context" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "payment" : "recurring",
+            "offlineValidationDuringRegistration" : true
+          },
+          "history" : {
+            "initial" : "0",
+            "lastModification" : "1",
+            "subsequent" : "1"
+          },
+          "discoverVariant" : {
+            "validationFlag" : "0",
+            "checkedAgainstValidationSource" : false
+          }
+        },
+        "clearScope" : "0not validated/1validated; Discover versus Visa validation meaning; India required/history.",
+        "excludedClaims" : [ "Authentication/authorization success inferred fromflag", "Whether changingflag itself requires event3" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Flag domain and stated validation precondition",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Flag-modification trigger policy",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "validationFlag",
+            "replacement" : "2",
+            "expected" : "FAIL code domain"
+          }, {
+            "path" : "context.offlineValidationDuringRegistration",
+            "replacement" : false,
+            "expected" : "FAIL logicalflag1/validation-state correspondence"
+          }, {
+            "path" : "history.subsequent",
+            "operation" : "remove",
+            "expected" : "FAIL history presence"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed1"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "validated" : "1",
+          "notValidated" : "0"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30495,
+          "section" : "Appendix I-59",
+          "endLine" : 30512
+        }, {
+          "startLine" : 30513,
+          "section" : "Appendix I-60",
+          "endLine" : 30545
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.06.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 06",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30498,
+            "section" : "Appendix I-59",
+            "endLine" : 30500
+          } ]
+        }, {
+          "path" : "113.06.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30501,
+            "section" : "Appendix I-59",
+            "endLine" : 30504
+          } ]
+        }, {
+          "path" : "113.06.Sub-Table Data",
+          "sourceType" : "n1",
+          "sourceLength" : "1 digit; 0 or 1",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30514,
+            "section" : "Appendix I-60",
+            "endLine" : 30545
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

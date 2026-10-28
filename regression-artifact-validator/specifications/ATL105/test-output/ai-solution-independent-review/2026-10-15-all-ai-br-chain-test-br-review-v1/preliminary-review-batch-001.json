@@ -1,0 +1,165 @@
+{
+  "artifact": "PRELIMINARY-AI-BR-TO-TEST-BR-CHAIN-REVIEW",
+  "batchId": "001",
+  "reviewedOn": "2026-10-15",
+  "reviewLevel": "AI_PRELIMINARY_REVIEW_NOT_AUTHORIZED_ADJUDICATION",
+  "scope": "Four AI BRs selected to exercise presence, field-constraint, and lifecycle matching. This is the first review batch, not completion of the 6,880-BR population.",
+  "aiScenarioApprovalRequired": false,
+  "semanticMatchesConfirmed": 0,
+  "records": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:001",
+      "aiStatement": "Access Code must be alphanumeric and must not exceed 12 bytes.",
+      "aiSourceAnchor": {
+        "element": "1",
+        "segment": "DL2",
+        "sourcePage": 355
+      },
+      "aiChain": {
+        "scenarioIds": ["SC-5530"],
+        "scenarioType": "field_constraint",
+        "scenarioName": "Field Constraint - ENT-ELEM-1: Access Code must be alphanumeric and must not exceed 12 bytes.",
+        "directCaseCount": 0,
+        "physicalPayloadCount": 0,
+        "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"
+      },
+      "testBrCandidates": [
+        {
+          "testBrId": "SEGDL2-R-005",
+          "testBrTitle": "If Access Code (Element 1) is not necessary, the dial string contains neither the Access Code nor the Pause Indicator (Element 66) that immediately follows it; the Access Code may itself contain one or more 'B' characters, each interpreted as a one-second pause",
+          "relation": "SAME_FIELD_CONTEXT_NOT_SAME_OBLIGATION",
+          "rationale": "Same segment and element. Test BR concerns conditional presence and pause-character interpretation; it does not specify the AI BR's alphanumeric constraint or 12-byte maximum."
+        },
+        {
+          "testBrId": "SEGDL2-R-002",
+          "testBrTitle": "Dial String Type is fixed value 1; Primary Phone Number block includes conditional Access Code and Pause Indicator",
+          "relation": "RELATED_COMPOSITE_CONTEXT_ONLY",
+          "rationale": "The Access Code appears in a larger required/conditional block, but the BR does not establish its character set or maximum length."
+        }
+      ],
+      "preliminaryDisposition": "NO_EQUIVALENT_TEST_BR_IDENTIFIED_IN_REVIEWED_CANDIDATES",
+      "additionalTestBrSearch": "Top lexical leads in other segments share generic terms such as alphanumeric, byte, or exceed; they are not retained as plausible matches because segment and element scope differ.",
+      "testChainLimitations": "Both listed Test BRs are DRAFT_REVIEW_REQUIRED with REVIEW_REQUIRED placeholder scenario/case/data chains.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED",
+      "requiresAuthorizedSourceReview": true
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1937",
+      "aiStatement": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.",
+      "aiSourceAnchor": {
+        "element": "86",
+        "segment": "100",
+        "sourcePage": 402
+      },
+      "aiChain": {
+        "scenarioIds": ["SC-7311"],
+        "scenarioCount": 1,
+        "caseIds": ["TC-009202", "TC-009203", "TC-009204", "TC-009205", "TC-009206", "TC-009207"],
+        "caseCount": 6,
+        "sequenceNumberValues": ["000001"],
+        "multiTransactionComparison": false,
+        "note": "Six independent case records use the same literal value; the records do not pair an initial authorization with follow-up transactions to assert persistence."
+      },
+      "testBrCandidates": [
+        {
+          "testBrId": "SEG100-R-037",
+          "testBrTitle": "Lifecycle follow-ups reuse the original Sequence Number and required approval context",
+          "relation": "STRONG_LIFECYCLE_OVERLAP_COMPOSITE_SCOPE",
+          "rationale": "Explicitly covers reuse on follow-ups; it also includes approval context beyond the AI BR."
+        },
+        {
+          "testBrId": "SEG100-R-019",
+          "testBrTitle": "Sequence Number is six digits and persists through lifecycle",
+          "relation": "STRONG_LIFECYCLE_OVERLAP_BROADER_WORDING",
+          "rationale": "Explicit persistence through lifecycle, but the Test BR does not state the initial-authorization linkage as specifically as the AI BR."
+        }
+      ],
+      "preliminaryDisposition": "STRONG_TEST_BR_CANDIDATES_CHAIN_DOES_NOT_DEMONSTRATE_LIFECYCLE",
+      "testChainLimitations": "Both Test BRs are DRAFT_REVIEW_REQUIRED; their scenario/case/data rows are REVIEW_REQUIRED placeholders, not executable lifecycle comparisons.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED",
+      "requiresAuthorizedSourceReview": true
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:3251",
+      "aiStatement": "In Standard Message Data Segment (Data Segment No. 100), field 14 (Sequence Number) is required and must be present.",
+      "aiSourceAnchor": {
+        "element": "86",
+        "segment": "100",
+        "sourcePage": 221
+      },
+      "aiChain": {
+        "scenarioCount": 8,
+        "caseCount": 13,
+        "caseIds": ["TC-002307", "TC-002428", "TC-002678", "TC-002853", "TC-003426", "TC-003851", "TC-003956", "TC-011908", "TC-011909", "TC-011910", "TC-011911", "TC-011912", "TC-011913"],
+        "scenarioIntentSummary": "Seven scenarios test omission; one checks the field constraint.",
+        "v6PhysicalCompleteCaseCount": 9,
+        "physicalCompletenessNote": "The v6 count is route/catalog scoped; retain the 13 linked cases and verify each candidate payload/metadata path separately before claiming all 13 clean."
+      },
+      "testBrCandidates": [
+        {
+          "testBrId": "SEG100-R-019",
+          "relation": "SAME_FIELD_WITH_ADDITIONAL_LIFECYCLE_AND_FORMAT_SCOPE",
+          "rationale": "Same segment and element; adds six-digit and lifecycle persistence obligations not stated by this AI BR."
+        },
+        {
+          "testBrId": "SEG100-R-037",
+          "relation": "SAME_FIELD_WITH_ADDITIONAL_LIFECYCLE_AND_APPROVAL_SCOPE",
+          "rationale": "Same segment and element; concerns follow-up reuse and approval context, not presence alone."
+        }
+      ],
+      "preliminaryDisposition": "PARTIAL_SCOPE_CANDIDATES_NO_PRESENCE_ONLY_TEST_BR_IDENTIFIED",
+      "testChainLimitations": "Both Test BRs are DRAFT_REVIEW_REQUIRED and have placeholder chains. The AI omission scenarios are evidence of AI-side coverage, not proof of the independent Test BR's expected behavior.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED",
+      "requiresAuthorizedSourceReview": true
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:6098",
+      "aiStatement": "Sequence Number: Fixed length six-digit numeric field identifying a transaction for its lifetime.",
+      "aiSourceAnchor": {
+        "element": "86",
+        "candidateSegments": ["100", "105", "109", "118", "119", "132"],
+        "anchorStatus": "AMBIGUOUS_OR_COMPOSITE_PRODUCER_ANCHOR"
+      },
+      "aiChain": {
+        "scenarioIds": ["SC-11472"],
+        "scenarioType": "supplemental_entity",
+        "caseIds": ["TC-019856", "TC-019857", "TC-019858", "TC-019859", "TC-019860", "TC-019861"],
+        "caseCount": 6,
+        "sequenceNumberValues": ["000001"],
+        "physicalEvidenceNote": "Per-case candidate payload status depends on catalog-relative path. The v6 aggregate clean-case set is narrower than the alternate test_data candidate routes; do not collapse route-specific statuses into a single payload count.",
+        "multiTransactionComparison": false
+      },
+      "testBrCandidates": [
+        {
+          "testBrId": "SEG100-R-019",
+          "relation": "FIELD_FORMAT_AND_LIFECYCLE_OVERLAP_SEGMENT_100",
+          "rationale": "Six digits and lifecycle persistence are stated, scoped to Segment 100."
+        },
+        {
+          "testBrId": "SEG100-R-037",
+          "relation": "LIFECYCLE_REUSE_OVERLAP_SEGMENT_100_COMPOSITE_SCOPE",
+          "rationale": "Follow-up reuse is stated with additional approval context, scoped to Segment 100."
+        },
+        {
+          "testBrId": "SEG109-R-015",
+          "relation": "FIELD_FORMAT_OVERLAP_SEGMENT_109",
+          "rationale": "Required six numeric characters; does not state transaction-lifetime identity."
+        },
+        {
+          "testBrId": "SEG118-R-008",
+          "relation": "FIELD_FORMAT_AND_LIFETIME_OVERLAP_SEGMENT_118",
+          "rationale": "Six digits and unique transaction sequence for the life of the transaction; segment applicability must be confirmed against the AI BR's ambiguous multi-segment anchor."
+        }
+      ],
+      "allV6AnchorCandidateTestBrIds": ["SEG100-R-019", "SEG100-R-037", "SEG105-R-013", "SEG105-R-016", "SEG109-R-015", "SEG109-R-022", "SEG118-R-008", "SEG118-R-025", "SEG119-R-019", "SEG119-R-032", "SEG132-R-005"],
+      "preliminaryDisposition": "MULTIPLE_SEGMENT_SCOPED_CANDIDATES_REQUIRE_SOURCE_SCOPE_ADJUDICATION",
+      "testChainLimitations": "All listed Test BR candidates are DRAFT_REVIEW_REQUIRED with placeholder scenario/case/data rows; the AI chain does not exercise paired transactions over a transaction lifetime.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED",
+      "requiresAuthorizedSourceReview": true
+    }
+  ]
+}

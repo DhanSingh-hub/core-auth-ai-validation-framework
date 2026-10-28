@@ -1,0 +1,100 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG120-PRINT-DATA-LENGTH-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Scope to Financial Transaction Response messages requiring large amounts of print data. Use the Segment 120 field table's R markers and its four-character Segment Length description.",
+      "dataPolicy": "Symbolic response-segment design only. Do not assign a wire delimiter byte or claim complete length computation without authorized raw response fixture.",
+      "baselinePolicy": "References SEG120-R-002 and the Segment 120 field table; no official Test record is modified.",
+      "promotionGate": "Authorized Test review must confirm response applicability, full print-data payload, four-digit length calculation, framing, and fixture identity before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG120-R-002",
+      "title": "Segment Length is present, exactly 4 digits (zero-padded), and equals the segment's actual encoded length including the Segment Type field and Field Separators",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.18", "segment": "120", "element": "84", "rule": "segment-length"}
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG120-RESPONSE-CONTEXT",
+      "sourcePage": 263,
+      "startLine": 13757,
+      "quote": "It is only sent on Financial Transaction Response messages requiring large amounts of print data.",
+      "interpretation": "The rule applies in this source-defined response context; request messages and unrelated Electronic Mail cases do not by themselves establish applicability."
+    },
+    {
+      "id": "ATL105-2026-3-SEG120-FIELD1-E85",
+      "sourcePage": 263,
+      "startLine": 13766,
+      "quote": "1 85 Segment Type 3 R Identifies the type of data segment being formatted. Fixed value: 120 Source: Host",
+      "interpretation": "The Segment 120 response begins with required Segment Type 120, host sourced."
+    },
+    {
+      "id": "ATL105-2026-3-SEG120-FIELD2-E84",
+      "sourcePage": 263,
+      "startLine": 13775,
+      "quote": "2 84 Segment Length 4 R Identifies the data segment’s length, including Segment Type’s length and Field Separators. Source: Host",
+      "interpretation": "Field 2 / Element 84 is required, four characters, and includes Segment Type length and Field Separators."
+    },
+    {
+      "id": "ATL105-2026-3-SEG120-SEPARATOR-POSITIONS",
+      "sourcePage": 263,
+      "startLine": 13764,
+      "quote": "Note: There is a Field Separator between Field Nos. 1 and 2 and between Field Nos. 2 and 3.",
+      "interpretation": "The field-level design must preserve the specified separators; actual wire encoding is not asserted here."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-0735C6414553",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3432",
+    "sourceAnchor": "ENT-FIELD-120-2",
+    "linkedCases": [
+      {"caseId": "TC-012684", "transaction": "ECA/TeleCheck Service Transaction", "screenedElement84State": "NO_EXACT_SEGMENT120_OBSERVATION", "transactionSourceContext": "NOT_FINANCIAL_TRANSACTION_RESPONSE", "payloadSha256": "1bbe07b7cfef1abc83e4fe3f8fe68309dafa3484863ef0b9118ca112107322bb"},
+      {"caseId": "TC-012685", "transaction": "ECA/TeleCheck Service Transaction Request", "screenedElement84State": "NO_EXACT_SEGMENT120_OBSERVATION", "transactionSourceContext": "NOT_FINANCIAL_TRANSACTION_RESPONSE", "payloadSha256": "cbbf8b0d9436d2f0fb0f31ffbcce79b8b0e2e2a8c28cefd03274adfd6aab9edf"},
+      {"caseId": "TC-012686", "transaction": "EMV Financial Transaction Request", "screenedElement84State": "NO_EXACT_SEGMENT120_OBSERVATION", "transactionSourceContext": "REQUEST_NOT_RESPONSE", "payloadSha256": "30bd3da88614b11c3b660bf4fde646ded2e915e94741805b7644f279594fe43e"},
+      {"caseId": "TC-012687", "transaction": "EMV Request Transaction", "screenedElement84State": "NO_EXACT_SEGMENT120_OBSERVATION", "transactionSourceContext": "REQUEST_NOT_RESPONSE", "payloadSha256": "4b73957d24f98509306de4fedc282397f3651e588bd7d2d31420d208fdf7dd7a"},
+      {"caseId": "TC-012688", "transaction": "Electronic Mail", "screenedElement84State": "NO_EXACT_SEGMENT120_OBSERVATION", "transactionSourceContext": "NOT_FINANCIAL_TRANSACTION_RESPONSE", "payloadSha256": "de7175767a0fc75615ade910b7b376446fd75eb2151c8e87b3a532a80f5da57a", "approvedPayloadCopiesMissing": 2}
+    ],
+    "assessment": "All five AI linked case labels are request/Electronic Mail contexts rather than the source-required Financial Transaction Response context; the bounded screen found no exact Segment 120 Element 84 observation for any case. They do not demonstrate this requirement."
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG120-E84-RESPONSE-LENGTH", "requirementIds": ["BR-RULE-SEG120-R-002"], "sourceEvidenceIds": ["ATL105-2026-3-SEG120-RESPONSE-CONTEXT", "ATL105-2026-3-SEG120-FIELD1-E85", "ATL105-2026-3-SEG120-FIELD2-E84", "ATL105-2026-3-SEG120-SEPARATOR-POSITIONS"], "intent": "For an authorized Financial Transaction Response requiring large print data, include Segment 120, fixed Segment Type 120, and required four-character Segment Length with source-specified separator positions.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG120-E84-PRESENT", "scenarioIds": ["TS-DRAFT-SEG120-E84-RESPONSE-LENGTH"], "testDataIds": ["TD-DRAFT-SEG120-E84-PRESENT"], "assertion": "A reviewed-valid Financial Transaction Response includes Segment 120 field 2 / Element 84 as a four-character length indicator.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG120-E84-OMITTED", "scenarioIds": ["TS-DRAFT-SEG120-E84-RESPONSE-LENGTH"], "testDataIds": ["TD-DRAFT-SEG120-E84-OMITTED"], "assertion": "The otherwise applicable Segment 120 response omits required field 2 / Element 84.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG120-E84-PRESENT", "testCaseIds": ["TC-DRAFT-SEG120-E84-PRESENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_NOT_CONVERTER_READY", "responseType": "FINANCIAL_TRANSACTION_RESPONSE", "segment": "120", "field1": "120", "fieldSeparatorBetweenFields1And2": true, "field2": "<4-character computed value>", "fieldSeparatorBetweenFields2And3": true, "field3": "<large print data>"}},
+    {"id": "TD-DRAFT-SEG120-E84-OMITTED", "testCaseIds": ["TC-DRAFT-SEG120-E84-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_RESPONSE_NOT_CONVERTER_READY", "responseType": "FINANCIAL_TRANSACTION_RESPONSE", "segment": "120", "field1": "120", "fieldSeparatorBetweenFields1And2": true, "field2": {"omitted": true}, "fieldSeparatorBetweenFields2And3": true, "field3": "<large print data>"}}
+  ],
+  "openQuestions": [
+    "Confirm a source-approved large-print Financial Transaction Response context and corresponding response body.",
+    "Confirm the four-character length calculation from the complete response payload and separators.",
+    "Confirm the converter's actual Field Separator representation and bind it to raw response bytes.",
+    "Review TC-012688 approved/candidate copies; two approved payload paths are missing from frozen inventory."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

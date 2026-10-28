@@ -115,11 +115,19 @@ All code-level anchors are ATL105 2026-3, Appendix G, Segment 100, Element 78, `
 
 ### Existing Implementation/Artifact Drift
 
-- `Segment100MultiStepCoverageValidator` accepts the invalid Authorization Only `-> 8` flow, accepts cross-paired sale reversal codes, allows TOR originals `3`, `5`, and `B`, imposes a global three-attempt cap, and universally compares TerminalID. Its acceptance rules should not be treated as the source of truth until corrected.
+- `Segment100MultiStepCoverageValidator` now scopes same-TerminalID enforcement to Timeout Reversal; do not apply that equality rule to Authorization -> Completion without a source/SME rule. The validator still accepts the invalid Authorization Only `-> 8` flow and cross-paired sale reversal codes; those code paths remain to be corrected and tested. TOR originals are restricted to `0`, `4`, and `6`; its attempt limit is enforced per supplied route attempt list, not demonstrated as a global transport-route policy.
 - `segment-100-multistep-flow-catalog.json` contains `BR-SEG100-LIFE-AUTH-VOID` and lacks a dedicated authorization-cancellation BR. Replace the invalid code-8 BR with a source-anchored cancellation BR before calling the lifecycle catalog complete.
 - `combined-23-transaction-type-br-ts-tc-td-matrix.md` lists `3`, `5`, and `B` as timeout originals and groups `8`/`C` across originals `0`, `4`, and `6`. Narrow TORs to eligible purchases with card/product rules, and constrain reversal pairs to `0`/`4` -> `8` and `6` -> `C`.
 - The shared flow-specific anchor `ATL105|2026-3|10|100|86|lifecycle-correlation` is generic. Add the precise Section 2.3/2.3.1, Section 10.1.2.2/10.2.2.2, and Appendix G anchors where they establish the rule.
 - The special BR count includes draft candidates only. Codes `D` and `T` remain source blockers; no special BR is execution-ready based on this inventory.
+
+### Oct 16 Authorization-to-Completion AI chain screen
+
+The hash-bound review `2026-10-16-ai-auth-completion-chain-review-v6` screens 138 AI cases across standard, partial, duplicate completion, EMV, estimated/incremental, and completion-then-void variants. Prompt Code paths and six-digit Sequence Number carry passed for all 138; 337 declared step files matched the frozen payload inventory and their case/scenario metadata. These are structural results, not semantic or host validation.
+
+The screen found 124 cases without direct AI BR links; the remaining 14 link to only five field-level AI BRs, so the lifecycle obligation itself remains unlinked. In 133 cases, the completion Approval Number is generated as a runtime placeholder; five cases omit it. Every amount-change case remains subject to actual host-approved-amount review. The Test BR map has 55 exact-anchor/retrieval candidates to 30 Test BRs, all pending review. Do not promote rankings to matches or synthetic approval values to host evidence.
+
+Terminal-ID equality across Authorization -> Completion is reported as an observation, not an ATL105 requirement. The ATL105 source requires the lifecycle Sequence Number and relevant approval/amount context; it does not state universal same-TerminalID equality for this flow. The repository validator still has a same-device rule for Timeout Reversal, where source context supports it.
 
 ## Source Artifacts
 
