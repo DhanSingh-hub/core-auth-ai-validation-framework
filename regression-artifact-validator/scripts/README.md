@@ -96,6 +96,37 @@ and compares each row with ATL105 Appendix F in both releases; the build fails u
 the differences equal `expectedDifferences`. Scenarios whose expectation depends on a
 recorded source conflict carry `oracleConflict` and are reported as conflicting oracles.
 
+### IIN Reference Manual ingestion and context training
+
+Run `.\framework.ps1 -Task iin-ingest-build`, `iin-ingest-check` and `iin-ingest-test`
+to import the
+[BUYPASS IIN Reference Manual 2024-1](../specifications/ATL105/docs/specs/BUYPASS_Platform_IIN_Reference_Manual_06072024_2024-1.pdf)
+(all 10 pages and its 3 outline bookmarks) as retrieval evidence and 8 curated draft
+lessons. `iin-atl105-crossref-build`, `-check` and `-test` locate the single ATL105
+referral (Element 2, Account Number, credit/debit/EBT cards only) in both 2026-3 and
+2026-4; fleet cards are referred to the Petroleum specification by the same element
+instead, so the two referrals never overlap in card-type scope.
+
+`iin-train-build`, `-train-check` and `-train-test` run the pilot and only context,
+`card-type-catalog`, covering all 16 Table 1/Table 2 card types. Every one of the 100
+PAN ranges (including the 63-row Visa Fleet block spanning 4 pages) is independently
+re-derived from the source page text — grouped by physical page and classified as a
+range low or high from its own trailing zero/nine digits, never hand-entered or
+assumed to follow a fixed block/pair layout — so continuation rows can never be
+cross-paired. The build also cross-checks the derived Visa Fleet BIN prefixes against
+the independently trained
+[Petroleum 2025-1 Visa Fleet catalog](../specifications/ATL105/docs/specs/kb/petroleum-2025-1/visa-fleet/training-package.json)
+(63/63 match) and cites Petroleum lesson `PETRO-2025-1-L011` for MasterCard Fleet's
+Mod 10 requirement rather than inventing a check-digit rule for any card type. A
+draft validator (length, range membership, and Mod 10 for MasterCard Fleet only)
+backs a mutation suite that must catch every invalid boundary/length/Mod10 case.
+Known source anomalies — UnionPay missing from the Introduction's card-type list,
+the duplicate `DS` Card Type ID shared by Discover Network and UnionPay, the shared
+`GF` code for Fleetwide/Fuelman, Diners Club's mixed PAN lengths, and the Debit/EBT
+placeholder ranges — are recorded as `REVIEW_REQUIRED` findings, not silently
+resolved. Debit and EBT are excluded from ranged BRs since their declared length is
+a placeholder, not a fixed structure.
+
 ### All-network requirements and lifecycle review
 
 From the module root, run `.\framework.ps1 -Task all-network-review-build`,
