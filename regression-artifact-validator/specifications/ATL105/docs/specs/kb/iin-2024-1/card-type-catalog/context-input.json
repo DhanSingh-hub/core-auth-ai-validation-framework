@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "contextId": "IIN_CARD_TYPE_CATALOG",
+  "planId": "IIN-2024-1-TRAINING-PLAN",
+  "sourceVersion": "2024-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "program": "IIN_CARD_TYPE_CATALOG",
+  "scope": {
+    "table1Pages": [5, 6, 7, 8, 9],
+    "table2Page": 10,
+    "introductionPage": 4,
+    "introductionQuote": "This document discusses IIN information for the following card types:",
+    "introductionCardTypes": ["American Express", "Debit", "Diners Club", "Discover Network", "EBT", "Fleet One",
+      "Fleetwide", "Fuelman", "JCB", "MasterCard", "MasterCard Fleet", "Visa", "Visa Fleet", "Voyager", "WEX"],
+    "exclusions": [
+      "Fleet card IIN/PAN authority is not asserted over the Petroleum Industry Processing Specification (see IIN-2024-1-Q05).",
+      "Card-present/EMV chip data, track layouts and prompt codes are out of scope; this document covers only IIN/PAN identity and entry-mode flags."
+    ]
+  },
+  "cardTypes": [
+    {"name": "American Express", "cardTypeId": "AX", "iinLength": 2, "panLengths": [15], "headerPage": 5,
+     "headerQuote": "American Express AX 2 15", "table2Quote": "American Express Y N Y"},
+    {"name": "Debit", "cardTypeId": "DB", "iinLength": 0, "panLengths": [0], "headerPage": 5,
+     "headerQuote": "Debit DB 0 0", "table2Quote": "Debit N Y N/A"},
+    {"name": "Diners Club", "cardTypeId": "DCI-DISC", "iinLength": 4, "panLengths": [14, 16], "headerPage": 5,
+     "headerQuote": "Diners Club DCI-DISC 4 14", "table2Quote": "Diners Club Y N Y"},
+    {"name": "Discover Network", "cardTypeId": "DS", "iinLength": 6, "panLengths": [16], "headerPage": 5,
+     "headerQuote": "Discover Network DS 6 16", "table2Quote": "Discover Network Y N Y"},
+    {"name": "EBT", "cardTypeId": "EB", "iinLength": 0, "panLengths": [0], "headerPage": 5,
+     "headerQuote": "EBT EB 0 0", "table2Quote": "EBT Y Y Y"},
+    {"name": "Fleet One", "cardTypeId": "FL", "iinLength": 6, "panLengths": [19], "headerPage": 6,
+     "headerQuote": "Fleet One FL 6 19", "table2Quote": "Fleet One Y N Y"},
+    {"name": "Fleetwide", "cardTypeId": "GF", "iinLength": 6, "panLengths": [17], "headerPage": 6,
+     "headerQuote": "Fleetwide GF 6 17", "table2Quote": "Fleetwide Y N Y"},
+    {"name": "Fuelman", "cardTypeId": "GF", "iinLength": 6, "panLengths": [17], "headerPage": 6,
+     "headerQuote": "Fuelman GF 6 17", "table2Quote": "Fuelman Y N Y"},
+    {"name": "JCB", "cardTypeId": "JCB-DISC", "iinLength": 8, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "JCB JCB-DISC 8 16", "table2Quote": "JCB Y N Y"},
+    {"name": "MasterCard", "cardTypeId": "MC", "iinLength": 4, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "MasterCard MC 4 16", "table2Quote": "MasterCard Y N Y"},
+    {"name": "MasterCard Fleet", "cardTypeId": "MF", "iinLength": 6, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "MasterCard Fleet MF 6 16", "table2Quote": "MasterCard Fleet Y N Y"},
+    {"name": "UnionPay", "cardTypeId": "DS", "iinLength": 6, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "UnionPay DS 6 16", "table2Quote": "UnionPay Y N Y"},
+    {"name": "Visa", "cardTypeId": "VISA", "iinLength": 4, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "Visa Reports: VS Receipts: VISA 4 16", "table2Quote": "Visa Y N Y"},
+    {"name": "Visa Fleet", "cardTypeId": "VISA", "iinLength": 6, "panLengths": [16], "headerPage": 6,
+     "headerQuote": "Visa Fleet Reports: VS Receipts: VISA 6 16", "table2Quote": "Visa Fleet Y N Y"},
+    {"name": "Voyager", "cardTypeId": "VF", "iinLength": 4, "panLengths": [19], "headerPage": 9,
+     "headerQuote": "Voyager VF 4 19", "table2Quote": "Voyager Y N N"},
+    {"name": "WEX", "cardTypeId": "WX", "iinLength": 6, "panLengths": [19], "headerPage": 9,
+     "headerQuote": "WEX WX 6 19", "table2Quote": "WEX Y N N"}
+  ],
+  "atl105CardTypeIdSection": {
+    "pdfPages": {"2026-3": 89, "2026-4": 91},
+    "printedPage": "10-12",
+    "anchorQuote": "The type of card prints on all credit card receipts",
+    "declaredCardTypeIds": ["AX", "DB", "DCI-DISC", "DS", "EB", "JCB-DISC", "MC", "VISA", "STAR"]
+  },
+  "crossDocument": {
+    "petroleumVisaFleetPackage": "kb/petroleum-2025-1/visa-fleet/training-package.json",
+    "petroleumMastercardFleetMod10Lesson": {
+      "path": "kb/petroleum-2025-1/training-lessons.json",
+      "lessonId": "PETRO-2025-1-L011",
+      "statementContains": "Mod 10 check-digit evaluation on the full account number"
+    }
+  },
+  "internalConsistency": [
+    {"id": "IIN-IC-01", "finding": "UnionPay is present in Table 1 (page 6) and Table 2 (page 10) but absent from the Introduction's 15-card-type list on page 4.",
+     "severity": "REVIEW_REQUIRED", "pages": [4, 6, 10], "question": "IIN-2024-1-Q01"},
+    {"id": "IIN-IC-02", "finding": "UnionPay's Card Type ID ('DS') duplicates Discover Network's Card Type ID in the same table.",
+     "severity": "REVIEW_REQUIRED", "pages": [6], "question": "IIN-2024-1-Q02"},
+    {"id": "IIN-IC-03", "finding": "Fleetwide and Fuelman share the Card Type ID ('GF').",
+     "severity": "REVIEW_REQUIRED", "pages": [6], "question": "IIN-2024-1-Q03"},
+    {"id": "IIN-IC-04", "finding": "Diners Club mixes two PAN lengths (14 and 16) under one IIN Length of 4.",
+     "severity": "REVIEW_REQUIRED", "pages": [5], "question": "IIN-2024-1-Q04"},
+    {"id": "IIN-IC-05", "finding": "Debit and EBT declare IIN Length 0 and PAN Length 0 with a full 0..9 placeholder range rather than a fixed structure.",
+     "severity": "REVIEW_REQUIRED", "pages": [5], "question": "IIN-2024-1-Q06"}
+  ],
+  "approvals": [],
+  "openQuestions": [
+    {"id": "IIN-2024-1-Q01", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "UnionPay appears in Table 1 (page 6) and Table 2 (page 10) but is absent from the Introduction's 15 card-type list on page 4. Confirm whether the Introduction is stale or UnionPay is intentionally out of this document's stated scope."},
+    {"id": "IIN-2024-1-Q02", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "UnionPay's Card Type ID is printed as 'DS', identical to Discover Network's Card Type ID in the same table. Confirm whether this is a transcription error or an intentional shared code."},
+    {"id": "IIN-2024-1-Q03", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Fleetwide and Fuelman share the Card Type ID 'GF'. Confirm whether this is an intentional shared sponsor code or requires disambiguation for routing."},
+    {"id": "IIN-2024-1-Q04", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Diners Club mixes two PAN lengths (14 and 16) under a single IIN Length of 4. Confirm whether downstream validation must branch on PAN length."},
+    {"id": "IIN-2024-1-Q05", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "ATL105 Element 2 refers credit, debit and EBT cards to this manual while referring fleet cards to the Petroleum Industry Processing Specification. Confirm whether the MasterCard Fleet, Visa Fleet, Voyager, WEX, Fleet One and Fuelman rows in this manual remain authoritative for IIN/PAN validation or are superseded by the Petroleum specification for those programs."},
+    {"id": "IIN-2024-1-Q06", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Debit and EBT declare IIN Length 0 and PAN Length 0 with a full 0..9 placeholder range. Confirm the intended meaning before treating these as validation-ready rules."}
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "title": "BUYPASS Platform Issuer Identification Number (IIN) Reference Manual",
+  "version": "2024-1",
+  "releaseDate": "2024-06-07",
+  "sourceSha256": "26f4bff48a123a8cbab6f7bcbb59e1bd7d13c70565232085b0e824f11dceb45d",
+  "pageCount": 10,
+  "coverMarkers": ["BUYPASS", "Issuer Identification Number (IIN)", "Reference Manual", "June 07, 2024", "2024-1"],
+  "expectedOutline": [
+    {"title": "BUYPASS\u00ae Platform Issuer Identification Number (IIN) Reference Manual", "pdfPage": 1},
+    {"title": "Current Revision History", "pdfPage": 2},
+    {"title": "Prior Revision History", "pdfPage": 3}
+  ],
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "lessons": [
+    {
+      "id": "IIN-2024-1-L001",
+      "scope": "Document purpose, page 4; names the 15 card types the Introduction lists (UnionPay is not among them, see IIN-2024-1-Q01)",
+      "statement": "Use the IIN Reference Manual as the source for Card Type ID, IIN Length, PAN Length and PAN range for the credit, debit and EBT cards it documents.",
+      "evidence": [{"pdfPage": 4, "quote": "This document discusses IIN information for the following card types:"}]
+    },
+    {
+      "id": "IIN-2024-1-L002",
+      "scope": "Document identity and lineage, page 2; supersession only, not a content diff beyond the stated table",
+      "statement": "The 2024-1 release is a new document replacing FDMS Doc. No. 0103, Version No. 2021-2, released on October 01, 2021.",
+      "evidence": [{"pdfPage": 2, "quote": "FDMS Doc. No. 0103, Version No. 2021-2, released on October 01, 2021"}]
+    },
+    {
+      "id": "IIN-2024-1-L003",
+      "scope": "Current revision history, page 2; identifies which table changed, not the specific range values",
+      "statement": "The only change from 2021-2 to 2024-1 is an update to the Visa Fleet PAN ranges in Card Type Information-Table 1.",
+      "evidence": [{"pdfPage": 2, "quote": "Updated Visa Fleet PAN ranges in Card Type Information"}]
+    },
+    {
+      "id": "IIN-2024-1-L004",
+      "scope": "Prior revision history, page 3; historical context for the 2021-2 release, not the current release's own content",
+      "statement": "Version 2021-2 updated the JCB Card Type's IIN Length to 8 and added a note enabling 8-digit BIN support for Discover.",
+      "evidence": [
+        {"pdfPage": 3, "quote": "Updated IIN length of Card Type"},
+        {"pdfPage": 3, "quote": "Added support of 8-digit BIN to Discover in the note of Card Type Information"}
+      ]
+    },
+    {
+      "id": "IIN-2024-1-L005",
+      "scope": "Document structure, page 4; column names only, not the row values",
+      "statement": "Table 1 carries Card Type, Card Type ID, IIN Length, PAN Length and PAN Range (Low/High); Table 2 carries Card Type, Manual Entry, Encrypted PIN Required and IIN Entered.",
+      "evidence": [
+        {"pdfPage": 4, "quote": "This document contains two tables."},
+        {"pdfPage": 4, "quote": "Table 2 contains the following information:"}
+      ]
+    },
+    {
+      "id": "IIN-2024-1-L006",
+      "scope": "8-Digit BIN support note, page 9; Visa, MasterCard and Discover only, not every card type in Table 1",
+      "statement": "Effective with the April 2022 release, Visa, MasterCard and Discover moved from six-digit to eight-digit issuing BINs per the ISO standard, and acquirers/processors must support both lengths.",
+      "evidence": [{"pdfPage": 9, "quote": "Effective with the April 2022 release, Visa, MasterCard, and Discover will implement the change from six-digit"}]
+    },
+    {
+      "id": "IIN-2024-1-L007",
+      "scope": "WEX note, page 9; WEX eligibility only, not a general merchant-location rule",
+      "statement": "For WEX, either First Data or WEX determines whether the payment card can be used at the merchant location.",
+      "evidence": [{"pdfPage": 9, "quote": "Either First Data or WEX will determine if the payment card can be used at"}]
+    },
+    {
+      "id": "IIN-2024-1-L008",
+      "scope": "Table 2 semantics, page 10; defines the IIN Entered column, not its per-card values",
+      "statement": "When manual entry is supported and IIN Entered is Y, no special processing is required to determine the IIN; when N, special processing is required to verify the card number and append the IIN.",
+      "evidence": [
+        {"pdfPage": 10, "quote": "If manual entry for a card is supported, and the column contains a Y for the"},
+        {"pdfPage": 10, "quote": "card, then no special processing is required to determine the IIN."}
+      ]
+    }
+  ],
+  "openQuestions": [
+    {"id": "IIN-2024-1-Q01", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "UnionPay appears in Table 1 (page 6) and Table 2 (page 10) but is absent from the Introduction's 15 card-type list on page 4. Confirm whether the Introduction is stale or UnionPay is intentionally out of this document's stated scope."},
+    {"id": "IIN-2024-1-Q02", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "UnionPay's Card Type ID is printed as 'DS', identical to Discover Network's Card Type ID in the same table. Confirm whether this is a transcription error or an intentional shared code."},
+    {"id": "IIN-2024-1-Q03", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Fleetwide and Fuelman share the Card Type ID 'GF'. Confirm whether this is an intentional shared sponsor code or requires disambiguation for routing."},
+    {"id": "IIN-2024-1-Q04", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Diners Club mixes two PAN lengths (14 and 16) under a single IIN Length of 4. Confirm whether downstream validation must branch on PAN length."},
+    {"id": "IIN-2024-1-Q05", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "ATL105 Element 2 refers credit, debit and EBT cards to this manual while referring fleet cards to the Petroleum Industry Processing Specification. Confirm whether the MasterCard Fleet, Visa Fleet, Voyager, WEX, Fleet One and Fuelman rows in this manual remain authoritative for IIN/PAN validation or are superseded by the Petroleum specification for those programs."},
+    {"id": "IIN-2024-1-Q06", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED",
+     "question": "Debit and EBT declare IIN Length 0 and PAN Length 0 with a full 0..9 placeholder range. Confirm the intended meaning before treating these as validation-ready rules."}
+  ]
+}

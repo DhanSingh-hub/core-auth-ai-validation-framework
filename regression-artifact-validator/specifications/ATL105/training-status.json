@@ -540,6 +540,98 @@
           "note": "Third rollout context: chapter 9, pages 72-92, including Voyager magstripe and EMV requirements and Appendix B product codes. Phases 0 to 7 are drafted (35 BRs and 53 TS/TC/TD); the Java compile blocker is fixed, but phase 8 remains partial because Segment 100/101 wire serialization is not demonstrated by the logical Voyager fixtures and the available adapter validates rather than generates wire. Phases 9 and 10 remain blocked. Draft requirements and tests are not independent Test Solution evidence, no host execution or SME approval is recorded, and no model weights changed."
         }
       }
+    },
+    "IIN_REFERENCE_MANUAL_2024_1": {
+      "status": "IN_PROGRESS",
+      "evidenceLevel": "FULL_DOCUMENT_INGESTION_AND_CURATED_DRAFT_LESSONS",
+      "sourceVersion": "2024-1",
+      "releaseDate": "2024-06-07",
+      "reviewRequired": true,
+      "countsExcludedFromSegmentCatalogSummary": true,
+      "executionCertified": false,
+      "independentBaselineChanged": false,
+      "source": "specifications/ATL105/docs/specs/BUYPASS_Platform_IIN_Reference_Manual_06072024_2024-1.pdf",
+      "evidence": "specifications/ATL105/docs/specs/kb/iin-2024-1/training-lessons.json",
+      "trainingInput": "specifications/ATL105/docs/specs/kb/iin-2024-1/training-input.json",
+      "ingestionManifest": "specifications/ATL105/docs/specs/kb/iin-2024-1/ingestion-manifest.json",
+      "atl105ReferenceMap": "specifications/ATL105/docs/specs/kb/iin-2024-1/atl105-iin-cross-references.json",
+      "atl105ReferenceReport": "specifications/ATL105/docs/specs/kb/iin-2024-1/atl105-iin-cross-references.md",
+      "atl105ReferenceStatus": "DRAFT_REVIEW_REQUIRED",
+      "atl105ReferenceOccurrencesPerRelease": 1,
+      "atl105ReferenceLocations": ["Element 2 (credit, debit and EBT cards only; fleet cards are referred to Petroleum 2025-1 instead)"],
+      "atl105ReferenceGenerator": "scripts/build-iin-atl105-crossrefs.py",
+      "atl105ReferenceRegressionTest": "scripts/test_iin_atl105_crossrefs.py",
+      "generator": "scripts/ingest-iin-reference.py",
+      "regressionTest": "scripts/test_iin_ingestion.py",
+      "nextGate": "CARD_TYPE_SCOPED_SOURCE_RECONCILIATION_AND_SME_REVIEW",
+      "blockers": [
+        "iin-2024-1-vs-atl105-2026-3-and-2026-4-reconciliation",
+        "union-pay-introduction-omission-and-duplicate-card-type-id-review",
+        "fleet-row-authority-vs-petroleum-2025-1-review",
+        "card-type-scoped-independent-br-ts-tc-td-derivation",
+        "independent-execution-oracles-and-ai-intake",
+        "sme-approval"
+      ],
+      "note": "All 10 PDF pages and the 3 outline bookmarks are ingested for retrieval. Eight page-quoted lessons remain DRAFT_REVIEW_REQUIRED. A fingerprinted locator records the single ATL105 referral to this manual (Element 2, credit/debit/EBT only) in each of releases 2026-3 and 2026-4. Ingestion does not resolve the Introduction/Table card-type mismatch, change the ATL105 baseline, add canonical BR/TC/TD counts, train model weights or certify execution.",
+      "trainingPlan": "specifications/ATL105/docs/specs/kb/iin-2024-1/training-plan.json",
+      "contextTraining": {
+        "CARD_TYPE_CATALOG": {
+          "status": "IN_PROGRESS",
+          "role": "PILOT_CONTEXT",
+          "trainedOn": "2026-10-28",
+          "reviewRequired": true,
+          "executionCertified": false,
+          "countsExcludedFromSegmentCatalogSummary": true,
+          "trainingPlan": "specifications/ATL105/docs/specs/kb/iin-2024-1/training-plan.json",
+          "input": "specifications/ATL105/docs/specs/kb/iin-2024-1/card-type-catalog/context-input.json",
+          "evidence": "specifications/ATL105/docs/specs/kb/iin-2024-1/card-type-catalog/training-package.json",
+          "report": "specifications/ATL105/docs/specs/kb/iin-2024-1/card-type-catalog/training-report.md",
+          "generator": "scripts/train-iin-context.py",
+          "regressionTest": "scripts/test_iin_context_training.py",
+          "phaseStatus": {
+            "0": "DRAFTED_PENDING_SME_SIGNOFF",
+            "1": "DRAFTED_PENDING_SME_REVIEW",
+            "2": "DRAFTED_PENDING_SME_REVIEW",
+            "3": "DRAFTED_PENDING_SME_REVIEW",
+            "4": "DRAFTED_PENDING_SME_REVIEW",
+            "5": "DRAFTED_PENDING_SME_REVIEW",
+            "6": "DRAFTED_PENDING_SME_REVIEW",
+            "7": "DRAFTED_PENDING_SME_REVIEW",
+            "8": "PARTIAL_ATL105_SERIALIZATION_BLOCKED",
+            "9": "BLOCKED_NO_AI_PACKAGE",
+            "10": "BLOCKED_PENDING_EXECUTION_AND_SME_APPROVAL"
+          },
+          "gates": {
+            "SOURCE_INVENTORY": "DRAFTED_REVIEW_REQUIRED",
+            "SEGMENT_KNOWLEDGE_MODEL": "DRAFTED_REVIEW_REQUIRED",
+            "CONTEXT_MATRIX": "DRAFTED_REVIEW_REQUIRED",
+            "INDEPENDENT_BR_DERIVATION": "DRAFTED_REVIEW_REQUIRED",
+            "TS_TC_TEST_DATA_CHAIN": "DRAFTED_REVIEW_REQUIRED",
+            "LIFECYCLE_AND_SPECIALIZED_FLOWS": "DRAFTED_REVIEW_REQUIRED",
+            "SERIALIZATION_AND_MUTATION": "PARTIAL_REVIEW_REQUIRED",
+            "INDEPENDENT_AI_ARTIFACT_INTAKE": "BLOCKED_NO_AI_PACKAGE",
+            "CONVERTER_AND_EXECUTION_READINESS": "BLOCKED_PENDING_EXECUTION_AND_SME_APPROVAL"
+          },
+          "draftCounts": {
+            "businessRequirements": 14,
+            "testScenarios": 71,
+            "testCases": 71,
+            "testData": 71,
+            "mutationsCaught": 43
+          },
+          "nextGate": "SME_REVIEW_OF_DRAFT_PHASES_THEN_AI_PACKAGE_AND_EXECUTION",
+          "blockers": [
+            "sme-review-deferred-by-user",
+            "union-pay-introduction-omission-and-duplicate-card-type-id-review",
+            "diners-club-mixed-pan-length-review",
+            "fleet-row-authority-vs-petroleum-2025-1-review",
+            "atl105-wire-serialization-not-demonstrated",
+            "ai-artifact-package-not-provisioned",
+            "host-execution-not-available"
+          ],
+          "note": "Pilot and only context: all 16 Table 1/Table 2 card types, pages 1-10. Every PAN range (100 total, including the 63-row Visa Fleet block) is independently re-derived from the source page text, not hand-entered. The Visa Fleet BIN prefixes cross-check 63/63 against the independently trained Petroleum 2025-1 Visa Fleet catalog. MasterCard Fleet's Mod 10 requirement is cited from Petroleum lesson PETRO-2025-1-L011 rather than invented. Phases 0 to 7 are drafted (14 ranged BRs; Debit and EBT are placeholder rows excluded from ranged BRs) and phase 8 is partial (43/43 mutations caught by the draft validator, but ATL105 wire serialization is not demonstrated). Phases 9 and 10 remain blocked. Draft requirements and tests are not independent Test Solution evidence, no host execution or SME approval is recorded, and no model weights changed."
+        }
+      }
     }
   },
   "transactionContextTraining": {
