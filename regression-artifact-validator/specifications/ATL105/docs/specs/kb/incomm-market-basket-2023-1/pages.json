@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "BUYPASS-INCOMM-MBD-2023-1",
+    "title": "BUYPASS InComm Market Basket Data Format",
+    "version": "2023-1",
+    "releaseDate": "2023-08-18",
+    "path": "docs/specs/BUYPASS_Platform_InComm_Market_Basket_Data_Format_2023-1.pdf",
+    "sha256": "bd8066de6eb5ec9794e8fd89bd6387f91f5ad397aa1cee51434ef0b84c67424d"
+  },
+  "usage": "FULL_DOCUMENT_RETRIEVAL_EVIDENCE_NOT_TRAINING_TRUTH",
+  "pages": [
+    {
+      "id": "INCOMM-MBD-2023-1-P0001",
+      "pdfPage": 1,
+      "printedPage": null,
+      "text": " \n \n \n \n \n \n \n     BUYPASS\u00ae InComm Market Basket Data  \nFormat \n     \n           August 18, 2023 \n             Version 2023-1 \n \n \n\u00a9 1998-2023 by First Data Corporation.  All rights reserved. All information contained herein is confidential and \npropriety to First Data Corporation. It shall not be disclosed, duplicated, or used in part or in whole, for any purpose \nwithout prior written consent from First Data Corporation. All trademarks, service marks and trade names \nreferenced in this material are the property of their respective owner. \n \n ",
+      "textSha256": "bd3e3288ec6c0501a24be95443c84bf3579291a45493960a6ff3221ab593bb92",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0002",
+      "pdfPage": 2,
+      "printedPage": null,
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \n \nRevision History \nThis is a new document. \nThe following table lists added, updated, and deleted pages: \nNote: Red text and change bars in the page margin indicate updated/added text.  Deleted text \nis indicated only in the following table.  Blue text indicates a link to another location in the \ntext. \n \nChanges Made to Ver. No. NA \nAnd Reflected in Ver. No. 2023-1 \nReleased August 18, 2023 \n \nTopic \nNA \nP. No. \n2023-1 \nP. No. \n \nSummary of Change \nNA NA NA Created the document \n ",
+      "textSha256": "9a36656a728a5d70ac32ee93d1182960ae96d5d9a34dea20a9592a3940a03b33",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0003",
+      "pdfPage": 3,
+      "printedPage": "i",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \n \n \nVersion:  2023-1 \nAugust 18, 2023 \ni \n \n \nTable of Contents \nRevision History ................................ ................................ ................................ ........................... i \nTable of Contents ................................ ................................ ................................ ......................... i \n1.Introduction ................................ ................................ ................................ ...........................1-1 \n1.1 Dataset Format ................................ ................................ ................................ .1-1 \n1.2 Defined Datasets ................................ ................................ .............................. 1-1 \n1.3 DV Dataset ................................ ................................ ................................ .......1-2 \n1.4 PI Dataset ................................ ................................ ................................ .........1-3 \n1.5 PI Dataset Field Usage ................................ ................................ .....................1-7 \n1.6 PU Dataset ................................ ................................ ................................ .......1-8 \n1.7 PU Dataset Field Usage ................................ ................................ ....................1-9 \n1.8 OF Dataset ................................ ................................ ................................ ..... 1-10 \n1.9 OF Dataset Field Usage ................................ ................................ .................. 1-11 \n1.10 OC Dataset ................................ ................................ ................................ ..... 1-11 \n1.11 OC Dataset Field Usage ................................ ................................ ................. 1-13 \n ",
+      "textSha256": "3db5d42ac06fd7bffe60577e182e280d4b912ff97618f780ebbb3c5f1e26dc7b",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0004",
+      "pdfPage": 4,
+      "printedPage": "1-1",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-1 \n \n1. Introduction \nMarket Basket Data should be formatted according to these rules adapted from the InComm \nISO 8583 Generic Interface Specification, Version 6.2.3, Appendix B. Note that when this \ndocument refers to the transaction type, it is referring to the 3-digit value entered as part of the \nMerchant Supplementary Data. The allowed values are: \nValue Description \n310 Benefit Eligibility & Balance Lookup \n910 Item Qualification \n920 Limited Spend \n200 Limited Spend Refund \n \n1.1 Dataset Format \nDatasets are composite data elements. Each dataset is formatted in a modified TLV method, \nwith the following format: \nElement  Description  \nTT  A two-character Tag to identify the dataset, such as DV for \n\u201cData Version\u201d. \nLLL  A three-digit numeric Length (up to \u201c999\u201d in ASCII) to indicate \nthe Length of the dataset. This Length includes all primary and \ncontinuation elements for the dataset, as well as the \nassociated bitmaps, but does not include the length of the Tag \nor Length elements. \nBBBBBBBB  An eight-byte Bitmap for the dataset. Dataset bitmaps are \nimplemented as 32-bit bitmaps, represented by eight bytes of \nASCII data. \nVVV\u2026  The Value of the dataset; that is, all the fields that comprise \nthe dataset. \nFor example, consider a DV dataset with a binary bitmap. The dataset contains only Bit 2 with \nthe value \u201c01.01\u201d. In hexadecimal, the dataset would be represented as:  \n44 56 30 30 39 34 30 30 30 30 30 30 30 30 31 2E 30 31 In ASCII, this would be:  \n\u201cDV0134000000001.01\u201d \n \n1.2 Defined Datasets \nThere are multiple datasets defined for InComm Healthcare (IH): \nTag Description  \nDV  The Data Version indicates which version of a dataset (and its \napplicable files) is being used. This is for support of future ",
+      "textSha256": "b17079aa8136dd813d9fe65e42a21625e8ee0119cc71df797f91576c02cc6664",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0005",
+      "pdfPage": 5,
+      "printedPage": "1-2",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-2 \n \nTag Description  \nenhancements to the Data Version.  \nPI  A Purchase Item dataset indicates shared values among a \nquantity of the same product.  \nPU  A Purse dataset indicates each active purse associated with a \ncardholder\u2019s account.  \nOF  An Offer dataset contains the offers available to a cardholder \n(in a response from InComm), or the offers redeemed (in a \nrequest message to InComm). This dataset is restricted to \nonly those retailers who implement an IH solution that does \nnot exchange a market basket in real time.  \nOC  An Offer Counts dataset contains the information necessary to \ntrack the usage of offers that have defined limitations and/or \nincremental adjustments towards earning an offer. This offer is \nrestricted to only those retailers who implement an IH solution \nthat does not exchange a market basket in real time.  \n \n1.3 DV Dataset \nThe DV dataset is required for all new implementations of IH. It has the following elements: \nBit  Req  Usage  Format  Description  \n1  O  Continuation Bit  b 1  Indicates a secondary bitmap. \n(Not currently used) \n2  R  Dataset Version  an 5  The dataset version expressed \nas MM.mm where MM \nrepresents the Major version \nand mm represents the minor \nversion.  \nAn InComm integration project \nresource will provide the value. \n3  C  Offer File Version  n 6  This value is used to ensure an \nappropriate Offer File \nreference.  \nRequired when an \nimplementation does not \nexchange a market basket in \nreal time, and not applicable \notherwise. \n4  C  Purse File Version  n 6  This value is used to ensure \nappropriate Purse File \nreference.   ",
+      "textSha256": "b044559ebb71c1bf311c3aad3655daa3d117efd5bf11924893b55f390213db9a",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0006",
+      "pdfPage": 6,
+      "printedPage": "1-3",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-3 \n \nBit  Req  Usage  Format  Description  \nRequired when an \nimplementation does not \nexchange a market basket in \nreal time, and not applicable \notherwise. \n \n1.4 PI Dataset \nThe PI dataset is required when evaluation of the market basket must be completed by IH to \nauthorize a discount, payment, or refund. Requirements per Bit are represented in the Request \nand Response definitions. A PI has the following elements: \nBit  Usage  Format  Description  \n1  Continuation Bit  b 1  Indicates a secondary bitmap. (Not \ncurrently used) \n2  Item Code  n 14  UPC, EAN13  \n\u2022 Does not include check digit.  \n\u2022 Code is right justified, zero filled.  \nSuppressed codes must be expanded. \n3  Quantity  n 3  Quantity of the item sold.  \nQuantities should be combined into a \nsingle PI when the value of Bits 2, 5, 10, \n11, 17, and 18 are the same. \n4  Sign Indicator   ans 1  This field is required when the Price field \nis negative.  \n\u2022 \u2018C\u2019 indicates Price field is >= 0.00  \n\u2022 \u2018D\u2019 indicates the Price field is < \n0.00 \n5  Price  n 12  Single retail price shared by all items in \nthe PI Dataset net any store and \nmanufacturer discounts and/or coupons.  \nDo not include tax in a 910 request. \n6  MBAS Manufacturer \nDiscount Quantity  \nn 3  Number of times that the IH \nManufacturer Discount Amount is to be \napplied at the POS.  \nRequired when an IH Manufacturer \nDiscount is applied. \n7  MBAS Manufacturer \nDiscount Amount  \nn 12  The per item discount amount to be \napplied at the POS.   ",
+      "textSha256": "72db25ae3152c0fda78c84e722af06010679f0db5f4e13264261d31229c22faf",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0007",
+      "pdfPage": 7,
+      "printedPage": "1-4",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-4 \n \nBit  Usage  Format  Description  \nThe total IH manufacturer discount is \nequal to Bit 6 multiplied by Bit 7.  \nRequired when an IH Manufacturer \nDiscount is applied. \n8  Limited Spend \nEligibility Flag  \nans 1  \u2022 N = Not Eligible for Limited \nSpend   \n\u2022 Y = Eligible for Limited Spend   \nIdentifies the item as eligible for spend \nfor the associated account. \n9  Redemption Request \nAmount  \nn 12  Total redemption request amount for this \nitem code (extended price + all \napplicable taxes, where the extended \nprice = Quantity * unit Price). Price is net \nof any applicable discounts. Some states \ntax discounts and some do not. This \namount includes any applicable tax for \nthe item based on retailer business rules \napplied at the POS.  \nAmount in cents (for example, $100 is \nrepresented as 000000010000).  \nRequired for 920 and 200. \n10  Manufacturer Discount \nAmount  \nn 12  The total amount of any manufacturer-\nfunded coupons/discounts already \napplied to the item at the POS. Note that \nthe Price field is already net of this \namount.  \nAmount in cents (ex. $100 would be \nshown as 000000010000).  \nRequired when the POS has applied a \nmanufacturer discount. \n11  Manufacturer Discount \nType  \nans 1  The delivery method of the Manufacturer \nDiscount Amount. This field is required if \nthe Manufacturer Discount Amount is \npresent, or when no further Manufacturer \nDiscounts are allowed by POS rule.  \n\u2022 P = Paper Manufacturer Coupon \n\u2022 E = Electronic Manufacturer \nCoupon   \n\u2022 M = Mixed (both P and E).  \n\u2022 X = Additional Manufacturer \nDiscounts are not allowed.  ",
+      "textSha256": "06c3afa27772aaa97e4fdecf5693fbe37756128938d3328eb9978ab07665ff41",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0008",
+      "pdfPage": 8,
+      "printedPage": "1-5",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-5 \n \nBit  Usage  Format  Description  \nRequired when the POS has applied a \nmanufacturer discount. \n12  Adjustment to Price  n 12  The amount of the adjustment, that is, \nthe amount paid by InComm including \nany multiplying effect of quantity for the \nPI dataset.  \nFor example, an item qualification \nprovides a Price of $5.00 and a Quantity \nof 2. The discount applied by MBAS is \n$0.75 for each item, so the value of this \nfield $1.50, the product of 2 * $0.75.  \nAmount in cents (for example, $0.75 is \nrepresented as 000000000075).  \nRequired when IH has discounted or \npaid for a portion or all of a PI. \n13  Item Reference \nNumber  \nn 4  PI reference number enables the retailer \nto match requests to responses in the PI \ndataset. This number must be unique per \nPI on the request. The uniqueness \napplies to the whole message. Item \nReference Numbers do not need to be \ncontiguous.  \nPI datasets are not necessarily returned \nin the order sent to the host.  \nIn cases in which a PI dataset is sent \nwith a quantity value greater than one \n(1), the dataset may be \u2018split\u2019 on the \nresponses. This event can occur if:  \n\u2022 Item qualification responses \nwhen a discount is eligible only \nfor part of the quantity submitted  \n\u2022 Limited spend responses when \neither a purse balance has been \ndepleted (full payment PI, partial \npayment PI, not paid PI)  \n\u2022 Limited spend responses when \nmultiple purses are used to fund \nitems.  \nWhen PI datasets are \u2018split\u2019 in this \nfashion, each of the resultant PI datasets \nwill bear the same Item Reference \nNumber as was contained in the original \nrequest. ",
+      "textSha256": "eb295ac3896fd05e46060072f0cedb525f8f3810a2b700d630a5e88f6f9e2e46",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0009",
+      "pdfPage": 9,
+      "printedPage": "1-6",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-6 \n \nBit  Usage  Format  Description  \n14  Purse ID  n 3  Purse identification for cross-reference to \nthe applicable PU dataset Purse ID.  \nA value of zero (000) in this Bit indicates \nthat the PI is not associated with a PU.  \nThe Purse ID on Item Qualification \nresponses is set to zero (000) because \nthe actual association is not known until \nitems are applied to purse balances \nauthorized in Limited Spend.   \nRequired on responses containing a \npurse. \n15  MBAS Store Discount \nQuantity  \nn 3  Number of times that the IH Store \nDiscount Amount is to be applied at the \nPOS.  \nRequired when an IH Store Discount is \napplied. \n16  MBAS Store Discount \nAmount  \nn 12  The per item discount amount to be \napplied at the POS.   \nThe total IH store discount is equal to Bit \n15 multiplied by Bit 16.  \nRequired when an IH Store Discount is \napplied. \n17  Store Discount \nAmount  \nn 12  The total amount of any store-funded \ncoupons/discounts already applied to the \nitem at the POS. Note that the Price field \nis already net of this amount.   \nAmount in cents (ex. $100 would be \nshown as 000000010000)  \nRequired when the POS has applied a \nstore discount. \n18  Store Discount Type  ans 1  The delivery method of the Store \nDiscount Amount.  \nThis field is required if the store Discount \nAmount is present, or when no further \nStore Discounts are allowed by POS \nrule.  \n\u2022 P = Paper Store Coupon  \n\u2022 E = Electronic Store Coupon  \n\u2022 M = Mixed (both P & E)  \n\u2022 X = Additional Store Discounts ",
+      "textSha256": "03c935f29547813fb4b58bb39052dfc83a3848687139ba38fc51e9adbd066683",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0010",
+      "pdfPage": 10,
+      "printedPage": "1-7",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-7 \n \nBit  Usage  Format  Description  \nare not allowed  \nRequired when the POS has applied a \nstore discount. \n19  MBAS Eligibility Flags  ans 20 Eligibility Flags describing the IH \ndiscount.  \n\u2022 Y = Eligible  \n\u2022 N = Not Eligible \n \nPosition  Eligibility Type \n1  MBAS Manufacturer \nDiscount  \n2  MBAS Store Discount  \n3   \n4-20  Reserved \n20-32 Reserved  Reserved for future use \n \n1.5 PI Dataset Field Usage \nA PI dataset is optional in a Benefit Eligibility & Balance Lookup (310). It is not present in \nimplementations that do not exchange a market basket.  \nThis table presents all the PI fields and their requirements per Transaction Type. Rows in \norange represent discount information conveyed by the retail partner in the request, and rows in \nblue represent discount information conveyed by InComm in its response. \n  Request Req Response Req \nBit  Usage  310 & \n910 \n920 & \n200 \n310 & \n910 \n920 & \n200 \n2  Item Code  R R RE RE \n3  Quantity  C C CE* CE* \n4  Sign Indicator  O NA OE NA \n5  Price  R NA RE NA \n6  MBAS Manufacturer Discount \nQuantity  \nNA NA C NA \n7  MBAS Manufacturer Discount \nAmount  \nNA NA C NA ",
+      "textSha256": "e0290af2e80ae9216539da8ed724da75ba1d3d1753d4a31cd852b4965c5d6692",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0011",
+      "pdfPage": 11,
+      "printedPage": "1-8",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-8 \n \n  Request Req Response Req \nBit  Usage  310 & \n910 \n920 & \n200 \n310 & \n910 \n920 & \n200 \n8  Limited Spend Eligibility Flag  NA NA R R \n9  Redemption Request Amount  NA R NA E \n10  Manufacturer Discount Amount  C NA NA NA \n11  Manufacturer Discount Type  C NA NA NA \n12  Adjustment to Price  NA NA R** R \n13  Item Reference Number  R R RE RE \n14  Purse ID  NA NA R R \n15  MBAS Store Discount Quantity  NA NA C NA \n16  MBAS Store Discount Amount  NA  NA C  NA  \n17  Store Discount Amount  C  NA NA  NA  \n18  Store Discount Type  C  NA NA  NA  \n19  MBAS Eligibility Flags  NA  NA R  R  \n* The quantity can be split up into multiple PIs in the response if IH applies discounts or spend to only a portion of the \nrequested quantity.  \n** The adjustment to price is not provided on a 310 as this is a preauthorization. \n \n1.6 PU Dataset \nPurse Datasets are returned in responses by IH. One PU dataset is returned for each active \npurse associated with an account. Purses with no balance (e.g., 0.00) remaining are included in \nthe response. It has the following base elements: \nBit  Usage  Format  Description  \n1  Continuation Bit  b 1  Indicates a secondary bitmap. (Not \ncurrently used.) \n2  Purse Description  an 20  A label to describe the purse.   \nThis value should be presented to the \nconsumer along with the balance at the \nconclusion of a transaction. \n3  Purse ID  n 3  A numeric identifier of the purse. ",
+      "textSha256": "38a5aa06b8011f162feb1733372e310587062fa458bf25275b40732a3c5b337c",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0012",
+      "pdfPage": 12,
+      "printedPage": "1-9",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-9 \n \nBit  Usage  Format  Description  \n4  Sign Indicator  ans 1  \u2022 \u2018C\u2019 indicates the remaining \nbalance Bit is >= 0.00  \n\u2022 \u2018D\u2019 indicates the remaining \nBalance Bit is < 0.00  \nThis field is required when the Price field \nis negative. \n5  Remaining Balance  n 12  The remaining balance for the purse.  \nAmount in cents (ex. $100 would be \nshown as 000000010000) \n6  Amount Authorized  n 12  The amount authorized from the purse. \nThis amount is never negative. This \namount is zero (000000000000) for \npurse declines or for purses not involved \nin the transaction (that is, no PI was \nassociated with the purse).  \nAmount in cents (ex. $100 would be \nshown as 000000010000)  \nRequired for 920 and 200 \n7  Response Code  an 2  The response code may provide \nadditional information about a purse \ndecline. \n8  Purse Unique ID  n 10  The unique purse number used for the \nredemption or refund  \nApplicable only to an implementation that \ndoes not exchange a market basket in \nreal time, and not applicable otherwise. \n9  Redemption Request \nAmount  \nn 12  Total redemption request amount for this \npurse \nApplicable only to an implementation that \ndoes not exchange a market basket in \nreal time, and not applicable otherwise. \n10-32 Reserved  Reserved for future use. \n \n1.7 PU Dataset Field Usage \nThis table presents all the PU fields and their requirements per applicable Transaction Type. \n \n \n ",
+      "textSha256": "3193ddfc11bf04009f9bae65cd027f669f2d14deefd778ec0246941e3b187515",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0013",
+      "pdfPage": 13,
+      "printedPage": "1-10",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-10 \n \n  Request \nReq \nResponse Req \nBit  Usage  920 & \n200 \n310  310  920 & \n200 \n920 & \n200 \n2  Purse Description  NA  R  R  R  R  \n3  Purse ID  NA  R  NA  R  NA  \n4  Sign Indicator  NA  C  NA  C  C  \n5  Remaining Balance  NA  R  NA  R  R  \n6  Amount Authorized  NA  NA  NA  R  R  \n7  Response Code  NA  R  NA  R  R  \n8  Purse Unique ID  R  NA  R  NA  R  \n9  Redemption Request Amount  R  NA  NA  NA  R  \n \n1.8 OF Dataset \nThe OF dataset is required for implementations of IH which do not exchange a market basket. It \nhas the following elements: \nBit  Usage  Format  Description  \n1  Continuation Bit  b 1  Indicates a secondary bitmap. (Not \ncurrently used.) \n2  Offer ID  n 10  Numerical identifier assigned by InComm \nto an offer. \n3  Offer Tag  ans 4  A label that describes the basic \ncharacteristics of an offer. \n4  Offer Print Text  ans 25  A short, literal description of an offer. \nDesigned to be printed on the receipt.  \nExamples:  \nBuy3Get1FreeTheraflu  \n$1OffJergens \n5  Offer Verbiage  ans 100  A longer, readable version of the Offer \nPrint Text.  \nExamples:  \nBuy Three Theraflu Get One Free  \nGet $1 Off Jergens ",
+      "textSha256": "ec95865e7c5979faee89cb9467e0bbb9c3cde139b03cbea1e4991905d5cd1e03",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0014",
+      "pdfPage": 14,
+      "printedPage": "1-11",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-11 \n \nBit  Usage  Format  Description  \n6-32  Reserved  NA  Reserved for future use. \n \n1.9 OF Dataset Field Usage \nThis table presents all the OF fields and their requirements per Transaction Type. \n  Request Req Response Req \nBit  Usage  910 310 \n2  Offer ID  R  R  \n3  Offer Tag  NA  R  \n4  Offer Print Text  NA  R  \n5  Offer Verbiage  NA  R  \n \n1.10 OC Dataset \nThe OC dataset is required for implementations of IH which do not exchange a market basket. It \nhas the following elements: \nBit  Usage  Format  Description  \n1  Continuation Bit  b 1  Indicates a secondary bitmap. (Not \ncurrently used.) \n2  Offer ID  n 10  Numerical identifier assigned by InComm \nto an offer. \n3  Times  n 10  Indicates the number of times something \nhas occurred in a count. \n4  Amount  n 12  Indicates an amount in pennies of a \nmonetary count. \n5  Type  a 20  Indicates the type of count being tracked. \n  \nIn an Account Lookup response, the \nvalid types are:  \ntallyEarn \u2013 indicates to the Retailer the \ntotal of purchases towards this \naccumulated offer (e.g., the consumer \nhas previously bought 3 items towards a \nBuy 4, Earn $1 Off the Fifth offer)  \ntallyRedeem \u2013 indicates to the Retailer ",
+      "textSha256": "14cdf0e5985e295706ca61edb97e352dfdcbed2dc272d649d63b4b618289d79d",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0015",
+      "pdfPage": 15,
+      "printedPage": "1-12",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-12 \n \nBit  Usage  Format  Description  \nthe portion already redeemed of a \npreviously earned offer (e.g., the \nconsumer has used $15 of the offer of \nBuy $100 of One, Get $25 Towards \nAnother)  \nredeemedCount \u2013 indicates to the \nRetailer total redemptions by the \nconsumer of this offer (e.g., the \nconsumer has previously redeemed the \nBuy 4, Earn $1 Off the Fifth offer 4 times)  \n  \nIn an Offer Redemption request, the \nvalid types are:  \nincrementedEarn \u2013 indicates to \nInComm the number of incremental \npurchases towards this accumulating \noffer during the transaction (e.g., the \nconsumer bought 3 items towards a Buy \n4, Earn $1 Off the Fifth offer)  \nincrementedRedeem \u2013 indicates to \nInComm the redemption of this offer that \nhas a redemption threshold (e.g., The \nconsumer redeemed $15 worth on \nanother item for the offer of Buy $100 of \nOne, Get $25 Towards Another)  \ntimesRedeemed \u2013 indicates to InComm \nhow many times this offer was redeemed \nduring the transaction (e.g., the \nconsumer has redeemed the Buy 4, Earn \n$1 Off the Fifth offer one time in the \ntransaction)  \ntotalAmountAwarded \u2013 indicates to \nInComm the total amount of money \nawarded in the transaction for this offer \n(e.g., the consumer has redeemed the \nBuy 4, Earn $1 Off the Fifth offer twice in \nthe transaction for a total amount \nawarded of $2)  \nNote: totalAmountAwarded will need to \nbe converted by the Retailer to an \namount when redeeming quantity or \npercentage-based offers. \n6-32  Reserved  NA  Reserved for future use.  ",
+      "textSha256": "e4b04698ff301b77b1449316f24834ed20eb16b0ad104c8d7a511e23480e1e83",
+      "extractionStatus": "TEXT_EXTRACTED"
+    },
+    {
+      "id": "INCOMM-MBD-2023-1-P0016",
+      "pdfPage": 16,
+      "printedPage": "1-13",
+      "text": "BUYPASS\u00ae InComm Market Basket Data Format \nSpecification Release Version:  2023-1 \nAugust 18, 2023 \n1-13 \n \n1.11 OC Dataset Field Usage \nThis table presents all the OF fields and their requirements per Transaction Type. \n  Request Req Response Req \nBit  Usage  910 310 \n2  Offer ID  R  C  \n3  Times  C  C  \n4  Amount  C  C  \n5  Type  C  C  \n ",
+      "textSha256": "fc60d2062c665bad5b099a287fef328f1b7aa44443026a84e4b82e18b2a0a008",
+      "extractionStatus": "TEXT_EXTRACTED"
+    }
+  ]
+}
