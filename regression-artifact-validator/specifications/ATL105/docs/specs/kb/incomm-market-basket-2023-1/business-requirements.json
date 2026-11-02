@@ -1,0 +1,3276 @@
+{
+  "schemaVersion": 1,
+  "contextId": "MARKET_BASKET_DATA",
+  "planId": "INCOMM-MBD-2023-1-TRAINING-PLAN",
+  "source": {
+    "id": "BUYPASS-INCOMM-MBD-2023-1",
+    "title": "BUYPASS InComm Market Basket Data Format",
+    "version": "2023-1",
+    "releaseDate": "2023-08-18",
+    "path": "docs/specs/BUYPASS_Platform_InComm_Market_Basket_Data_Format_2023-1.pdf",
+    "sha256": "bd8066de6eb5ec9794e8fd89bd6387f91f5ad397aa1cee51434ef0b84c67424d"
+  },
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "certified": false,
+  "executionReady": false,
+  "baselineChanged": false,
+  "modelWeightsChanged": false,
+  "independentBrCount": 0,
+  "testScenarioCount": 0,
+  "testCaseCount": 0,
+  "testDataCount": 0,
+  "executedCaseCount": 0,
+  "draftCounts": {
+    "businessRequirements": 36,
+    "blockedPendingSme": 8,
+    "enforced": 17,
+    "partiallyEnforced": 16,
+    "notDataEnforceable": 3
+  },
+  "countPolicy": "Draft BRs are authored from source text and stay out of independent Test Solution counts until SME approval.",
+  "scopeDecision": {
+    "decidedOn": "2026-10-30",
+    "decidedBy": "User",
+    "decision": "Derive business requirements only. Test scenarios, test cases and test data are not to be created for this document.",
+    "excludedArtifacts": [
+      "testScenarios",
+      "testCases",
+      "testData"
+    ]
+  },
+  "phaseProgress": [
+    {
+      "phase": 0,
+      "id": "P0-SCOPE",
+      "name": "Scope and identity",
+      "frameworkGate": null,
+      "status": "DRAFTED_PENDING_SME_SIGNOFF",
+      "evidence": "16 pages, 14 bookmarks; scope question Q01 open"
+    },
+    {
+      "phase": 1,
+      "id": "P1-INVENTORY",
+      "name": "Chapter inventory",
+      "frameworkGate": "SOURCE_INVENTORY",
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "14 chapters, 35 page-quoted lessons"
+    },
+    {
+      "phase": 2,
+      "id": "P2-RECONCILE",
+      "name": "ATL105 reconciliation",
+      "frameworkGate": null,
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "3 ATL105 references located in 2026-3 and 2026-4; 14 open questions"
+    },
+    {
+      "phase": 3,
+      "id": "P3-CATALOG",
+      "name": "Dataset catalog extraction",
+      "frameworkGate": "SEGMENT_KNOWLEDGE_MODEL",
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "42 dataset fields and 34 usage rows re-matched to page text"
+    },
+    {
+      "phase": 4,
+      "id": "P4-CONTEXT-MATRIX",
+      "name": "Transaction-type context matrix",
+      "frameworkGate": "CONTEXT_MATRIX",
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "Usage columns mapped to direction x 310/910/920/200; duplicated PU columns flagged (Q03)"
+    },
+    {
+      "phase": 5,
+      "id": "P5-BR",
+      "name": "Independent BR derivation",
+      "frameworkGate": "INDEPENDENT_BR_DERIVATION",
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "36 draft BRs (8 blocked pending SME)"
+    },
+    {
+      "phase": 6,
+      "id": "P6-CHAINS",
+      "name": "TS, TC and TD chains",
+      "frameworkGate": "TS_TC_TEST_DATA_CHAIN",
+      "status": "OUT_OF_SCOPE_BY_USER_DECISION",
+      "evidence": "No TS, TC or TD are created for this document (user decision 2026-10-30)"
+    },
+    {
+      "phase": 7,
+      "id": "P7-FLOWS",
+      "name": "Lifecycle and specialized flows",
+      "frameworkGate": "LIFECYCLE_AND_SPECIALIZED_FLOWS",
+      "status": "DRAFTED_PENDING_SME_REVIEW",
+      "evidence": "2 lifecycle BRs drawn only from documented 310/910/920/200 relationships"
+    },
+    {
+      "phase": 8,
+      "id": "P8-MUTATION",
+      "name": "Validator and mutation",
+      "frameworkGate": "SERIALIZATION_AND_MUTATION",
+      "status": "PARTIAL_ATL105_SERIALIZATION_BLOCKED",
+      "evidence": "31 validator rules, each reachable by a regression mutation; Segment 151/152 wire serialization not demonstrated"
+    },
+    {
+      "phase": 9,
+      "id": "P9-AI-INTAKE",
+      "name": "AI artifact intake",
+      "frameworkGate": "INDEPENDENT_AI_ARTIFACT_INTAKE",
+      "status": "BLOCKED_NO_AI_PACKAGE",
+      "evidence": "No AI-produced Segment 151/152 package has been supplied"
+    },
+    {
+      "phase": 10,
+      "id": "P10-EXECUTION",
+      "name": "Execution and certification",
+      "frameworkGate": "CONVERTER_AND_EXECUTION_READINESS",
+      "status": "BLOCKED_PENDING_EXECUTION_AND_SME_APPROVAL",
+      "evidence": "No execution environment or SME approval"
+    }
+  ],
+  "coverage": {
+    "lessons": "33/33 non-informational",
+    "datasets": [
+      "DV",
+      "OC",
+      "OF",
+      "PI",
+      "PU"
+    ],
+    "usageMatrices": [
+      "OC",
+      "OF",
+      "PI",
+      "PU"
+    ],
+    "atl105References": [
+      "INCOMM-MBD-ATL105-R01",
+      "INCOMM-MBD-ATL105-R02",
+      "INCOMM-MBD-ATL105-R03"
+    ],
+    "openQuestions": 14,
+    "chapters": [
+      "CH-1",
+      "CH-1.1",
+      "CH-1.10",
+      "CH-1.11",
+      "CH-1.2",
+      "CH-1.3",
+      "CH-1.4",
+      "CH-1.5",
+      "CH-1.6",
+      "CH-1.7",
+      "CH-1.8",
+      "CH-1.9"
+    ],
+    "validatorRules": 31
+  },
+  "validatorRules": {
+    "TXN_CODE": "Transaction type is one of 310, 910, 920, 200",
+    "MAX_LENGTH": "Market Basket Data does not exceed the ATL105 field maximum",
+    "ENVELOPE": "Each dataset has a known Tag, a 3-digit Length and enough data for its Length and fields",
+    "BITMAP_HEX": "Dataset bitmap is 8 hexadecimal characters",
+    "CONTINUATION_UNUSED": "Bit 1 (secondary bitmap) is not used",
+    "RESERVED_BIT": "No reserved or undefined bit is present",
+    "LENGTH_MATCH": "Dataset Length equals the bitmap plus the fixed widths of the present fields",
+    "FIELD_FORMAT": "Each field matches its n / a / an / ans character type",
+    "FIELD_EMBEDDED_SPACE": "An 'an' field contains an embedded space (padding interpretation)",
+    "FIELD_VALUE": "Enumerated, MM.mm and Y/N position values are documented values",
+    "DV_FIRST": "Market Basket Data starts with a DV dataset",
+    "COMPOSITION_LIMIT": "Dataset counts stay within the ATL105 Segment 151/152 limits",
+    "COMPOSITION_OUTSIDE_ATL105": "A dataset type not listed in the ATL105 composition is present",
+    "DV_VERSION_REQUIRED": "DV carries Dataset Version",
+    "NON_REAL_TIME_FIELD": "A field defined only for non-real-time implementations is present",
+    "DISCOUNT_TYPE_REQUIRED": "POS discount Type accompanies its POS discount Amount",
+    "MBAS_PAIR": "MBAS discount Quantity and Amount are sent together",
+    "PI_CONSOLIDATION": "PIs sharing Bits 2, 5, 10, 11, 17 and 18 should be combined",
+    "PURSE_ZERO_ON_910": "Item Qualification responses carry Purse ID 000",
+    "PURSE_LINK": "A non-zero PI Purse ID matches a PU Purse ID in the same response",
+    "USAGE_REQUIRED": "Usage-matrix R/RE fields are present for the direction and transaction type",
+    "USAGE_NOT_APPLICABLE": "Usage-matrix NA fields are absent for the direction and transaction type",
+    "USAGE_AMBIGUOUS": "Duplicated usage columns disagree; the cell is not enforced",
+    "NOT_ON_310": "Adjustment to Price is not provided on a 310",
+    "ADJUSTMENT_CONDITION_CONFLICT": "A response PI lacks Adjustment to Price, which the usage table requires but the field text makes conditional",
+    "PURSE_ID_CONDITION_CONFLICT": "A response PI without any PU lacks Purse ID, which the usage table requires but the field text ties to responses containing a purse",
+    "ITEM_REF_UNIQUE": "Item Reference Numbers are unique per PI on the request",
+    "ITEM_REF_KNOWN": "Every response Item Reference Number was sent in the request",
+    "ECHO_MATCH": "Echoed (E) PI fields equal the request values",
+    "SPLIT_QUANTITY": "Split response quantities add up to the requested quantity",
+    "OC_TYPE_DIRECTION": "OC Type belongs to the set listed for the message direction"
+  },
+  "informationalLessons": {
+    "INCOMM-MBD-2023-1-L001": "Document lineage only; no testable behavior.",
+    "INCOMM-MBD-2023-1-L002": "Format lineage to the InComm ISO 8583 specification, which is not ingested; no testable behavior on its own."
+  },
+  "businessRequirements": [
+    {
+      "id": "INCOMM-MBD-BR-001",
+      "chapter": "CH-1",
+      "category": "TRANSACTION_TYPE",
+      "title": "InComm OTC transaction type",
+      "statement": "Every InComm OTC transaction carrying Market Basket Data must identify its transaction type as 310 (Benefit Eligibility & Balance Lookup), 910 (Item Qualification), 920 (Limited Spend) or 200 (Limited Spend Refund) in ATL105 Segment 111 Table 049 Sub-Table 09.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L003",
+            "chapter": "CH-1",
+            "statement": "The transaction type is the 3-digit value sent in Merchant Supplementary Data: 310 Benefit Eligibility & Balance Lookup, 910 Item Qualification, 920 Limited Spend, 200 Limited Spend Refund.",
+            "pdfPages": [
+              4
+            ]
+          }
+        ],
+        "catalog": [],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R03",
+            "location": "Segment 111 Table 049 Merchant Supplementary Data, Sub-Table 09",
+            "pdfPages": {
+              "2026-3": 586,
+              "2026-4": 592
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "TXN_CODE"
+        ],
+        "gap": "The validator receives the code as a parameter; reading it from Segment 111 is not demonstrated."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-002",
+      "chapter": "CH-1.1",
+      "category": "STRUCTURE",
+      "title": "Dataset envelope",
+      "statement": "Each dataset must be encoded as a 2-character Tag, a 3-digit numeric Length, an 8-character bitmap and then the field values.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L004",
+            "chapter": "CH-1.1",
+            "statement": "Each dataset is a modified TLV: a 2-character Tag, a 3-digit numeric Length, an 8-byte bitmap, then the dataset field values.",
+            "pdfPages": [
+              4
+            ]
+          }
+        ],
+        "catalog": [],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "ENVELOPE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-003",
+      "chapter": "CH-1.1",
+      "category": "STRUCTURE",
+      "title": "Dataset length",
+      "statement": "A dataset's Length must equal the bitmap plus all present fields and must exclude the Tag and the Length itself.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L005",
+            "chapter": "CH-1.1",
+            "statement": "The Length counts the bitmap(s) and all primary and continuation elements, but not the Tag or the Length itself.",
+            "pdfPages": [
+              4
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L007",
+            "chapter": "CH-1.1",
+            "statement": "A DV dataset carrying only Bit 2 with value 01.01 is rendered as DV0134000000001.01 (Tag DV, Length 013, bitmap 40000000, value 01.01).",
+            "pdfPages": [
+              4
+            ]
+          }
+        ],
+        "catalog": [],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [
+        "INCOMM-MBD-2023-1-Q13"
+      ],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "LENGTH_MATCH"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-004",
+      "chapter": "CH-1.1",
+      "category": "STRUCTURE",
+      "title": "Dataset bitmap",
+      "statement": "Each dataset bitmap must be 8 hexadecimal characters representing 32 bits with Bit 1 as the most significant bit, and fields must appear in ascending bit order exactly when their bit is set.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L006",
+            "chapter": "CH-1.1",
+            "statement": "Dataset bitmaps are 32-bit bitmaps represented by eight ASCII bytes (eight hexadecimal characters).",
+            "pdfPages": [
+              4
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L007",
+            "chapter": "CH-1.1",
+            "statement": "A DV dataset carrying only Bit 2 with value 01.01 is rendered as DV0134000000001.01 (Tag DV, Length 013, bitmap 40000000, value 01.01).",
+            "pdfPages": [
+              4
+            ]
+          }
+        ],
+        "catalog": [],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [
+        "INCOMM-MBD-2023-1-Q15",
+        "INCOMM-MBD-2023-1-Q16"
+      ],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "BITMAP_HEX",
+          "LENGTH_MATCH"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-005",
+      "chapter": "CH-1.1",
+      "category": "STRUCTURE",
+      "title": "No secondary bitmap or reserved bits",
+      "statement": "Bit 1 (continuation / secondary bitmap) must not be set because it is not currently used, and no reserved or undefined bit may be set in any dataset.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [
+          {
+            "dataset": "DV",
+            "chapter": "CH-1.3",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  6
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  11
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "OF",
+            "chapter": "CH-1.8",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  13
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "OC",
+            "chapter": "CH-1.10",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  14
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "CONTINUATION_UNUSED",
+          "RESERVED_BIT"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-006",
+      "chapter": "CH-1.1",
+      "category": "FIELD_FORMAT",
+      "title": "Fixed-width field formats",
+      "statement": "Every field must be sent at its full fixed width and match its character type: n right-justified zero-filled; a, an and ans left-justified space-filled.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L013",
+            "chapter": "CH-1.4",
+            "statement": "Item Code (n 14) is the UPC/EAN13 without check digit, right-justified and zero-filled; suppressed codes must be expanded.",
+            "pdfPages": [
+              6
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "DV",
+            "chapter": "CH-1.3",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  5
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Dataset Version",
+                "format": "an 5",
+                "pdfPages": [
+                  5
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Offer File Version",
+                "format": "n 6",
+                "pdfPages": [
+                  5
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Purse File Version",
+                "format": "n 6",
+                "pdfPages": [
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Item Code",
+                "format": "n 14",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Price",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 6,
+                "name": "MBAS Manufacturer Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 7,
+                "name": "MBAS Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 8,
+                "name": "Limited Spend Eligibility Flag",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 10,
+                "name": "Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 11,
+                "name": "Manufacturer Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 12,
+                "name": "Adjustment to Price",
+                "format": "n 12",
+                "pdfPages": [
+                  8
+                ]
+              },
+              {
+                "bit": 13,
+                "name": "Item Reference Number",
+                "format": "n 4",
+                "pdfPages": [
+                  8
+                ]
+              },
+              {
+                "bit": 14,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 15,
+                "name": "MBAS Store Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 16,
+                "name": "MBAS Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 17,
+                "name": "Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 18,
+                "name": "Store Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 19,
+                "name": "MBAS Eligibility Flags",
+                "format": "ans 20",
+                "pdfPages": [
+                  10
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Purse Description",
+                "format": "an 20",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Remaining Balance",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 6,
+                "name": "Amount Authorized",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 7,
+                "name": "Response Code",
+                "format": "an 2",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 8,
+                "name": "Purse Unique ID",
+                "format": "n 10",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "OF",
+            "chapter": "CH-1.8",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Offer ID",
+                "format": "n 10",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Offer Tag",
+                "format": "ans 4",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Offer Print Text",
+                "format": "ans 25",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Offer Verbiage",
+                "format": "ans 100",
+                "pdfPages": [
+                  13
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "OC",
+            "chapter": "CH-1.10",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Offer ID",
+                "format": "n 10",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Times",
+                "format": "n 10",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Type",
+                "format": "a 20",
+                "pdfPages": [
+                  14
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [
+        "INCOMM-MBD-2023-1-Q15"
+      ],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "FIELD_FORMAT",
+          "FIELD_EMBEDDED_SPACE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-007",
+      "chapter": "CH-1.2",
+      "category": "STRUCTURE",
+      "title": "Known dataset tags only",
+      "statement": "Market Basket Data may contain only the DV, PI, PU, OF and OC dataset tags.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L008",
+            "chapter": "CH-1.2",
+            "statement": "Five datasets are defined for InComm Healthcare (IH): DV Data Version, PI Purchase Item, PU Purse, OF Offer and OC Offer Counts.",
+            "pdfPages": [
+              4,
+              5
+            ]
+          }
+        ],
+        "catalog": [],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "ENVELOPE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-008",
+      "chapter": "CH-1.2",
+      "category": "SCOPE",
+      "title": "Non-real-time structures",
+      "statement": "OF, OC, DV Offer/Purse File Versions and PU Purse Unique ID / Redemption Request Amount are used only by implementations that do not exchange the market basket in real time; their presence in Segment 151/152 must be reviewed.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L009",
+            "chapter": "CH-1.2",
+            "statement": "OF and OC datasets are restricted to retailers whose IH solution does not exchange a market basket in real time.",
+            "pdfPages": [
+              5
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L011",
+            "chapter": "CH-1.3",
+            "statement": "Offer File Version (Bit 3) and Purse File Version (Bit 4) are required only when the implementation does not exchange a market basket in real time, and are not applicable otherwise.",
+            "pdfPages": [
+              5,
+              6
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L026",
+            "chapter": "CH-1.6",
+            "statement": "Purse Unique ID (Bit 8) and Redemption Request Amount (Bit 9) apply only to implementations that do not exchange a market basket in real time.",
+            "pdfPages": [
+              12
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "DV",
+            "chapter": "CH-1.3",
+            "fields": [
+              {
+                "bit": 3,
+                "name": "Offer File Version",
+                "format": "n 6",
+                "pdfPages": [
+                  5
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Purse File Version",
+                "format": "n 6",
+                "pdfPages": [
+                  5
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 8,
+                "name": "Purse Unique ID",
+                "format": "n 10",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          },
+          {
+            "id": "INCOMM-MBD-ATL105-R02",
+            "location": "Segment 152 Incomm OTC Market Basket Data (Response), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 306,
+              "2026-4": 309
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "NON_REAL_TIME_FIELD",
+          "COMPOSITION_OUTSIDE_ATL105"
+        ],
+        "gap": "Reported for review, not rejected, until Q01 is answered."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-009",
+      "chapter": "CH-1.3",
+      "category": "COMPOSITION",
+      "title": "DV first with Dataset Version",
+      "statement": "Market Basket Data must start with exactly one DV dataset, and that DV must carry Dataset Version (Bit 2).",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L010",
+            "chapter": "CH-1.3",
+            "statement": "The DV dataset is required for all new IH implementations; Bit 2 Dataset Version (MM.mm) is required and its value is supplied by an InComm integration project resource.",
+            "pdfPages": [
+              5
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "DV",
+            "chapter": "CH-1.3",
+            "fields": [
+              {
+                "bit": 2,
+                "name": "Dataset Version",
+                "format": "an 5",
+                "pdfPages": [
+                  5
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          },
+          {
+            "id": "INCOMM-MBD-ATL105-R02",
+            "location": "Segment 152 Incomm OTC Market Basket Data (Response), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 306,
+              "2026-4": 309
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "DV_FIRST",
+          "COMPOSITION_LIMIT",
+          "DV_VERSION_REQUIRED"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-010",
+      "chapter": "CH-1",
+      "category": "COMPOSITION",
+      "title": "Segment 151 request composition",
+      "statement": "Segment 151 request Market Basket Data must be one DV dataset followed by up to 10 PI datasets and must not exceed 2300 characters.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q12"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "DV_FIRST",
+          "COMPOSITION_LIMIT",
+          "MAX_LENGTH"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-011",
+      "chapter": "CH-1",
+      "category": "COMPOSITION",
+      "title": "Segment 152 response composition",
+      "statement": "Segment 152 response Market Basket Data must be one DV dataset, up to 10 PI datasets and up to 10 PU datasets, and must not exceed 2300 characters.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R02",
+            "location": "Segment 152 Incomm OTC Market Basket Data (Response), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 306,
+              "2026-4": 309
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q09",
+        "INCOMM-MBD-2023-1-Q12"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "DV_FIRST",
+          "COMPOSITION_LIMIT",
+          "MAX_LENGTH"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-012",
+      "chapter": "CH-1",
+      "category": "COMPOSITION",
+      "title": "Segment 151 maximum length conflict",
+      "statement": "The Segment 151 maximum (2,309 in the narrative vs 3,334 in the character-range text vs 2300 for the field) must be confirmed before segment-level length checks are applied.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q12"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q12"
+      ],
+      "enforcement": {
+        "level": "NOT_DATA_ENFORCEABLE",
+        "rules": [],
+        "gap": "Segment-level length is outside Market Basket Data; only the 2300 field maximum is checked (BR-010)."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-013",
+      "chapter": "CH-1.4",
+      "category": "APPLICABILITY",
+      "title": "PI when IH evaluates the basket",
+      "statement": "A PI dataset must be sent for each product line whenever IH must evaluate the market basket to authorize a discount, payment or refund.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L012",
+            "chapter": "CH-1.4",
+            "statement": "A PI dataset is required when IH must evaluate the market basket to authorize a discount, payment or refund.",
+            "pdfPages": [
+              6
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Item Code",
+                "format": "n 14",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Price",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 6,
+                "name": "MBAS Manufacturer Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 7,
+                "name": "MBAS Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 8,
+                "name": "Limited Spend Eligibility Flag",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 10,
+                "name": "Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 11,
+                "name": "Manufacturer Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 12,
+                "name": "Adjustment to Price",
+                "format": "n 12",
+                "pdfPages": [
+                  8
+                ]
+              },
+              {
+                "bit": 13,
+                "name": "Item Reference Number",
+                "format": "n 4",
+                "pdfPages": [
+                  8
+                ]
+              },
+              {
+                "bit": 14,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 15,
+                "name": "MBAS Store Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 16,
+                "name": "MBAS Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 17,
+                "name": "Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 18,
+                "name": "Store Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 19,
+                "name": "MBAS Eligibility Flags",
+                "format": "ans 20",
+                "pdfPages": [
+                  10
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "NOT_DATA_ENFORCEABLE",
+        "rules": [],
+        "gap": "Whether IH evaluation is needed is a business context, not visible in the data."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-014",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Item Code",
+      "statement": "PI Item Code must be the UPC/EAN13 without its check digit, expanded if suppressed, right-justified and zero-filled to 14 digits.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L013",
+            "chapter": "CH-1.4",
+            "statement": "Item Code (n 14) is the UPC/EAN13 without check digit, right-justified and zero-filled; suppressed codes must be expanded.",
+            "pdfPages": [
+              6
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 2,
+                "name": "Item Code",
+                "format": "n 14",
+                "pdfPages": [
+                  6
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "FIELD_FORMAT"
+        ],
+        "gap": "Check-digit removal and UPC-E expansion cannot be verified without the original barcode."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-015",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Quantity consolidation",
+      "statement": "Items whose Item Code, Price, Manufacturer Discount Amount/Type and Store Discount Amount/Type are all identical should be combined into one PI with the summed Quantity.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L014",
+            "chapter": "CH-1.4",
+            "statement": "Quantities are combined into a single PI when Bits 2, 5, 10, 11, 17 and 18 are identical.",
+            "pdfPages": [
+              6
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 2,
+                "name": "Item Code",
+                "format": "n 14",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Price",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 10,
+                "name": "Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 11,
+                "name": "Manufacturer Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 17,
+                "name": "Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 18,
+                "name": "Store Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  9
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "PI_CONSOLIDATION"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-016",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Net price and sign",
+      "statement": "PI Price must be the single retail price net of store and manufacturer discounts, excluding tax on a 910 request; the Sign Indicator must be C (price >= 0) or D (price < 0) and is required when the price is negative.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L015",
+            "chapter": "CH-1.4",
+            "statement": "Price is the single retail price shared by all items in the PI, net of store and manufacturer discounts/coupons; tax is excluded on a 910 request.",
+            "pdfPages": [
+              6
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Price",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q06"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "FIELD_VALUE",
+          "USAGE_REQUIRED"
+        ],
+        "gap": "Net-of-discount and tax-exclusion are business calculations; Price units await Q06."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-017",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "POS-applied discounts",
+      "statement": "When the POS has applied a manufacturer or store discount, the request must carry the total discount amount in cents (already netted out of Price) together with its delivery Type (P paper, E electronic, M mixed, X no further discounts allowed).",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L018",
+            "chapter": "CH-1.4",
+            "statement": "POS-applied manufacturer/store discount amounts (Bits 10, 17) are already netted out of Price; their Type (Bits 11, 18: P, E, M, X) is required when the amount is present or when no further discounts are allowed.",
+            "pdfPages": [
+              7,
+              9
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 10,
+                "name": "Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 11,
+                "name": "Manufacturer Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              },
+              {
+                "bit": 17,
+                "name": "Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 18,
+                "name": "Store Discount Type",
+                "format": "ans 1",
+                "pdfPages": [
+                  9
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "DISCOUNT_TYPE_REQUIRED",
+          "FIELD_VALUE",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-018",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "InComm (MBAS) discounts",
+      "statement": "When IH applies a manufacturer or store discount, the response must carry the discount Quantity and per-item Amount together, and the POS must apply Quantity x Amount as the total IH discount.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L016",
+            "chapter": "CH-1.4",
+            "statement": "The InComm (MBAS) discount total is quantity times per-item amount: manufacturer = Bit 6 x Bit 7, store = Bit 15 x Bit 16.",
+            "pdfPages": [
+              7,
+              9
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 6,
+                "name": "MBAS Manufacturer Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 7,
+                "name": "MBAS Manufacturer Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 15,
+                "name": "MBAS Store Discount Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              },
+              {
+                "bit": 16,
+                "name": "MBAS Store Discount Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  9
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "MBAS_PAIR",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": "Applying the discount at the POS is device behavior."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-019",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "MBAS eligibility flags",
+      "statement": "Responses must return MBAS Eligibility Flags with position 1 (manufacturer discount) and position 2 (store discount) set to Y or N.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 19,
+                "name": "MBAS Eligibility Flags",
+                "format": "ans 20",
+                "pdfPages": [
+                  10
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q02"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "FIELD_VALUE",
+          "USAGE_REQUIRED"
+        ],
+        "gap": "Position 3 and reserved filler await Q02."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-020",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Limited Spend eligibility",
+      "statement": "Responses must flag each item as eligible (Y) or not eligible (N) for Limited Spend on the associated account.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 8,
+                "name": "Limited Spend Eligibility Flag",
+                "format": "ans 1",
+                "pdfPages": [
+                  7
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "FIELD_VALUE",
+          "USAGE_REQUIRED",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-021",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Redemption Request Amount",
+      "statement": "Limited Spend (920) and Limited Spend Refund (200) requests must carry, per PI, the Redemption Request Amount in cents equal to Quantity x net unit Price plus applicable tax.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L017",
+            "chapter": "CH-1.4",
+            "statement": "Redemption Request Amount is extended price (quantity x net unit price) plus applicable tax, in cents, and is required for 920 and 200.",
+            "pdfPages": [
+              7
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L034",
+            "chapter": "CH-1.4",
+            "statement": "Tax in the Redemption Request Amount follows the retailer's POS business rules, and states differ on whether discounts are taxed.",
+            "pdfPages": [
+              7
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  7
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "USAGE_REQUIRED",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": "Price is not sent on 920/200 and tax follows retailer business rules that vary by state (some states tax discounts, some do not), so the arithmetic cannot be checked."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-022",
+      "chapter": "CH-1.4",
+      "category": "FIELD_RULE",
+      "title": "Adjustment to Price",
+      "statement": "When IH discounts or pays for part or all of a PI, the response must carry Adjustment to Price as the total for the PI including the quantity multiplier, except on a 310 because it is a preauthorization. Whether it is also required when IH applied nothing is unresolved (field text says conditional, usage table says R).",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L019",
+            "chapter": "CH-1.4",
+            "statement": "Adjustment to Price is the amount InComm paid or discounted for the whole PI, including the quantity multiplier (e.g. 2 x $0.75 = $1.50), in cents.",
+            "pdfPages": [
+              8
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L022",
+            "chapter": "CH-1.5",
+            "statement": "PI is optional in a 310 and absent when no market basket is exchanged; responses may split quantities across PIs, and Adjustment to Price is not returned on a 310 because it is a preauthorization.",
+            "pdfPages": [
+              10,
+              11
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 12,
+                "name": "Adjustment to Price",
+                "format": "n 12",
+                "pdfPages": [
+                  8
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q11",
+        "INCOMM-MBD-2023-1-Q18"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q18"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "NOT_ON_310",
+          "ADJUSTMENT_CONDITION_CONFLICT"
+        ],
+        "gap": "A missing Adjustment to Price is reported for review, not rejected, until Q18 is answered."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-023",
+      "chapter": "CH-1.4",
+      "category": "CORRELATION",
+      "title": "Unique Item Reference Number",
+      "statement": "Each PI on a request must carry an Item Reference Number unique across the whole message; numbers need not be contiguous.",
+      "appliesTo": {
+        "direction": [
+          "request"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L020",
+            "chapter": "CH-1.4",
+            "statement": "Item Reference Number must be unique per PI across the whole request (not necessarily contiguous); responses may be unordered and a multi-quantity PI may be split, each part keeping the original Item Reference Number.",
+            "pdfPages": [
+              8
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 13,
+                "name": "Item Reference Number",
+                "format": "n 4",
+                "pdfPages": [
+                  8
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "ITEM_REF_UNIQUE",
+          "USAGE_REQUIRED"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-024",
+      "chapter": "CH-1.4",
+      "category": "CORRELATION",
+      "title": "Response matching and splitting",
+      "statement": "The POS must match response PIs to request PIs by Item Reference Number, accept them in any order, and accept a request PI split into several response PIs that keep the original Item Reference Number and whose quantities add up to the requested quantity. Splits occur when a discount applies to only part of the quantity (910), when a purse is depleted giving full payment, partial payment and not paid PIs (920), or when several purses fund the items (920).",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L020",
+            "chapter": "CH-1.4",
+            "statement": "Item Reference Number must be unique per PI across the whole request (not necessarily contiguous); responses may be unordered and a multi-quantity PI may be split, each part keeping the original Item Reference Number.",
+            "pdfPages": [
+              8
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L022",
+            "chapter": "CH-1.5",
+            "statement": "PI is optional in a 310 and absent when no market basket is exchanged; responses may split quantities across PIs, and Adjustment to Price is not returned on a 310 because it is a preauthorization.",
+            "pdfPages": [
+              10,
+              11
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L033",
+            "chapter": "CH-1.4",
+            "statement": "A multi-quantity PI may be split in the response when a discount applies to only part of the quantity (Item Qualification), when a purse balance is depleted giving a full payment PI, a partial payment PI and a not paid PI (Limited Spend), or when several purses fund the items (Limited Spend).",
+            "pdfPages": [
+              8
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 3,
+                "name": "Quantity",
+                "format": "n 3",
+                "pdfPages": [
+                  6
+                ]
+              },
+              {
+                "bit": 13,
+                "name": "Item Reference Number",
+                "format": "n 4",
+                "pdfPages": [
+                  8
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R02",
+            "location": "Segment 152 Incomm OTC Market Basket Data (Response), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 306,
+              "2026-4": 309
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q09"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "ITEM_REF_KNOWN",
+          "SPLIT_QUANTITY"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-025",
+      "chapter": "CH-1.5",
+      "category": "CORRELATION",
+      "title": "Echoed PI values",
+      "statement": "Fields marked E in the PI usage matrix (Item Code, Quantity, Sign Indicator, Price, Item Reference Number, and Redemption Request Amount on 920/200) must be returned with the values sent in the request; when a PI is split, its Redemption Request Amounts must total the requested amount.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [
+          {
+            "usageMatrix": "PI",
+            "chapter": "CH-1.5",
+            "pdfPages": [
+              10,
+              11
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [
+        "INCOMM-MBD-2023-1-Q14"
+      ],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "ECHO_MATCH",
+          "ITEM_REF_KNOWN"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-026",
+      "chapter": "CH-1.4",
+      "category": "LIFECYCLE",
+      "title": "Purse association",
+      "statement": "A response PI must reference the PU that funded it through Purse ID; 000 means no purse, and Item Qualification (910) responses always carry 000 because purses are only applied in Limited Spend. Whether Purse ID is required in a response that contains no PU is unresolved (field text vs usage table).",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L021",
+            "chapter": "CH-1.4",
+            "statement": "Purse ID links a PI to a PU; 000 means no purse association, and Item Qualification responses always carry 000.",
+            "pdfPages": [
+              9
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 14,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  9
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 3,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  11
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q19"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "PURSE_ZERO_ON_910",
+          "PURSE_LINK",
+          "USAGE_REQUIRED",
+          "PURSE_ID_CONDITION_CONFLICT"
+        ],
+        "gap": "A missing Purse ID in a response without any PU is reported for review, not rejected, until Q19 is answered."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-027",
+      "chapter": "CH-1.5",
+      "category": "APPLICABILITY",
+      "title": "PI field usage per transaction type",
+      "statement": "PI fields must be present or absent according to the section 1.5 usage matrix for the message direction and transaction type; retailer-applied discounts (orange rows) travel only in requests and InComm-applied discounts (blue rows) only in responses; a PI is optional in a 310 and absent when no market basket is exchanged.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L022",
+            "chapter": "CH-1.5",
+            "statement": "PI is optional in a 310 and absent when no market basket is exchanged; responses may split quantities across PIs, and Adjustment to Price is not returned on a 310 because it is a preauthorization.",
+            "pdfPages": [
+              10,
+              11
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L035",
+            "chapter": "CH-1.5",
+            "statement": "In the PI usage table, orange rows (Bits 10, 11, 17, 18) are discounts the retail partner sends in the request and blue rows (Bits 6, 7, 15, 16) are discounts InComm returns in its response.",
+            "pdfPages": [
+              10
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "usageMatrix": "PI",
+            "chapter": "CH-1.5",
+            "pdfPages": [
+              10,
+              11
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q10"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "USAGE_REQUIRED",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-028",
+      "chapter": "CH-1.6",
+      "category": "APPLICABILITY",
+      "title": "One PU per active purse",
+      "statement": "Responses must return one PU dataset for every active purse on the account, including purses with a zero balance; PU datasets are not sent by the POS in a real-time request.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L023",
+            "chapter": "CH-1.6",
+            "statement": "PU datasets appear only in IH responses, one per active purse on the account, including purses with a zero balance.",
+            "pdfPages": [
+              11
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Purse Description",
+                "format": "an 20",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Purse ID",
+                "format": "n 3",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Remaining Balance",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 6,
+                "name": "Amount Authorized",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 7,
+                "name": "Response Code",
+                "format": "an 2",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 8,
+                "name": "Purse Unique ID",
+                "format": "n 10",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 9,
+                "name": "Redemption Request Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": [
+          {
+            "id": "INCOMM-MBD-ATL105-R01",
+            "location": "Segment 151 Incomm OTC Market Basket Data (Request), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 305,
+              "2026-4": 308
+            }
+          },
+          {
+            "id": "INCOMM-MBD-ATL105-R02",
+            "location": "Segment 152 Incomm OTC Market Basket Data (Response), field 3 Market Basket Data",
+            "pdfPages": {
+              "2026-3": 306,
+              "2026-4": 309
+            }
+          }
+        ]
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "COMPOSITION_OUTSIDE_ATL105"
+        ],
+        "gap": "Which purses are active is account state held by InComm."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-029",
+      "chapter": "CH-1.6",
+      "category": "DEVICE",
+      "title": "Purse display to consumer",
+      "statement": "At the end of the transaction the POS should present each Purse Description together with its remaining balance to the consumer.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L024",
+            "chapter": "CH-1.6",
+            "statement": "Purse Description should be shown to the consumer with the balance at the end of the transaction.",
+            "pdfPages": [
+              11
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 2,
+                "name": "Purse Description",
+                "format": "an 20",
+                "pdfPages": [
+                  11
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Remaining Balance",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "NOT_DATA_ENFORCEABLE",
+        "rules": [],
+        "gap": "Device display/receipt checkpoint, not message data."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-030",
+      "chapter": "CH-1.6",
+      "category": "FIELD_RULE",
+      "title": "Purse amounts",
+      "statement": "Limited Spend (920) and Refund (200) responses must carry each purse's Amount Authorized in cents, never negative and zero for declined or uninvolved purses, plus its Remaining Balance with a C/D Sign Indicator required when the balance is negative.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L025",
+            "chapter": "CH-1.6",
+            "statement": "Amount Authorized is never negative, is zero for declined or uninvolved purses, and is required for 920 and 200.",
+            "pdfPages": [
+              12
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 4,
+                "name": "Sign Indicator",
+                "format": "ans 1",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Remaining Balance",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              },
+              {
+                "bit": 6,
+                "name": "Amount Authorized",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [],
+      "qeInterpretationIds": [
+        "INCOMM-MBD-2023-1-Q17"
+      ],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "USAGE_REQUIRED",
+          "FIELD_VALUE",
+          "FIELD_FORMAT"
+        ],
+        "gap": "Zero for declined purses needs the purse Response Code meaning (Q08)."
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-031",
+      "chapter": "CH-1.6",
+      "category": "FIELD_RULE",
+      "title": "Purse Response Code",
+      "statement": "Each purse may return a 2-character Response Code giving more information about a purse decline; its valid values must be supplied before they are checked.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [],
+        "catalog": [
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 7,
+                "name": "Response Code",
+                "format": "an 2",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q08"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q08"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "FIELD_FORMAT"
+        ],
+        "gap": "Only the an 2 format is checked until values are supplied (Q08)."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-032",
+      "chapter": "CH-1.7",
+      "category": "APPLICABILITY",
+      "title": "PU field usage per transaction type",
+      "statement": "PU fields must be present or absent according to the section 1.7 usage matrix; cells where the duplicated 310 or 920 & 200 response columns disagree are not enforced until their meaning is confirmed.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L027",
+            "chapter": "CH-1.7",
+            "statement": "PU field requirements are tabulated per transaction type, with the request side defined only for 920 & 200.",
+            "pdfPages": [
+              12
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "usageMatrix": "PU",
+            "chapter": "CH-1.7",
+            "pdfPages": [
+              13,
+              13
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q03"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q03"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "USAGE_REQUIRED",
+          "USAGE_NOT_APPLICABLE",
+          "USAGE_AMBIGUOUS"
+        ],
+        "gap": "Disagreeing duplicated columns are reported, not enforced."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-033",
+      "chapter": "CH-1.8",
+      "category": "APPLICABILITY",
+      "title": "Offers (OF)",
+      "statement": "Non-real-time implementations must return available offers (Offer ID, Tag, Print Text up to 25 for the receipt, Verbiage up to 100) in a 310 response and send redeemed Offer IDs in a 910 request.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L028",
+            "chapter": "CH-1.8",
+            "statement": "OF is required for non-real-time IH implementations; Offer Print Text (max 25) is designed for the receipt and Offer Verbiage (max 100) is the readable version.",
+            "pdfPages": [
+              13
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L031",
+            "chapter": "CH-1.9",
+            "statement": "A 910 request carries only the OF Offer ID; a 310 response carries Offer ID, Offer Tag, Offer Print Text and Offer Verbiage.",
+            "pdfPages": [
+              14
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "OF",
+            "chapter": "CH-1.8",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Offer ID",
+                "format": "n 10",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Offer Tag",
+                "format": "ans 4",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Offer Print Text",
+                "format": "ans 25",
+                "pdfPages": [
+                  13
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Offer Verbiage",
+                "format": "ans 100",
+                "pdfPages": [
+                  13
+                ]
+              }
+            ]
+          },
+          {
+            "usageMatrix": "OF",
+            "chapter": "CH-1.9",
+            "pdfPages": [
+              14,
+              14
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "USAGE_REQUIRED",
+          "USAGE_NOT_APPLICABLE",
+          "COMPOSITION_OUTSIDE_ATL105"
+        ],
+        "gap": "OF is outside the ATL105 composition until Q01 is answered."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-034",
+      "chapter": "CH-1.10",
+      "category": "APPLICABILITY",
+      "title": "Offer counts (OC)",
+      "statement": "Non-real-time implementations must track offer usage with OC datasets: Account Lookup responses use tallyEarn, tallyRedeem or redeemedCount and Offer Redemption requests use incrementedEarn, incrementedRedeem, timesRedeemed or totalAmountAwarded, with amounts in pennies.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L029",
+            "chapter": "CH-1.10",
+            "statement": "OC is required for non-real-time IH implementations. Account Lookup responses use tallyEarn, tallyRedeem, redeemedCount; Offer Redemption requests use incrementedEarn, incrementedRedeem, timesRedeemed, totalAmountAwarded.",
+            "pdfPages": [
+              14,
+              15
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L030",
+            "chapter": "CH-1.10",
+            "statement": "OC Amount is in pennies; totalAmountAwarded must be converted by the retailer to an amount for quantity- or percentage-based offers.",
+            "pdfPages": [
+              14,
+              15
+            ]
+          },
+          {
+            "id": "INCOMM-MBD-2023-1-L032",
+            "chapter": "CH-1.11",
+            "statement": "A 910 request requires OC Offer ID with Times, Amount and Type conditional; in a 310 response all OC fields are conditional.",
+            "pdfPages": [
+              16
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "OC",
+            "chapter": "CH-1.10",
+            "fields": [
+              {
+                "bit": 1,
+                "name": "Continuation Bit",
+                "format": "b 1",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 2,
+                "name": "Offer ID",
+                "format": "n 10",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 3,
+                "name": "Times",
+                "format": "n 10",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 4,
+                "name": "Amount",
+                "format": "n 12",
+                "pdfPages": [
+                  14
+                ]
+              },
+              {
+                "bit": 5,
+                "name": "Type",
+                "format": "a 20",
+                "pdfPages": [
+                  14
+                ]
+              }
+            ]
+          },
+          {
+            "usageMatrix": "OC",
+            "chapter": "CH-1.11",
+            "pdfPages": [
+              16,
+              16
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01",
+        "INCOMM-MBD-2023-1-Q04",
+        "INCOMM-MBD-2023-1-Q05"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01",
+        "INCOMM-MBD-2023-1-Q04",
+        "INCOMM-MBD-2023-1-Q05"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "OC_TYPE_DIRECTION",
+          "FIELD_VALUE",
+          "USAGE_REQUIRED",
+          "COMPOSITION_OUTSIDE_ATL105"
+        ],
+        "gap": "Type-to-transaction mapping awaits Q05; totalAmountAwarded conversion is a retailer calculation."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    },
+    {
+      "id": "INCOMM-MBD-BR-035",
+      "chapter": "CH-1.5",
+      "category": "LIFECYCLE",
+      "title": "310 is a preauthorization",
+      "statement": "A Benefit Eligibility & Balance Lookup (310) is a preauthorization: it may carry a market basket but must not return a price adjustment or amounts authorized from purses.",
+      "appliesTo": {
+        "direction": [
+          "response"
+        ],
+        "transactionTypes": [
+          "310"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L022",
+            "chapter": "CH-1.5",
+            "statement": "PI is optional in a 310 and absent when no market basket is exchanged; responses may split quantities across PIs, and Adjustment to Price is not returned on a 310 because it is a preauthorization.",
+            "pdfPages": [
+              10,
+              11
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "PI",
+            "chapter": "CH-1.4",
+            "fields": [
+              {
+                "bit": 12,
+                "name": "Adjustment to Price",
+                "format": "n 12",
+                "pdfPages": [
+                  8
+                ]
+              }
+            ]
+          },
+          {
+            "dataset": "PU",
+            "chapter": "CH-1.6",
+            "fields": [
+              {
+                "bit": 6,
+                "name": "Amount Authorized",
+                "format": "n 12",
+                "pdfPages": [
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q10",
+        "INCOMM-MBD-2023-1-Q11"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [],
+      "enforcement": {
+        "level": "ENFORCED",
+        "rules": [
+          "NOT_ON_310",
+          "USAGE_NOT_APPLICABLE"
+        ],
+        "gap": null
+      },
+      "status": "DRAFT_REVIEW_REQUIRED"
+    },
+    {
+      "id": "INCOMM-MBD-BR-036",
+      "chapter": "CH-1.3",
+      "category": "FIELD_RULE",
+      "title": "Dataset Version value",
+      "statement": "DV Dataset Version must be the MM.mm value supplied by the InComm integration project resource for the BUYPASS implementation.",
+      "appliesTo": {
+        "direction": [
+          "request",
+          "response"
+        ],
+        "transactionTypes": [
+          "310",
+          "910",
+          "920",
+          "200"
+        ]
+      },
+      "sourceAnchors": {
+        "lessons": [
+          {
+            "id": "INCOMM-MBD-2023-1-L010",
+            "chapter": "CH-1.3",
+            "statement": "The DV dataset is required for all new IH implementations; Bit 2 Dataset Version (MM.mm) is required and its value is supplied by an InComm integration project resource.",
+            "pdfPages": [
+              5
+            ]
+          }
+        ],
+        "catalog": [
+          {
+            "dataset": "DV",
+            "chapter": "CH-1.3",
+            "fields": [
+              {
+                "bit": 2,
+                "name": "Dataset Version",
+                "format": "an 5",
+                "pdfPages": [
+                  5
+                ]
+              }
+            ]
+          }
+        ],
+        "atl105": []
+      },
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q07"
+      ],
+      "qeInterpretationIds": [],
+      "blockingQuestionIds": [
+        "INCOMM-MBD-2023-1-Q07"
+      ],
+      "enforcement": {
+        "level": "PARTIAL",
+        "rules": [
+          "FIELD_VALUE"
+        ],
+        "gap": "The actual Dataset Version value is not known (Q07), so only the MM.mm pattern is checked."
+      },
+      "status": "DRAFT_BLOCKED_PENDING_SME"
+    }
+  ]
+}

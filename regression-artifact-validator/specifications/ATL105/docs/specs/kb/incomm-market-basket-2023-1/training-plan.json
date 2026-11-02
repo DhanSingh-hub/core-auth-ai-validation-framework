@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "INCOMM-MBD-2023-1-TRAINING-PLAN",
+  "sourceId": "BUYPASS-INCOMM-MBD-2023-1",
+  "sourceVersion": "2023-1",
+  "status": "IN_PROGRESS",
+  "scopeDecision": {
+    "decidedOn": "2026-10-30",
+    "decidedBy": "User",
+    "decision": "Derive business requirements only. Test scenarios, test cases and test data are not to be created for this document.",
+    "excludedArtifacts": ["testScenarios", "testCases", "testData"]
+  },
+  "rolloutOrder": [
+    {"order": 1, "context": "MARKET_BASKET_DATA", "chapters": ["CH-1", "CH-1.1", "CH-1.2", "CH-1.3", "CH-1.4", "CH-1.5", "CH-1.6", "CH-1.7", "CH-1.8", "CH-1.9", "CH-1.10", "CH-1.11"], "pdfPageRanges": [[4, 16]]}
+  ],
+  "phases": [
+    {"phase": 0, "id": "P0-SCOPE", "name": "Scope and identity", "frameworkGate": null,
+     "steps": ["Confirm title, version, release date, fingerprint and 16-page count", "Confirm the 14 nested bookmarks", "Record real-time vs non-real-time scope as an owned question (Q01)"]},
+    {"phase": 1, "id": "P1-INVENTORY", "name": "Chapter inventory", "frameworkGate": "SOURCE_INVENTORY",
+     "steps": ["Split the document into chapters from its bookmarks and verify each heading on its start page", "Anchor each lesson to a page-local quote inside its chapter", "Prove every content page belongs to a chapter"]},
+    {"phase": 2, "id": "P2-RECONCILE", "name": "ATL105 reconciliation", "frameworkGate": null,
+     "steps": ["Locate the Segment 151, Segment 152 and Table 049 Sub-Table 09 references in ATL105 2026-3 and 2026-4", "Record every source conflict or gap as an owned question"]},
+    {"phase": 3, "id": "P3-CATALOG", "name": "Dataset catalog extraction", "frameworkGate": "SEGMENT_KNOWLEDGE_MODEL",
+     "steps": ["Re-match every DV, PI, PU, OF and OC field row against page text", "Re-match every usage-matrix row and footnote", "Record encoding conventions with their interpretation IDs"]},
+    {"phase": 4, "id": "P4-CONTEXT-MATRIX", "name": "Transaction-type context matrix", "frameworkGate": "CONTEXT_MATRIX",
+     "steps": ["Map each usage-matrix column to its direction and transaction types (310, 910, 920, 200)", "Flag duplicated or ambiguous columns instead of resolving them"]},
+    {"phase": 5, "id": "P5-BR", "name": "Independent BR derivation", "frameworkGate": "INDEPENDENT_BR_DERIVATION",
+     "steps": ["Derive each BR from cited lessons, catalog rows or ATL105 references only", "Cover every non-informational lesson, every dataset, every usage matrix, every ATL105 reference and every open question", "Mark a BR blocked when it depends on an unresolved SME question", "Declare how each BR is enforced by the draft validator, or why it cannot be checked from data"]},
+    {"phase": 6, "id": "P6-CHAINS", "name": "TS, TC and TD chains", "frameworkGate": "TS_TC_TEST_DATA_CHAIN",
+     "steps": ["Out of scope by user decision on 2026-10-30"]},
+    {"phase": 7, "id": "P7-FLOWS", "name": "Lifecycle and specialized flows", "frameworkGate": "LIFECYCLE_AND_SPECIALIZED_FLOWS",
+     "steps": ["Express the 310 preauthorization, 910 qualification, 920 spend and 200 refund relationships documented by the source as lifecycle BRs", "Do not invent linkage the source does not state"]},
+    {"phase": 8, "id": "P8-MUTATION", "name": "Validator and mutation", "frameworkGate": "SERIALIZATION_AND_MUTATION",
+     "steps": ["Prove every registered validator rule is reachable by at least one mutated input in the regression test", "ATL105 wire serialization of Segment 151/152 is not demonstrated"]},
+    {"phase": 9, "id": "P9-AI-INTAKE", "name": "AI artifact intake", "frameworkGate": "INDEPENDENT_AI_ARTIFACT_INTAKE",
+     "steps": ["Compare AI-produced Segment 151/152 artifacts against the BRs when a package is supplied"]},
+    {"phase": 10, "id": "P10-EXECUTION", "name": "Execution and certification", "frameworkGate": "CONVERTER_AND_EXECUTION_READINESS",
+     "steps": ["Requires host execution and SME approval"]}
+  ],
+  "guardrails": [
+    "InComm Market Basket Data Format 2023-1 supplements ATL105 2026-3 and 2026-4 Segments 151/152; it does not replace either release.",
+    "Only BRs are derived; no test scenarios, test cases or test data are produced for this document.",
+    "A BR that depends on an unresolved SME question stays DRAFT_BLOCKED_PENDING_SME.",
+    "QE interpretations recorded on 2026-10-30 remain pending SME confirmation and are cited, not promoted.",
+    "Draft BRs stay out of independent Test Solution counts until SME approval.",
+    "No status is promoted without source evidence and a recorded SME decision."
+  ]
+}

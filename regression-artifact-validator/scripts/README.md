@@ -212,6 +212,39 @@ placeholder ranges — are recorded as `REVIEW_REQUIRED` findings, not silently
 resolved. Debit and EBT are excluded from ranged BRs since their declared length is
 a placeholder, not a fixed structure.
 
+### InComm Market Basket Data Format training
+
+Run `.\framework.ps1 -Task incomm-mbd-train-build`, `incomm-mbd-train-check` and
+`incomm-mbd-train-test` to train the
+[BUYPASS InComm Market Basket Data Format 2023-1](../specifications/ATL105/docs/specs/BUYPASS_Platform_InComm_Market_Basket_Data_Format_2023-1.pdf)
+chapter by chapter. All 16 pages and the 14 nested bookmarks are ingested; each chapter
+(Revision History, Contents, Introduction and sections 1.1 to 1.11) takes its page span from
+the bookmarks and its heading is verified on its start page. 35 page-quoted lessons, the
+DV/PI/PU/OF/OC field rows (each with a source-quoted description) and the four usage matrices are re-matched against page text, and
+the three ATL105 references (Segment 151, Segment 152 and Table 049 Sub-Table 09) are located
+in both 2026-3 and 2026-4. The generated
+[training report](../specifications/ATL105/docs/specs/kb/incomm-market-basket-2023-1/training-report.md)
+lists every chapter with its lessons, tables and open questions.
+
+`python scripts/ingest-incomm-market-basket.py --validate <data> --direction request|response --txn 310|910|920|200 [--request <data>]`
+runs the draft Market Basket validator (TLV envelope, bitmap, field formats, ATL105
+composition, usage matrices and response echo). Source ambiguities are tracked as
+`REVIEW_REQUIRED` questions; user-chosen interpretations are recorded as
+`QE_INTERPRETATION_PENDING_SME`, and anything outside the ATL105 Segment 151/152 composition
+is reported for review rather than rejected.
+
+Training follows the phased
+[training plan](../specifications/ATL105/docs/specs/kb/incomm-market-basket-2023-1/training-plan.json).
+By user decision only business requirements are derived: the
+[BR input](../specifications/ATL105/docs/specs/kb/incomm-market-basket-2023-1/business-requirements-input.json)
+generates 36 draft BRs in `business-requirements.json`, and phase 6 (TS/TC/TD) is
+`OUT_OF_SCOPE_BY_USER_DECISION`. The build fails unless every BR anchor resolves and the BRs
+together cover every non-informational lesson, dataset, usage matrix, ATL105 reference, open
+question, content chapter and validator rule. A BR that depends on an unresolved question is
+`DRAFT_BLOCKED_PENDING_SME`. Each BR declares whether the validator enforces it fully,
+partially (with the gap stated) or not at all from message data, and every one of the 31
+validator rules is proven reachable by a mutation in the regression test.
+
 ### All-network requirements and lifecycle review
 
 From the module root, run `.\framework.ps1 -Task all-network-review-build`,
