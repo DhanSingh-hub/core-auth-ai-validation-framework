@@ -17,6 +17,53 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Native business-model delivery gates and safe export repair
+
+The AI producer's `src/pipeline/business_model` implementation is not part of this
+repository. These tools validate its native exports and repair deterministic
+export defects in a **new copy**; they do not claim to fix upstream generator
+code or provide complete semantic/host certification.
+
+```powershell
+.\framework.ps1 -Task delivery-gates-test
+.\framework.ps1 -Task delivery-gates-check -ReviewDirectory 'C:\review\original' -OutputDirectory 'C:\review\original-gates'
+.\framework.ps1 -Task delivery-export-repair -ReviewDirectory 'C:\review\original' -OutputDirectory 'C:\review\corrected'
+.\framework.ps1 -Task delivery-gates-check -ReviewDirectory 'C:\review\corrected' -OutputDirectory 'C:\review\corrected-gates'
+```
+
+The input can contain one native package or several package directories. Gate
+output and repair destinations must be new and outside the input. Original files
+are hash-checked before/after; unsafe references, links, unsupported layouts and
+conflicting card data fail explicitly. A failed gate returns exit code 1 and
+writes `validation.json`; invocation/schema/source errors are nonzero exceptions.
+The framework launcher surfaces the nonzero exit.
+
+Independent gates check final TD references, nested/flat trace links, run-set/CSV
+identity/status, primary/all-leg file mapping, packaging/build identity,
+Element 188's three-byte representation and tag 5F34 relation, EMV lengths,
+split-tender bindings and unresolved runtime/readiness evidence. ATL105 2026-4
+evidence is pinned by SHA-256. `--previous <single-package-directory>` on
+`delivery_gates.py` additionally detects reassigned unqualified historical IDs.
+
+Repair zero-pads Element 188 only when card data agrees, recalculates the
+supported single-section Segment 130 length (Section 12.20), synchronizes inline
+fields, rebuilds nested/flat/Markdown trace from final run-set references and
+replaces stale top-level documentation. Embedded archives are preserved in
+`repair-evidence` outside the deliverable packages, not deleted. Build-qualified
+TC identities prevent confusing regenerated IDs across builds; bare IDs are
+retained for compatibility. Original producer hashes/verification are retained
+as evidence but invalidated for changed artifacts; no unknown hash recipe is
+fabricated. `repair-manifest.json` records original and resulting file digests.
+
+The repair does **not** invent PINs, card eligibility, cryptograms or host
+responses, resolve SME decisions, generate unapproved missing scenarios or alter
+runtime amounts. EMV dynamic-amount dependencies remain explicit review items.
+`gate=PASS` means only the named deterministic checks passed;
+`execution_readiness=BLOCKED` and `semantic_certification=NOT_CERTIFIED` remain
+separate. Scenario coverage uses the delivered scenario denominator, not the
+number of scope-BR containers. Re-run independent gates on the corrected copy
+before handoff; producer-side generator integration still requires its source.
+
 ### Release-aware new-format validation and readiness
 
 Run `.\framework.ps1 -Task new-format-readiness-build`,

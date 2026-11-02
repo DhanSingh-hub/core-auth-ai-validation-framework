@@ -3,6 +3,7 @@ param(
     [string]$Task,
     [string]$Tests,
     [string]$ReviewDirectory,
+    [string]$OutputDirectory,
     [string]$JsdomModulePath,
     [string]$PythonPath = 'python.exe',
     [switch]$List,
@@ -35,9 +36,15 @@ foreach ($argument in $definition.arguments) {
     switch -CaseSensitive ($argument) {
         '{ReviewDirectory}' {
             if (-not $ReviewDirectory -or -not (Test-Path -LiteralPath $ReviewDirectory -PathType Container)) {
-                throw 'Provide an existing -ReviewDirectory for semantic-view-check.'
+                throw 'Provide an existing -ReviewDirectory for this task.'
             }
             $arguments += (Resolve-Path -LiteralPath $ReviewDirectory).Path
+        }
+        '{OutputDirectory}' {
+            if (-not $OutputDirectory -or (Test-Path -LiteralPath $OutputDirectory)) {
+                throw 'Provide a new -OutputDirectory; existing outputs are never overwritten.'
+            }
+            $arguments += [System.IO.Path]::GetFullPath($OutputDirectory)
         }
         '{JsdomModulePath}' {
             if (-not $JsdomModulePath -or -not (Test-Path -LiteralPath $JsdomModulePath)) {
