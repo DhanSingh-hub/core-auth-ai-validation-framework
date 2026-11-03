@@ -1,0 +1,60 @@
+{
+  "id" : "TD-APPI-C032-12N-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-12N-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-12N-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-28",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r020-APPI-C032-12N"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-12N",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R020" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-28",
+          "startLine" : 28629,
+          "endLine" : 28637
+        } ],
+        "logicalFields" : {
+          "subTableId" : "12",
+          "subTableLength" : "001",
+          "value" : "N",
+          "observedCreditRouting" : false,
+          "logicalOutcome" : "Decline without specific response code",
+          "context" : {
+            "debitCNP" : true,
+            "ecommerce" : true,
+            "debitRouteAvailable" : false,
+            "merchantDebitOnly" : true
+          }
+        },
+        "clearScope" : [ "ExplicitN forbids credit fallback and source-stated decline when no debit route" ],
+        "excludedClaims" : [ "Network response code", "Actual processing trace" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "N/no-debit-route does not route to credit",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "observedCreditRouting",
+          "value" : true,
+          "targetedNegative" : "Credit fallback despite debit-onlyN"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

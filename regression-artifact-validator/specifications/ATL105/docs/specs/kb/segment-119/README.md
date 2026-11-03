@@ -2,7 +2,7 @@
 
 **Specification:** BUYPASS Platform ATL105 Message Format Specifications, Release 2026-3 (August 7, 2026)
 **Training Handbook:** [ATL105 Segment Training Handbook](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md) (8-Item Framework)
-**Training Status:** Specification-grounded baseline complete; manual policy gates remain `REVIEW_REQUIRED`; Run1 contains no `llm_phrased` Segment 119 requirements, so AI artifact coverage is currently unavailable rather than inferred.
+**Training Status:** Bounded executable field, wire and observed-history coverage is available; full Segment 119 closure remains incomplete. Manual policy gates remain `REVIEW_REQUIRED`. The phase-1 actual AI intake is assessed separately from Run1 requirement matching.
 
 ## Learning Module Index
 
@@ -70,6 +70,140 @@ The Section 11.4.1.2 text names "Data Segment No. 116" for this message. Its lay
 | 19 | 15 | Card Type Total Amount | 8 | Required per bucket |
 
 ## Serialization Rules
+
+### Executable Chapter 12 numbered-observation continuation
+
+The [numbered-observation validator](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ObservationValidator.java)
+is dispatched by the shared Chapter 12 adapter and Chapter 11 envelope. It
+checks required fields, source enums/widths, nonzero sequence/counts, calendar
+and timestamp validity, Appendix D terminal state and Appendix L currency,
+ordered left-aligned N4 card labels and numeric count/amount triples. Merchant
+assignment, authentic versions and original host timestamp provenance are not
+inferred from their lexical form.
+
+Use `cardBuckets` as an ordered array of objects with numbered text keys
+`13`, `16`, `15`. The Section 12.17 label list includes `HD` and contains
+19 named labels despite the prose allowing up to 20 buckets; no twentieth
+label is invented. Approved-response mandatory/optional bucket prose is not
+applied as mandatory request inclusion. Request counts use Chapter 13's
+`00001-99999` domain.
+
+Supply observed conditional policy as explicit booleans in `context`:
+`employeeNumberRequired`, `passwordRequired`, `totalsRequired`.
+Absent policy remains review-required; malformed controls are invalid.
+With `context.bucketCoverageComplete: true`, Grand Total is compared to the
+sum of supplied financial buckets, excluding `AO`, `SV1`, `SV3`, `SV4`, `HD`.
+Without complete scope, no total equality is inferred.
+
+Optional `serializedSegment` is always measured against N3 Segment Length
+as ASCII bytes. Explicit `context.wireProfile: "TABLE_17_19"` selects the
+table-derived layout: 16 prefix fields, each followed by FS, then concatenated
+four/five/eight-byte bucket triples, and a final FS. This profile is checked
+for exact order and retained empty-field separators, but its source framing
+conflict remains a separate review. Without a selected profile, the validator
+does not guess delimiter semantics. Both the 389/493 cap conflict and 17-19/
+18-20 field numbering conflict remain review-required.
+
+Chapter 11 supplies authoritative family, direction and observed placement;
+contradictory child values are invalid and inputs are not mutated.
+The old named-payload `TotalsRequestPayloadValidator` remains unchanged;
+its new explicit adapter/evidence overload adds actual field/history checks
+while preserving the old default behavior. This continuation does not claim
+complete lifecycle closure.
+
+[Independent fixtures and predicate probes](../../../../test-output/test-json/chapter-12-segment-observations.json)
+provide 20 Segment 119 executions (two header observations plus 18 predicates).
+[Persistent execution evidence](../../../../test-output/test-json/chapter-12-training-evidence.json)
+cross-checks exact existing Test anchors for all 20, without approval.
+[Boundary and integration tests](../../../../../../src/test/java/com/coreauth/validator/Segment119ObservationValidatorTest.java)
+also exercise all 19 listed labels in a measured 453-byte segment, cap
+boundaries, swapped/duplicated buckets, nonfinancial exclusion, malformed
+dates/controls and source conflict reviews. The covering 51-test gate passed.
+
+**Status: bounded execution added; full Segment 119 coverage remains incomplete.**
+Activity-window/lifecycle, selection/retry/cutoff and complete actual producer
+mapping remain implementation/evidence work, separate from genuine source
+conflicts and deferred approvals.
+
+### Actual named payload and observed-history integration
+
+[Segment119ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Segment119ActualPayloadAdapter.java)
+maps actual named fields and every `CategoryTotals` occurrence without copying
+metadata values. It also supports a single flat `CardLabel`/`CardTypeTotalCount`/
+`CardTypeTotalAmount` triple; supplying both array and flat bucket forms is
+invalid rather than silently selecting one. Logical short Card Labels are
+space-padded only in the derived observation, never in the input. Unknown
+actual field aliases remain explicit reviews; missing/nontext required fields
+are not replaced by metadata.
+
+Pass this adapter and an observed evidence object to
+`TotalsRequestPayloadValidator.validatePayload(payload, adapter, evidence)` to
+enable strict Segment 119 field/history validation. The one-argument overload
+retains its legacy behavior. `Atl105AiElementIntake` executes this adapter for
+every actual Segment 119 occurrence when its existing semantic mode is enabled
+(`--chapter13-semantics`); default metadata-only mode remains unchanged.
+The selected source-family root stays authoritative.
+
+Evidence `history.totals` is passed to the existing Chapter 13 processing-history
+validator. It assesses activity-date selection, request/response correlation,
+settlement ending/roll and reset/accumulation observations using explicit full
+dates, booleans and amounts. It does not authenticate those observations or
+invent a settlement calendar. See the [Chapter 13 history guide](../13-data-elements.md)
+for field shapes. Actual request direction is authoritative; contradictory or
+malformed history controls are invalid. Absent/partial history remains review.
+
+Six additional independent actual-payload probes cover valid/invalid timestamp,
+zero sequence, nontext repeated count and observed settlement-response selection
+and mismatch. The existing Chapter 12 canonical generator executes the actual
+adapter for these payloads, preserving target status separately from whole status.
+At that integration milestone, the package contained **48 BR / 48 TS / 72 TC / 72 TD records**, including
+**26 Segment 119 executions**, all with exact unapproved existing Test candidates.
+These totals are not whole-segment or whole-chapter closure.
+
+Final focused integration validation passed **87 tests**. Full regression
+during the batch ran **2,501 tests**, with **2,499 passing and the two known
+appendix failures**, before the final flat-bucket guard; that last guard was
+covered by the focused gate. The real 37-case AI batch was rerun and all 74
+producer inputs remained hash-identical. See the
+[detailed chapter report](../chapter-coverage-gap-register.md) for measured
+Segment 119 findings, actual-AI provenance and remaining scope.
+
+### Numbered/envelope lifecycle and current-state continuation
+
+Numbered observations and actual named payloads now share the same history
+dispatch; the adapter no longer maintains a second history-execution loop.
+Chapter 11 passes authoritative parent `history` to the Segment 119 child
+without requiring the Chapter 13 semantic flag. Contradictory child history,
+direction or current-state context is invalid; no input is mutated.
+
+The shared history shape supports the explicit-date activity window, special
+date selection, `222222` settlement end/roll, `111111` retention and last-reset
+period boundary, and `999999` clearing every observed accumulation. In
+`history.totals`, optional observed `requestSequenceNumber` and
+`responseSequenceNumber` must be textual nonzero N6 values, equal each other
+and actual Element 86. Missing sequence observations remain review-required;
+date/history checks do not authenticate the matched transaction.
+
+Supply current-state evidence as `context.loadedDeviceCardTableVersion` (N35)
+and `context.hostDiscountTimestampInUse` (`CCYYMMDDHHMM`). Each is compared with
+the actual request value, not substituted for it. Parent-supplied values are
+authoritative in envelope dispatch. Missing evidence is a review; wrong types
+or contradictory values are invalid. This is observed equality, not proof of
+authentic card-table contents or an authenticated host load.
+
+The latest canonical package contains **114 BR / 114 TS / 138 TC / 138 TD**
+records across 26 segment identities, including **62 Segment 119 executions**
+with exact unapproved existing-Test anchor candidates. It includes 80
+single-target predicate executions and ten actual product executions; there
+are zero whole-status or target-status mismatches. See the linked detailed
+chapter report for final regression results and unresolved implementation.
+
+The final phase-1 AI case containing Segment 119 has 16 passed bounded
+findings, seven invalid findings and 12 reviews. The three added reviews
+explicitly expose absent matched-sequence, loaded-version and loaded-timestamp
+observations; they do not weaken the existing invalid findings. All 74 producer
+files remain unchanged. These counts are neither a whole-message pass rate nor
+source-conflict resolution.
 
 - Fields 1-17 are Field Separator-delimited.
 - A Field Separator follows Field 17.

@@ -1,0 +1,1116 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-011-DRIVER-IDENTIFICATION",
+  "reviewDate": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:038",
+    "statement": "Driver/Identification\nNumber must be numeric and must not exceed 10 bytes.",
+    "scenarioIds": [
+      "SC-2557",
+      "SC-3291",
+      "SC-3767"
+    ],
+    "caseIds": [
+      "TC-002453",
+      "TC-003133",
+      "TC-003537"
+    ],
+    "segments": [
+      "101"
+    ],
+    "elements": [
+      "31"
+    ],
+    "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE",
+    "physicalPayloadPathCount": 6
+  },
+  "sourceRule": {
+    "id": "ENT-ELEM-31",
+    "element": "31",
+    "name": "Driver/Identification Number",
+    "characterType": "N",
+    "maximumLengthBytes": 10,
+    "representation": "Variable length of up to 10 digits",
+    "validValues": "Any numeric representation",
+    "applicability": "Issuer-dependent; if required, found in Segment 101",
+    "alignment": "AI numeric / maximum-10-byte claim is source-aligned; no fixed-width or mandatory-presence inference",
+    "sourceEvidence": [
+      {
+        "sourcePage": 374,
+        "startLine": 20208,
+        "quote": "Number: 31 Name: Driver/Identification Number"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20210,
+        "quote": "Character Type: N Maximum Length: 10 bytes"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20212,
+        "quote": "Representation: Variable length of up to 10 digits"
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20218,
+        "quote": "If required by the issuer, this number must be an unencrypted Driver/Identification Number."
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20220,
+        "quote": "If required by the issuer, this element is found in the Fleet Data Segment (Segment No. 101)."
+      },
+      {
+        "sourcePage": 374,
+        "startLine": 20222,
+        "quote": "Valid Codes/Values: Any numeric representation"
+      }
+    ],
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "testCrosswalk": {
+    "exactAnchorCandidates": [
+      "SEG101-R-012"
+    ],
+    "rankedCandidatesAreLeadsOnly": true,
+    "rankedCandidates": [
+      {
+        "candidateId": "SEG101-R-012",
+        "packageId": "BR-RULE-SEG101-R-012",
+        "title": "Driver/Identification Number, when populated, is alphanumeric with maximum length 10",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "element": "31",
+            "rule": "driver-identification-number"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-012"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-012"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-012"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "packageId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "title": "Non-TransArmor request Element 2 does not exceed 24 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-REQUEST-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-REQUEST-LENGTH-24",
+            "TC-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-REQUEST-LENGTH-24",
+            "TD-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG100-R-041",
+        "packageId": "BR-RULE-SEG100-R-041",
+        "title": "Account Number or identification value is present for the transaction context",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG100-R-041"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-041"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG100-R-041"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG101-R-009",
+        "packageId": "BR-RULE-SEG101-R-009",
+        "title": "Odometer, when populated, is numeric with maximum length 8",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "element": "64",
+            "rule": "odometer"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-009"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-009"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-009"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-GAP-ACCOUNT",
+        "packageId": "BR-SEG100-GAP-ACCOUNT",
+        "title": "Segment 100 shall contain the account number or identification value required by the transaction context.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.1",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-GAP-ACCOUNT"
+          ],
+          "scenarioStatuses": [
+            null
+          ],
+          "caseIds": [
+            "TC-SEG100-GAP-ACCOUNT-PASS",
+            "TC-SEG100-GAP-ACCOUNT-FAIL"
+          ],
+          "caseStatuses": [
+            null,
+            null
+          ],
+          "testDataIds": [
+            "TD-SEG100-GAP-ACCOUNT-PASS",
+            "TD-SEG100-GAP-ACCOUNT-FAIL"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED",
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG101-FIELD-009",
+        "packageId": "BR-SEG101-FIELD-009",
+        "title": "Odometer is numeric max 8 digits when populated.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "element": "64",
+            "rule": "odometer"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "SCN-SEG101-FIELD-001"
+          ],
+          "scenarioStatuses": [
+            null
+          ],
+          "caseIds": [
+            "TC-SEG101-FIELD-001"
+          ],
+          "caseStatuses": [
+            "active"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-SEG101-FIELD-001"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG101-R-023",
+        "packageId": "BR-RULE-SEG101-R-023",
+        "title": "Fleet Tag 3-byte code must be one of the 17 codes in the fleet-tag code table",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "rule": "fleet-tag-code-enumeration"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-023"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-023"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-023"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG101-R-022",
+        "packageId": "BR-RULE-SEG101-R-022",
+        "title": "Fleet Tag format is 3-byte code plus up to 31-byte data payload",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "rule": "fleet-tag-format"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-022"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-022"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-022"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG101-R-013",
+        "packageId": "BR-RULE-SEG101-R-013",
+        "title": "Fleet Employee Number, when populated, is alphanumeric with maximum length 10",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.2",
+            "segment": "101",
+            "element": "40",
+            "rule": "fleet-employee-number"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG101-R-013"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG110-R-011",
+        "packageId": "BR-RULE-SEG110-R-011",
+        "title": "Date of Birth (Element 125) is conditional, numeric, fixed 8 digits (MMDDYYYY); the extracted Segment 110 table marks it conditional but states no explicit trigger separate from the Driver's License/State Code identification bundle",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.9",
+            "segment": "110",
+            "element": "125",
+            "rule": "date-of-birth"
+          }
+        ],
+        "chain": {
+          "chainStatus": null,
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG110-R-011"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG110-R-011"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG110-R-011"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      }
+    ],
+    "directRuleDisposition": "SOURCE_TEST_CHARACTER_CLASS_CONFLICT",
+    "directRuleConflict": "ATL105 specifies numeric (N); BR-RULE-SEG101-R-012 says alphanumeric. Its applicability is conditional ('when populated'), but its chain remains draft/review-required."
+  },
+  "cases": [
+    {
+      "caseId": "TC-002453",
+      "copies": [
+        {
+          "caseId": "TC-002453",
+          "sourceKind": "TEST_DATA_10_OCT/TEST_DATA_10_OCT/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002453.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-002453.meta.json",
+          "payloadSha256": "5eff4cfd7560937402c29c89426c8257e6b0e28ca355e73143843362cb6fd900",
+          "sidecarSha256": "8397ee6402679bdbbe97d1f9c90b0af99f078819c598572b3e264500f72c749e",
+          "messageFamily": "EMV Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EMV Data Segment/SegmentType",
+              "segment": "130"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "111",
+            "130",
+            "143",
+            "156"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 0,
+          "rawTargetValuesWritten": false
+        },
+        {
+          "caseId": "TC-002453",
+          "sourceKind": "TEST_GENERATION/TEST_GENERATION/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002453.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-002453.meta.json",
+          "payloadSha256": "5eff4cfd7560937402c29c89426c8257e6b0e28ca355e73143843362cb6fd900",
+          "sidecarSha256": "8397ee6402679bdbbe97d1f9c90b0af99f078819c598572b3e264500f72c749e",
+          "messageFamily": "EMV Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/EMV Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EMV Data Segment/SegmentType",
+              "segment": "130"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/EMV Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "111",
+            "130",
+            "143",
+            "156"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 0,
+          "rawTargetValuesWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element31Observed": false
+    },
+    {
+      "caseId": "TC-003133",
+      "copies": [
+        {
+          "caseId": "TC-003133",
+          "sourceKind": "TEST_DATA_10_OCT/TEST_DATA_10_OCT/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003133.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003133.meta.json",
+          "payloadSha256": "e18dcaa4274fa492f79e91ae10796c95b64861aafd6b9e275540bb75aff45267",
+          "sidecarSha256": "90bd19268f1a89942c550c8667a3906ed9550c4f3bd78d948a8fc63637ce0b1a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 0,
+          "rawTargetValuesWritten": false
+        },
+        {
+          "caseId": "TC-003133",
+          "sourceKind": "TEST_GENERATION/TEST_GENERATION/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003133.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003133.meta.json",
+          "payloadSha256": "e18dcaa4274fa492f79e91ae10796c95b64861aafd6b9e275540bb75aff45267",
+          "sidecarSha256": "90bd19268f1a89942c550c8667a3906ed9550c4f3bd78d948a8fc63637ce0b1a",
+          "messageFamily": "Financial Transaction Request",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transaction Request/Standard Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transaction Request/Product Code Data Segment/SegmentType",
+              "segment": "102"
+            },
+            {
+              "path": "/Financial Transaction Request/EBT Data Segment/SegmentType",
+              "segment": "103"
+            },
+            {
+              "path": "/Financial Transaction Request/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transaction Request/Variable Info Segment/SegmentType",
+              "segment": "111"
+            },
+            {
+              "path": "/Financial Transaction Request/NFC Payment Tokenization Data Segment/SegmentType",
+              "segment": "123"
+            },
+            {
+              "path": "/Financial Transaction Request/Moneris Data Segment (Request)/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Tax by Product Data Segment/SegmentType",
+              "segment": "143"
+            },
+            {
+              "path": "/Financial Transaction Request/Enhanced Fleet Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Request InComm OTC Market Basket Data/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Network Token Data Request/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transaction Request/Check Data Segment/SegmentType",
+              "segment": "110"
+            },
+            {
+              "path": "/Financial Transaction Request/ECA/ TeleCheck Data Segment Format \u00ae/SegmentType",
+              "segment": "113"
+            },
+            {
+              "path": "/Financial Transaction Request/SKU Data Segment/SegmentType",
+              "segment": "100"
+            },
+            {
+              "path": "/Financial Transaction Request/Totals with Proprietary Data Load Data Segment/SegmentType",
+              "segment": "119"
+            },
+            {
+              "path": "/Financial Transaction Request/CA Public Key File Data Segment/SegmentType",
+              "segment": "132"
+            },
+            {
+              "path": "/Financial Transaction Request/EV Charging Data Segment/SegmentType",
+              "segment": "156"
+            }
+          ],
+          "observedSegmentTypes": [
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "108",
+            "110",
+            "111",
+            "113",
+            "119",
+            "123",
+            "132",
+            "143",
+            "156"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 0,
+          "rawTargetValuesWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element31Observed": false
+    },
+    {
+      "caseId": "TC-003537",
+      "copies": [
+        {
+          "caseId": "TC-003537",
+          "sourceKind": "TEST_DATA_10_OCT/TEST_DATA_10_OCT/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003537.json",
+          "sidecarPath": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data/TC-003537.meta.json",
+          "payloadSha256": "67880d0924885e92d561172d33676e5707147236de444e752b574521c2703cf2",
+          "sidecarSha256": "2cfc125ffe99e74cd82c9e476210b1cc00a721c9f2e7dff13466fb2f1d16dcaf",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 1,
+          "rawTargetValuesWritten": false
+        },
+        {
+          "caseId": "TC-003537",
+          "sourceKind": "TEST_GENERATION/TEST_GENERATION/CANDIDATES/QE_SHAPED_TEST_DATA",
+          "payloadPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003537.json",
+          "sidecarPath": "test_generation/test_generation/candidates/qe_shaped_test_data/TC-003537.meta.json",
+          "payloadSha256": "67880d0924885e92d561172d33676e5707147236de444e752b574521c2703cf2",
+          "sidecarSha256": "2cfc125ffe99e74cd82c9e476210b1cc00a721c9f2e7dff13466fb2f1d16dcaf",
+          "messageFamily": "Financial Transactions",
+          "payloadParseError": null,
+          "sidecarParseError": null,
+          "sidecarCaseIdMatches": true,
+          "sourceBatchSha256Present": false,
+          "segmentMarkers": [
+            {
+              "path": "/Financial Transactions/Fleet Segment/SegmentType",
+              "segment": "101"
+            },
+            {
+              "path": "/Financial Transactions/Purchase Card Data Segment/SegmentType",
+              "segment": "104"
+            },
+            {
+              "path": "/Financial Transactions/Loyalty Card Data Segment/SegmentType",
+              "segment": "108"
+            },
+            {
+              "path": "/Financial Transactions/Electronic Mail Data Segment/SegmentType",
+              "segment": "109"
+            },
+            {
+              "path": "/Financial Transactions/Check Data Segment/SegmentType",
+              "segment": "110"
+            }
+          ],
+          "observedSegmentTypes": [
+            "101",
+            "104",
+            "108",
+            "109",
+            "110"
+          ],
+          "targetFieldOccurrences": [],
+          "sidecarTargetFieldCount": 0,
+          "sidecarTargetValuesMatchPayload": null,
+          "unavailableElement31": [
+            {
+              "element": "Driver /Identification Number",
+              "friendly": "DriverNumber",
+              "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+              "dataSource": "not_applicable"
+            }
+          ],
+          "unavailableSegment101Count": 0,
+          "presenceUnknownSegment101Count": 1,
+          "rawTargetValuesWritten": false
+        }
+      ],
+      "duplicateCopiesByteIdentical": true,
+      "element31Observed": false
+    }
+  ],
+  "summary": {
+    "caseCount": 3,
+    "caseIdsWithElement31": [],
+    "caseIdsWithoutElement31": [
+      "TC-002453",
+      "TC-003133",
+      "TC-003537"
+    ],
+    "allDuplicateCandidateCopiesIdentical": true,
+    "segment101BoundCaseIds": [
+      "TC-002453",
+      "TC-003133",
+      "TC-003537"
+    ],
+    "coverageCredit": 0,
+    "semanticMatchesConfirmed": 0,
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "sourceAlignment": "AI_FORMAT_CLAIM_ALIGNED_TO_ELEMENT31",
+    "caseEvidence": "THREE_LINKED_CASES_DO_NOT_EXERCISE_ELEMENT31; sidecars mark Element 31 omitted by composer",
+    "testCounterpart": "DIRECT_TEST_CANDIDATE_CONFLICTS_ON_CHARACTER_CLASS_AND_IS_NOT_APPROVED",
+    "overall": "PRELIMINARY_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "rawDriverIdentificationValuesWritten": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

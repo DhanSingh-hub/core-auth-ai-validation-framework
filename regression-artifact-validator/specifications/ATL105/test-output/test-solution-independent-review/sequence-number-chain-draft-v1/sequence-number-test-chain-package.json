@@ -1,0 +1,74 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-SEQUENCE-NUMBER-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "3977941badfbbcaab223f5cce41dd73eaf3f0a070e7844468eec838c851e32ef",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Only source-quoted Sequence Number clauses are encoded. No decline/response code is invented.",
+      "dataPolicy": "Synthetic field and transaction-step design fragments only; not converter-ready ATL105 requests or payloads.",
+      "baselinePolicy": "References existing Test BRs SEG100-R-019 and SEG100-R-037; adds no rules to the official 601-rule source-derived baseline.",
+      "promotionGate": "Authorized independent Test review must confirm applicability, case objectives, transaction semantics and expected outcomes before executable fixtures are built."
+    }
+  },
+  "requirementReferences": [
+    {"id": "BR-RULE-SEG100-R-019", "title": "Sequence Number is six digits and persists through lifecycle", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.1", "segment": "100", "element": "86", "rule": "sequence-number"}},
+    {"id": "BR-RULE-SEG100-R-037", "title": "Lifecycle follow-ups reuse the original Sequence Number and required approval context", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "10", "segment": "100", "element": "86", "rule": "lifecycle-correlation"}}
+  ],
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG100-E86-FORMAT", "requirementIds": ["BR-RULE-SEG100-R-019"], "intent": "Verify required presence, six numeric characters and the documented valid range 000001-999999.", "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEG100-E86-RANGE"], "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E86-INVALID", "requirementIds": ["BR-RULE-SEG100-R-019"], "intent": "Probe omitted, zero, short, long and nonnumeric Sequence Number values. Expected response behavior is not stated in the cited source.", "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEG100-E86-RANGE"], "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E86-PREAUTH-CAPTURE", "requirementIds": ["BR-RULE-SEG100-R-019", "BR-RULE-SEG100-R-037"], "intent": "For a preauthorized transaction, compare Authorization Only and associated Purchase/Capture Sequence Number values.", "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86-PREAUTH-CAPTURE"], "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E86-REVERSALS", "requirementIds": ["BR-RULE-SEG100-R-019", "BR-RULE-SEG100-R-037"], "intent": "Compare an original financial request with a purchase reversal/void and timeout reversal Sequence Number.", "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86-REVERSAL", "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"], "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E86-NEW-REQUEST", "requirementIds": ["BR-RULE-SEG100-R-019"], "intent": "Distinguish a separately forwarded new financial request, which receives a new Sequence Number, from a follow-up associated with the original authorization.", "sourceEvidenceIds": ["ATL105-2026-3-SEG100-E86", "ATL105-2026-3-SEC2-3-1-TOR-SEQUENCE"], "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG100-E86-VALID-MIN", "scenarioIds": ["TS-DRAFT-SEG100-E86-FORMAT"], "testDataIds": ["TD-DRAFT-SEG100-E86-VALID-MIN"], "assertion": "000001 is six numeric characters and the lower valid boundary.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-VALID-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E86-FORMAT"], "testDataIds": ["TD-DRAFT-SEG100-E86-VALID-MAX"], "assertion": "999999 is six numeric characters and the upper valid boundary.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-OMITTED", "scenarioIds": ["TS-DRAFT-SEG100-E86-INVALID"], "testDataIds": ["TD-DRAFT-SEG100-E86-OMITTED"], "assertion": "Element 86 is required in Segment 100; rejection/response oracle is unspecified.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-ZERO", "scenarioIds": ["TS-DRAFT-SEG100-E86-INVALID"], "testDataIds": ["TD-DRAFT-SEG100-E86-ZERO"], "assertion": "000000 is outside the documented valid range.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-SHORT", "scenarioIds": ["TS-DRAFT-SEG100-E86-INVALID"], "testDataIds": ["TD-DRAFT-SEG100-E86-SHORT"], "assertion": "12345 is shorter than the fixed six-character representation.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-LONG", "scenarioIds": ["TS-DRAFT-SEG100-E86-INVALID"], "testDataIds": ["TD-DRAFT-SEG100-E86-LONG"], "assertion": "1000000 is longer than the fixed six-character representation.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-NONNUMERIC", "scenarioIds": ["TS-DRAFT-SEG100-E86-INVALID"], "testDataIds": ["TD-DRAFT-SEG100-E86-NONNUMERIC"], "assertion": "12A456 contains a nonnumeric character.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-PREAUTH-CAPTURE-SAME", "scenarioIds": ["TS-DRAFT-SEG100-E86-PREAUTH-CAPTURE"], "testDataIds": ["TD-DRAFT-SEG100-E86-PREAUTH-CAPTURE-SAME"], "assertion": "Purchase/Capture Sequence Number equals the associated Authorization Only Sequence Number.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-TOR-SAME", "scenarioIds": ["TS-DRAFT-SEG100-E86-REVERSALS"], "testDataIds": ["TD-DRAFT-SEG100-E86-TOR-SAME"], "assertion": "Timeout Reversal Sequence Number equals the financial transaction being reversed.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-VOID-SAME", "scenarioIds": ["TS-DRAFT-SEG100-E86-REVERSALS"], "testDataIds": ["TD-DRAFT-SEG100-E86-VOID-SAME"], "assertion": "Purchase reversal/void Sequence Number equals the original request Sequence Number.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E86-NEW-REQUEST-DIFFERENT", "scenarioIds": ["TS-DRAFT-SEG100-E86-NEW-REQUEST"], "testDataIds": ["TD-DRAFT-SEG100-E86-NEW-REQUEST-DIFFERENT"], "assertion": "A separately forwarded new financial request is assigned a new Sequence Number; applicability to adjacent lifecycle cases must be reviewed.", "expectedOutcome": "REVIEW_REQUIRED", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG100-E86-VALID-MIN", "testCaseIds": ["TC-DRAFT-SEG100-E86-VALID-MIN"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "000001"}},
+    {"id": "TD-DRAFT-SEG100-E86-VALID-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E86-VALID-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "999999"}},
+    {"id": "TD-DRAFT-SEG100-E86-OMITTED", "testCaseIds": ["TC-DRAFT-SEG100-E86-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "omitted": true}},
+    {"id": "TD-DRAFT-SEG100-E86-ZERO", "testCaseIds": ["TC-DRAFT-SEG100-E86-ZERO"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "000000"}},
+    {"id": "TD-DRAFT-SEG100-E86-SHORT", "testCaseIds": ["TC-DRAFT-SEG100-E86-SHORT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "12345"}},
+    {"id": "TD-DRAFT-SEG100-E86-LONG", "testCaseIds": ["TC-DRAFT-SEG100-E86-LONG"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "1000000"}},
+    {"id": "TD-DRAFT-SEG100-E86-NONNUMERIC", "testCaseIds": ["TC-DRAFT-SEG100-E86-NONNUMERIC"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "100", "element": "86", "value": "12A456"}},
+    {"id": "TD-DRAFT-SEG100-E86-PREAUTH-CAPTURE-SAME", "testCaseIds": ["TC-DRAFT-SEG100-E86-PREAUTH-CAPTURE-SAME"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "MULTI_STEP_DESIGN_ONLY_NOT_EXECUTABLE", "steps": [{"type": "AUTHORIZATION_ONLY", "transactionCode": "3", "segment": "100", "element": "86", "value": "000123"}, {"type": "PURCHASE_CAPTURE", "segment": "100", "element": "86", "value": "000123"}]}},
+    {"id": "TD-DRAFT-SEG100-E86-TOR-SAME", "testCaseIds": ["TC-DRAFT-SEG100-E86-TOR-SAME"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "MULTI_STEP_DESIGN_ONLY_NOT_EXECUTABLE", "steps": [{"type": "ORIGINAL_FINANCIAL_REQUEST", "segment": "100", "element": "86", "value": "000456"}, {"type": "TIMEOUT_REVERSAL", "segment": "100", "element": "86", "value": "000456"}]}},
+    {"id": "TD-DRAFT-SEG100-E86-VOID-SAME", "testCaseIds": ["TC-DRAFT-SEG100-E86-VOID-SAME"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "MULTI_STEP_DESIGN_ONLY_NOT_EXECUTABLE", "steps": [{"type": "ORIGINAL_FINANCIAL_REQUEST", "segment": "100", "element": "86", "value": "000789"}, {"type": "PURCHASE_REVERSAL_OR_VOID", "segment": "100", "element": "86", "value": "000789"}]}},
+    {"id": "TD-DRAFT-SEG100-E86-NEW-REQUEST-DIFFERENT", "testCaseIds": ["TC-DRAFT-SEG100-E86-NEW-REQUEST-DIFFERENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "MULTI_STEP_DESIGN_ONLY_NOT_EXECUTABLE", "steps": [{"type": "FINANCIAL_REQUEST_1", "segment": "100", "element": "86", "value": "000123"}, {"type": "SEPARATE_FINANCIAL_REQUEST_2", "segment": "100", "element": "86", "value": "000124"}]}}
+  ],
+  "unresolvedCompositeObligation": {
+    "testBrId": "SEG100-R-037",
+    "component": "required approval context",
+    "status": "SOURCE_AND_APPLICABILITY_REVIEW_REQUIRED",
+    "note": "The Sequence Number-only cases do not satisfy the composite BR's approval-context clause. Do not mark SEG100-R-037 fully chain-covered until that clause is separately sourced and tested."
+  },
+  "promotionGaps": [
+    "Existing official placeholder chains remain unchanged.",
+    "No response/decline code is invented for invalid Sequence Number cases.",
+    "No complete transaction payload or metadata sidecar is produced.",
+    "Approval Number context in SEG100-R-037 remains unresolved.",
+    "No converter execution, host execution, semantic match or coverage credit is claimed."
+  ]
+}

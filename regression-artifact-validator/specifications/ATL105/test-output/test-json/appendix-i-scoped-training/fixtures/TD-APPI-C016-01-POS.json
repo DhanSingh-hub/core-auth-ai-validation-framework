@@ -1,0 +1,53 @@
+{
+  "id" : "TD-APPI-C016-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C016-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C016-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-11",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t016-r001-APPI-C016-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C016-01",
+        "tableId" : "016",
+        "ruleIds" : [ "APPI-T016-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-11",
+          "startLine" : 27855,
+          "endLine" : 27859
+        } ],
+        "logicalFields" : {
+          "cardSequenceNumber" : "0001",
+          "datasetId" : "01",
+          "lengthOfTags" : "100",
+          "datasetLength" : "095"
+        },
+        "clearScope" : [ "Card sequence AN4", "Dataset identifier01", "Explicit subtraction100-5=95 only" ],
+        "excludedClaims" : [ "Whether100 counts card sequence or length fields", "Aggregate completeness", "Mandatory tags", "N2 selector" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "DatasetLength equals LengthOfTags minus5",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "datasetLength",
+          "value" : "096",
+          "targetedNegative" : "Arithmetic mismatch"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

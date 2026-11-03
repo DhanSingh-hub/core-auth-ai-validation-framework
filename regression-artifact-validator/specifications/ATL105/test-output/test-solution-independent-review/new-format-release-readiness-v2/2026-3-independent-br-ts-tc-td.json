@@ -1,0 +1,2557 @@
+{
+  "schemaVersion": 2,
+  "format": "BA_BUSINESS_CONTEXT_REVIEW_V2",
+  "manifest": {
+    "packageId": "INDEPENDENT-RELEASE-CHAINS-2026-3",
+    "producer": "INDEPENDENT_TEST_SOLUTION",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "strictExecutionContract": false
+  },
+  "businessRequirements": [
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "BR-2026-3-sequence",
+      "statement": "Apply the independently derived 2026-3 sequence profile in its declared scope.",
+      "claim": {
+        "subject": "Segment100.Element86",
+        "operator": "asciiDigitsRange",
+        "width": 6,
+        "minimum": 1,
+        "maximum": 999999,
+        "modality": "must",
+        "conditions": {
+          "messageFamily": "STANDARD_FINANCIAL_REQUEST"
+        }
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 402,
+          "startLine": 21438,
+          "endLine": 21489,
+          "quote": "--- PAGE 402 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n13-69 \n157 Data Segment No. 157, Adjusted Product Code Data \nSegment \nDL1 Data Segment No. DL1, Merchant Data Segment. \nDL2 Data Segment No. DL2, Dial String Data Segment \nDL3 Data Segment No. DL3, Date and Time Data Segment \nDL4 Data Segment No. DL4, Software Dial Load Data Segment \nDL5 Data Segment No. DL5, Software IP Load Data Segment \nDL6 Data Segment No.DL6, Store and Forward Data Segment \n \n \nNumber: 86 Name: Sequence Number \nCharacter Type: N Maximum Length: 6 bytes \n \nRepresentation: Fixed length of six digits \nPurpose: Note: Identifies a transaction for the life of the transaction. \nSequence Number must persist in all the subsequent transactions \nthat are associated with the initial authorization request. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture identifies the Sequence Number in the \ntransaction\u2019s Authorization Only request. \nProcessing Rules: Each transaction has a unique Sequence Number.  It is included \non all transaction types, and originates at the device. \n In the case of a preauthorized transaction, the Sequence Number \nin the Purchase/Capture is the same Sequence Number as in the \ntransaction\u2019s Authorization Only request. \n In the case of a purchase reversal/void or time-out reversal \ntransaction, the Sequence Number must be the same as in the \noriginal transaction request. \n In the case of an Authorization Only Reversal, this element\u2014\npresent in the original transaction\u2014must be present and identical \nin the Authorization Only Reversal transaction.  (Note:  The \nAuthorization Only Reversal transaction enables a merchant to \nreverse the following credit card transactions within required \ntimeframes:  POS Authorization Only [Transaction Type code \n\u201c3\u201d]); POS Mail/Phone Authorization Only [Transaction Type code \n\u201cB\u201d]); and CAT Authorization Only [Transaction Type code \u201c5\u201d]). \n For TransArmor PKI Encryption and Tokenization, this element is \nincluded in a new data segment (No. 116 [TransArmor Load Data \nSegment]). \nValid Codes/Values: 000001\u2013999999 \n 100000-199999   \n  ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "BR-2026-3-online-refund",
+      "statement": "Apply the independently derived 2026-3 online-refund profile in its declared scope.",
+      "claim": {
+        "subject": "Table032.Subtable11",
+        "operator": "conditionalIndicator",
+        "length": "001",
+        "value": "Y",
+        "modality": "must",
+        "conditions": {
+          "merchantParticipating": true,
+          "onlineApprovalWanted": true,
+          "transactionCategory": "RETURN",
+          "lifecycleRole": "ORIGINAL"
+        }
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 702,
+          "startLine": 35832,
+          "endLine": 35872,
+          "quote": "--- PAGE 702 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \nAppendix X-1 \n \nAppendix X.  Online Refund/Refund Authorization \nNote: Please contact your First Data representative for availability of this functionality \nToday, cardholders have real-time, 24/7 access to their online banking apps through \nsmartphones and other devices. They are more aware than ever of how quickly purchase \ninformation is updated to their account. However, cardholders also have become increasingly \naware that the same flow of information does not exist on purchase returns. \nTo align the purchase and return processes, an authorization was introduced on credit voucher \n(aka purchase return) transactions. This new credit voucher / purchase return authorization \nmessage will provide issuers with real-time information about returns, similar to that for \npurchases, which they must then provide to their cardholders.  \nMerchants must send the Online Refund/Refund Authorization Indicator in Sub-table ID 11 of \nPOS Additional Data Information (Table ID 32) in Appendix I (Variable Information Data \nLayouts) when participating in Online Refund/Refund Authorization program to get authorization \nfor Merchandise Return transactions. Merchants who do not want Merchandise Return to be \napproved online must not send this field. \nThe value of the Online Refund/Refund Authorization Indicator should be \u2018Y\u2019 for Visa, \nMasterCard, Amex, and Discover. \nWhen the Online Refund/Refund Authorization Indicator is included in a Merchandise Return \ntransaction, this indicator should also be included in the subsequent reversal/follow-up \ntransactions and Timeout reversals. \nStarting October, 2018, for certain merchants Visa will require a \u2018real-time\u2019 message using the \nAuthorization system, prior to an existing Settlement System Refund. Impacted merchants have \nalready been notified. All other merchants are expected to perform Visa online authorization \neffective April, 2020..  \nA \u2018real time\u2019 message (like an Authorization) will advise the issuer and/or cardholder that a \nrefund is pending. This will help to eliminate the delay between the merchant deciding to initiate \na Refund and the visible impact on the cardholder\u2019s account. \nIt is expected that an Online Refund/Refund Authorization will only be declined if the Issuer \ncannot be reached or the cardholder account is not valid; however declining transactions for any \nreason is subject to the Issuer\u2019s discretion. \n. \n ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "BR-2026-3-token-request",
+      "statement": "Apply the independently derived 2026-3 token-request profile in its declared scope.",
+      "claim": {
+        "subject": "Segment153.Tables",
+        "operator": "releaseTableProfile",
+        "profile": "ATL105-2026-3-153",
+        "modality": "must",
+        "conditions": {
+          "direction": "REQUEST"
+        }
+      },
+      "sourceEvidence": [
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 307,
+          "startLine": 16297,
+          "endLine": 16362,
+          "quote": "--- PAGE 307 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-93 \n12.38 Network Token Data Request Segment \nThis section describes Data Segment No. 153, Network Token Data Request Segment. \nThe Network Token Data Request Segment contains Network Token Data associated with this \ntransaction. This segment will potentially hold multiple sub-segments, each of which contains \ndifferent network token-related data. The sub-segments will be in the standard TLV format (sub-\nsegment type, sub-segment length, sub-segment value). \nThe following table illustrates the layout of the Network Token Data Request Segment: \n \nNetwork Token Data Request Format \nData Segment No. 153 \n \nField \nNo. \nElement \nNo. \nElemen\nt Name \n \nLen. \nEnt\nry \nis: \nR/O\n/C1 \n \nDescription \n1 85 Segme\nnt Type \n3 R Indicates the type of data segment being formatted \nFixed Value 153 \nSource: Device \n2 84 Segme\nnt \nLength \nIndicat\nor \n3 R Indicates the data segment length including the Segment Type \nlength \nSource: Device \n3 239 Networ\nk \nToken \nData \n999 R All or some of the Network Token sub-segment data is \nspecified below. Data is in <tag><len><data> format. \n1Required/Optional/Conditional \n \nNetwork Token Data Layouts \nNetwork Token \nField Attributes Description \nTable ID n3 Fixed value: 001 \nTable Length n3 Variable Value: 013-018 \nTable Data NA Network Token Data \n \nNetwork Token Data Layouts \nNetwork Token Expiration Date ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 308,
+          "startLine": 16363,
+          "endLine": 16400,
+          "quote": "--- PAGE 308 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-94 \nField Attributes Description \nTable ID n3 Fixed value: 002 \nTable Length n3 Fixed Value: 004 \nTable Data NA Network Token Expiration Date \n \nNetwork Token Data Layouts \nNetwork Token Provisional Fee Indicator \nField Attributes Description \nTable ID n3 Fixed value: 003 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Provisional Fee Indicator \n \nNetwork Token Data Layouts \nNetwork Token Input Indicator \nField Attributes Description \nTable ID n3 Fixed value: 004 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Input Indicator \n \nNetwork Token Data Layouts \nNetwork Token Eligible Indicator \nField Attributes Description \nTable ID n3 Fixed value: 005 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token Eligible Indicator \n \nNetwork Token Data Layouts \nNetwork Token PAN Indicator ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        },
+        {
+          "path": "docs/specs/extracted_text.txt",
+          "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+          "pdfPage": 309,
+          "startLine": 16401,
+          "endLine": 16415,
+          "quote": "--- PAGE 309 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-95 \nField Attributes Description \nTable ID n3 Fixed value: 006 \nTable Length n3 Fixed Value: 001 \nTable Data An200 Network Token PAN Indicator \n  ",
+          "scope": "PINNED_EXTRACTED_SOURCE_NOT_PDF_VISUAL_OR_APPROVAL"
+        }
+      ]
+    }
+  ],
+  "testScenarios": [
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TS-2026-3-sequence",
+      "requirementIds": [
+        "BR-2026-3-sequence"
+      ],
+      "intent": "Exercise source-supported positive, negative, boundary and missing-evidence partitions for sequence.",
+      "preconditions": [
+        "Synthetic scoped observations, not a valid full-message/host control"
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TS-2026-3-online-refund",
+      "requirementIds": [
+        "BR-2026-3-online-refund"
+      ],
+      "intent": "Exercise source-supported positive, negative, boundary and missing-evidence partitions for online-refund.",
+      "preconditions": [
+        "Synthetic scoped observations, not a valid full-message/host control"
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TS-2026-3-token-request",
+      "requirementIds": [
+        "BR-2026-3-token-request"
+      ],
+      "intent": "Exercise source-supported positive, negative, boundary and missing-evidence partitions for token-request.",
+      "preconditions": [
+        "Synthetic scoped observations, not a valid full-message/host control"
+      ]
+    }
+  ],
+  "testCases": [
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-MIN",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the MIN observation, run the independent sequence predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-MAX",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the MAX observation, run the independent sequence predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-ZERO",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the ZERO observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-SHORT",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SHORT observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-LONG",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the LONG observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-ALPHA",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the ALPHA observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-MISSING",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the MISSING observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-NUMERIC_TYPE",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the NUMERIC_TYPE observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-sequence-UNICODE",
+      "scenarioIds": [
+        "TS-2026-3-sequence"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the UNICODE observation, run the independent sequence predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-sequence",
+          "rule": "sequence",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-online-refund-VALID",
+      "scenarioIds": [
+        "TS-2026-3-online-refund"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the VALID observation, run the independent online-refund predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-online-refund",
+          "rule": "online-refund",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-online-refund-MISSING",
+      "scenarioIds": [
+        "TS-2026-3-online-refund"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the MISSING observation, run the independent online-refund predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-online-refund",
+          "rule": "online-refund",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-online-refund-WRONG_VALUE",
+      "scenarioIds": [
+        "TS-2026-3-online-refund"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the WRONG_VALUE observation, run the independent online-refund predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-online-refund",
+          "rule": "online-refund",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-online-refund-UNKNOWN_CONTEXT",
+      "scenarioIds": [
+        "TS-2026-3-online-refund"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the UNKNOWN_CONTEXT observation, run the independent online-refund predicate.",
+        "Then expect scoped result NOT_ASSESSED; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-online-refund",
+          "rule": "online-refund",
+          "observationId": "actual",
+          "expectedResult": "NOT_ASSESSED"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-VALID",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the VALID observation, run the independent token-request predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-SIZE12",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SIZE12 observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-SIZE13",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SIZE13 observation, run the independent token-request predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-SIZE18",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SIZE18 observation, run the independent token-request predicate.",
+        "Then expect scoped result PASS; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "PASS"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-SIZE19",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SIZE19 observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-SIZE20",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the SIZE20 observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-WRONG_LENGTH",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the WRONG_LENGTH observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-UNKNOWN_TAG",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the UNKNOWN_TAG observation, run the independent token-request predicate.",
+        "Then expect scoped result NOT_ASSESSED; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "NOT_ASSESSED"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-EMPTY",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the EMPTY observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TC-2026-3-token-request-NONASCII",
+      "scenarioIds": [
+        "TS-2026-3-token-request"
+      ],
+      "steps": [
+        "Given the declared 2026-3 source profile and observed synthetic context.",
+        "When assessing the NONASCII observation, run the independent token-request predicate.",
+        "Then expect scoped result FAIL; do not infer a host response."
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-2026-3-token-request",
+          "rule": "token-request",
+          "observationId": "actual",
+          "expectedResult": "FAIL"
+        }
+      ]
+    }
+  ],
+  "testData": [
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-MIN",
+      "testCaseIds": [
+        "TC-2026-3-sequence-MIN"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "000001"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-MAX",
+      "testCaseIds": [
+        "TC-2026-3-sequence-MAX"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "999999"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-ZERO",
+      "testCaseIds": [
+        "TC-2026-3-sequence-ZERO"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "000000"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-SHORT",
+      "testCaseIds": [
+        "TC-2026-3-sequence-SHORT"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "12345"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-LONG",
+      "testCaseIds": [
+        "TC-2026-3-sequence-LONG"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "1000000"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-ALPHA",
+      "testCaseIds": [
+        "TC-2026-3-sequence-ALPHA"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "12A456"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-MISSING",
+      "testCaseIds": [
+        "TC-2026-3-sequence-MISSING"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {}
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-NUMERIC_TYPE",
+      "testCaseIds": [
+        "TC-2026-3-sequence-NUMERIC_TYPE"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": 123456
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "sequence",
+          "section": "13.2",
+          "segment": "100",
+          "element": "86"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-sequence-UNICODE",
+      "testCaseIds": [
+        "TC-2026-3-sequence-UNICODE"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "sequenceNumber": "\uff11\uff12\uff13\uff14\uff15\uff16"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-online-refund-VALID",
+      "testCaseIds": [
+        "TC-2026-3-online-refund-VALID"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "merchantParticipating": true,
+            "onlineApprovalWanted": true,
+            "indicatorPresent": true,
+            "tableId": "032",
+            "subtableId": "11",
+            "length": "001",
+            "value": "Y"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-online-refund-MISSING",
+      "testCaseIds": [
+        "TC-2026-3-online-refund-MISSING"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "merchantParticipating": true,
+            "onlineApprovalWanted": true,
+            "indicatorPresent": false,
+            "tableId": "032",
+            "subtableId": "11",
+            "length": "001",
+            "value": "Y"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-online-refund-WRONG_VALUE",
+      "testCaseIds": [
+        "TC-2026-3-online-refund-WRONG_VALUE"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "merchantParticipating": true,
+            "onlineApprovalWanted": true,
+            "indicatorPresent": true,
+            "tableId": "032",
+            "subtableId": "11",
+            "length": "001",
+            "value": "N"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "online-refund",
+          "section": "Appendix X"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "RETURN",
+        "flowId": "SINGLE_STEP_RETURN",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-online-refund-UNKNOWN_CONTEXT",
+      "testCaseIds": [
+        "TC-2026-3-online-refund-UNKNOWN_CONTEXT"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "merchantParticipating": null,
+            "onlineApprovalWanted": true,
+            "indicatorPresent": true,
+            "tableId": "032",
+            "subtableId": "11",
+            "length": "001",
+            "value": "Y"
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-VALID",
+      "testCaseIds": [
+        "TC-2026-3-token-request-VALID"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "018",
+                "value": "888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-SIZE12",
+      "testCaseIds": [
+        "TC-2026-3-token-request-SIZE12"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "012",
+                "value": "888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-SIZE13",
+      "testCaseIds": [
+        "TC-2026-3-token-request-SIZE13"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "013",
+                "value": "8888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-SIZE18",
+      "testCaseIds": [
+        "TC-2026-3-token-request-SIZE18"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "018",
+                "value": "888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-SIZE19",
+      "testCaseIds": [
+        "TC-2026-3-token-request-SIZE19"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "019",
+                "value": "8888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-SIZE20",
+      "testCaseIds": [
+        "TC-2026-3-token-request-SIZE20"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "020",
+                "value": "88888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-WRONG_LENGTH",
+      "testCaseIds": [
+        "TC-2026-3-token-request-WRONG_LENGTH"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "001",
+                "value": "888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-UNKNOWN_TAG",
+      "testCaseIds": [
+        "TC-2026-3-token-request-UNKNOWN_TAG"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "999",
+                "length": "018",
+                "value": "888888888888888888"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-EMPTY",
+      "testCaseIds": [
+        "TC-2026-3-token-request-EMPTY"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": []
+          }
+        }
+      }
+    },
+    {
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "rule": "token-request",
+          "section": "12.38",
+          "segment": "153"
+        }
+      ],
+      "businessContext": {
+        "platform": "BUYPASS",
+        "specification": "ATL105",
+        "version": "2026-3",
+        "domain": "PAYMENT",
+        "cardProgram": "CREDIT",
+        "groupId": "MASTERCARD",
+        "network": "MASTERCARD",
+        "genericCategory": null,
+        "messageFamily": "STANDARD_FINANCIAL_REQUEST",
+        "direction": "REQUEST",
+        "transactionCategory": "SALE",
+        "flowId": "SINGLE_STEP_PURCHASE",
+        "lifecycleRole": "ORIGINAL",
+        "cardPresence": "PRESENT",
+        "entryMode": "CONTACT_CHIP",
+        "channel": "POS",
+        "eligibility": "REVIEW_REQUIRED"
+      },
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "id": "TD-2026-3-token-request-NONASCII",
+      "testCaseIds": [
+        "TC-2026-3-token-request-NONASCII"
+      ],
+      "readiness": "SCOPED_OBSERVATION_ONLY",
+      "payload": {
+        "observations": {
+          "actual": {
+            "segmentType": "153",
+            "tables": [
+              {
+                "id": "001",
+                "length": "018",
+                "value": "\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18\uff18"
+              },
+              {
+                "id": "002",
+                "length": "004",
+                "value": "3012"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Independent source-derived drafts, no semantic approval, full-message or host certification",
+    "Synthetic observations are not authenticated service/history or physical capture evidence"
+  ]
+}

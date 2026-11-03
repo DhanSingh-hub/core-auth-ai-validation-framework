@@ -1,0 +1,77 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-APPENDIX-D-STATE-CODE-USE-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-037A3E4CB847",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:2387",
+  "aiStatement": "Alphabetical State Codes are used in Address Line 2, Card Discretionary Block Data, and State Code elements.",
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_SOURCE_USES",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE_NO_VALUES_OBSERVED",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-APPENDIX-D-ALPHA-STATE-USES", "ATL105-2026-3-DL1-E4-STATE-POSITIONS", "ATL105-2026-3-DL1-E4-LAYOUT"],
+    "facts": [
+      "Appendix D identifies alphabetical State Codes for Address Line 2 (Element 4), Card Discretionary Block Data (Element 12), and State Code (Element 124).",
+      "ANSI State Codes are separately used for Terminal Identifier (Element 102); that use must not be conflated with the alphabetical code claim.",
+      "DL1 Address Line 2 has a fixed 21-character layout with its alphabetical state code at positions 14-15."
+    ]
+  },
+  "independentTestModel": {
+    "addressLine2Rule": {
+      "testBrId": "BR-RULE-SEGDL1-R-010",
+      "scenario": "TS-REVIEW-BR-RULE-SEGDL1-R-010",
+      "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-010",
+      "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-010",
+      "status": "REVIEW_REQUIRED",
+      "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]
+    },
+    "appendixDCodeSetRule": {
+      "testBrId": "BR-SEG100-APPD-ALPHA-STATE",
+      "status": "PARTIALLY_COVERED",
+      "coveredContext": "Segment 110 Element 124",
+      "testCases": ["TC-SEG100-APPD-ALPHA-VALID", "TC-SEG100-APPD-ALPHA-INVALID"],
+      "reusedTestData": ["TD-SEG100-APPD-ALPHA-US-CA", "TD-SEG100-APPD-ALPHA-UNLISTED-ZZ"],
+      "coverageNote": "The canonical Test model states Element 124 is exhaustively checked against Appendix D, while Card Discretionary Block Data Element 12 remains outside that validator. This coverage is not promoted to the AI claim as a whole."
+    }
+  },
+  "aiCaseReview": {
+    "caseCount": 5,
+    "caseIds": ["TC-010489", "TC-010490", "TC-010491", "TC-010492", "TC-010493"],
+    "transactionContexts": ["ECA/TeleCheck Service Transaction", "ECA/TeleCheck Service Transaction Request", "EMV Financial Transaction Request", "EMV Request Transaction", "Financial Transaction Request"],
+    "fieldObservations": [
+      {"caseId": "TC-010489", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element124": "DECLARED_OMISSION_NO_EXACT_FIELD", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010490", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element124": "DECLARED_OMISSION_NO_EXACT_FIELD", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010491", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element124": "NO_EXACT_OBSERVATION", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010492", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element124": "NO_EXACT_OBSERVATION", "element4": "NO_EXACT_OBSERVATION"},
+      {"caseId": "TC-010493", "element12": "DECLARED_OMISSION_NO_EXACT_FIELD", "element124": "DECLARED_OMISSION_NO_EXACT_FIELD", "element4": "NO_EXACT_OBSERVATION"}
+    ],
+    "assessment": "The cases contain field-name references but no exact State Code values in the claimed contexts. None is a DL1 Table Load Response case exercising Address Line 2 Element 4, and no Card Discretionary or State Code value is observed in these candidate payloads."
+  },
+  "supplementalDraft": {
+    "path": "dl1-address-line-2-state-code-test-chain-package-v1.json",
+    "scope": "DL1 Element 4 positions 14-15 only; references existing Appendix D code-set vectors for CA/ZZ",
+    "scenarioCount": 1,
+    "caseCount": 2,
+    "testDataDesignCount": 2,
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Authorized DL1 Table Load Response fixtures with BUYPASS-assigned city and ZIP values and exact 21-character Address Line 2 rendering.",
+    "Full payload and sidecar review for the five AI cases; none currently provides exact values for Elements 4, 12, or 124.",
+    "Independent Test detail for Card Discretionary Block Data Element 12's source-defined placement and State Code usage.",
+    "Separate review of Element 124's conditional presence with Drivers License and the exact Appendix D code-set expectation."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

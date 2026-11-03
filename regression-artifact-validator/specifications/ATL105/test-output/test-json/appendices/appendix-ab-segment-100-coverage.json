@@ -1,26 +1,81 @@
 {
-  "appendix": "AB",
-  "title": "Purchase Repayment",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to installment payments submitted by a third-party installment provider or payment facilitator (Buy-Now-Pay-Later / post-purchase repayment) for Visa and MasterCard Segment 100 transactions.",
-  "source": "docs/specs/extracted_text.txt Appendix AB-1; cross-referenced at Appendix I-42 and Appendix K-25",
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPAB-VALUE-SCOPE","title":"The Consumer Bill Payment/Purchase Repayment indicator value 'CB' shall be used only for Visa transactions, and value 'IR' shall be used only for MasterCard transactions.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-brand-scope"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","title":"For MasterCard Purchase Repayment transactions, the merchant shall submit the Installment Payment Indicator value 'I' in Segment 111 Table ID 013 (Special Payments Indicator Information).","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-mastercard-installment-indicator"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","title":"For MasterCard Purchase Repayment transactions, the merchant shall submit the Merchant Name in Segment 111 Table ID 047 (Soft Descriptor) in the format 'Installment Provider name*Merchant name'.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-mastercard-merchant-name"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAB-ADVICE-CODE","title":"A decline for a merchant not registered for the Purchase Repayment program shall return Merchant Advice Code 22 ('Merchant does not qualify for product code') when the merchant sent the Merchant Advice Code acceptance indicator (Table ID 049 Sub Table 07 = 'Y').","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB","segment":"111","element":"113","rule":"purchase-repayment-advice-code-22"},"status":"REVIEW_REQUIRED"}
+  "appendix":"AB",
+  "title":"Purchase Repayment",
+  "specification":"ATL105",
+  "specificationVersion":"2026-3",
+  "applicability":"Logical installment/third-party definition and explicitly documented MasterCard companion fields. Not a blanket network eligibility or wire certification contract.",
+  "source":"Appendix AB-1; Appendix I-9/I-10 Table 013, I-39 Table 047, I-41/I-42 Table 049 sub-table 04, I-44 sub-table 07; Appendix K-24/K-25 Table 030",
+  "sourceNotes":[
+    "Appendix AB defines installment payments submitted by third-party installment providers or payment facilitators. Third-party providers differ from the retailer. Use cases include post-purchase and third-party BNPL.",
+    "Table 049 sub-table 04 has ID 04, length 2, values CB Consumer Bill Payment (Visa-only) and IR Purchase Repayment (MasterCard-only). CB must not be relabeled as Visa Purchase Repayment.",
+    "MasterCard Purchase Repayment requires Table 013 I and Table 047 Installment Provider name*Merchant name, for example XYZ*A SMALL CO. Table 013 data length is 1; Table 047 allows up to 38 bytes.",
+    "Table 049 sub-table 07 has ID 07, length 1 and only listed value Y, indicating the merchant opts to receive advice.",
+    "Segment 112 Table 030 has ID 030, length 002, two alphanumeric advice-code bytes. It is currently MasterCard-only and supplied by the authorizer.",
+    "With acceptance Y, an authorizer decline because a merchant is not registered for Purchase Repayment returns 22. Without acceptance, advice is not returned; no enrollment conclusion is inferred from a code alone.",
+    "Merchants must not retry after advice 03, 21 or 22. MasterCard can introduce new advice codes; unknown structurally valid codes are review-gated, not rejected by a frozen allowlist.",
+    "No MCC, amount, installment-count, timing or comprehensive brand eligibility matrix is defined by Appendix AB. Discover third-party installment rules belong to Appendix Z/I and are not replaced by the MasterCard IR profile."
   ],
-  "testScenarios": [
-    {"id":"TS-SEG100-APPAB-SCOPE","covers":["BR-SEG100-APPAB-VALUE-SCOPE"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPAB-MASTERCARD","covers":["BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPAB-ADVICE","covers":["BR-SEG100-APPAB-ADVICE-CODE"],"status":"REVIEW_REQUIRED"}
+  "businessRequirements":[
+    {"id":"BR-SEG100-APPAB-DEFINITION","title":"Installment repayments are submitted by third-party providers distinct from the retailer or by payment facilitators; includes post-purchase and third-party BNPL.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB-1","rule":"purchase-repayment-definition"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-VALUE-SCOPE","title":"CB is Visa Consumer Bill Payment; IR is MasterCard Purchase Repayment. Do not invent mappings for other brands.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-41,I-42","segment":"111","tableId":"049","subTableId":"04","rule":"purchase-repayment-brand-scope"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","title":"MasterCard Purchase Repayment must submit I in Table 013.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-9,I-10,I-42","segment":"111","tableId":"013","rule":"purchase-repayment-mastercard-installment-indicator"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","title":"MasterCard repayment descriptor is provider name*retailer name, up to 38 bytes, with evidence for both identities.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-39,I-42","segment":"111","tableId":"047","rule":"purchase-repayment-mastercard-merchant-name"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-ADVICE-CODE","title":"MasterCard opt-in Y gates advice; unregistered repayment decline returns 22. Table 030 has two alphanumeric bytes.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-44,Appendix K-24,K-25","segment":"111,112","tableId":"049,030","rule":"purchase-repayment-advice-code-22"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-NO-RETRY","title":"Do not retry after advice 03, 21 or 22; do not assume other/future codes are retryable.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix K-24,K-25","segment":"112","tableId":"030","rule":"purchase-repayment-no-retry"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAB-EXTERNAL-EVIDENCE","title":"Third-party identity, registration, authorizer outcome, actual retry behavior, full messages and AI artifacts require independent external evidence.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AB-1,Appendix K-25","rule":"purchase-repayment-external-evidence"},"status":"REVIEW_REQUIRED"}
   ],
-  "testCases": [
-    {"id":"TC-SEG100-APPAB-SCOPE","scenarioId":"TS-SEG100-APPAB-SCOPE","positive":"'CB' sent only on Visa; 'IR' sent only on MasterCard","negative":["'CB' sent on MasterCard","'IR' sent on Visa"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPAB-MASTERCARD","scenarioId":"TS-SEG100-APPAB-MASTERCARD","positive":"Table ID 013 = 'I' with correctly formatted Table ID 047 merchant name","negative":["Missing installment indicator","wrong merchant-name format missing asterisk separator"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPAB-ADVICE","scenarioId":"TS-SEG100-APPAB-ADVICE","positive":"Unregistered merchant with acceptance indicator 'Y' receives Advice Code 22","negative":["Advice Code returned without acceptance indicator sent","wrong advice code for unregistered merchant"],"status":"REVIEW_REQUIRED"}
+  "testScenarios":[
+    {"id":"TS-SEG100-APPAB-DEFINITION","covers":["BR-SEG100-APPAB-DEFINITION","BR-SEG100-APPAB-EXTERNAL-EVIDENCE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAB-SCOPE","covers":["BR-SEG100-APPAB-VALUE-SCOPE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAB-MASTERCARD","covers":["BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAB-ADVICE","covers":["BR-SEG100-APPAB-ADVICE-CODE","BR-SEG100-APPAB-NO-RETRY"],"status":"PARTIALLY_COVERED"}
   ],
-  "testDataStatus": "No dedicated Purchase Repayment AI artifact or third-party installment-provider fixture is currently available.",
-  "remaining": ["Obtain AI-generated Purchase Repayment request/response artifacts for Visa 'CB' and MasterCard 'IR' scenarios.","Confirm program-registration configuration source referenced by the Merchant Advice Code 22 rule."]
+  "testCases":[
+    {"id":"TC-SEG100-APPAB-DEFINITION","scenarioId":"TS-SEG100-APPAB-DEFINITION","positive":"Installment third-party distinct from retailer or payment facilitator","negative":["not installment","provider is retailer","neither submitter type"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAB-SCOPE","scenarioId":"TS-SEG100-APPAB-SCOPE","positive":"MasterCard IR and Visa CB consumer bill payment","negative":["cross-brand CB/IR","missing MasterCard IR","unknown indicator"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAB-MASTERCARD","scenarioId":"TS-SEG100-APPAB-MASTERCARD","positive":"Table 013 I; provider*retailer descriptor and exact 38-byte boundary","negative":["missing/wrong installment flag","missing separator/name","39 bytes","reversed names"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAB-ADVICE","scenarioId":"TS-SEG100-APPAB-ADVICE","positive":"Opt-in unregistered decline returns 22 and is not retried","negative":["advice without opt-in","non-MasterCard advice","missing/wrong 22","retry after 03/21/22"],"status":"PARTIALLY_COVERED"}
+  ],
+  "fixtureDefaults":{
+    "brand":"MASTERCARD","purchaseRepayment":true,"installment":true,
+    "thirdPartyProvider":true,"paymentFacilitator":false,"providerDistinctFromRetailer":true,
+    "businessPaymentType":"IR","installmentIndicator":"I",
+    "merchantName":"XYZ*A SMALL CO","providerName":"XYZ","retailerName":"A SMALL CO",
+    "adviceAcceptance":"Y","responseObserved":true,"declined":true,"programRegistered":false,
+    "merchantAdviceCode":"22","retryAttempted":false
+  },
+  "testData":[
+    {"id":"TD-SEG100-APPAB-01","coversBr":"BR-SEG100-APPAB-DEFINITION","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-DEFINITION","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-02","coversBr":"BR-SEG100-APPAB-DEFINITION","payload":{"installment":false},"expected":{"businessRequirementId":"BR-SEG100-APPAB-DEFINITION","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-03","coversBr":"BR-SEG100-APPAB-DEFINITION","payload":{"providerDistinctFromRetailer":false},"expected":{"businessRequirementId":"BR-SEG100-APPAB-DEFINITION","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-04","coversBr":"BR-SEG100-APPAB-DEFINITION","payload":{"thirdPartyProvider":false,"paymentFacilitator":true,"providerDistinctFromRetailer":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-DEFINITION","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-05","coversBr":"BR-SEG100-APPAB-VALUE-SCOPE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-VALUE-SCOPE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-06","coversBr":"BR-SEG100-APPAB-VALUE-SCOPE","payload":{"brand":"VISA","purchaseRepayment":false,"businessPaymentType":"CB"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-VALUE-SCOPE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-07","coversBr":"BR-SEG100-APPAB-VALUE-SCOPE","payload":{"brand":"VISA"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-VALUE-SCOPE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-08","coversBr":"BR-SEG100-APPAB-VALUE-SCOPE","payload":{"businessPaymentType":"CB"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-VALUE-SCOPE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-09","coversBr":"BR-SEG100-APPAB-VALUE-SCOPE","payload":{"brand":"VISA","businessPaymentType":"CB"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-VALUE-SCOPE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-10","coversBr":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-11","coversBr":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","payload":{"installmentIndicator":"R"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-INSTALLMENT-INDICATOR","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-12","coversBr":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-13","coversBr":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","payload":{"merchantName":"XYZ A SMALL CO"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-14","coversBr":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","payload":{"merchantName":"A SMALL CO*XYZ"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-15","coversBr":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","payload":{"providerName":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-MASTERCARD-MERCHANT-NAME","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-16","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-17","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{"merchantAdviceCode":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-18","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{"adviceAcceptance":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-19","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{"adviceAcceptance":null,"merchantAdviceCode":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-20","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{"programRegistered":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-21","coversBr":"BR-SEG100-APPAB-ADVICE-CODE","payload":{"programRegistered":true,"merchantAdviceCode":"ZZ"},"expected":{"businessRequirementId":"BR-SEG100-APPAB-ADVICE-CODE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-22","coversBr":"BR-SEG100-APPAB-NO-RETRY","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-NO-RETRY","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-23","coversBr":"BR-SEG100-APPAB-NO-RETRY","payload":{"retryAttempted":true},"expected":{"businessRequirementId":"BR-SEG100-APPAB-NO-RETRY","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-24","coversBr":"BR-SEG100-APPAB-NO-RETRY","payload":{"retryAttempted":null},"expected":{"businessRequirementId":"BR-SEG100-APPAB-NO-RETRY","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAB-25","coversBr":"BR-SEG100-APPAB-EXTERNAL-EVIDENCE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAB-EXTERNAL-EVIDENCE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"}
+  ],
+  "testDataReadinessSummary":{"total":25,"executable":25,"externalFixtureRequired":0,"reviewRequired":0,"note":"Synthetic logical fixtures; executable review outcomes test gates, not resolved external behavior."},
+  "remaining":[
+    "Obtain independent provider/retailer identity, payment-facilitator role and Purchase Repayment registration evidence.",
+    "Obtain real authorizer request/response and retry-behavior evidence, plus AI-generated artifacts.",
+    "Full Segment 111/112 wire envelopes, table ordering and lifecycle parsing remain separate contracts; this oracle consumes parsed logical fields.",
+    "Non-ASCII descriptor byte encoding, other/future advice semantics and non-MasterCard repayment mappings remain reviewed. No invented MCC, amount or installment-count rules."
+  ]
 }

@@ -1,0 +1,79 @@
+{
+  "sampleId": "S05",
+  "sampleType": "single-leg",
+  "legCount": 1,
+  "source": {
+    "runFolder": "181026 Run",
+    "specId": "SRC-ATL105-PDF-001",
+    "specVersion": "2026-3",
+    "generatedAt": "2026-10-18T18:28:12.926647+00:00",
+    "requirementArtifact": "Requirement candidates/requirement_candidates.json",
+    "scenarioArtifact": "scenarios/scenarios/approved/approved_scenarios.json",
+    "testCaseArtifact": "test_case_candidates.json",
+    "matrixArtifact": "traceability_matrix_full.json",
+    "testDataDirectory": "qe_shaped_test_data/qe_shaped_test_data"
+  },
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:005"
+    ],
+    "scenarioIds": [
+      "SC-0752"
+    ],
+    "testCaseId": "TC-000680",
+    "flowId": null,
+    "transactionType": "POS Purchase/Capture (0; completion context not established)",
+    "messageFormatType": "EMV Financial Transaction Request",
+    "promptCode": "0020",
+    "transactionTypeCode": "0",
+    "verificationStatus": [
+      "PASS"
+    ],
+    "matrixTraceStatuses": [
+      "FULLY_TRACED"
+    ],
+    "allRequirementsPresent": true,
+    "scenarioPresent": true,
+    "testCasePresent": true,
+    "allDataLegsPresent": true,
+    "links": [
+      {
+        "businessRequirement": {
+          "id": "REQ-SRC-ATL105-PDF-001:005",
+          "file": "requirements/REQ-0005.json",
+          "statement": "Approval Number must be alphanumeric and must not exceed 6 bytes.",
+          "sourceRuleId": "ENT-ELEM-5",
+          "sourcePage": 361,
+          "traceStatus": "FULLY_TRACED"
+        },
+        "scenario": {
+          "id": "SC-0752",
+          "file": "scenarios/SC-0752.json",
+          "name": "Negative — EMV Financial Transaction Request — Approval Number violates: value exceeds documented max length (7 bytes, limit is 6)",
+          "chainSide": "request",
+          "linkBasis": "direct",
+          "flowId": null
+        },
+        "testCase": {
+          "id": "TC-000680",
+          "file": "test_cases/TC-000680.json",
+          "transactionType": "POS Purchase/Capture (Prompt Code 0; may also represent preauthorized completion; the one-leg data does not establish completion context)",
+          "sourceMessageFormatType": "EMV Financial Transaction Request",
+          "verificationStatus": "PASS"
+        },
+        "testData": [
+          {
+            "file": "test_data/TD-TC-000680.json",
+            "sourceFile": "qe_shaped_test_data/TD-TC-000680.json",
+            "sourceSha256": "5238fe5339690c64310e4d516ca1c5fe4783ecb885277de9ecaf6e9fedae9b78",
+            "demoSha256": "a63999beb73167af7c294e3499f5aa925e3d2d4ef1ca0495b9e5e23357ba936d"
+          }
+        ]
+      }
+    ]
+  },
+  "dataSanitization": {
+    "applied": true,
+    "notice": "Sensitive-looking values in copied records are masked with X characters while preserving string length. The copy is not an executable fixture."
+  }
+}

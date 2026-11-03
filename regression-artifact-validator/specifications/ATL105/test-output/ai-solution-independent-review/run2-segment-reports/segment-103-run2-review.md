@@ -3,14 +3,24 @@
 - Composite delivery: `2026-09-23/Run1+Run2`
 - Decision: **REVIEW_REQUIRED**
 - Version resolution: `ATL105-RUN2-SPEC-VERSION-RESOLUTION-001`
-- Confirmed BR coverage: **45.8%**
-- Full-chain coverage: **37.5%**
+- Confirmed independent-rule coverage: **45.8%**
+- Full-chain independent-rule coverage: **37.5%**
 
-## Coverage
+## Independent Test Solution Rule Coverage
 
-| Denominator | Confirmed | Review required | Missing | Unmatched AI | Full chain |
-|---:|---:|---:|---:|---:|---:|
-|24|11|9|4|77|9|
+Denominator type: **independent Test Solution in-scope rules**; structurally valid: **true**; certification: **NOT_ESTABLISHED_BY_STRUCTURAL_ASSESSMENT**.
+
+| Rule denominator | Confirmed rules | Review required | Missing rules | Full-chain rules |
+|---:|---:|---:|---:|---:|
+|24|11|9|4|9|
+
+## AI Business-Requirement Mapping
+
+This denominator is the AI BR inventory, not the independent Test Solution rule catalog. `Unmapped` means no crosswalk disposition; it is not a confirmed AI-only classification.
+
+| AI BR inventory | With crosswalk disposition | Confirmed AI BRs | Review required | Missing mapping | Unmapped | Confirmed / AI BR inventory |
+|---:|---:|---:|---:|---:|---:|---:|
+|208|131|93|38|0|77|44.7%|
 
 ## Artifact chain
 

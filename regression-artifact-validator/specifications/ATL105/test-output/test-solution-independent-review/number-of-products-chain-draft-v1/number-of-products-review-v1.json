@@ -1,0 +1,61 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-NUMBER-OF-PRODUCTS-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-068A8E809F60",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:6076",
+  "aiStatement": "Number of Products: Identifies the count of products reported for a transaction.",
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_ELEMENT62_PURPOSE",
+    "chainAdequacy": "PARTIAL_CANDIDATE_COUNT_OBSERVATIONS",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-E62-DEFINITION", "ATL105-2026-3-SEG102-E62", "ATL105-2026-3-SEG143-E62-MATCH", "ATL105-2026-3-SEG157-E62"],
+    "facts": [
+      "Element 62 is numeric, fixed length two digits, zero-padded for single digits, and has valid values 01-10.",
+      "Segment 102 and Segment 157 each have a required local Number of Products field preceding repeated product entries.",
+      "Segment 143 Element 62 is required and should match the number of products from the Product Code Data Segment (Segment 102)."
+    ],
+    "scopeNote": "Do not collapse Segment 102 local count, Segment 143 cross-segment count, and Segment 157 local count into one rule merely because they share Element 62."
+  },
+  "independentTestModel": {
+    "segment102LocalCount": {"testBrId": "BR-RULE-SEG102-R-004", "status": "DRAFT_REVIEW_REQUIRED", "scenario": "TS-REVIEW-BR-RULE-SEG102-R-004", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-004", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-004"},
+    "segment102EntryConsistency": {"testBrId": "BR-RULE-SEG102-R-005", "status": "DRAFT_REVIEW_REQUIRED", "scenario": "TS-REVIEW-BR-RULE-SEG102-R-005", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-005", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-005"},
+    "segment143CrossSegment": {"testBrId": "BR-RULE-SEG143-R-004", "status": "DRAFT_REVIEW_REQUIRED", "scenario": "TS-REVIEW-BR-RULE-SEG143-R-004", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG143-R-004", "data": "TD-REVIEW-TC-REVIEW-BR-RULE-SEG143-R-004"},
+    "segment157Composite": {"testBrId": "BR-RULE-SEG157-R-009", "status": "DRAFT_REVIEW_REQUIRED", "scenario": "TS-REVIEW-BR-RULE-SEG157-R-009", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-009", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-009", "scopeNote": "Composite chain; draft addresses only its Number of Products component."}
+  },
+  "aiCaseReview": {
+    "cases": [
+      {"caseId": "TC-019781", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "segment143Count": "01", "payloadSha256": "e0ad08816ab94134ea59c21ec73dcd47e9889a977c2c8beab42b0b6223ace9d1"},
+      {"caseId": "TC-019782", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "payloadSha256": "9e027e14ad8e1592535032682e6d641cb1f5457cd5de040969196aede72fed83"},
+      {"caseId": "TC-019783", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "payloadSha256": "660e0654151f8f0459dbc9a6e98b68ae909fb66eab9ac782d18bd7aa4bfe0690"},
+      {"caseId": "TC-019784", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "segment143Count": "01", "payloadSha256": "25171d1000de897a8b6cda28c8c02d94b77bce48c68ded352d1afbd1dce587df"}
+    ],
+    "assessment": "All four candidate payloads have Element 62 = 01 in Segment 102 and one observed Product Code entry. Two additionally have Segment 143 Element 62 = 01. No Segment 157 Element 62 is observed. These are bounded producer payload observations; product entry completeness and actual count semantics are not independently validated."
+  },
+  "supplementalDraft": {
+    "path": "number-of-products-test-chain-package-v1.json",
+    "scenarioCount": 3,
+    "caseCount": 5,
+    "testDataDesignCount": 5,
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Complete product-entry fixture and independent entry count for Segment 102 and Segment 157 local-count tests.",
+    "Paired Segment 102 and Segment 143 response/request fixture proving cross-segment count matching in the applicable context.",
+    "Full payload and sidecar semantic review for TC-019781 through TC-019784.",
+    "Authorized Test-owner review and execution evidence before any Test chain is promoted."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

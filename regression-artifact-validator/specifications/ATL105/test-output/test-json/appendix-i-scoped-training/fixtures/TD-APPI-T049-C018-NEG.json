@@ -1,0 +1,98 @@
+{
+  "id" : "TD-APPI-T049-C018-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C018-NEG.json",
+  "testCaseIds" : [ "TC-APPI-T049-C018-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-47",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r032-APPI-T049-C018"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C018",
+        "tableId" : "049",
+        "nestedSelector" : "18",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R032" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-47",
+          "startLine" : 29695,
+          "endLine" : 29719
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "18",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "0", "1", "2", "3" ],
+          "baselinePositiveData" : "4",
+          "negativeLogicalFields" : {
+            "data" : "4"
+          },
+          "preconditionsByData" : {
+            "0" : {
+              "chipRestrictionsSupported" : false,
+              "hostRestrictionsSupported" : false
+            },
+            "1" : {
+              "chipRestrictionsSupported" : true,
+              "hostRestrictionsSupported" : false
+            },
+            "2" : {
+              "chipRestrictionsSupported" : false,
+              "hostRestrictionsSupported" : true
+            },
+            "3" : {
+              "chipRestrictionsSupported" : true,
+              "hostRestrictionsSupported" : true
+            }
+          }
+        },
+        "clearScope" : "Only nested049/18 fixed length, four codes and declared capability meanings. No network or wire applicability asserted.",
+        "excludedClaims" : [ "Visa/non-MC applicability conflict resolved", "MCF/MGF complete transactions", "June2026 production enablement", "Top-level018 identity", "Segment length018/019" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "restriction-method-in-0-1-2-3",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "method-matches-logical-capabilities",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "restriction-method-in-0-1-2-3",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ],
+          "gated" : [ {
+            "predicate" : "network-acquirer-applicability",
+            "outcome" : "REVIEW_REQUIRED"
+          }, {
+            "predicate" : "production-availability",
+            "outcome" : "REVIEW_REQUIRED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "2",
+          "to" : "4",
+          "targetPredicate" : "restriction-method-in-0-1-2-3"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

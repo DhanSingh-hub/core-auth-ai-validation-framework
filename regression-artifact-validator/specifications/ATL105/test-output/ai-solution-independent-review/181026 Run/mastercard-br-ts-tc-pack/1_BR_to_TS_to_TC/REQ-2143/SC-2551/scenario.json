@@ -1,0 +1,150 @@
+{
+  "name": "Flow — Loyalty Sale followed by Reversal (Financial Transaction Request → Purchase Reversal) [maximal-multi-brand]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Point-of-Service Entry Mode": "82",
+    "Terminal PIN Entry Capability": "2"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        1,
+        2
+      ],
+      "table_data_length": 3,
+      "axis": "entry_mode",
+      "value": "82",
+      "parameter": "Point-of-Service Entry Mode"
+    },
+    {
+      "segment": "111",
+      "table_id": "005",
+      "table_entity": "ENT-TABLE-I-005",
+      "source_pages": [
+        548
+      ],
+      "positions": [
+        3,
+        3
+      ],
+      "table_data_length": 3,
+      "axis": "pin_entry_capability",
+      "value": "2",
+      "parameter": "Terminal PIN Entry Capability"
+    }
+  ],
+  "flow_id": "FLOW-LOYALTY-SALE-REVERSAL",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "sale",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      }
+    },
+    {
+      "step": 2,
+      "role": "reversal",
+      "transaction": "Purchase Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "8"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Unit of Work",
+          "source_rule_id": "BR-444-2",
+          "source_page": 444,
+          "rule": "Required on loyalty reversals for matching information to the original purchase. Appears in Loyalty Card Data Segment (Segment No. 108).",
+          "spec_anchor": {
+            "keywords": [
+              "required on loyalty reversals",
+              "matching information to the original purchase"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-444-2",
+  "source_page": 444,
+  "business_rule_assertion": "Required on loyalty reversals for matching information to the original purchase. Appears in Loyalty Card Data Segment (Segment No. 108).",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "0b6fa4c83f7a79306e31535cf4f8f34a83e95024e7408dcf7d345c1aca0c56c1",
+  "dedup_key": "a18a045bd9665f50468ca9845e0e6ccd8a04bae4977423f96019f0fb420b0ec6",
+  "inclusion_profile": "maximal",
+  "flow_variant_id": "maximal-multi-brand",
+  "flow_variant_name": "Maximal profile across card brands",
+  "flow_axis_values": {
+    "card_brand": "MC",
+    "entry_mode": "82",
+    "field_profile": "maximal",
+    "pin_entry_capability": "2"
+  },
+  "flow_axis_provenance": {
+    "card_brand": {
+      "source": "test_axes",
+      "applied_as": "card_profile"
+    },
+    "entry_mode": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Point-of-Service Entry Mode"
+    },
+    "field_profile": {
+      "source": "field_inclusion_profiles",
+      "applied_as": "inclusion_profile"
+    },
+    "pin_entry_capability": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Terminal PIN Entry Capability"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:2143",
+      "rule_id": "BR-444-2",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Unit of Work",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:2143"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2551",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

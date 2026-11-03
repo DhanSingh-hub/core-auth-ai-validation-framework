@@ -1,0 +1,308 @@
+{
+  "id" : "TD-APPI-C060-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C060-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C060-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-65",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t060-r001-APPI-C060-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C060-OUTER-001",
+        "tableId" : "060",
+        "ruleIds" : [ "APPI-T060-R001", "APPI-T060-R002", "APPI-T060-R003", "APPI-T060-R004", "APPI-T060-R005", "APPI-T060-R006", "APPI-T060-R007", "APPI-T060-R008" ],
+        "syntheticData" : {
+          "tableSelector" : "060",
+          "logicalPayloadLength" : 5,
+          "records" : [ {
+            "selector" : "01",
+            "logicalLength" : 1,
+            "value" : "Y"
+          }, {
+            "selector" : "02",
+            "logicalLength" : 1,
+            "value" : "O"
+          } ],
+          "logicalRecordObservation" : "0101Y",
+          "context" : {
+            "cardBrand" : "Visa",
+            "cardPresence" : "not present",
+            "transactionType" : "Auth",
+            "paymentContext" : "recurring",
+            "participatingAcquirer" : true,
+            "merchantRegisteredAndCertifiedSyntheticPrecondition" : true,
+            "optimizerQualified" : true,
+            "optimizerUsed" : true,
+            "updatesAvailable" : true
+          },
+          "sanitizedCredentials" : {
+            "fixtureScope" : "Independent credential-tuple example; not credentials inferred from responseLogicalRecords, whose E status describes an expiry-only response variant",
+            "retryInitialAttempt" : {
+              "accountAlias" : "PAN-B",
+              "expiry" : "2907"
+            },
+            "original" : {
+              "accountAlias" : "PAN-A",
+              "expiry" : "2807"
+            },
+            "updated" : {
+              "accountAlias" : "PAN-B",
+              "expiry" : "2907"
+            },
+            "followOn" : {
+              "accountAlias" : "PAN-B",
+              "expiry" : "2907"
+            },
+            "retry" : {
+              "accountAlias" : "PAN-B",
+              "expiry" : "2907"
+            }
+          },
+          "responseLogicalRecords" : [ {
+            "selector" : "003",
+            "logicalLength" : 4,
+            "expiryYymm" : "2907"
+          }, {
+            "selector" : "004",
+            "logicalLength" : 1,
+            "status" : "E"
+          } ],
+          "visaResultVariant" : {
+            "election" : "I",
+            "requestExpiryLaterThanUpdater" : true,
+            "resultCode" : "VAU013"
+          },
+          "overrideVariant" : {
+            "selector" : "02",
+            "value" : "O",
+            "optimizerInvoked" : false,
+            "record01Absent" : true
+          }
+        },
+        "clearScope" : "Only01or02;Visa/MC CNPAuthSaleRefund;participation isexplicit syntheticprecondition;Yfull/Iindicator gates;follow-onexpiry tuples/retries;155expiryYYMM,status/resultcode conditions.",
+        "excludedClaims" : [ "Actual PAN/token values", "Certification proof", "NewPAN withoutcorrespondingexpiry policy", "ADtrigger versusoverride resolution", "155/005 width3versus4", "Automatic optimizereligibility", "Full155serialization" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Single applicable indicator andlogicalcount5",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Participation/CNP/type prerequisites",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Yfullupdate andIindicator-only",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Follow-on matchingtuple andretryidentity",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Override preventsoptimization",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "155expiryformatYYMM,statusE,VAU013context",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Conflictedwidth/default/partialupdate",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "records",
+            "operation" : "append",
+            "value" : {
+              "selector" : "02",
+              "logicalLength" : 1,
+              "value" : "O"
+            },
+            "expected" : "FAIL mutualexclusion"
+          }, {
+            "path" : "context.cardPresence",
+            "replacement" : "present",
+            "expected" : "FAIL CNPscope"
+          }, {
+            "path" : "context.participatingAcquirer",
+            "replacement" : false,
+            "expected" : "FAIL ADparticipationprerequisite"
+          }, {
+            "path" : "records[0].value",
+            "replacement" : "I",
+            "expected" : "FAIL unchanged responsefull-expiry gating"
+          }, {
+            "path" : "sanitizedCredentials.followOn.expiry",
+            "replacement" : "2807",
+            "expected" : "FAIL fixture-explicit PAN-B/2907tuple"
+          }, {
+            "path" : "sanitizedCredentials.retry.accountAlias",
+            "replacement" : "PAN-A",
+            "expected" : "FAIL retryinitial-attemptcredentials"
+          }, {
+            "path" : "overrideVariant.optimizerInvoked",
+            "replacement" : true,
+            "expected" : "FAIL explicitoverrideeffect"
+          }, {
+            "path" : "visaResultVariant.resultCode",
+            "replacement" : "VAU015",
+            "expected" : "FAIL undefinedresultcode"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 4,
+            "expected" : "FAIL observedfive-byte recordcount"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "definedRequestSelectors" : [ "01", "02" ],
+          "allocatedButUndefinedSelectors" : "03-25",
+          "declaredMaximumPayload" : 100,
+          "oneOverMaximum" : 101,
+          "expiryFormatObservation" : "2907 meansJuly2029,notMMYY",
+          "resultsListed" : [ "VAU001", "VAU002", "VAU003", "VAU004", "VAU005", "VAU006", "VAU007", "VAU008", "VAU009", "VAU010", "VAU011", "VAU012", "VAU013", "VAU014", "VAU016" ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30848,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "startLine" : 30856,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30917,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "startLine" : 30893,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30914
+        }, {
+          "startLine" : 30932,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "section" : "Appendix I-65",
+          "startLine" : 30870,
+          "endLine" : 30882
+        }, {
+          "section" : "Appendix AD-1",
+          "startLine" : 36815,
+          "endLine" : 36828
+        }, {
+          "section" : "Appendix AD-1",
+          "startLine" : 36807,
+          "endLine" : 36830
+        }, {
+          "section" : "Appendix I-65",
+          "startLine" : 30896,
+          "endLine" : 30899
+        }, {
+          "section" : "13 / Element 2",
+          "startLine" : 19498,
+          "endLine" : 19515
+        }, {
+          "section" : "13 / Element 12",
+          "startLine" : 19779,
+          "endLine" : 19809
+        }, {
+          "section" : "12.39 / 12-96",
+          "startLine" : 16426,
+          "endLine" : 16481
+        }, {
+          "section" : "12.39 / 12-97",
+          "startLine" : 16492,
+          "endLine" : 16542
+        }, {
+          "section" : "12.39 / 12-98",
+          "startLine" : 16551,
+          "endLine" : 16576
+        }, {
+          "section" : "12.39 / 12-99",
+          "startLine" : 16587,
+          "endLine" : 16622
+        }, {
+          "section" : "Appendix I-66",
+          "startLine" : 30910,
+          "endLine" : 30914
+        }, {
+          "section" : "12.39",
+          "startLine" : 16426,
+          "endLine" : 16542
+        }, {
+          "section" : "12.39",
+          "startLine" : 16551,
+          "endLine" : 16622
+        }, {
+          "section" : "12.39",
+          "startLine" : 16519,
+          "endLine" : 16622
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 060",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30856,
+            "section" : "Appendix I-65",
+            "endLine" : 30856
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; payload up to 100",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30857,
+            "section" : "Appendix I-65",
+            "endLine" : 30861
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans100",
+          "sourceLength" : "maximum 100",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30862,
+            "section" : "Appendix I-65",
+            "endLine" : 30882
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

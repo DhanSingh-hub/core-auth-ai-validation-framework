@@ -1,8 +1,16 @@
 package com.coreauth.validator.canonical;
 
 import com.coreauth.validator.validation.ValidationResult;
+import com.coreauth.validator.paths.Atl105Paths;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
+import java.util.HexFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,14 +23,19 @@ import java.util.stream.Collectors;
 public final class CanonicalTraceabilityValidator {
 
     public ValidationResult validate(CanonicalArtifactPackage artifactPackage) {
-        return validate(artifactPackage, false);
+        return validate(artifactPackage, false, null);
     }
 
     public ValidationResult validateForExecution(CanonicalArtifactPackage artifactPackage) {
-        return validate(artifactPackage, true);
+        return validateForExecution(artifactPackage, Path.of(System.getProperty("user.dir")).resolve(Atl105Paths.root()));
     }
 
-    private ValidationResult validate(CanonicalArtifactPackage artifactPackage, boolean forExecution) {
+    public ValidationResult validateForExecution(CanonicalArtifactPackage artifactPackage, Path sourceEvidenceRoot) {
+        return validate(artifactPackage, true, sourceEvidenceRoot);
+    }
+
+    private ValidationResult validate(CanonicalArtifactPackage artifactPackage, boolean forExecution,
+                                      Path sourceEvidenceRoot) {
         String packageId = artifactPackage == null || artifactPackage.getManifest() == null
                 ? "canonical-package" : artifactPackage.getManifest().getPackageId();
         ValidationResult result = new ValidationResult(packageId == null ? "canonical-package" : packageId);
@@ -71,7 +84,148 @@ public final class CanonicalTraceabilityValidator {
         validateScheduledAvailability(requirements, scenarios, testCases, result);
         validateRequirementCrosswalk(artifactPackage.getRequirementCrosswalk(), requirements, result);
         validateOrphans(requirements, scenarios, testCases, testData, result);
+        if (forExecution) {
+            validateExecutionModelEvidence(requirements, scenarios, testCases, sourceEvidenceRoot, result);
+        }
         return result;
+    }
+
+    private static void validateExecutionModelEvidence(Map<String, CanonicalRequirement> requirements,
+                                                       Map<String, CanonicalScenario> scenarios,
+                                                       Map<String, CanonicalTestCase> testCases,
+                                                       Path sourceEvidenceRoot, ValidationResult result) {
+        Map<String, CanonicalRequirement> readyRequirements = new HashMap<>();
+        for (CanonicalRequirement requirement : requirements.values()) {
+            if (!"EXECUTION_READY".equals(requirement.getExecutionStatus())) continue;
+            readyRequirements.put(requirement.getId(), requirement);
+            required(requirement.getStatement(), "BusinessRequirement", requirement.getId() + ".statement", result);
+            if (!"ATOMIC".equals(requirement.getAtomicity())) {
+                result.addError("BusinessRequirement", requirement.getId()
+                        + ".atomicity must be ATOMIC before execution readiness");
+            }
+            validateSourceEvidence(requirement, sourceEvidenceRoot, result);
+        }
+        for (CanonicalScenario scenario : scenarios.values()) {
+            if (scenario.getStatus() == ArtifactStatus.EXECUTION_READY) {
+                required(scenario.getIntent(), "TestScenario", scenario.getId() + ".intent", result);
+                if (scenario.getPreconditions() == null) {
+                    result.addError("TestScenario", scenario.getId()
+                            + ".preconditions must be declared (use an empty list when none)");
+                }
+                for (String requirementId : safe(scenario.getRequirementIds())) {
+                    CanonicalRequirement requirement = requirements.get(requirementId);
+                    if (requirement != null && !"EXECUTION_READY".equals(requirement.getExecutionStatus())) {
+                        result.addError("TestScenario", scenario.getId() + " links non-ready requirement "
+                                + requirementId);
+                    }
+                }
+            }
+        }
+        for (CanonicalTestCase testCase : testCases.values()) {
+            if (!"EXECUTION_READY".equals(testCase.getStatus())) continue;
+            Map<String, CanonicalRequirement> linkedRequirements = new HashMap<>();
+            for (String scenarioId : safe(testCase.getScenarioIds())) {
+                CanonicalScenario scenario = scenarios.get(scenarioId);
+                if (scenario == null) continue;
+                for (String requirementId : safe(scenario.getRequirementIds())) {
+                    CanonicalRequirement requirement = requirements.get(requirementId);
+                    if (requirement != null) linkedRequirements.put(requirementId, requirement);
+                }
+            }
+            Set<String> assertedRequirements = new HashSet<>();
+            List<CanonicalTestAssertion> assertions = safe(testCase.getAssertions());
+            if (assertions.isEmpty()) {
+                result.addError("TestCase", testCase.getId() + " must contain per-requirement assertions");
+            }
+            for (CanonicalTestAssertion assertion : assertions) {
+                if (assertion == null || isBlank(assertion.getRequirementId())) {
+                    result.addError("TestCase", testCase.getId() + " contains an assertion without requirementId");
+                    continue;
+                }
+                String requirementId = assertion.getRequirementId();
+                CanonicalRequirement requirement = linkedRequirements.get(requirementId);
+                if (requirement == null) {
+                    result.addError("TestCase", testCase.getId() + " assertion references an unlinked requirement: "
+                            + requirementId);
+                    continue;
+                }
+                assertedRequirements.add(requirementId);
+                if (!"EXECUTION_READY".equals(requirement.getExecutionStatus())) {
+                    result.addError("TestCase", testCase.getId() + " links non-ready requirement " + requirementId);
+                }
+                required(assertion.getAssertion(), "TestAssertion", testCase.getId() + ".assertion", result);
+                required(assertion.getExpectedResult(), "TestAssertion", testCase.getId() + ".expectedResult", result);
+                if (!sharesAnchor(assertion.getSourceAnchors(), requirement.getSourceAnchors())) {
+                    result.addError("TestAssertion", testCase.getId() + " assertion for " + requirementId
+                            + " must cite a sourceAnchor on that requirement");
+                }
+            }
+            linkedRequirements.keySet().stream().filter(id -> !assertedRequirements.contains(id))
+                    .forEach(id -> result.addError("TestCase", testCase.getId()
+                            + " has no assertion for linked requirement " + id));
+        }
+    }
+
+    private static void validateSourceEvidence(CanonicalRequirement requirement, Path sourceEvidenceRoot,
+                                               ValidationResult result) {
+        List<CanonicalSourceEvidence> evidenceRows = safe(requirement.getSourceEvidence());
+        if (evidenceRows.isEmpty()) {
+            result.addError("SourceEvidence", requirement.getId() + " requires a hash-bound source quote");
+            return;
+        }
+        if (sourceEvidenceRoot == null) {
+            result.addError("SourceEvidence", requirement.getId() + " has no source evidence root");
+            return;
+        }
+        Path root;
+        try {
+            root = sourceEvidenceRoot.toRealPath();
+        } catch (IOException exception) {
+            result.addError("SourceEvidence", requirement.getId() + " source evidence root could not be resolved");
+            return;
+        }
+        for (CanonicalSourceEvidence evidence : evidenceRows) {
+            if (evidence == null) {
+                result.addError("SourceEvidence", requirement.getId() + " contains a null citation");
+                continue;
+            }
+            required(evidence.getLocator(), "SourceEvidence", requirement.getId() + ".locator", result);
+            required(evidence.getQuote(), "SourceEvidence", requirement.getId() + ".quote", result);
+            if (isBlank(evidence.getSourcePath()) || isBlank(evidence.getSha256())
+                    || !evidence.getSha256().matches("(?i)[0-9a-f]{64}")) {
+                result.addError("SourceEvidence", requirement.getId() + " citation requires sourcePath and a SHA-256 hash");
+                continue;
+            }
+            Path source = root.resolve(evidence.getSourcePath()).normalize();
+            if (!source.startsWith(root) || !Files.exists(source)) {
+                result.addError("SourceEvidence", requirement.getId() + " citation source is missing or outside its root: "
+                        + evidence.getSourcePath());
+                continue;
+            }
+            try {
+                source = source.toRealPath();
+                if (!source.startsWith(root) || !Files.isRegularFile(source)) {
+                    result.addError("SourceEvidence", requirement.getId()
+                            + " citation resolves outside its root or is not a file: " + evidence.getSourcePath());
+                    continue;
+                }
+                byte[] bytes = Files.readAllBytes(source);
+                String actualHash = HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes));
+                if (!actualHash.equalsIgnoreCase(evidence.getSha256())) {
+                    result.addError("SourceEvidence", requirement.getId() + " citation hash does not match "
+                            + evidence.getSourcePath());
+                    continue;
+                }
+                String sourceText = new String(bytes, StandardCharsets.UTF_8);
+                if (!isBlank(evidence.getQuote()) && !sourceText.contains(evidence.getQuote())) {
+                    result.addError("SourceEvidence", requirement.getId() + " quote is not literal in "
+                            + evidence.getSourcePath());
+                }
+            } catch (IOException | NoSuchAlgorithmException exception) {
+                result.addError("SourceEvidence", requirement.getId() + " citation could not be verified: "
+                        + evidence.getSourcePath());
+            }
+        }
     }
 
     private static void requireExecutionReady(String status, String id, ValidationResult result) {

@@ -5,11 +5,11 @@ Generated from [training-status.json](../../../training-status.json) and the seg
 | Metric | Current |
 |---|---:|
 | Segments | 49 |
-| Catalogued rules | 601 |
+| Catalogued rules | 605 |
 | Substantive knowledge modules | 48 |
 | In progress | 49 |
 | Trained for independent intake | 0 |
-| Segments with explicit blockers | 44 |
+| Segments with explicit blockers | 46 |
 
 ## Gate Policy
 
@@ -21,23 +21,23 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 |---|---:|---|---|---:|---|
 | 100 | 58 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 101 | 26 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |
-| 102 | 25 | SUBSTANTIVE | IN_PROGRESS | 4 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 103 | 24 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
+| 102 | 26 | SUBSTANTIVE | IN_PROGRESS | 3 | INDEPENDENT_AI_ARTIFACT_INTAKE |
+| 103 | 24 | SUBSTANTIVE | IN_PROGRESS | 2 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 104 | 14 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 105 | 22 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 108 | 25 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |
 | 109 | 22 | SUBSTANTIVE | IN_PROGRESS | 3 | AI_ARTIFACT_REWORK_AND_INDEPENDENT_INTAKE |
 | 110 | 21 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_AI_INTAKE |
-| 111 | 8 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 112 | 10 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_KNOWLEDGE_MODEL |
+| 111 | 8 | SUBSTANTIVE | IN_PROGRESS | 38 | INDEPENDENT_AI_ARTIFACT_INTAKE_AND_APPENDIX_I_TABLE_VALIDATION |
+| 112 | 10 | SUBSTANTIVE | IN_PROGRESS | 7 | APPENDIX_K_LAYOUT_VALIDATION_AND_SME_REVIEW |
 | 113 | 18 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_AI_INTAKE |
 | 114 | 13 | SUBSTANTIVE | IN_PROGRESS | 2 | SME_REVIEW_AND_AI_INTAKE |
 | 115 | 13 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 116 | 9 | MINIMAL_SOURCE_IS_STUB_ONLY | IN_PROGRESS | 5 | EXTERNAL_TRANSARMOR_DOCUMENT_REQUIRED |
+| 116 | 9 | MINIMAL | IN_PROGRESS | 4 | SME_REVIEW_AND_INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 118 | 30 | SUBSTANTIVE | IN_PROGRESS | 6 | SME_REVIEW_AND_AI_INTAKE |
 | 119 | 39 | SUBSTANTIVE | IN_PROGRESS | 9 | SME_REVIEW_AND_AI_INTAKE |
 | 120 | 8 | SUBSTANTIVE | IN_PROGRESS | 0 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 123 | 11 | SUBSTANTIVE | IN_PROGRESS | 4 | SME_REVIEW_AND_AI_INTAKE |
+| 123 | 12 | SUBSTANTIVE | IN_PROGRESS | 3 | SME_REVIEW_AND_AI_INTAKE |
 | 130 | 23 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 131 | 12 | SUBSTANTIVE | IN_PROGRESS | 2 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 132 | 12 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
@@ -58,7 +58,7 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 | 152 | 3 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 153 | 3 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 155 | 6 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
-| 156 | 7 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
+| 156 | 9 | SUBSTANTIVE | IN_PROGRESS | 1 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | 157 | 9 | SUBSTANTIVE | IN_PROGRESS | 2 | INDEPENDENT_AI_ARTIFACT_INTAKE |
 | DL1 | 12 | SUBSTANTIVE | IN_PROGRESS | 6 | SME_REVIEW_AND_AI_INTAKE |
 | DL2 | 9 | SUBSTANTIVE | IN_PROGRESS | 6 | SME_REVIEW_AND_AI_INTAKE |
@@ -68,5 +68,13 @@ A catalogued rule is not an SME-approved BR or an executable test. All required 
 | DL6 | 7 | SUBSTANTIVE | IN_PROGRESS | 7 | SME_REVIEW_AND_AI_INTAKE |
 | DL7 | 6 | SUBSTANTIVE | IN_PROGRESS | 7 | SME_REVIEW_AND_AI_INTAKE |
 | DL8 | 5 | SUBSTANTIVE | IN_PROGRESS | 6 | SME_REVIEW_AND_AI_INTAKE |
+
+## Transaction-Context Training
+
+Business-level contexts reuse segment-trained Test Solution records; their counts are excluded from the segment totals above. Trained BRs have a BR -> TS -> TC -> TD chain that passes canonical traceability; this is not SME approval or execution readiness.
+
+| Context | Status | Trained BRs / scope | Review queue | TS / TC / TD | Explicit blockers | Next gate |
+|---|---|---:|---:|---:|---:|---|
+| MASTERCARD_CREDIT_PURCHASE | IN_PROGRESS | 168 / 189 | 21 | 189 / 226 / 230 | 7 | REVIEW_QUEUE_CLOSURE_AND_SME_REVIEW |
 
 See each segment's `segment-*/` KB module for source anchors and its open SME/TBA decisions. Historical branch activity is available in repository history; it is not a training-completion measure.

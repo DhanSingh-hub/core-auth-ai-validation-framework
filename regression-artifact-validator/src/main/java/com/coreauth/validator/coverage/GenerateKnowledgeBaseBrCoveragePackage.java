@@ -181,6 +181,9 @@ public final class GenerateKnowledgeBaseBrCoveragePackage {
                 + "| Composite-section BRs | " + summary.path("compositeSectionRequirements").asInt() + " |\n"
                 + "| Title-alias BRs | " + summary.path("titleAliasRequirements").asInt() + " |\n"
                 + "| Appendix-evidence BRs | " + summary.path("appendixEvidenceRequirements").asInt() + " |\n\n"
-                + "Coverage means an authored BR exists, not SME approval. TS/TC/TD are intentionally zero here; downstream chain derivation remains the next Test Solution gate.\n";
+                + "Coverage means an authored BR exists, not SME approval. TS/TC/TD are intentionally zero here; downstream chain derivation remains the next Test Solution gate.\n\n"
+                + "## Transaction-Context BR Coverage\n\n"
+                + "Business-level contexts measure BR -> TS -> TC -> TD chain coverage against their own denominator: "
+                + "[Mastercard Credit Purchase BR coverage](mc-credit-purchase-br-coverage.md).\n";
     }
 }

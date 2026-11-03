@@ -237,6 +237,44 @@
   },
   "items": [
     {
+      "id": "SEG100-SME-004",
+      "channel": "SME_QUERY",
+      "segments": ["100"],
+      "subject": "Review all-network requirements, context/flow eligibility and NET-Q01 through NET-Q10",
+      "context": "Corrected to seven named network groups (AMEX, Visa, Mastercard, Discover, Diners Club, JCB, STAR Signature Debit), plus generic Debit and EBT. BA diagram adopted as navigation only: platform/spec-version/card-program/network/transaction-category/presence/entry/channel/flow-leg. The 145 mixed-dimension requirements remain a shared library; 176 conditional BR/TS context records reference them without adding canonical coverage.",
+      "status": "OPEN",
+      "owner": "BA/SME and named network, program, transport, host, security and settlement owners",
+      "raisedOn": "2026-10-26",
+      "raisedBy": "Copilot automated source review",
+      "detail": "Answer NET-Q01 through NET-Q10 with per-leg source/configuration version, environment, exceptions, reviewer and date. Review format 2 replaces the 850-cell cross-product with 44 explicitly selected conditional lifecycle contexts. Eligibility remains REVIEW_REQUIRED; 81 library rows remain unmapped. Resolve prepaid/commercial applicability and separate presence/entry/channel, missing network-specific source rules, host/fleet/specialized contracts, EBT/eWIC, receipts/security, settlement and release overlays. Concrete TC/TD links remain absent, not fabricated. Appendix AF 2026-4 is not adopted. Use synthetic or masked evidence only.",
+      "evidence": [
+        "specifications/ATL105/docs/specs/kb/segment-100/all-network-requirements-review.json",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/requirements-review.csv",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/network-flow-review.csv",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/ba-sme-questionnaire.csv",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/NETWORK-REVIEW.md",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/chain-gaps.csv",
+        "specifications/ATL105/test-output/test-solution-independent-review/all-network-requirements-review-v1/shared-library-mapping.csv"
+      ]
+    },
+    {
+      "id": "SEG100-SME-003",
+      "channel": "SME_QUERY",
+      "segments": ["100"],
+      "subject": "Review corrected Mastercard credit-purchase reference and answer MC-Q01 through MC-Q09",
+      "context": "User-shared BA screenshot is reference only: BR-01, eight FRs and 37 scenarios. Independent source review corrects field mappings and retains expiry-transmission and same-device queued-TOR conditions. No BR baseline or approval is promoted.",
+      "status": "OPEN",
+      "owner": "BA/SME and named integration, configuration, settlement and audit owners",
+      "raisedOn": "2026-10-26",
+      "raisedBy": "Copilot automated source review",
+      "detail": "Complete all nine grouped questions with source/configuration version, environment, exceptions, reviewer and date. Brand/BIN/routing, card status and expiry action, merchant eligibility, entry-mode scope, amount/cash policy, request/response oracles, TOR transport policy, clearing/settlement, and secure audit logging remain unresolved. Use only synthetic or masked evidence.",
+      "evidence": [
+        "specifications/ATL105/docs/specs/kb/segment-100/mastercard-ba-reference-review.json",
+        "specifications/ATL105/test-output/test-solution-independent-review/mastercard-ba-reference-review-v1/requirements-review.csv",
+        "specifications/ATL105/test-output/test-solution-independent-review/mastercard-ba-reference-review-v1/ba-sme-questionnaire.csv"
+      ]
+    },
+    {
       "id": "SEG101-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -512,6 +550,29 @@
       "raisedBy": "Rishabh Kumar"
     },
     {
+      "id": "SEG102-SME-006",
+      "channel": "SME_QUERY",
+      "segments": [
+        "102"
+      ],
+      "subject": "Resolve the Appendix B product/tax reconciliation discrepancy: Appendix B's two Product Amounts total 2,290, while Segment 100 Fuel + Nonfuel + Tax + Cash totals 2,387. Section 12.3 requires the product total to equal all four fields and separately says tax-coded product totals are also reported in Element 99; Appendix B shows a 97 tax on cigarettes but no tax product entry.",
+      "context": "Appendix B-1 through B-5 gives product amounts 500 and 1,790, Segment 100 amounts 500/1,790/97/blank, and describes 6% tax. Section 12.3 requires product amounts to reconcile with Elements 41, 58, 99, and 17. The source example and rule text do not reconcile arithmetically.",
+      "impact": "SEG102-R-015/016, Appendix B amount-consistency coverage, and composite purchase certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-07",
+      "raisedBy": "Test Solution training",
+      "links": {
+        "rules": [
+          "SEG102-R-015",
+          "SEG102-R-016"
+        ],
+        "blocks": [
+          "Appendix B product/tax amount reconciliation certification"
+        ]
+      }
+    },
+    {
       "id": "SEG103-SME-001",
       "channel": "SME_QUERY",
       "segments": [
@@ -681,6 +742,32 @@
         ],
         "impacts": [
           "test-data"
+        ]
+      }
+    },
+    {
+      "id": "SEG103-SME-009",
+      "channel": "SME_QUERY",
+      "segments": [
+        "103"
+      ],
+      "subject": "Resolve the Appendix M TAG 50 AMOUNT TYPE contradiction: Section 13.2 lists 50 for a request TAG 50 and both worked-example strings encode 50, while Appendix M-2 and M-4 prose says the valid HIP Amount Type is 40.",
+      "context": "SEG103-SME-003 was previously settled by Test Team source interpretation, not SME decision. The conflicting literal source statements are preserved; the validator accepts only candidates 40 and 50 but emits REVIEW_REQUIRED until this query is answered.",
+      "impact": "SEG103-R-022 TAG 50 amount-type validation, Appendix M positive fixture readiness, and Segment 103 semantic certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-07",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG103-SME-003"
+      ],
+      "links": {
+        "catalogItem": "P-09",
+        "rules": [
+          "SEG103-R-022"
+        ],
+        "blocks": [
+          "TAG 50 AMOUNT TYPE semantic certification"
         ]
       }
     },
@@ -1748,12 +1835,26 @@
       "channel": "SME_QUERY",
       "segments": ["111"],
       "subject": "Which version of Conexxus PSPC defines the host-restriction values and semantics referenced by these fleet layouts?",
-      "context": "Appendix K-26 lines 34007-34025 and K-27 lines 34038-34040, referenced by Appendix I Table 049. Training issue APPI-T049-Q010.",
+      "context": "Appendix K-26 lines 34007-34025 and K-27 lines 34038-34040 (2026-3; 2026-4 lines 36291-36310 and 36323-36324), referenced by Appendix I Table 049. Training issue APPI-T049-Q010.",
       "impact": "External host-restriction meaning is not inferred from numeric formatting.",
-      "status": "OPEN",
+      "status": "ANSWERED",
       "owner": "SME/TBA",
       "raisedOn": "2026-10-06",
-      "raisedBy": "Test Solution training assistant"
+      "raisedBy": "Test Solution training assistant",
+      "resolution": "The missing reference was supplied to the Test Team in two versions: Conexxus Payment System Product Codes v4.1 (May 12, 2022) and v3.7 (September 4, 2015), both on the X9.104 Part 2 registration-authority list. Both are ingested as PSPC source oracles (413 and 394 rows, each covering codes 000-999) and applied to Appendix K Table 034 value semantics: assigned codes PASS, code 000 FAIL, deprecated or reserved codes REVIEW_REQUIRED. ATL105 2026-4 still names no PSPC version, and 62 codes change state or meaning between v3.7 and v4.1 (for example 052 is deprecated Ultra Low Sulfur #1 in v3.7 but B1 Diesel in v4.1). An unbound Table 034 code is therefore judged against both versions, and any disagreement is REVIEW_REQUIRED. The PSPC version the networks apply, and the packing of codes in the ans32 Table Data, still need SME confirmation. Element 77 stays governed by ATL105 Appendix F, which follows the numbering from before the PSPC v3.5 deprecations.",
+      "evidence": [
+        "specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_4.1_2022-05-12.pdf",
+        "specifications/ATL105/docs/specs/Conexxus_Payment_System_Product_Codes_Version_3.7_2015-09-04.pdf",
+        "specifications/ATL105/docs/specs/extracted_text_pspc_v4.1.txt",
+        "specifications/ATL105/docs/specs/extracted_text_pspc_v3.7.txt",
+        "src/main/resources/atl105/pspc-product-code-oracle.json",
+        "src/main/resources/atl105/pspc-product-code-oracle-v3.7.json",
+        "specifications/ATL105/test-output/test-json/pspc-product-code-chain-package.json",
+        "specifications/ATL105/test-output/test-json/pspc-v3.7-product-code-chain-package.json",
+        "specifications/ATL105/test-output/test-json/pspc-version-diff-v3.7-v4.1.csv",
+        "specifications/ATL105/docs/test-validation-strategy/pspc-payment-system-product-codes/README.md",
+        "specifications/ATL105/docs/test-validation-strategy/Conexxus-PSPC-Training-Record.md"
+      ]
     },
     {
       "id": "SEG111-SME-013",
@@ -1913,6 +2014,60 @@
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
       "raisedBy": "Rishabh Kumar"
+    },
+    {
+      "id": "SEG112-SME-008",
+      "channel": "SME_QUERY",
+      "segments": [
+        "112"
+      ],
+      "subject": "Confirm the effective Segment 112 length ceiling in a Financial Transaction Response: Section 11.1.2 lists a 349 maximum for the Segment 112 field, while Section 12.11 gives Segment 112 a 999-character maximum. Is 349 a response-context cap, a narrower field allocation, or a stale value? Clarify the unit and applicable boundary.",
+      "context": "ATL105 2026-3 Section 11.1.2 places Segment 112 in Data Section 2 with Max. Len. 349 and allows Segment 115 to follow under its own condition. Section 12.11 states a 999-character Segment 112 maximum and a 990-byte repeated-section maximum. These statements may be context-scoped rather than contradictory; no precedence rule is recorded.",
+      "impact": "Response-context Segment 112 length validation, boundary fixtures, and certification of the combined flow above 349 characters.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-06",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG112-SME-003",
+        "SEG115-SME-004"
+      ],
+      "links": {
+        "catalogItem": "P-08",
+        "rules": [
+          "SEG112-R-002",
+          "SEG112-R-003"
+        ],
+        "blocks": [
+          "response-context Segment 112 lengths above 349"
+        ]
+      }
+    },
+    {
+      "id": "SEG112-SME-009",
+      "channel": "SME_QUERY",
+      "segments": [
+        "112"
+      ],
+      "subject": "Resolve Segment 112 response placement: Section 12.11 says it appears at the end of a Financial Transaction Response, while Section 11.1.2 places it in Data Section 2 Field 16/17/18 and allows Segment 115 to follow in Field 17/18/19. Is Segment 112 last within Data Section 1, or may Segment 115 follow it in the response?",
+      "context": "Section 11.1.2 presents Segment 112 and Segment 115 as independently conditional Data Section 2 entries; Section 12.11 describes Segment 112 as appearing at the end of the Financial Transaction response. The current flow validates direction and flag agreement but deliberately does not enforce a relative order.",
+      "impact": "Combined response segment ordering, co-occurrence fixtures, and SEG112-R-004 certification.",
+      "status": "OPEN",
+      "owner": "SME/TBA",
+      "raisedOn": "2026-10-06",
+      "raisedBy": "Test Solution training",
+      "relatedItems": [
+        "SEG115-SME-004"
+      ],
+      "links": {
+        "catalogItem": "P-09",
+        "rules": [
+          "SEG112-R-004"
+        ],
+        "blocks": [
+          "Segment 112/115 relative order certification"
+        ]
+      }
     },
     {
       "id": "SEG113-SME-001",
@@ -2445,9 +2600,9 @@
       "segments": [
         "116"
       ],
-      "subject": "**Obtain the external `BUYPASS®_Platform_ATL105_Specification_Updates_for_TransArmor_Processing` document** (Direct Platform Specifications Portal) and supply Segment 116's complete field-by-field layout (element numbers, lengths, R/O/C designations) beyond Segment Type and Segment Length, plus confirmation of the Segment Length field's format and the segment's Origin.",
-      "context": "Sections 12.15 and 11.7.5 are both single-sentence stubs redirecting to this external document; nothing else in the current workspace source describes Segment 116's internal fields.",
-      "impact": "Blocks nearly all field-level, mutation, and traceability tests.",
+      "subject": "Provide the TransArmor specification updates document referenced by ATL105 Sections 11.7.5 and 12.15, or confirm where the Test Solution team can obtain it.",
+      "context": "The ATL105 extract contains only a note redirecting to the separately published TransArmor document; the Segment 116 request and response layouts are not present in the current workspace source.",
+      "impact": "Blocks full Segment 116 rule derivation and validation.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
@@ -2455,7 +2610,7 @@
       "links": {
         "catalogItem": "P-01",
         "rules": [
-          "SEG116-R-004",
+          "SEG116-R-002",
           "SEG116-R-006"
         ],
         "blocks": [
@@ -2475,8 +2630,8 @@
       "segments": [
         "116"
       ],
-      "subject": "Confirm whether the TransArmor PKI Encryption and Tokenization Load Request truly excludes Segment 100 (Standard Message Data Segment) and Data Section 3, or has its own distinct envelope shown only in the external document.",
-      "context": "The current conclusion is a structural analogy with sibling message types (Totals, Loyalty, Electronic Mail), not a directly shown request table.",
+      "subject": "Confirm the request envelope for the TransArmor Key/Key ID Load flow, including whether Segment 100 or other data segments are present.",
+      "context": "Sections 11.7.5 and 12.15 redirect to the external TransArmor processing specification, which is not available in the current source extract.",
       "impact": "Envelope/applicability tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
@@ -2499,8 +2654,8 @@
       "segments": [
         "116"
       ],
-      "subject": "Confirm whether Key ID (155), Key Data Length (156), and Key Data (157) are serialized as a Segment 116 response container (Segment Type/Segment Length + these fields) or as a separate positional response structure, comparable to the Electronic Mail Response (Segment 109).",
-      "context": "The Chapter 13 element catalog defines these fields and calls them part of the \"TransArmor Load Response\" but does not show the response's own layout table.",
+      "subject": "Confirm the TransArmor Load Response layout, field order, and whether it is serialized as a Segment 116 container.",
+      "context": "The Chapter 13 element catalog identifies TransArmor response fields, but the response layout is not present in the current ATL105 extract.",
       "impact": "Response-parsing and correlation tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
@@ -2594,9 +2749,9 @@
       "segments": [
         "116"
       ],
-      "subject": "The Element 63 (Number of Segments) processing rule says TransArmor Key Load requests are 'followed by Data Section No. 2, which contains Data Segment No. 116' and Communications Test requests by 'Data Section No. 2 which contains Element No. 120'. Is Segment 116 the only segment, in Field No. 3, and is the Data Section 2 label only descriptive for both messages?",
-      "context": "Chapter 13, Element 63 (Number of Segments), Processing Rules. Section 11.7.5 (TransArmor) refers to a separate TransArmor document, and Section 11.6.1 (Communications Test) is a positional message with Element 55 at position 1 and Element 120 at position 9, with no Element 63 and no data sections. Every other request reserves Data Section 2 for Segment 100.",
-      "impact": "Under the request convention in TT-0014 the Test Solution treats Segment 116 as Data Section 3, Field No. 3, and follows Section 11.6.1's positional layout for the Communications Test.",
+      "subject": "Confirm the Data Section label used by Segment 116 in the TransArmor Key/Key ID Load Request.",
+      "context": "The generic request convention and the Segment 116 reference do not establish the message-specific data-section label.",
+      "impact": "Request-envelope field placement and compatibility tests.",
       "status": "OPEN",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-29",
@@ -3591,19 +3746,19 @@
       ],
       "subject": "Is Appendix V (Moneris Data layouts) in scope for this training pass?",
       "context": "Is Appendix V (Moneris Data layouts, defining the <tag><len><data> sub-structures) in scope for this training pass?",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
       "raisedBy": "Rishabh Kumar",
+      "resolution": "Appendix V is in scope for this training pass at the user's direction. The Appendix V-1 through V-4 request/response layouts are transcribed in the appendix-v training module. Source conflicts and unspecified Moneris behavior remain review-gated and are not resolved by this scope decision.",
+      "resolvedOn": "2026-10-08",
+      "resolvedBy": "Test Team (user-directed training scope)",
       "links": {
         "catalogItem": "P-02",
         "rules": [
           "SEG135-R-005"
         ],
-        "blocks": [
-          "Item 1",
-          "Item 4"
-        ]
+        "blocks": []
       }
     },
     {
@@ -3677,19 +3832,19 @@
         "136"
       ],
       "subject": "Is Appendix V (Moneris Data layouts) in scope for this training pass?",
-      "status": "OPEN",
+      "status": "RESOLVED",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
       "raisedBy": "Rishabh Kumar",
+      "resolution": "Appendix V is in scope for this training pass at the user's direction. The Appendix V-1 through V-4 request/response layouts are transcribed in the appendix-v training module. Source conflicts and unspecified Moneris behavior remain review-gated and are not resolved by this scope decision.",
+      "resolvedOn": "2026-10-08",
+      "resolvedBy": "Test Team (user-directed training scope)",
       "links": {
         "catalogItem": "P-03",
         "rules": [
           "SEG136-R-005"
         ],
-        "blocks": [
-          "Item 1",
-          "Item 4"
-        ]
+        "blocks": []
       }
     },
     {
@@ -4993,20 +5148,20 @@
         "DL7"
       ],
       "subject": "Is Appendix W (Download Data Layout) in scope for this training pass?",
-      "context": "Appendix W is present in the extracted ATL105 2026-3 text (Table ID 001 Site Language, Table ID 002 Postal Code) and has been transcribed into SEGDL7-R-004 pending this scope decision.",
-      "status": "OPEN",
+      "context": "Appendix W is present in the extracted ATL105 2026-3 text (Table ID 001 Site Language, Table ID 002 Postal Code) and is included in the Appendix W training module.",
+      "status": "RESOLVED",
       "owner": "SME/TBA",
       "raisedOn": "2026-09-26",
       "raisedBy": "Rishabh Kumar",
+      "resolution": "Appendix W is in scope for this training pass at the user's direction. The two table layouts are transcribed and structurally trained; unresolved source-description conflicts, DL7 outer framing, and message placement remain review-gated.",
+      "resolvedOn": "2026-10-08",
+      "resolvedBy": "Test Team (user-directed training scope)",
       "links": {
         "catalogItem": "P-01",
         "rules": [
           "SEGDL7-R-003"
         ],
-        "blocks": [
-          "Item 1",
-          "Item 4"
-        ]
+        "blocks": []
       }
     },
     {
@@ -5456,6 +5611,23 @@
       "relatedItems": [
         "SEG111-SME-001",
         "SEG113-SME-008"
+      ]
+    },
+    {
+      "id": "AID-0005",
+      "channel": "AI_DEV_DISCUSSION",
+      "segments": [
+        "100",
+        "130"
+      ],
+      "subject": "Agree the versioned mapping for Segment 100 account/track aliases and EMV data",
+      "detail": "A user-supplied Authorization JSON represents account/track information with a producer-level `TrackData` property and also includes Segment 130 EMV data. ATL105 Chapter 13 does not define `TrackData` as a Segment 100 wire element: for Track 2, Element 2 is the source data before `=`, and Element 12 is the source data after `=`; for Track 1, the split is at the first `^`. The supplied logical alias uses a different delimiter, but no producer-to-ATL105 converter contract was provided to establish what that delimiter means. Agree and version an adapter contract that declares entry method, distinguishes raw/aggregate track input from normalized Elements 2 and 12, specifies supported delimiters and conversion behavior, and maps Segment 130 EMV data independently. Supply synthetic positive, negative, boundary, and round-trip examples. Do not publish or copy the supplied account, track, or chip values; do not infer entry method, normalize the delimiter, or reject the request until the contract is established. This remains a format discussion, not a confirmed AI defect or SME decision.",
+      "status": "OPEN",
+      "owner": "Test Team + AI Solution Team",
+      "raisedOn": "2026-10-16",
+      "raisedBy": "Test Solution validation review",
+      "relatedItems": [
+        "AIF-0007"
       ]
     },
     {
@@ -6826,6 +6998,58 @@
       "detail":"The chain REQ-SRC-ATL105-PDF-001:0821 -> SC-0018 -> TC-000016 has explicit linked IDs. Its physical TD omits required Segment Length. Under the bounded single-record alias interpretation, VariableInformationLength declares 001 but the sole TableID 001 Value has two characters. ATL105 2026-3 section12.10, extracted_text.txt lines12599-12622 defines the required lengths. Producer confidence, review flags and deferred calculations are not approved physical evidence. Supply a new versioned TD with explicit calculated segment/table lengths and matching wire evidence, or clarify the documented alias mapping. Do not modify the immutable delivery in place. Full message-family and semantic correctness remain unassessed; this one representative does not establish Appendix I AI coverage.",
       "evidence":["specifications/ATL105/test-output/ai-solution-independent-review/appendix-i/representative-intake.json","specifications/ATL105/test-input/ai-solution/runs/2026-09-29/phase_1_single_leg/test_data/TC-000016.json","specifications/ATL105/docs/specs/extracted_text.txt section12.10 lines12599-12622"],
       "status":"OPEN","owner":"AI Solution Team","raisedOn":"2026-10-06","raisedBy":"Test Solution training assistant"
+    },
+    {
+      "id":"AIF-0018","channel":"AI_FEEDBACK","segments":["100"],
+      "subject":"Validate Authorization Only response expectations and missing Credit Visa flows across Run1–Run4",
+      "targetDelivery":"Next versioned AI delivery after ATL105-2026-10-07-Run4",
+      "detail":"Compared the corrected Credit Visa/BuyPass flow list (4 single-step and 10 multi-step shapes) with the 89 Run4 case-register records marked isFlow=true and their sidecar/JSON leg files. No standalone Run4 flow candidate was found for Authorization or Sale; no matching candidate was found for COF/MIT or the report-only Unclassified bucket; and no exact Authorization -> Completion -> Timeout candidate was found. Candidates do exist for Authorization -> Completion (TC-006448), Authorization -> Void (TC-006490), Sale -> Void (TC-006502), Refund -> Void (TC-006472), Authorization -> Cancellation (TC-006484), Authorization -> Partial Completion (TC-006454), Authorization -> Completion -> Void (TC-006496), and Authorization -> Completion -> Duplicate Completion (TC-006460). TC-006478 is Financial Transaction Request -> Time-out Reversal and does not establish Sale -> Timeout. The Segment 100 suite catalog reports 16 flows declared, 0 generated, 16 skipped, 1,650 single-leg cases, and 0 multi-leg cases. TC-card expected responses: all four same-date runs have 4,844 Segment 100 cards and zero expected Response Code 2/3. Scenario expected responses differ: Runs2–4 each contain 4,224 expected_response_code=2 scenarios and zero code-3 scenarios; all 4,224 are typed negative, 82 target Auth Completion (0220), and the scenario oracle authority is Level C (chatbot-sourced). The three scenario catalogs are byte-identical (SHA-256 1be41aff6746cd76cbb9e058ed91443bd717145e8cdfdaaa44f3e5d6f6c9e4f6). Run1 has no standalone scenario catalog. ATL105 defines code 2 as Approved Authorization Only, code 3 as Approved Authorization Only with AVS, and code 0 as Approved Purchase/Capture. Do not count the unvalidated negative scenario defaults as positive Authorization Only coverage or assume they match the TC expected responses. Separately, the independent Test Solution response-code package contains one BR (BR-SEG100-RC-APPROVED-AUTH) covering codes 2 and 3 together, with one TD for code 2 only; that TD has expectedValidation REVIEW, and no separate code-3 TD is present. This independent starter package is not Run4 AI coverage or execution certification. Run4 candidate flow rows have empty requirementIds and NO_BR_ATTRIBUTION; register verificationStatus PASS is not proof of business approval or executed transaction behavior.",
+      "impact":"The same-date AI artifacts contain a contradiction: Runs2–4 scenario records assign code 2 to negative cases, while none of the four runs' Segment 100 TC cards expects code 2/3. Those scenario assignments are chatbot-sourced and do not establish valid approved Authorization Only testing. The independent Test Solution has one combined BR, one REVIEW-only code-2 TD, and no code-3 TD. Run4 also lacks directly traceable standalone Authorization, Sale, and exact Authorization -> Completion -> Timeout flow chains. Do not grant coverage credit until expected-response assignments are corrected and positive/negative cases have complete source-backed BR -> TS -> TC -> TD evidence.",
+      "evidence":["specifications/ATL105/reports/atl105-visa-legacy/ATL105 Visa - Corrected Flow List.html","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run1/pipeline_outputs_2026-10-07/src/pipeline/reporting/output/segment-100-suite-catalog.md","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run2/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run3/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-input/ai-solution/runs/2026-10-07/Run4/pipeline_outputs_2026-10-07/src/pipeline/scenarios/approved/approved_scenarios.json","specifications/ATL105/test-output/test-json/atl105-response-code-family-matrix.json","specifications/ATL105/test-output/test-json/segment-100-response-code-package.json","specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/case-register.csv","specifications/ATL105/test-output/ai-solution-independent-review/2026-10-07-Run4/analysis-v2/run4-semantic-review-v2/run4-manual-search-findings.json"],
+      "status":"OPEN","owner":"AI Solution Team","raisedOn":"2026-10-09","raisedBy":"Test Solution review"
+    },
+    {
+      "id":"AIF-0019",
+      "channel":"AI_FEEDBACK",
+      "segments":["105","116","119"],
+      "subject":"Correct Totals with Proprietary Data Load requirement :1040 to Segment 119",
+      "targetDelivery":"Next versioned AI delivery after the 2026-10-16 Amount review",
+      "detail":"AI BR `REQ-SRC-ATL105-PDF-001:1040` states that a Totals with Proprietary Data Load Request contains Data Segment 116. The source has a conflicting sentence in Section 11.4.1.2 that labels the request segment 116, but the same section's actual layout table identifies Segment 119 in Data Section 3, Field 3; Section 12.17 defines Data Segment 119 as the Totals with Proprietary Data Load Data Segment; and Chapter 13 Element 85 identifies Segment 116 as the TransArmor Load Data Segment and 119 as the Totals with Proprietary Data Load Data Segment. Under the Test Solution's source-precedence rule, correct the AI requirement to Segment 119 and preserve the Section 11 narrative discrepancy as a source note. Do not use the erroneous narrative label as a second segment or infer Segment 116 content. This item covers the AI BR text; AIF-0012 separately covers the missing/malformed Totals test payloads.",
+      "impact":"The AI requirement currently assigns the Totals-with-Proprietary-Data request to the TransArmor Segment 116 identity. This creates a false semantic candidate for SEG116-R-009 and obscures the correct Segment 119 chain. Correct the source-derived requirement and any linked scenarios/cases without changing immutable prior deliveries.",
+      "evidence":[
+        "REQ-SRC-ATL105-PDF-001:1040 in specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-all-ai-br-chain-test-br-review-v2/all-ai-br-review-register.csv",
+        "ATL105 2026-3 extracted_text.txt Section 11.4.1.2, page 11-17: layout table identifies Segment 119 in Data Section 3, Field No. 3; preceding narrative label 116 is retained as the source discrepancy",
+        "ATL105 2026-3 extracted_text.txt Section 12.17, page 12-46: defines Data Segment No. 119 as Totals with Proprietary Data Load Data Segment",
+        "ATL105 2026-3 extracted_text.txt Chapter 13, Element 85, page 13-68: Segment 116 is TransArmor Load Data Segment; Segment 119 is Totals with Proprietary Data Load Data Segment",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-amount-test-br-gaps-v1/REPORT.md",
+        "specifications/ATL105/registers/atl105-communication-register.json AIF-0012"
+      ],
+      "status":"OPEN",
+      "owner":"AI Solution Team",
+      "raisedOn":"2026-10-16",
+      "raisedBy":"GitHub Copilot",
+      "relatedItems":["AIF-0012"]
+    },
+    {
+      "id":"AIF-0020",
+      "channel":"AI_FEEDBACK",
+      "segments":["100"],
+      "subject":"Generate AI test cases for all 36 financial Prompt Code card types",
+      "targetDelivery":"Next versioned AI delivery after the 2026-10-16 card-type coverage audit",
+      "detail":"The hash-bound 2026-10-16 AI network/brand and card-type audit inspected 21,254 candidate Test Cases and 39,480 physical payload files (39,479 paired; one unpaired), excluded 2,359 conflicted Test Case IDs, and found Prompt Code payloads for only 1 of the 36 ATL105 financial card types. The sole observed code is 001 (BUYPASS Fleet); 35 codes have no non-conflicted case, including 020 (Credit), debit codes 011/012/013 and Loyalty 040. Generate and trace at least one appropriately scoped AI Test Case and physical Test Data payload for every missing financial card type. The actual Segment 100 Prompt Code card-type value must match the declared scenario/test metadata. Keep source-supported transaction/card applicability explicit and use synthetic/approved test fixtures. The audit also observed cases for all four currently declared flow-axis brand labels (VISA, MC, AX, DS); this is a separate producer-declared axis and is not an independent global network denominator. Do not infer or require a network-by-card-type Cartesian product. This audit measures case presence only, not semantic correctness or host execution.",
+      "impact":"The current AI delivery is incomplete against the Test Team's explicit 36-code financial card-type coverage requirement; 35 card types lack a non-conflicted payload-backed case. The current presence result grants no semantic or execution coverage credit. Preserve the separate brand-axis count and avoid unsupported combination claims.",
+      "evidence":[
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/REPORT.md",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/coverage-summary.json",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/financial-card-type-coverage.csv",
+        "specifications/ATL105/test-output/ai-solution-independent-review/2026-10-16-ai-network-cardtype-coverage-v4/manifest.json",
+        "src/main/java/com/coreauth/validator/canonical/Segment100CardTypeOracle.java"
+      ],
+      "status":"OPEN",
+      "owner":"AI Solution Team",
+      "raisedOn":"2026-10-16",
+      "raisedBy":"Test Solution validation review",
+      "relatedItems":["AIF-0018"]
     }
   ]
 }

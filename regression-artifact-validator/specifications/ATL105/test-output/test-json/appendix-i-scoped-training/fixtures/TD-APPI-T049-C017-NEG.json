@@ -1,0 +1,74 @@
+{
+  "id" : "TD-APPI-T049-C017-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C017-NEG.json",
+  "testCaseIds" : [ "TC-APPI-T049-C017-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-47",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r031-APPI-T049-C017"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C017",
+        "tableId" : "049",
+        "nestedSelector" : "17",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R031" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-47",
+          "startLine" : 29672,
+          "endLine" : 29694
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "17",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "N" ],
+          "baselinePositiveData" : "Y",
+          "negativeLogicalFields" : {
+            "data" : "Y"
+          },
+          "preconditions" : {
+            "network" : "Discover",
+            "chargeClass" : "No Show"
+          }
+        },
+        "clearScope" : "Discover no-show codeN, not a Boolean false.",
+        "excludedClaims" : [ "Mandatory presence", "No-show merchant eligibility", "Complete charge flow" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "no-show-code-is-N",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "discover-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "no-show-code-is-N",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "N",
+          "to" : "Y",
+          "targetPredicate" : "no-show-code-is-N"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

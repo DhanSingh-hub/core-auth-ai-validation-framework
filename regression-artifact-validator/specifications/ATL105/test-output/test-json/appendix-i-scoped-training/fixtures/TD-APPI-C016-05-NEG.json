@@ -1,0 +1,56 @@
+{
+  "id" : "TD-APPI-C016-05-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C016-05-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C016-05-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-12",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t016-r003-APPI-C016-05"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C016-05",
+        "tableId" : "016",
+        "ruleIds" : [ "APPI-T016-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-12",
+          "startLine" : 27893,
+          "endLine" : 27899
+        } ],
+        "logicalFields" : {
+          "tag" : "9F7C",
+          "lengthField" : "08",
+          "hexadecimalData" : "0123ABCZ"
+        },
+        "clearScope" : [ "9F7C identifier", "N2 length-field syntax", "Customer data hexadecimal component syntax only" ],
+        "excludedClaims" : [ "08 byte-versus-hex-character unit interpretation", "Variable-tag capacity semantics", "Tag optionality" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Customer-exclusive data contains only hexadecimal characters",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "08 corresponds to encoded data length in source units",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "hexadecimalData",
+          "value" : "0123ABCZ",
+          "targetedNegative" : "NonhexadecimalZ without resolving length units"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

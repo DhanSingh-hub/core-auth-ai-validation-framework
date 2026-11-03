@@ -1,0 +1,624 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-014-END-OF-DATA-INDICATOR",
+  "reviewDate": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "status": "REVIEW_REQUIRED",
+  "aiBusinessRequirement": {
+    "id": "REQ-SRC-ATL105-PDF-001:041",
+    "statement": "End-of-Data Indicator must be alphabetic and must not exceed 1 bytes.",
+    "segments": [
+      "DL3",
+      "DL4",
+      "DL5",
+      "DL6"
+    ],
+    "elements": [
+      "34"
+    ],
+    "scenarioIds": [
+      "SC-5552"
+    ],
+    "scenarioCount": 1,
+    "caseIds": [],
+    "caseCount": 0,
+    "payloadPaths": [],
+    "chainStatus": "SCENARIO_LINK_WITHOUT_CASE",
+    "physicalPayloadPathCount": 0
+  },
+  "sourceRule": {
+    "id": "ENT-ELEM-34",
+    "element": "34",
+    "name": "End-of-Data Indicator",
+    "characterType": "A",
+    "maximumLengthBytes": 1,
+    "representation": "Fixed length of one alpha character",
+    "validCode": "~",
+    "validCodeAsciiAlphabetic": false,
+    "processingRuleSegments": [
+      "DL1",
+      "DL2",
+      "DL3",
+      "DL4",
+      "DL5"
+    ],
+    "dl6Table": {
+      "section": "12.47",
+      "field": 4,
+      "element": "34",
+      "fixedValue": "~",
+      "source": "Host"
+    },
+    "sourceInternalTensions": [
+      "The generic Element 34 definition says Character Type A and fixed one alpha character, but its sole valid code '~' is ASCII punctuation, not alphabetic.",
+      "The generic processing-rule list names DL1-DL5, while Section 12.47 explicitly includes Element 34 as DL6 field 4 with fixed value '~'."
+    ],
+    "sourceDisposition": "SOURCE_INTERNAL_INCONSISTENCY_REQUIRES_AUTHORIZED_INTERPRETATION",
+    "sourceEvidence": [
+      {
+        "section": "12.6",
+        "startLine": 20267,
+        "quote": "Number: 34 Name: End-of-Data Indicator"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20268,
+        "quote": "Character Type: A Maximum Length: 1 byte"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20270,
+        "quote": "Representation: Fixed length of one alpha character"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20272,
+        "quote": "Processing Rules: It is used in the following data segments:"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20273,
+        "quote": "Merchant Data Segment (No. DL1)"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20274,
+        "quote": "Dial String Data Segment (No. DL2)"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20275,
+        "quote": "Date and Time Data Segment (No. DL3)"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20276,
+        "quote": "Software Dial Load Data Segment (No. DL4)"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20277,
+        "quote": "Software IP Load Data Segment (No. DL5)"
+      },
+      {
+        "section": "12.6",
+        "startLine": 20278,
+        "quote": "Valid Codes/Values: ~"
+      },
+      {
+        "section": "12.47",
+        "startLine": 17532,
+        "quote": "12.47 Store and Forward Data Segment"
+      },
+      {
+        "section": "12.47",
+        "startLine": 17570,
+        "quote": "4 34 End-of-Data"
+      },
+      {
+        "section": "12.47",
+        "startLine": 17571,
+        "quote": "Indicator"
+      },
+      {
+        "section": "12.47",
+        "startLine": 17572,
+        "quote": "1 R Indicates the end of the data segment."
+      },
+      {
+        "section": "12.47",
+        "startLine": 17573,
+        "quote": "Fixed value: ~"
+      },
+      {
+        "section": "12.47",
+        "startLine": 17574,
+        "quote": "Source: Host"
+      }
+    ],
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "testCrosswalk": {
+    "exactAnchorCandidates": [
+      "SEGDL3-R-001",
+      "SEGDL4-R-002",
+      "SEGDL5-R-002",
+      "SEGDL6-R-002"
+    ],
+    "rankedCandidatesAreLeadsOnly": true,
+    "rankedCandidates": [
+      {
+        "candidateId": "SEGDL3-R-001",
+        "packageId": "BR-RULE-SEGDL3-R-001",
+        "title": "Segment DL3 maximum length is 23 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed ':' (field 1), End-of-Data Indicator fixed '~' (last field)",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.44",
+            "segment": "DL3",
+            "element": "24,34",
+            "rule": "max-length-23-markers"
+          }
+        ],
+        "claimedSegment": "DL3",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL3-R-001"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL3-R-001"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL3-R-001"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL4-R-002",
+        "packageId": "BR-RULE-SEGDL4-R-002",
+        "title": "Segment DL4 maximum length is 52 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '@' (field 1), End-of-Data Indicator fixed '~' (last field)",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.45",
+            "segment": "DL4",
+            "element": "24,34",
+            "rule": "max-length-52-markers"
+          }
+        ],
+        "claimedSegment": "DL4",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL4-R-002"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL4-R-002"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL4-R-002"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL5-R-002",
+        "packageId": "BR-RULE-SEGDL5-R-002",
+        "title": "Segment DL5 maximum length is 64 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '$' (field 1), End-of-Data Indicator fixed '~' (last field)",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.46",
+            "segment": "DL5",
+            "rule": "max-length-64-markers",
+            "element": "24,34"
+          }
+        ],
+        "claimedSegment": "DL5",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL5-R-002"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL5-R-002"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL5-R-002"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL6-R-002",
+        "packageId": "BR-RULE-SEGDL6-R-002",
+        "title": "Segment DL6 maximum length is 9 alphanumeric characters; originates at BUYPASS (Host); Data Type Indicator fixed '\\' (field 1), End-of-Data Indicator fixed '~' (last field)",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.47",
+            "segment": "DL6",
+            "rule": "max-length-9-markers",
+            "element": "24,34"
+          }
+        ],
+        "claimedSegment": "DL6",
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL6-R-002"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-002"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-002"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL1-R-002",
+        "packageId": "BR-RULE-SEGDL1-R-002",
+        "title": "Segment DL1 uses NO Field Separators; instead it is self-delimited by a Data Type Indicator ('#', field 1) and an End-of-Data Indicator ('~', last field) \u2014 a distinct delimiting convention from the numbered segments (85/84 Segment Type/Length pair)",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.42",
+            "segment": "DL1",
+            "element": "24,34",
+            "rule": "data-type-end-of-data-markers-not-segment-type-length"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL1-R-002"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-002"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL1-R-002"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL6-R-006",
+        "packageId": "BR-RULE-SEGDL6-R-006",
+        "title": "Segment DL6 is Data Block No. 4 of the Table Load Response: it follows the End-of-Load Indicator '*' that closes Data Block No. 3 and is itself followed by an End-of-Load Indicator '*'; it is sent only on a Table Load Response",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "11.7.1.2",
+            "segment": "DL6",
+            "element": "35",
+            "rule": "table-load-response-data-block-4-after-end-of-load"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-006"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEG111-R-003",
+        "packageId": "BR-RULE-SEG111-R-003",
+        "title": "Indicator length",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "12.10",
+            "segment": "111",
+            "element": "111",
+            "rule": "segment-111-indicator-length"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG111-R-003"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "packageId": "BR-SEG100-E2-REQUEST-LENGTH",
+        "title": "Non-TransArmor request Element 2 does not exceed 24 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "2",
+            "rule": "account-number"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E2-REQUEST-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E2-REQUEST-LENGTH-24",
+            "TC-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E2-REQUEST-LENGTH-24",
+            "TD-SEG100-E2-REQUEST-LENGTH-25"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "BR-SEG100-E12-MAX-LENGTH",
+        "packageId": "BR-SEG100-E12-MAX-LENGTH",
+        "title": "A supplied Element 12 value does not exceed 51 bytes.",
+        "status": null,
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "100",
+            "element": "12",
+            "rule": "card-discretionary-block-data"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": null,
+          "scenarioIds": [
+            "TS-SEG100-E12-MAX-LENGTH"
+          ],
+          "scenarioStatuses": [
+            "EXECUTION_READY"
+          ],
+          "caseIds": [
+            "TC-SEG100-E12-MAX-LENGTH-51",
+            "TC-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "caseStatuses": [
+            "EXECUTION_READY",
+            "EXECUTION_READY"
+          ],
+          "testDataIds": [
+            "TD-SEG100-E12-MAX-LENGTH-51",
+            "TD-SEG100-E12-MAX-LENGTH-52"
+          ],
+          "testDataReadiness": [
+            "EXECUTABLE",
+            "EXECUTABLE"
+          ],
+          "testDataExpectedValidation": [
+            "PASS",
+            "FAIL"
+          ]
+        }
+      },
+      {
+        "candidateId": "SEGDL6-R-005",
+        "packageId": "BR-RULE-SEGDL6-R-005",
+        "title": "Start Time and End Time (Element 166) are numeric, fixed length four digits HHMM, valid values 0000-2359",
+        "status": "DRAFT_REVIEW_REQUIRED",
+        "sourceAnchors": [
+          {
+            "specification": "ATL105",
+            "version": "2026-3",
+            "section": "13.2",
+            "segment": "DL6",
+            "element": "166",
+            "rule": "start-end-time-hhmm-0000-2359"
+          }
+        ],
+        "claimedSegment": null,
+        "chain": {
+          "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+          "scenarioIds": [
+            "TS-REVIEW-BR-RULE-SEGDL6-R-005"
+          ],
+          "scenarioStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "caseIds": [
+            "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-005"
+          ],
+          "caseStatuses": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataIds": [
+            "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-005"
+          ],
+          "testDataReadiness": [
+            "REVIEW_REQUIRED"
+          ],
+          "testDataExpectedValidation": [
+            "REVIEW_REQUIRED"
+          ]
+        }
+      }
+    ],
+    "dl3ToDl5Candidates": "Their titles use the '~' terminator and align with the Element 34 processing list; all remain draft/review-required and their chains are placeholders.",
+    "dl6Candidate": {
+      "id": "SEGDL6-R-002",
+      "sourceReconciliation": "The direct Test lead is consistent with the DL6 table layout; the generic Element 34 processing list omits DL6. This source inconsistency remains unresolved.",
+      "chain": {
+        "businessRequirementStatus": "DRAFT_REVIEW_REQUIRED",
+        "scenarioIds": [
+          "TS-REVIEW-BR-RULE-SEGDL6-R-002"
+        ],
+        "scenarioStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "caseIds": [
+          "TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-002"
+        ],
+        "caseStatuses": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataIds": [
+          "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEGDL6-R-002"
+        ],
+        "testDataReadiness": [
+          "REVIEW_REQUIRED"
+        ],
+        "testDataExpectedValidation": [
+          "REVIEW_REQUIRED"
+        ]
+      }
+    }
+  },
+  "caseReview": {
+    "aiCaseCount": 0,
+    "scenarioCount": 1,
+    "evidence": "SCENARIO_ONLY_NO_LINKED_CASES_OR_PAYLOAD_PATHS",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatClaim": "One-byte/fixed-alpha representation aligns with the generic type text, but the explicit valid code '~' contradicts an alphabetic-only reading.",
+    "segmentScope": "DL3-DL5 appear in the Element 34 processing list; DL6 appears in the dedicated DL6 layout but is omitted from that list.",
+    "overall": "PRELIMINARY_SOURCE_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "casePayloadsInspected": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

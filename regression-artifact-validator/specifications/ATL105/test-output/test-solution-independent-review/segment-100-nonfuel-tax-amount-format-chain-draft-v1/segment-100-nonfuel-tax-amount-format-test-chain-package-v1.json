@@ -1,0 +1,117 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-NONFUEL-TAX-AMOUNT-FORMAT-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Group parallel Element 58/99 numeric, assumed-decimal, and Amex/non-Amex width claims while preserving each element and AI BR identity.",
+      "dataPolicy": "Symbolic boundary values only; card-brand selection, currency, amount semantics, and complete Segment 100 fixtures require review.",
+      "baselinePolicy": "Range/width draft only; existing net Nonfuel and total Tax Amount rules remain separate and unchanged.",
+      "promotionGate": "Authorized Test review must confirm card-brand encoding, value-to-decimal serialization, relevant transaction context, and expected outcomes before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {"id": "BR-RULE-SEG100-E58-WIDTH-DRAFT", "title": "Nonfuel Amount Element 58 allows eight digits for Amex and seven for other card types.", "sourceAiBrId": "REQ-SRC-ATL105-PDF-001:1804", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "segment": "100", "element": "58", "rule": "nonfuel-amount-card-width"}},
+    {"id": "BR-RULE-SEG100-E58-MAX-DRAFT", "title": "Nonfuel Amount Element 58 has maximum length 8 bytes.", "sourceAiBrId": "REQ-SRC-ATL105-PDF-001:2369", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "segment": "100", "element": "58", "rule": "nonfuel-amount-max-length"}},
+    {"id": "BR-RULE-SEG100-E99-WIDTH-DRAFT", "title": "Tax Amount Element 99 allows eight digits for Amex and seven for other card types.", "sourceAiBrId": "REQ-SRC-ATL105-PDF-001:1953", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "segment": "100", "element": "99", "rule": "tax-amount-card-width"}},
+    {"id": "BR-RULE-SEG100-E99-MAX-DRAFT", "title": "Tax Amount Element 99 has maximum length 8 bytes.", "sourceAiBrId": "REQ-SRC-ATL105-PDF-001:2370", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "segment": "100", "element": "99", "rule": "tax-amount-max-length"}},
+    {"id": "BR-RULE-SEG100-R-046", "title": "Nonfuel Amount follows the net nonfuel amount rule", "status": "DRAFT_REVIEW_REQUIRED", "relationship": "SEPARATE_AMOUNT_SEMANTICS_NOT_TESTED_BY_WIDTH_DRAFT"},
+    {"id": "BR-RULE-SEG100-R-047", "title": "Tax Amount follows the total tax amount rule", "status": "DRAFT_REVIEW_REQUIRED", "relationship": "SEPARATE_AMOUNT_SEMANTICS_NOT_TESTED_BY_WIDTH_DRAFT"}
+  ],
+  "sourceEvidence": [
+    {"id": "ATL105-2026-3-E58-NUMERIC-MAX", "sourcePage": 386, "startLine": 20713, "element": "58", "quote": "Number: 58 Name: Nonfuel Amount Character Type: N Maximum Length: 8 bytes", "interpretation": "Element 58 is numeric with an eight-byte maximum."},
+    {"id": "ATL105-2026-3-E58-DECIMALS", "sourcePage": 386, "startLine": 20716, "element": "58", "quote": "Representation: Variable length of up to eight digits with two assumed decimal places", "interpretation": "Element 58 has two assumed decimal places."},
+    {"id": "ATL105-2026-3-E58-CARD-WIDTHS", "sourcePage": 386, "startLine": 20718, "element": "58", "quote": "Note: A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.", "interpretation": "The eight-digit width is Amex-only; other card types are limited to seven digits."},
+    {"id": "ATL105-2026-3-E58-RANGE", "sourcePage": 386, "startLine": 20736, "element": "58", "quote": "Valid Codes/Values: 1–99999999", "interpretation": "The general valid-value range is 1 through 99999999, subject to card-specific representation limits."},
+    {"id": "ATL105-2026-3-E99-NUMERIC-MAX", "sourcePage": 408, "startLine": 21703, "element": "99", "quote": "Number: 99 Name: Tax Amount Character Type: N Maximum Length: 8 bytes", "interpretation": "Element 99 is numeric with an eight-byte maximum."},
+    {"id": "ATL105-2026-3-E99-DECIMALS", "sourcePage": 408, "startLine": 21706, "element": "99", "quote": "Representation: Variable length of up to eight digits with two assumed decimal places", "interpretation": "Element 99 has two assumed decimal places."},
+    {"id": "ATL105-2026-3-E99-CARD-WIDTHS", "sourcePage": 408, "startLine": 21708, "element": "99", "quote": "Note: A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.", "interpretation": "The eight-digit width is Amex-only; other card types are limited to seven digits."},
+    {"id": "ATL105-2026-3-E99-RANGE", "sourcePage": 408, "startLine": 21717, "element": "99", "quote": "Valid Codes/Values: 1–9999999", "interpretation": "The valid-value range ends at 9999999 despite the Amex eight-byte capacity."}
+  ],
+  "aiReviewReferences": {
+    "obligationGroups": ["OBL-05C7A1288388", "OBL-A2A87EE1F583"],
+    "aiBrs": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "claim": "Nonfuel Amount max length is 8 bytes for American Express cards only; 7 bytes for all other card types."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "claim": "Nonfuel Amount has maximum length 8."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "claim": "Tax Amount maximum length is 8 bytes for American Express cards only; 7 bytes for all other card types."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "claim": "Tax Amount has maximum length 8."}
+    ],
+    "linkedCases": [
+      {"caseId": "TC-008826", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "ebbe1e28bbb06ea6ba81ea44f01e1e6c0562eb112f3851cf7b04a1e2d453335c"},
+      {"caseId": "TC-008827", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "e52b5c9c171ca5db77014a24887e9d777dab941403f9948946c6a6e6788d450b"},
+      {"caseId": "TC-008828", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "670bfd8fa934f4234d9f5d5c2d38433fc04807f2f013f07943047312a8820b71"},
+      {"caseId": "TC-008829", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "fa0f9ee9feb5f1adb8150e3d9ee538981f26a2273ea797faa4e67188f3d87096"},
+      {"caseId": "TC-008830", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "8cd17ed45407562aa49e1880f199b0ceb549d448b7849c180355b708fb6f416b"},
+      {"caseId": "TC-008831", "aiBrId": "REQ-SRC-ATL105-PDF-001:1804", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "68fb64a7214a87096e55411f35b8bfead1223303b3039b462f6f76f0f222b0d5"},
+      {"caseId": "TC-010401", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "3e45bbb16bb3e11fde7e08b1a3e6e5044a45b328a0b2ca494152f95f5dde8443"},
+      {"caseId": "TC-010402", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "c8fa4f651d729162eeba5192bda4c80a5edb0006b6553cdd04c27e410d133bc3"},
+      {"caseId": "TC-010403", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "7bcc229c358717cde9ec1a025cd557ca6280f93bb40c782d7ba93821e335bbc8"},
+      {"caseId": "TC-010404", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "728bbe42b52e5b836ed17b25cac945f800a740bda2e153794d9fc12d4e150b0e"},
+      {"caseId": "TC-010405", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "1b5c398bfa1025666ca718f94d8bc595508584ac89098d3c720be2cf35100304"},
+      {"caseId": "TC-010406", "aiBrId": "REQ-SRC-ATL105-PDF-001:2369", "element58": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "7f194939df428f239382c63e36d284830293d389dd7b70d79f57ddecea980951"},
+      {"caseId": "TC-009260", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "163c3edadf2dc524c1469efd454c774fbb0ae2bff8e7caa5dc07b13c340b26fc"},
+      {"caseId": "TC-009261", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f7969b71bdc522975b9ed04dd9264059cc16bbd55fad2cef7bb37ba46b29f697"},
+      {"caseId": "TC-009262", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "0de882682d4773a7ee43820f6d6f84206d991511006d679bd20853d43ab17604"},
+      {"caseId": "TC-009263", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "7011fcc796b5e92d1bac1a577bd5b58e62836daf947f99472fb0d5ec9a36ec21"},
+      {"caseId": "TC-009264", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "fc85ad5e4a9c3ccb219594526e0f32b40e23ce55a2518e279cca02ba9abc19dd"},
+      {"caseId": "TC-009265", "aiBrId": "REQ-SRC-ATL105-PDF-001:1953", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "894732d9614567c221795261806ee532fff1dd6eb23f367b1a1d1935716e0782"},
+      {"caseId": "TC-010407", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "06fd5820aa54fd68dd851aa84fd4354953095fa5ce89b40d5d4fdc0e043a27fe"},
+      {"caseId": "TC-010408", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "d17880d06d36ee2cbe15b2bf0c2b344c35434890db9e8247f10612b3f703f3ef"},
+      {"caseId": "TC-010409", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "67afc5dba1932dd7ea2ead94a2bac3f53f58ab8da04ec6bb563e8029b7c39a3f"},
+      {"caseId": "TC-010410", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "c679d708901df5ac4c8466a6b33eee814b025768c005218ca4a7e4a91c4c7145"},
+      {"caseId": "TC-010411", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "7e1e9b0f7e8a34c8bca05d612291047683925b5d7480971497017376dffd4b3f"},
+      {"caseId": "TC-010412", "aiBrId": "REQ-SRC-ATL105-PDF-001:2370", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f5cb1f68ec91720e2eb5458bcd23736f087d18070eea9d6d51aff456b7138c21"}
+    ],
+    "assessment": "All 24 cases across four AI BR records are retained individually. The four claims concern two distinct elements; their card-width rules are parallel, but their value ceilings and semantic contexts differ.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG100-E58-WIDTH", "requirementIds": ["BR-RULE-SEG100-E58-WIDTH-DRAFT", "BR-RULE-SEG100-E58-MAX-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-E58-NUMERIC-MAX", "ATL105-2026-3-E58-DECIMALS", "ATL105-2026-3-E58-CARD-WIDTHS", "ATL105-2026-3-E58-RANGE"], "intent": "For authorized Segment 100 Nonfuel Amount contexts, exercise maximum and out-of-range values separately for Amex and non-Amex card types.", "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E99-WIDTH", "requirementIds": ["BR-RULE-SEG100-E99-WIDTH-DRAFT", "BR-RULE-SEG100-E99-MAX-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-E99-NUMERIC-MAX", "ATL105-2026-3-E99-DECIMALS", "ATL105-2026-3-E99-CARD-WIDTHS", "ATL105-2026-3-E99-RANGE"], "intent": "For authorized Segment 100 Tax Amount contexts, exercise maximum and out-of-range values separately for Amex and non-Amex card types.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG100-E58-AMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E58-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E58-AMEX-MAX"], "assertion": "Amex Element 58 value 99999999 is within the documented range and eight-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E58-AMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E58-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E58-AMEX-ABOVE"], "assertion": "Amex Element 58 value 100000000 exceeds the valid-value ceiling and maximum width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E58-NONAMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E58-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E58-NONAMEX-MAX"], "assertion": "Non-Amex Element 58 value 9999999 is within the seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E58-NONAMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E58-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E58-NONAMEX-ABOVE"], "assertion": "Non-Amex Element 58 value 10000000 exceeds the seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E99-AMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E99-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E99-AMEX-MAX"], "assertion": "Amex Element 99 value 9999999 is within the valid-value ceiling and eight-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E99-AMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E99-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E99-AMEX-ABOVE"], "assertion": "Amex Element 99 value 10000000 exceeds the documented valid-value ceiling.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E99-NONAMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E99-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E99-NONAMEX-MAX"], "assertion": "Non-Amex Element 99 value 9999999 is within the valid-value ceiling and seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E99-NONAMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E99-WIDTH"], "testDataIds": ["TD-DRAFT-SEG100-E99-NONAMEX-ABOVE"], "assertion": "Non-Amex Element 99 value 10000000 exceeds the documented valid-value ceiling and seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG100-E58-AMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E58-AMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "58", "value": "99999999", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E58-AMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E58-AMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "58", "value": "100000000", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E58-NONAMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E58-NONAMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "58", "value": "9999999", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E58-NONAMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E58-NONAMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "58", "value": "10000000", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E99-AMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E99-AMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "99", "value": "9999999", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E99-AMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E99-AMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "99", "value": "10000000", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E99-NONAMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E99-NONAMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "99", "value": "9999999", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E99-NONAMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E99-NONAMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "99", "value": "10000000", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}}
+  ],
+  "openQuestions": [
+    "Confirm how Amex versus non-Amex card width is selected and encoded in complete fixtures.",
+    "Confirm assumed-decimal serialization and relevant transaction context for both amount elements.",
+    "Resolve the distinction that Element 99's Amex width is eight bytes while its valid-value ceiling is only seven digits.",
+    "Keep Element 58 net amount and Element 99 total tax semantics independent from these format vectors; review expected outcomes before execution."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

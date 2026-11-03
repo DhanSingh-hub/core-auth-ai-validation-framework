@@ -1,0 +1,62 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG104-DMI-INVOICE-CONDITION-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN_CONDITION_UNRESOLVED",
+  "obligationGroupId": "OBL-076522023EAB",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:3302",
+  "aiStatement": "In Purchase Card Data Segment (Data Segment No. 104), field 10 (Direct Marketing Invoice Number) is conditional and must be present only when its documented condition holds.",
+  "decisions": {
+    "brAlignment": "PARTIAL_SOURCE_USE_SUPPORTED_TRIGGER_NOT_DEFINED",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE_NO_TRIGGER_CONTEXT",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG104-FIELD10-E29-C", "ATL105-2026-3-E29-PURPOSE", "ATL105-2026-3-E29-PROCESSING"],
+    "facts": [
+      "Segment 104 field 10 / Element 29 is marked Conditional and identifies an invoice number in a direct marketing transaction.",
+      "Chapter 13 describes Element 29's purpose as the invoice number in a Direct Marketing/Address Verification System Request.",
+      "The processing rule says the field is used in that request; the cited source excerpt does not specify a transaction flag or other independent activation predicate."
+    ],
+    "separation": "SEG104-R-014 concerns format when populated (alphanumeric, maximum ten characters); it does not by itself define conditional applicability."
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG104-R-014",
+    "scenario": "TS-REVIEW-BR-RULE-SEG104-R-014",
+    "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-014",
+    "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG104-R-014",
+    "status": "REVIEW_REQUIRED",
+    "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]
+  },
+  "aiCaseReview": {
+    "cases": [
+      {"caseId": "TC-012104", "transaction": "EMV Financial Transaction Request", "element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f3e7f7df1b62f3c88287dfa1335808752700be114a487bf6ed2b3dba01bf8a4d"},
+      {"caseId": "TC-012105", "transaction": "Financial Transaction Request", "element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "99b21e86907f0dcf116612db14e3426f2a8e316fd0ad686dbee7f96ee380d231"},
+      {"caseId": "TC-012106", "transaction": "Financial Transactions", "element29": "DECLARED_OMISSION_NO_EXACT_FIELD", "purchaseCode80": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "bc77017b3e6d7497c6302b48a44e12971be9d59fcfbefbd70dce468350ce315d"}
+    ],
+    "assessment": "The bounded screen shows Segment 104 context but Element 29, Purchase Code 80, and PC amounts 72-74 declared omitted in all three cases. It does not establish a Direct Marketing/AVS trigger, nor does it show a populated invoice number."
+  },
+  "supplementalDraft": {
+    "path": "segment-104-direct-marketing-invoice-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 2,
+    "testDataDesignCount": 2,
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Authorized definition of the Direct Marketing/AVS condition and how a test proves that condition without relying on Element 29 itself.",
+    "Full Segment 104 request fixture in a source-justified direct-marketing context and a contrasting non-DM/AVS context.",
+    "Independent Test-owner decision on whether Element 29 omission is permitted outside DM/AVS requests.",
+    "Separate format review for a populated invoice number under SEG104-R-014."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerExpectedOutcomeAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

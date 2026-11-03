@@ -1,0 +1,124 @@
+{
+  "artifact": "PRELIMINARY-AI-BR-TO-TEST-BR-CHAIN-REVIEW",
+  "batchId": "003",
+  "reviewedOn": "2026-10-15",
+  "reviewLevel": "AI_PRELIMINARY_REVIEW_NOT_AUTHORIZED_ADJUDICATION",
+  "scope": "First eight AI BRs assigned to scheduled batch 003.",
+  "aiScenarioApprovalRequired": false,
+  "semanticMatchesConfirmed": 0,
+  "records": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:102",
+      "aiStatement": "Ship-to Postal Code must be alphanumeric and must not exceed 10 bytes.",
+      "aiSourceAnchor": {"segment": "104", "element": "90"},
+      "aiChain": {"scenarioCount": 12, "caseCount": 12, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG104-R-012", "relation": "STRONG_FIELD_SCOPE_OVERLAP_PROVISIONAL_RULE", "rationale": "Same segment/element. Test BR covers strict ZIP+4 or general alphanumeric up to 10 characters, but labels the format provisional and requires SME review; it is not confirmed equivalent to a 10-byte maximum."}
+      ],
+      "preliminaryDisposition": "STRONG_PROVISIONAL_CANDIDATE_SOURCE_AND_BYTE_CHARACTER_REVIEW_REQUIRED",
+      "testChainStatus": "DRAFT_REVIEW_REQUIRED placeholder chain; Test rule itself is explicitly provisional.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:103",
+      "aiStatement": "Software Load Phone Number must be alphanumeric and must not exceed 18 bytes.",
+      "aiSourceAnchor": {"segment": "DL4", "element": "91"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "STRONG_CONSTRAINT_OVERLAP_WITHIN_COMPOSITE_RULE", "rationale": "The Test BR explicitly states Software Load Phone Number (element 91) is alphanumeric up to 18. This is the same field and constraint; the Test BR also contains five other field obligations."},
+        {"testBrId": "SEGDL4-R-003", "relation": "FIELD_PRESENCE_ONLY", "rationale": "Composite required-field list includes element 91 but provides no format constraint."}
+      ],
+      "preliminaryDisposition": "STRONG_FIELD_CONSTRAINT_CANDIDATE_COMPOSITE_TEST_RULE",
+      "testChainStatus": "Candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; the AI scenario has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:104",
+      "aiStatement": "Software Load Request Date must be numeric and must not exceed 6 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["DL4", "DL5"], "element": "92"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP", "rationale": "Same DL4 field; MMDDYY specifies a six-digit date representation. The Test BR additionally bundles other field rules."},
+        {"testBrId": "SEGDL5-R-005", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP", "rationale": "Repeats the MMDDYY rule for the corresponding DL5 request date; AI segment attribution includes DL5."}
+      ],
+      "preliminaryDisposition": "STRONG_CONSTRAINT_CANDIDATES_WITH_COMPOSITE_SCOPE",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; AI has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:105",
+      "aiStatement": "Software Load Request Time must be numeric and must not exceed 4 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["DL4", "DL5"], "element": "93"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP", "rationale": "Same DL4 field; HHMM specifies a four-digit time representation within the AI limit."},
+        {"testBrId": "SEGDL5-R-005", "relation": "STRONG_FIELD_CONSTRAINT_OVERLAP", "rationale": "Repeats the HHMM rule for the corresponding DL5 request time; AI segment attribution includes DL5."}
+      ],
+      "preliminaryDisposition": "STRONG_CONSTRAINT_CANDIDATES_WITH_COMPOSITE_SCOPE",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; AI has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:106",
+      "aiStatement": "Software Load Type must be alphabetic and must not exceed 1 byte.",
+      "aiSourceAnchor": {"candidateSegments": ["DL4", "DL5"], "element": "94"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "FIELD_TYPE_AND_LENGTH_OVERLAP_WITH_ENUMERATION", "rationale": "Test BR restricts the field to one-character F/P values, meeting the one-character alphabetic predicate and adding an enum restriction."},
+        {"testBrId": "SEGDL5-R-005", "relation": "FIELD_TYPE_AND_LENGTH_OVERLAP_WITH_ENUMERATION", "rationale": "Repeats the F/P values for DL5; AI segment attribution includes DL5."}
+      ],
+      "preliminaryDisposition": "STRONG_SUBSET_CANDIDATES_ENUMERATION_ADDS_SCOPE",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; AI has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:107",
+      "aiStatement": "Software Load Type must be F (full application load) or P (partial application load).",
+      "aiSourceAnchor": {"candidateSegments": ["DL4", "DL5"], "element": "94"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "DIRECT_FIELD_VALUE_OVERLAP_COMPOSITE_RULE", "rationale": "The Test BR states the same F/P values for element 94 in DL4, alongside other software-load field constraints."},
+        {"testBrId": "SEGDL5-R-005", "relation": "DIRECT_FIELD_VALUE_OVERLAP_COMPOSITE_RULE", "rationale": "The Test BR repeats the same F/P values for element 94 in DL5; AI segment attribution includes DL5."}
+      ],
+      "preliminaryDisposition": "STRONG_VALUE_SET_CANDIDATES_COMPOSITE_TEST_RULES",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; AI has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:108",
+      "aiStatement": "Software Terminal Record ID must be alphanumeric and must not exceed 13 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["DL4", "DL5"], "element": "95"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL4-R-005", "relation": "FORMAT_OVERLAP_FIXED_LENGTH_VERSUS_MAXIMUM", "rationale": "Test BR specifies fixed-length AN 13 for element 95 in DL4. This shares the character set and upper bound, but fixed length is stronger than the AI maximum-only statement."},
+        {"testBrId": "SEGDL5-R-005", "relation": "FORMAT_OVERLAP_FIXED_LENGTH_VERSUS_MAXIMUM", "rationale": "Repeats fixed-length AN 13 for DL5; same fixed-length versus maximum distinction applies."}
+      ],
+      "preliminaryDisposition": "STRONG_FORMAT_CANDIDATES_LENGTH_SEMANTICS_DIFFER",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders; AI has no linked case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:109",
+      "aiStatement": "Software Version must be alphanumeric and must not exceed 8 bytes.",
+      "aiSourceAnchor": {"candidateSegments": ["105", "119", "132"], "element": "96"},
+      "aiChain": {"scenarioCount": 12, "caseCount": 12, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG105-R-011", "relation": "SAME_FIELD_PRESENCE_ONLY", "rationale": "Same segment/element Software Version, but the Test BR says only that the field is required; it does not state AN or an eight-byte limit."},
+        {"testBrId": "SEG119-R-017", "relation": "SAME_FIELD_PRESENCE_ONLY", "rationale": "Same field in Segment 119; requiredness only, no format or length constraint."},
+        {"testBrId": "SEG132-R-008", "relation": "SAME_FIELD_WITH_COMPOSITE_DEVICE_VERSION_SCOPE", "rationale": "Includes Software Version element 96 as a required identifier with other version fields, but does not specify AN or eight-byte length."}
+      ],
+      "preliminaryDisposition": "RELATED_REQUIRED_FIELD_CANDIDATES_FORMAT_RULE_NOT_IDENTIFIED",
+      "excludedLead": {"testBrId": "SEGDL4-R-005", "reason": "Its New Software Version is element 57 in DL4, not Software Version element 96 in segments 105/119/132."},
+      "testChainStatus": "Candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id" : "TD-APPI-C034-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C034-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C034-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-31",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t034-r002-APPI-C034-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C034-02",
+        "tableId" : "034",
+        "ruleIds" : [ "APPI-T034-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-31",
+          "startLine" : 28784,
+          "endLine" : 28791
+        } ],
+        "logicalFields" : {
+          "brand" : "Visa",
+          "firstNameField" : "SYN                                ",
+          "lastNameField" : "TEST                               ",
+          "middleNameField" : "J                                  ",
+          "componentOrder" : [ "firstNameField", "middleNameField", "lastNameField" ]
+        },
+        "clearScope" : [ "All three concrete35-character components", "Visa first/last/middle order" ],
+        "excludedClaims" : [ "Shorter/empty middle encoding", "Names grammar", "105 aggregate wire encoding" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Visa component order first,last,middle",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "componentOrder",
+          "value" : [ "firstNameField", "middleNameField", "lastNameField" ],
+          "targetedNegative" : "Middle moved before last"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

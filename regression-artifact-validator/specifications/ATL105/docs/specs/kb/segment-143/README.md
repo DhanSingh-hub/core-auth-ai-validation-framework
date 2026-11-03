@@ -19,6 +19,27 @@ Requires paired Segment 102 (same order), format-only validation (no value judge
 
 ## `[PROVISIONAL]` Items — Both Open
 
+### Independent actual companion and wire execution
+
+The actual143 adapter binds the existing same-count/same-order predicate to actual
+observed102 product entries. A metadata `segment102ProductCodes` list cannot replace
+missing actual102. Ten `TAX7-*` canonical/intake probes replay this existing behavior
+with positive, contradictory and missing actual companions, independent raw wire,
+N-flag omission and early-terminationFS checks. They are added executions, not a new
+tax arithmetic oracle. Missing raw evidence is review; malformed observed raw data
+is invalid. Empty tax fields underN are not equivalent to structurally absent fields.
+QST and non-Canadian scope remain explicit boundaries; no value-level tax formula,
+merchant tax policy or rounding rule is inferred.
+
+Eight additional `TAX8-*` canonical/intake probes measure three versus four tax
+entries, observed empty versus absent lists, two-tax physical backslash versus
+prematureFS, and a nine-digit amount accepted without tax-rate arithmetic.
+The existing tax oracle now exposes one aggregate tax-count finding; absent
+actual lists review without metadata fill. Incomplete actual tax bodies cannot
+establish expected physical grammar. Numbered/default legacy missing-list
+semantics remain unchanged. The source-only atomic prefix links these executions,
+but is not a whole-section or whole-chapter denominator.
+
 See [SME/TBA Input Register](segment-143-sme-tba-input-register.md): Tax Type scope beyond Canada; missing AI/Test artifact package.
 
 ## Do-Not-Assume Rules

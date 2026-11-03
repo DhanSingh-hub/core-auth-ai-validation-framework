@@ -9,6 +9,13 @@
 
 ## Learning Module Index
 
+The opt-in actual intake now executes Section 12.8's ordered interior FS,
+explicit empty fields, measured N3 wire length and 232-byte cap. Both observed
+terminal-FS variants retain an explicit framing boundary because the source
+does not prescribe the final terminator. This does not certify the distinct
+Electronic Mail response layout or change default intake. See the current
+[Chapter 12 checkpoint](../chapter-coverage-gap-register.md).
+
 - [Segment 109 Rule Catalog (authoritative)](coverage/segment-109-rule-catalog.json)
 - [Segment 109 SME/TBA Input Register](segment-109-sme-tba-input-register.md)
 - [Segment 109 SME/TBA Learning Note](segment-109-sme-tba-learning-note.md)

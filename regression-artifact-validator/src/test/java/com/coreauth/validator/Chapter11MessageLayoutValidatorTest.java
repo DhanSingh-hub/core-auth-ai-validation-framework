@@ -1,0 +1,157 @@
+package com.coreauth.validator;
+
+import com.coreauth.validator.canonical.Chapter11MessageLayoutValidator;
+import com.coreauth.validator.canonical.Chapter12SegmentPayloadValidator.Status;
+import com.coreauth.validator.paths.Atl105Paths;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class Chapter11MessageLayoutValidatorTest {
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    private ObjectNode financial(String family) {
+        ObjectNode input = mapper.createObjectNode().put("specificationVersion", "2026-3").put("messageFamily", family);
+        input.putObject("elements").put("55", "ATL105").put("63", "01");
+        input.putArray("segments").addObject().put("segment", "100").put("dataSection", 2);
+        return input;
+    }
+
+    @Test
+    void printDataDispatchUsesParentFamilyDirectionAndInclusionFlagWithoutMutatingInput() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Response").put("completeness", "PARTIAL");
+        ((ObjectNode) input.path("elements")).put("115", "1");
+        ObjectNode observation = mapper.createObjectNode().put("specificationVersion", "2026-3").put("segment", "115");
+        observation.putObject("elements").put("85", "115").put("84", "0014").put("152", "TERMS");
+        observation.putObject("context").put("requestLoyaltyVersion", "2");
+        observation.put("serializedSegment", "115\u001c0014\u001cTERMS");
+        input.putArray("segments").addObject().put("segment", "115").put("dataSection", 2).set("observation", observation);
+        var before = input.deepCopy();
+        var result = validator.validate(input);
+        assertThat(result.findings()).anyMatch(f -> f.ruleId().equals("SEG115-R-006")
+                && f.scope().equals("wire-declared-length") && f.status() == Status.CHECKS_PASSED);
+        assertThat(input).isEqualTo(before);
+        ((ObjectNode) input.path("elements")).put("115", "0");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.ruleId().equals("SEG115-R-002") && f.status() == Status.INVALID);
+        observation.put("messageFamily", "Financial Transaction Request").put("direction", "REQUEST");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("segment-context") && f.status() == Status.INVALID);
+    }
+
+    @Test
+    void financialCountsAreOccurrencesNotTemplateAlternativeCount() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Request");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        ((ObjectNode) input.path("elements")).put("63", "14");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        ((ObjectNode) input.path("elements")).put("63", "02");
+        input.withArray("segments").addObject().put("segment", "105").put("dataSection", 3);
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+    }
+
+    @Test
+    void standardRequestAllowsSevenTotalSegmentsButRejectsAnEighth() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Request");
+        for (String id : java.util.List.of("101", "102", "103", "104", "111", "123")) {
+            input.withArray("segments").addObject().put("segment", id).put("dataSection", 3);
+        }
+        ((ObjectNode) input.path("elements")).put("63", "07");
+        var sevenSegments = validator.validate(input);
+        assertThat(sevenSegments.findings()).noneMatch(f -> f.scope().equals("segment-slots")
+                && f.status() == Status.INVALID);
+        assertThat(sevenSegments.findings()).noneMatch(f -> f.scope().equals("segment-count")
+                && f.status() == Status.INVALID);
+
+        input.withArray("segments").addObject().put("segment", "135").put("dataSection", 3);
+        ((ObjectNode) input.path("elements")).put("63", "08");
+        assertThat(validator.validate(input).findings()).anyMatch(f -> f.scope().equals("segment-slots")
+                && f.status() == Status.INVALID);
+    }
+
+    @Test
+    void emvRequires130AndHonorsSixTotalSlots() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("EMV Financial Transaction Request");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input.withArray("segments").addObject().put("segment", "130").put("dataSection", 3);
+        ((ObjectNode) input.path("elements")).put("63", "02");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        for (int i = 0; i < 5; i++) input.withArray("segments").addObject().put("segment", "111").put("dataSection", 3);
+        ((ObjectNode) input.path("elements")).put("63", "07");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void aliasesReuseRequiredResponseFieldsAndExternalLayoutsNeverPass() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Loyalty Card Transaction Response");
+        input.putArray("segments");
+        input.putObject("elements");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        input.put("messageFamily", "TransArmor Key and Key ID Load Request");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.REVIEW_REQUIRED);
+        input.put("messageFamily", "unknown");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void everyCatalogFamilyDispatchesPartialInputsWithoutInventingMissingFields() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        var templates = mapper.readTree(Atl105Paths.docs().resolve("atl105_complete_templates.json").toFile()).path("message_templates");
+        var layouts = mapper.readTree(Atl105Paths.docs().resolve("specs/kb/section-11-message-layout-index.json").toFile()).path("layouts");
+        var families = templates.fieldNames();
+        int count = 0;
+        while (families.hasNext()) {
+            String family = families.next();
+            String sourceSection = null;
+            for (var layout : layouts) {
+                if (family.equals(layout.path("template_key").asText())) sourceSection = layout.path("section").asText();
+            }
+            assertThat(sourceSection).as(family + " source section").isNotBlank();
+            ObjectNode input = financial(family).put("completeness", "PARTIAL");
+            input.putObject("elements");
+            input.putArray("segments");
+            var result = validator.validate(input);
+            String expectedAnchor = "ATL105|2026-3|" + sourceSection + "|MESSAGE";
+            assertThat(result.status()).as(family).isEqualTo(Status.REVIEW_REQUIRED);
+            assertThat(result.findings()).as(family + " source anchor")
+                    .anyMatch(finding -> finding.ruleId().equals(expectedAnchor));
+            count++;
+        }
+        assertThat(count).isEqualTo(31);
+    }
+
+    @Test
+    void segmentObservationIsWiredAndMismatchedIdentityIsRejected() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Financial Transaction Request");
+        var segment = input.withArray("segments").addObject().put("segment", "156").put("dataSection", 3);
+        ObjectNode observation = segment.putObject("observation").put("specificationVersion", "2026-3").put("segment", "156");
+        observation.putObject("elements").put("85", "999").put("84", "006");
+        observation.putArray("tables");
+        ((ObjectNode) input.path("elements")).put("63", "02");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+        observation.put("segment", "153");
+        assertThat(validator.validate(input).status()).isEqualTo(Status.INVALID);
+    }
+
+    @Test
+    void processingHistoryIsInheritedAndChildCannotOverrideIt() throws Exception {
+        var validator = new Chapter11MessageLayoutValidator();
+        ObjectNode input = financial("Phone Load Response").put("completeness", "PARTIAL").put("chapter13Semantics", true);
+        input.putArray("segments");
+        var child = input.withArray("segments").addObject().put("segment", "DL1").put("dataSection", 2).putObject("observation");
+        child.putObject("elements").put("98", "********");
+        var actions = input.putObject("history").putObject("storeNumberActions").put("displayed", true).put("printed", false);
+        var saved = input.deepCopy();
+        assertThat(validator.validate(input).findings().toString()).contains("MASKED-ACTIONS", "INVALID");
+        assertThat(input).isEqualTo(saved);
+        actions.put("displayed", false);
+        child.putObject("history").putObject("storeNumberActions").put("displayed", true).put("printed", false);
+        assertThat(validator.validate(input).findings().toString()).contains("Child history contradicts parent");
+    }
+}

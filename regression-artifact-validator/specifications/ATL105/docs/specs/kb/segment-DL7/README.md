@@ -19,6 +19,7 @@
 | Companion compatibility | [Note](companion-compatibility/companion-segment-compatibility-sme-tba-note.md) · [Flow](companion-compatibility/companion-segment-compatibility-flow.md) |
 | Serialization / wire format | [Note](serialization-wire-format/serialization-wire-format-sme-tba-note.md) · [Flow](serialization-wire-format/serialization-wire-format-flow.md) |
 | Coverage | [Coverage closure](coverage/README.md) · [Rule catalog](coverage/segment-DL7-rule-catalog.json) |
+| Appendix W table oracle | [Appendix W training](../appendix-w/README.md) |
 | SME/TBA input register | [Input register](segment-DL7-sme-tba-input-register.md) |
 | AI vs Test comparison | [Comparison](segment-DL7-ai-vs-test-requirement-comparison.md) |
 
@@ -54,14 +55,14 @@
 | --- | --- | --- | --- |
 | SEGDL7-R-001 | `^` + Segment Length framing, no `~` | structure | REVIEW_REQUIRED (P-04) |
 | SEGDL7-R-002 | Segment Length excludes `^` | field | REVIEW_REQUIRED (P-05) |
-| SEGDL7-R-003 | Download Data TLV per Appendix W | field | REVIEW_REQUIRED (P-01) |
-| SEGDL7-R-004 | Appendix W tables 001 and 002 | field | REVIEW_REQUIRED (P-03) |
+| SEGDL7-R-003 | Download Data TLV per Appendix W | field | PARTIALLY_COVERED (Appendix W trained; outer DL7 questions open) |
+| SEGDL7-R-004 | Appendix W tables 001 and 002 | field | PARTIALLY_COVERED (an1 conflict remains review-gated) |
 | SEGDL7-R-005 | Download Data AN ≤ 100, "all or some" | field | REVIEW_REQUIRED (P-04) |
 | SEGDL7-R-006 | Segment Length 3 digits, matches content | structure | REVIEW_REQUIRED (P-05) |
 
 ## [PROVISIONAL] Items
 
-- P-01 `SEGDL7-SME-001`: Appendix W scope (now transcribed).
+- P-01 `SEGDL7-SME-001`: Appendix W training scope (resolved by user direction; source questions remain open).
 - P-02 `SEGDL7-SME-002`: No dedicated DL7 AI/Test package; approve synthesized fixtures.
 - P-03 `SEGDL7-SME-003`: Appendix W `an1` attribute vs Table Lengths 003/013.
 - P-04 `SEGDL7-SME-004`: Which message carries DL7; can Download Data span several DL7s.

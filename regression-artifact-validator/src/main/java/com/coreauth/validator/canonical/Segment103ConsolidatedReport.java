@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Item 8 (Consolidated Report) for Segment 103.
  *
- * <p>Generates {@code SEGMENT-103-CONSOLIDATED-REPORT.txt} at the module root, aggregating
+ * <p>Generates {@code SEGMENT-103-CONSOLIDATED-REPORT.txt} in the specification pack's consolidated reports, aggregating
  * Item 1-7 outcomes into a production-readiness sign-off. Mirrors
  * {@link Segment101ConsolidatedReport}.
  */

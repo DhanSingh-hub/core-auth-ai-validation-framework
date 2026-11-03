@@ -1,0 +1,166 @@
+{
+  "id" : "TD-APPI-C056-N05-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N05-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N05-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-58",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r007-APPI-C056-N05-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N05-001",
+        "tableId" : "056",
+        "nestedSelector" : "05",
+        "ruleIds" : [ "APPI-T056-R007", "APPI-T056-R009" ],
+        "syntheticData" : {
+          "selector" : "05",
+          "logicalLength" : 2,
+          "discoverFirst" : {
+            "frequency" : "08",
+            "meaning" : "unscheduled",
+            "phase" : "first payment"
+          },
+          "visaIndia" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "frequency" : "09",
+            "meaning" : "ten days",
+            "payment" : "recurring"
+          },
+          "visaHistory" : {
+            "initial" : "04",
+            "lastModification" : "02",
+            "subsequent" : "02"
+          }
+        },
+        "clearScope" : "Discover01-08 first-only; Visa01-12 India recurring; full frequency meanings source-linked; stable/modification history.",
+        "excludedClaims" : [ "Calendar execution/frequency scheduling", "Unlisted future codes" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Brand code domain andphase",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "History match",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "discoverFirst.frequency",
+            "replacement" : "09",
+            "expected" : "FAIL Discover code domain"
+          }, {
+            "path" : "discoverFirst.phase",
+            "replacement" : "subsequent",
+            "expected" : "FAIL first-only"
+          }, {
+            "path" : "visaIndia.frequency",
+            "replacement" : "13",
+            "expected" : "FAIL Visa domain"
+          }, {
+            "path" : "visaHistory.subsequent",
+            "replacement" : "01",
+            "expected" : "FAIL neither historic permitted value"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 1,
+            "expected" : "FAIL fixed2"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "discoverEndpoints" : [ "01", "08" ],
+          "visaEndpoints" : [ "01", "12" ],
+          "belowDomain" : "00"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30425,
+          "section" : "Appendix I-58",
+          "endLine" : 30454
+        }, {
+          "startLine" : 30455,
+          "section" : "Appendix I-59",
+          "endLine" : 30493
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.05.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 05",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30428,
+            "section" : "Appendix I-58",
+            "endLine" : 30430
+          } ]
+        }, {
+          "path" : "113.05.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30431,
+            "section" : "Appendix I-58",
+            "endLine" : 30434
+          } ]
+        }, {
+          "path" : "113.05.Sub-Table Data",
+          "sourceType" : "n2",
+          "sourceLength" : "2 digits",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30435,
+            "section" : "Appendix I-58",
+            "endLine" : 30454
+          }, {
+            "startLine" : 30455,
+            "section" : "Appendix I-59",
+            "endLine" : 30493
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

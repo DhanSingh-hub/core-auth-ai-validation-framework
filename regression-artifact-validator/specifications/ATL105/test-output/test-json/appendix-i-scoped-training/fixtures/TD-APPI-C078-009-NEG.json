@@ -1,0 +1,92 @@
+{
+  "id" : "TD-APPI-C078-009-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-009-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-009-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-84",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r012-APPI-C078-009"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-009",
+        "tableId" : "078",
+        "nestedSelector" : "06",
+        "ruleIds" : [ "APPI-T078-R012" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-84",
+          "startLine" : 32201,
+          "endLine" : 32217
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "06",
+            "declaredValueLength" : "04",
+            "data" : "0250",
+            "logicalPercentage" : "2.50",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "negative" : {
+            "id" : "06",
+            "declaredValueLength" : "04",
+            "data" : "0250",
+            "logicalPercentage" : "25.0",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "positiveVariants" : [ {
+            "data" : "0001",
+            "logicalPercentage" : "0.01"
+          }, {
+            "data" : "0025",
+            "logicalPercentage" : "0.25",
+            "scope" : "formal two-decimal rule only, conflicting example label not approved"
+          } ],
+          "active" : {
+            "id" : "06",
+            "declaredValueLength" : "04",
+            "data" : "0250",
+            "logicalPercentage" : "25.0",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          }
+        },
+        "clearScope" : "Formal local-tax percentage scale and fixed four numeric data bytes.",
+        "excludedClaims" : [ "Printed 0025=2.5% claim", "Rate business limits", "Rounding or tax formulas", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalPercentage equals data divided by 100",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalPercentage equals data divided by 100",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "four numeric bytes and length 04 preserved",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalPercentage",
+          "from" : "2.50",
+          "to" : "25.0",
+          "unchanged" : "data, header and fuel context",
+          "targetedFailure" : "wrong implied decimal scale"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

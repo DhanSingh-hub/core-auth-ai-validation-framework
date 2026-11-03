@@ -1,0 +1,150 @@
+{
+  "name": "Flow — Original request, Time-out Reversal, then next financial transaction (Financial Transaction Request → Time-out Reversal → Financial Transaction Request) [boundary-at-limit-terminal-identifier]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:107",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Terminal Identifier": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-TIMEOUT-NEXT-TRANSACTION",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "original_transaction",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      }
+    },
+    {
+      "step": 2,
+      "role": "timeout_reversal",
+      "transaction": "Time-out Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "Z"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-38-9",
+          "source_page": null,
+          "rule": "The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number of a tor",
+              "must be the same"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Terminal Identifier",
+          "source_rule_id": "BR-38-4",
+          "source_page": 38,
+          "rule": "A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.",
+          "spec_anchor": {
+            "keywords": [
+              "sent from the same device",
+              "financial transaction request that resulted"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "next_transaction",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "expected_outcome_note": "TOR must be sent before the next financial transaction from the same device (QE feedback) — sequencing is not asserted here, only the Sequence Number relationship.",
+      "links": [
+        {
+          "type": "must_differ",
+          "from_step": 2,
+          "element_name": "Sequence Number",
+          "source_rule_id": "QE-2026-09-16",
+          "source_page": null,
+          "rule": "QE feedback: the next financial transaction uses a new Sequence Number.",
+          "citation_kind": "qe_source"
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 1,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-102",
+  "source_page": 38,
+  "business_rule_assertion": "The Sequence Number of a TOR must be the same as the Sequence Number of the financial transaction being reversed.; A TOR must be sent from the same device as the original financial transaction request that resulted in the TOR.; QE feedback: the next financial transaction uses a new Sequence Number.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "e89e3e9baf7dca1aed05daef1f41d6871ec3bf91cba08f6d4ee76c65e62404fa",
+  "dedup_key": "2166e052c5e83bb3d07c82d91c37b29da77c8cf57d2b6e6b8418b6b40c324a11",
+  "flow_variant_id": "boundary-at-limit-terminal-identifier",
+  "flow_variant_name": "Boundary — Terminal Identifier at max length (22 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:288",
+    "REQ-SRC-ATL105-PDF-001:293"
+  ],
+  "flow_boundary_element": "Terminal Identifier",
+  "flow_boundary_max_bytes": 22,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:293",
+      "rule_id": "BR-38-9",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:288",
+      "rule_id": "BR-38-4",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Terminal Identifier",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2508",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:107",
+      "REQ-SRC-ATL105-PDF-001:288",
+      "REQ-SRC-ATL105-PDF-001:293"
+    ],
+    "testCaseIds": [
+      "TC-002200"
+    ],
+    "chainSide": "request",
+    "flowId": "FLOW-TIMEOUT-NEXT-TRANSACTION"
+  }
+}

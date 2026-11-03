@@ -1,22 +1,6345 @@
 {
-  "appendix": "AC",
-  "title": "Valid Country Codes",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to Segment 111 Table ID 59, which identifies the country in which the acquiring institution resides.",
-  "source": "docs/specs/extracted_text.txt Appendix AC-1 through AC-4",
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPAC-VALID-CODE","title":"A country reference in Table ID 59 shall use a valid three-digit country code from the Appendix AC list.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AC","segment":"111","element":"113","rule":"acquirer-country-code-valid"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPAC-ACQUIRER-CONTEXT","title":"The Table ID 59 country code shall identify the country in which the acquiring institution resides, consistent with the merchant/acquirer configuration.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AC","segment":"111","element":"113","rule":"acquirer-country-code-context"},"status":"REVIEW_REQUIRED"}
-  ],
-  "testScenarios": [
-    {"id":"TS-SEG100-APPAC-VALID","covers":["BR-SEG100-APPAC-VALID-CODE"],"status":"PARTIALLY_COVERED"},
-    {"id":"TS-SEG100-APPAC-CONTEXT","covers":["BR-SEG100-APPAC-ACQUIRER-CONTEXT"],"status":"REVIEW_REQUIRED"}
-  ],
-  "testCases": [
-    {"id":"TC-SEG100-APPAC-VALID","scenarioId":"TS-SEG100-APPAC-VALID","positive":"Three-digit code present in the Appendix AC list, e.g. 840 (United States)","negative":["Two-digit code","four-digit code","code not present in the Appendix AC list"],"status":"PARTIALLY_COVERED"},
-    {"id":"TC-SEG100-APPAC-CONTEXT","scenarioId":"TS-SEG100-APPAC-CONTEXT","positive":"Country code matches configured acquirer country","negative":["Country code conflicts with configured acquirer country"],"status":"REVIEW_REQUIRED"}
-  ],
-  "testDataStatus": "The Appendix AC country-code table is fully transcribed from source; acquirer-configuration cross-check awaits AI/configuration artifacts.",
-  "remaining": ["Validate AI-generated Table ID 59 data against the full Appendix AC country list.","Confirm acquirer-country configuration source for the context-consistency check."]
+  "appendix" : "AC",
+  "title" : "Valid Country Codes",
+  "specification" : "ATL105",
+  "specificationVersion" : "2026-3",
+  "applicability" : "Source-release numeric country recognition for Table 059; general acquirer versus merchant role remains conflicted.",
+  "source" : "Appendix AC-1 through AC-4; Appendix I-64/I-65 Table 059",
+  "sourceNotes" : [ "All source rows are preserved, including N/A, blank and reference-only entries. Only three-digit numeric entries enter the recognition vector.", "840 is assigned to both American Samoa and United States. Numeric recognition is separate from ambiguous country mapping.", "Northern Mariana Islands 580 is repeated on AC-2 and AC-4; identical repeated mappings are not treated as conflicting.", "Source values 249 France, Metropolitan; 929 Mauritania; 930 Sao Tome and Principe; 900 UNMIK and all historical labels are preserved, not replaced by modern ISO registry values.", "Antarctica has no numeric code, Holy See and European Economic and Monetary Union are N/A, and Virgin Islands is a reference. Vatican City State is separately listed as 336. No automatic alias resolution.", "AC describes acquiring-institution residence. Appendix I calls Table 059 Soft Descriptor - Merchant Country, with the underlying retailer country for Discover third-party providers. General role semantics remain REVIEW_REQUIRED.", "Appendix I prints Table ID attribute n2 with value 059 and Table Length n2 with value 03; do not infer a full wire-header layout from these conflicting widths. Logical data width is three.", "Synthetic location evidence is not production boarding, eligibility or current ISO certification." ],
+  "businessRequirements" : [ {
+    "id" : "BR-SEG100-APPAC-VALID-CODE",
+    "title" : "Recognize exactly three ASCII digits from the complete numeric Appendix AC source list, preserving leading zeros.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1 through AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "ac-country-code-source-recognition"
+    },
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+    "title" : "Preserve source labels, repeated rows, 840 ambiguity and nonnumeric references without ISO substitutions or inferred aliases.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1 through AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "ac-country-source-mapping"
+    },
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "BR-SEG100-APPAC-ACQUIRER-CONTEXT",
+    "title" : "Keep acquiring-institution versus Merchant Country conflict explicit; do not auto-certify configured country role.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1,Appendix I-64,I-65",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "acquirer-country-code-context"
+    },
+    "status" : "REVIEW_REQUIRED"
+  }, {
+    "id" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+    "title" : "In supplied Discover third-party context, Table 059 matches source-listed underlying retailer-country evidence.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix I-65",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "discover-third-party-retailer-country"
+    },
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "BR-SEG100-APPAC-EXTERNAL-EVIDENCE",
+    "title" : "Source recognition does not certify real location, boarding, current ISO validity, full wire framing or AI artifacts.",
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1,Appendix I-64,I-65",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "ac-country-external-evidence"
+    },
+    "status" : "REVIEW_REQUIRED"
+  } ],
+  "testScenarios" : [ {
+    "id" : "TS-SEG100-APPAC-VALID",
+    "covers" : [ "BR-SEG100-APPAC-VALID-CODE", "BR-SEG100-APPAC-SOURCE-MAPPING" ],
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "TS-SEG100-APPAC-CONTEXT",
+    "covers" : [ "BR-SEG100-APPAC-ACQUIRER-CONTEXT", "BR-SEG100-APPAC-DISCOVER-RETAILER", "BR-SEG100-APPAC-EXTERNAL-EVIDENCE" ],
+    "status" : "PARTIALLY_COVERED"
+  } ],
+  "testCases" : [ {
+    "id" : "TC-SEG100-APPAC-VALID",
+    "scenarioId" : "TS-SEG100-APPAC-VALID",
+    "positive" : "Every numeric source row, exact source label and leading zero; preserve duplicate/historical mappings",
+    "negative" : [ "unknown numeric code", "wrong width", "nonnumeric reference", "source-country mismatch" ],
+    "status" : "PARTIALLY_COVERED"
+  }, {
+    "id" : "TC-SEG100-APPAC-CONTEXT",
+    "scenarioId" : "TS-SEG100-APPAC-CONTEXT",
+    "positive" : "Discover underlying retailer code matches supplied evidence",
+    "negative" : [ "retailer mismatch", "invalid supplied retailer code" ],
+    "review" : [ "840 ambiguity", "missing evidence", "general acquirer/merchant role conflict", "wire header width conflict" ],
+    "status" : "PARTIALLY_COVERED"
+  } ],
+  "fixtureDefaults" : {
+    "countryCode" : "124",
+    "assertedCountry" : "Canada",
+    "discoverThirdParty" : false,
+    "retailerCountryCode" : null
+  },
+  "testData" : [ {
+    "id" : "TD-SEG100-APPAC-NEG-01",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "payload" : {
+      "countryCode" : "12"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-NEG-02",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "payload" : {
+      "countryCode" : "0124"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-NEG-03",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "payload" : {
+      "countryCode" : "999"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-NEG-04",
+    "coversBr" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+    "payload" : {
+      "countryCode" : "356"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+      "status" : "FAIL"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-REVIEW-01",
+    "coversBr" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+    "payload" : {
+      "countryCode" : "840",
+      "assertedCountry" : "United States"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-REVIEW-02",
+    "coversBr" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+    "payload" : {
+      "countryCode" : "336",
+      "assertedCountry" : "Holy See (See Vatican City State.)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-SOURCE-MAPPING",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-REVIEW-03",
+    "coversBr" : "BR-SEG100-APPAC-ACQUIRER-CONTEXT",
+    "payload" : { },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-ACQUIRER-CONTEXT",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-REVIEW-04",
+    "coversBr" : "BR-SEG100-APPAC-EXTERNAL-EVIDENCE",
+    "payload" : { },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-EXTERNAL-EVIDENCE",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-RETAILER-01",
+    "coversBr" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+    "payload" : {
+      "discoverThirdParty" : true,
+      "retailerCountryCode" : "124"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+      "status" : "PASS"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-RETAILER-02",
+    "coversBr" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+    "payload" : {
+      "discoverThirdParty" : true,
+      "retailerCountryCode" : "356"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+      "status" : "FAIL"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-RETAILER-03",
+    "coversBr" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+    "payload" : {
+      "discoverThirdParty" : true
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-RETAILER-04",
+    "coversBr" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+    "payload" : {
+      "countryCode" : "840",
+      "discoverThirdParty" : true,
+      "retailerCountryCode" : "840"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-DISCOVER-RETAILER",
+      "status" : "REVIEW_REQUIRED"
+    },
+    "status" : "EXECUTABLE"
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-001",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "004",
+      "assertedCountry" : "Afghanistan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-1"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-002",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "092",
+      "assertedCountry" : "British Virgin Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-2"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-003",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "008",
+      "assertedCountry" : "Albania"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-3"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-004",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "096",
+      "assertedCountry" : "Brunei Darussalam"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-4"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-005",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "012",
+      "assertedCountry" : "Algeria"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-5"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-006",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "100",
+      "assertedCountry" : "Bulgaria"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-6"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-007",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "840",
+      "assertedCountry" : "American Samoa"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-7"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-008",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "854",
+      "assertedCountry" : "Burkina Faso"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-8"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-009",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "020",
+      "assertedCountry" : "Andorra"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-9"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-010",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "108",
+      "assertedCountry" : "Burundi"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-10"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-011",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "024",
+      "assertedCountry" : "Angola"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-11"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-012",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "116",
+      "assertedCountry" : "Cambodia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-12"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-013",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "660",
+      "assertedCountry" : "Anguilla"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-13"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-014",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "120",
+      "assertedCountry" : "Cameroon"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-14"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-015",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "",
+      "assertedCountry" : "Antarctica (no universal currency)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-15"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-016",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "124",
+      "assertedCountry" : "Canada"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-16"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-017",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "028",
+      "assertedCountry" : "Antigua and Barbuda"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-17"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-018",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "132",
+      "assertedCountry" : "Cape Verde"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-18"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-019",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "032",
+      "assertedCountry" : "Argentina"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-19"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-020",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "136",
+      "assertedCountry" : "Cayman Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-20"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-021",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "051",
+      "assertedCountry" : "Armenia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-21"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-022",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "140",
+      "assertedCountry" : "Central African Republic"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-22"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-023",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "533",
+      "assertedCountry" : "Aruba"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-23"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-024",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "148",
+      "assertedCountry" : "Chad"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-24"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-025",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "036",
+      "assertedCountry" : "Australia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-25"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-026",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "152",
+      "assertedCountry" : "Chile"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-26"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-027",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "040",
+      "assertedCountry" : "Austria"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-27"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-028",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "156",
+      "assertedCountry" : "China"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-28"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-029",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "031",
+      "assertedCountry" : "Azerbaijan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-29"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-030",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "162",
+      "assertedCountry" : "Christmas Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-30"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-031",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "044",
+      "assertedCountry" : "Bahamas"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-31"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-032",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "166",
+      "assertedCountry" : "Cocos (Keeling) Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-32"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-033",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "048",
+      "assertedCountry" : "Bahrain"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-33"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-034",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "170",
+      "assertedCountry" : "Columbia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-34"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-035",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "050",
+      "assertedCountry" : "Bangladesh"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-35"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-036",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "174",
+      "assertedCountry" : "Comoros"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-36"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-037",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "052",
+      "assertedCountry" : "Barbados"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-37"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-038",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "178",
+      "assertedCountry" : "Congo"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-38"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-039",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "112",
+      "assertedCountry" : "Belarus"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-39"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-040",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "184",
+      "assertedCountry" : "Cook Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-40"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-041",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "056",
+      "assertedCountry" : "Belgium"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-41"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-042",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "188",
+      "assertedCountry" : "Costa Rica"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-42"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-043",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "084",
+      "assertedCountry" : "Belize"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-43"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-044",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "191",
+      "assertedCountry" : "Croatia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-44"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-045",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "204",
+      "assertedCountry" : "Benin"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-45"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-046",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "196",
+      "assertedCountry" : "Cyprus"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-46"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-047",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "060",
+      "assertedCountry" : "Bermuda"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-47"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-048",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "203",
+      "assertedCountry" : "Czech Republic"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-48"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-049",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "064",
+      "assertedCountry" : "Bhutan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-49"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-050",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "180",
+      "assertedCountry" : "Democratic Republic of Congo"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-50"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-051",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "068",
+      "assertedCountry" : "Bolivia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-51"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-052",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "208",
+      "assertedCountry" : "Denmark"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-52"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-053",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "070",
+      "assertedCountry" : "Bosnia – Herzegovina"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-53"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-054",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "262",
+      "assertedCountry" : "Djibouti"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-54"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-055",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "072",
+      "assertedCountry" : "Botswana"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-55"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-056",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "212",
+      "assertedCountry" : "Dominica"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-56"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-057",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "074",
+      "assertedCountry" : "Bouvet Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-57"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-058",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "214",
+      "assertedCountry" : "Dominican Republic"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-58"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-059",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "076",
+      "assertedCountry" : "Brazil"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-59"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-060",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "626",
+      "assertedCountry" : "East Timor"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-60"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-061",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "086",
+      "assertedCountry" : "British Indian Ocean Territory"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-61"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-062",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "332",
+      "assertedCountry" : "Haiti"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-1",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-62"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-063",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "218",
+      "assertedCountry" : "Ecuador"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-63"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-064",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "334",
+      "assertedCountry" : "Heard Island and McDonald Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-64"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-065",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "818",
+      "assertedCountry" : "Egypt"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-65"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-066",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "N/A",
+      "assertedCountry" : "Holy See (See Vatican City State.)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-66"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-067",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "222",
+      "assertedCountry" : "El Salvador"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-67"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-068",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "340",
+      "assertedCountry" : "Honduras"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-68"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-069",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "226",
+      "assertedCountry" : "Equatorial Guinea"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-69"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-070",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "344",
+      "assertedCountry" : "Hong Kong"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-70"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-071",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "232",
+      "assertedCountry" : "Eritrea"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-71"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-072",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "348",
+      "assertedCountry" : "Hungary"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-72"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-073",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "233",
+      "assertedCountry" : "Estonia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-73"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-074",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "352",
+      "assertedCountry" : "Iceland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-74"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-075",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "231",
+      "assertedCountry" : "Ethiopia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-75"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-076",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "356",
+      "assertedCountry" : "India"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-76"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-077",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "N/A",
+      "assertedCountry" : "European Economic and Monetary Union"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-77"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-078",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "360",
+      "assertedCountry" : "Indonesia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-78"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-079",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "234",
+      "assertedCountry" : "Faeroe Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-79"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-080",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "368",
+      "assertedCountry" : "Iraq"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-80"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-081",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "238",
+      "assertedCountry" : "Falkland Islands (Malvinas)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-81"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-082",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "372",
+      "assertedCountry" : "Ireland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-82"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-083",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "242",
+      "assertedCountry" : "Fiji"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-83"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-084",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "376",
+      "assertedCountry" : "Israel"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-84"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-085",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "246",
+      "assertedCountry" : "Finland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-85"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-086",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "380",
+      "assertedCountry" : "Italy"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-86"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-087",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "250",
+      "assertedCountry" : "France"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-87"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-088",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "384",
+      "assertedCountry" : "Ivory Coast"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-88"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-089",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "249",
+      "assertedCountry" : "France, Metropolitan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-89"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-090",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "388",
+      "assertedCountry" : "Jamaica"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-90"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-091",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "254",
+      "assertedCountry" : "French Guiana"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-91"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-092",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "392",
+      "assertedCountry" : "Japan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-92"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-093",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "258",
+      "assertedCountry" : "French Polynesia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-93"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-094",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "400",
+      "assertedCountry" : "Jordan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-94"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-095",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "260",
+      "assertedCountry" : "French Southern Territory"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-95"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-096",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "398",
+      "assertedCountry" : "Kazakhstan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-96"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-097",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "266",
+      "assertedCountry" : "Gabon"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-97"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-098",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "404",
+      "assertedCountry" : "Kenya"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-98"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-099",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "270",
+      "assertedCountry" : "Gambia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-99"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-100",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "296",
+      "assertedCountry" : "Kiribati"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-100"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-101",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "268",
+      "assertedCountry" : "Georgia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-101"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-102",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "410",
+      "assertedCountry" : "Korea, Republic of"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-102"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-103",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "276",
+      "assertedCountry" : "Germany"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-103"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-104",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "414",
+      "assertedCountry" : "Kuwait"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-104"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-105",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "288",
+      "assertedCountry" : "Ghana"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-105"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-106",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "417",
+      "assertedCountry" : "Kyrgyzstan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-106"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-107",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "292",
+      "assertedCountry" : "Gibraltar"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-107"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-108",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "418",
+      "assertedCountry" : "Lao People's Democratic Republic"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-108"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-109",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "300",
+      "assertedCountry" : "Greece"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-109"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-110",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "428",
+      "assertedCountry" : "Latvia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-110"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-111",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "304",
+      "assertedCountry" : "Greenland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-111"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-112",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "422",
+      "assertedCountry" : "Lebanon"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-112"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-113",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "308",
+      "assertedCountry" : "Grenada"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-113"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-114",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "426",
+      "assertedCountry" : "Lesotho"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-114"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-115",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "312",
+      "assertedCountry" : "Guadeloupe"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-115"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-116",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "430",
+      "assertedCountry" : "Liberia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-116"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-117",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "316",
+      "assertedCountry" : "Guam"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-117"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-118",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "434",
+      "assertedCountry" : "Libyan Arab Jamahiriya"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-118"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-119",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "320",
+      "assertedCountry" : "Guatemala"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-119"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-120",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "438",
+      "assertedCountry" : "Liechtenstein"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-120"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-121",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "324",
+      "assertedCountry" : "Guinea"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-121"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-122",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "574",
+      "assertedCountry" : "Norfolk Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-122"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-123",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "624",
+      "assertedCountry" : "Guinea-Bissau"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-123"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-124",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "580",
+      "assertedCountry" : "Northern Mariana Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-124"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-125",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "328",
+      "assertedCountry" : "Guyana"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-125"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-126",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "578",
+      "assertedCountry" : "Norway"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-2",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-126"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-127",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "440",
+      "assertedCountry" : "Lithuania"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-127"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-128",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "512",
+      "assertedCountry" : "Oman"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-128"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-129",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "442",
+      "assertedCountry" : "Luxembourg"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-129"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-130",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "586",
+      "assertedCountry" : "Pakistan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-130"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-131",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "446",
+      "assertedCountry" : "Macau"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-131"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-132",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "585",
+      "assertedCountry" : "Palau"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-132"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-133",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "807",
+      "assertedCountry" : "Macedonia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-133"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-134",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "275",
+      "assertedCountry" : "Palestinian Territory, Occupied"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-134"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-135",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "450",
+      "assertedCountry" : "Madagascar"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-135"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-136",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "591",
+      "assertedCountry" : "Panama"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-136"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-137",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "454",
+      "assertedCountry" : "Malawi"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-137"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-138",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "598",
+      "assertedCountry" : "Papua New Guinea"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-138"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-139",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "458",
+      "assertedCountry" : "Malaysia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-139"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-140",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "600",
+      "assertedCountry" : "Paraguay"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-140"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-141",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "462",
+      "assertedCountry" : "Maldives"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-141"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-142",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "604",
+      "assertedCountry" : "Peru"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-142"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-143",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "466",
+      "assertedCountry" : "Mali"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-143"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-144",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "608",
+      "assertedCountry" : "Philippines"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-144"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-145",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "470",
+      "assertedCountry" : "Malta"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-145"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-146",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "612",
+      "assertedCountry" : "Pitcairn Island"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-146"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-147",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "584",
+      "assertedCountry" : "Marshall Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-147"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-148",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "616",
+      "assertedCountry" : "Poland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-148"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-149",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "474",
+      "assertedCountry" : "Martinique"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-149"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-150",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "620",
+      "assertedCountry" : "Portugal"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-150"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-151",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "929",
+      "assertedCountry" : "Mauritania"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-151"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-152",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "630",
+      "assertedCountry" : "Puerto Rico"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-152"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-153",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "480",
+      "assertedCountry" : "Mauritius"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-153"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-154",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "634",
+      "assertedCountry" : "Qatar"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-154"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-155",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "175",
+      "assertedCountry" : "Mayotte"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-155"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-156",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "638",
+      "assertedCountry" : "Reunion"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-156"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-157",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "484",
+      "assertedCountry" : "Mexico"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-157"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-158",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "642",
+      "assertedCountry" : "Romania"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-158"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-159",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "583",
+      "assertedCountry" : "Micronesia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-159"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-160",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "643",
+      "assertedCountry" : "Russian Federation"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-160"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-161",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "498",
+      "assertedCountry" : "Moldova"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-161"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-162",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "646",
+      "assertedCountry" : "Rwanda"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-162"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-163",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "492",
+      "assertedCountry" : "Monaco"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-163"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-164",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "654",
+      "assertedCountry" : "St. Helena"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-164"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-165",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "496",
+      "assertedCountry" : "Mongolia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-165"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-166",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "659",
+      "assertedCountry" : "St. Kitts-Nevis"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-166"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-167",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "499",
+      "assertedCountry" : "Montenegro"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-167"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-168",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "662",
+      "assertedCountry" : "St. Lucia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-168"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-169",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "500",
+      "assertedCountry" : "Montserrat"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-169"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-170",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "666",
+      "assertedCountry" : "St. Pierre and Miquelon"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-170"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-171",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "504",
+      "assertedCountry" : "Morocco"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-171"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-172",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "670",
+      "assertedCountry" : "St. Vincent and the Grenadines"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-172"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-173",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "508",
+      "assertedCountry" : "Mozambique"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-173"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-174",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "882",
+      "assertedCountry" : "Samoa"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-174"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-175",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "104",
+      "assertedCountry" : "Myanmar"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-175"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-176",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "674",
+      "assertedCountry" : "San Marino"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-176"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-177",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "516",
+      "assertedCountry" : "Namibia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-177"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-178",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "930",
+      "assertedCountry" : "Sao Tome and Principe"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-178"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-179",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "520",
+      "assertedCountry" : "Nauru"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-179"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-180",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "682",
+      "assertedCountry" : "Saudi Arabia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-180"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-181",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "524",
+      "assertedCountry" : "Nepal"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-181"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-182",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "686",
+      "assertedCountry" : "Senegal"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-182"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-183",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "528",
+      "assertedCountry" : "Netherlands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-183"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-184",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "688",
+      "assertedCountry" : "Serbia, Republic of"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-184"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-185",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "540",
+      "assertedCountry" : "New Caledonia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-185"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-186",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "690",
+      "assertedCountry" : "Seychelles"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-186"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-187",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "554",
+      "assertedCountry" : "New Zealand"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-187"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-188",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "694",
+      "assertedCountry" : "Sierra Leone"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-188"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-189",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "558",
+      "assertedCountry" : "Nicaragua"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-189"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-190",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "702",
+      "assertedCountry" : "Singapore"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-190"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-191",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "562",
+      "assertedCountry" : "Niger"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-191"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-192",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "703",
+      "assertedCountry" : "Slovakia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-192"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-193",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "566",
+      "assertedCountry" : "Nigeria"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-193"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-194",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "840",
+      "assertedCountry" : "United States"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-194"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-195",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "570",
+      "assertedCountry" : "Niue"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-195"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-196",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "581",
+      "assertedCountry" : "U.S. Minor Outlying Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-196"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-197",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "850",
+      "assertedCountry" : "United States Virgin Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-3",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-197"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-198",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "705",
+      "assertedCountry" : "Slovenia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-198"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-199",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "858",
+      "assertedCountry" : "Uruguay"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-199"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-200",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "090",
+      "assertedCountry" : "Solomon Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-200"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-201",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "860",
+      "assertedCountry" : "Uzbekistan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-201"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-202",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "706",
+      "assertedCountry" : "Somalia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-202"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-203",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "548",
+      "assertedCountry" : "Vanuatu"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-203"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-204",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "710",
+      "assertedCountry" : "South Africa"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-204"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-205",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "336",
+      "assertedCountry" : "Vatican City State (Holy See)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-205"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-206",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "239",
+      "assertedCountry" : "South Georgia and South Sandwich Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-206"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-207",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "862",
+      "assertedCountry" : "Venezuela"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-207"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-208",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "724",
+      "assertedCountry" : "Spain"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-208"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-209",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "704",
+      "assertedCountry" : "Vietnam"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-209"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-210",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "144",
+      "assertedCountry" : "Sri Lanka"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-210"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-211",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "",
+      "assertedCountry" : "Virgin Islands: See British Virgin Islands and United States Virgin Islands."
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "FAIL"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-211"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-212",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "729",
+      "assertedCountry" : "Sudan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-212"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-213",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "876",
+      "assertedCountry" : "Wallis and Futuna Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-213"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-214",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "740",
+      "assertedCountry" : "Suriname"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-214"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-215",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "732",
+      "assertedCountry" : "Western Sahara"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-215"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-216",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "744",
+      "assertedCountry" : "Svalbard and Jan Mayen Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-216"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-217",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "887",
+      "assertedCountry" : "Yemen"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-217"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-218",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "748",
+      "assertedCountry" : "Swaziland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-218"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-219",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "894",
+      "assertedCountry" : "Zambia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-219"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-220",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "752",
+      "assertedCountry" : "Sweden"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-220"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-221",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "716",
+      "assertedCountry" : "Zimbabwe"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-221"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-222",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "756",
+      "assertedCountry" : "Switzerland"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-222"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-223",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "663",
+      "assertedCountry" : "Saint Martin"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-223"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-224",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "158",
+      "assertedCountry" : "Taiwan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-224"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-225",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "534",
+      "assertedCountry" : "Sint Maarten"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-225"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-226",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "762",
+      "assertedCountry" : "Tajikistan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-226"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-227",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "728",
+      "assertedCountry" : "South Sudan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-227"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-228",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "834",
+      "assertedCountry" : "Tanzania, United Republic of"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-228"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-229",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "760",
+      "assertedCountry" : "Syria"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-229"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-230",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "764",
+      "assertedCountry" : "Thailand"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-230"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-231",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "832",
+      "assertedCountry" : "Jersey"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-231"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-232",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "768",
+      "assertedCountry" : "Togo"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-232"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-233",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "833",
+      "assertedCountry" : "Isle of Man"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-233"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-234",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "772",
+      "assertedCountry" : "Tokelau"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-234"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-235",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "535",
+      "assertedCountry" : "Bonaire, Sint Eustatius and Saba"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-235"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-236",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "776",
+      "assertedCountry" : "Tonga"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-236"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-237",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "248",
+      "assertedCountry" : "Aland Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-237"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-238",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "780",
+      "assertedCountry" : "Trinidad and Tobago"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-238"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-239",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "192",
+      "assertedCountry" : "Cuba"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-239"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-240",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "788",
+      "assertedCountry" : "Tunisia"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-240"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-241",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "364",
+      "assertedCountry" : "Iran"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-241"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-242",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "792",
+      "assertedCountry" : "Turkey"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-242"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-243",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "408",
+      "assertedCountry" : "Korea-north"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-243"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-244",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "795",
+      "assertedCountry" : "Turkmenistan"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-244"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-245",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "531",
+      "assertedCountry" : "Curaçao"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-245"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-246",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "796",
+      "assertedCountry" : "Turks and Caicos Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-246"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-247",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "580",
+      "assertedCountry" : "Northern Mariana Islands"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-247"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-248",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "798",
+      "assertedCountry" : "Tuvalu"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-248"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-249",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "652",
+      "assertedCountry" : "Saint Barthelemy"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-249"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-250",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "800",
+      "assertedCountry" : "Uganda"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-250"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-251",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "804",
+      "assertedCountry" : "Ukraine"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-251"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-252",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "784",
+      "assertedCountry" : "United Arab Emirates"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-252"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-253",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "826",
+      "assertedCountry" : "United Kingdom"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-253"
+    }
+  }, {
+    "id" : "TD-SEG100-APPAC-SOURCE-254",
+    "coversBr" : "BR-SEG100-APPAC-VALID-CODE",
+    "status" : "EXECUTABLE",
+    "payload" : {
+      "countryCode" : "900",
+      "assertedCountry" : "United Nations Interim Administration Mission in Kosovo (UNMIK)"
+    },
+    "expected" : {
+      "businessRequirementId" : "BR-SEG100-APPAC-VALID-CODE",
+      "status" : "PASS"
+    },
+    "sourceAnchor" : {
+      "specification" : "ATL105",
+      "version" : "2026-3",
+      "section" : "Appendix AC-4",
+      "segment" : "111",
+      "tableId" : "059",
+      "rule" : "country-row-254"
+    }
+  } ],
+  "remaining" : [ "Resolve Table 059 acquiring-institution versus merchant-country semantics and conflicting printed wire-header widths.", "Resolve 840 dual-country assignment and obtain authoritative disposition of unusual/historical source values; do not silently modernize.", "Obtain real retailer/merchant/acquirer location and boarding evidence, AI artifacts and full wire fixtures." ],
+  "countryRows" : [ {
+    "code" : "004",
+    "country" : "Afghanistan",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "092",
+    "country" : "British Virgin Islands",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "008",
+    "country" : "Albania",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "096",
+    "country" : "Brunei Darussalam",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "012",
+    "country" : "Algeria",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "100",
+    "country" : "Bulgaria",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "840",
+    "country" : "American Samoa",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "854",
+    "country" : "Burkina Faso",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "020",
+    "country" : "Andorra",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "108",
+    "country" : "Burundi",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "024",
+    "country" : "Angola",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "116",
+    "country" : "Cambodia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "660",
+    "country" : "Anguilla",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "120",
+    "country" : "Cameroon",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "",
+    "country" : "Antarctica (no universal currency)",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "124",
+    "country" : "Canada",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "028",
+    "country" : "Antigua and Barbuda",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "132",
+    "country" : "Cape Verde",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "032",
+    "country" : "Argentina",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "136",
+    "country" : "Cayman Islands",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "051",
+    "country" : "Armenia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "140",
+    "country" : "Central African Republic",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "533",
+    "country" : "Aruba",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "148",
+    "country" : "Chad",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "036",
+    "country" : "Australia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "152",
+    "country" : "Chile",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "040",
+    "country" : "Austria",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "156",
+    "country" : "China",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "031",
+    "country" : "Azerbaijan",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "162",
+    "country" : "Christmas Island",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "044",
+    "country" : "Bahamas",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "166",
+    "country" : "Cocos (Keeling) Island",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "048",
+    "country" : "Bahrain",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "170",
+    "country" : "Columbia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "050",
+    "country" : "Bangladesh",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "174",
+    "country" : "Comoros",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "052",
+    "country" : "Barbados",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "178",
+    "country" : "Congo",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "112",
+    "country" : "Belarus",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "184",
+    "country" : "Cook Islands",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "056",
+    "country" : "Belgium",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "188",
+    "country" : "Costa Rica",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "084",
+    "country" : "Belize",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "191",
+    "country" : "Croatia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "204",
+    "country" : "Benin",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "196",
+    "country" : "Cyprus",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "060",
+    "country" : "Bermuda",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "203",
+    "country" : "Czech Republic",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "064",
+    "country" : "Bhutan",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "180",
+    "country" : "Democratic Republic of Congo",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "068",
+    "country" : "Bolivia",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "208",
+    "country" : "Denmark",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "070",
+    "country" : "Bosnia – Herzegovina",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "262",
+    "country" : "Djibouti",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "072",
+    "country" : "Botswana",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "212",
+    "country" : "Dominica",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "074",
+    "country" : "Bouvet Island",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "214",
+    "country" : "Dominican Republic",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "076",
+    "country" : "Brazil",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "626",
+    "country" : "East Timor",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "086",
+    "country" : "British Indian Ocean Territory",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "332",
+    "country" : "Haiti",
+    "pageAnchor" : "AC-1"
+  }, {
+    "code" : "218",
+    "country" : "Ecuador",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "334",
+    "country" : "Heard Island and McDonald Island",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "818",
+    "country" : "Egypt",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "N/A",
+    "country" : "Holy See (See Vatican City State.)",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "222",
+    "country" : "El Salvador",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "340",
+    "country" : "Honduras",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "226",
+    "country" : "Equatorial Guinea",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "344",
+    "country" : "Hong Kong",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "232",
+    "country" : "Eritrea",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "348",
+    "country" : "Hungary",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "233",
+    "country" : "Estonia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "352",
+    "country" : "Iceland",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "231",
+    "country" : "Ethiopia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "356",
+    "country" : "India",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "N/A",
+    "country" : "European Economic and Monetary Union",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "360",
+    "country" : "Indonesia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "234",
+    "country" : "Faeroe Islands",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "368",
+    "country" : "Iraq",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "238",
+    "country" : "Falkland Islands (Malvinas)",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "372",
+    "country" : "Ireland",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "242",
+    "country" : "Fiji",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "376",
+    "country" : "Israel",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "246",
+    "country" : "Finland",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "380",
+    "country" : "Italy",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "250",
+    "country" : "France",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "384",
+    "country" : "Ivory Coast",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "249",
+    "country" : "France, Metropolitan",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "388",
+    "country" : "Jamaica",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "254",
+    "country" : "French Guiana",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "392",
+    "country" : "Japan",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "258",
+    "country" : "French Polynesia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "400",
+    "country" : "Jordan",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "260",
+    "country" : "French Southern Territory",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "398",
+    "country" : "Kazakhstan",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "266",
+    "country" : "Gabon",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "404",
+    "country" : "Kenya",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "270",
+    "country" : "Gambia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "296",
+    "country" : "Kiribati",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "268",
+    "country" : "Georgia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "410",
+    "country" : "Korea, Republic of",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "276",
+    "country" : "Germany",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "414",
+    "country" : "Kuwait",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "288",
+    "country" : "Ghana",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "417",
+    "country" : "Kyrgyzstan",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "292",
+    "country" : "Gibraltar",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "418",
+    "country" : "Lao People's Democratic Republic",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "300",
+    "country" : "Greece",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "428",
+    "country" : "Latvia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "304",
+    "country" : "Greenland",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "422",
+    "country" : "Lebanon",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "308",
+    "country" : "Grenada",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "426",
+    "country" : "Lesotho",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "312",
+    "country" : "Guadeloupe",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "430",
+    "country" : "Liberia",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "316",
+    "country" : "Guam",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "434",
+    "country" : "Libyan Arab Jamahiriya",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "320",
+    "country" : "Guatemala",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "438",
+    "country" : "Liechtenstein",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "324",
+    "country" : "Guinea",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "574",
+    "country" : "Norfolk Island",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "624",
+    "country" : "Guinea-Bissau",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "580",
+    "country" : "Northern Mariana Islands",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "328",
+    "country" : "Guyana",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "578",
+    "country" : "Norway",
+    "pageAnchor" : "AC-2"
+  }, {
+    "code" : "440",
+    "country" : "Lithuania",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "512",
+    "country" : "Oman",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "442",
+    "country" : "Luxembourg",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "586",
+    "country" : "Pakistan",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "446",
+    "country" : "Macau",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "585",
+    "country" : "Palau",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "807",
+    "country" : "Macedonia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "275",
+    "country" : "Palestinian Territory, Occupied",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "450",
+    "country" : "Madagascar",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "591",
+    "country" : "Panama",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "454",
+    "country" : "Malawi",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "598",
+    "country" : "Papua New Guinea",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "458",
+    "country" : "Malaysia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "600",
+    "country" : "Paraguay",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "462",
+    "country" : "Maldives",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "604",
+    "country" : "Peru",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "466",
+    "country" : "Mali",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "608",
+    "country" : "Philippines",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "470",
+    "country" : "Malta",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "612",
+    "country" : "Pitcairn Island",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "584",
+    "country" : "Marshall Islands",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "616",
+    "country" : "Poland",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "474",
+    "country" : "Martinique",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "620",
+    "country" : "Portugal",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "929",
+    "country" : "Mauritania",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "630",
+    "country" : "Puerto Rico",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "480",
+    "country" : "Mauritius",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "634",
+    "country" : "Qatar",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "175",
+    "country" : "Mayotte",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "638",
+    "country" : "Reunion",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "484",
+    "country" : "Mexico",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "642",
+    "country" : "Romania",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "583",
+    "country" : "Micronesia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "643",
+    "country" : "Russian Federation",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "498",
+    "country" : "Moldova",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "646",
+    "country" : "Rwanda",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "492",
+    "country" : "Monaco",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "654",
+    "country" : "St. Helena",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "496",
+    "country" : "Mongolia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "659",
+    "country" : "St. Kitts-Nevis",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "499",
+    "country" : "Montenegro",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "662",
+    "country" : "St. Lucia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "500",
+    "country" : "Montserrat",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "666",
+    "country" : "St. Pierre and Miquelon",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "504",
+    "country" : "Morocco",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "670",
+    "country" : "St. Vincent and the Grenadines",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "508",
+    "country" : "Mozambique",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "882",
+    "country" : "Samoa",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "104",
+    "country" : "Myanmar",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "674",
+    "country" : "San Marino",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "516",
+    "country" : "Namibia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "930",
+    "country" : "Sao Tome and Principe",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "520",
+    "country" : "Nauru",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "682",
+    "country" : "Saudi Arabia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "524",
+    "country" : "Nepal",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "686",
+    "country" : "Senegal",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "528",
+    "country" : "Netherlands",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "688",
+    "country" : "Serbia, Republic of",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "540",
+    "country" : "New Caledonia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "690",
+    "country" : "Seychelles",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "554",
+    "country" : "New Zealand",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "694",
+    "country" : "Sierra Leone",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "558",
+    "country" : "Nicaragua",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "702",
+    "country" : "Singapore",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "562",
+    "country" : "Niger",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "703",
+    "country" : "Slovakia",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "566",
+    "country" : "Nigeria",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "840",
+    "country" : "United States",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "570",
+    "country" : "Niue",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "581",
+    "country" : "U.S. Minor Outlying Islands",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "850",
+    "country" : "United States Virgin Islands",
+    "pageAnchor" : "AC-3"
+  }, {
+    "code" : "705",
+    "country" : "Slovenia",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "858",
+    "country" : "Uruguay",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "090",
+    "country" : "Solomon Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "860",
+    "country" : "Uzbekistan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "706",
+    "country" : "Somalia",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "548",
+    "country" : "Vanuatu",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "710",
+    "country" : "South Africa",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "336",
+    "country" : "Vatican City State (Holy See)",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "239",
+    "country" : "South Georgia and South Sandwich Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "862",
+    "country" : "Venezuela",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "724",
+    "country" : "Spain",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "704",
+    "country" : "Vietnam",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "144",
+    "country" : "Sri Lanka",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "",
+    "country" : "Virgin Islands: See British Virgin Islands and United States Virgin Islands.",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "729",
+    "country" : "Sudan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "876",
+    "country" : "Wallis and Futuna Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "740",
+    "country" : "Suriname",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "732",
+    "country" : "Western Sahara",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "744",
+    "country" : "Svalbard and Jan Mayen Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "887",
+    "country" : "Yemen",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "748",
+    "country" : "Swaziland",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "894",
+    "country" : "Zambia",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "752",
+    "country" : "Sweden",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "716",
+    "country" : "Zimbabwe",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "756",
+    "country" : "Switzerland",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "663",
+    "country" : "Saint Martin",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "158",
+    "country" : "Taiwan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "534",
+    "country" : "Sint Maarten",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "762",
+    "country" : "Tajikistan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "728",
+    "country" : "South Sudan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "834",
+    "country" : "Tanzania, United Republic of",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "760",
+    "country" : "Syria",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "764",
+    "country" : "Thailand",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "832",
+    "country" : "Jersey",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "768",
+    "country" : "Togo",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "833",
+    "country" : "Isle of Man",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "772",
+    "country" : "Tokelau",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "535",
+    "country" : "Bonaire, Sint Eustatius and Saba",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "776",
+    "country" : "Tonga",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "248",
+    "country" : "Aland Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "780",
+    "country" : "Trinidad and Tobago",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "192",
+    "country" : "Cuba",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "788",
+    "country" : "Tunisia",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "364",
+    "country" : "Iran",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "792",
+    "country" : "Turkey",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "408",
+    "country" : "Korea-north",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "795",
+    "country" : "Turkmenistan",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "531",
+    "country" : "Curaçao",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "796",
+    "country" : "Turks and Caicos Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "580",
+    "country" : "Northern Mariana Islands",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "798",
+    "country" : "Tuvalu",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "652",
+    "country" : "Saint Barthelemy",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "800",
+    "country" : "Uganda",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "804",
+    "country" : "Ukraine",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "784",
+    "country" : "United Arab Emirates",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "826",
+    "country" : "United Kingdom",
+    "pageAnchor" : "AC-4"
+  }, {
+    "code" : "900",
+    "country" : "United Nations Interim Administration Mission in Kosovo (UNMIK)",
+    "pageAnchor" : "AC-4"
+  } ],
+  "catalogSummary" : {
+    "sourceRows" : 254,
+    "numericRows" : 250,
+    "uniqueNumericCodes" : 248,
+    "nonnumericRows" : 4
+  },
+  "testDataReadinessSummary" : {
+    "total" : 266,
+    "executable" : 266,
+    "externalFixtureRequired" : 0,
+    "reviewRequired" : 0,
+    "note" : "Synthetic source recognition vectors; executable review outcomes exercise gates only."
+  }
 }

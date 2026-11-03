@@ -87,6 +87,27 @@ See [segment-131-ai-vs-test-requirement-comparison.md](segment-131-ai-vs-test-re
 
 ## 6. Do-Not-Assume Rules
 
+### Executed binary-wire continuation
+
+[EmvSegmentWireValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/EmvSegmentWireValidator.java)
+checks actual `serializedSegmentHex` as immediately concatenated ASCII
+headers, packed chip bytes and additional-information triples. No structural
+FS is inserted. A packed chip byte equal to FS is still binary content.
+Measured bytes must equal N4 Segment Length; ASCII hexadecimal substitution,
+extra separators and mismatched byte counts are rejected.
+
+The [actual adapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12ActualPayloadAdapter.java)
+maps `SerializedSegmentHex` and source-named fields without metadata
+substitution, rejects mixed array/scalar additional-information forms and
+explicitly reviews text-only wire. The corresponding EMV Financial
+Transaction Response family is checked, and existing observed request checksum
+echo checks remain active.
+
+See the [persisted Chapter 12 executions](../../../../test-output/test-json/chapter-12-training-evidence.json).
+Binary equality does not authenticate the matched request, host state or chip
+cryptography. Source conflicts and complete lifecycle/placement coverage
+remain separate from these bounded checks.
+
 1. Do not insert Field Separators anywhere in Segment 131 — it is the first fully non-delimited segment in this KB.
 2. Do not reuse Segment 130's 2,000-byte EMV Additional Information Section cap — Segment 131's is 2,800 bytes.
 3. Do not assert a specific Data Section/field placement for Segment 131 without flagging the Section 12.21 vs layout-table contradiction (`SEG131-SME-001`, open).

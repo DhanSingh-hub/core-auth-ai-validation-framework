@@ -7,6 +7,19 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+**Opt-in actual execution continuation:** The historical catalog-only statements
+below still describe the default single-segment validator, not the actual
+bridge. Actual intake now checks source-order/interior FS, explicit blanks,
+measured N3 length and the 156-byte cap. It reuses the existing MICR oracle on
+independently observed raw data, actual 110/113 companions and actual Standard
+card type046 service discriminator, and executes
+Trace ID requiredness when the actual Standard Prompt Code denotes Void
+(Appendix G types 8/C/U). Missing observations remain review; observed required
+blank/malformed values are invalid. Final-FS convention, ECA Void support and
+original-host trace authenticity remain unresolved. This is bounded local
+execution, not complete coverage or approval; see the current
+[Chapter 12 checkpoint](../chapter-coverage-gap-register.md).
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)

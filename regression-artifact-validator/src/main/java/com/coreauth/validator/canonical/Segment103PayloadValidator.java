@@ -51,6 +51,7 @@ public final class Segment103PayloadValidator {
     private static final String EBT_PROGRAM_FIXED_ACCOUNT_TYPE = "98";
     private static final String EBT_PROGRAM_FIXED_CURRENCY_CODE = "840";
     private static final Set<String> EBT_PROGRAM_AMOUNT_DESCRIPTORS = Set.of("0", "C", "D");
+    private static final Set<String> APPENDIX_M_TAG_50_AMOUNT_TYPES = Set.of("40", "50");
     // TAG=IT detail is a fixed 28-byte address + 9-byte zip = 37 bytes of LEN-counted data.
     private static final int EBT_PROGRAM_IT_ADDRESS_LENGTH = 28;
     private static final int EBT_PROGRAM_IT_ZIP_LENGTH = 9;
@@ -95,6 +96,27 @@ public final class Segment103PayloadValidator {
     public ValidationResult validatePayload(JsonNode payload) {
         ValidationResult result = new ValidationResult("segment-103-payload");
         validatePayload(payload, result);
+        return result;
+    }
+
+    public ValidationResult validateElement(String element, JsonNode value) {
+        ValidationResult result = new ValidationResult("chapter13-element-" + element);
+        var segment = objectMapper.createObjectNode();
+        if ("153".equals(element)) {
+            if (value == null || !value.isTextual() || value.textValue().isEmpty()) {
+                result.addError(SOURCE, "Element 153 requires nonempty textual discount blocks");
+            } else {
+                segment.set("WicDiscountAmount", value);
+                validateWicDiscountAmount(segment, result);
+            }
+        } else if ("164".equals(element)) {
+            if (value == null || !value.isObject() || !value.path("subelements").isArray() || !value.path("totalLength").isTextual()) {
+                result.addError(SOURCE, "Element 164 requires explicit totalLength and subelements");
+            } else {
+                segment.set("EbtProgramData", value);
+                validateEbtProgramData(segment, result);
+            }
+        } else result.addError(SOURCE, "Unsupported isolated Segment 103 element: " + element);
         return result;
     }
 
@@ -276,6 +298,9 @@ public final class Segment103PayloadValidator {
         if (!subelements.isArray()) {
             return;
         }
+        if (totalLength != null && EBT_PROGRAM_TOTAL_LENGTH.matcher(totalLength).matches()) {
+            validateEbtProgramTotalLength(Integer.parseInt(totalLength), subelements, result);
+        }
         int count = subelements.size();
         if (count < EBT_PROGRAM_SUBELEMENT_MIN_COUNT || count > EBT_PROGRAM_SUBELEMENT_MAX_COUNT) {
             result.addError(SOURCE, "EBT Data Segment.EbtProgramData must contain 1-6 Program Data subelements (SEG103-R-015); found " + count);
@@ -302,6 +327,21 @@ public final class Segment103PayloadValidator {
         }
     }
 
+    private static void validateEbtProgramTotalLength(int declared, JsonNode subelements, ValidationResult result) {
+        int encodedLength = 0;
+        for (JsonNode sub : subelements) {
+            String length = sub.path("len").asText(null);
+            if (length == null || !NUMERIC_2.matcher(length).matches()) {
+                return;
+            }
+            encodedLength += 2 + 2 + Integer.parseInt(length);
+        }
+        if (declared != encodedLength) {
+            result.addError(SOURCE, "EBT Data Segment.EbtProgramData.totalLength " + declared
+                + " does not match encoded TAG/LEN/detail character count " + encodedLength + " (SEG103-R-014)");
+        }
+    }
+
     /**
      * Element 164 / Appendix M full positional layout, validated only when a fixture supplies
      * the granular fields (amountType/currencyCode/amountDescriptor/detail for TAG 50/51/52, or
@@ -321,9 +361,9 @@ public final class Segment103PayloadValidator {
                 result.addError(SOURCE, "EBT Data Segment.EbtProgramData subelement TAG IT address must be exactly "
                     + EBT_PROGRAM_IT_ADDRESS_LENGTH + " bytes (SEG103-R-022)");
             }
-            if (zip.length() > EBT_PROGRAM_IT_ZIP_LENGTH) {
+            if (zip.length() > EBT_PROGRAM_IT_ZIP_LENGTH || !zip.matches("[0-9]{0,9}")) {
                 result.addError(SOURCE, "EBT Data Segment.EbtProgramData subelement TAG IT zip must be at most "
-                    + EBT_PROGRAM_IT_ZIP_LENGTH + " bytes (SEG103-R-022)");
+                    + EBT_PROGRAM_IT_ZIP_LENGTH + " digits (SEG103-R-022)");
             }
             checkLen(sub, EBT_PROGRAM_LEN_IT, result);
             return;
@@ -332,7 +372,10 @@ public final class Segment103PayloadValidator {
             return;
         }
         String amountType = sub.path("amountType").asText(null);
-        if (amountType == null || !amountType.equals(tag)) {
+        if ("50".equals(tag) && APPENDIX_M_TAG_50_AMOUNT_TYPES.contains(amountType)) {
+            result.addWarning("REVIEW_REQUIRED (SEG103-SME-009): Appendix M describes TAG 50 AMOUNT TYPE as 40, while Section 13.2 and the worked strings use 50; observed value "
+                + amountType + " is retained pending SME/TBA resolution.");
+        } else if (amountType == null || !amountType.equals(tag)) {
             result.addError(SOURCE, "EBT Data Segment.EbtProgramData subelement TAG " + tag
                 + " must set amountType to " + tag + " (SEG103-R-022)");
         }

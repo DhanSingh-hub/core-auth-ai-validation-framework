@@ -1,0 +1,115 @@
+{
+  "artifact": "PRELIMINARY-AI-BR-TO-TEST-BR-CHAIN-REVIEW",
+  "batchId": "002",
+  "reviewedOn": "2026-10-15",
+  "reviewLevel": "AI_PRELIMINARY_REVIEW_NOT_AUTHORIZED_ADJUDICATION",
+  "scope": "First eight AI BRs assigned to scheduled batch 002.",
+  "aiScenarioApprovalRequired": false,
+  "semanticMatchesConfirmed": 0,
+  "records": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:002",
+      "aiStatement": "Account Number must be alphanumeric with special characters and must not exceed 24 bytes.",
+      "aiSourceAnchor": {"segment": "100", "element": "2"},
+      "aiChain": {"scenarioCount": 7, "caseCount": 7, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG100-R-041", "relation": "SAME_FIELD_CONTEXT_ONLY", "rationale": "Requires an account number or identification value in transaction context; does not state the AI BR's format or 24-byte maximum."},
+        {"testBrId": "SEG100-R-035", "relation": "SAME_FIELD_REPRESENTATION_CONTEXT", "rationale": "Covers tokenized/TransArmor representation, not the general alphanumeric/special-character and length constraint."},
+        {"testBrId": "SEG100-R-034", "relation": "SAME_FIELD_TRANSACTION_CONTEXT", "rationale": "Covers representation by POS entry method; the AI field-value constraint is not established."}
+      ],
+      "excludedLead": {"testBrId": "SEG130-R-009", "reason": "Different segment scope despite shared element number."},
+      "preliminaryDisposition": "RELATED_TEST_RULES_BUT_NO_EQUIVALENT_FORMAT_CONSTRAINT_IDENTIFIED",
+      "testChainStatus": "Candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:003",
+      "aiStatement": "Address Line 1 must be alphanumeric and must not exceed 24 bytes.",
+      "aiSourceAnchor": {"segment": "DL1", "element": "3"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL1-R-003", "relation": "POTENTIAL_PARTIAL_MATCH_COMPOSITE_RULE", "rationale": "The Test BR groups Address Line 1 (element 3, 24) with other required fixed-length host fields. The 24-character/fixed-length scope is related, but the Test BR is composite and does not explicitly establish the AI alphanumeric predicate or byte-vs-character equivalence."}
+      ],
+      "preliminaryDisposition": "POTENTIAL_PARTIAL_SCOPE_CANDIDATE_CHAIN_MISSING",
+      "testChainStatus": "DRAFT_REVIEW_REQUIRED placeholder chain.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:004",
+      "aiStatement": "Address Line 2 must be alphanumeric and must not exceed 21 bytes.",
+      "aiSourceAnchor": {"segment": "DL1", "element": "4"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [
+        {"testBrId": "SEGDL1-R-010", "relation": "POTENTIAL_PARTIAL_MATCH_DIFFERENT_OBLIGATION_DETAIL", "rationale": "Same field; Test BR defines the 21-position city/state/ZIP layout. The AI BR states alphanumeric and a 21-byte maximum. Positional composition and byte/character length still need source-level comparison."},
+        {"testBrId": "SEGDL1-R-003", "relation": "POTENTIAL_PARTIAL_MATCH_COMPOSITE_RULE", "rationale": "Groups Address Line 2 (element 4, 21) with other required fixed-length fields; composite scope and byte-vs-character meaning remain unresolved."}
+      ],
+      "preliminaryDisposition": "POTENTIAL_PARTIAL_SCOPE_CANDIDATES_SOURCE_REVIEW_REQUIRED",
+      "testChainStatus": "Both candidate Test BR chains are DRAFT_REVIEW_REQUIRED placeholders.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:005",
+      "aiStatement": "Approval Number must be alphanumeric and must not exceed 6 bytes.",
+      "aiSourceAnchor": {"segment": "100", "element": "5"},
+      "aiChain": {"scenarioCount": 28, "caseCount": 28, "chainStatus": "SCENARIO_CASE_CHAIN_WITH_PHYSICAL_EVIDENCE"},
+      "testBrCandidates": [
+        {"testBrId": "SEG100-R-049", "relation": "SAME_FIELD_LIFECYCLE_PRESENCE_ONLY", "rationale": "Test BR addresses when an Approval Number is present; it does not state the AI BR's alphanumeric format or six-byte maximum."}
+      ],
+      "preliminaryDisposition": "RELATED_LIFECYCLE_RULE_NOT_EQUIVALENT_TO_FIELD_CONSTRAINT",
+      "testChainStatus": "DRAFT_REVIEW_REQUIRED placeholder chain.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:006",
+      "aiStatement": "Approved Amount must be numeric and must not exceed 9 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "6", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [],
+      "rejectedLexicalLeads": ["SEG108-R-012", "SEG102-R-023", "SEG109-R-009"],
+      "preliminaryDisposition": "NO_DEFENSIBLE_CANDIDATE_WITHOUT_SEGMENT_ATTRIBUTION",
+      "reviewAction": "Resolve source segment and inspect all Test BRs for the same amount field before concluding no counterpart exists.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:007",
+      "aiStatement": "Authorizer Code must be numeric and must not exceed 2 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "7", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [],
+      "rejectedLexicalLeads": ["SEG100-R-055", "SEG109-R-009", "SEG102-R-023"],
+      "preliminaryDisposition": "NO_DEFENSIBLE_CANDIDATE_WITHOUT_SEGMENT_ATTRIBUTION",
+      "reviewAction": "Resolve source segment; authorizer-flow leads do not by themselves establish the field-value constraint.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:008",
+      "aiStatement": "Authorizer Code must be one of the listed response codes.",
+      "aiSourceAnchor": {"segment": null, "element": "7", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [],
+      "rejectedLexicalLeads": ["SEG135-R-001", "SEG100-R-055", "SEG101-R-023"],
+      "preliminaryDisposition": "NO_DEFENSIBLE_CANDIDATE_WITHOUT_SEGMENT_ATTRIBUTION",
+      "reviewAction": "Resolve source segment and response-code field identity; authorizer and generic code matches are lexical leads only.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:009",
+      "aiStatement": "Authorizer Response Code must be alphanumeric and must not exceed 2 bytes.",
+      "aiSourceAnchor": {"segment": null, "element": "8", "anchorStatus": "SEGMENT_UNRESOLVED"},
+      "aiChain": {"scenarioCount": 1, "caseCount": 0, "chainStatus": "SCENARIO_LINK_WITHOUT_CASE"},
+      "testBrCandidates": [],
+      "rejectedLexicalLeads": ["SEG113-R-014", "SEG100-R-055", "SEG102-R-023"],
+      "preliminaryDisposition": "NO_DEFENSIBLE_CANDIDATE_WITHOUT_SEGMENT_ATTRIBUTION",
+      "reviewAction": "Resolve source segment and response-code field identity before evaluating whether a Test counterpart exists.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED",
+      "semanticMatchStatus": "NOT_ASSESSED"
+    }
+  ]
+}

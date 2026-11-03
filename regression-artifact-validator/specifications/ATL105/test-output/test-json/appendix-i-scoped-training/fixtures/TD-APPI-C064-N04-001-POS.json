@@ -1,0 +1,147 @@
+{
+  "id" : "TD-APPI-C064-N04-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C064-N04-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C064-N04-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-74",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t064-r006-APPI-C064-N04-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C064-N04-001",
+        "tableId" : "064",
+        "nestedSelector" : "04",
+        "ruleIds" : [ "APPI-T064-R002", "APPI-T064-R006" ],
+        "syntheticData" : {
+          "selector" : "04",
+          "logicalLength" : 5,
+          "postalCode" : "80202",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "paymentType" : "Credit",
+            "acceptorPostal" : "02108",
+            "countryUsesPostalCodes" : true,
+            "approvedCountryPostalFixtureSyntheticPrecondition" : true
+          }
+        },
+        "clearScope" : "Requiredifdifferentandcountryusespostal,max10an,n3count;countryformatunavailable.",
+        "excludedClaims" : [ "Realpostalvalidation", "Automaticpunctuationremoval", "Mandatoryplaceholderforno-postal-codecountry" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Presence/count/max10",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Externalcountrypostalformat",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "postalCode",
+            "operation" : "remove",
+            "expected" : "FAIL conditionalrequiredness"
+          }, {
+            "path" : "postalCode",
+            "replacement" : "ABCDEFGHIJK",
+            "expected" : "FAIL maximum10 regardlessofexternalformat"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 4,
+            "expected" : "FAIL5-bytecount"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "max10StructuralString" : "ABCDEFGHIJ",
+          "noPostalCountryVariant" : {
+            "countryUsesPostalCodes" : false,
+            "ruleEffect" : "No inventedpostalvalueorcondition-drivenmandatorypresence"
+          }
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31484,
+          "section" : "Appendix I-74",
+          "endLine" : 31510
+        }, {
+          "startLine" : 31352,
+          "section" : "Appendix I-72",
+          "endLine" : 31378
+        }, {
+          "startLine" : 31402,
+          "section" : "Appendix I-73",
+          "endLine" : 31412
+        }, {
+          "startLine" : 31431,
+          "section" : "Appendix I-73",
+          "endLine" : 31441
+        }, {
+          "startLine" : 31459,
+          "section" : "Appendix I-73",
+          "endLine" : 31469
+        }, {
+          "startLine" : 31470,
+          "section" : "Appendix I-74",
+          "endLine" : 31478
+        }, {
+          "startLine" : 31495,
+          "section" : "Appendix I-74",
+          "endLine" : 31505
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.04.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 04",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31495,
+            "section" : "Appendix I-74",
+            "endLine" : 31497
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "variable count up to 10 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31498,
+            "section" : "Appendix I-74",
+            "endLine" : 31501
+          } ]
+        }, {
+          "path" : "113.04.Sub-Table Data",
+          "sourceType" : "an..10",
+          "sourceLength" : "maximum 10 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31502,
+            "section" : "Appendix I-74",
+            "endLine" : 31510
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

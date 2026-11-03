@@ -66,6 +66,27 @@ public final class Atl105ElementValueValidator {
                         .map(String::trim).anyMatch(profile.path("element").asText()::equals)) ruleExists = true;
             }
             if (!ruleExists) throw new IOException("Profile does not reuse a matching existing element rule: " + profileId);
+            if (profile.has("calendarDate")) {
+                if (!"MMDDYY".equals(profile.path("calendarDate").asText())
+                        || !inSource(definitions, "MMDDYY")) {
+                    throw new IOException("Unsupported or ungrounded calendar format: " + profileId);
+                }
+                if (profile.has("dateSpecialCodes") && !profile.path("dateSpecialCodes").isArray()) {
+                    throw new IOException("Date special codes must be an array: " + profileId);
+                }
+                Set<String> codes = new HashSet<>();
+                for (JsonNode code : profile.path("dateSpecialCodes")) {
+                    if (!code.isTextual() || !code.textValue().matches("[0-9]{6}")
+                            || !codes.add(code.textValue()) || !inSource(definitions, code.textValue())) {
+                        throw new IOException("Unverified or duplicated date special code: " + profileId);
+                    }
+                }
+            } else if (profile.has("dateSpecialCodes")) {
+                throw new IOException("Date special codes need a calendar profile: " + profileId);
+            }
+            if (profile.path("emptyMeansOmitted").asBoolean() && profile.path("required").asBoolean()) {
+                throw new IOException("Required profile cannot treat empty text as omitted: " + profileId);
+            }
             patterns.put(profileId, Pattern.compile(profile.path("pattern").asText()));
         }
     }
@@ -92,6 +113,8 @@ public final class Atl105ElementValueValidator {
             String id = profile.path("element").asText();
             JsonNode value = observation.path("elements").get(id);
             if (value == null && !profile.path("required").asBoolean()) continue;
+            if (profile.path("emptyMeansOmitted").asBoolean() && value != null
+                    && value.isTextual() && value.textValue().isEmpty()) continue;
             checked.add(id);
             findings.add(check(profile, value, observation));
         }
@@ -115,6 +138,16 @@ public final class Atl105ElementValueValidator {
         if (value == null || !value.isTextual()) return new Finding(id, Status.INVALID, ruleId, "Required element missing or not text under profile " + profileId);
         String text = value.asText();
         if (!patterns.get(profileId).matcher(text).matches()) return new Finding(id, Status.INVALID, ruleId, "Value shape violates profile " + profileId);
+        if (profile.has("calendarDate")) {
+            boolean special = false;
+            for (JsonNode code : profile.path("dateSpecialCodes")) if (text.equals(code.textValue())) special = true;
+            if (!special && !Atl105CalendarDate.isValidMmddyy(text)) {
+                return new Finding(id, Status.INVALID, ruleId, "Invalid calendar representation under profile " + profileId);
+            }
+            if (!special && Atl105CalendarDate.needsCenturyForLeapDay(text)) {
+                return new Finding(id, Status.REVIEW_REQUIRED, ruleId, "Leap day with year 00 needs century evidence under profile " + profileId);
+            }
+        }
         JsonNode range = profile.path("numericRange");
         if (!range.isMissingNode()) {
             if (!DIGITS.matcher(text).matches() || text.length() > 18)
@@ -149,10 +182,19 @@ public final class Atl105ElementValueValidator {
         if (text.isEmpty()) return new Finding(id, Status.REVIEW_REQUIRED, "", "Empty value; omission semantics require context");
         if (text.length() > constraint.path("maxLength").asInt()) return new Finding(id, Status.INVALID, "", "Exceeds maximum length of " + source);
         if ("N".equals(constraint.path("characterType").asText()) && !DIGITS.matcher(text).matches())
-            return new Finding(id, Status.INVALID, "", "Non-digit value for numeric " + source);
+            return new Finding(id, sourceDefinedNumericException(id, text) ? Status.REVIEW_REQUIRED : Status.INVALID, "",
+                sourceDefinedNumericException(id, text) ? "Source-declared padding, masking or composite exception requires contextual validation of " + source
+                    : "Non-digit value for numeric " + source);
         if ("FIXED".equals(constraint.path("lengthMode").asText()) && text.length() < constraint.path("maxLength").asInt())
             return new Finding(id, Status.REVIEW_REQUIRED, "", "Shorter than fixed length of " + source + "; padding convention requires review");
         return new Finding(id, Status.REVIEW_REQUIRED, "", "Baseline type/length of " + source + " passed; no verified contextual profile");
+    }
+
+    private static boolean sourceDefinedNumericException(String id, String value) {
+        return "65".equals(id) && value.matches(" +[0-9]+") && value.length() == 6
+            || "98".equals(id) && value.matches("\\*{1,16}")
+            || "138".equals(id) && "ERN".equals(value)
+            || "153".equals(id) && value.matches("(9752[0-9]{3}[0CD][0-9]{12}){1,2}");
     }
 
     private void membership(JsonNode observation, List<Finding> findings) {
@@ -177,11 +219,71 @@ public final class Atl105ElementValueValidator {
             if (!allowed.contains(segment)) findings.add(new Finding("", Status.REVIEW_REQUIRED, "", "Segment " + segment + " not listed in " + section));
             return;
         }
-        if (!observation.path("segmentsPresent").isArray()) return;
         Set<String> present = new HashSet<>();
-        observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
-        for (String missing : required) if (!present.contains(missing))
-            findings.add(new Finding("", Status.INVALID, "", "Required Segment " + missing + " absent per " + section));
+        if (observation.path("segmentsPresent").isArray())
+            observation.path("segmentsPresent").forEach(item -> present.add(item.asText()));
+        JsonNode occurrences = observation.path("qualifiers").path("segmentOccurrenceCounts");
+        boolean hasStructureEvidence = observation.path("segmentsPresent").isArray() || occurrences.isObject();
+        if (occurrences.isObject()) occurrences.fieldNames().forEachRemaining(present::add);
+        for (String missing : required) {
+            if ("100".equals(missing)) {
+                JsonNode exactCount = occurrences.path("100");
+                if (exactCount.canConvertToInt()) {
+                    int count = exactCount.asInt();
+                    Status status = count == 1 ? Status.CHECKS_PASSED : Status.INVALID;
+                    String reason = count == 1 ? "Segment 100 occurs exactly once in the payload"
+                        : count == 0 ? "Required Segment 100 absent per " + section
+                        : "Segment 100 occurs " + count + " times; exactly one occurrence is required per " + section;
+                    findings.add(new Finding("", status, "SEG100-R-001", reason));
+                } else if (!hasStructureEvidence) {
+                    findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-001",
+                        "Segment 100 presence cannot be assessed without segment occurrence or presence evidence"));
+                } else if (!present.contains("100")) {
+                    findings.add(new Finding("", Status.INVALID, "SEG100-R-001", "Required Segment 100 absent per " + section));
+                } else {
+                    findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG100-R-001",
+                        "Segment 100 is present, but exact-once occurrence count is unavailable"));
+                }
+            } else if (!present.contains(missing)) {
+                findings.add(new Finding("", hasStructureEvidence ? Status.INVALID : Status.REVIEW_REQUIRED, "",
+                    (hasStructureEvidence ? "Required Segment " : "Presence of required Segment ") + missing
+                        + (hasStructureEvidence ? " absent per " : " cannot be assessed per ") + section));
+            }
+        }
+        JsonNode segment100Count = occurrences.path("100");
+        JsonNode segment101Count = occurrences.path("101");
+        JsonNode untypedSegmentCount = observation.path("qualifiers").path("untypedSegmentObjectCount");
+        if (!occurrences.isObject() || !untypedSegmentCount.canConvertToInt()) {
+            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                "Segment 101 to Segment 100 companion relationship requires occurrence counts and typed segment evidence"));
+        } else if (segment101Count.asInt(0) == 0) {
+            if (untypedSegmentCount.asInt() > 0)
+                findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                    "An untyped segment object could be Segment 101; its Segment 100 companion relationship cannot be assessed"));
+        } else if (segment100Count.asInt(0) > 0) {
+            findings.add(new Finding("", Status.CHECKS_PASSED, "SEG101-R-001", "Segment 101 is accompanied by Segment 100"));
+        } else if (untypedSegmentCount.asInt() > 0) {
+            findings.add(new Finding("", Status.REVIEW_REQUIRED, "SEG101-R-001",
+                "Segment 101 is present but an untyped segment object could be its Segment 100 companion"));
+        } else {
+            findings.add(new Finding("", Status.INVALID, "SEG101-R-001", "Segment 101 is present without required companion Segment 100"));
+        }
+        Status duplicateStatus;
+        String duplicateReason;
+        if (!hasStructureEvidence) {
+            duplicateStatus = Status.REVIEW_REQUIRED;
+            duplicateReason = "Segment 101 duplicate check requires segment presence or occurrence evidence";
+        } else if (segment101Count.canConvertToInt() && segment101Count.asInt() > 1) {
+            duplicateStatus = Status.INVALID;
+            duplicateReason = "Companion Segment 101 occurs " + segment101Count.asInt() + " times; duplicates are not allowed";
+        } else if (!untypedSegmentCount.canConvertToInt() || untypedSegmentCount.asInt() > 0) {
+            duplicateStatus = Status.REVIEW_REQUIRED;
+            duplicateReason = "Segment 101 duplicate check requires a typed count for every top-level segment object";
+        } else {
+            duplicateStatus = Status.CHECKS_PASSED;
+            duplicateReason = "Companion Segment 101 occurs no more than once in the payload";
+        }
+        findings.add(new Finding("", duplicateStatus, "SEG100-R-008", duplicateReason));
         for (String extra : present) if (!allowed.contains(extra))
             findings.add(new Finding("", Status.REVIEW_REQUIRED, "", "Segment " + extra + " not listed in " + section));
     }

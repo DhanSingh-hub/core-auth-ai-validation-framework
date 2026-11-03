@@ -1,0 +1,170 @@
+{
+  "name": "Flow — Authorization followed by Partial Completion (Financial Transaction Request → Purchase/Capture) [wallet-present]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Wallet Identifier": "01",
+    "Wallet Method": "S"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        567
+      ],
+      "sub_table_id": "07",
+      "sub_table_length": "002",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_07",
+      "axis": "wallet",
+      "value": "01",
+      "parameter": "Wallet Identifier"
+    },
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        569
+      ],
+      "sub_table_id": "10",
+      "sub_table_length": "001",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_10",
+      "axis": "wallet_method",
+      "value": "S",
+      "parameter": "Wallet Method"
+    }
+  ],
+  "flow_id": "FLOW-AUTH-PARTIAL-COMPLETION",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "partial_completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Sequence Number must match the original transaction request.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Fuel Purchase Amount",
+          "rule": "Capture amount is less than the authorized amount. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Nonfuel Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Tax Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Cash Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-402-1",
+  "source_page": null,
+  "business_rule_assertion": "Sequence Number must match the original transaction request.; Capture amount is less than the authorized amount. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.; Capture amount is less than the authorized amount.; Capture amount is less than the authorized amount.; Capture amount is less than the authorized amount.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "5840f1b2cd40a2598a7a4d57b514ea6e447896993ce2740c3209f2a4258ae58f",
+  "dedup_key": "be9197f57df7aedd217cdf2b24261a8ecd3860de9aa7200da93f7435416b1274",
+  "flow_variant_id": "wallet-present",
+  "flow_variant_name": "Digital wallet presentment",
+  "flow_axis_values": {
+    "wallet": "01",
+    "wallet_method": "S"
+  },
+  "flow_axis_provenance": {
+    "wallet": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Identifier"
+    },
+    "wallet_method": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Method"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1921"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2170",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

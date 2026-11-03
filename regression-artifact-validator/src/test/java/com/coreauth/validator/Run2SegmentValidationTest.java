@@ -69,6 +69,39 @@ class Run2SegmentValidationTest {
                 error.reason().contains("validator is not implemented"));
     }
 
+        @Test
+        void dispatchesSegment112ResponsePayloadThroughTheSharedTransactionFlow(@TempDir Path runRoot) throws Exception {
+                Path payload = Files.writeString(runRoot.resolve("segment-112.json"), """
+                                {
+                                    "Financial Transaction Response": {
+                                        "additionalInformationDataSegmentFlag": "1",
+                                        "dataSection2": {
+                                            "additionalInformationDataSegment": {
+                                                "segmentType": "112",
+                                                "segmentLength": "021",
+                                                "additionalInformationSections": [
+                                                    {"additionalInformationIndicator":"001","additionalInformationLength":"006","additionalInformation":"123456"}
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                                """);
+                CanonicalArtifactPackage artifactPackage = new CanonicalArtifactPackage();
+                artifactPackage.setTestData(List.of(testData("TD-112", "TC-112", "112", payload.getFileName().toString())));
+
+                var result = new Run2PayloadBatchValidator().validate("112", runRoot, artifactPackage);
+
+                assertThat(result.validatorImplemented()).isTrue();
+                assertThat(result.applicablePayloadFiles()).isEqualTo(1);
+                assertThat(result.validPayloadFiles()).isZero();
+                assertThat(result.invalidPayloadFiles()).isZero();
+                assertThat(result.reviewRequiredPayloadFiles()).isEqualTo(1);
+                assertThat(result.asValidationResult().isValid()).isFalse();
+                assertThat(result.asValidationResult().errors()).anyMatch(error ->
+                    error.reason().contains("REVIEW_REQUIRED"));
+        }
+
     @Test
     void unrelatedLinkedPayloadDoesNotPassPreSmeSegmentCompliance(@TempDir Path runRoot) throws Exception {
         Files.writeString(runRoot.resolve("other-segment.json"),

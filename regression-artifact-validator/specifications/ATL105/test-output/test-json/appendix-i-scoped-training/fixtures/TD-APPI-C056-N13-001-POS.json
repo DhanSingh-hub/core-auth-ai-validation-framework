@@ -1,0 +1,151 @@
+{
+  "id" : "TD-APPI-C056-N13-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N13-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N13-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-63",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r018-APPI-C056-N13-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N13-001",
+        "tableId" : "056",
+        "nestedSelector" : "13",
+        "ruleIds" : [ "APPI-T056-R018", "APPI-T056-R009" ],
+        "syntheticData" : {
+          "selector" : "13",
+          "logicalLength" : 35,
+          "registrationReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "history" : {
+            "initialReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "modificationReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "subsequentReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "context" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "payment" : "recurring"
+          }
+        },
+        "clearScope" : "Fixed35alphanumeric,IndiaVisa recurring required,initial value unchanged throughmodification/subsequent.",
+        "excludedClaims" : [ "External reference generation/uniqueness algorithm", "Permission to change reference onmodification" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Thirty-five-byte stable reference",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "history.subsequentReference",
+            "replacement" : "BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "expected" : "FAIL initial equality"
+          }, {
+            "path" : "history.modificationReference",
+            "operation" : "remove",
+            "expected" : "FAIL recurrentpresence"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 34,
+            "expected" : "FAIL fixed35"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "tooShort34" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "tooLong36" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30718,
+          "section" : "Appendix I-63",
+          "endLine" : 30746
+        }, {
+          "startLine" : 30718,
+          "section" : "Appendix I-63",
+          "endLine" : 30757
+        }, {
+          "startLine" : 27801,
+          "section" : "Appendix I-9",
+          "endLine" : 27812
+        }, {
+          "startLine" : 27813,
+          "section" : "Appendix I-10",
+          "endLine" : 27822
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.13.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 13",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30721,
+            "section" : "Appendix I-63",
+            "endLine" : 30723
+          } ]
+        }, {
+          "path" : "113.13.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 35",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30724,
+            "section" : "Appendix I-63",
+            "endLine" : 30727
+          } ]
+        }, {
+          "path" : "113.13.Sub-Table Data",
+          "sourceType" : "an35",
+          "sourceLength" : "35 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30728,
+            "section" : "Appendix I-63",
+            "endLine" : 30746
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

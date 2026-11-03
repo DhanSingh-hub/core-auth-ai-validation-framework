@@ -88,6 +88,12 @@ A rule is fully covered only when:
 - Test data carries the anchor and links to the test case.
 - The test data exercises the claimed behavior.
 
+### Single-Sample Evidence Boundary
+
+A standalone request is not a BR coverage denominator or a complete coverage chain. Without a frozen delivery population and explicit BR -> TS -> TC -> TD identity, record only the rules the sample can directly exercise; do not count it as a confirmed AI/Test BR match or infer lifecycle coverage.
+
+The sanitized Authorization sample screened on 2026-10-16 has three declared segment objects and its declared EMV byte count agrees with the observed hex byte count. Its Element 190 begins with bytes that, interpreted as a packed-BCD prefix, encode 145 bytes; the remaining 145 bytes parse into 22 TLV entries, including required identifier tags and no prohibited PAN/Track-2 tags. However, the current Appendix R contract treats the example's BCD length prefix as separate from the Element 190 TLV value, while this producer object places the prefix inside `EMVChipData`. Do not call the supplied stream malformed or accept the stripped remainder as compliant until the producer adapter's field boundary is confirmed; record prefix placement as `REVIEW_REQUIRED`. Element 188 independently fails its three-digit format and does not match the decoded chip sequence. The producer `TrackData` alias has no declared entry mode or Element 2/12 adapter mapping. The sample has no BR/TS/TC/TD identifiers, completion leg, response evidence, or frozen delivery inventory; therefore it contributes no confirmed BR-coverage numerator. Do not persist its raw track or chip values in review artifacts.
+
 ## Step 4: Classify Coverage
 
 | Status | Meaning | Certification impact |

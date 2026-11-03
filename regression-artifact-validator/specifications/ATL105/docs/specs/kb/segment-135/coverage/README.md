@@ -5,4 +5,4 @@
 
 ## Approval Gate
 
-Confirm Appendix V scope (`SEG135-SME-002`) and AI package canonicity (`SEG135-SME-003`) before certifying any rule `COVERED`.
+Appendix V scope is resolved; use the [Appendix V training module](../../appendix-v/README.md) for its bounded request-table coverage. Confirm AI package canonicity (`SEG135-SME-003`) before certifying artifact-comparison coverage.

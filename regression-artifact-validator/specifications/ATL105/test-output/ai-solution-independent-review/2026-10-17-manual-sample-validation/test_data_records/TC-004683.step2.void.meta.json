@@ -1,0 +1,2287 @@
+{
+  "configurationVersion": "1.0",
+  "specification": "ATL105",
+  "generatedAt": "2026-10-12T10:05:59.767983+00:00",
+  "testCaseId": "TC-004683",
+  "flowId": "FLOW-EMV-SALE-VOID",
+  "flowVariantId": "boundary-at-limit-sequence-number",
+  "flowVariantName": "Boundary — Sequence Number at max length (6 bytes)",
+  "flowAxisValues": {},
+  "step": 2,
+  "role": "void",
+  "previousStep": 1,
+  "scenarioId": "SC-5028",
+  "requirementId": "REQ-SRC-ATL105-PDF-001:096",
+  "sourceRuleId": "ENT-ELEM-86",
+  "sourcePage": null,
+  "messageFamily": "Purchase Reversal",
+  "scenarioType": "flow",
+  "priority": "P2",
+  "negativeClass": null,
+  "violatedElementName": null,
+  "qeCoverage": {
+    "qeFields": 0,
+    "totalFields": 92,
+    "ratio": 0.0
+  },
+  "dataSections": {
+    "1": {
+      "elements": [
+        "MessageFormatVersionIdentifier",
+        "NumberofSegments"
+      ]
+    },
+    "2": {
+      "segments": [
+        "100"
+      ],
+      "source": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "position": 0
+      }
+    },
+    "3": {
+      "segments": [
+        "101",
+        "102",
+        "103",
+        "104",
+        "111",
+        "123",
+        "135",
+        "143",
+        "145",
+        "151",
+        "153"
+      ],
+      "source": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "position": 0
+      }
+    },
+    "unresolved": {
+      "segments": [
+        "108",
+        "110",
+        "113",
+        "114",
+        "119",
+        "132",
+        "156"
+      ],
+      "reasons": {
+        "108": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "110": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "113": "NEEDS_SPEC_GROUNDING: segment 113 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "114": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "119": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "132": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'",
+        "156": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    }
+  },
+  "fields": [
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "InformationByte",
+      "specElementName": "Information Byte",
+      "nameSource": "qe_confirmed",
+      "value": "0",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "TerminalID",
+      "specElementName": "Terminal Identifier",
+      "nameSource": "qe_confirmed",
+      "value": "JDLL404965838242073067",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "PromptCode",
+      "specElementName": "Prompt Code",
+      "nameSource": "derived_stripped",
+      "value": "8001",
+      "dataSource": "catalog_preserved_deliberate_or_fixed",
+      "provisional": null,
+      "sourceSamples": [],
+      "reshapedInto": "PromptCode",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "AccountNumber",
+      "specElementName": "Account Number",
+      "nameSource": "derived_stripped",
+      "value": "464629002834633666729004",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "mergedInto": "TrackData",
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "SequenceNumber",
+      "specElementName": "Sequence Number",
+      "nameSource": "qe_confirmed",
+      "value": "104657",
+      "dataSource": "flow_recarried",
+      "provisional": false,
+      "sourceSamples": [],
+      "note": "carried/derived (equal) from step 1",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "ApprovalNumber",
+      "specElementName": "Approval Number",
+      "nameSource": "qe_confirmed",
+      "value": "F38ESV",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Segment",
+      "element": "PartialApprovalIndicator",
+      "specElementName": "Partial Approval Indicator",
+      "nameSource": "qe_confirmed",
+      "value": "0",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "101",
+      "segmentFriendlyName": "Fleet Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "101",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "102",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ServiceLevel",
+      "specElementName": "Service Level",
+      "nameSource": "derived_stripped",
+      "value": "F",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "NumberofProducts",
+      "specElementName": "Number of Products",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ProductCode",
+      "specElementName": "Product Code",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "UnitofMeasure",
+      "specElementName": "Unit of Measure",
+      "nameSource": "derived_stripped",
+      "value": "C",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "Quantity",
+      "specElementName": "Quantity",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "UnitPrice",
+      "specElementName": "Unit Price",
+      "nameSource": "derived_stripped",
+      "value": "000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "102",
+      "segmentFriendlyName": "Product Code Data Segment",
+      "element": "ProductAmount",
+      "specElementName": "Product Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 1
+      }
+    },
+    {
+      "segment": "103",
+      "segmentFriendlyName": "EBT Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "103",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 2
+      }
+    },
+    {
+      "segment": "104",
+      "segmentFriendlyName": "Purchase Card Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "104",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 3
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "108",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyProgramID",
+      "specElementName": "Loyalty Program ID",
+      "nameSource": "derived_stripped",
+      "value": "853448",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "PointstoRedeem",
+      "specElementName": "Points to Redeem",
+      "nameSource": "derived_stripped",
+      "value": "224828",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "CouponID",
+      "specElementName": "Coupon ID",
+      "nameSource": "derived_stripped",
+      "value": "7304793339223303547",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "CouponAmount",
+      "specElementName": "Coupon Amount",
+      "nameSource": "derived_stripped",
+      "value": "36287168",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "PaymentTenderType",
+      "specElementName": "Payment Tender Type",
+      "nameSource": "derived_stripped",
+      "value": "VS",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyTrack2Data",
+      "specElementName": "Loyalty Track 2 Data",
+      "nameSource": "derived_stripped",
+      "value": "42155425482654081230528253350607841055",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "LoyaltyInformationVersion",
+      "specElementName": "Loyalty Information Version",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "108",
+      "segmentFriendlyName": "Loyalty Card Data Segment",
+      "element": "UnitofWork",
+      "specElementName": "Unit of Work",
+      "nameSource": "derived_stripped",
+      "value": "6026310808132586838",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 108 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "110",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "MICRData",
+      "specElementName": "MICR Data",
+      "nameSource": "derived_stripped",
+      "value": "2VT42USVQR8O6IW5COGZRQA1LXCUX7XTJ68HBP97FMFR6VI76E",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "CheckType",
+      "specElementName": "Check Type",
+      "nameSource": "derived_stripped",
+      "value": "P",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "CustomerPhoneNumber",
+      "specElementName": "Customer Phone Number",
+      "nameSource": "derived_stripped",
+      "value": "6482991785",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "CustomerLastName",
+      "specElementName": "Customer Last Name",
+      "nameSource": "derived_stripped",
+      "value": "KQPCD7SBE2IKSVP6JFYPKYFZ",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "110",
+      "segmentFriendlyName": "Check Data Segment",
+      "element": "CheckIssueDate",
+      "specElementName": "Check Issue Date",
+      "nameSource": "derived_stripped",
+      "value": "06152025",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 110 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "111",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationIndicator",
+      "specElementName": "Variable Information Indicator",
+      "nameSource": "derived_stripped",
+      "value": "005",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationLength",
+      "specElementName": "Variable Information Length",
+      "nameSource": "derived_stripped",
+      "value": "003",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformation",
+      "specElementName": "Variable Information",
+      "nameSource": "derived_stripped",
+      "value": "000",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationIndicator2",
+      "specElementName": "Variable Information Indicator [2]",
+      "nameSource": "derived_stripped",
+      "value": "031",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformationLength2",
+      "specElementName": "Variable Information Length [2]",
+      "nameSource": "derived_stripped",
+      "value": "002",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Info Segment",
+      "element": "VariableInformation2",
+      "specElementName": "Variable Information [2]",
+      "nameSource": "derived_stripped",
+      "value": "00",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "foldedInto": "VarInfoTable",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 4
+      }
+    },
+    {
+      "segment": "113",
+      "segmentFriendlyName": "ECA/ TeleCheck Data Segment Format ®",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "113",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 113 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "113",
+      "segmentFriendlyName": "ECA/ TeleCheck Data Segment Format ®",
+      "element": "ECATeleCheckClerkID",
+      "specElementName": "ECA/ TeleCheck ® Clerk ID",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 113 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "113",
+      "segmentFriendlyName": "ECA/ TeleCheck Data Segment Format ®",
+      "element": "ECATeleCheckPhoneNumber",
+      "specElementName": "ECA/ TeleCheck ® Phone Number",
+      "nameSource": "derived_stripped",
+      "value": "8859137835",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 113 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "113",
+      "segmentFriendlyName": "ECA/ TeleCheck Data Segment Format ®",
+      "element": "MerchantTraceID",
+      "specElementName": "Merchant Trace ID",
+      "nameSource": "derived_stripped",
+      "value": "FYMBFNPAWPQKJF1DRFOOS3VZW",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 113 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "114",
+      "segmentFriendlyName": "SKU Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "114",
+      "segmentFriendlyName": "SKU Data Segment",
+      "element": "SKUData",
+      "specElementName": "SKU Data",
+      "nameSource": "derived_stripped",
+      "value": "KZ6ONXSRU95SUZLI0QV1FYT3THPEKULS4969WB15EE6CHA7YBJE5JU359X9SGPIJFIO2YHMCXYBV22VL24NMLMST6WHMLACV4I75MCE5RD92B1JXI8PL5OHBVWJJWMNFSOG8A4755YO1B4IPTQXEUU29NXP5DQMA8G3VIXFEB0SJTZ7RU779SVAP49XLH9U5SNEZP63B06CRFLRRLHVNQKSXSRSV2UDU11M60M7HF92NELEFOH2GTYXI1W78QS3WSC0YOYZ7Q7L8CVV1ULV4M0CGAFYL1F2LVYXVPN7N17D0YGWWHUNGUXKF4ZF0QJN8DJPU5LRDRFDCKXCCBZ8P9XZ44JE3NEO4ABVRLUDMZCBZWVUJ4SPC5ZNQB49VRNZ6HWKRTWCM8O9SZXVYB6F35UQV66JA1RYQWXF12YWLK1GCB7ZY7SC5DTBZNB0V8W5QEA5755AT5PP9U39L54OZY6G8DDV45VMM9Z5655DT1BJEX0BHUC58LDREP2TSZCALHAZBVT5ZCRB9UOVXXFCI5QCTHXRGWEZIHQD9HJ5BSNPOVQX24Z6K4KBNWRNJGD6Q35CMO5E1HDJPLIJN9UPRIDEOYS4HT531K1GKP1XL733BN12ESJ3AVODKB5H6EOT89UL9S6WLVVT9EJDYW0KKTG3EZNLHGTOL1GVK1A6ROKV6ORWNT4L3RBA88C6E1CWBGFKOBPD855IKHRPHSNO01VKKSC2O1WM4TRWP2X0ZH5166V6TD8HNQQOQSJDZ6C0P5CSA7OMYTB4PHMDFLMDVA0CSKKZLK1X8PTIQNNUBO9VRXR1KGNAK6ADI3VQ7DLXPQS1WIQ94GFTE9QALXHF4CC71LK1RNDSKEUDZ6CWW9WKGRY6FARSERL0F29F2ZA9WCJUDREFYTPU12FSO9SCJUTZTA7USPCZL2BPALLTQLOIM11UVGYRDFJ94QLNJB1RRG65EB821XBFW4C39E1HFJKNP0AUJ5XVGU3B4O2C6",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 114 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "119",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "InformationByte",
+      "specElementName": "Information Byte",
+      "nameSource": "qe_confirmed",
+      "value": "0",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "TerminalID",
+      "specElementName": "Terminal Identifier",
+      "nameSource": "qe_confirmed",
+      "value": "JDLL404965838242073067",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "PromptCode",
+      "specElementName": "Prompt Code",
+      "nameSource": "derived_stripped",
+      "value": "990",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "TotalsDate",
+      "specElementName": "Totals Date",
+      "nameSource": "derived_stripped",
+      "value": "111111",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "HardwareVersion",
+      "specElementName": "Hardware Version",
+      "nameSource": "derived_stripped",
+      "value": "2SQ47X7B",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '43' ('Hardware Version') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=8 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "SoftwareVersion",
+      "specElementName": "Software Version",
+      "nameSource": "derived_stripped",
+      "value": "QOPPLF01",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "FirmwareVersion",
+      "specElementName": "Firmware Version",
+      "nameSource": "derived_stripped",
+      "value": "7VQETOUF",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "SequenceNumber",
+      "specElementName": "Sequence Number",
+      "nameSource": "qe_confirmed",
+      "value": "232930",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "DeviceCardTableVersion",
+      "specElementName": "Device Card Table Version",
+      "nameSource": "derived_stripped",
+      "value": "295469",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "HostDiscountTimestamp",
+      "specElementName": "Host Discount Timestamp",
+      "nameSource": "derived_stripped",
+      "value": "202506151430",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "CurrencyCode",
+      "specElementName": "Currency Code",
+      "nameSource": "derived_stripped",
+      "value": "840",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "GrandTotal",
+      "specElementName": "Grand Total",
+      "nameSource": "derived_stripped",
+      "value": "00000000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "CardLabel",
+      "specElementName": "Card Label",
+      "nameSource": "derived_stripped",
+      "value": "CC",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "CardTypeTotalCount",
+      "specElementName": "Card Type Total Count",
+      "nameSource": "derived_stripped",
+      "value": "00001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "119",
+      "segmentFriendlyName": "Totals with Proprietary Data Load Data Segment",
+      "element": "CardTypeTotalAmount",
+      "specElementName": "Card Type Total Amount",
+      "nameSource": "derived_stripped",
+      "value": "00000000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 119 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "123",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "CAVVRevisedFormat",
+      "specElementName": "CAVV, Revised Format",
+      "nameSource": "derived_stripped",
+      "value": "RHVPY2",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "TokenRequestorID",
+      "specElementName": "Token Requesto r ID",
+      "nameSource": "derived_stripped",
+      "value": "YH5WD7",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "CryptogramTokenData",
+      "specElementName": "Cryptogr am Token Data",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "SafeKeyData",
+      "specElementName": "SafeKey Data",
+      "nameSource": "derived_stripped",
+      "value": "3306435079038606685485776433567274807568428632276376045119",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "SafeKeyResponse",
+      "specElementName": "SafeKey Respons e",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "TAVVCryptogram",
+      "specElementName": "TAVV Cryptogr am",
+      "nameSource": "derived_stripped",
+      "value": "FTDA5FWRQR3FTME0UFBTIELBSAUA",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "123",
+      "segmentFriendlyName": "NFC Payment Tokenization Data Segment",
+      "element": "TAVVResultCode",
+      "specElementName": "TAVV Result Code",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 5
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "132",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "SequenceNumber",
+      "specElementName": "Sequence Number",
+      "nameSource": "qe_confirmed",
+      "value": "232930",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "TerminalID",
+      "specElementName": "Terminal Identifier",
+      "nameSource": "qe_confirmed",
+      "value": "JDLL404965838242073067",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "LoadType",
+      "specElementName": "Load Type",
+      "nameSource": "derived_stripped",
+      "value": "K",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "HardwareVersion",
+      "specElementName": "Hardware Version",
+      "nameSource": "derived_stripped",
+      "value": "2SQ47X7B",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '43' ('Hardware Version') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=8 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "SoftwareVersion",
+      "specElementName": "Software Version",
+      "nameSource": "derived_stripped",
+      "value": "QOPPLF01",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "FirmwareVersion",
+      "specElementName": "Firmware Version",
+      "nameSource": "derived_stripped",
+      "value": "7VQETOUF",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "CAPublicKeyFileChecksum",
+      "specElementName": "CA Public Key File Checksum",
+      "nameSource": "qe_confirmed",
+      "value": "1752678781838239510390136",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "132",
+      "segmentFriendlyName": "CA Public Key File Data Segment",
+      "element": "BlockNumber",
+      "specElementName": "Block Number",
+      "nameSource": "derived_stripped",
+      "value": "000",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 132 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "135",
+      "segmentFriendlyName": "Moneris Data Segment (Request)",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "135",
+      "segmentFriendlyName": "Moneris Data Segment (Request)",
+      "element": "MonerisData",
+      "specElementName": "Moneris Data",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "143",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "NumberofProducts",
+      "specElementName": "Number of Products",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "ProductCode",
+      "specElementName": "Product Code",
+      "nameSource": "derived_stripped",
+      "value": "001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "143",
+      "segmentFriendlyName": "Tax by Product Data Segment",
+      "element": "InclusiveExclusiveforTax1",
+      "specElementName": "Inclusive/ Exclusive for Tax 1",
+      "nameSource": "derived_stripped",
+      "value": "I",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 7
+      }
+    },
+    {
+      "segment": "145",
+      "segmentFriendlyName": "Enhanced Fleet Request",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "145",
+      "segmentFriendlyName": "Enhanced Fleet Request",
+      "element": "EnhancedFleetData",
+      "specElementName": "Enhanced Fleet Data",
+      "nameSource": "derived_stripped",
+      "value": "6HHG76TV2KG5BL84D0IYSEPTB9QTEIB6N2YYI8A126P3SY8EBZAZZ5KE7RO8JAXR3CH2J0WVZAR4NOP9SHEWJ2N3XAW2Q1DA9K9ESVSLPPTMOERMKAXITEBUTJWTQJXP01KEZ29SLEJL7DYUA7C5DKSZ7PCAESYYP31QFGD1DCQA47QOHEISJ82ZH97FO7QDJ2CS5NLE0HGALTDLOLSIDSZL2GG26OII8JA3WHWNKZXQE07CFC1TBQK94P67AV3143BT0NN1BFURBLSPOYNWKRSY5M1R8TLY18JWPRGL78RIL27X1U91HSD5SIAPNOD8FZ12BIOV6XB1BTJB1PAC39Z7QV48HRHS1JHS0KS0FDSZQSF603X82XTP27G4FWZGSZUTF2GPAR9N0EWAMW2H9G6ZQEN3BLDQPD7CCVB78Q8B1AUNMXX0ZH95Q4IX3IBFTPSV9EWVZGKM43TFVDK48XZXXHH6N2KAJ0Q6BZXJM4YZ1M70YLIMTZDCTJ2S8QILM6YBR0HEO7A67VKTYW83N5KD3L2RV94I7161FQ97S9E4R3BL6U0VJFFWD9UFJFI5FWOQD5II3QM4LY29NBYPFKLJRBESHOT6XZ2EL5U8756XLP2Y65H6866JDU2IMKE25IQBYGX7E3YABT98CMSSJBB528KP2YABDYQXMMWDE2A9WYU5SZRKCINQKG90S9PH1VCIYG187KIEOYWLRJ5XZ78NSNCIXNMCLMM51D2NB0SNVIXDQ9P0IROS90O0CHN129QEDC4YUWU870A5I5HLK6MC8VW4KWBAO9OLBEXIU0XGCJET35BBJMIIXBXNG5RLROJ4SOZN6ZAQSZ9VY2GK7T3PKMI39NSCJJPJRMZN7RHPS6ANDAF77ZIQEJ86T7K67TL3L9ECSS0V0TW20UP11BDXIUF4JSOAIE526FOU5DMY1GE4NNOP5SL2LGVDOICNGC233TIL9L3BQ9LGMYDH7CY25DGIZTTO119UTD0",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 8
+      }
+    },
+    {
+      "segment": "151",
+      "segmentFriendlyName": "Request InComm OTC Market Basket Data",
+      "element": "SegmentType",
+      "specElementName": "Segme nt Type",
+      "nameSource": "derived_stripped",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 10
+      }
+    },
+    {
+      "segment": "153",
+      "segmentFriendlyName": "Network Token Data Request",
+      "element": "SegmentType",
+      "specElementName": "Segme nt Type",
+      "nameSource": "derived_stripped",
+      "value": "100",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 165,
+        "basis": "named in Financial Transaction Request's (p.165) own Data Section No. 3 clause",
+        "position": 12
+      }
+    },
+    {
+      "segment": "156",
+      "segmentFriendlyName": "EV Charging Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "qe_confirmed",
+      "value": "156",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "156",
+      "segmentFriendlyName": "EV Charging Data Segment",
+      "element": "EVChargingData",
+      "specElementName": "EV Charging Data",
+      "nameSource": "derived_stripped",
+      "value": "01",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": null,
+      "dataSectionSource": {
+        "basis": "NEEDS_SPEC_GROUNDING: segment 156 is rendered in this transaction's template but is not named by element 63's own Data Section No. 2 or No. 3 clause for 'Financial Transaction Request'"
+      }
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "MessageFormatVersionIdentifier",
+      "specElementName": "MessageFormatVersionIdentifier",
+      "nameSource": "spec_element_name",
+      "value": "ATL105",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "ELEMENT-55-PROCESSING-RULES (p.384); value: ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST (p.209)"
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "NumberofSegments",
+      "specElementName": "NumberofSegments",
+      "nameSource": "spec_element_name",
+      "value": "19",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "Financial Transaction Request (p.164); value: Financial Transaction Request (p.164)"
+    }
+  ],
+  "unavailableFields": [
+    {
+      "segment": "100",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "100",
+      "element": "Card Discretionary Block Data",
+      "friendly": "CardDiscretionaryBlockData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry); part of merged field 'TrackData'",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Encrypted PIN Block Data",
+      "friendly": "PINBlockData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Pump/Lane Number",
+      "friendly": "PumpNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Fuel Purchase Amount",
+      "friendly": "FuelPurchaseAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Nonfuel Amount",
+      "friendly": "NonFuelAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Tax Amount",
+      "friendly": "TaxAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Cash Amount",
+      "friendly": "CashAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "100",
+      "element": "Local Date and Local Time",
+      "friendly": "LocalDateTime",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "101",
+      "element": "Odometer",
+      "friendly": "Odometer",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Vehicle Number",
+      "friendly": "VehicleNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Job Number",
+      "friendly": "JobNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Driver /Identification Number",
+      "friendly": "DriverNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Employee Number",
+      "friendly": "FleetEmployeeNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "License #",
+      "friendly": "LicenseNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Job ID",
+      "friendly": "JobID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Department #",
+      "friendly": "DepartmentNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Customer Data",
+      "friendly": "CustomerData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "User ID",
+      "friendly": "UserID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Vehicle ID#",
+      "friendly": "VehicleID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 1",
+      "friendly": "FleetTag1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 2",
+      "friendly": "FleetTag2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 3",
+      "friendly": "FleetTag3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 4",
+      "friendly": "FleetTag4",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "101",
+      "element": "Fleet Tag 5",
+      "friendly": "FleetTag5",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "102",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "103",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "103",
+      "element": "Clerk ID",
+      "friendly": "ClerkID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "Voucher ID",
+      "friendly": "VoucherID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "WIC Discount Amount",
+      "friendly": "WICDiscountAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "WIC Product Data",
+      "friendly": "WICProductData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "103",
+      "element": "EBT Program Data",
+      "friendly": "EBTProgramData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "104",
+      "element": "Purchase Code",
+      "friendly": "PurchaseCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Tax Amount",
+      "friendly": "PCTaxAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Freight Amount",
+      "friendly": "PCFreightAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "PC Duty Amount",
+      "friendly": "PCDutyAmount",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-to Country Code",
+      "friendly": "ShiptoCountryCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-to Postal Code",
+      "friendly": "ShiptoPostalCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Ship-from Postal Code",
+      "friendly": "ShipfromPostalCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "104",
+      "element": "Direct Marketing Invoice Number",
+      "friendly": "DirectMarketingInvoiceNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "108",
+      "element": "Loyalty Account Number",
+      "friendly": "LoyaltyAccountNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Update Code",
+      "friendly": "UpdateCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Street Address",
+      "friendly": "StreetAddress",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Phone Number, Loyalty",
+      "friendly": "PhoneNumberLoyalty",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "108",
+      "element": "Expiration Date",
+      "friendly": "ExpirationDate",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "110",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "110",
+      "element": "Driver's License",
+      "friendly": "DriversLicense",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "110",
+      "element": "State Code",
+      "friendly": "StateCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "110",
+      "element": "Date of Birth",
+      "friendly": "DateofBirth",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "110",
+      "element": "Check Number",
+      "friendly": "CheckNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "110",
+      "element": "Alternate MICR IND",
+      "friendly": "AlternateMICRIND",
+      "reason": "no documented character_type or valid_values for this field; composer could not derive a grounded value",
+      "dataSource": "TODO_CLIENT_VALUE"
+    },
+    {
+      "segment": "111",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "113",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "113",
+      "element": "ECA/ TeleCheck ® Product Code",
+      "friendly": "ECATeleCheckProductCode",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "113",
+      "element": "ECA/ TeleCheck ® Trace ID",
+      "friendly": "ECATeleCheckTraceID",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "113",
+      "element": "Denial Record Number",
+      "friendly": "DenialRecordNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "113",
+      "element": "Extended MICR Data",
+      "friendly": "ExtendedMICRData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "114",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "119",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "119",
+      "element": "Employee Number",
+      "friendly": "EmployeeNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "119",
+      "element": "Password",
+      "friendly": "Password",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "123",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "123",
+      "element": "Token PAN Suffix",
+      "friendly": "TokenPANSuffix",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "132",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "135",
+      "element": "Segment Length Indicator",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "143",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 1",
+      "friendly": "TaxType1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 1",
+      "friendly": "TaxAmount1",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Inclusive/ Exclusive for Tax 2",
+      "friendly": "InclusiveExclusiveforTax2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 2",
+      "friendly": "TaxType2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 2",
+      "friendly": "TaxAmount2",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Inclusive/ Exclusive for Tax 3",
+      "friendly": "InclusiveExclusiveforTax3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Type 3",
+      "friendly": "TaxType3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "143",
+      "element": "Tax Amount 3",
+      "friendly": "TaxAmount3",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    },
+    {
+      "segment": "145",
+      "element": "Segment Length Indicator",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "151",
+      "element": "Segme nt Length Indicat or",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "151",
+      "element": "Market Basket Data",
+      "friendly": "MarketBasketData",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "TODO_CLIENT_VALUE"
+    },
+    {
+      "segment": "153",
+      "element": "Segme nt Length Indicat or",
+      "friendly": "SegmentLengthIndicator",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    },
+    {
+      "segment": "153",
+      "element": "Networ k Token Data",
+      "friendly": "NetworkTokenData",
+      "reason": "no documented character_type or valid_values for this field; composer could not derive a grounded value",
+      "dataSource": "TODO_CLIENT_VALUE"
+    },
+    {
+      "segment": "156",
+      "element": "Segment Length",
+      "friendly": "SegmentLength",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "spec_derived"
+    }
+  ],
+  "unavailableSegments": [
+    {
+      "segment": "146",
+      "specSegmentName": "Enhanced Fleet Data Segment (Response)",
+      "fieldCount": 3,
+      "reason": "excluded by segment_render_policy (this segment's presence_in_message did not qualify it for rendering under the active inclusion profile)"
+    }
+  ],
+  "presenceUnknownSegments": [
+    {
+      "segment": "108",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "110",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "113",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "114",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "119",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "123",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "135",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "143",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "145",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "151",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "153",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    },
+    {
+      "segment": "156",
+      "reason": "SEGMENT_PRESENCE_NOT_EXTRACTED: presence_in_message was not extracted from the spec for this segment; rendered rather than silently excluded"
+    }
+  ],
+  "runtimeSubstitutions": [
+    {
+      "element": "Approval Number",
+      "from_step": 1,
+      "rule": "Required on reversals for matching information to the original\npurchase. If it is included in a Purchase Request, then the\nPurchase Request is considered preauthorized, and BUYPASS\ndoes not go out for authorization. In the case of an Authorization Only Reversal, this element-\npresent in the original transaction-must be present and identical\nin the Authorization Only Reversal transaction. (Note:",
+      "source_rule_id": "ENT-ELEM-5"
+    }
+  ],
+  "sourceBatch": null,
+  "sourceBatchSha256": null
+}

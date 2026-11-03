@@ -1,0 +1,69 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG146-ENHANCED-FLEET-RESPONSE-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-025EE9A68D4A",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:3554",
+  "aiStatement": "In Enhanced Fleet Data Segment (Response) (Data Segment No. 146), field 3 (Enhanced Fleet Data) is required and must be present.",
+  "independentTestBrId": "BR-RULE-SEG146-R-002",
+  "decisions": {
+    "brAlignment": "SOURCE_SUPPORTED_WITH_NESTED_DATA_CAVEAT",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE_RESPONSE_METADATA_CONFLICTS",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG146-FIELD3-E239", "ATL105-2026-3-SEG146-TABLE001-NO-FLAGS", "ATL105-2026-3-SEG145-REQUEST-REUSED-E239"],
+    "facts": [
+      "Segment 146 is the Enhanced Fleet Response Segment; field 3 / Element 239 is marked R and carries Enhanced Fleet Data in <tag><len><data> format.",
+      "A nested Table 001 Table Data field is not included when no flags are present. That subfield omission is not assumed to mean the entire Element 239 is optional.",
+      "Element 239 also identifies Enhanced Fleet Data in request Segment 145, so source/case evidence must bind to the segment container."
+    ]
+  },
+  "officialTestChain": {
+    "businessRequirement": "BR-RULE-SEG146-R-002",
+    "scenario": "TS-REVIEW-BR-RULE-SEG146-R-002",
+    "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG146-R-002",
+    "testData": "TD-REVIEW-TC-REVIEW-BR-RULE-SEG146-R-002",
+    "status": "REVIEW_REQUIRED",
+    "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+    "fixtureStatus": "SME_FIXTURE_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 7,
+    "cases": [
+      {"caseId": "TC-002726", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "af54a8875f161e82081a51676d0edba82dc841ca43195be81bdfc3f75c62ba91", "expectedResponseFieldListed": false, "assessment": "Negative case labels Enhanced Fleet Data missing, but its expected-response catalog does not list the Segment 146 field; request-side Segment 145 contains an unresolved Element 239 alias."},
+      {"caseId": "TC-003503", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "8e95f9ff4b8222c005578bb2c77001eb0c7be3be6d867ef7113464225db7a5fa", "expectedResponseFieldListed": true, "assessment": "The expected-response catalog lists Segment 146 Enhanced Fleet Data, while the bounded physical observation declares Element 239 omitted; this is an unresolved copy/metadata conflict."},
+      {"caseId": "TC-013018", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "20565707c4c37f109303d12264e2e1c953307db3f0a0b8e48d79127b64486664", "assessment": "No exact Segment 146 Element 239 observation."},
+      {"caseId": "TC-013019", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "036571e5f9649c047309478f944801a8a30623c1bb9a8379a8173bc6f9b42ffc", "assessment": "No exact Segment 146 Element 239 observation."},
+      {"caseId": "TC-013020", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "UNRESOLVED_FIELD_OR_ALIAS", "payloadSha256": "ff1c68764c9913136b3b2abac96878f3c352a5cdde74db7f731cf7eed6515ed1", "assessment": "Long candidate data is present under both request and response paths but cannot be bound reliably to one Element 239 container."},
+      {"caseId": "TC-013021", "segment145Element239": "UNRESOLVED_FIELD_OR_ALIAS", "segment146Element239": "UNRESOLVED_FIELD_OR_ALIAS", "payloadSha256": "8d80a9d125c24910d5798665a80707e7cdf2f419d08e307448b16b58bb15fd3c", "expectedResponseFieldListed": true, "assessment": "Long candidate data is present under both request and response paths but cannot be bound reliably to one Element 239 container."},
+      {"caseId": "TC-013022", "segment146Element239": "NO_EXACT_OBSERVATION", "payloadSha256": "b4c91d09f54ca5789681b46b8d27e49fbf4b54a6cdb2059e9d210060a20a1ea3", "assessment": "No exact Segment 146 Element 239 observation."}
+    ],
+    "assessment": "The source supports the Segment 146 field-level required marker, but the seven producer chains do not form a consistent independently verifiable response-side presence test. Segment 145/146 reuse, response-name mismatch, unresolved aliases, and absent observations prevent case adjudication."
+  },
+  "supplementalDraft": {
+    "path": "segment-146-enhanced-fleet-response-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "caseCount": 2,
+    "testDataDesignCount": 2,
+    "scope": "Response Segment 146 field 3 / Element 239 only; positive Table 001 CP example and field omission mutation",
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "requiredEvidenceForAdjudication": [
+    "Resolve expected-response versus physical-payload differences for TC-002726 and TC-003503.",
+    "Bind Element 239 to response Segment 146 or request Segment 145 in TC-013020 and TC-013021.",
+    "Authorized Test-owner confirmation of the response applicability and the nested Table 001 no-flags subcondition.",
+    "A full serialized response fixture and independent structural outcome for Segment 146 field presence."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

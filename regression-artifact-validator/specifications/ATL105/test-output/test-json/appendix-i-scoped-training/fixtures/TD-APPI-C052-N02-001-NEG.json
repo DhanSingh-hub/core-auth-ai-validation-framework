@@ -1,0 +1,124 @@
+{
+  "id" : "TD-APPI-C052-N02-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C052-N02-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C052-N02-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-53",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t052-r002-APPI-C052-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C052-N02-001",
+        "tableId" : "052",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T052-R001", "APPI-T052-R002" ],
+        "syntheticData" : {
+          "context" : {
+            "encryption" : "AES DUKPT",
+            "ksnRecordPresent" : true
+          },
+          "selector" : "02",
+          "logicalLength" : 3
+        },
+        "clearScope" : "Device Type required for AES DUKPT,optional for TDES/OnGuard; an maximum8.",
+        "excludedClaims" : [ "Authoritative device-type catalog", "Encryption configuration validation" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "AES device supplied",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Device at most8 alphanumeric bytes",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "deviceType",
+            "operation" : "remove",
+            "expected" : "FAIL AES requiredness"
+          }, {
+            "path" : "deviceType",
+            "replacement" : "ABCDEFGHI",
+            "expected" : "FAIL maximum8"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL data count"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "maximum8" : "ABCDEFGH",
+          "optionalOmissionContexts" : [ "TDES", "Ingenico OnGuard" ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30114,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        }, {
+          "startLine" : 30080,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30108,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "an2",
+          "sourceLength" : "2 bytes; fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30119,
+            "section" : "Appendix I-53",
+            "endLine" : 30122
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30123,
+            "section" : "Appendix I-53",
+            "endLine" : 30126
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "an8",
+          "sourceLength" : "variable up to 8 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30127,
+            "section" : "Appendix I-53",
+            "endLine" : 30132
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C016-06-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C016-06-POS.json",
+  "testCaseIds" : [ "TC-APPI-C016-06-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-11",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t016-r002-APPI-C016-06"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C016-06",
+        "tableId" : "016",
+        "ruleIds" : [ "APPI-T016-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-12",
+          "startLine" : 27900,
+          "endLine" : 27904
+        } ],
+        "logicalFields" : {
+          "tag" : "9F6E",
+          "length" : "08",
+          "value" : "00000001"
+        },
+        "clearScope" : [ "Tag9F6E", "N8 fixed width only" ],
+        "excludedClaims" : [ "Device-attribute bit meanings", "Actual device classification", "Tag mandatory set" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Form factor data is8 digits",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "0000000A",
+          "targetedNegative" : "Alphabetic character violates N8"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

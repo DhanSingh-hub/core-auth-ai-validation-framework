@@ -1,0 +1,148 @@
+{
+  "source": "ATL105 2026-3 Section 12.30 and Elements 229-231",
+  "scope": "Synthetic full financial request; Tax 3 N branch only",
+  "cases": [
+    {
+      "id": "SEG143-TAX3-N-BOTH-OMITTED",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "expectedFindings": [
+        {"ruleId": "SEG143-R-001", "scope": "companion-order", "status": "CHECKS_PASSED"},
+        {"ruleId": "SEG143-R-006", "scope": "omission", "status": "CHECKS_PASSED"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-order-delimiters", "status": "CHECKS_PASSED"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-declared-length", "status": "CHECKS_PASSED"}
+      ],
+      "request": {
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "NumSegments": "03",
+          "Standard Segment": {
+            "SegmentType": "100",
+            "SegmentLength": "086",
+            "InformationByte": "0",
+            "TerminalID": "SYNTH001",
+            "PromptCode": {"TransactionType": "0", "CardType": "020"},
+            "SequenceNumber": "000001",
+            "PartialApprovalIndicator": "0"
+          },
+          "Product Code Segment": {
+            "SegmentType": "102",
+            "SegmentLength": "049",
+            "ServiceLevel": "S",
+            "NumberOfProducts": "01",
+            "Products": [
+              {"ProductCode": "001", "UnitOfMeasure": "G", "Quantity": "000000205", "UnitPrice": "000003005", "ProductAmount": "000000000210"}
+            ],
+            "SerializedSegment": "102\u001c049\u001cS\u001c01001G000000205\\000003005\\000000000210\u001c"
+          },
+          "Tax Amount Segment": {
+            "SegmentType": "143",
+            "SegmentLength": "043",
+            "NumberOfProducts": "01",
+            "TaxProducts": [
+              {"productCode": "001", "taxes": [
+                {"flag": "I", "type": "GST", "amount": "000000100"},
+                {"flag": "E", "type": "GST", "amount": "000000050"},
+                {"flag": "N"}
+              ]}
+            ],
+            "SerializedSegment": "143\u001c043\u001c01001IGST000000100\\EGST000000050\\N\u001c"
+          }
+        }
+      }
+    },
+    {
+      "id": "SEG143-TAX3-N-TYPE-PRESENT",
+      "expectedStatus": "INVALID",
+      "expectedFindings": [
+        {"ruleId": "SEG143-R-006", "scope": "omission", "status": "INVALID"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-order-delimiters", "status": "INVALID"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-declared-length", "status": "CHECKS_PASSED"}
+      ],
+      "request": {
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "NumSegments": "03",
+          "Standard Segment": {
+            "SegmentType": "100",
+            "SegmentLength": "086",
+            "InformationByte": "0",
+            "TerminalID": "SYNTH001",
+            "PromptCode": {"TransactionType": "0", "CardType": "020"},
+            "SequenceNumber": "000001",
+            "PartialApprovalIndicator": "0"
+          },
+          "Product Code Segment": {
+            "SegmentType": "102",
+            "SegmentLength": "049",
+            "ServiceLevel": "S",
+            "NumberOfProducts": "01",
+            "Products": [
+              {"ProductCode": "001", "UnitOfMeasure": "G", "Quantity": "000000205", "UnitPrice": "000003005", "ProductAmount": "000000000210"}
+            ],
+            "SerializedSegment": "102\u001c049\u001cS\u001c01001G000000205\\000003005\\000000000210\u001c"
+          },
+          "Tax Amount Segment": {
+            "SegmentType": "143",
+            "SegmentLength": "046",
+            "NumberOfProducts": "01",
+            "TaxProducts": [
+              {"productCode": "001", "taxes": [
+                {"flag": "I", "type": "GST", "amount": "000000100"},
+                {"flag": "E", "type": "GST", "amount": "000000050"},
+                {"flag": "N", "type": "GST"}
+              ]}
+            ],
+            "SerializedSegment": "143\u001c046\u001c01001IGST000000100\\EGST000000050\\NGST\u001c"
+          }
+        }
+      }
+    },
+    {
+      "id": "SEG143-TAX3-N-AMOUNT-PRESENT",
+      "expectedStatus": "INVALID",
+      "expectedFindings": [
+        {"ruleId": "SEG143-R-006", "scope": "omission", "status": "INVALID"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-order-delimiters", "status": "INVALID"},
+        {"ruleId": "SEG143-R-008", "scope": "wire-declared-length", "status": "CHECKS_PASSED"}
+      ],
+      "request": {
+        "Financial Request": {
+          "MessageType": "ATL105",
+          "NumSegments": "03",
+          "Standard Segment": {
+            "SegmentType": "100",
+            "SegmentLength": "086",
+            "InformationByte": "0",
+            "TerminalID": "SYNTH001",
+            "PromptCode": {"TransactionType": "0", "CardType": "020"},
+            "SequenceNumber": "000001",
+            "PartialApprovalIndicator": "0"
+          },
+          "Product Code Segment": {
+            "SegmentType": "102",
+            "SegmentLength": "049",
+            "ServiceLevel": "S",
+            "NumberOfProducts": "01",
+            "Products": [
+              {"ProductCode": "001", "UnitOfMeasure": "G", "Quantity": "000000205", "UnitPrice": "000003005", "ProductAmount": "000000000210"}
+            ],
+            "SerializedSegment": "102\u001c049\u001cS\u001c01001G000000205\\000003005\\000000000210\u001c"
+          },
+          "Tax Amount Segment": {
+            "SegmentType": "143",
+            "SegmentLength": "052",
+            "NumberOfProducts": "01",
+            "TaxProducts": [
+              {"productCode": "001", "taxes": [
+                {"flag": "I", "type": "GST", "amount": "000000100"},
+                {"flag": "E", "type": "GST", "amount": "000000050"},
+                {"flag": "N", "amount": "000000001"}
+              ]}
+            ],
+            "SerializedSegment": "143\u001c052\u001c01001IGST000000100\\EGST000000050\\N000000001\u001c"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,3113 @@
+{
+  "_epoch": "68fa5d0fab05bf83b76b9cff72b29ae4a7458d3e78f3e7afd589a230b7892f54",
+  "entries": {
+    "ENT-ELEM-1": {
+      "content_hash": "ef93a5c8b274da90ef4d772e5945799fc29b92d33b14cea2a91d68ea3670ee96",
+      "phrased_statement": "Access Code must contain one or more B characters to indicate a longer than standard pause.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM: also states omission rule when Access Code not necessary"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-2": {
+      "content_hash": "35929326af114e839a6c79914952df39fe1a1ea7c66783837b4c04c8421768b6",
+      "phrased_statement": "POS device must not maintain card's Account Number after initial card swipe when using TransArmor PKI Encryption and Tokenization.",
+      "llm_verdict": {
+        "verdict": "FAIL",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page gives byte lengths for Account Number, no statement about not maintaining card's Account Number after swipe"
+        ],
+        "traceback_match": false
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_357",
+        "CONTINUED_ON_PAGE_358",
+        "CONTINUED_ON_PAGE_359",
+        "LLM_FLAG: SEVERITY:MEDIUM multiple conflicting max lengths across transaction types not unified",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes set to 24 but multiple larger lengths (425, 25, 50) documented for different variants, not unified",
+        "LLM_FLAG: MEDIUM: also covers Track1/Track2 parsing, length limits, Account Updater, retry rules",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page only lists byte lengths for TransArmor scenarios, no statement about not maintaining Account Number after swipe",
+        "LLM_FLAG: SEVERITY:MEDIUM Multiple independent rules present: Track2 parsing, Track1 parsing, length limits by type, Account Updater follow-on PAN/token use, retry credential reuse.",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page gives byte lengths for Account Number, no statement about not maintaining card's Account Number after swipe"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-2",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page gives byte lengths for Account Number, no statement about not maintaining card's Account Number after swipe"
+        ],
+        "review_question": "Does any BUYPASS source state a no-retention rule for Account Number under TransArmor?",
+        "suggested_action": "REJECT"
+      }
+    },
+    "ENT-ELEM-5": {
+      "content_hash": "52fef172a2406736567e94417834f12c9986fc0453ca741a342f80e15a6f3c50",
+      "phrased_statement": "Approval Number must be present in an Authorization Only Reversal transaction when present in the original transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM: also states preauthorization rule when included in Purchase Request"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-6": {
+      "content_hash": "6117a11cb153181e83ee66a70f1d3fe4cb59eefd4ed88ddc286b9b1a275fca75",
+      "phrased_statement": "POS device must prompt for payment of remaining balance due when transaction is a Partial Approval transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: MEDIUM: also states AFP pump rule and approved amount may differ from requested"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-11": {
+      "content_hash": "2d09a8831489709e9db5d2e9349192d6e27f4dcf90cde63f7ce23033a760f6d4",
+      "phrased_statement": "Host must use a Block Number to track the data block sent in an Electronic Mail response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM: also covers CA Public Key File Load, device tracking, and Proprietary Data Load rules"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-12": {
+      "content_hash": "c3ea688b72dbb119c50a303e122c67264509c5ee5a9a7478cacbdeddae6fb91b",
+      "phrased_statement": "Account Number and Card Discretionary Block Data combined must not exceed 76 characters for Track 1.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_365",
+        "LLM_FLAG: SEVERITY:MEDIUM Also states Track 2 limit of 37 chars, expiration date inclusion, Account Updater and retry rules"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-14": {
+      "content_hash": "b57171ef10ea9588b58c785e7aeab46fe9ba58ea693b603bf331debb30ad935b",
+      "phrased_statement": "Card Type must be a valid Card Type code.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM Also states Table Load, financial, and special transaction prompt code behaviors"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-17": {
+      "content_hash": "9d38bb8fa142b33dd05cbc1e4baa60b58dfab5b303223f20c5a2b96709d721fa",
+      "phrased_statement": "Cash Amount must include cash back fee total when merchant supports Interlink's Optional Cash Back Fee.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting values in source: fixed length 8 bytes vs variable length representation",
+        "JUDGE_FAIL: is_variable_length false but representation states 'Variable length of up to eight digits', internally inconsistent"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-17",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false but representation states 'Variable length of up to eight digits', internally inconsistent"
+        ],
+        "review_question": "Is Cash Amount fixed 8-digit or variable length up to 8 digits?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-20": {
+      "content_hash": "942ef13816d7c98edb50e0b2b4aacc9088ebcbafcf8712d6cd93cc5d4189cc4f",
+      "phrased_statement": "Currency Code must default to 840 when not sent in Transaction Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM Also states field ignored during processing and merchant currency totaling restriction"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-22": {
+      "content_hash": "65a6d1f21b51f83e0388d0c15c36bb52ba2789627a0797815d2194a0c0c06d3c",
+      "phrased_statement": "Current Time must include adjustments for time zone.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: Minute range listed as 01-60, should be 00-59; internally implausible for HHMM time format",
+        "LLM_FLAG: SEVERITY:MEDIUM Also states daylight saving time adjustment as separate condition"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-22",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "Minute range listed as 01-60, should be 00-59; internally implausible for HHMM time format"
+        ],
+        "review_question": "Should minute range be 00-59 instead of 01-60 as stated in source?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-23": {
+      "content_hash": "20d41a727a8251203f8cbd04eb062f8ab8e5a7d1978207662c53a8214fa1467b",
+      "phrased_statement": "Device must start settlement procedure 30 minutes prior to merchant's cut time when using automatic cut time and settlement incomplete.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: Minute range listed as 01-60, should be 00-59; internally implausible for HHMM time format",
+        "LLM_FLAG: SEVERITY:MEDIUM Combines automatic cut time trigger with incomplete settlement condition"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-23",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "Minute range listed as 01-60, should be 00-59; internally implausible for HHMM time format"
+        ],
+        "review_question": "Should minute range be 00-59 instead of 01-60 as stated in source?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-24": {
+      "content_hash": "aeddadbaf08c64aba2a32a4a3c0dc9a555ef4f4dbb8cee42f964c34f82245255",
+      "phrased_statement": "Data Type Indicator must be present when transaction is TransArmor PKI Encryption and Tokenization.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Page also lists 'Required for EMV CA Public Key File Load' as separate condition, not included"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW duplicate code '&' used for two different meanings",
+        "JUDGE_NEEDS_REVIEW: '&' code assigned two different meanings (new Key/Key ID vs CA Public Key block) creating ambiguity",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires presence for EMV CA Public Key File Load, phrase separately"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-24",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "'&' code assigned two different meanings (new Key/Key ID vs CA Public Key block) creating ambiguity"
+        ],
+        "review_question": "Is '&' truly used for two distinct meanings, or is one a duplication/typo of 'K'?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-25": {
+      "content_hash": "f89c22d2227af79af0c7db86fa50aa46ae28a44b15c72bb8c7975f1c1541b9a1",
+      "phrased_statement": "Day of the Week must originate at BUYPASS.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_372"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-26": {
+      "content_hash": "f920c805c1faead951cbb950b5668b5b8598cace6bfdf726e2defc912f1fc629",
+      "phrased_statement": "Decline Code must be defined by BUYPASS.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also states device display behavior and Token Only appendix reference, phrase separately"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-28": {
+      "content_hash": "0cdb2042182c6a8963a3259d0b1d7467e6e80f8654114d664d1d5ab80ad31843",
+      "phrased_statement": "Dial String Type must equal fixed value 1.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-30": {
+      "content_hash": "13b36bcbe506397873a2b01b52833ebb8c295ac51c3a3d1d9ede613d40b3a834",
+      "phrased_statement": "Download Indicator must indicate device must update Key ID and Key when required for TransArmor PKI Encryption and Tokenization.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_374",
+        "LLM_FLAG: SEVERITY:MEDIUM also covers BUYPASS leaving communications established and EMV Public Key load condition, phrase separately"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-31": {
+      "content_hash": "6f784e7a64b4f65cb3f4aee5078228fc3a0b86995d9aebd75d19e0cf88d0e454",
+      "phrased_statement": "Driver/Identification Number must be unencrypted when required by the issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: representation states 'Variable length' while is_variable_length is marked false, contradicting itself",
+        "LLM_FLAG: SEVERITY:MEDIUM also states element location in Fleet Data Segment 101, phrase separately"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-31",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "representation states 'Variable length' while is_variable_length is marked false, contradicting itself"
+        ],
+        "review_question": "Is this field variable-length up to 10 digits or fixed-length, given is_variable_length=false?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-33": {
+      "content_hash": "4867f29eeb8ebc258ff6735853eeed0b4824cdaca5faa706c0e77235580e0bb2",
+      "phrased_statement": "Encrypted PIN Block Data must be encrypted using DUKPT.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_NEEDS_REVIEW: 36-byte fixed max_length conflicts with representation describing 16-20 byte KSN plus 16-byte PIN block (32-36 bytes variable)",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires Field Separator if not included, and EMV offline PIN F's/decline rule, phrase separately"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-33",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "36-byte fixed max_length conflicts with representation describing 16-20 byte KSN plus 16-byte PIN block (32-36 bytes variable)"
+        ],
+        "review_question": "Is max_length_bytes=36 a fixed cap for a variable total of 32-36 bytes, or an error?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-34": {
+      "content_hash": "052e9b4d5e370523988e005a29561ff529482038d83047422a13a50db4166bca",
+      "phrased_statement": "End-of-Data Indicator must be used in the Merchant Data Segment (No. DL1).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also used in DL2, DL3, DL4, DL5 segments, phrase separately",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: indicator is used in 5 segments (DL1-DL5), not only Merchant Data Segment",
+        "LLM_FLAG: SEVERITY:MEDIUM Also applies to Dial String, Date and Time, Software Dial Load, Software IP Load segments."
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-34",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: indicator is used in 5 segments (DL1-DL5), not only Merchant Data Segment"
+        ],
+        "review_question": "Should statement list all five data segments instead of only DL1?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-35": {
+      "content_hash": "ee6ba514566e213ea607c0770769df9f4a4b7229b5a8fb3090da888ae351bcdd",
+      "phrased_statement": "End-of-Load Indicator must be used in the Table Load Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW vague usage context, not a checkable condition"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-39": {
+      "content_hash": "51b220f3064bcd4ad4e8cd5de59d77c552061fa50c5457c42aa1ad8cb927a402",
+      "phrased_statement": "Firmware Version must be present when message type is Totals Requests.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source lists required for Totals Requests, Table Load Request, and TransArmor Load Request; statement only asserts one"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also required for Table Load Request, TransArmor PKI Load Request",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page 377 describes Extract Time and Fee Amount, no Firmware Version field present",
+        "LLM_FLAG: SEVERITY:MEDIUM Also required for Table Load Request and TransArmor PKI Encryption and Tokenization Load Request."
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-39",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page 377 describes Extract Time and Fee Amount, no Firmware Version field present"
+        ],
+        "review_question": "Firmware Version detail appears to belong to a different page (element 39); verify correct page?",
+        "suggested_action": "REJECT"
+      }
+    },
+    "ENT-ELEM-40": {
+      "content_hash": "606903c9609d200dc1929f4f2b5ce2c88911a88c7eb06970d11c7aea1d43f1b3",
+      "phrased_statement": "Fleet Employee Number must be found in the Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:HIGH references external spec, no checkable condition stated",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: no phrased_statement provided to verify against source text"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-40",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "LOW",
+        "issues": [
+          "TRACEBACK_MISMATCH: no phrased_statement provided to verify against source text"
+        ],
+        "review_question": "No statement given for Fleet Employee Number; what should be verified?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-41": {
+      "content_hash": "b8e941f4bc98243bf1391381398e7e007000fe8f9acd8c898fc40e42d455ec2a",
+      "phrased_statement": "Fuel Purchase Amount must be included on any transaction with fuel sales.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting length rules for Amex (8 bytes) vs other cards (7 bytes)",
+        "JUDGE_FAIL: max_length_bytes set to 8 and representation fixed-length, contradicting Amex=8/other=7 variable rule",
+        "LLM_FLAG: SEVERITY:MEDIUM also defines calculation rules for fuel-only and mixed fuel/nonfuel cases"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-41",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "max_length_bytes set to 8 and representation fixed-length, contradicting Amex=8/other=7 variable rule"
+        ],
+        "review_question": "Should max_length_bytes reflect 7 for non-Amex cards rather than a flat 8?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-43": {
+      "content_hash": "846628bec1b0b991bb07c842866313c757442757383ee1441f35d4a10e8a1157",
+      "phrased_statement": "Hardware Version must be present when message is a Totals Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_NEEDS_REVIEW: is_variable_length marked false despite representation stating 'four or eight' length options",
+        "LLM_FLAG: SEVERITY:MEDIUM also required for Table Load Request, TransArmor Load Request, and 8-byte length note"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-43",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "is_variable_length marked false despite representation stating 'four or eight' length options"
+        ],
+        "review_question": "Is Hardware Version truly fixed-length per device type, or variable between 4 and 8 bytes?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-44": {
+      "content_hash": "f95fb88b6be3841916867bb0a6027815a5162c30af64461c1b4167c70badec15",
+      "phrased_statement": "Information Byte must signify type of special load when message is a Download Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also defines Single-message and Multimessage Request meanings"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-45": {
+      "content_hash": "cf3a58007405d2c85f7f2a52ba47af09d53cb18ee3c978b456df3a3c48a94080",
+      "phrased_statement": "Initiation Date must be calculated using the BUYPASS system clock.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also uses merchant profile time zone and daylight saving flag"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-46": {
+      "content_hash": "f5fd56bcc9287b94eaa19639a05871e36589718d3dedcdd438b13cf2d3e665d8",
+      "phrased_statement": "Initiation Time must be calculated using the BUYPASS system clock.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also uses merchant profile time zone and daylight saving flag"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-47": {
+      "content_hash": "fce29185471e88493697b396cdae42ce27a9d136f5d3af97d8ca5b357a8f3b1d",
+      "phrased_statement": "Job Number must be found in the Fleet Data Segment (Segment No. 101) when required by the issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-48": {
+      "content_hash": "c06d1360a354bbb52a6d4f5e643c68fa8fc7b03fd7b0e8a17e87c5b5e04d4be6",
+      "phrased_statement": "Load Type must be required for TransArmor PKI Encryption and Tokenization.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW duplicate code 'K' used for two different meanings",
+        "JUDGE_NEEDS_REVIEW: Code 'K' assigned to two distinct meanings (TransArmor PKI Load and CA Public Key File Load) without disambiguation",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires Load Type for EMV Public Key loads"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-48",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Code 'K' assigned to two distinct meanings (TransArmor PKI Load and CA Public Key File Load) without disambiguation"
+        ],
+        "review_question": "How is code 'K' disambiguated between TransArmor PKI Load and CA Public Key File Load contexts?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-49": {
+      "content_hash": "6724e2485c3356134606b803a07bcf3f695ff8148fce65172aac57afc30f062a",
+      "phrased_statement": "Local Date and Local Time must be sent only in a POS and CAT Capture transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also states merchant must send terminal local date/time for Debit Cancellation and Time out Reversal transactions"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-54": {
+      "content_hash": "66888699d61127b40662c3e9debf37e8dac625610af46e264da256b9335cb766",
+      "phrased_statement": "Merchant Phone Number must be used in Data Segment No. DL1, Merchant Data Segment.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-55": {
+      "content_hash": "92ed252f0c8450872fb5866d52ff9001a5488e011047bba0aa2f17da26f6ede9",
+      "phrased_statement": "Message Format Version Identifier must appear in Field No. 1 for all Financial Transaction Request messages.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_385",
+        "LLM_FLAG: SEVERITY:MEDIUM also required for Totals Request, Loyalty Card Request, Electronic Mail Request messages; also specifies following elements/segments per message type"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-57": {
+      "content_hash": "a973ac988bd536875226679ce67d4dcd628f8df114cd43b92468a9430882909a",
+      "phrased_statement": "New Software Version must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also used in Software IP Load Data Segment (No. DL5)"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-58": {
+      "content_hash": "c12ab28534df627f46930bfa47f94807afccf2d8eb1b1223ba9865939e8e15c2",
+      "phrased_statement": "Nonfuel Amount must contain the activation amount for a stored value card activation transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting max length: 8 bytes general vs 7 bytes for non-Amex cards",
+        "JUDGE_FAIL: max_length_bytes set to 8 but representation notes 7 bytes applies to all cards except Amex, contradictory",
+        "LLM_FLAG: SEVERITY:MEDIUM also defines deactivation, recharge, nonfuel purchase net amount, and combined fuel/nonfuel discount application rules"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-58",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "max_length_bytes set to 8 but representation notes 7 bytes applies to all cards except Amex, contradictory"
+        ],
+        "review_question": "Should max_length_bytes be 7 (general case) rather than 8 (Amex-only case)?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-62": {
+      "content_hash": "67ea31d450a93faa07ed675ca6748639ce8761d217ff4af67f783d8b5874c395",
+      "phrased_statement": "Number of Products must precede single digits 1-9 with a zero.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-63": {
+      "content_hash": "53cff77c76f34ccde99e78b503d531438e1752076ea434e14c325d310ad2347b",
+      "phrased_statement": "Number of Segments must be followed by Data Segment No. 100 when request is a Financial Transaction Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional per-request-type following-segment conditions not phrased"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-64": {
+      "content_hash": "ba5a2bab958a433f946227f54f5f48ce0bafc5e14a3b582110ea5eb0eb51596a",
+      "phrased_statement": "Odometer must be found in the Fleet Data Segment (Segment No. 101) when required by the issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-65": {
+      "content_hash": "305aa2de118d1e84f67b164de3bca0c3ef0bbef0f54d5957136ee4ebbbcd3f4b",
+      "phrased_statement": "Password must be required when transaction is a totals request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional conditions: matched against merchant profile password, right-align if under six characters"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-66": {
+      "content_hash": "481ebc196d06c593434ef5b69f44c801c91e5872571c524af911e5745ab8ca9b",
+      "phrased_statement": "Pause Indicator must cause device to pause approximately one second before proceeding.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_390",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional conditions: behavior differs by loader, Hayes modem replaces B with comma"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-72": {
+      "content_hash": "b7b9adad12e8e2a7302e2ef75d3f27d4030a3b0efd2e2968f9b60ea944a6b07a",
+      "phrased_statement": "PC Duty Amount must be used for Purchase Card Transaction Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-73": {
+      "content_hash": "e8fe4c7172fb7a408b300b635024c8c8b31df1c54503035792e145c516e4ebe6",
+      "phrased_statement": "PC Freight Amount must be used in Direct Marketing/Address Verification System Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-75": {
+      "content_hash": "db91ea980d3285b94b9aefeaf1872331cf7ffa8b718772ecbec29f1aea70efcb",
+      "phrased_statement": "Transaction dialing must begin with the primary Phone Number.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also states secondary/tertiary phone number usage and field delimiter rule"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-76": {
+      "content_hash": "8391b262e7f8538b403ff2810214c0c593ab4ec81ee912b1b4817ad2c07005cc",
+      "phrased_statement": "Product Amount must assume two decimal places when Currency Code is not specified.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "JUDGE_NEEDS_REVIEW: valid_values '1-999999999999' is 13 digits, exceeding stated max_length of 12 bytes",
+        "LLM_FLAG: SEVERITY:MEDIUM also states repetition up to 10 products with listed elements"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-76",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "valid_values '1-999999999999' is 13 digits, exceeding stated max_length of 12 bytes"
+        ],
+        "review_question": "Is the max value range a typo, or should max_length_bytes be 13?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-77": {
+      "content_hash": "e0b225d5dec54894f8ad4eeedcbebef452e86adfeb63180a4083c9a6b5ba6e83",
+      "phrased_statement": "Product Code must be unique for each type of fuel purchase.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also states repetition rule and Dynamic Card Table and wildcard rules"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-78": {
+      "content_hash": "4f46665712874f94f94674d7257b973b1a24a4557796909ad8101c9afd57ad34",
+      "phrased_statement": "Prompt Code must be present and identical to the original transaction when used in an Authorization Only Reversal.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_394",
+        "LLM_FLAG: SEVERITY:MEDIUM also states 4-char/3-char prompt code, reversal, signature debit, EMV D/S rules",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page 393 text ends with Prompt Code purpose, no 'valid Transaction Type code' rule stated; that appears on page 394 instead",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional conditions: 4-char code for financial txns, 3-char for special txns, Signature Debit must use Credit Prompt Code not Debit, EMV 'D'/'S' response dictates credit/debit on subsequent transactions"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-78",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page 393 text ends with Prompt Code purpose, no 'valid Transaction Type code' rule stated; that appears on page 394 instead"
+        ],
+        "review_question": "Should this candidate be re-attributed to page 394 where the processing rule actually appears?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-79": {
+      "content_hash": "aa8140aae108d2d7002b4afdfa433af1a60d1bcfae8980d2e28cae2f78635339",
+      "phrased_statement": "Pump/Lane Number must be present when the transaction is a fuel transaction.",
+      "llm_verdict": {
+        "verdict": "FAIL",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page gives field format for Pump/Lane Number only, no rule requiring presence for fuel transactions"
+        ],
+        "traceback_match": false
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "CONTINUED_ON_PAGE_395",
+        "LLM_FLAG: SEVERITY:MEDIUM also states EDATA Identifier value 7 triggers decryption-only usage",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page 394 text does not contain 'Required on all fuel transactions' for Pump/Lane Number; that text is on page 395",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional condition: used for decryption only when Account Number EDATA Identifier value is 7",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: page gives field format for Pump/Lane Number only, no rule requiring presence for fuel transactions"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-79",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: page gives field format for Pump/Lane Number only, no rule requiring presence for fuel transactions"
+        ],
+        "review_question": "Is there a documented requirement that Pump/Lane Number must be present for fuel transactions?",
+        "suggested_action": "REJECT"
+      }
+    },
+    "ENT-ELEM-81": {
+      "content_hash": "670dd87c067ac85d1fa6bb01ac14fd8c43e5efb280a20571941e5c3e5d265769",
+      "phrased_statement": "Quantity must not exceed three assumed decimal places.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also states repetition up to 10 products with listed elements"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-84": {
+      "content_hash": "098e0e305e4339da8b4bb4c3a322cadb016ccb82ff8c90c8709017e0512d84e1",
+      "phrased_statement": "Segment Length must equal sum of lengths of all data elements plus related Field Separators/Delimiters.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_400",
+        "JUDGE_NEEDS_REVIEW: Max length stated as 'three or four digits' but valid_values table includes ranges up to 4 digits like 0001-3800 exceeding stated 4-byte max only barely, and some ranges like 001-3834 seem inconsistent with the 7-segment exception list",
+        "LLM_FLAG: SEVERITY:MEDIUM also states 4-digit length restricted to specific listed segments only"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-84",
+        "category": "EDGE_CASE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Max length stated as 'three or four digits' but valid_values table includes ranges up to 4 digits like 0001-3800 exceeding stated 4-byte max only barely, and some ranges like 001-3834 seem inconsistent with the 7-segment exception list"
+        ],
+        "review_question": "Do all listed segment ranges correctly align with the 7 segments allowed 4-digit lengths exception list?",
+        "suggested_action": "CONFIRM"
+      }
+    },
+    "ENT-ELEM-85": {
+      "content_hash": "7b34c4f8f1f9e8f3a85c15cd23aea3cef99b91a388fa3962df08ca71d81e0a2a",
+      "phrased_statement": "Segment Type must be present for the TransArmor PKI Encryption and Tokenization Load Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_402"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-86": {
+      "content_hash": "f9be7745abfb10e766a7a5e7c13a0631e87b2f6882fc0098bab0e87a507f24ee",
+      "phrased_statement": "Sequence Number must be present on all transaction types.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_403",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires preauth Capture matches Authorization Only Sequence Number; reversal matches original; Authorization Only Reversal matches original"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-91": {
+      "content_hash": "ed436ac2478c0bab4364d62a1a3796b094d56690d6d1c1cdb3e36c58a26c3473",
+      "phrased_statement": "Software Load Phone Number must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "JUDGE_FAIL: is_variable_length false contradicts representation stating 'Variable length of up to eighteen characters'"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-91",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false contradicts representation stating 'Variable length of up to eighteen characters'"
+        ],
+        "review_question": "Is Software Load Phone Number variable length up to 18, or fixed at 18 bytes?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-92": {
+      "content_hash": "0cf8beb07e18332b6f21cf425173600f5071529deef7a9f6c88cf43277fb6156",
+      "phrased_statement": "Software Load Request Date must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source lists DL4 and DL5 both; candidate only mentions DL4, omission not contradiction"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires use in Software IP Load Data Segment (No. DL5)"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-93": {
+      "content_hash": "8463e38211337b8655275ecf778d7b1cb9664c6222aab66dcd539af0f4991809",
+      "phrased_statement": "Software Load Request Time must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source lists DL4 and DL5 both; candidate only mentions DL4, omission not contradiction"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires use in Software IP Load Data Segment (No. DL5)"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-94": {
+      "content_hash": "e4f8ea0b78603e96b8c7ed2dcfb4cb3e46d6bd1d2a0f53b4ca5d01bc8c1bcbae",
+      "phrased_statement": "Software Load Type must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires use in Software IP Load Data Segment (No. DL5)"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-95": {
+      "content_hash": "2d93af0af8e76b6c2502255fc05822fdf32d6d348783d2b7a4f4b7e802587016",
+      "phrased_statement": "Software Terminal Record ID must be used in the Software Dial Load Data Segment (No. DL4).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires use in Software IP Load Data Segment (No. DL5)"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-96": {
+      "content_hash": "e489aedf4e6b5d79588e5a78dad4f1e2982b6c16f73e95de38b6f24160a39e99",
+      "phrased_statement": "Software Version must be present when transaction is a Totals Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source says 'Required for' three cases joined; statement isolates only Totals Request, which is acceptable atomicity but review other two"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also required for Table Load Request and TransArmor PKI Encryption and Tokenization Load Request"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-98": {
+      "content_hash": "18334cbc749a94dcea0fe99c84617876723cde9b5b35ca1d0d98b60c3fbe331b",
+      "phrased_statement": "Store Number must not be displayed when data is masked by all asterisks.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires data not be printed when masked"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-99": {
+      "content_hash": "09185839caea06ca274edaa688b3e4d7ee3eb47086a8605a54e50635c9fe2e7d",
+      "phrased_statement": "Tax Amount must not be applied when the transaction is EBT Food Stamps.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting max length 8 bytes vs valid value range implying 7 digits",
+        "JUDGE_FAIL: 8-byte max length with valid range 1-9999999 (7 digits) contradicts stated 8-byte Amex exception not reflected in range",
+        "LLM_FLAG: MEDIUM: also states sales tax not applicable to EBT Food Stamps",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: source says 'Sales tax is applied to EBT Cash Benefits only' as a note on Tax Amount element, not a processing rule stating it 'must apply only when present'; phrasing inverts condition and implies conditional presence not stated",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional condition: sales tax applies to EBT Cash Benefits transactions"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-99",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: source says 'Sales tax is applied to EBT Cash Benefits only' as a note on Tax Amount element, not a processing rule stating it 'must apply only when present'; phrasing inverts condition and implies conditional presence not stated"
+        ],
+        "review_question": "Does the note about EBT Cash Benefits support a 'must apply only when present' requirement phrasing?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-101": {
+      "content_hash": "983899fc6a15c920d8b165535bf49d015e915b432c39e55e7315705263c179d1",
+      "phrased_statement": "Terminal Display/Printer Message must print exactly what is sent.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: Examples describe 16-character fields while representation claims fixed 31-character length",
+        "LLM_FLAG: MEDIUM: also states repeat limit of 3, response-type restrictions, TransArmor requirement"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-101",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "Examples describe 16-character fields while representation claims fixed 31-character length"
+        ],
+        "review_question": "Are the 3rd/4th examples actually 16-byte fields, contradicting the stated 31-byte fixed length?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-102": {
+      "content_hash": "c82e40a6d16b7e1b4161dd2f18d4bc3a317106e2e7664079af03fbbb4f9eb159",
+      "phrased_statement": "Terminal Identifier must be present when transaction or message is sent.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_411",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false",
+        "LLM_FLAG: MEDIUM: also states BUYPASS assignment, field length variants, device type prefixes"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-102",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field truly variable length or fixed, given conflicting representation and flag?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-105": {
+      "content_hash": "b2b8d9a37c16a5139d907e5e6aee402794a61a604acc9766f338cd485eb3a4ea",
+      "phrased_statement": "Totals Date must not be requested for a date prior to the third most recent activity date.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM: also notes response value may differ from request value"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-106": {
+      "content_hash": "6d76a3c80f350e8a5c83aea72ce0dd1b5c8985fd1d51dd47ff78b44677d61612",
+      "phrased_statement": "Unit of Measure must repeat for up to 10 products in Data Segment No. 102 or 157.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-107": {
+      "content_hash": "de793f7caa70b17389ffe575a5388944e6387620f11a1fbc4eb14c01eaaea0a1",
+      "phrased_statement": "Unit Price must not have more than three assumed decimal places.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false",
+        "LLM_FLAG: MEDIUM: also states repetition for up to 10 products in Data Segment 102 or 157"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-107",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field variable or fixed length given conflicting data?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-108": {
+      "content_hash": "733241daad92e2996348169161c80b7f0d57364be43bd0e73817d8269ba0b06b",
+      "phrased_statement": "Vehicle Number must be found in Fleet Data Segment No. 101 when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false",
+        "LLM_FLAG: MEDIUM: also references external Petroleum Industry Processing Specifications for issuer requirements"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-108",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field variable or fixed length given conflicting data?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-109": {
+      "content_hash": "3ea8a640448c870b6a71fecb605d24df3c3f1d66274c4c6961bb60415c0f5d9d",
+      "phrased_statement": "Voucher ID must be present when an EBT transaction is approved locally.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source says 'Required by some states' not a universal mandate"
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false",
+        "LLM_FLAG: MEDIUM only some states require this, condition not universal"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-109",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field variable or fixed length given conflicting data?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-111": {
+      "content_hash": "ea2b36de73b425d0cc7a20813ab5d0053f3d781c858f62c912694d2b9d25fbfa",
+      "phrased_statement": "Variable Information Indicator value 008 must support the Balance Merge transaction type.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_416",
+        "CONTINUED_ON_PAGE_417",
+        "LLM_FLAG: MEDIUM also states it supports Replace (code N) transaction type"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-113": {
+      "content_hash": "12bb1648f63dab3a1affbd1af06b75befa0b35d8a3b906e9178da7d388d2a73c",
+      "phrased_statement": "Variable Information must contain the actual UPC when Variable Information Indicator equals 001.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_420",
+        "CONTINUED_ON_PAGE_421",
+        "CONTINUED_ON_PAGE_422",
+        "CONTINUED_ON_PAGE_423",
+        "CONTINUED_ON_PAGE_424",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false",
+        "LLM_FLAG: MEDIUM holds 80+ additional value-specific conditions not phrased"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-113",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field variable or fixed length given conflicting data?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-116": {
+      "content_hash": "793ec12270ff54cf92db0f9ade26505daf55466cb95f94a5beb128cd5e641d6e",
+      "phrased_statement": "Additional Information Indicator must transmit balance information (001) when BUYPASS initiates a Financial Transaction Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_427",
+        "CONTINUED_ON_PAGE_428",
+        "LLM_FLAG: MEDIUM also states AVS(003)/CVV(004) and Visa product result(009) conditions"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-118": {
+      "content_hash": "ece0aff953ac5e82e02d927c62b3a1514ae5bfe79d6e6a86ca4ff845a0004e53",
+      "phrased_statement": "Additional Information field must contain gift card, EBT card, credit card, or phone card balance information when Additional Information Indicator equals 001.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "MERGED_FROM_PAGE_432",
+        "CONTINUED_ON_PAGE_430",
+        "CONTINUED_ON_PAGE_431",
+        "CONTINUED_ON_PAGE_432",
+        "LLM_FLAG: SEVERITY:MEDIUM valid_values range 001-984 vs max_length_bytes 984 vs element_117 range 001-985",
+        "JUDGE_NEEDS_REVIEW: valid_values range 001-984 conflicts with Element 117's stated range 001-985",
+        "LLM_FLAG: SEVERITY:MEDIUM holds 46 additional indicator-value conditions not phrased"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-118",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "valid_values range 001-984 conflicts with Element 117's stated range 001-985"
+        ],
+        "review_question": "Should Additional Information length range be 001-984 or 001-985 per Element 117?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-121": {
+      "content_hash": "f9158b5213b2358e7974461f0d7aeac48b78ddb7270e50882bd97a02c29ee462",
+      "phrased_statement": "Partial Approval Indicator must be present on all transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-122": {
+      "content_hash": "52be1978b47d44287c908ab10627015b02269d9ad1375045e85b05386838a88f",
+      "phrased_statement": "MICR Data must be present on all check transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM holds additional 50-byte truncation and ECA/TeleCheck segment conditions"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-123": {
+      "content_hash": "ea3a48feb0c5c839a5f3631cbcf0a9e623da50453a01b4a83f1131efe6160270",
+      "phrased_statement": "Driver's License must be present on all manually entered check transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-124": {
+      "content_hash": "aa45a5ad68ec161f72fe33a79e3ed51ba037ba6af724ea67f3796494a8504722",
+      "phrased_statement": "State Code must be present when Driver's License is included in a check transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-126": {
+      "content_hash": "dd1b419dca8873ee9a2edb8d12850a79a175ea2c9a5844b1c0975d3871eb95d2",
+      "phrased_statement": "Check Type must be present on all manually entered check transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-127": {
+      "content_hash": "7db193ef6ee192d760ad4f1835181cef83c9dc497e4f82c8b867ea18f1220a75",
+      "phrased_statement": "Check Number must be present on all manually entered check transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-137": {
+      "content_hash": "28f0786c31b150e6c36a446c2cb47d5fde84f8c37de58eedaaf1169b37b8414d",
+      "phrased_statement": "Extended MICR Data must be populated when raw MICR data exceeds the MICR Data field length.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-138": {
+      "content_hash": "c967f3a36b60619629d04c633800e0195ba3778d59d03c44b372210628dc7aeb",
+      "phrased_statement": "Loyalty Program ID must be present when transaction is a loyalty card transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM valid_values 'ERN' is non-numeric, conflicting with numeric character_type",
+        "JUDGE_FAIL: valid_values 'ERN' is non-numeric text, contradicting character_type N"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-138",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "valid_values 'ERN' is non-numeric text, contradicting character_type N"
+        ],
+        "review_question": "Is Loyalty Program ID numeric per character_type or does 'ERN' indicate a specific valid value/text?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-139": {
+      "content_hash": "7ba4bd9dbc6e0fefae4347df75f88faed9f5a3fe33ae79c83f478fbd80ad8097",
+      "phrased_statement": "Loyalty Account Number must be present when transaction is a loyalty card transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-150": {
+      "content_hash": "e1793173db604e482ff764a7b33ba319e18207462079b5b4325511b8091c813e",
+      "phrased_statement": "Loyalty Information Version must default to 1 when not sent in a transaction request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also states field appears in Segment No. 108, not phrased"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-151": {
+      "content_hash": "62f30cd523e2be1fb76814836e812cb7b203bf67e8c51183822ad1ff0e8b56b2",
+      "phrased_statement": "Unit of Work must be present on loyalty reversals.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM also states field appears in Segment No. 108, not phrased"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-152": {
+      "content_hash": "ce3d150289aad1155e4c4be770466bbe89623e640ec9b26d584106c15ee65423",
+      "phrased_statement": "Print Data must appear in Print Data Segment (Segment No. 115).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "JUDGE_FAIL: is_variable_length=false contradicts representation 'Variable length of up to 900 characters'",
+        "LLM_FLAG: SEVERITY:HIGH no checkable condition, only segment location stated",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: no phrased_statement provided to verify"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-152",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "LOW",
+        "issues": [
+          "TRACEBACK_MISMATCH: no phrased_statement provided to verify"
+        ],
+        "review_question": "Should a statement be generated for Print Data before verification?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-153": {
+      "content_hash": "b8037d9bdd9a622f371a6a5fbd35c91669c3e211d923de3b824f8d65fcf09896",
+      "phrased_statement": "WIC Discount Amount must encode Account Type in positions 1-2 of the field.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_NEEDS_REVIEW: Amount x value '0 (credit amount)' duplicates meaning of 'C (credit amount)', likely should be debit/other code",
+        "LLM_FLAG: SEVERITY:MEDIUM also defines Amount Type, Currency Code, Amount position ranges, not phrased"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-153",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Amount x value '0 (credit amount)' duplicates meaning of 'C (credit amount)', likely should be debit/other code"
+        ],
+        "review_question": "Should the '0' code in Amount x field denote something other than credit amount, given C already means credit?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-154": {
+      "content_hash": "9787a53e316a8c8c6f6153f7062856b38f14a1bb09e250405065b9fb71898fde",
+      "phrased_statement": "WIC Product Data must be composed of two or more of the listed subelements.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_447",
+        "CONTINUED_ON_PAGE_448",
+        "CONTINUED_ON_PAGE_449",
+        "CONTINUED_ON_PAGE_450",
+        "CONTINUED_ON_PAGE_451",
+        "LLM_FLAG: SEVERITY:MEDIUM additional conditions: field inclusion per response type, CVB quantity-equals-price rule, exception record pricing adjustment not phrased"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-154",
+        "category": "EDGE_CASE",
+        "confidence": "MEDIUM",
+        "issues": [],
+        "review_question": null,
+        "suggested_action": null
+      }
+    },
+    "ENT-ELEM-155": {
+      "content_hash": "0609944a6e5f89e3eba8c09225d1621d8827ac3a2afbb179cff67ad8c3c67776",
+      "phrased_statement": "Key ID must be used for all subsequent TransArmor transactions from this device when requested and approved.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM additional condition not phrased: Key ID is required in the TransArmor Load Response"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-156": {
+      "content_hash": "85f339f7c58acd10c1b9c04b14b650a52baf50a378f2867a70635f077f77d05e",
+      "phrased_statement": "Key Data Length must be present in the TransArmor Load Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-157": {
+      "content_hash": "07409ff84a68679b92b82afbd87314c692d69dbf47e4a298fc15d5e0940957a2",
+      "phrased_statement": "Key Data must not exceed 999 bytes for an approved TransArmor transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM additional conditions not phrased: field required in Load Response; declined transaction returns message text"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-158": {
+      "content_hash": "d2afdc57e6bb6dfd19dc02acea8516dcd7f29c4cd11f9ed0589e772e44a2da64",
+      "phrased_statement": "License # must be found in the Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW external reference to Petroleum Industry Processing Specifications not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-159": {
+      "content_hash": "e9ae4d4262af7b1e33386f33acffd05ce30d549a1b76e9b15c9f5404ed53ee8e",
+      "phrased_statement": "Job ID must be found in the Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW external reference to Petroleum Industry Processing Specifications not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-160": {
+      "content_hash": "a97ca835e6cc2e6f3d13448244446fab8517ff984b91f6fd25e01c68fdc343ef",
+      "phrased_statement": "Department # must be found in the Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW external reference to Petroleum Industry Processing Specifications not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-161": {
+      "content_hash": "ae28c27c3210ac6de0adaf676ece40fe455c44cf2398a4342a34a0d0ad37c0cb",
+      "phrased_statement": "Customer Data must be found in the Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW external reference to Petroleum Industry Processing Specifications not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-162": {
+      "content_hash": "d218ec823537c54f13e0b47e338b1300a39d794f9ce5ed15614171e4c0e284e7",
+      "phrased_statement": "User ID must appear in Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM Also references external issuer spec, not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-163": {
+      "content_hash": "3355d09e51c6b6b63b0aff3a90c30c3b3013a0650066de71acddeafabac6feda",
+      "phrased_statement": "Vehicle ID# must appear in Fleet Data Segment (Segment No. 101) when required by issuer.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: MEDIUM Also references external issuer spec, not independently testable"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-164": {
+      "content_hash": "cb7092047978b07bacf22f38687a7c2150b671208c88b5c0e55a9ca557d78121",
+      "phrased_statement": "EBT Program Data Total Length subelement must be fixed length of 3 digits.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_457",
+        "CONTINUED_ON_PAGE_458",
+        "CONTINUED_ON_PAGE_459",
+        "CONTINUED_ON_PAGE_460",
+        "LLM_FLAG: MEDIUM Also states Program Data subelement length/count rules and total length derivation"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-164",
+        "category": "EDGE_CASE",
+        "confidence": "MEDIUM",
+        "issues": [],
+        "review_question": "Does DETAIL position range '5-32'/'33-41' correctly align with stated position 13-24 for TAG=IT subfields?",
+        "suggested_action": "CONFIRM"
+      }
+    },
+    "ENT-ELEM-165": {
+      "content_hash": "05b70be6315bfd2e33e73b0d74015ffe98041df0055c6e7db847c62dae093b8c",
+      "phrased_statement": "Start Date must indicate immediate use when it contains 00000000.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: character_type field contains length info duplicating max_length, inconsistent formatting vs other elements",
+        "LLM_FLAG: MEDIUM Also states End Date 99999999 meaning and pairing with Element No. 166"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-165",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "character_type field contains length info duplicating max_length, inconsistent formatting vs other elements"
+        ],
+        "review_question": "Should character_type field be split to separate max_length_bytes as done elsewhere?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-166": {
+      "content_hash": "aa0c91e1f8ea283e68f1772c39a3f0749b382062a8bfee7835bd7129fdcdd7e1",
+      "phrased_statement": "Start Time or End Time must appear in Proprietary Data Load Segment (Segment No. 118).",
+      "llm_verdict": {
+        "verdict": "FAIL",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: statement attributed to wrong element — text shown is for Element 166, but segment ref is correct though element name field appears duplicated/garbled"
+        ],
+        "traceback_match": false
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LLM_FLAG: SEVERITY:HIGH No checkable condition, only segment location and element pairing stated",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: phrased_statement is null, nothing to verify",
+        "LLM_FLAG: SEVERITY:MEDIUM also used with Element No. 165, Start Date or End Date",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: statement attributed to wrong element — text shown is for Element 166, but segment ref is correct though element name field appears duplicated/garbled"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-166",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: statement attributed to wrong element — text shown is for Element 166, but segment ref is correct though element name field appears duplicated/garbled"
+        ],
+        "review_question": "Confirm Start Time or End Time (Element 166) correctly appears in Segment 118 per text.",
+        "suggested_action": "CONFIRM"
+      }
+    },
+    "ENT-ELEM-168": {
+      "content_hash": "175de6a0cebb443c4770ea5762dbcace7b3a9973b5f325627cdd37e8a5faa254",
+      "phrased_statement": "Number of Receipt Text Lines must appear in Proprietary Data Load Segment (118) when Prompt Code 901 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-169": {
+      "content_hash": "fcde0d0d2ea605ebaba3e4043dc2358e73d1ef6cba9a2c0c6d557a2d3fc12277",
+      "phrased_statement": "Receipt Text Data Length must appear in Proprietary Data Load Segment (118) when Prompt Code 901 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-170": {
+      "content_hash": "d27ce8a16f1faee905cd29c7e2675ad20ed05f1ebe9b43c2b7b49133c345bfdc",
+      "phrased_statement": "Receipt Text Data must appear in Proprietary Data Load Segment (118) when Prompt Code 901 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting values in source: max_length 20 vs representation 'up to 20'",
+        "JUDGE_NEEDS_REVIEW: quality_flag claims a conflict between max_length 20 and representation 'up to 20' but these are consistent, not contradictory",
+        "LLM_FLAG: MEDIUM Also states data must be retained by POS Device for subsequent receipt printing"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-170",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "LOW",
+        "issues": [
+          "quality_flag claims a conflict between max_length 20 and representation 'up to 20' but these are consistent, not contradictory"
+        ],
+        "review_question": "Is there an actual discrepancy intended by the flagged quality_flag note?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-171": {
+      "content_hash": "e6f99204a78518116d716cb8334ccaa90c8a4fc61ff57afb4b660b23333619e2",
+      "phrased_statement": "Number of Discounts must appear in Segment 118 when Prompt Code 904 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null while character_type field embeds '2 bytes', inconsistent with structured fields elsewhere",
+        "LLM_FLAG: MEDIUM: also states field used by POS to parse Product Codes/Discounts"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-171",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null while character_type field embeds '2 bytes', inconsistent with structured fields elsewhere"
+        ],
+        "review_question": "Should max_length_bytes be populated as 2 given character_type text states '2 bytes'?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-172": {
+      "content_hash": "dabbb101554660bfe56faa16d277b183792616a474cb71b80a0cdfcdc6f64576",
+      "phrased_statement": "Product Discount Amount must appear in Segment 118 when Prompt Code 904 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null despite character_type stating '5 bytes', inconsistent structuring",
+        "LLM_FLAG: MEDIUM: also states format 99v999 and use for discount calculation"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-172",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null despite character_type stating '5 bytes', inconsistent structuring"
+        ],
+        "review_question": "Should max_length_bytes be populated as 5 given character_type text states '5 bytes'?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-173": {
+      "content_hash": "210bfa49e772b6a843e203a1bab3079be0f033b126392ed49903dd366fd2fb94",
+      "phrased_statement": "BUYPASS Card Type must appear in Segment 118 when Prompt Code 904 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null despite character_type stating '4 bytes', inconsistent structuring",
+        "LLM_FLAG: MEDIUM: also states format 9999 and use for discount calculation"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-173",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null despite character_type stating '4 bytes', inconsistent structuring"
+        ],
+        "review_question": "Should max_length_bytes be populated as 4 given character_type text states '4 bytes'?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-174": {
+      "content_hash": "a022d37f0b0583fac4662a859396b025ecb74fb09cf8fcb0d5c3a638a130e5c6",
+      "phrased_statement": "Card Table Type must appear in Segment 118 when Prompt Code 902 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null despite character_type stating '4 bytes', inconsistent structuring",
+        "LLM_FLAG: MEDIUM: also states format 9999 and use for Card Table creation/replacement"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-174",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null despite character_type stating '4 bytes', inconsistent structuring"
+        ],
+        "review_question": "Should max_length_bytes be populated as 4 given character_type text states '4 bytes'?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-175": {
+      "content_hash": "cb4b084c4f9e03c07276fd9065272cd9eece849dee00e42a664e444966fd59ca",
+      "phrased_statement": "Card Table Data must appear in Segment 118 when Prompt Code 902 is returned.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null despite character_type stating '3,600 bytes', inconsistent structuring",
+        "LLM_FLAG: MEDIUM: also states data used for creating/replacing Card Table information"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-175",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null despite character_type stating '3,600 bytes', inconsistent structuring"
+        ],
+        "review_question": "Should max_length_bytes be populated as 3600 given character_type text states this value?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-176": {
+      "content_hash": "1448d0ead2b04481828703959052e512ba8ec253f57af3032532f5c3c9e123c0",
+      "phrased_statement": "Device Card Table Version must indicate no card table used when value begins with 99999.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: max_length_bytes null despite character_type stating '35 bytes', inconsistent structuring",
+        "LLM_FLAG: MEDIUM: also states field appears in Segment 118 for Host update checks"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-176",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "max_length_bytes null despite character_type stating '35 bytes', inconsistent structuring"
+        ],
+        "review_question": "Should max_length_bytes be populated as 35 given character_type text states this value?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-177": {
+      "content_hash": "191d84e021f6df919f68d053199ef711e14b36e0f2768ecfe82eadef28adf838",
+      "phrased_statement": "Card Table Load Version must appear in Proprietary Data Load Segment (Segment No. 118).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "LLM_FLAG: SEVERITY:HIGH no checkable condition stated, only purpose description",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: phrased_statement is null, no candidate claim to verify",
+        "LLM_FLAG: SEVERITY:LOW purpose clause (multi-block retention) not phrased as separate condition"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-177",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "LOW",
+        "issues": [
+          "TRACEBACK_MISMATCH: phrased_statement is null, no candidate claim to verify"
+        ],
+        "review_question": "Should a statement be generated for Card Table Load Version before verification?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-178": {
+      "content_hash": "31a68630aebaa0372d6f42ee71f705b56172af09200edfef545552008fbae74c",
+      "phrased_statement": "Load Control Key must appear in Proprietary Data Load Segment (Segment No. 118).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "LLM_FLAG: SEVERITY:HIGH no checkable condition stated, only segment presence noted",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: phrased_statement is null, no candidate claim to verify"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-178",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "LOW",
+        "issues": [
+          "TRACEBACK_MISMATCH: phrased_statement is null, no candidate claim to verify"
+        ],
+        "review_question": "Should a statement be generated for Load Control Key before verification?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-179": {
+      "content_hash": "07e635ac9a52c71cfebda994497f6e043ce2d366887fc799a150d57b0fdda9a4",
+      "phrased_statement": "Host Discount Timestamp must use format CCYYMMDDHHMM.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-180": {
+      "content_hash": "550425a632c020c4f8d7eadca0c8422413a95c441b8317af7459d6a2e7cffb4d",
+      "phrased_statement": "Site Configuration Data must appear in Segment 118 when Prompt Code 903 is sent in the request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: is_variable_length false contradicts character_type stating 'Variable Length' and representation 'up to 3,600'",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires sending only final config data per business day, and no data when no changes occur"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-180",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "is_variable_length false contradicts character_type stating 'Variable Length' and representation 'up to 3,600'"
+        ],
+        "review_question": "Is this field truly variable length up to 3,600 bytes, or fixed despite the label?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-182": {
+      "content_hash": "1a8d0c2cc6f89425a627cbb819a84a86d61565e054a253500e065c1bb8a1450c",
+      "phrased_statement": "Prompt Code, Pending must be a valid Transaction Type and/or Card Type Code.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: character_type/representation say 'Fixed length of 4' but element name and attribute header say 'Max. Length: 4 bytes', implying variable",
+        "LLM_FLAG: SEVERITY:MEDIUM also states a 4-character Prompt Code is transmitted for special transactions"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-182",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "character_type/representation say 'Fixed length of 4' but element name and attribute header say 'Max. Length: 4 bytes', implying variable"
+        ],
+        "review_question": "Is Prompt Code, Pending fixed at 4 chars or variable up to 4 chars max?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-183": {
+      "content_hash": "e68a093d0fac2466e1f6a531f66dc6ae7c5256acfcdc74b80023979889cc611a",
+      "phrased_statement": "Card BIN Range, Beginning must appear in Proprietary Load Response Data, Prompt Code 904.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-184": {
+      "content_hash": "d451bd3dbf51ff7136c5d07a6feda5001e523a444ce807bd6c1fe2d585dc0dd5",
+      "phrased_statement": "Card BIN Range, Ending must appear in Proprietary Load Response Data, Prompt Code 904.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-185": {
+      "content_hash": "197ca4d3c1c1b3eb4b810c73b28ec4375a4ab1112ad518bdf898b6478240ae70",
+      "phrased_statement": "Discount Quantity Limit must appear in Proprietary Load Response Data, Prompt Code 904.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: 'Max. Length: 3 bytes' labeled but representation says 'Fixed length', inconsistent length semantics"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-185",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "'Max. Length: 3 bytes' labeled but representation says 'Fixed length', inconsistent length semantics"
+        ],
+        "review_question": "Is Discount Quantity Limit fixed-length 3 digits or variable up to 3?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-186": {
+      "content_hash": "dd8eeeda8e04a9a64c79189b64ada19ded1f213ac555740ddeaa2ea8bd1cee13",
+      "phrased_statement": "Discount Program Description must appear in Proprietary Load Response Data, Prompt Code 904.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "JUDGE_NEEDS_REVIEW: 'Max. Length: 15 bytes' conflicts with representation stating 'Fixed length of 15'"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-186",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "'Max. Length: 15 bytes' conflicts with representation stating 'Fixed length of 15'"
+        ],
+        "review_question": "Is Discount Program Description fixed 15 chars or variable up to 15?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-187": {
+      "content_hash": "3edd7519348be27600cf667a03ac00038e0207bc622faed6b0e157200f42def9",
+      "phrased_statement": "CA Public Key File Checksum must be present in the EMV Financial Transaction Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "CONTINUED_ON_PAGE_470",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires reuse in subsequent requests, presence in Load Response, and per-response provisioning"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-188": {
+      "content_hash": "f3deda39b74a8e974156bb33d734808b4e6dadb7db105fc5335d2436f9fff4ab",
+      "phrased_statement": "EMV Card Sequence Number must be required when card product includes Card Sequence Number in EMV data.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires sending three spaces when EMV Tag 5F34 not provided by card"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-189": {
+      "content_hash": "616615e15b62a529880be8ae8b5b05100c08ef5ca54c553bab5a299f23509ac1",
+      "phrased_statement": "EMV Chip Data Length must be present in all EMV transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-190": {
+      "content_hash": "e4357d3073e4862b63eea719a56b4f663a9878c3e464ab5fa87c8c90167a53d4",
+      "phrased_statement": "EMV Chip Data must be present in all EMV transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_472",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting length values: 999 bytes vs component value up to 255",
+        "JUDGE_FAIL: Conflicting max lengths: field max_length_bytes 999 vs element_name text stating value sub-component up to 255 bytes",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires exact TLV values, last-value rule, AID/DF tag inclusion, PAN/Track2 exclusion"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-190",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "Conflicting max lengths: field max_length_bytes 999 vs element_name text stating value sub-component up to 255 bytes"
+        ],
+        "review_question": "Does the 999-byte limit refer to total EMV Chip Data or per-TLV value field of 255 bytes?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-193": {
+      "content_hash": "cf07775c0d9dfeaf53ecc74ee1e488b3e32e1a09f91e68a255590a1ba2d912b2",
+      "phrased_statement": "CA Public Key File Block Length must be present in the CA Public Key File Load Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-194": {
+      "content_hash": "4d4904a1b90c5d199efb24578f2d2277f0ed78556038652a728c1d0bb093c17c",
+      "phrased_statement": "CA Public Key File Block must be required in the CA Public Key File Load Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: max_length_bytes 999 contradicts max_length_raw '9,999 bytes'; is_variable_length false contradicts representation stating 'Variable length'",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires full key replacement, 9999 byte max, concatenation, decline message behavior",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: source states required in CA Public Key File Load Response, not 'must be present' generically but phrasing differs only cosmetically; Processing Rules says 'Required in the CA Public Key File Load Response' matches claim",
+        "LLM_FLAG: SEVERITY:MEDIUM also states content scope, replacement behavior, max length 9999 bytes, concatenation, decline message display"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-194",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: source states required in CA Public Key File Load Response, not 'must be present' generically but phrasing differs only cosmetically",
+          "Processing Rules says 'Required in the CA Public Key File Load Response' matches claim"
+        ],
+        "review_question": "Does 'Required in' equate to 'must be present in' for this element?",
+        "suggested_action": "CONFIRM"
+      }
+    },
+    "ENT-ELEM-195": {
+      "content_hash": "9f6575f3aec24b595c9934f4e0831b8056dfdc91b533fde95fac848cde5f4ac2",
+      "phrased_statement": "CAVV Revised Format must be used only for Visa and Interlink payment tokenized transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_475"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-196": {
+      "content_hash": "6039a82eeb89f6a216081ce14fde094ccefb4ed881b1c3b6862462af4f9e8bad",
+      "phrased_statement": "Token Requestor ID must be used only for Visa/MasterCard payment tokenized transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-197": {
+      "content_hash": "bee888e423456e887b0c2620f8f49dbdeecaa01b924a1550a11d6fd66c9fb78e",
+      "phrased_statement": "Token PAN Suffix must be returned only for Visa/MasterCard tokenized transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires return for Interlink/Maestro tokenized transactions"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-198": {
+      "content_hash": "36e4007837a41f7802c4387d551d564ef3979fa4ce1ab487b124c24a88b9bf07",
+      "phrased_statement": "Settlement Type must be required in the Common AID EMV and non-traditional Signature Debit Financial Transaction Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also required in non-traditional Signature Debit response; Signature Debit availability note untestable",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV",
+        "LLM_FLAG: SEVERITY:LOW note on checking availability with project manager not testable"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-198",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV"
+        ],
+        "review_question": "Should the requirement include both EMV and Signature Debit conditions, not just EMV?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-199": {
+      "content_hash": "925f0466a3384b0444da138026500b64b1cce9fa193ce363063458546e51dab8",
+      "phrased_statement": "Signature Required must be required in the Common AID EMV and non-traditional Signature Debit Financial Transaction Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also required in non-traditional Signature Debit response; Signature Debit availability note untestable",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV",
+        "LLM_FLAG: SEVERITY:LOW note on checking availability with project manager not testable"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-199",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV"
+        ],
+        "review_question": "Should the requirement include both EMV and Signature Debit conditions, not just EMV?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-200": {
+      "content_hash": "8dcf9ca5dfdad254c7a1431524ed380adbc660485c23d56dcf76ea48b43ebb56",
+      "phrased_statement": "Receipt Card Description must be required in the Common AID EMV and non-traditional Signature Debit Financial Transaction Response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also required in non-traditional Signature Debit response; Signature Debit availability note untestable",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV",
+        "LLM_FLAG: SEVERITY:LOW note on checking availability with project manager not testable"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-200",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: source says required in Common AID EMV AND non-traditional Signature Debit Financial Transaction Response, not just EMV"
+        ],
+        "review_question": "Should the requirement include both EMV and Signature Debit conditions, not just EMV?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-201": {
+      "content_hash": "2460b20f43158be4650a0fe6107f769fbc9ebac4864654293c084d01e8646c4c",
+      "phrased_statement": "Fuel Volume Data must appear in Proprietary Data Load Segment (Segment No. 118) when Prompt Code 905 is sent in the request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_478",
+        "JUDGE_FAIL: character_type states 'Variable Length' and representation says variable, but is_variable_length is false"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-201",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "character_type states 'Variable Length' and representation says variable, but is_variable_length is false"
+        ],
+        "review_question": "Should is_variable_length be true given the field is described as variable length?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-202": {
+      "content_hash": "07359c7e117ef7b7160363565908d6ef0c5fff11638ec531e21e38368397551e",
+      "phrased_statement": "Cryptogram Token Data must be used for In App payment tokenization transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "LLM_FLAG: SEVERITY:MEDIUM character_type labeled variable length but representation states fixed 28 or 56 bytes",
+        "JUDGE_FAIL: character_type labeled 'Variable Length: 28/56 bytes' but representation and is_variable_length indicate fixed length",
+        "LLM_FLAG: SEVERITY:LOW condition is vague, no explicit field presence or value check stated"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-202",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "character_type labeled 'Variable Length: 28/56 bytes' but representation and is_variable_length indicate fixed length"
+        ],
+        "review_question": "Is this field fixed-length (28 or 56 bytes) or truly variable length as character_type suggests?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-203": {
+      "content_hash": "cf874d381ca9c86f6820110303050681001e9f05fc5e0c774d81c41f42bbbb30",
+      "phrased_statement": "Safekey Data must appear in Data Segment No. 123 when used in a SafeKey payment tokenization transaction.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_479"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-204": {
+      "content_hash": "00dc07ed29ea4f2a1f458e17dd5ed0e60e38d284a2cd4fb95fcc6e4752dbd424",
+      "phrased_statement": "SafeKey Response must appear in Data Segment No. 123 (NFC Payment Tokenization Data Segment).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_480",
+        "LLM_FLAG: SEVERITY:MEDIUM also states field indicates AEVV validation result, not phrased"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-205": {
+      "content_hash": "b45cad3a57c1b2b3749175e1013fdec2526576b3e6922183731a8d078b9681a6",
+      "phrased_statement": "Load Subtype must appear in the Moneris Key Load Request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-206": {
+      "content_hash": "f373bb83a8aef598f9f9704756bdb919f1cd40fa31386b33285993a1e9ca3b89",
+      "phrased_statement": "SPDH Header must appear in the Moneris Key Load request.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source says 'both Moneris Key Load request and response', candidate only states request."
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires SPDH Header to appear in Moneris Key Load response"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-207": {
+      "content_hash": "28d1a2f25c20d05c21a0a25770b8dffbf7cc407234f97f5fb518dc997bc1d70c",
+      "phrased_statement": "Moneris Terminal Identifier must be obtained from Moneris during terminal initialization.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-208": {
+      "content_hash": "0ae93658b9dfcae5f185dcea6557642e33883f5a26ea7636d9af00e5b9d405e0",
+      "phrased_statement": "Moneris Merchant ID must be obtained from Moneris during terminal initialization.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-209": {
+      "content_hash": "ec44f933c62403a41dfaec7d23ee4a0a0cb7773931ebbbd8149698255aa6d92d",
+      "phrased_statement": "Moneris Response Code must be obtained from Moneris when transaction response is received.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "MEDIUM",
+        "issues": [
+          "Source states 'Obtained from Moneris in transaction response', candidate paraphrases as 'when received'."
+        ],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "NO_VALID_VALUES"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-210": {
+      "content_hash": "bad33e3263943b5bf7990ef24142fc8ac9a5af049135979f6db5c19a5f6fdb68",
+      "phrased_statement": "MAC must be sent in the transaction request for Moneris debit transactions.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires MAC received in transaction response for Moneris debit transactions"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-212": {
+      "content_hash": "6d8de4cdd58c6bde026a4b526fd84efac1e3bed629cf766f1f705b32dc265ea9",
+      "phrased_statement": "Moneris Key Data must include one iteration for each \"Y\" value in Moneris Key Indicators.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-213": {
+      "content_hash": "f9063d6ad697f1575223ced3da5e2b41979b5af742411d8b66818f316c4ae0ca",
+      "phrased_statement": "Moneris Data must be formatted as <tag><len><data>.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: is_variable_length false contradicts representation stating 'Variable Length up to 100 bytes'"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-213",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false contradicts representation stating 'Variable Length up to 100 bytes'"
+        ],
+        "review_question": "Is Moneris Data field fixed or variable length - which attribute is correct?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-214": {
+      "content_hash": "22bf4383cf4242212b2df8c684f8c13808876acb3fc225852827cf740c264500",
+      "phrased_statement": "Batch Number must be supplied by the terminal when identifying the batch to Moneris.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-215": {
+      "content_hash": "190f51015920abeea1f55293bd2e46eaf8a229551054dc8e1a128d49806bf683",
+      "phrased_statement": "Language Indicator must identify language in Moneris's format.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM vague condition, no checkable value or format stated"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-216": {
+      "content_hash": "cc224ae45953496225ec9187c026c1ec64735eb6305d1a39c5b5d01e4b52ffdc",
+      "phrased_statement": "Response Display must be supplied by Moneris when returned in batch close response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-223": {
+      "content_hash": "4b55ec2d38ba971d2c0c7e21c990093c1aaf506811340b6825035ba6d8def0c2",
+      "phrased_statement": "Tax type must be skipped when Inclusive/Exclusive for Tax 1 value is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires Tax Amount 1 be skipped when flag is \"N\"",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: rule 'if value is N, both tax type and amount skipped' is attributed to element 223 (Inclusive/Exclusive), not Tax Type 1 directly described as 'this field is omitted' under element 224.",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires tax amount be skipped when value is \"N\""
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-223",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: rule 'if value is N, both tax type and amount skipped' is attributed to element 223 (Inclusive/Exclusive), not Tax Type 1 directly described as 'this field is omitted' under element 224."
+        ],
+        "review_question": "Should statement be rephrased to match element 224's own processing rule text instead of element 223's?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-224": {
+      "content_hash": "8be2bfa2f11cea304c02a9e259047db8fbef5dbf23fa6f15cf0f4a9e5b8ca624",
+      "phrased_statement": "Tax Type 1 must be omitted when the Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-225": {
+      "content_hash": "a38fd7617e7065c563e8c98bc3c06e65cd461f3f91866a8de498da5b94054f17",
+      "phrased_statement": "Tax Amount 1 must be omitted when the Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_486"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-226": {
+      "content_hash": "58e4a95033ed6ddbd0b3bdbdaa7d27eb753fd7153a967ccf7ecd4640d9af4403",
+      "phrased_statement": "Tax type must be skipped when Inclusive/Exclusive for Tax 2 value is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:LOW length stated as 3 bytes but values are single-char codes",
+        "JUDGE_FAIL: Length stated as 3 bytes but valid values are single-character codes (I/E/N), contradicting field 229 and 223 which are 1 byte",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires Tax Amount 2 be skipped when flag is \"N\"",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: skip rule stated under element 226 (Inclusive/Exclusive), not as Tax Type 2's own rule.",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires tax amount be skipped when value is \"N\""
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-226",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: skip rule stated under element 226 (Inclusive/Exclusive), not as Tax Type 2's own rule."
+        ],
+        "review_question": "Should statement reference element 226's rule rather than attribute it directly to Tax Type 2?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-227": {
+      "content_hash": "b98b5786564c0934f23699644f8b4b3c6f5c38e7ceacf86c5e541e35a156c53e",
+      "phrased_statement": "Tax Type 2 must be omitted when the Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-228": {
+      "content_hash": "52aeb31455a38888e92b827956d7fa4e1068e4481ad1ab841a22eafc62f43014",
+      "phrased_statement": "Tax Amount 2 must be omitted when Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_487",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: element 228 (Tax Amount 2) has no stated 'omit if N' processing rule in this text; rule only appears under element 226/227."
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-228",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "LOW",
+        "issues": [
+          "TRACEBACK_MISMATCH: element 228 (Tax Amount 2) has no stated 'omit if N' processing rule in this text; rule only appears under element 226/227."
+        ],
+        "review_question": "Does Tax Amount 2 explicitly have an omission rule elsewhere, or is this inferred from Tax Type 2's rule?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-229": {
+      "content_hash": "fc9d831e39c17e1247cc5f1310a14e9b5fb2a51bf843260b27ad15666814f886",
+      "phrased_statement": "Tax type must be skipped when Inclusive/Exclusive for Tax 3 value is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires Tax Amount 3 be skipped under same condition",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: rule is 'if this tax amount value is N, both tax type and amount skipped' under element 229, not phrased as Tax Amount 3 value.",
+        "LLM_FLAG: SEVERITY:MEDIUM also requires tax amount be skipped when value is \"N\""
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-229",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: rule is 'if this tax amount value is N, both tax type and amount skipped' under element 229, not phrased as Tax Amount 3 value."
+        ],
+        "review_question": "Should phrasing attribute the 'N' condition to element 229 (Inclusive/Exclusive) rather than Tax Amount 3?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-230": {
+      "content_hash": "5bb98fb50d706959c68ecc5c03e4bbffdbe507018292e0a6fd3f1a3f5188a787",
+      "phrased_statement": "Tax Type 3 must be omitted when Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-231": {
+      "content_hash": "1977c8b5846addb1231499a7305dbdf2eff1775fe630437f8bd77db0f193f837",
+      "phrased_statement": "Tax Amount 3 must be omitted when Inclusive/Exclusive flag is \"N\".",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_UNSTRUCTURED",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_488",
+        "TRACEBACK_MISMATCH: TRACEBACK_MISMATCH: no omission rule stated for Tax Amount 3 itself; rule given is for Tax Type 3/flag"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-231",
+        "category": "TRACEBACK_MISMATCH",
+        "confidence": "HIGH",
+        "issues": [
+          "TRACEBACK_MISMATCH: no omission rule stated for Tax Amount 3 itself; rule given is for Tax Type 3/flag"
+        ],
+        "review_question": "Does the source state Tax Amount 3 specifically is omitted, or only Tax Type 3?",
+        "suggested_action": "REJECT"
+      }
+    },
+    "ENT-ELEM-239": {
+      "content_hash": "b11e6a967177ae7ad3462f780c34ecd11bbc820539b1d523ae9ac32d4f40f2ae",
+      "phrased_statement": "Enhanced Fleet Data must include list of enhanced prompts when Element No. 239 value is '004'.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_491"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-240": {
+      "content_hash": "d8e2f76f2edd40590af028443e1377db423b8b73ce8635d706e6103180348331",
+      "phrased_statement": "Segment must be returned to the terminal during response when WEX Available Product Fleet Indicator is set to '4'.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_FAIL: is_variable_length false contradicts representation stating variable length up to 17 bytes"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-240",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false contradicts representation stating variable length up to 17 bytes"
+        ],
+        "review_question": "Is this field variable length (per representation) or fixed (per is_variable_length flag)?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-243": {
+      "content_hash": "d6d9da3b449e8f42bd3a4918ad8371c9fb03efcdc3e6d621b4b4d3af67cc4a79",
+      "phrased_statement": "Extended Unit of Measure must repeat for up to 10 Non-Fuel products in Data Segment No. 102.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "CONTINUED_ON_PAGE_493",
+        "LLM_FLAG: SEVERITY:MEDIUM conflicting values in source: character_type says Variable Length but representation says Fixed length of 4",
+        "JUDGE_FAIL: character_type labels field Variable Length while representation says Fixed length of 4, direct contradiction",
+        "LLM_FLAG: SEVERITY:MEDIUM also states usage in Segment 111 sub-table 14 and availability restriction until June 2026"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-243",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "HIGH",
+        "issues": [
+          "character_type labels field Variable Length while representation says Fixed length of 4, direct contradiction"
+        ],
+        "review_question": "Is Extended Unit of Measure fixed 4 bytes or variable length up to 4 bytes?",
+        "suggested_action": "CLARIFY"
+      }
+    },
+    "ENT-ELEM-103": {
+      "content_hash": "25e9d3640de16d82e31fdfd7ee961b55c5108251a03e13a19af87b63d65539b1",
+      "phrased_statement": "Text Data must accept free-form text content.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "JUDGE_FAIL: representation says 'Variable length' but is_variable_length is false"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-103",
+        "category": "AMBIGUOUS_SOURCE",
+        "confidence": "MEDIUM",
+        "issues": [
+          "representation says 'Variable length' but is_variable_length is false"
+        ],
+        "review_question": "Is this field variable or fixed length given the contradictory flag and description?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-211": {
+      "content_hash": "2e053ef007a02693514414cb8379c3f8bfa80304802912af020d221588d9bf3b",
+      "phrased_statement": "Moneris Key Indicators must be set when keys are present in transaction response.",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "CONTINUED_ON_PAGE_482"
+      ],
+      "review_package": null
+    },
+    "ENT-ELEM-241": {
+      "content_hash": "171744a9d9d08d3e4e6e7cf7a8a7c377c98ddd5d42678374ba40348066196b68",
+      "phrased_statement": "Price Data must be unique to the Fuel Price Update Request Segment (No 149).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_FAIL: is_variable_length false contradicts representation stating variable length up to 999 bytes",
+        "LLM_FLAG: SEVERITY:MEDIUM also states field contains Cash and Credit unit prices for primary Diesel #2 fuel"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-241",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false contradicts representation stating variable length up to 999 bytes"
+        ],
+        "review_question": "Is this field variable length (per representation) or fixed (per is_variable_length flag)?",
+        "suggested_action": "MODIFY"
+      }
+    },
+    "ENT-ELEM-242": {
+      "content_hash": "a17bfe23bbbbeb5efcc5ad9e773bc87c4d6482fdb96961b9ba6219c2ccf14ddd",
+      "phrased_statement": "EV Charging Data must be unique to the EV Charging Data Segment (No. 156).",
+      "llm_verdict": {
+        "verdict": "PASS",
+        "confidence": "HIGH",
+        "issues": [],
+        "traceback_match": true
+      },
+      "flags": [
+        "VALID_VALUES_PARSED_HEURISTIC",
+        "LENGTH_UNCLEAR",
+        "JUDGE_FAIL: is_variable_length false contradicts representation stating variable length up to 200 bytes",
+        "LLM_FLAG: SEVERITY:MEDIUM also states field contains EV charging data"
+      ],
+      "review_package": {
+        "item_id": "ENT-ELEM-242",
+        "category": "EDGE_CASE",
+        "confidence": "HIGH",
+        "issues": [
+          "is_variable_length false contradicts representation stating variable length up to 200 bytes"
+        ],
+        "review_question": "Is this field variable length (per representation) or fixed (per is_variable_length flag)?",
+        "suggested_action": "MODIFY"
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ Response-side Moneris data segment, used for both financial transactions and Key
 
 ## Rule Set (5 rules)
 
-Applicability (Moneris financial/Key Load), Segment Type fixed 136 (sourcing provisional), Segment Length, separator behavior (provisional), Moneris Data TLV field (Appendix V scope provisional).
+Applicability (Moneris financial/Key Load), Segment Type fixed 136 (sourcing provisional), Segment Length, separator behavior (provisional), and Moneris Data TLV field. Appendix V's response-table layouts are trained in the [Appendix V module](../appendix-v/README.md); this does not resolve Segment 136's separate sourcing or separator questions.
 
 ## `[PROVISIONAL]` Items — All 4 Open
 
@@ -25,7 +25,7 @@ See [SME/TBA Input Register](segment-136-sme-tba-input-register.md).
 
 1. Do not assume Segment 136's separator behavior mirrors Segment 135's exactly — it is less detailed in the spec.
 2. Do not silently "correct" the Device-sourced Segment Type/Length fields without SME confirmation.
-3. Do not fabricate Appendix V TLV sub-field rules.
+3. Use the bounded [Appendix V oracle](../appendix-v/README.md) for the published Moneris table layouts; do not infer additional Moneris implementation rules from those layouts.
 
 <!-- segment-100-parity-index -->
 ## Segment 100 Parity Index

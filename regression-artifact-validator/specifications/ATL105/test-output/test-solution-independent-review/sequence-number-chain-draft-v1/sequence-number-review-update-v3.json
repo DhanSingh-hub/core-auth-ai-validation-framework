@@ -1,0 +1,45 @@
+{
+  "artifact": "SEQUENCE_NUMBER_SEMANTIC_REVIEW_UPDATE",
+  "reviewDate": "2026-10-16",
+  "supersedesInterpretationIn": "sequence-number-preliminary-semantic-review-v2.json",
+  "authorizedSemanticDecision": false,
+  "semanticMatchesConfirmed": 0,
+  "testExecutions": 0,
+  "sourceFinding": {
+    "sourceEvidenceIds": ["ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-APPROVAL", "ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-SEQUENCE", "ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-CODE"],
+    "section": "10.1.2.2 Authorization Only Reversal",
+    "sourceLocation": "extracted_text.txt lines 3957-3963",
+    "sourceRule": "For Authorization Only Reversal (Prompt Code transaction type S), Approval Number, when present in the original, must be present and identical; Sequence Number must also be present and identical.",
+    "appliesTo": ["POS Authorization Only reversal transaction type 3", "CAT Authorization Only reversal transaction type 5"],
+    "notEstablishedFor": ["Authorization Completion transaction type 0", "ordinary purchase/sale Void transaction type 8", "Refund Void transaction type U", "all lifecycle follow-ups generally"],
+    "interpretation": "SEG100-R-037's Approval Number context is source-supported for Authorization Only Reversal only. Whether SEG100-R-037 intends only that scope or an overbroad general lifecycle rule remains open for authorized Test review."
+  },
+  "chainDraftUpdate": {
+    "artifact": "sequence-number-test-chain-package-v2.json",
+    "previousDraftCounts": {"scenarios": 3, "cases": 8, "testData": 8},
+    "currentDraftCounts": {"scenarios": 4, "cases": 12, "testData": 12},
+    "addedScenario": "TS-DRAFT-SEG100-E86-AUTH-ONLY-REVERSAL",
+    "addedCases": ["TC-DRAFT-SEG100-E86-AUTH-REVERSAL-MATCH", "TC-DRAFT-SEG100-E86-AUTH-REVERSAL-OMIT-APPROVAL", "TC-DRAFT-SEG100-E86-AUTH-REVERSAL-APPROVAL-MISMATCH", "TC-DRAFT-SEG100-E86-AUTH-REVERSAL-SEQUENCE-MISMATCH"],
+    "addedSourceEvidenceIds": ["ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-APPROVAL", "ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-SEQUENCE", "ATL105-2026-3-SEC10-1-2-2-AUTH-REVERSAL-CODE"],
+    "allStatuses": "REVIEW_REQUIRED",
+    "converterReady": false,
+    "hostExecuted": false,
+    "baselineModified": false,
+    "coverageCredit": 0
+  },
+  "authoredTestEvidence": [
+    {"brId": "BR-SEG100-LIFE-AUTH-COMPLETE", "caseIds": ["TC-SEG100-LIFE-AUTH-COMPLETE-PASS", "TC-SEG100-LIFE-AUTH-COMPLETE-MISMATCH"], "sequenceEqualityVectorsVerified": [true, false], "testDataReadiness": "REVIEW_REQUIRED", "execution": "NOT_PERFORMED"},
+    {"brId": "BR-SEG100-LIFE-AUTH-VOID", "caseIds": ["TC-SEG100-LIFE-AUTH-VOID-PASS", "TC-SEG100-LIFE-AUTH-VOID-MISMATCH"], "sequenceEqualityVectorsVerified": [true, false], "sequenceObligationSourceFit": "Authorization Only Reversal code S is not the same as ordinary Authorization Void code 8; review whether this chain implements the cited rule.", "testDataReadiness": "REVIEW_REQUIRED", "execution": "NOT_PERFORMED"},
+    {"brId": "BR-SEG100-LIFE-SALE-VOID", "caseIds": ["TC-SEG100-LIFE-SALE-VOID-PASS", "TC-SEG100-LIFE-SALE-VOID-MISMATCH"], "sequenceEqualityVectorsVerified": [true, false], "testDataReadiness": "REVIEW_REQUIRED", "execution": "NOT_PERFORMED"},
+    {"brId": "BR-SEG100-LIFE-TIMEOUT-TOR", "caseIds": ["TC-SEG100-LIFE-TIMEOUT-TOR-PASS"], "sequenceEqualityVectorVerified": true, "testDataReadiness": "REVIEW_REQUIRED", "syntheticFixture": true, "execution": "NOT_PERFORMED"},
+    {"brId": "BR-SEG100-LIFE-REFUND-VOID", "caseIds": ["TC-SEG100-LIFE-REFUND-VOID-PASS", "TC-SEG100-LIFE-REFUND-VOID-MISMATCH"], "sequenceEqualityVectorsVerified": [true, false], "sourceApplicability": "UNRESOLVED", "testDataReadiness": "REVIEW_REQUIRED", "execution": "NOT_PERFORMED"}
+  ],
+  "aiChainFindingUnchanged": {
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:1937",
+    "linkedCases": 6,
+    "distinctSequenceValues": ["000001"],
+    "linkedInitialFollowupComparisons": 0,
+    "preliminaryRelation": "SOURCE_CLAUSE_OVERLAP_PROPOSED_CHAIN_ADEQUACY_GAP"
+  },
+  "remainingGates": ["Resolve eight approved/candidate AI case record conflicts.", "Review Test BR SEG100-R-037 composite scope with authorized owner.", "Approve expected outcomes and test data readiness.", "Execute no cases until fixtures, applicability and oracles are approved."]
+}

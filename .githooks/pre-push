@@ -1,9 +1,13 @@
 #!/bin/sh
 # main is updated only by the weekly pull request from Develop.
-while read local_ref local_sha remote_ref remote_sha; do
-    if [ "$remote_ref" = "refs/heads/main" ]; then
-        echo "Push to main rejected: main is updated only by the weekly pull request from Develop." >&2
-        exit 1
-    fi
-done
+input=$(cat)
+if printf '%s\n' "$input" | awk '$3 == "refs/heads/main" { found = 1 } END { exit !found }'; then
+    echo "Push to main rejected: main is updated only by the weekly pull request from Develop." >&2
+    exit 1
+fi
+
+# core.hooksPath replaces the hook Git LFS installs, so upload LFS objects here.
+if [ -n "$input" ] && command -v git-lfs >/dev/null 2>&1; then
+    printf '%s\n' "$input" | git lfs pre-push "$@" || exit 1
+fi
 exit 0

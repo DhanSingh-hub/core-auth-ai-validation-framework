@@ -1,23 +1,109 @@
 {
-  "appendix": "AD",
-  "title": "Real Time Account Updater",
-  "specification": "ATL105",
-  "specificationVersion": "2026-3",
-  "applicability": "Applies to card-not-present Segment 100 transactions from a participating acquirer/merchant that are Credential-on-File, Installment, or Recurring payments.",
-  "source": "docs/specs/extracted_text.txt Appendix AD-1",
-  "businessRequirements": [
-    {"id":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","title":"Real Time Account Updater applies only to card-not-present transactions from a participating, registered/certified acquirer/merchant that are Credential-on-File, Installment, or Recurring payments.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"111","element":"113","rule":"account-updater-participation-scope"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAD-TRIGGER-INDICATOR","title":"A participating merchant shall send the Account Updater Request Indicator (Segment 111, Table ID 060, Sub Table ID 01) as the trigger on Installment, Recurring, and Credential-on-File request messages.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"111","element":"113","rule":"account-updater-trigger-indicator"},"status":"REVIEW_REQUIRED"},
-    {"id":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","title":"Real Time Account Updater processing depends on Account Number (Element 2) and Card Discretionary Block Data (Element 12) content and shall be validated jointly with those fields.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD","segment":"100","element":"2,12","rule":"account-updater-account-dependency"},"status":"REVIEW_REQUIRED"}
+  "appendix":"AD",
+  "title":"Real Time Account Updater",
+  "specification":"ATL105",
+  "specificationVersion":"2026-3",
+  "source":"Appendix AD-1; Appendix I-65/I-66 Table 060; Section 12.39 Segment 155 (12-96 through 12-99); Elements 2 and 12 (13-25,13-31,13-32)",
+  "applicability":"Bounded parsed-field account-updater request/response and follow-on credential profile; not a First Data eligibility engine or full wire parser.",
+  "sourceNotes":[
+    "AD requires participating acquirer, CNP and COF/installment/recurring context. Merchant registers and certifies with First Data; secure account storage is part of the definition. Issuer/acquirer participation and actual qualification require external evidence.",
+    "Participating merchants should send Table 060 sub-table 01 on installment, recurring and COF requests. First Data determines qualification; updates are supplied only when available.",
+    "Table 060 allows up to 100 data bytes. Sub-table headers are two-digit ID and length, ranges 01-25, with 1-25 alphanumeric data bytes. Only 01 and 02 have specified semantics here.",
+    "01 has length 01, Y (all updates) or I (indicators only). 02 has length 01, O (do not perform optimization). 01/02 are mutually exclusive; Visa/MasterCard CNP Auth/Sale/Refund only.",
+    "If 01 is omitted, no update information is returned even if optimization occurs. O is an explicit opt-out; reconcile its use with AD all-request guidance instead of inventing a mandatory Y-only policy.",
+    "Segment 155 is sent only when the transaction qualifies for and uses First Data Auth Optimizer. Tables have three-digit ID/length and are not separated by field separators; unpopulated fields are omitted.",
+    "155 tables 001 updated PAN and 002 updated TransArmor token allow up to 19 alphanumeric bytes, only with Y and Visa/MasterCard; 001 is excluded for TransArmor and 002 excluded for PAN transactions.",
+    "155 table 003 expiry is four-byte YYMM with Y, Visa/MasterCard. Table 004 is A/E/Q/C/U with Y/I, Visa/MasterCard. Do not infer that status A makes every update field mandatory.",
+    "155 table 005 original association decline requires Y/I, Visa/MasterCard and network decline followed by optimizer-directed reattempt. Its length description 3 conflicts with data maximum 4; bounded data is checked, exact width reviewed.",
+    "155 table 006 has six-byte result code and Y/I, Visa-only. Fifteen listed values VAU001-VAU014 and VAU016 are recognized; VAU015 is not listed. Reasons do not independently certify network eligibility or transaction approval.",
+    "Elements 2/12 permit original or updated PAN/TransArmor token on follow-ons, with corresponding expiry. Updated response expiry uses YYMM; parsed manually entered Element 12 expiry uses MMYY.",
+    "Retry of a follow-on reversal, completion, cancellation, void of merchandise return or timeout reversal retains the credentials from its initial attempt. Logical token values are not complete TAP requests."
   ],
-  "testScenarios": [
-    {"id":"TS-SEG100-APPAD-SCOPE","covers":["BR-SEG100-APPAD-PARTICIPATION-SCOPE"],"status":"REVIEW_REQUIRED"},
-    {"id":"TS-SEG100-APPAD-TRIGGER","covers":["BR-SEG100-APPAD-TRIGGER-INDICATOR","BR-SEG100-APPAD-ACCOUNT-DEPENDENCY"],"status":"REVIEW_REQUIRED"}
+  "businessRequirements":[
+    {"id":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","title":"CNP, participating acquirer, registered/certified merchant, COF/installment/recurring and secure-storage evidence.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD-1","rule":"account-updater-participation-scope"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-TRIGGER-INDICATOR","title":"Participating original Auth/Sale/Refund COF/installment/recurring requests use Y/I trigger; explicit override is separately reviewed.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD-1,Appendix I-66","segment":"111","tableId":"060","subTableId":"01","rule":"account-updater-trigger-indicator"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-REQUEST-LAYOUT","title":"Known Table 060 indicators, two-digit sub-table header bounds, 100-byte table-data bound, mutual exclusion, brand/CNP/operation scope.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-65,I-66","segment":"111","tableId":"060","rule":"account-updater-request-layout"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-OVERRIDE","title":"Override O excludes updater opt-in and supplied optimization behavior.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix I-66","segment":"111","tableId":"060","subTableId":"02","rule":"account-updater-override"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-RESPONSE-LAYOUT","title":"All six Segment 155 logical table profiles; Table 005 width conflict and full wire framing remain reviewed.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39 (12-96 through 12-99)","segment":"155","rule":"account-updater-response-layout"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-RESPONSE-GATES","title":"Qualified/used service, Y versus I information gates, Visa/MasterCard scope, PAN/token exclusions and table 005 decline/reattempt evidence.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39 (12-96 through 12-99)","segment":"155","rule":"account-updater-response-gates"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-RESULT-CODE","title":"Recognize all 15 source-listed VAU result codes and meanings without inferring approval or reproducing eligibility.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"12.39 (12-99)","segment":"155","tableId":"006","rule":"account-updater-result-code"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","title":"Follow-on original/updated PAN or token is paired with corresponding expiration; logical YYMM-to-MMYY conversion.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13-25,13-31,13-32","segment":"100,155","element":"2,12","rule":"account-updater-account-dependency"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-RETRY-CREDENTIALS","title":"Follow-on retry preserves initial-attempt account/token and expiration.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"13-25,13-32","segment":"100","element":"2,12","rule":"account-updater-retry-credentials"},"status":"PARTIALLY_COVERED"},
+    {"id":"BR-SEG100-APPAD-EXTERNAL-EVIDENCE","title":"Actual service qualification, issuer updates, registration/certification, storage, production lifecycle and AI evidence remain external.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix AD-1,12.39","rule":"account-updater-external-evidence"},"status":"REVIEW_REQUIRED"}
   ],
-  "testCases": [
-    {"id":"TC-SEG100-APPAD-SCOPE","scenarioId":"TS-SEG100-APPAD-SCOPE","positive":"Non-participating merchant omits the indicator; card-present transactions are out of scope","negative":["Indicator sent on a card-present transaction","Indicator sent by a non-registered merchant"],"status":"REVIEW_REQUIRED"},
-    {"id":"TC-SEG100-APPAD-TRIGGER","scenarioId":"TS-SEG100-APPAD-TRIGGER","positive":"Table ID 060 Sub Table 01 present on Installment/Recurring/COF request with valid Account Number/Card Discretionary Data","negative":["Indicator missing on an eligible transaction","indicator present without Credential-on-File/Installment/Recurring context"],"status":"REVIEW_REQUIRED"}
+  "testScenarios":[
+    {"id":"TS-SEG100-APPAD-SCOPE","covers":["BR-SEG100-APPAD-PARTICIPATION-SCOPE","BR-SEG100-APPAD-EXTERNAL-EVIDENCE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAD-REQUEST","covers":["BR-SEG100-APPAD-TRIGGER-INDICATOR","BR-SEG100-APPAD-REQUEST-LAYOUT","BR-SEG100-APPAD-OVERRIDE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAD-RESPONSE","covers":["BR-SEG100-APPAD-RESPONSE-LAYOUT","BR-SEG100-APPAD-RESPONSE-GATES","BR-SEG100-APPAD-RESULT-CODE"],"status":"PARTIALLY_COVERED"},
+    {"id":"TS-SEG100-APPAD-FOLLOWON","covers":["BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","BR-SEG100-APPAD-RETRY-CREDENTIALS"],"status":"PARTIALLY_COVERED"}
   ],
-  "testDataStatus": "No dedicated Real Time Account Updater AI artifact or approved merchant-registration fixture is currently available.",
-  "remaining": ["Obtain merchant registration/certification configuration source for participation validation.","Validate AI-generated Credential-on-File/Installment/Recurring artifacts carrying Table ID 060 when available."]
+  "testCases":[
+    {"id":"TC-SEG100-APPAD-SCOPE","scenarioId":"TS-SEG100-APPAD-SCOPE","positive":"Participating CNP registered/certified merchant with qualifying context","negative":["card present","not participating","unregistered/uncertified","no qualifying context","insecure storage"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAD-REQUEST","scenarioId":"TS-SEG100-APPAD-REQUEST","positive":"Y/I across Visa/MasterCard Auth/Sale/Refund, or O without optimization","negative":["missing required trigger","invalid indicators","01+02","wrong network/operation","over 100 data bytes"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAD-RESPONSE","scenarioId":"TS-SEG100-APPAD-RESPONSE","positive":"All six table profiles, every status/result code and proper service/indicator gates","negative":["wrong width/date","I with actual credentials","PAN/token exclusion","wrong brand","missing opt-in","service not used","005 without decline/reattempt"],"status":"PARTIALLY_COVERED"},
+    {"id":"TC-SEG100-APPAD-FOLLOWON","scenarioId":"TS-SEG100-APPAD-FOLLOWON","positive":"Original or updated credential/expiry pair; retry unchanged","negative":["mixed account/expiry","unknown account","retry switched credentials"],"status":"PARTIALLY_COVERED"}
+  ],
+  "fixtureDefaults":{
+    "brand":"VISA","operation":"AUTH","updaterRequestOperation":"AUTH","phase":"ORIGINAL","transArmor":false,
+    "cardNotPresent":true,"credentialOnFile":true,"installment":false,"recurring":false,
+    "acquirerParticipating":true,"merchantRegistered":true,"merchantCertified":true,"securelyStored":true,
+    "requestData":{"01":"Y"},"responseData":{"001":"4111111111111111","003":"3012","004":"A"},
+    "optimizerQualified":true,"optimizerUsed":true,"networkDeclined":false,"networkReattempted":false,
+    "originalCredential":{"account":"4000000000000002","expirationMmyy":"1229"},
+    "sentCredential":null,"initialAttemptCredential":null
+  },
+  "testData":[
+    {"id":"TD-SEG100-APPAD-01","coversBr":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-02","coversBr":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","payload":{"cardNotPresent":false},"expected":{"businessRequirementId":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-03","coversBr":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","payload":{"merchantCertified":null},"expected":{"businessRequirementId":"BR-SEG100-APPAD-PARTICIPATION-SCOPE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-04","coversBr":"BR-SEG100-APPAD-TRIGGER-INDICATOR","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAD-TRIGGER-INDICATOR","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-05","coversBr":"BR-SEG100-APPAD-TRIGGER-INDICATOR","payload":{"requestData":{}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-TRIGGER-INDICATOR","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-06","coversBr":"BR-SEG100-APPAD-REQUEST-LAYOUT","payload":{"requestData":{"01":"I"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-REQUEST-LAYOUT","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-07","coversBr":"BR-SEG100-APPAD-REQUEST-LAYOUT","payload":{"requestData":{"01":"Y","02":"O"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-REQUEST-LAYOUT","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-08","coversBr":"BR-SEG100-APPAD-REQUEST-LAYOUT","payload":{"requestData":{"01":"N"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-REQUEST-LAYOUT","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-09","coversBr":"BR-SEG100-APPAD-OVERRIDE","payload":{"requestData":{"02":"O"},"responseData":{},"optimizerUsed":false},"expected":{"businessRequirementId":"BR-SEG100-APPAD-OVERRIDE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-10","coversBr":"BR-SEG100-APPAD-OVERRIDE","payload":{"requestData":{"02":"O"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-OVERRIDE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-11","coversBr":"BR-SEG100-APPAD-TRIGGER-INDICATOR","payload":{"requestData":{"02":"O"},"responseData":{},"optimizerUsed":false},"expected":{"businessRequirementId":"BR-SEG100-APPAD-TRIGGER-INDICATOR","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-12","coversBr":"BR-SEG100-APPAD-RESPONSE-LAYOUT","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-LAYOUT","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-13","coversBr":"BR-SEG100-APPAD-RESPONSE-LAYOUT","payload":{"responseData":{"003":"1230"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-LAYOUT","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-14","coversBr":"BR-SEG100-APPAD-RESPONSE-LAYOUT","payload":{"responseData":{"005":"05"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-LAYOUT","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-15","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"requestData":{"01":"I"},"responseData":{"004":"E"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-16","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"requestData":{"01":"I"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-17","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"requestData":{}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-18","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"optimizerUsed":false},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-19","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"transArmor":true,"responseData":{"002":"1234567890123456","003":"3012"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-20","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"transArmor":true},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-21","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"responseData":{"005":"05"},"networkDeclined":true,"networkReattempted":true},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-22","coversBr":"BR-SEG100-APPAD-RESPONSE-GATES","payload":{"responseData":{"005":"05"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESPONSE-GATES","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-23","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU015"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-24","coversBr":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","payload":{"phase":"FOLLOW_ON","operation":"COMPLETION","sentCredential":{"account":"4000000000000002","expirationMmyy":"1229"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-25","coversBr":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","payload":{"phase":"FOLLOW_ON","operation":"COMPLETION","sentCredential":{"account":"4111111111111111","expirationMmyy":"1230"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-26","coversBr":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","payload":{"phase":"FOLLOW_ON","operation":"COMPLETION","sentCredential":{"account":"4111111111111111","expirationMmyy":"1229"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-ACCOUNT-DEPENDENCY","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-27","coversBr":"BR-SEG100-APPAD-RETRY-CREDENTIALS","payload":{"phase":"RETRY","operation":"REVERSAL","sentCredential":{"account":"4000000000000002","expirationMmyy":"1229"},"initialAttemptCredential":{"account":"4000000000000002","expirationMmyy":"1229"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RETRY-CREDENTIALS","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-28","coversBr":"BR-SEG100-APPAD-RETRY-CREDENTIALS","payload":{"phase":"RETRY","operation":"REVERSAL","sentCredential":{"account":"4111111111111111","expirationMmyy":"1230"},"initialAttemptCredential":{"account":"4000000000000002","expirationMmyy":"1229"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RETRY-CREDENTIALS","status":"FAIL"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-29","coversBr":"BR-SEG100-APPAD-EXTERNAL-EVIDENCE","payload":{},"expected":{"businessRequirementId":"BR-SEG100-APPAD-EXTERNAL-EVIDENCE","status":"REVIEW_REQUIRED"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU001","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU001"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU002","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU002"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU003","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU003"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU004","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU004"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU005","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU005"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU006","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU006"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU007","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU007"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU008","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU008"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU009","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU009"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU010","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU010"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU011","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU011"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU012","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU012"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU013","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU013"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU014","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU014"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"},
+    {"id":"TD-SEG100-APPAD-VAU016","coversBr":"BR-SEG100-APPAD-RESULT-CODE","payload":{"responseData":{"006":"VAU016"}},"expected":{"businessRequirementId":"BR-SEG100-APPAD-RESULT-CODE","status":"PASS"},"status":"EXECUTABLE"}
+  ],
+  "testDataReadinessSummary":{"total":44,"executable":44,"externalFixtureRequired":0,"reviewRequired":0,"note":"Executable synthetic fields including review-gate expectations, not actual issuer updates."},
+  "remaining":[
+    "Independent acquirer/issuer participation, merchant First Data registration/certification and secure-storage evidence.",
+    "First Data qualification and optimizer-directed network reattempt evidence; trigger never guarantees service use or an available update.",
+    "Resolve Segment 155 Table 005 length 3 versus maximum 4 and explicit override versus all-participating-request guidance.",
+    "Full Table 060/Segment 155 wire framing, ordering/repeated tables, Segment Length counting, Element 12 application layouts, TAP token envelopes and end-to-end lifecycle.",
+    "AI-generated artifacts, genuine updated credential association and cryptographic token validity."
+  ]
 }

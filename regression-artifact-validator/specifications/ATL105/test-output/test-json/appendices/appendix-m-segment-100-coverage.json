@@ -6,23 +6,61 @@
   "applicability": "Applies to eBT/eWIC Segment 103 Element 164 EBT Program Data associated with Segment 100 transactions.",
   "source": "docs/specs/extracted_text.txt Appendix M-1 through M-4",
   "businessRequirements": [
-    {"id":"BR-SEG100-APPM-TOTAL-LENGTH","title":"EBT Program Data Element 164 shall begin with a three-digit zero-filled total length matching all following program-data characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-total-length"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPM-TAG-LENGTH","title":"Each EBT Program Data subelement shall contain a valid tag, length, and detail payload whose length matches the declared length.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-tag-length-detail"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPM-HIP-AMOUNT","title":"HIP purchase/return program data shall use the source-defined account type, amount type, currency, descriptor, and zero-filled amount detail.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"hip-purchase-return-amount"},"status":"PARTIALLY_COVERED"},
-    {"id":"BR-SEG100-APPM-MULTIPLE-SUBELEMENTS","title":"Element 164 shall support multiple valid program-data subelements with a total length covering all subelements.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"multiple-ebt-program-subelements"},"status":"PARTIALLY_COVERED"}
+    {"id":"BR-SEG100-APPM-TOTAL-LENGTH","title":"EBT Program Data Element 164 shall begin with a three-digit zero-filled total length matching all following program-data characters.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-total-length"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPM-TAG-LENGTH","title":"Each EBT Program Data subelement shall contain a valid tag, length, and detail payload whose length matches the declared length.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"ebt-program-tag-length-detail"},"status":"COVERED"},
+    {"id":"BR-SEG100-APPM-HIP-AMOUNT","title":"HIP purchase/return program data shall use the source-defined account type, amount type, currency, descriptor, and zero-filled amount detail.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"hip-purchase-return-amount"},"status":"REVIEW_REQUIRED"},
+    {"id":"BR-SEG100-APPM-MULTIPLE-SUBELEMENTS","title":"Element 164 shall support multiple valid program-data subelements with a total length covering all subelements.","sourceAnchor":{"specification":"ATL105","version":"2026-3","section":"Appendix M","segment":"103","element":"164","rule":"multiple-ebt-program-subelements"},"status":"COVERED"}
   ],
   "examples": [
-    {"name":"HIP purchase/return amount","tag":"50","accountType":"98","amountType":"40","currency":"840","descriptorValues":["0","C","D"]},
-    {"name":"HIP Internet shipping information","tag":"IT","detailLength":"37","composition":"28-character address plus 9-digit ZIP"}
+    {"name":"HIP purchase/return amount","tag":"50","accountType":"98","amountTypeCandidates":["40","50"],"currency":"840","descriptorValues":["0","C","D"],"reviewStatus":"REVIEW_REQUIRED","reviewItem":"SEG103-SME-009"},
+    {"name":"HIP Internet shipping information","tag":"IT","detailLength":"37","composition":"28-character address plus up to 9-digit ZIP"}
   ],
   "testScenarios": [
-    {"id":"TS-SEG100-APPM-SINGLE","covers":["BR-SEG100-APPM-TOTAL-LENGTH","BR-SEG100-APPM-TAG-LENGTH","BR-SEG100-APPM-HIP-AMOUNT"],"status":"PARTIALLY_COVERED"},
-    {"id":"TS-SEG100-APPM-MULTIPLE","covers":["BR-SEG100-APPM-MULTIPLE-SUBELEMENTS"],"status":"PARTIALLY_COVERED"}
+    {"id":"TS-SEG100-APPM-SINGLE","covers":["BR-SEG100-APPM-TOTAL-LENGTH","BR-SEG100-APPM-TAG-LENGTH","BR-SEG100-APPM-HIP-AMOUNT"],"status":"REVIEW_REQUIRED"},
+    {"id":"TS-SEG100-APPM-MULTIPLE","covers":["BR-SEG100-APPM-MULTIPLE-SUBELEMENTS"],"status":"REVIEW_REQUIRED"}
   ],
   "testCases": [
-    {"id":"TC-SEG100-APPM-SINGLE","scenarioId":"TS-SEG100-APPM-SINGLE","positive":"Valid HIP program data with matching total length","negative":["Wrong total length","invalid tag length","invalid account/amount type","invalid descriptor"],"status":"PARTIALLY_COVERED"},
-    {"id":"TC-SEG100-APPM-MULTIPLE","scenarioId":"TS-SEG100-APPM-MULTIPLE","positive":"HIP amount and IT shipping subelements have matching combined length","negative":["Second subelement omitted from total length","detail length mismatch","malformed ZIP detail"],"status":"PARTIALLY_COVERED"}
+    {"id":"TC-SEG100-APPM-SINGLE","scenarioId":"TS-SEG100-APPM-SINGLE","positive":"Valid HIP program data with matching total length","negative":["Wrong total length","invalid tag length","invalid account/amount type","invalid descriptor"],"status":"REVIEW_REQUIRED"},
+    {"id":"TC-SEG100-APPM-MULTIPLE","scenarioId":"TS-SEG100-APPM-MULTIPLE","positive":"HIP amount and IT shipping subelements have matching combined length","negative":["Second subelement omitted from total length","detail length mismatch","malformed ZIP detail"],"status":"REVIEW_REQUIRED"}
   ],
-  "testDataStatus": "eWIC/EBT Segment 103 validation exists at high level; Appendix M tagged Element 164 parsing is not yet implemented.",
-  "remaining": ["Implement a bounded Element 164 parser and validator.","Validate AI-generated EBT/eWIC Segment 103 data when available."]
+  "testData": [
+    {
+      "id":"TD-SEG100-APPM-HIP-M1",
+      "testCaseIds":["TC-SEG100-APPM-SINGLE"],
+      "expectedValidation":"PASS_WITH_REVIEW",
+      "readiness":"REVIEW_REQUIRED",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix M-1,M-2","segment":"103","element":"164","rule":"hip-purchase-return-amount"}],
+      "payload":{"Financial Request":{"Standard Segment":{"SegmentType":"100"},"EBT Data Segment":{"SegmentType":"103","SegmentLength":"0180","EbtProgramData":{"totalLength":"024","subelements":[{"tag":"50","len":"20","accountType":"98","amountType":"50","currencyCode":"840","amountDescriptor":"C","detail":"000000001234"}]}}}}
+    },
+    {
+      "id":"TD-SEG100-APPM-HIP-IT-M3",
+      "testCaseIds":["TC-SEG100-APPM-MULTIPLE"],
+      "expectedValidation":"PASS_WITH_REVIEW",
+      "readiness":"REVIEW_REQUIRED",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix M-3,M-4","segment":"103","element":"164","rule":"multiple-ebt-program-subelements"}],
+      "reviewNote":"Appendix M uses Z characters as a ZIP placeholder; the validator fixture uses synthetic numeric ZIP 123456789 per Section 13.2.",
+      "payload":{"Financial Request":{"Standard Segment":{"SegmentType":"100"},"EBT Data Segment":{"SegmentType":"103","SegmentLength":"0180","EbtProgramData":{"totalLength":"065","subelements":[{"tag":"50","len":"20","accountType":"98","amountType":"50","currencyCode":"840","amountDescriptor":"C","detail":"000000001234"},{"tag":"IT","len":"37","address":"AAAAAAAAAAAAAAAAAAAAAAAAAAAA","zip":"123456789"}]}}}}
+    },
+    {
+      "id":"TD-SEG100-APPM-BAD-TOTAL-LENGTH",
+      "testCaseIds":["TC-SEG100-APPM-SINGLE"],
+      "expectedValidation":"FAIL",
+      "readiness":"REVIEW_REQUIRED",
+      "expectedRule":"SEG103-R-014",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix M-1","segment":"103","element":"164","rule":"ebt-program-total-length"}],
+      "payload":{"Financial Request":{"Standard Segment":{"SegmentType":"100"},"EBT Data Segment":{"SegmentType":"103","SegmentLength":"0180","EbtProgramData":{"totalLength":"023","subelements":[{"tag":"50","len":"20","accountType":"98","amountType":"50","currencyCode":"840","amountDescriptor":"C","detail":"000000001234"}]}}}}
+    },
+    {
+      "id":"TD-SEG100-APPM-BAD-DETAIL-LENGTH",
+      "testCaseIds":["TC-SEG100-APPM-SINGLE"],
+      "expectedValidation":"FAIL",
+      "readiness":"REVIEW_REQUIRED",
+      "expectedRule":"SEG103-R-022",
+      "sourceAnchors":[{"specification":"ATL105","version":"2026-3","section":"Appendix M-1","segment":"103","element":"164","rule":"ebt-program-tag-length-detail"}],
+      "payload":{"Financial Request":{"Standard Segment":{"SegmentType":"100"},"EBT Data Segment":{"SegmentType":"103","SegmentLength":"0180","EbtProgramData":{"totalLength":"023","subelements":[{"tag":"50","len":"19","accountType":"98","amountType":"50","currencyCode":"840","amountDescriptor":"C","detail":"000000001234"}]}}}}
+    }
+  ],
+  "testDataStatus": "Appendix M-1 and M-3 examples now run through Segment103PayloadValidator, including total-length and detail-length negatives. TAG 50 positives remain REVIEW_REQUIRED under SEG103-SME-009; external AI artifact intake remains open.",
+  "openQuestions": ["SEG103-SME-009: Appendix M prose says TAG 50 AMOUNT TYPE 40, while Section 13.2 and worked-example strings use 50. OPEN."],
+  "remaining": ["Resolve SEG103-SME-009 before certifying TAG 50 amount-type semantics.","Validate AI-generated EBT/eWIC Segment 103 data when available."]
 }

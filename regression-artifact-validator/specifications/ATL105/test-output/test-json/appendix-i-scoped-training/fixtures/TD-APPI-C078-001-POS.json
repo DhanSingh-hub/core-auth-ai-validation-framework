@@ -1,0 +1,94 @@
+{
+  "id" : "TD-APPI-C078-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C078-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-83",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r004-APPI-C078-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-001",
+        "tableId" : "078",
+        "ruleIds" : [ "APPI-T078-R001", "APPI-T078-R002", "APPI-T078-R003", "APPI-T078-R004" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-82",
+          "startLine" : 32029,
+          "endLine" : 32049
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "078",
+            "logicalContext" : {
+              "network" : "Visa",
+              "card" : "fleet",
+              "product" : "EV",
+              "previouslyProcessed" : false
+            },
+            "lineItemProductCodes" : [ "001", "019" ],
+            "segment102ProductCodes" : [ "001", "019" ],
+            "amountModel" : {
+              "pretax" : "100.00",
+              "applicableTax" : "5.00",
+              "taxInclusiveTransactionTotal" : "105.00"
+            }
+          },
+          "negative" : {
+            "tableId" : "078",
+            "logicalContext" : {
+              "network" : "Visa",
+              "card" : "fleet",
+              "product" : "EV",
+              "previouslyProcessed" : false
+            },
+            "lineItemProductCodes" : [ "001", "019" ],
+            "segment102ProductCodes" : [ "001" ],
+            "amountModel" : {
+              "pretax" : "100.00",
+              "applicableTax" : "5.00",
+              "taxInclusiveTransactionTotal" : "105.00"
+            }
+          }
+        },
+        "clearScope" : "Outer selector, future Visa fleet scope, logical tax-inclusive total and one-way requirement that all 078 product codes also appear in 102. Codes are opaque synthetic identifiers, not an EV product-code assignment.",
+        "excludedClaims" : [ "Full 078 data blob or length field", "Example code meanings/actual EV code", "Standard field literally named Transaction Amount", "Production activation", "Previously-processed exception resolution", "Full request" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "every line-item product code occurs in segment102ProductCodes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "logical transaction total includes applicable tax exactly once",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "every line-item product code occurs in segment102ProductCodes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "logical tax-inclusive total remains 105.00",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "segment102ProductCodes",
+          "from" : [ "001", "019" ],
+          "to" : [ "001" ],
+          "unchanged" : "078 codes, context and amounts",
+          "targetedFailure" : "019 has no companion 102 code"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

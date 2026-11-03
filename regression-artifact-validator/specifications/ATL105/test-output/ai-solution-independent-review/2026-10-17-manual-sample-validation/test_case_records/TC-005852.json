@@ -1,0 +1,130 @@
+{
+  "id": "TC-005852",
+  "scenario_id": "SC-6022",
+  "scenario_type": "business_rule",
+  "transaction_type": "TransArmor Key and Key ID Load",
+  "priority": "P3",
+  "priority_score": 0.23,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:648",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:648"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "ff6f26fee51b9d9865c5c0c3ef04584981ea2c01208cb88f612796de8628287e",
+  "request": {
+    "TransArmor Load Data Segment": {}
+  },
+  "segment_presence": {
+    "116": "R"
+  },
+  "forced_segments": [],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            209
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        }
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        }
+      }
+    },
+    "source": "universal_request_envelope"
+  },
+  "flags": [],
+  "completeness_status": "COMPLETE",
+  "completeness_findings": [],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)"
+  },
+  "source_rule_id": "BR-103-8",
+  "source_page": 103,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "FLAG",
+      "field": "ResponseCode",
+      "value": null,
+      "flags": [
+        "NEEDS_AUTHORIZER_DOC",
+        "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type None has no Appendix G meaning"
+      ]
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "business_rule": {
+      "tier": "ASSERT",
+      "assertion": "Rule exception applies",
+      "source_page": 103,
+      "confidence_score": 0.67,
+      "grounding": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'TransArmor Key and Key ID Load' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "business_rule_assertion": "Rule exception applies",
+  "related_entity_ids": [
+    "ENT-SEG-116"
+  ],
+  "confidence_score": 0.67,
+  "confidence_pct": 67,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "prior_confidence_score=0.67"
+  ],
+  "test_data_file": "qe_shaped_test_data/TC-005852.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": [],
+    "attempts": 1
+  }
+}

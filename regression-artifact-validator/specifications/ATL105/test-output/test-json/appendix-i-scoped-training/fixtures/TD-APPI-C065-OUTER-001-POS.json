@@ -1,0 +1,172 @@
+{
+  "id" : "TD-APPI-C065-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C065-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C065-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-74",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t065-r001-APPI-C065-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C065-OUTER-001",
+        "tableId" : "065",
+        "ruleIds" : [ "APPI-T065-R001", "APPI-T065-R002", "APPI-T065-R003" ],
+        "syntheticData" : {
+          "tableSelector" : "065",
+          "logicalPayloadLength" : 11,
+          "gatewayId" : "12345678901",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "gatewayInvolved" : true,
+            "externalGateway" : true,
+            "assignedGatewayIdSyntheticPrecondition" : "12345678901"
+          },
+          "missingRequestVariant" : {
+            "gatewayIdAbsent" : true,
+            "hostForwardingObservation" : "00000999997"
+          },
+          "evvLogicalVariant" : {
+            "evvValue" : "ABCDE",
+            "destinationTable" : "071",
+            "notIn065" : true
+          }
+        },
+        "clearScope" : "MC/Maestro11numericassignedIDwheninvolved;explicitmissing-requesthostdefault;EVVnot065andactualnamed071.",
+        "excludedClaims" : [ "Realnetworkregistration", "Merchantsideautomaticdefault", "VisaMPGrules", "ResolvingmigrationSubTable64versus071" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Eleven-digitmatchinggatewayID",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Explicitmissing-requesthostfallback",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "EVVnotin065",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "MigrationreferenceandVisaapplicability",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "gatewayId",
+            "replacement" : "12345678902",
+            "expected" : "FAIL syntheticassignedIDmatch"
+          }, {
+            "path" : "gatewayId",
+            "operation" : "remove",
+            "expected" : "FAIL merchantmust-sendwheninvolved;hostfallbackisseparateeffect"
+          }, {
+            "path" : "missingRequestVariant.hostForwardingObservation",
+            "replacement" : "00000999996",
+            "expected" : "FAIL documentedhostfallback"
+          }, {
+            "path" : "evvLogicalVariant.notIn065",
+            "replacement" : false,
+            "expected" : "FAIL explicitEVVlegacyplacementprohibition"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 10,
+            "expected" : "FAIL fixed11count"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "tenDigits" : "1234567890",
+          "twelveDigits" : "123456789012",
+          "nonNumericEleven" : "1234567890X"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31511,
+          "section" : "Appendix I-74",
+          "endLine" : 31548
+        }, {
+          "startLine" : 31549,
+          "section" : "Appendix I-75",
+          "endLine" : 31553
+        }, {
+          "startLine" : 31511,
+          "section" : "Appendix I-74",
+          "endLine" : 31539
+        }, {
+          "startLine" : 31531,
+          "section" : "Appendix I-74",
+          "endLine" : 31539
+        }, {
+          "startLine" : 31550,
+          "section" : "Appendix I-75",
+          "endLine" : 31553
+        }, {
+          "section" : "Appendix I-78",
+          "startLine" : 31806,
+          "endLine" : 31817
+        }, {
+          "section" : "Appendix I-79",
+          "startLine" : 31828,
+          "endLine" : 31836
+        }, {
+          "startLine" : 31806,
+          "section" : "Appendix I-78",
+          "endLine" : 31826
+        }, {
+          "startLine" : 31827,
+          "section" : "Appendix I-79",
+          "endLine" : 31841
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 065",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31520,
+            "section" : "Appendix I-74",
+            "endLine" : 31522
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; fixed payload 11 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31523,
+            "section" : "Appendix I-74",
+            "endLine" : 31528
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "n11",
+          "sourceLength" : "11 digits",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31529,
+            "section" : "Appendix I-74",
+            "endLine" : 31539
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

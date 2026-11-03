@@ -26,7 +26,7 @@ public final class Atl105ElementInventory {
     private static final Set<String> SUPPORTED_TYPES = Set.of("A", "N", "AN", "ANS", "ANSB");
 
     public static void main(String[] args) throws Exception {
-        Path pack = args.length == 0 ? Atl105Paths.root() : Path.of(args[0]);
+        Path pack = (args.length == 0 ? Atl105Paths.root() : Path.of(args[0])).toAbsolutePath().normalize();
         Path output = args.length < 2 ? pack.resolve("test-output/test-solution-independent-review/all-element-inventory.json") : Path.of(args[1]);
         ObjectMapper mapper = new ObjectMapper();
         Path sourceFile = pack.resolve("docs/specs/extracted_text.txt");

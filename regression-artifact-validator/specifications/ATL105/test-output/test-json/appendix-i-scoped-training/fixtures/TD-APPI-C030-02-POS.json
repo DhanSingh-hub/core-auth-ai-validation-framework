@@ -1,0 +1,55 @@
+{
+  "id" : "TD-APPI-C030-02-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C030-02-POS.json",
+  "testCaseIds" : [ "TC-APPI-C030-02-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix Q-3",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t030-r004-APPI-C030-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C030-02",
+        "tableId" : "030",
+        "ruleIds" : [ "APPI-T030-R004" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix Q-3",
+          "startLine" : 35243,
+          "endLine" : 35249
+        } ],
+        "logicalFields" : {
+          "terminalType" : "29",
+          "context" : {
+            "brand" : "MasterCard",
+            "recurringInternet" : true,
+            "initialMobileIssuedPaymentToken" : true
+          }
+        },
+        "clearScope" : [ "Specific Q terminal-type29 network/sequence mapping" ],
+        "excludedClaims" : [ "Ten-character aggregate encoding", "Network token validation" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "29 used only in stated MasterCard context",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "context.brand",
+          "value" : "Visa",
+          "targetedNegative" : "MasterCard-only terminal type used for Visa"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

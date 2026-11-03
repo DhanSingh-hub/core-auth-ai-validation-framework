@@ -1,0 +1,90 @@
+{
+  "id" : "TD-APPI-C078-011-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-011-POS.json",
+  "testCaseIds" : [ "TC-APPI-C078-011-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-85",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r014-APPI-C078-011"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-011",
+        "tableId" : "078",
+        "nestedSelector" : "11",
+        "ruleIds" : [ "APPI-T078-R014" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-85",
+          "startLine" : 32247,
+          "endLine" : 32263
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "11",
+            "declaredValueLength" : "12",
+            "data" : "000000000275",
+            "logicalAmount" : "2.75",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag10" : "1"
+            }
+          },
+          "negative" : {
+            "id" : "11",
+            "declaredValueLength" : "12",
+            "data" : "00000000027X",
+            "logicalAmount" : "2.75",
+            "impliedDecimalPlaces" : 2,
+            "logicalPremise" : {
+              "tag10" : "1"
+            }
+          },
+          "positiveVariants" : [ {
+            "data" : "000000000001",
+            "logicalAmount" : "0.01",
+            "logicalPremise" : {
+              "tag10" : "1"
+            }
+          } ]
+        },
+        "clearScope" : "Defined 11 other-tax amount, n12 and two decimals under 10=1 premise.",
+        "excludedClaims" : [ "Sample 08 selector", "Mandatory amount presence", "Tax terminology resolution", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data has exactly twelve numeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "numeric amount interpreted at two decimals is 2.75",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data has exactly twelve numeric bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "numeric decimal conversion of invalid data",
+            "outcome" : "NOT_EVALUATED_TYPE_FAILURE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[11]",
+          "from" : "5",
+          "to" : "X",
+          "unchanged" : "width, header and 10=1 premise",
+          "targetedFailure" : "nonnumeric other-tax amount"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

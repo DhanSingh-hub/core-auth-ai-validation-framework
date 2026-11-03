@@ -1,0 +1,75 @@
+{
+  "id" : "TD-APPI-C077-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C077-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C077-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-82",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t077-r001-APPI-C077-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C077-001",
+        "tableId" : "077",
+        "ruleIds" : [ "APPI-T077-R001", "APPI-T077-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-81",
+          "startLine" : 32006,
+          "endLine" : 32008
+        }, {
+          "section" : "Appendix I-82",
+          "startLine" : 32018,
+          "endLine" : 32021
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "077",
+            "declaredDataLength" : "012",
+            "data" : "000000000250",
+            "logicalRole" : "applied total discount for synthetic fuel product"
+          },
+          "negative" : {
+            "tableId" : "077",
+            "declaredDataLength" : "012",
+            "data" : "00000000025A",
+            "logicalRole" : "applied total discount for synthetic fuel product"
+          }
+        },
+        "clearScope" : "Twelve numeric data bytes and 012 length value for applied fuel discount.",
+        "excludedClaims" : [ "Amount currency scale", "Multiproduct association", "Equality with 076 totals", "Universal presence", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "exactly twelve numeric data bytes",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "exactly twelve numeric data bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "declared count equals twelve actual bytes",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[11]",
+          "from" : "0",
+          "to" : "A",
+          "unchanged" : "width, headers and logical role",
+          "targetedFailure" : "nonnumeric discount digit"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

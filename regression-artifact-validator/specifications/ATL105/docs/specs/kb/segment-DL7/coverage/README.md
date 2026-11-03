@@ -26,7 +26,7 @@ Authoritative rule catalog (6 rules)
 ## Approval Gate
 
 1. The 6-rule catalog represents the intended DL7 scope.
-2. Every DL7 rule is `REVIEW_REQUIRED` until `SEGDL7-SME-001`, `-003`, `-004`, `-005` are answered.
+2. Appendix W scope (`SEGDL7-SME-001`) is resolved for this training pass. Full DL7 certification still requires the open source-width, message-placement, and segment-length decisions (`SEGDL7-SME-003`, `-004`, `-005`).
 3. Test data is synthetic until `SEGDL7-SME-002` approves synthesized fixtures.
 
 ## Current Candidate Metrics

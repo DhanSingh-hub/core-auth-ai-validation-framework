@@ -1,0 +1,87 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG100-FUEL-PURCHASE-AMOUNT-RANGE-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Keep Element 41 range and card-brand width boundaries separate from fuel-sale applicability, net fuel amount calculations, and Segment 157 reconciliation.",
+      "dataPolicy": "Synthetic field-level designs only; complete Segment 100 transaction and card-brand context require review.",
+      "baselinePolicy": "References existing Segment 100 fuel amount semantics without changing the official Test baseline.",
+      "promotionGate": "Authorized Test review must confirm card-brand selection, fuel-sale applicability, assumed decimal serialization, and expected outcomes before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {"id": "BR-RULE-SEG100-E41-RANGE-DRAFT", "title": "Fuel Purchase Amount (Segment 100 Element 41) has valid values 1-99999999; representation is limited to eight digits for American Express and seven digits for other card types.", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "Chapter 13-Element 41", "segment": "100", "element": "41", "rule": "fuel-amount-range-and-card-width"}},
+    {"id": "BR-RULE-SEG100-R-045", "title": "Fuel Purchase Amount follows the net fuel amount rule", "status": "DRAFT_REVIEW_REQUIRED", "relationship": "SEPARATE_FUEL_AMOUNT_SEMANTICS_RULE_NOT_TESTED_BY_RANGE_VECTORS"}
+  ],
+  "sourceEvidence": [
+    {"id": "ATL105-2026-3-E41-NUMERIC-MAX", "sourcePage": 378, "startLine": 20376, "quote": "Number: 41 Name: Fuel Purchase Amount Character Type: N Maximum Length: 8 bytes", "interpretation": "Element 41 is numeric with an eight-byte maximum."},
+    {"id": "ATL105-2026-3-E41-DECIMALS", "sourcePage": 378, "startLine": 20379, "quote": "Representation: Variable length of up to eight digits with two assumed decimal places", "interpretation": "The field is variable-length with two assumed decimal places."},
+    {"id": "ATL105-2026-3-E41-CARD-WIDTHS", "sourcePage": 378, "startLine": 20381, "quote": "A maximum length of 8 bytes is allowed for American Express cards only. A maximum length of 7 bytes is allowed for all other card types.", "interpretation": "Eight digits apply only to Amex; all other card types are limited to seven."},
+    {"id": "ATL105-2026-3-E41-PURPOSE", "sourcePage": 378, "startLine": 20384, "quote": "Purpose: Identifies the total dollar amount of all fuel sold for this transaction.", "interpretation": "Element 41 is transaction fuel-sales amount."},
+    {"id": "ATL105-2026-3-E41-FUEL-CONTEXT", "sourcePage": 378, "startLine": 20385, "quote": "Processing Rules: Included on any transactions with fuel sales.", "interpretation": "The element applies to transactions with fuel sales."},
+    {"id": "ATL105-2026-3-E41-VALID-RANGE", "sourcePage": 378, "startLine": 20393, "quote": "Valid Codes/Values: 1–99999999", "interpretation": "The general valid-value range is 1 through 99999999, subject to the card-specific representation limits."}
+  ],
+  "aiReviewReferences": {
+    "obligationGroups": ["OBL-46FAF0354443", "OBL-5DA8189FB5C6"],
+    "aiBrs": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1769", "claim": "Fuel Purchase Amount max length is 8 bytes for American Express cards only; 7 bytes for all other card types."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1773", "claim": "Valid values for Fuel Purchase Amount are 1-99999999."}
+    ],
+    "linkedCases": [
+      {"caseId": "TC-008694", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "2da417fe2deaf5a4116b48ced8f8eb961ffa04307cb031419a025c25506f9421"},
+      {"caseId": "TC-008695", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "f19a7b3a9153a09eee867f3d6cc47b5c16d975ad95c8cae3d3c8f86482bae7c2"},
+      {"caseId": "TC-008696", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "dfddc1e2bdd928a5044fa1d907c96366b9ec6077f8d7d418f9d73d0248149651"},
+      {"caseId": "TC-008697", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "6d7e85949732628b8b275374fdd62a69170e3f6787954109f7b814cf78954dda"},
+      {"caseId": "TC-008698", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1769"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "1637b110302661b57e67d2ed891a3a4cdc721b6925c83ded247a698d06059ac9"},
+      {"caseId": "TC-008717", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "983ff9dcc82b8c97b957d47112bc1167c38c0e3a44afae14f12518833fe22677"},
+      {"caseId": "TC-008718", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "ab23545a304ebe965468491c07e6cdb5b5873347f2c4794ce4a9deb82cb0ad5f"},
+      {"caseId": "TC-008719", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "e75505fcd41a2ca6a37b74e9bf4033207c2ab587541fab8fe3f6e97ea9b3813f"},
+      {"caseId": "TC-008720", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "3399a8f51ab21bd50ea07a89a3b4816c378c70ec3361389c097be61d745c9720"},
+      {"caseId": "TC-008721", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "425bd27db9f98694f78c5d79e67a665f8387f2e113ab220682c37dbf11172c9f"},
+      {"caseId": "TC-008722", "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1773"], "element41": "DECLARED_OMISSION_NO_EXACT_FIELD", "payloadSha256": "29dbf2a17ab2e4a207eeb6b7ee39feb025e107a0165871329341aa6d0e9187d6"}
+    ],
+    "assessment": "Both AI claims match ATL105: range 1-99999999 and Amex-only eight-digit width versus seven digits for others. The claims omit two assumed decimal places and fuel-sale applicability. All 11 hash-verified cases declare Element 41 omitted, so none demonstrates range, width, or fuel amount semantics.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG100-E41-AMEX", "requirementIds": ["BR-RULE-SEG100-E41-RANGE-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-E41-NUMERIC-MAX", "ATL105-2026-3-E41-DECIMALS", "ATL105-2026-3-E41-CARD-WIDTHS", "ATL105-2026-3-E41-VALID-RANGE"], "intent": "For an authorized fuel-sale Segment 100 Amex context, exercise the valid eight-digit upper bound and the first value above the documented valid range.", "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG100-E41-NONAMEX", "requirementIds": ["BR-RULE-SEG100-E41-RANGE-DRAFT"], "sourceEvidenceIds": ["ATL105-2026-3-E41-NUMERIC-MAX", "ATL105-2026-3-E41-DECIMALS", "ATL105-2026-3-E41-CARD-WIDTHS", "ATL105-2026-3-E41-VALID-RANGE"], "intent": "For an authorized fuel-sale Segment 100 non-Amex context, exercise the valid seven-digit upper bound and the first value above the card-specific width.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG100-E41-AMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E41-AMEX"], "testDataIds": ["TD-DRAFT-SEG100-E41-AMEX-MAX"], "assertion": "Amex Element 41 value 99999999 is within the documented valid range and eight-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E41-AMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E41-AMEX"], "testDataIds": ["TD-DRAFT-SEG100-E41-AMEX-ABOVE"], "assertion": "Amex Element 41 value 100000000 exceeds both the valid-value ceiling and maximum length.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E41-NONAMEX-MAX", "scenarioIds": ["TS-DRAFT-SEG100-E41-NONAMEX"], "testDataIds": ["TD-DRAFT-SEG100-E41-NONAMEX-MAX"], "assertion": "Non-Amex Element 41 value 9999999 is within the documented seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG100-E41-NONAMEX-ABOVE", "scenarioIds": ["TS-DRAFT-SEG100-E41-NONAMEX"], "testDataIds": ["TD-DRAFT-SEG100-E41-NONAMEX-ABOVE"], "assertion": "Non-Amex Element 41 value 10000000 exceeds the documented seven-digit width.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG100-E41-AMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E41-AMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "41", "value": "99999999", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E41-AMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E41-AMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "41", "value": "100000000", "cardBrand": "AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E41-NONAMEX-MAX", "testCaseIds": ["TC-DRAFT-SEG100-E41-NONAMEX-MAX"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "41", "value": "9999999", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG100-E41-NONAMEX-ABOVE", "testCaseIds": ["TC-DRAFT-SEG100-E41-NONAMEX-ABOVE"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "100", "element": "41", "value": "10000000", "cardBrand": "NON_AMERICAN_EXPRESS", "assumedDecimalPlaces": 2}}
+  ],
+  "openQuestions": [
+    "Confirm card-brand/type encoding and how the Amex width exception is selected in complete Segment 100 fixtures.",
+    "Confirm fuel-sale applicability and two-decimal serialization; the draft does not calculate net fuel amounts or discount allocation.",
+    "Review full requests and expected outcomes with the authorized Test owner before promotion or execution."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

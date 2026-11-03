@@ -1,0 +1,101 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-003-SEG103-CLERK-ID",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "obligationGroupId": "OBL-ECF8F149F01D",
+    "aiBrCount": 2,
+    "distinctClaimCount": 2,
+    "elementScope": "Segment 103 / Element 18",
+    "caseCount": 15
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:021",
+      "claim": "Clerk ID must be numeric and must not exceed 10 bytes.",
+      "sourceRuleId": "ENT-ELEM-18",
+      "sourcePage": 368,
+      "linkedCaseIds": ["TC-002451", "TC-002558", "TC-002559", "TC-003049", "TC-003073", "TC-003074", "TC-003129", "TC-003268", "TC-003269", "TC-004787", "TC-004909", "TC-004928"],
+      "linkedCaseCount": 12
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:6034",
+      "claim": "Clerk ID: Variable up to 10 digits identifying clerk's identification number.",
+      "sourceRuleId": "ENT-ELEM-18",
+      "sourcePage": 368,
+      "linkedCaseIds": ["TC-019700", "TC-019701", "TC-019702"],
+      "linkedCaseCount": 3
+    }
+  ],
+  "sourceAssessment": {
+    "disposition": "ALIGNED_WHEN_POPULATED_BUT_APPLICABILITY_REQUIRES_CONTEXT",
+    "sourceEvidence": [
+      {"sourceSection": "11.3", "startLine": 11776, "quote": "3 18 Clerk ID 10 C Identifies the clerk’s Identification Number.", "interpretation": "Segment 103 field 3 / Element 18 is conditional (C); this format claim does not itself establish the trigger for presence."},
+      {"sourcePage": 368, "startLine": 19955, "quote": "Number: 18 Name: Clerk ID Character Type: N Maximum Length: 10 bytes", "interpretation": "Element 18 is numeric with a maximum length of ten bytes."},
+      {"sourcePage": 368, "startLine": 19958, "quote": "Representation: Variable amount of up to 10 digits", "interpretation": "The representation is variable-length, up to ten digits."},
+      {"sourcePage": 368, "startLine": 19962, "quote": "Valid Codes/Values: 1–9999999999", "interpretation": "The valid-value range begins at one; a ten-digit zero string is not a valid boundary value."},
+      {"sourceSection": "10.5.4.2", "startLine": 5208, "quote": "Note: The Clerk ID is an optional receipt requirement.", "interpretation": "Receipt optionality does not decide whether Segment 103 Element 18 is present in a transaction request."},
+      {"sourcePage": 368, "startLine": 19960, "quote": "When identifying a Clerk ID for ECA/ TeleCheck® processing, please refer to Data Element No. 131, ECA/ TeleCheck® Clerk ID.", "interpretation": "ECA/TeleCheck Element 131 is distinct from Segment 103 Element 18; values are not interchangeable. The AI cases that contain both are assessed as separate fields."}
+    ],
+    "assessment": "Both AI statements align with Element 18's numeric/ten-digit format when populated. They omit the fixed-vs-variable detail and conditional Segment 103 applicability; the format claim alone is not a presence rule."
+  },
+  "testModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "exactSegment103Element18Records": [
+      {"testBrId": "BR-RULE-SEG103-R-009", "title": "Clerk ID, when populated, is numeric with maximum length 10", "status": "DRAFT_REVIEW_REQUIRED", "chain": {"scenarioCount": 1, "caseCount": 1, "dataCount": 1, "scenarioStatus": "REVIEW_REQUIRED", "caseStatus": "REVIEW_REQUIRED", "dataReadiness": "REVIEW_REQUIRED"}},
+      {"testBrId": "BR-SEG103-FIELD-009", "title": "Clerk ID is numeric max 10 when populated", "status": "NOT_SET", "chain": {"scenarioCount": 1, "caseCount": 1, "dataCount": 1, "caseExpectedOutcome": "FAIL", "dataReadiness": "REVIEW_REQUIRED", "fixtureStatus": "SME_FIXTURE_REQUIRED"}}
+    ],
+    "counterpartDisposition": "SOURCE_ALIGNED_RULES_EXIST_BUT_EXECUTABLE_EXPECTED_ORACLES_AND_DATA_ARE_NOT_ESTABLISHED"
+  },
+  "caseReview": {
+    "screenFile": "2026-10-19-all-ai-br-chain-test-br-review-v3/automated-chain-screen-v1/case-field-observations.jsonl.gz",
+    "all15CasesHashBoundToScreen": true,
+    "caseIdsByIntent": {
+      "lengthExceeded": ["TC-002451", "TC-003049", "TC-003129"],
+      "invalidCharacterSet": ["TC-002558", "TC-003073", "TC-003268"],
+      "emptyString": ["TC-002559", "TC-003074", "TC-003269"],
+      "boundaryAtLimit": ["TC-004787", "TC-004909", "TC-004928"],
+      "supplementalEntityWithDeclaredOmission": ["TC-019700", "TC-019701", "TC-019702"]
+    },
+    "observedElement103Values": {
+      "00000000000": {"caseCount": 3, "intent": "Eleven zero digits; exceeds ten-digit length and is also outside the source positive valid-value range."},
+      "000000000#": {"caseCount": 3, "intent": "Eleven characters including a nonnumeric character; both charset and length constraints are violated."},
+      "": {"caseCount": 3, "intent": "Empty string is observed, not proof of an omitted field or a conditional-presence defect."},
+      "0000000000": {"caseCount": 3, "intent": "Ten zero digits fit the width but are below the source valid-value minimum of one; not a valid lower/upper boundary."},
+      "DECLARED_OMISSION_NO_EXACT_FIELD": {"caseCount": 3, "intent": "Supplemental cases declare Element 18 omitted; their EBT applicability and expected behavior are unresolved."}
+    },
+    "declaredOutcomes": {"responseCode1": 9, "responseCode0": 4, "noResponseCode": 2, "assertTier": 13, "flagTier": 2, "authority": "Producer-declared response metadata, not an independently validated oracle."},
+    "separateEcaElement131Observed": {"caseIds": ["TC-003129", "TC-003268", "TC-003269", "TC-004928", "TC-019702"], "value": "1", "interpretation": "ECA/TeleCheck Element 131; not Segment 103 Element 18."},
+    "missingFrozenPaths": {"count": 3, "caseIds": ["TC-019700", "TC-019701", "TC-019702"], "interpretation": "The alternate test_generation candidate paths are absent from the frozen inventory; available test_data_10_oct candidates remain hash-bound."}
+  },
+  "analystDisposition": {
+    "sourceClaimAlignment": "ALIGNED_FOR_FORMAT_WHEN_POPULATED",
+    "chainAdequacy": "PARTIAL",
+    "testCounterpart": "PRESENT_AS_DRAFT_RULES_WITH_PLACEHOLDER_DATA",
+    "negativeMutationIsolation": "PARTIAL; 11-character nonnumeric inputs violate both length and character constraints",
+    "boundaryAdequacy": "INADEQUATE; zero-valued ten-digit strings are outside the positive valid-value range",
+    "applicability": "UNRESOLVED; Segment 103 field marker C does not supply an approved trigger",
+    "overall": "PRELIMINARY_ALIGNMENT_WITH_INCOMPLETE_TEST_CHAIN",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Confirm Segment 103 applicability and whether these financial-transaction cases represent EBT contexts before generalizing the Test rule.",
+    "Add valid positive and maximum-value cases; decide whether a lower boundary is required and retain the source minimum of one.",
+    "Separate numeric-character and length mutations so each negative case tests one constraint, or explicitly declare a combined violation.",
+    "Bind the producer response outcomes to an independent source/Test oracle; do not infer from response codes 0 or 1 alone.",
+    "Keep ECA/TeleCheck Element 131 separate from Segment 103 Element 18 and resolve the three absent alternate candidate paths if needed."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "manifest": {
+    "packageId": "ATL105-NUMBER-OF-PRODUCTS-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the Element 62 definition and each segment table independently; Segment 143-to-102 count matching is a separate cross-segment rule.",
+      "dataPolicy": "Field-level symbolic designs only. Product Code entries and delimiter-complete segments are not converter-ready fixtures.",
+      "baselinePolicy": "References source-derived Segment 102/143 rules and the Segment 157 composite layout; no official Test record is modified.",
+      "promotionGate": "Authorized Test review must confirm full product entries, segment delimiters/lengths, the two-segment linkage for Segment 143, and readiness before execution or promotion."
+    }
+  },
+  "requirementReferences": [
+    {"id": "BR-RULE-SEG102-R-004", "title": "Number of Products is 01-10 and zero-padded", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.3,Chapter 13-Element 62", "segment": "102", "element": "62", "rule": "number-of-products"}},
+    {"id": "BR-RULE-SEG102-R-005", "title": "Number of Products matches the actual serialized product entry count", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.3", "segment": "102", "element": "62", "rule": "number-of-products-consistency"}},
+    {"id": "BR-RULE-SEG143-R-004", "title": "Number of Products (Element 62) is required, 2 digits, and should match the number of products from the Product Code Data Segment", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.30", "segment": "143", "element": "62", "rule": "number-of-products-matches-segment-102"}},
+    {"id": "BR-RULE-SEG157-R-009", "title": "Segment 157 composite layout includes Number of Products (Element 62, 2 digits) followed by repeated product data", "status": "DRAFT_REVIEW_REQUIRED", "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.41", "segment": "157", "element": "62", "rule": "adjusted-product-code-field-layout"}, "scopeNote": "Composite Test BR; this package addresses only the Number of Products component."}
+  ],
+  "sourceEvidence": [
+    {"id": "ATL105-2026-3-E62-DEFINITION", "sourcePage": 387, "startLine": 20786, "quote": "Number: 62 Name: Number of Products Character Type: N Maximum Length: 2 bytes Representation: Fixed length of two digits Purpose: Identifies the count of products reported for a transaction. Processing Rules: Always precede single digits (1–9) with a zero (01–09). Valid Codes/Values: 01–10", "interpretation": "Element 62 is a two-digit numeric count, zero-padded for 1–9, with values 01–10."},
+    {"id": "ATL105-2026-3-SEG102-E62", "sourcePage": 227, "startLine": 11634, "quote": "4 62 Number of Products 2 R Identifies the count of products reported for this transaction.", "interpretation": "Segment 102 field 4 is required and identifies the product count."},
+    {"id": "ATL105-2026-3-SEG143-E62-MATCH", "sourcePage": 283, "startLine": 15001, "quote": "3 62 Number of Products 2 R Identifies the count of products reported for this transaction. Should match the number of products from the Product Code Data Segment.", "interpretation": "Segment 143 field 3 is required and its count should match the Segment 102 Product Code Data Segment count."},
+    {"id": "ATL105-2026-3-SEG157-E62", "sourcePage": 321, "startLine": 16995, "quote": "4 62 Number of Products 2 R Identifies the count of products reported for this transaction.", "interpretation": "Segment 157 field 4 is required and identifies the product count."}
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-068A8E809F60",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:6076",
+    "linkedCases": [
+      {"caseId": "TC-019781", "transaction": "EMV Financial Transaction Request", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "segment143Count": "01", "payloadSha256": "e0ad08816ab94134ea59c21ec73dcd47e9889a977c2c8beab42b0b6223ace9d1"},
+      {"caseId": "TC-019782", "transaction": "FSA/HRA Purchase/Capture", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "payloadSha256": "9e027e14ad8e1592535032682e6d641cb1f5457cd5de040969196aede72fed83"},
+      {"caseId": "TC-019783", "transaction": "Financial Transaction", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "payloadSha256": "660e0654151f8f0459dbc9a6e98b68ae909fb66eab9ac782d18bd7aa4bfe0690"},
+      {"caseId": "TC-019784", "transaction": "Financial Transaction Request", "segment102Count": "01", "segment102ProductCodeEntriesObserved": 1, "segment143Count": "01", "payloadSha256": "25171d1000de897a8b6cda28c8c02d94b77bce48c68ded352d1afbd1dce587df"}
+    ],
+    "interpretation": "All four cases show Segment 102 Element 62 = 01 and one Product Code entry. Two also show Segment 143 Element 62 = 01. These are hash-verified candidate observations, not independent verification of the product count or complete product-entry list.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {"id": "TS-DRAFT-SEG102-E62-LOCAL-COUNT", "requirementIds": ["BR-RULE-SEG102-R-004", "BR-RULE-SEG102-R-005"], "sourceEvidenceIds": ["ATL105-2026-3-E62-DEFINITION", "ATL105-2026-3-SEG102-E62"], "intent": "Check a zero-padded one-product count against one complete Segment 102 Product Data entry, and a deliberately mismatched count against the same entry count.", "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG143-E62-CROSS-SEGMENT", "requirementIds": ["BR-RULE-SEG143-R-004", "BR-RULE-SEG102-R-005"], "sourceEvidenceIds": ["ATL105-2026-3-E62-DEFINITION", "ATL105-2026-3-SEG143-E62-MATCH"], "intent": "Check that Segment 143's product count matches the count of Segment 102 product entries, with one matching and one mismatching design.", "status": "REVIEW_REQUIRED"},
+    {"id": "TS-DRAFT-SEG157-E62-LOCAL-COUNT", "requirementIds": ["BR-RULE-SEG157-R-009"], "sourceEvidenceIds": ["ATL105-2026-3-E62-DEFINITION", "ATL105-2026-3-SEG157-E62"], "intent": "Check a zero-padded one-product count against one complete Segment 157 repeated product entry; other fields in the composite rule are out of scope.", "status": "REVIEW_REQUIRED"}
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG102-E62-ONE-PRODUCT", "scenarioIds": ["TS-DRAFT-SEG102-E62-LOCAL-COUNT"], "testDataIds": ["TD-DRAFT-SEG102-E62-ONE-PRODUCT"], "assertion": "Number of Products is 01 and exactly one complete Segment 102 product entry follows.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG102-E62-MISMATCH", "scenarioIds": ["TS-DRAFT-SEG102-E62-LOCAL-COUNT"], "testDataIds": ["TD-DRAFT-SEG102-E62-MISMATCH"], "assertion": "Number of Products is 02 but only one complete Segment 102 product entry follows.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG143-E62-MATCH", "scenarioIds": ["TS-DRAFT-SEG143-E62-CROSS-SEGMENT"], "testDataIds": ["TD-DRAFT-SEG143-E62-MATCH"], "assertion": "Segment 102 and Segment 143 each report 01 for the same one-product transaction.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG143-E62-MISMATCH", "scenarioIds": ["TS-DRAFT-SEG143-E62-CROSS-SEGMENT"], "testDataIds": ["TD-DRAFT-SEG143-E62-MISMATCH"], "assertion": "Segment 102 reports 01 while Segment 143 reports 02 for the same one-product transaction.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG157-E62-ONE-PRODUCT", "scenarioIds": ["TS-DRAFT-SEG157-E62-LOCAL-COUNT"], "testDataIds": ["TD-DRAFT-SEG157-E62-ONE-PRODUCT"], "assertion": "Segment 157 Number of Products is 01 and exactly one complete repeated product entry follows.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG102-E62-ONE-PRODUCT", "testCaseIds": ["TC-DRAFT-SEG102-E62-ONE-PRODUCT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "102", "numberOfProducts": "01", "productEntries": 1}},
+    {"id": "TD-DRAFT-SEG102-E62-MISMATCH", "testCaseIds": ["TC-DRAFT-SEG102-E62-MISMATCH"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "102", "numberOfProducts": "02", "productEntries": 1}},
+    {"id": "TD-DRAFT-SEG143-E62-MATCH", "testCaseIds": ["TC-DRAFT-SEG143-E62-MATCH"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segments": {"102": {"numberOfProducts": "01", "productEntries": 1}, "143": {"numberOfProducts": "01"}}}},
+    {"id": "TD-DRAFT-SEG143-E62-MISMATCH", "testCaseIds": ["TC-DRAFT-SEG143-E62-MISMATCH"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segments": {"102": {"numberOfProducts": "01", "productEntries": 1}, "143": {"numberOfProducts": "02"}}}},
+    {"id": "TD-DRAFT-SEG157-E62-ONE-PRODUCT", "testCaseIds": ["TC-DRAFT-SEG157-E62-ONE-PRODUCT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "SYMBOLIC_NOT_CONVERTER_READY", "segment": "157", "numberOfProducts": "01", "productEntries": 1}}
+  ],
+  "openQuestions": [
+    "Confirm complete product-entry serialization, delimiters, and valid product fixtures for each segment.",
+    "Confirm Segment 143 cross-segment transaction pairing and whether its count must match the Segment 102 product list in all applicable contexts.",
+    "Confirm valid Segment 157 product-entry fixture details; this draft does not validate the remaining composite Segment 157 fields.",
+    "Review the full AI payloads and sidecars before treating their repeated 01 counts as independent corroboration."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

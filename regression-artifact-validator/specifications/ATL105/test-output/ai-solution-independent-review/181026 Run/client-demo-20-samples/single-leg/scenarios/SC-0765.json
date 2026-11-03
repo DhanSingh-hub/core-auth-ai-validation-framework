@@ -1,0 +1,54 @@
+{
+  "name": "Negative — EMV Financial Transaction Request — Nonfuel Amount violates: value exceeds documented max length (9 bytes, limit is 8)",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:063",
+  "type": "negative",
+  "negative_class": "length_exceeded",
+  "parameters": {
+    "Nonfuel Amount": "<9-byte value, 1 over limit>"
+  },
+  "parameter_source_pages": {
+    "Nonfuel Amount": 386
+  },
+  "target_transaction": "EMV Financial Transaction Request",
+  "source_rule_id": "ENT-ELEM-58",
+  "related_entity_ids": [
+    "ENT-ELEM-58"
+  ],
+  "expected_response_code": "1",
+  "expected_decline_code": "2P",
+  "oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) — validate against ATL105 PDF Ch.13 before trusting as ground truth",
+  "source": "auto_generated",
+  "flags": [],
+  "fingerprint": "059827e70dea77508d6e246f40d85aa106da3cfdffac7215ee65e397611e4dc5",
+  "dedup_key": "1e97e862a3a902dd671bb6679d2cada114b9a3ed82a67ab37259a7f13d9c15b4",
+  "llm_verdict": {
+    "verdict": "PASS",
+    "confidence": "HIGH",
+    "issues": [
+      "Note states 8 bytes only for Amex, 7 for others, but table max is 8 bytes"
+    ],
+    "traceback_match": true
+  },
+  "id": "SC-0765",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 90,
+  "confidence_band": "HIGH",
+  "confidence_factors": [
+    "verdict=PASS",
+    "llm_confidence=HIGH"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:063"
+    ],
+    "testCaseIds": [
+      "TC-000693"
+    ],
+    "chainSide": "request",
+    "flowId": null
+  }
+}

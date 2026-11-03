@@ -1,6 +1,7 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.coverage.Atl105ElementInventory;
+import com.coreauth.validator.paths.Atl105Paths;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
@@ -9,6 +10,16 @@ import java.nio.file.Path;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class Atl105ElementInventoryTest {
+    @Test
+    void commandLineInventoryResolvesDefaultModuleRelativePack() throws Exception {
+        Atl105ElementInventory.main(new String[0]);
+        var inventory = new ObjectMapper().readTree(Atl105Paths.testOutput()
+                .resolve("test-solution-independent-review").resolve("all-element-inventory.json").toFile());
+        assertThat(inventory.path("elementCount").asInt()).isEqualTo(231);
+        assertThat(inventory.path("definitionCount").asInt()).isEqualTo(232);
+        assertThat(inventory.path("summary").path("elementsWithContextualProfiles").asInt()).isGreaterThanOrEqualTo(15);
+    }
+
     @Test
     void reconcilesAll231SourceElementsWithoutLosingDuplicate118OrWrappedNames() throws Exception {
         var inventory = new Atl105ElementInventory().extract(Files.readString(

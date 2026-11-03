@@ -1,0 +1,98 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-005-DATA-TYPE-INDICATOR",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "linkedCaseCount": 0,
+    "element": "24"
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:027",
+      "claim": "Data Type Indicator must be alphanumeric and must not exceed 1 bytes.",
+      "sourceRuleId": "ENT-ELEM-24",
+      "sourceAlignment": "PARTIALLY_ALIGNED",
+      "sourceDetail": "ATL105 defines Element 24 as Character Type AN, maximum one byte, fixed length one alphanumeric character. The source also enumerates punctuation markers (#, !, :, @, $, \\, &, ^, %) and K; the precise intended meaning of generic 'alphanumeric' against the explicit symbol set requires source/Test interpretation.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:028",
+      "claim": "Data Type Indicator must be one of: DL3)., (No. DL4)., DL5)., (No. DL6)., Encryption and Tokenization., Encryption and Tokenization, (No. DL7).",
+      "sourceRuleId": "ENT-ELEM-24",
+      "sourceAlignment": "INSUFFICIENT_EVIDENCE_MALFORMED_ENUM_CLAIM",
+      "sourceDetail": "The AI statement is malformed and cannot be interpreted as a complete value set. ATL105 lists ten distinct single-character values (#, !, :, @, $, \\, &, K, ^, %) with overlapping/contextual meanings for '&'; it maps the segment markers to DL1-DL8 and separately describes key-load response indicators.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    }
+  ],
+  "sourceEvidence": [
+    {"sourcePage": 371, "startLine": 20052, "quote": "Number: 24 Name: Data Type Indicator"},
+    {"sourcePage": 371, "startLine": 20053, "quote": "Character Type: AN Maximum Length: 1 byte"},
+    {"sourcePage": 371, "startLine": 20055, "quote": "Representation: Fixed length of one alphanumeric character"},
+    {"sourcePage": 371, "startLine": 20058, "quote": "Processing Rules: Required for TransArmor PKI Encryption and Tokenization."},
+    {"sourcePage": 371, "startLine": 20061, "quote": "Valid Codes/Values: Code Description"},
+    {"sourcePage": 371, "startLine": 20062, "quote": "# Identifies the Merchant Data Segment (No. DL1)."},
+    {"sourcePage": 371, "startLine": 20063, "quote": "! Identifies the Dial String Data Segment (No. DL2)."},
+    {"sourcePage": 371, "startLine": 20064, "quote": ": Identifies the Date and Time Data Segment (No. DL3)."},
+    {"sourcePage": 371, "startLine": 20066, "quote": "@ Identifies the Software Dial Load Data Segment (No. DL4)."},
+    {"sourcePage": 371, "startLine": 20068, "quote": "$ Identifies the Software IP Load Data Segment (No. DL5)."},
+    {"sourcePage": 371, "startLine": 20070, "quote": "\\ Identifies the Store and Forward Data Segment (No. DL6)."},
+    {"sourcePage": 371, "startLine": 20072, "quote": "& Indicates that a new Key and Key ID are being returned to a device using TransArmor PKI Encryption and Tokenization."},
+    {"sourcePage": 371, "startLine": 20075, "quote": "& For EMV, indicates that a block of a new CA Public Key file is being returned to the device."},
+    {"sourcePage": 371, "startLine": 20077, "quote": "K Indicates that a new Key and Key ID are being returned to a device using TransArmor PKI Encryption and Tokenization"},
+    {"sourcePage": 371, "startLine": 20080, "quote": "^ Identifies the Supplemental Terminal Data Segment (No. DL7)"},
+    {"sourcePage": 371, "startLine": 20082, "quote": "% Identifies EMV Floor Limits Segment (No. DL8)"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "currentTestBrsAnchoredToElement24": [
+      {"testBrId": "BR-RULE-SEGDL1-R-002", "marker": "#", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL1 framing markers"},
+      {"testBrId": "BR-RULE-SEGDL2-R-001", "marker": "!", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL2 marker and segment length"},
+      {"testBrId": "BR-RULE-SEGDL3-R-001", "marker": ":", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL3 marker and segment length"},
+      {"testBrId": "BR-RULE-SEGDL4-R-002", "marker": "@", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL4 marker and segment length"},
+      {"testBrId": "BR-RULE-SEGDL5-R-002", "marker": "$", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL5 marker and segment length"},
+      {"testBrId": "BR-RULE-SEGDL6-R-002", "marker": "\\", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL6 marker and segment length"},
+      {"testBrId": "BR-RULE-SEGDL7-R-001", "marker": "^", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL7 marker and hybrid framing"},
+      {"testBrId": "BR-RULE-SEGDL8-R-002", "marker": "%", "status": "DRAFT_REVIEW_REQUIRED", "scope": "DL8 marker and hybrid framing"}
+    ],
+    "nonSegmentKeyMarkers": ["&", "K"],
+    "testRuleForKeyMarkerMeaningsFound": false,
+    "chainsAreDraftPlaceholders": true,
+    "interpretation": "The Test model has segment-specific framing rules for DL1-DL8 but no direct Element 24 code-set BR that exhaustively covers key-response '&'/'K' contexts. These candidates do not yet demonstrate complete enum coverage."
+  },
+  "caseReview": {
+    "aiCaseCount": 0,
+    "aiCaseEvidence": "NO_LINKED_CASES_FOR_EITHER_AI_BR",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatClaimAlignment": "PARTIAL_SOURCE_ALIGNMENT_WITH_AN_ALPHANUMERIC_VS_EXPLICIT_SYMBOL_ENUM_REVIEW",
+    "allowedValuesClaimAlignment": "INSUFFICIENT_EVIDENCE_MALFORMED_CLAIM",
+    "testCounterparts": "SEGMENT_SPECIFIC_TEST_RULES_EXIST_BUT_ARE_DRAFT_AND_INCOMPLETE_FOR_KEY_MARKERS",
+    "overall": "PRELIMINARY_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Recover the intended complete enum from the source artifact/producer record for AI BR :028; do not repair the malformed list by guesswork.",
+    "Clarify whether Character Type AN includes all explicitly enumerated punctuation symbols under the ATL105 validator convention.",
+    "Determine whether '&' and 'K' require additional independent Test rules for their TransArmor/EMV key-load response contexts.",
+    "Add hash-bound positive, invalid-marker, and context-appropriate cases for DL1-DL8 and key-response meanings, with independent expected outcomes.",
+    "Review Data Type Indicator presence conditions: the source says it is required for specified key-load operations, not universally."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

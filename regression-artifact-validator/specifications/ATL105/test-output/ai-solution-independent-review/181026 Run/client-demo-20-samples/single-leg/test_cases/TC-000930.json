@@ -1,0 +1,2464 @@
+{
+  "id": "TC-000930",
+  "name": "Negative — EMV Financial Transaction Request — EMV Chip Data violates: mandatory field omitted [EMV Financial Transaction Request]",
+  "scenario_id": "SC-1002",
+  "scenario_type": "negative",
+  "transaction_type": "EMV Financial Transaction Request",
+  "priority": "P1",
+  "priority_score": 0.805,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:3875",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:3875"
+  ],
+  "violated_element_name": "EMV Chip Data",
+  "negative_class": "missing_mandatory",
+  "fingerprint": "ed5b931052bd07276f9249d9f39129c095a478b5be5bc00f27b0c4b1ad8e3e61",
+  "request": {
+    "Standard Message Data Segment": {
+      "Segment Type": {
+        "value": "100",
+        "method": "fixed_value",
+        "source_page": 220,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 220,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Information Byte": {
+        "value": "0",
+        "method": "test_data_config_value",
+        "source_page": 220,
+        "flags": [
+          "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Information Byte' has QE example value(s); the client-entered value is used instead"
+        ],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "element_no": "44",
+        "data_ref": {
+          "segment": "100",
+          "element": "Information Byte",
+          "variant": "valid"
+        }
+      },
+      "Terminal Identifier": {
+        "value": "CUKJ315256755931906583",
+        "method": "realistic_terminal_id",
+        "source_page": 220,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "102",
+        "data_ref": {
+          "segment": "100",
+          "element": "Terminal Identifier",
+          "variant": "valid"
+        }
+      },
+      "Prompt Code": {
+        "value": "0020",
+        "method": "other_valid_value",
+        "source_page": 220,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+          "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+          "PROMPT_CODE_CARD_TYPE_PER_APPENDIX_E: positions 2-4 = 020 (card brand 'ds'; element 78 p.400-401, Appendix E p.521-522); position 1 = the composed Transaction Type"
+        ],
+        "element_no": "78",
+        "data_ref": {
+          "segment": "100",
+          "element": "Prompt Code",
+          "variant": "valid"
+        }
+      },
+      "Account Number": {
+        "value": "6011640256133635",
+        "method": "realistic_pan",
+        "source_page": 221,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+          "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+          "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "2",
+        "data_ref": {
+          "segment": "100",
+          "element": "Account Number",
+          "variant": "valid"
+        }
+      },
+      "Card Discretionary Block Data": {
+        "value": "0830",
+        "method": "realistic_expiry_date",
+        "source_page": null,
+        "element_no": "12",
+        "flags": [
+          "CARD_EXPIRY_PER_ELEMENT_12: the test case's own card expiry (MMYY) — element 12 (p.371-372): 'For all authorizations, merchants must send a value even for expired cards'"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Card Discretionary Block Data",
+          "variant": "valid"
+        }
+      },
+      "Encrypted PIN Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "33",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Encrypted PIN Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Pump/Lane Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "79",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Pump/Lane Number",
+          "variant": "omitted"
+        }
+      },
+      "Fuel Purchase Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "41",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Fuel Purchase Amount",
+          "variant": "omitted"
+        }
+      },
+      "Nonfuel Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "58",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Nonfuel Amount",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "99",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "Cash Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "17",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Cash Amount",
+          "variant": "omitted"
+        }
+      },
+      "Sequence Number": {
+        "value": "000001",
+        "method": "qe_example_value",
+        "source_page": 221,
+        "flags": [],
+        "element_no": "86",
+        "data_ref": {
+          "segment": "100",
+          "element": "Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "Approval Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "5",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Approval Number",
+          "variant": "omitted"
+        }
+      },
+      "Local Date and Local Time": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "49",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Local Date and Local Time",
+          "variant": "omitted"
+        }
+      },
+      "Partial Approval Indicator": {
+        "value": "1",
+        "method": "test_data_config_value",
+        "source_page": 222,
+        "flags": [
+          "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Partial Approval Indicator' has QE example value(s); the client-entered value is used instead"
+        ],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "element_no": "121",
+        "data_ref": {
+          "segment": "100",
+          "element": "Partial Approval Indicator",
+          "variant": "valid"
+        }
+      }
+    },
+    "Fleet Data Segment": {
+      "Segment Type": {
+        "value": "101",
+        "method": "fixed_value",
+        "source_page": 223,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "101",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 223,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "101",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Odometer": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "64",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Odometer",
+          "variant": "omitted"
+        }
+      },
+      "Vehicle Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "108",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Vehicle Number",
+          "variant": "omitted"
+        }
+      },
+      "Job Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "47",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Job Number",
+          "variant": "omitted"
+        }
+      },
+      "Driver /Identification Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "31",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Driver /Identification Number",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Employee Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "40",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Employee Number",
+          "variant": "omitted"
+        }
+      },
+      "License #": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "158",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "License #",
+          "variant": "omitted"
+        }
+      },
+      "Job ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "159",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Job ID",
+          "variant": "omitted"
+        }
+      },
+      "Department #": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "160",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Department #",
+          "variant": "omitted"
+        }
+      },
+      "Customer Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "161",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Customer Data",
+          "variant": "omitted"
+        }
+      },
+      "User ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "162",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "User ID",
+          "variant": "omitted"
+        }
+      },
+      "Vehicle ID#": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "163",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Vehicle ID#",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 1",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 2",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 3",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 4": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 4",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 5": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 5",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Product Code Data Segment": {
+      "Segment Type": {
+        "value": "102",
+        "method": "fixed_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 227,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Service Level": {
+        "value": "F",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "87",
+        "data_ref": {
+          "segment": "102",
+          "element": "Service Level",
+          "variant": "valid"
+        }
+      },
+      "Number of Products": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "62",
+        "data_ref": {
+          "segment": "102",
+          "element": "Number of Products",
+          "variant": "valid"
+        }
+      },
+      "Product Code": {
+        "value": "001",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "77",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Code",
+          "variant": "valid"
+        }
+      },
+      "Unit of Measure": {
+        "value": "C",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "106",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit of Measure",
+          "variant": "valid"
+        }
+      },
+      "Quantity": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 227,
+        "flags": [],
+        "element_no": "81",
+        "data_ref": {
+          "segment": "102",
+          "element": "Quantity",
+          "variant": "valid"
+        }
+      },
+      "Unit Price": {
+        "value": "000",
+        "method": "qe_example_value",
+        "source_page": 228,
+        "flags": [],
+        "element_no": "107",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit Price",
+          "variant": "valid"
+        }
+      },
+      "Product Amount": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 228,
+        "flags": [],
+        "element_no": "76",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Amount",
+          "variant": "valid"
+        }
+      }
+    },
+    "EBT Data Segment": {
+      "Segment Type": {
+        "value": "103",
+        "method": "fixed_value",
+        "source_page": 229,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "103",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 229,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "103",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Clerk ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "18",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "Clerk ID",
+          "variant": "omitted"
+        }
+      },
+      "Voucher ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "109",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "Voucher ID",
+          "variant": "omitted"
+        }
+      },
+      "WIC Discount Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "153",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "WIC Discount Amount",
+          "variant": "omitted"
+        }
+      },
+      "WIC Product Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "154",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "WIC Product Data",
+          "variant": "omitted"
+        }
+      },
+      "EBT Program Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "164",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "EBT Program Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Purchase Card Data Segment": {
+      "Segment Type": {
+        "value": "104",
+        "method": "fixed_value",
+        "source_page": 230,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "104",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 230,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "104",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Purchase Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "80",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Purchase Code",
+          "variant": "omitted"
+        }
+      },
+      "PC Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "74",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "PC Freight Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "73",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Freight Amount",
+          "variant": "omitted"
+        }
+      },
+      "PC Duty Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "72",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Duty Amount",
+          "variant": "omitted"
+        }
+      },
+      "Ship-to Country Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "89",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-to Country Code",
+          "variant": "omitted"
+        }
+      },
+      "Ship-to Postal Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "90",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-to Postal Code",
+          "variant": "omitted"
+        }
+      },
+      "Ship-from Postal Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "88",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-from Postal Code",
+          "variant": "omitted"
+        }
+      },
+      "Direct Marketing Invoice Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "29",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Direct Marketing Invoice Number",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Loyalty Card Data Segment": {
+      "Segment Type": {
+        "value": "108",
+        "method": "fixed_value",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 235,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Program ID": {
+        "value": "741337",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "138",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Program ID",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Account Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "139",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Account Number",
+          "variant": "omitted"
+        }
+      },
+      "Points to Redeem": {
+        "value": "297748",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "140",
+        "data_ref": {
+          "segment": "108",
+          "element": "Points to Redeem",
+          "variant": "valid"
+        }
+      },
+      "Coupon ID": {
+        "value": "4269785392079273586",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "141",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon ID",
+          "variant": "valid"
+        }
+      },
+      "Coupon Amount": {
+        "value": "31864097",
+        "method": "realistic_amount",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "142",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon Amount",
+          "variant": "valid"
+        }
+      },
+      "Update Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "143",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Update Code",
+          "variant": "omitted"
+        }
+      },
+      "Street Address": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "144",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Street Address",
+          "variant": "omitted"
+        }
+      },
+      "Phone Number, Loyalty": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "145",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Phone Number, Loyalty",
+          "variant": "omitted"
+        }
+      },
+      "Expiration Date": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "146",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Expiration Date",
+          "variant": "omitted"
+        }
+      },
+      "Payment Tender Type": {
+        "value": "VS",
+        "method": "qe_example_value",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "148",
+        "data_ref": {
+          "segment": "108",
+          "element": "Payment Tender Type",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Track 2 Data": {
+        "value": "60116402561336350830620451411229059583",
+        "method": "realistic_track2_data",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "147",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Track 2 Data",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Information Version": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "150",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Information Version",
+          "variant": "valid"
+        }
+      },
+      "Unit of Work": {
+        "value": "2879574327312551706",
+        "method": "format_synthesis",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "151",
+        "data_ref": {
+          "segment": "108",
+          "element": "Unit of Work",
+          "variant": "valid"
+        }
+      }
+    },
+    "Variable Information Data Segment": {
+      "Segment Type": {
+        "value": "111",
+        "method": "fixed_value",
+        "source_page": 243,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 243,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator": {
+        "value": "005",
+        "method": "fixed_value",
+        "source_page": 548,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); no client value in the test-data library (VarInfoTable[005])"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information": {
+        "value": "UNKNOWN",
+        "method": "placeholder",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); no client value in the test-data library (VarInfoTable[005])"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator [2]": {
+        "value": "031",
+        "method": "fixed_value",
+        "source_page": 562,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length [2]": {
+        "value": "002",
+        "method": "derived_from_table_data",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information [2]": {
+        "value": "00",
+        "method": "spec_unspecified_code",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      }
+    },
+    "SKU Data Segment": {
+      "Segment Type": {
+        "value": "114",
+        "method": "fixed_value",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 248,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "SKU Data": {
+        "value": "W23YEVKE30JMQFIKCFI3ZSXL8BAXYAI17MAWBZ1Q5BC55RRYSLWE1EDS5FNP7A9EHMNCLM568MW4A959EVSGJDOS6I515TRKH5ZYIH63QRC36RJI4Y4TPTLFVEFKBZWLQU7YVC4TVJZ7QPH3TOW0SL0XI8N2DSB92AZ3YBSFK3WCJZEMYWTVMNWLSLMPVR1HW3QW0W3V5YOR1G3S0MDFP6QFDH0EUOVXERL55GA96GF0SSMHNVXSPIBAS4Q8NW89U7O9QMBJCFL3NZ99U6XATOTF6UZ54RZHTJZP4JQPKHU9VZYMJRYPJZHIGZ5RX2ACULQS4AJ5T0KO4SH49KWKFFAZNI31IM5SF0HBG3LO443UTIDK9QAXM7VZS8YPGVKNFSR1KA6DP1YKTHZ2NBAYS47BS54GJJKNZOT518IEO393HW0W27FSMERAFCB9A1S7X1R79ODTGXXUZ4JCUHBQBJE3Y1D7FN2OR6E8DXQCNXS6P5Y43XZ0VCFSLT60DT7FZYWCXH8ETEQZ1FWA6FAUPYVOQPR6E2NS19F5RENVAONR6NB0K9J9W296WCP1QQOY7PZ0NKQO31U64FWRUVPJ4WYMF31CTEI32D8Q6ILVCIKDFHD2MF80VRBSPNBF2VZDKBIUIKDUGNEDV2RA711E1MMW8LR31YOUDBQKKXIJCJLGZTZ1SPEZP9RBH3L2MW0D2DAMFZ04EQBQR2U7DZ6CD3OZACBXZWXZN77F2E699OGIPGNFURBFLECRAT6N3NXVT6H69FCUKJI33ST9EBOJ5RDMQR9N91G4IZH73UDQAQAIE9KWARAPX9MUCVB1CN4A5H2V8RT3XHZ1JBKX9UH2JBD5WFAE9Z7B9FKCZ76QYAOXTF34TRCW630AY1KCVRQ11AO2IPQQK8B15Z2BK8QSZXQN13PT3VW8XQJG4NOZCWKW45MU4VOLN3ECPDGEN2P45PJWQ3NACAP87O6FS67DNZVBFZ9ITIRD0AYBND3P",
+        "method": "format_synthesis",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "149",
+        "data_ref": {
+          "segment": "114",
+          "element": "SKU Data",
+          "variant": "valid"
+        }
+      }
+    },
+    "EMV Request Data Segment": {
+      "Segment Type": {
+        "value": "130",
+        "method": "fixed_value",
+        "source_page": 267,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "130",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 267,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "130",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "CA Public Key File Checksum": {
+        "value": "2012091700000100000102171",
+        "method": "test_data_config_value",
+        "source_page": 267,
+        "flags": [],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "element_no": "187",
+        "data_ref": {
+          "segment": "130",
+          "element": "CA Public Key File Checksum",
+          "variant": "valid"
+        }
+      },
+      "EMV Card Sequence Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "188",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Card Sequence Number",
+          "variant": "omitted"
+        }
+      },
+      "EMV Chip Data Length": {
+        "value": "000",
+        "method": "qe_example_value",
+        "source_page": 267,
+        "flags": [
+          "LINKED_FIELD_SOURCE_MISSING: 'EMV Chip Data Length' (hex_byte_length of 'EMV Chip Data', group 'EMV') — source not in this message"
+        ],
+        "element_no": "189",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Chip Data Length",
+          "variant": "valid"
+        }
+      },
+      "EMV Chip Data": {
+        "value": null,
+        "method": "deliberate_violation_missing_mandatory",
+        "source_page": null,
+        "element_no": "190",
+        "flags": [
+          "DELIBERATE_CONSTRAINT_VIOLATION: mandatory field deliberately omitted"
+        ],
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Chip Data",
+          "variant": "missing"
+        },
+        "scenario_named": true
+      }
+    },
+    "Moneris Data Segment (Request)": {
+      "Segment Type": {
+        "value": "135",
+        "method": "fixed_value",
+        "source_page": 274,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "135",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 274,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "135",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Moneris Data": {
+        "value": "001",
+        "method": "qe_example_value",
+        "source_page": 274,
+        "flags": [],
+        "element_no": "213",
+        "data_ref": {
+          "segment": "135",
+          "element": "Moneris Data",
+          "variant": "valid"
+        }
+      }
+    },
+    "Tax by Product Data Segment": {
+      "Segment Type": {
+        "value": "143",
+        "method": "fixed_value",
+        "source_page": 282,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "143",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 282,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "143",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Number of Products": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 283,
+        "flags": [],
+        "element_no": "62",
+        "data_ref": {
+          "segment": "143",
+          "element": "Number of Products",
+          "variant": "valid"
+        }
+      },
+      "Product Code": {
+        "value": "001",
+        "method": "qe_example_value",
+        "source_page": 283,
+        "flags": [],
+        "element_no": "77",
+        "data_ref": {
+          "segment": "143",
+          "element": "Product Code",
+          "variant": "valid"
+        }
+      },
+      "Inclusive/ Exclusive for Tax 1": {
+        "value": "I",
+        "method": "qe_example_value",
+        "source_page": 283,
+        "flags": [],
+        "element_no": "223",
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/ Exclusive for Tax 1",
+          "variant": "valid"
+        }
+      },
+      "Tax Type 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "224",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 1",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "225",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 1",
+          "variant": "omitted"
+        }
+      },
+      "Inclusive/ Exclusive for Tax 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "226",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/ Exclusive for Tax 2",
+          "variant": "omitted"
+        }
+      },
+      "Tax Type 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "227",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 2",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "228",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 2",
+          "variant": "omitted"
+        }
+      },
+      "Inclusive/ Exclusive for Tax 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "229",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/ Exclusive for Tax 3",
+          "variant": "omitted"
+        }
+      },
+      "Tax Type 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "230",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 3",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "231",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 3",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Enhanced Fleet Request": {
+      "Segment Type": {
+        "value": "145",
+        "method": "fixed_value",
+        "source_page": 286,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "145",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 286,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "145",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Enhanced Fleet Data": {
+        "value": "98KQMY1N4OR89EQHLL2BUT1W29BY1D5ECX2LMAY3FQFLYU80ELJ7SPK2GHADGNTBJYAEIFYMUD6ZH4FG71V1AGNBA22WOB9O46YWGUAGZ4ZCL8LY95X8DPGTQGDC3JNA6QH3GMGL4IZL37RJ489T1I7EKLYZJWRCZ0N1KP908FV4QQTI56LJIN8GGP4K6Q8XS7KUJF8LWZHD892OIAUPWLP52W56BUYKNHAQVH6IV1GFW9PTLE7X3TUQUOEAQQ6JHBA3F28QN3N3DVQHDC6OWHUJJPB3VOV6C1HZWRIFFCNCUTCZJSQ3U79T26FQ2WMMCAPIX7W08O3HLIP75OJH20PTGU0CGO9K4BQUGIYNN3SBQ4HL1D4DZ12MEAYDJPO4W51U902DYLIZOB48FG42JYWMA2E4M6TQDQ95N2XCTTXU28RTX9C2DK7OL96YES4ON8OUV9VR7JL953XUSEBTAX8R8MQK6QHCAVB5XOYG8OFXXKR41BVNQ433R72GKWP17NA4RSMJ424Y3JXPPA4DD0WRBXOQE3H8M5ZQFLX89W6Y29BRT3XS3WK4BDFWRLNVDEWVMDPY3948VKEITUWF2D0QMYC8UK345WPMI8YA4CC8I3OFC2AQZVLUI4DU7L1FB6URMHBR9OMFRBC11BYG004QT2IXP71ASNWIXGKOKZNGN5PR035X8AS3B5F9WKBRI6HSXZBCAAZXO1SSNHLSQ1B3V0MRON1VCU7M3EOVOFMZL8YFG3AEDJ5CZB7TFVALH0DLR9UM8I42UQKST03EYUKWZEV2HMBUG3BDE8GBS7U2GI648ZEPUTJ9DTCQQB95GZK5R6D4S2Y78DEXYOSWTT4QTGRZYTKDPWPT2W2HKGRB6RSG2AK9KSEXB37IHKMFO82Z7TVSCF46LAC53H8WQDZ0D5EL4L3C2FB0T6NW8R32T8CUKRO6VEJT8QDSMADB9OVWMGH3IHZ176RL1TF6VBOB275LVAVMFUMS7XX",
+        "method": "format_synthesis",
+        "source_page": 286,
+        "flags": [
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "239",
+        "data_ref": {
+          "segment": "145",
+          "element": "Enhanced Fleet Data",
+          "variant": "valid"
+        }
+      }
+    },
+    "Request InComm OTC Market Basket Data": {
+      "Segme nt Type": {
+        "value": "151",
+        "method": "fixed_value",
+        "source_page": 305,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "151",
+          "element": "Segme nt Type",
+          "variant": "valid"
+        }
+      },
+      "Segme nt Length Indicat or": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 305,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segme nt Length Indicat or''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "151",
+          "element": "Segme nt Length Indicat or",
+          "variant": "valid"
+        }
+      },
+      "Market Basket Data": {
+        "value": null,
+        "method": "awaiting_client_value",
+        "source_page": 305,
+        "flags": [
+          "AWAITING_CLIENT_VALUE: library entry for 'Market Basket Data' has no client-supplied value"
+        ],
+        "element_no": "",
+        "data_ref": {
+          "segment": "151",
+          "element": "Market Basket Data",
+          "variant": "missing"
+        }
+      }
+    },
+    "Network Token Data Request": {
+      "Segme nt Type": {
+        "value": "153",
+        "method": "fixed_value",
+        "source_page": 307,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "153",
+          "element": "Segme nt Type",
+          "variant": "valid"
+        }
+      },
+      "Segme nt Length Indicat or": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 307,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segme nt Length Indicat or''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "153",
+          "element": "Segme nt Length Indicat or",
+          "variant": "valid"
+        }
+      },
+      "Networ k Token Data": {
+        "value": "UNKNOWN",
+        "method": "placeholder",
+        "source_page": 307,
+        "flags": [
+          "UNKNOWN: no character_type/valid_values available for this field",
+          "ELEMENT_NO_COLLISION: attribute catalog's element_no 239 record is 'Enhanced Fleet Data', not this template field's own name 'Networ k Token Data' (ATL105 reuses element numbers per-segment) — attribute not trusted for this field"
+        ],
+        "element_no": "239",
+        "data_ref": {
+          "segment": "153",
+          "element": "Networ k Token Data",
+          "variant": "valid"
+        }
+      }
+    },
+    "EV Charging Data Segment": {
+      "Segment Type": {
+        "value": "156",
+        "method": "fixed_value",
+        "source_page": 314,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 314,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "EV Charging Data": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 314,
+        "flags": [
+          "LENGTH_RECOVERED_FROM_SPEC_TEXT: max_length_raw/max_length_bytes empty; length 200 taken from this element's own character_type Length cell text"
+        ],
+        "element_no": "242",
+        "data_ref": {
+          "segment": "156",
+          "element": "EV Charging Data",
+          "variant": "valid"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "100": "R",
+    "101": "O",
+    "102": "O",
+    "103": "O",
+    "104": "O",
+    "108": "UNKNOWN",
+    "111": "O",
+    "114": "UNKNOWN",
+    "130": "UNKNOWN",
+    "135": "UNKNOWN",
+    "143": "UNKNOWN",
+    "145": "UNKNOWN",
+    "151": "UNKNOWN",
+    "153": "UNKNOWN",
+    "156": "UNKNOWN"
+  },
+  "forced_segments": [
+    "111"
+  ],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            209
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        },
+        "field_no": "1",
+        "entry": "R",
+        "position": null,
+        "length": "6",
+        "source_role": null,
+        "layout_page": 202
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        },
+        "field_no": "2",
+        "entry": "R",
+        "position": null,
+        "length": "2",
+        "source_role": null,
+        "layout_page": 202
+      }
+    },
+    "source": "ENT-MSG-EMV_FINANCIAL_TRANSACTION_REQUEST"
+  },
+  "flags": [
+    "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+    "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+    "AWAITING_CLIENT_VALUE: library entry for 'Market Basket Data' has no client-supplied value",
+    "CARD_EXPIRY_PER_ELEMENT_12: the test case's own card expiry (MMYY) — element 12 (p.371-372): 'For all authorizations, merchants must send a value even for expired cards'",
+    "CONDITIONAL_FIELD_OMITTED",
+    "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+    "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+    "DELIBERATE_CONSTRAINT_VIOLATION: mandatory field deliberately omitted",
+    "DERIVED_AT_WIRE_ENCODING: 'Segme nt Length Indicat or''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "ELEMENT_NO_COLLISION: attribute catalog's element_no 239 record is 'Enhanced Fleet Data', not this template field's own name 'Networ k Token Data' (ATL105 reuses element numbers per-segment) — attribute not trusted for this field",
+    "LENGTH_RECOVERED_FROM_SPEC_TEXT: max_length_raw/max_length_bytes empty; length 200 taken from this element's own character_type Length cell text",
+    "LINKED_FIELD_SOURCE_MISSING: 'EMV Chip Data Length' (hex_byte_length of 'EMV Chip Data', group 'EMV') — source not in this message",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); no client value in the test-data library (VarInfoTable[005])",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]",
+    "PROMPT_CODE_CARD_TYPE_PER_APPENDIX_E: positions 2-4 = 020 (card brand 'ds'; element 78 p.400-401, Appendix E p.521-522); position 1 = the composed Transaction Type",
+    "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+    "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Information Byte' has QE example value(s); the client-entered value is used instead",
+    "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Partial Approval Indicator' has QE example value(s); the client-entered value is used instead",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+    "UNKNOWN: no character_type/valid_values available for this field",
+    "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+  ],
+  "completeness_status": "DELIBERATE_OMISSION",
+  "completeness_findings": [],
+  "scenario_oracle_hint": {
+    "response_code": "1",
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) — validate against ATL105 PDF Ch.13 before trusting as ground truth"
+  },
+  "source_rule_id": "ENT-FIELD-130-6",
+  "source_page": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "1",
+      "meaning": "Declined-All other transactions",
+      "source_page": 396,
+      "grounding": "ATL105 Response Code valid values (attribute catalog) + Prompt Code transaction type"
+    },
+    "decline_code": {
+      "tier": "FLAG",
+      "field": "DeclineCode",
+      "value": null,
+      "flags": [
+        "NEEDS_AUTHORIZER_DOC: scenario carries no decline code hint, and no Appendix H Fast Code matches the violated element"
+      ]
+    },
+    "response_message": {
+      "available": true,
+      "response_transaction_type": "EMV Financial Transaction Response",
+      "grounding": "assembled/output/atl105_complete_templates.json paired response template",
+      "tier_counts": {
+        "ASSERT": 10,
+        "INFER": 30,
+        "FLAG": 10
+      },
+      "comparison_note": "Compare field-by-field. 'exact' must match the documented value; 'format_only' must satisfy character_type/length but its value is runtime-determined; 'ignore' is processor-generated and not assertable from ATL105.",
+      "data_section_1": {
+        "Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "83",
+          "character_type": "AN",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Download Indicator": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "30",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "45",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Time": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "46",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Sequence Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "86",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Approved Amount": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "6",
+          "character_type": "N",
+          "max_length_bytes": 9,
+          "presence": "C",
+          "position": null,
+          "length": "9",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Approval Number": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "5",
+          "character_type": "AN",
+          "max_length_bytes": 6,
+          "presence": "C",
+          "position": null,
+          "length": "6",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Account Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "2",
+          "character_type": "ANS",
+          "max_length_bytes": 24,
+          "presence": "R",
+          "position": null,
+          "length": "25",
+          "source_page": 206,
+          "tolerance_source": "heuristic"
+        },
+        "Decline Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "26",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "C",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "7",
+          "character_type": "N",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "8",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Settlement Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "119",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Additional Information Data Segment Flag": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "115",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Number of Print Lines": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "61",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        },
+        "Terminal Display /Printer Message": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "101",
+          "character_type": "AN",
+          "max_length_bytes": 31,
+          "presence": "R",
+          "position": null,
+          "length": "31",
+          "source_page": 207,
+          "tolerance_source": "heuristic"
+        }
+      },
+      "data_section_1_source": "ENT-MSG-EMV_FINANCIAL_TRANSACTION_RESPONSE",
+      "flags": [],
+      "segments": {
+        "Additional Information Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "112",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "116",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "117",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "118",
+            "character_type": "AN",
+            "max_length_bytes": 984,
+            "presence": "R",
+            "source_page": 245,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "115",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 249,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data 2 Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "120",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 263,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "EMV Response Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "131",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "CA Public Key File Checksum": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "187",
+            "character_type": "N",
+            "max_length_bytes": 25,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "189",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "190",
+            "character_type": "ANSB",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 269,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Transaction Attributes Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "134",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Settlement Type": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "198",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Signature Required": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "199",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "Receipt Card Description": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "200",
+            "character_type": "AN",
+            "max_length_bytes": 10,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Moneris Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "136",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          },
+          "Moneris Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "213",
+            "character_type": "AN",
+            "max_length_bytes": 100,
+            "presence": "R",
+            "source_page": 275,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Enhanced Fleet Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "146",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          },
+          "Enhanced Fleet Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "239",
+            "character_type": "AN",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 295,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "WEX Available Product Fleet Information": {
+          "Segme nt Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "148",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 301,
+            "tolerance_source": "heuristic"
+          },
+          "Segme nt Length Indicat or": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 301,
+            "tolerance_source": "heuristic"
+          },
+          "Availab le Produc t informa tion": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "240",
+            "character_type": "AN Variable Length: 17 bytes",
+            "max_length_bytes": null,
+            "presence": "R",
+            "source_page": 302,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Response InComm OTC Market Basket Data": {
+          "Segme nt Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "152",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          },
+          "Segme nt Length Indicat or": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          },
+          "Market Basket Data": {
+            "tier": "FLAG",
+            "tolerance": "ignore",
+            "value": null,
+            "element_no": "",
+            "character_type": null,
+            "max_length_bytes": null,
+            "presence": "R",
+            "source_page": 306,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Real Time Account Updater Response Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "155",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 310,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 310,
+            "tolerance_source": "heuristic"
+          }
+        }
+      }
+    }
+  },
+  "confidence_score": 0.9,
+  "confidence_pct": 9,
+  "confidence_band": "LOW",
+  "confidence_factors": [
+    "prior_confidence_score=0.9",
+    "minor_flags=-81"
+  ],
+  "test_data_file": "qe_shaped_test_data/TD-TC-000930.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": [],
+    "advisories": [
+      "CONSTRAINT_NOT_VERIFIABLE: Standard Message Data Segment.Account Number (element 2) has no DEFINED length rule (UNRESOLVED_KB_GAP) — conformance was not verified"
+    ],
+    "attempts": 1
+  },
+  "demoClassification": {
+    "transactionType": "POS Purchase/Capture (0; completion context not established)",
+    "messageFormatType": "EMV Financial Transaction Request",
+    "promptCode": "0020",
+    "transactionTypeCode": "0",
+    "note": null
+  }
+}

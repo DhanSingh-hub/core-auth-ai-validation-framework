@@ -1,0 +1,83 @@
+{
+  "id" : "TD-APPI-C078-012-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-012-POS.json",
+  "testCaseIds" : [ "TC-APPI-C078-012-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-85",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r015-APPI-C078-012"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-012",
+        "tableId" : "078",
+        "nestedSelector" : "12",
+        "ruleIds" : [ "APPI-T078-R015" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-85",
+          "startLine" : 32264,
+          "endLine" : 32280
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "12",
+            "declaredValueLength" : "04",
+            "data" : "0750",
+            "logicalPercentage" : "7.50",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "negative" : {
+            "id" : "12",
+            "declaredValueLength" : "03",
+            "data" : "0750",
+            "logicalPercentage" : "7.50",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "positiveVariants" : [ {
+            "data" : "0001",
+            "logicalPercentage" : "0.01"
+          } ]
+        },
+        "clearScope" : "Defined 12 selector, four-byte other-tax percentage and two-decimal scale.",
+        "excludedClaims" : [ "Sample 09 selector in 078", "Business rate limits", "Tax computation", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "header fixed value 04 and actual value byte count agree",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "data is n4 and percentage is 7.50",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "header fixed value 04 and actual value byte count agree",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data is n4 and percentage is 7.50",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "declaredValueLength",
+          "from" : "04",
+          "to" : "03",
+          "unchanged" : "data, logical scale and context",
+          "targetedFailure" : "wrong fixed sub-table length"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

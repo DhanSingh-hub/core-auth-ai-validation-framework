@@ -1,0 +1,52 @@
+{
+  "reviewId": "ATL105-SEG100-TAX-APPLICABILITY-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroupId": "OBL-8D69ABF072E0",
+  "aiBrs": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:1193", "scope": "Segment 102 tax product totals", "assessment": "Source-aligned: when tax product codes are present, their total is also reported in Segment 100 Element 99."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2842", "scope": "Table 78 tags 04/05 local tax", "assessment": "Source-aligned conditional: tag 05 contains local tax amount when tag 04 is 1."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2846", "scope": "Table 78 tags 10/11 other tax", "assessment": "Source-aligned conditional: tag 11 contains other tax amount when tag 10 is 1."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2849", "scope": "Visa table 079 tags 01/02 local tax", "assessment": "Source-aligned conditional: tag 02 contains local tax amount when tag 01 is 1."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2852", "scope": "Visa table 079 tags 07/08 other tax", "assessment": "Source-aligned conditional: tag 08 contains other tax amount when tag 07 is 1."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:6790", "scope": "Segment 100 Element 99 EBT tax applicability", "assessment": "Source-aligned but context-sensitive: ATL105 says sales tax applies to EBT Cash Benefits only and not EBT Food Stamps."}
+  ],
+  "sourceNuance": {
+    "productTaxes": "Segment 102 tax product total-to-Element 99 is separate from local/other tax amounts nested in Tables 78 and 079.",
+    "nestedTaxTables": "Table 78 local tags 04/05 and other tags 10/11 are distinct from Visa Commercial Card Data table 079 local tags 01/02 and other tags 07/08. Each indicator's listed valid value is 1=True; a false/zero indicator value is not derived.",
+    "amounts": "The four nested amount fields are 12 digits with two implied decimal places, conditional on the matching indicator value being 1.",
+    "independentRules": "SEG102-R-016 tax-product reconciliation and SEG100-R-047 total Tax Amount are existing source-derived placeholder chains, not approval or executable evidence.",
+    "sourceEvidenceIds": ["ATL105-2026-3-SEG102-TAX-PRODUCT-TOTAL", "ATL105-2026-3-TABLE78-CONTEXT", "ATL105-2026-3-TABLE78-LOCAL-TAX-INDICATOR", "ATL105-2026-3-TABLE78-LOCAL-TAX-AMOUNT", "ATL105-2026-3-TABLE78-OTHER-TAX-INDICATOR", "ATL105-2026-3-TABLE78-OTHER-TAX-AMOUNT", "ATL105-2026-3-TABLE79-CONTEXT", "ATL105-2026-3-TABLE79-LOCAL-TAX-INDICATOR", "ATL105-2026-3-TABLE79-LOCAL-TAX-AMOUNT", "ATL105-2026-3-TABLE79-OTHER-TAX-INDICATOR", "ATL105-2026-3-TABLE79-OTHER-TAX-AMOUNT", "ATL105-2026-3-E99-EBT-TAX-LIMIT"]
+  },
+  "independentTestAssessment": {
+    "candidateDraft": "segment-100-tax-applicability-test-chain-package-v1.json",
+    "scenarioCount": 6,
+    "caseCount": 11,
+    "testDataDesignCount": 11,
+    "status": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "aiCaseReview": {
+    "caseCount": 36,
+    "caseIds": ["TC-007230", "TC-007231", "TC-007232", "TC-007233", "TC-007234", "TC-007235", "TC-011157", "TC-011158", "TC-011159", "TC-011160", "TC-011161", "TC-011162", "TC-011169", "TC-011170", "TC-011171", "TC-011172", "TC-011173", "TC-011174", "TC-011179", "TC-011180", "TC-011181", "TC-011182", "TC-011183", "TC-011184", "TC-011185", "TC-011186", "TC-011187", "TC-011188", "TC-011189", "TC-011190", "TC-020648", "TC-020649", "TC-020650", "TC-020651", "TC-020652", "TC-020653"],
+    "allElement99DeclaredOmitted": true,
+    "allPayloadHashesBoundToFrozenScreen": true,
+    "taxIndicatorOrAmountObservationsFound": 0,
+    "conclusion": "All 36 generic transaction cases declare Segment 100 Element 99 omitted. The frozen screen has no exact local/other tax indicator or amount observations in these payloads and does not identify an EBT Cash Benefits versus Food Stamps context. Some Segment 143 tax-field observations and Element 74 PC Tax omissions are distinct and do not prove these obligations. Individual AI BR associations and payload hashes are retained in the package."
+  },
+  "adjudicationGaps": [
+    "Select approved tax product codes and define the complete Segment 102-to-Element 99 arithmetic fixture and oracle.",
+    "Confirm tag/table serialization and amount presence behavior in complete Table 78 and table 079 fixtures.",
+    "Do not infer false-path requirements or indicator value 0 from source text that only lists 1=True.",
+    "Confirm EBT Cash Benefits/Food Stamps transaction encoding and tax applicability with the authorized Test owner.",
+    "Review the source-derived SEG102-R-016 and SEG100-R-047 chains before promotion or execution."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

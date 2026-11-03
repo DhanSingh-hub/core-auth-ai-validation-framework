@@ -1,0 +1,134 @@
+{
+  "id" : "TD-APPI-C055-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C055-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C055-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-54",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t055-r001-APPI-C055-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C055-OUTER-001",
+        "tableId" : "055",
+        "ruleIds" : [ "APPI-T055-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "055",
+          "logicalPayloadLength" : 4,
+          "providerValue" : "GSPY",
+          "context" : {
+            "syntheticUcomAssignment" : "Google Pay"
+          }
+        },
+        "clearScope" : "Four listed provider assignments and maximum4; assignment is a synthetic stated precondition.",
+        "excludedClaims" : [ "Real UCOM assignment", "Future provider codes", "Universal mandatory presence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Listed Google Pay code",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Real assignment authority",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "providerValue",
+            "replacement" : "ZZZZ",
+            "expected" : "FAIL source-listed domain"
+          }, {
+            "path" : "providerValue",
+            "replacement" : "AAPY",
+            "expected" : "FAIL Google Pay scenario mapping,despite listed Amazon code"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 3,
+            "expected" : "FAIL four-byte count"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "listedScenarioPairs" : [ {
+            "value" : "WMPY",
+            "provider" : "Walmart+"
+          }, {
+            "value" : "AAPY",
+            "provider" : "Amazon Pay"
+          }, {
+            "value" : "GSPY",
+            "provider" : "Google Pay"
+          }, {
+            "value" : "WXPY",
+            "provider" : "Wex Pay"
+          } ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30181,
+          "section" : "Appendix I-54",
+          "endLine" : 30201
+        }, {
+          "startLine" : 30202,
+          "section" : "Appendix I-55",
+          "endLine" : 30212
+        }, {
+          "startLine" : 30185,
+          "section" : "Appendix I-54",
+          "endLine" : 30212
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 055",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30185,
+            "section" : "Appendix I-54",
+            "endLine" : 30185
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30186,
+            "section" : "Appendix I-54",
+            "endLine" : 30188
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "An4",
+          "sourceLength" : "variable up to 4 bytes; all listed values have 4",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30189,
+            "section" : "Appendix I-54",
+            "endLine" : 30201
+          }, {
+            "startLine" : 30202,
+            "section" : "Appendix I-55",
+            "endLine" : 30212
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

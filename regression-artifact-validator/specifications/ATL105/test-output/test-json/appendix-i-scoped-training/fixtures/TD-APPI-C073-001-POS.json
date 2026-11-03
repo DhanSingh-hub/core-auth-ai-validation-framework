@@ -1,0 +1,80 @@
+{
+  "id" : "TD-APPI-C073-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C073-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C073-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-79",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t073-r001-APPI-C073-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C073-001",
+        "tableId" : "073",
+        "ruleIds" : [ "APPI-T073-R001", "APPI-T073-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-79",
+          "startLine" : 31875,
+          "endLine" : 31885
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "073",
+            "declaredDataLength" : "012",
+            "data" : "000000006000",
+            "logicalContext" : {
+              "consumer" : "MasterCard",
+              "businessRole" : "anticipated future completion"
+            }
+          },
+          "negative" : {
+            "tableId" : "073",
+            "declaredDataLength" : "012",
+            "data" : "00000000600A",
+            "logicalContext" : {
+              "consumer" : "MasterCard",
+              "businessRole" : "anticipated future completion"
+            }
+          }
+        },
+        "clearScope" : "Exactly twelve numeric bytes, 012 length value and future-completion meaning.",
+        "excludedClaims" : [ "Currency scale", "Guaranteed decline prevention", "MasterCard-only prohibition", "Zero-amount business validity", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "exactly twelve numeric data bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "declared count equals twelve actual bytes",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "exactly twelve numeric data bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "declared count equals twelve actual bytes",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[11]",
+          "from" : "0",
+          "to" : "A",
+          "unchanged" : "byte count and context",
+          "targetedFailure" : "nonnumeric fixed-width amount"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

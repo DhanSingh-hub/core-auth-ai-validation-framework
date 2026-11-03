@@ -28,6 +28,24 @@ class Segment100EwicArtifactIntakeValidatorTest {
     }
 
     @Test
+    void acceptsOptionalAuthorizationArtifactWithoutSegment103() throws Exception {
+        Path directory = Files.createTempDirectory("ai-ewic-intake-optional-103-");
+        for (int index = 0; index < OPERATIONS.length; index++) {
+            ObjectNode candidate = payload(OPERATIONS[index], CODES[index]);
+            if ("AUTHORIZATION".equals(OPERATIONS[index])) {
+                ObjectNode request = (ObjectNode) candidate.path("Financial Request");
+                request.remove("EBT Data Segment");
+                request.put("NumSegments", "01");
+            }
+            MAPPER.writeValue(directory.resolve(index + "-" + OPERATIONS[index] + ".json").toFile(), candidate);
+        }
+
+        var result = new Segment100EwicArtifactIntakeValidator().validateDirectory(directory);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
     void reportsMissingEwicOperation() throws Exception {
         Path directory = Files.createTempDirectory("ai-ewic-intake-");
         for (int index = 0; index < OPERATIONS.length - 1; index++) {

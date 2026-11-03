@@ -1,0 +1,84 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEGMENT-TYPE-E85-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-0334FA053782",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:094",
+  "aiStatement": "Segment Type must be numeric and must not exceed 3 bytes.",
+  "sourceEvidence": {
+    "sourcePage": "13-68",
+    "startLine": 21399,
+    "quote": "Number: 85 Name: Segment Type Character Type: N Maximum Length: 3 bytes Representation: Fixed length of three digits",
+    "interpretation": "The source supports numeric type and a three-byte maximum, and is more specific: Element 85 is fixed length of three digits. The AI statement is directionally aligned but omits the fixed-length requirement and per-segment fixed value."
+  },
+  "decisions": {
+    "brAlignment": "PARTIAL_SOURCE_CLAIM_OMITS_FIXED_LENGTH_AND_SEGMENT_VALUE",
+    "chainAdequacy": "UNRESOLVED_ELEMENT85_CONTAINER_BINDING",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "independentTestModel": {
+    "segmentScopes": 40,
+    "scopesWithSegmentTypeTestBR": 40,
+    "sourceAnchoredSegmentTypeRuleCount": 39,
+    "remainingScopeRepresentedByComposite": "Segment 157 BR-RULE-SEG157-R-009 includes Segment Type fixed 157 in its composite title/source anchor.",
+    "chainStatus": "Segment-specific Test BRs exist; source-derived ones are DRAFT_REVIEW_REQUIRED and their associated TS/TC/TD records remain review placeholders. Some authored Segment Type chains also exist but do not authorize AI coverage.",
+    "decision": "No new generic Test BR was added: the independent model already covers the segment-specific fixed values. Missing Test coverage is not the current bottleneck; AI payload field-to-container binding is."
+  },
+  "aiCasePopulation": {
+    "scenarioCount": 92,
+    "caseCount": 76,
+    "uniqueTransactionContexts": 19,
+    "casesPerContext": 4,
+    "scenarioClasses": {"negative_length_exceeded": 19, "negative_charset_invalid": 19, "negative_empty_value": 19, "boundary_at_limit": 19},
+    "allLinkedCaseIds": [
+      "TC-002219", "TC-002267", "TC-002268", "TC-002340", "TC-002388", "TC-002389", "TC-002477", "TC-002592", "TC-002593", "TC-002767", "TC-002813", "TC-002814", "TC-002886", "TC-002911", "TC-002912", "TC-002941", "TC-002966", "TC-002967", "TC-002992", "TC-003010", "TC-003011", "TC-003030", "TC-003039", "TC-003040", "TC-003058", "TC-003085", "TC-003086", "TC-003164", "TC-003316", "TC-003317", "TC-003555", "TC-003630", "TC-003631", "TC-003726", "TC-003731", "TC-003732", "TC-003744", "TC-003749", "TC-003750", "TC-003772", "TC-003813", "TC-003814", "TC-003877", "TC-003918", "TC-003919", "TC-003979", "TC-004004", "TC-004005", "TC-004029", "TC-004044", "TC-004045", "TC-004079", "TC-004109", "TC-004110", "TC-004151", "TC-004181", "TC-004182", "TC-004743", "TC-004768", "TC-004804", "TC-004852", "TC-004878", "TC-004892", "TC-004902", "TC-004907", "TC-004915", "TC-004952", "TC-005019", "TC-005055", "TC-005058", "TC-005068", "TC-005092", "TC-005117", "TC-005126", "TC-005140", "TC-005156"
+    ],
+    "screenedSegmentTypeObservations": {
+      "casesWithAtLeastOneObservation": 76,
+      "fieldObservationOccurrences": 560,
+      "allOccurrencesState": "IDENTITY_FIELD_REQUIRES_CONTAINER_BINDING",
+      "distinctObservedSegmentContexts": 23,
+      "distinctValuesAcrossOccurrences": 22,
+      "interpretation": "These are payload-observation occurrences, not 560 distinct test cases. Repeated Segment Type fields in nested message containers prevent a unique bind to the claimed segment from the current metadata."
+    },
+    "assessment": "All 76 cases remain in scope. Their boundary and negative labels are producer intent only; value membership and Segment Type container identity are not independently validated by the bounded screen."
+  },
+  "transactionContexts": [
+    "ECA/TeleCheck Service Transaction",
+    "ECA/TeleCheck Service Transaction Request",
+    "EMV Financial Transaction Request",
+    "EMV Request Transaction",
+    "Electronic Mail",
+    "Electronic Mail Request",
+    "FSA/HRA Purchase/Capture",
+    "FSA/HRA Transaction Request",
+    "Financial Transaction",
+    "Financial Transaction Request",
+    "Financial Transactions",
+    "Financial Transactions (Data Section No. 3)",
+    "Key Load",
+    "Loyalty Card Transaction",
+    "Loyalty Card Transaction Request",
+    "Mail Request",
+    "Proprietary Data Load Request",
+    "Totals Request",
+    "Totals with Proprietary Data Load Request"
+  ],
+  "requiredEvidenceForAdjudication": [
+    "Bind each of the 76 cases' violated Element 85 field to one explicit segment/container and source-defined segment code.",
+    "Resolve field aliases and repeated Segment Type instances in the full payload and metadata sidecar.",
+    "Compare each negative/boundary value to its segment-specific fixed Segment Type requirement and authorized expected outcome.",
+    "Obtain independent Test review and execution evidence; existing Test BR presence and producer case labels do not grant coverage."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerExpectedOutcomeAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0,
+    "executionPerformed": false
+  }
+}

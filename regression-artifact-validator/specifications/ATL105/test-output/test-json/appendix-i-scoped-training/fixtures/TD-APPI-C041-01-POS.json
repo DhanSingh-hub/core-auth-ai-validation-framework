@@ -1,0 +1,63 @@
+{
+  "id" : "TD-APPI-C041-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C041-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C041-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-35",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t041-r002-APPI-C041-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C041-01",
+        "tableId" : "041",
+        "ruleIds" : [ "APPI-T041-R001", "APPI-T041-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-35",
+          "startLine" : 28978,
+          "endLine" : 28983
+        }, {
+          "section" : "Appendix D-4",
+          "startLine" : 26227,
+          "endLine" : 26231
+        } ],
+        "logicalFields" : {
+          "subdivision" : "ZZ",
+          "tablePresent" : true,
+          "context" : {
+            "outsideUSCanada" : true,
+            "terminalNumericState" : "00"
+          }
+        },
+        "clearScope" : [ "Explicit state00 companion presence", "Two alphanumeric characters within3; opaque syntheticZZ" ],
+        "excludedClaims" : [ "ZZ is valid ISO subdivision", "D extracted001 interpretation", "Actual decline response" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "041 present with explicit non-US/Canada state00 fixture",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Subdivision ISO value certified",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "tablePresent",
+          "value" : false,
+          "targetedNegative" : "Required subdivision companion omitted"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

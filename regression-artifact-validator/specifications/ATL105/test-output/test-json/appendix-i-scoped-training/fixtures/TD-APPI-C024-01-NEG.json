@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C024-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C024-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C024-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-17",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t024-r001-APPI-C024-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C024-01",
+        "tableId" : "024",
+        "ruleIds" : [ "APPI-T024-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-17",
+          "startLine" : 28134,
+          "endLine" : 28139
+        } ],
+        "logicalFields" : {
+          "micrType" : "18",
+          "associatedRawMicr" : "t000000000t 00000000o 0001",
+          "processing" : "Unchanged raw MICR"
+        },
+        "clearScope" : [ "Listed09 raw-unchanged mapping only" ],
+        "excludedClaims" : [ "Valid bank/account/routing number", "Actual check", "Numeric-versus-T$ type correction" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Raw unchanged MICR fixture selects09",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "micrType",
+          "value" : "18",
+          "targetedNegative" : "ABA-plus-account type without transforming fixture"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

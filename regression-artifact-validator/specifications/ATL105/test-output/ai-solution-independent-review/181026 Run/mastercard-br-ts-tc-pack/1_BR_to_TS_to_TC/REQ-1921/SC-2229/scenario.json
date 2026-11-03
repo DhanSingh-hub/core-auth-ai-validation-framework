@@ -1,0 +1,205 @@
+{
+  "name": "Flow — Authorization, Completion, then duplicate Completion (Financial Transaction Request → Purchase/Capture → Purchase/Capture) [wallet-present]",
+  "requirement_id": null,
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Wallet Identifier": "05",
+    "Wallet Method": "S"
+  },
+  "table_placements": [
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        567
+      ],
+      "sub_table_id": "07",
+      "sub_table_length": "002",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_07",
+      "axis": "wallet",
+      "value": "05",
+      "parameter": "Wallet Identifier"
+    },
+    {
+      "segment": "111",
+      "table_id": "032",
+      "table_entity": "ENT-TABLE-I-032",
+      "source_pages": [
+        562,
+        569
+      ],
+      "sub_table_id": "10",
+      "sub_table_length": "001",
+      "sub_table_entity": "ENT-TABLE-I-032-SUB-SUB_TABLE_ID_10",
+      "axis": "wallet_method",
+      "value": "S",
+      "parameter": "Wallet Method"
+    }
+  ],
+  "flow_id": "FLOW-AUTH-COMPLETION-DUPLICATE",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Sequence Number must match the original transaction request.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "duplicate_completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "expected_outcome_note": "Duplicate of step 2. Whether this is declined, ignored or accepted is BUYPASS business logic and is NOT documented in ATL105 — outcome deliberately not asserted.",
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 2,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Duplicate repeats the prior completion identically.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 2,
+          "relation": "equal",
+          "element_name": "Fuel Purchase Amount",
+          "rule": "Duplicate carries the same amount as the completion it repeats. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 2,
+          "relation": "equal",
+          "element_name": "Nonfuel Amount",
+          "rule": "Duplicate carries the same amount as the completion it repeats.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 2,
+          "relation": "equal",
+          "element_name": "Tax Amount",
+          "rule": "Duplicate carries the same amount as the completion it repeats.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 2,
+          "relation": "equal",
+          "element_name": "Cash Amount",
+          "rule": "Duplicate carries the same amount as the completion it repeats.",
+          "citation_kind": "unresolved_kb_gap"
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 1.0,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "BR-402-1",
+  "source_page": null,
+  "business_rule_assertion": "Sequence Number must match the original transaction request.; Duplicate repeats the prior completion identically.; Duplicate carries the same amount as the completion it repeats. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.; Duplicate carries the same amount as the completion it repeats.; Duplicate carries the same amount as the completion it repeats.; Duplicate carries the same amount as the completion it repeats.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "8a68867d9de3bfd64f30e74807a017512c9093238d68bb5a752ef8d065fd54b4",
+  "dedup_key": "2fc49335b1f5426abed3cc4fb95646a7b49c1ee21861f997d74c2d0708974583",
+  "flow_variant_id": "wallet-present",
+  "flow_variant_name": "Digital wallet presentment",
+  "flow_axis_values": {
+    "wallet": "05",
+    "wallet_method": "S"
+  },
+  "flow_axis_provenance": {
+    "wallet": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Identifier"
+    },
+    "wallet_method": {
+      "source": "test_axes",
+      "applied_as": "table_placement",
+      "element_name": "Wallet Method"
+    }
+  },
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 3,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1921"
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2229",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ]
+}

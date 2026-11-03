@@ -1,0 +1,95 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG143-TAX-AMOUNT-3-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the Segment 143 Element 229/230/231 clauses. Test only the explicit N branch; do not infer that I/E makes Tax Type or Tax Amount required.",
+      "dataPolicy": "Field-level mutation designs only. Complete Product Code Segment context, unaffected fields, delimiters, and operation validity require authorized Test review.",
+      "baselinePolicy": "References SEG143-R-006 and its existing placeholder chain; no official Test baseline record is modified.",
+      "promotionGate": "Authorized Test review must approve field-level encoding, N-condition fixture, serialization semantics, and expected structural validation before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG143-R-006",
+      "title": "Inclusive/Exclusive flag values: I (inclusive to the product amount), E (exclusive), N (this tax not applicable; tax type and amount fields are skipped)",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.30", "segment": "143", "element": "223,226,229", "rule": "inclusive-exclusive-flag-n-omits-fields"}
+    },
+    {
+      "id": "BR-RULE-SEG143-TAX3-SCOPE-DRAFT",
+      "title": "When Inclusive/Exclusive for Tax 3 (Element 229) is N, Tax Type 3 (Element 230) and Tax Amount 3 (Element 231) are omitted",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.30,Chapter 13-Elements 229-231", "segment": "143", "element": "229,230,231", "rule": "tax3-n-omission"},
+      "relationship": "NARROW_COMPONENT_OF_BR-RULE-SEG143-R-006"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG143-E229",
+      "sourcePage": 487,
+      "startLine": 25060,
+      "quote": "If this tax amount value is “N”, both tax type and amount should be skipped.",
+      "interpretation": "Element 229 is a one-character I/E/N flag. For N, the source says both associated type and amount are skipped."
+    },
+    {
+      "id": "ATL105-2026-3-SEG143-E230-N",
+      "sourcePage": 487,
+      "startLine": 25110,
+      "quote": "Processing Rules: If the Inclusive/Exclusive flag is “N”, this field is omitted.",
+      "interpretation": "Tax Type 3 (Element 230) is omitted when the flag is N."
+    },
+    {
+      "id": "ATL105-2026-3-SEG143-E231-N",
+      "sourcePage": 488,
+      "startLine": 25156,
+      "quote": "Processing Rules: If the Inclusive/Exclusive flag is “N”, this field should be omitted.",
+      "interpretation": "Tax Amount 3 (Element 231) should be omitted when the flag is N."
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG143-TAX3-N-OMISSION",
+      "requirementIds": ["BR-RULE-SEG143-R-006", "BR-RULE-SEG143-TAX3-SCOPE-DRAFT"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG143-E229", "ATL105-2026-3-SEG143-E230-N", "ATL105-2026-3-SEG143-E231-N"],
+      "intent": "For a reviewed-valid Segment 143 Product Code context with Inclusive/Exclusive for Tax 3 set to N, verify Tax Type 3 and Tax Amount 3 are both omitted; independently mutate each associated field to be present.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG143-TAX3-N-BOTH-OMITTED", "scenarioIds": ["TS-DRAFT-SEG143-TAX3-N-OMISSION"], "testDataIds": ["TD-DRAFT-SEG143-TAX3-N-BOTH-OMITTED"], "assertion": "With Element 229 = N, Elements 230 and 231 are both omitted.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG143-TAX3-N-TYPE-PRESENT", "scenarioIds": ["TS-DRAFT-SEG143-TAX3-N-OMISSION"], "testDataIds": ["TD-DRAFT-SEG143-TAX3-N-TYPE-PRESENT"], "assertion": "With Element 229 = N, Element 230 is present while Element 231 is omitted.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG143-TAX3-N-AMOUNT-PRESENT", "scenarioIds": ["TS-DRAFT-SEG143-TAX3-N-OMISSION"], "testDataIds": ["TD-DRAFT-SEG143-TAX3-N-AMOUNT-PRESENT"], "assertion": "With Element 229 = N, Element 231 is present while Element 230 is omitted.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG143-TAX3-N-BOTH-OMITTED", "testCaseIds": ["TC-DRAFT-SEG143-TAX3-N-BOTH-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "143", "element229": "N", "element230": {"omitted": true}, "element231": {"omitted": true}}},
+    {"id": "TD-DRAFT-SEG143-TAX3-N-TYPE-PRESENT", "testCaseIds": ["TC-DRAFT-SEG143-TAX3-N-TYPE-PRESENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "143", "element229": "N", "element230": {"value": "GST"}, "element231": {"omitted": true}}},
+    {"id": "TD-DRAFT-SEG143-TAX3-N-AMOUNT-PRESENT", "testCaseIds": ["TC-DRAFT-SEG143-TAX3-N-AMOUNT-PRESENT"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "143", "element229": "N", "element230": {"omitted": true}, "element231": {"value": "000000001"}}}
+  ],
+  "openQuestions": [
+    "Confirm the full Product Code Segment context and required companion fields for a valid independent fixture.",
+    "Confirm the representation of an omitted field in the encoded segment and whether separators remain positional.",
+    "Confirm the source-conformance validator's expected structural result for each N-branch mutation; no host response is specified here.",
+    "Review the six absent approved AI payload copies for TC-010324 and TC-010340 and inspect all remaining case payloads and sidecars."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

@@ -6,6 +6,7 @@ import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalTraceabilityValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
@@ -42,8 +43,8 @@ public final class GenerateAppendixIScopedTraining {
         for (JsonNode data : output.artifactPackage().path("testData")) {
             write(destination.resolve(data.path("fileName").asText()), data);
         }
-        System.out.println("Generated 11 scoped review-only BR/TS and 22 linked logical TC/TD; "
-                + "11 supplied mutations detected. Full requests and certification remain incomplete.");
+        System.out.println("Generated 178 scoped review-only BR/TS and 372 linked logical TC/TD; "
+            + "178 supplied mutations detected. Full requests and certification remain incomplete.");
     }
 
     public static Output generate(Path root) throws IOException {
@@ -89,6 +90,17 @@ public final class GenerateAppendixIScopedTraining {
                 || !"LOGICAL_FRAGMENT".equals(candidates.path("payloadScope").asText())
                 || !"appendix-i-010-048.json".equals(candidates.path("knowledgeReference").asText())) {
             throw new IllegalStateException("Unexpected candidate scope or readiness");
+        }
+        Path table049Path = knowledge.resolve("appendix-i-candidates-049.json");
+        inputHashes.addObject().put("file", table049Path.getFileName().toString()).put("sha256", hash(table049Path));
+        JsonNode table049 = MAPPER.readTree(table049Path.toFile());
+        if (!"ATL105".equals(table049.path("specification").asText())
+                || !"2026-3".equals(table049.path("specificationVersion").asText())
+                || !"DRAFT_REVIEW_REQUIRED".equals(table049.path("status").asText())
+                || !"REVIEW_REQUIRED".equals(table049.path("readiness").asText())
+                || !"LOGICAL_FRAGMENT".equals(table049.path("payloadScope").asText())
+                || !"appendix-i-049.json".equals(table049.path("knowledgeReference").asText())) {
+            throw new IllegalStateException("Unexpected Table 049 candidate identity or readiness");
         }
         ObjectNode pkg = MAPPER.createObjectNode();
         pkg.putObject("manifest").put("packageId", "ATL105-APPENDIX-I-SCOPED-TRAINING-001")
@@ -170,6 +182,249 @@ public final class GenerateAppendixIScopedTraining {
                 evaluation.put("certified", false);
             }
         }
+        Set<String> table049Seen = new HashSet<>();
+        for (JsonNode candidate : table049.path("candidates")) {
+            String id = candidate.path("candidateId").asText();
+            if (!AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id)) continue;
+            if (!table049Seen.add(id) || !candidate.isObject()
+                    || !"REVIEW_REQUIRED".equals(candidate.path("readiness").asText())
+                    || !"LOGICAL_FRAGMENT".equals(candidate.path("payloadScope").asText())
+                    || candidate.path("ruleIds").isEmpty()
+                    || !"049".equals(candidate.path("tableId").asText())) {
+                throw new IllegalStateException("Invalid or duplicate Table 049 candidate " + id);
+            }
+            for (JsonNode ref : candidate.path("ruleIds")) {
+                if (!rules.containsKey(ref.asText())) throw new IllegalStateException("Missing Table 049 source rule " + ref);
+                supportingCandidates.computeIfAbsent(ref.asText(), ignored -> new HashSet<>()).add(id);
+            }
+            String target = AppendixIScopedCandidateValidator.mutationTarget(id);
+            JsonNode targetRule = rules.get(target);
+            if (targetRule == null) throw new IllegalStateException("Missing target Table 049 rule " + target);
+                ArrayNode anchors = MAPPER.createArrayNode();
+                ObjectNode sourceAnchor = targetRule.path("sourceAnchor").deepCopy();
+                sourceAnchor.put("rule", "scoped-" + target.toLowerCase(java.util.Locale.ROOT) + "-" + id);
+                anchors.add(sourceAnchor);
+            String brId = "BR-" + id;
+            String tsId = "TS-" + id;
+            ObjectNode br = brs.addObject();
+            br.put("id", brId).put("title", "Scoped Table 049 logical check " + target + ": " + candidate.path("clearScope"))
+                    .put("category", "BOUNDED_LOGICAL_PREDICATE")
+                    .put("applicability", "Synthetic Table 049 nested-selector context only; not complete source-rule coverage")
+                    .put("priority", "high").put("executionStatus", "REVIEW_REQUIRED");
+            br.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode scenario = scenarios.addObject();
+            scenario.put("id", tsId).put("status", "REVIEW_REQUIRED");
+            scenario.putArray("requirementIds").add(brId);
+            scenario.set("sourceAnchors", anchors.deepCopy());
+
+            JsonNode positiveValues = candidate.path("structuredLogicalFields").path("positiveDataValues");
+            if (!positiveValues.isArray() || positiveValues.isEmpty()) {
+                throw new IllegalStateException("Table 049 candidate has no positive data values: " + id);
+            }
+            for (int index = 0; index < positiveValues.size(); index++) {
+                ObjectNode positive = candidate.deepCopy();
+                ObjectNode positiveFields = (ObjectNode) positive.path("structuredLogicalFields");
+                String value = positiveValues.get(index).asText();
+                positiveFields.put("baselinePositiveData", value);
+                JsonNode lengthByValue = positiveFields.path("declaredDataLengthsByData");
+                if (lengthByValue.has(value)) positiveFields.put("declaredDataLength", lengthByValue.path(value).asText());
+                var positiveResult = validator.validate(positive);
+                if (positiveResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                        && f.status() == AppendixILogicalDataValidator.Status.PASS)
+                        || positiveResult.findings().stream().anyMatch(f -> f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                    throw new IllegalStateException("Table 049 positive candidate failed " + id + " value " + value);
+                }
+                String suffix = positiveValues.size() == 1 ? "-POS" : String.format("-POS-%02d", index + 1);
+                appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, positive, anchors,
+                        brId, tsId, target, suffix, AppendixILogicalDataValidator.Status.PASS, positiveResult);
+            }
+            ObjectNode negative = mutate(candidate);
+            var negativeResult = validator.validate(negative);
+            if (negativeResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Table 049 targeted mutation was not detected: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, negative, anchors,
+                    brId, tsId, target, "-NEG", AppendixILogicalDataValidator.Status.FAIL, negativeResult);
+        }
+        if (table049Seen.size() != table049.path("candidates").size()) {
+            throw new IllegalStateException("Table 049 candidate inventory is incomplete");
+        }
+        seen.addAll(table049Seen);
+        Path table050Path = knowledge.resolve("appendix-i-candidates-050-067.json");
+        inputHashes.addObject().put("file", table050Path.getFileName().toString()).put("sha256", hash(table050Path));
+        JsonNode table050Batch = MAPPER.readTree(table050Path.toFile());
+        if (!"ATL105".equals(table050Batch.path("specification").asText())
+                || !"2026-3".equals(table050Batch.path("specificationVersion").asText())
+                || !"DRAFT_REVIEW_REQUIRED".equals(table050Batch.path("status").asText())
+                || !"REVIEW_REQUIRED".equals(table050Batch.path("readiness").asText())
+                || !"LOGICAL_FRAGMENT".equals(table050Batch.path("payloadScope").asText())
+                || !"appendix-i-050-067.json".equals(table050Batch.path("knowledgeReference").asText())) {
+            throw new IllegalStateException("Unexpected Table 050/051 candidate identity or readiness");
+        }
+        Set<String> table050Seen = new HashSet<>();
+        for (JsonNode candidate : table050Batch.path("candidates")) {
+            String id = candidate.path("candidateId").asText();
+                if (!Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C052-OUTER-001",
+                    "APPI-C052-N01-001", "APPI-C052-N02-001", "APPI-C053-OUTER-001",
+                        "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
+                    "APPI-C065-OUTER-001", "APPI-C067-OUTER-001",
+                        "APPI-C060-OUTER-001", "APPI-C060-N01-001", "APPI-C060-N02-001",
+                        "APPI-C063-OUTER-001",
+                        "APPI-C066-OUTER-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+                        "APPI-C066-N03-001", "APPI-C066-N04-001", "APPI-C064-OUTER-001",
+                        "APPI-C064-N01-001", "APPI-C064-N02-001", "APPI-C064-N03-001", "APPI-C064-N04-001",
+                        "APPI-C056-OUTER-001", "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001",
+                        "APPI-C056-N04-001", "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001",
+                        "APPI-C056-N08-001", "APPI-C056-N09-001", "APPI-C056-N12-001", "APPI-C056-N13-001",
+                        "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-OUTER-001",
+                        "APPI-C062-N01-001", "APPI-C062-N02-001").contains(id)) continue;
+            if (!AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id)
+                    || !table050Seen.add(id) || !candidate.isObject()
+                    || !"REVIEW_REQUIRED".equals(candidate.path("readiness").asText())
+                    || !"LOGICAL_FRAGMENT".equals(candidate.path("payloadScope").asText())
+                    || candidate.path("ruleIds").isEmpty()) {
+                throw new IllegalStateException("Invalid or duplicate later-table candidate " + id
+                        + ": supported=" + AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id)
+                        + ", newlySeen=" + table050Seen.contains(id)
+                        + ", readiness=" + candidate.path("readiness").asText()
+                        + ", scope=" + candidate.path("payloadScope").asText()
+                        + ", ruleCount=" + candidate.path("ruleIds").size());
+            }
+            for (JsonNode ref : candidate.path("ruleIds")) {
+                if (!rules.containsKey(ref.asText())) throw new IllegalStateException("Missing Table 050/051 source rule " + ref);
+                supportingCandidates.computeIfAbsent(ref.asText(), ignored -> new HashSet<>()).add(id);
+            }
+            String target = AppendixIScopedCandidateValidator.mutationTarget(id);
+            JsonNode targetRule = rules.get(target);
+            if (targetRule == null) throw new IllegalStateException("Missing Table 050/051 target rule " + target);
+            ArrayNode anchors = MAPPER.createArrayNode();
+            ObjectNode sourceAnchor = targetRule.path("sourceAnchor").deepCopy();
+            sourceAnchor.put("rule", "scoped-" + target.toLowerCase(java.util.Locale.ROOT) + "-" + id);
+            anchors.add(sourceAnchor);
+            String brId = "BR-" + id;
+            String tsId = "TS-" + id;
+            ObjectNode br = brs.addObject();
+            br.put("id", brId).put("title", "Scoped logical check " + target + ": " + candidate.path("clearScope"))
+                    .put("category", "BOUNDED_LOGICAL_PREDICATE")
+                    .put("applicability", "Supplied synthetic Table 050/051 context only; not complete source-rule coverage")
+                    .put("priority", "high").put("executionStatus", "REVIEW_REQUIRED");
+            br.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode scenario = scenarios.addObject();
+            scenario.put("id", tsId).put("status", "REVIEW_REQUIRED");
+            scenario.putArray("requirementIds").add(brId);
+            scenario.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode positive = candidate.deepCopy();
+            var positiveResult = validator.validate(positive);
+            if (positiveResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.PASS)
+                    || positiveResult.findings().stream().anyMatch(f -> f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Table 050/051 positive candidate failed: " + id
+                    + "; findings=" + positiveResult.findings());
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, positive, anchors,
+                    brId, tsId, target, "-POS", AppendixILogicalDataValidator.Status.PASS, positiveResult);
+            ObjectNode negative = mutate(candidate);
+            var negativeResult = validator.validate(negative);
+            if (negativeResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Table 050/051 targeted mutation was not detected: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, negative, anchors,
+                    brId, tsId, target, "-NEG", AppendixILogicalDataValidator.Status.FAIL, negativeResult);
+        }
+        if (!table050Seen.equals(Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001",
+            "APPI-C053-OUTER-001", "APPI-C054-OUTER-001", "APPI-C055-OUTER-001",
+                "APPI-C057-OUTER-001", "APPI-C058-OUTER-001", "APPI-C059-OUTER-001",
+                "APPI-C052-OUTER-001", "APPI-C052-N01-001", "APPI-C052-N02-001",
+                "APPI-C065-OUTER-001", "APPI-C067-OUTER-001",
+                "APPI-C066-OUTER-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+                "APPI-C066-N03-001", "APPI-C066-N04-001",
+                "APPI-C064-OUTER-001", "APPI-C064-N01-001", "APPI-C064-N02-001",
+                "APPI-C064-N03-001", "APPI-C064-N04-001",
+                "APPI-C060-OUTER-001", "APPI-C060-N01-001", "APPI-C060-N02-001",
+                "APPI-C063-OUTER-001",
+                "APPI-C056-OUTER-001", "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001",
+                "APPI-C056-N04-001", "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001",
+                "APPI-C056-N08-001", "APPI-C056-N09-001", "APPI-C056-N12-001", "APPI-C056-N13-001",
+                "APPI-C062-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001"))) {
+            throw new IllegalStateException("Implemented later-table candidate inventory is incomplete");
+        }
+        seen.addAll(table050Seen);
+        Path laterCandidatePath = knowledge.resolve("appendix-i-candidates-068-081.json");
+        inputHashes.addObject().put("file", laterCandidatePath.getFileName().toString()).put("sha256", hash(laterCandidatePath));
+        JsonNode laterBatch = MAPPER.readTree(laterCandidatePath.toFile());
+        if (!"ATL105".equals(laterBatch.path("specification").asText())
+                || !"2026-3".equals(laterBatch.path("specificationVersion").asText())
+                || !"REVIEW_REQUIRED".equals(laterBatch.path("readiness").asText())
+                || !"LOGICAL_FRAGMENT".equals(laterBatch.path("payloadScope").asText())
+                || !"appendix-i-068-081.json".equals(laterBatch.path("knowledgeReference").asText())) {
+            throw new IllegalStateException("Unexpected Table 068–081 candidate identity or readiness");
+        }
+        Set<String> selectedLaterIds = Set.of("APPI-C068-001", "APPI-C069-001", "APPI-C070-001",
+            "APPI-C071-001", "APPI-C072-001", "APPI-C073-001", "APPI-C075-001",
+            "APPI-C075-002", "APPI-C075-003", "APPI-C075-004", "APPI-C075-005",
+            "APPI-C075-006", "APPI-C076-001", "APPI-C076-002", "APPI-C077-001",
+            "APPI-C078-001", "APPI-C078-002", "APPI-C078-003", "APPI-C078-004",
+            "APPI-C078-005", "APPI-C078-006", "APPI-C078-007", "APPI-C078-008",
+            "APPI-C078-009", "APPI-C078-010", "APPI-C078-011", "APPI-C078-012", "APPI-C078-013",
+            "APPI-C079-001", "APPI-C079-002", "APPI-C079-003", "APPI-C079-004",
+            "APPI-C079-005", "APPI-C079-006", "APPI-C079-007",
+            "APPI-C080-001", "APPI-C081-001");
+        Set<String> selectedLaterSeen = new HashSet<>();
+        for (JsonNode candidate : laterBatch.path("candidates")) {
+            String id = candidate.path("candidateId").asText();
+            if (!selectedLaterIds.contains(id)) continue;
+            if (!AppendixIScopedCandidateValidator.CANDIDATE_IDS.contains(id) || !selectedLaterSeen.add(id)
+                    || !"REVIEW_REQUIRED".equals(candidate.path("readiness").asText())
+                    || !"LOGICAL_FRAGMENT".equals(candidate.path("payloadScope").asText())) {
+                throw new IllegalStateException("Invalid or duplicate selected later-table candidate " + id);
+            }
+            for (JsonNode ref : candidate.path("ruleIds")) {
+                if (!rules.containsKey(ref.asText())) throw new IllegalStateException("Missing source rule " + ref);
+                supportingCandidates.computeIfAbsent(ref.asText(), ignored -> new HashSet<>()).add(id);
+            }
+            String target = AppendixIScopedCandidateValidator.mutationTarget(id);
+            JsonNode targetRule = rules.get(target);
+            if (targetRule == null) throw new IllegalStateException("Missing target rule " + target);
+            ArrayNode anchors = MAPPER.createArrayNode();
+            ObjectNode sourceAnchor = targetRule.path("sourceAnchor").deepCopy();
+            sourceAnchor.put("rule", "scoped-" + target.toLowerCase(java.util.Locale.ROOT) + "-" + id);
+            anchors.add(sourceAnchor);
+            String brId = "BR-" + id;
+            String tsId = "TS-" + id;
+            ObjectNode br = brs.addObject();
+            br.put("id", brId).put("title", "Scoped logical check " + target + ": " + candidate.path("clearScope"))
+                    .put("category", "BOUNDED_LOGICAL_PREDICATE")
+                    .put("applicability", "Supplied synthetic later-table variant only; not complete source-rule coverage")
+                    .put("priority", "high").put("executionStatus", "REVIEW_REQUIRED");
+            br.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode scenario = scenarios.addObject();
+            scenario.put("id", tsId).put("status", "REVIEW_REQUIRED");
+            scenario.putArray("requirementIds").add(brId);
+            scenario.set("sourceAnchors", anchors.deepCopy());
+            ObjectNode positive = candidate.deepCopy();
+            var positiveResult = validator.validate(positive);
+            if (positiveResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.PASS)
+                    || positiveResult.findings().stream().anyMatch(f -> f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Selected later-table positive candidate failed: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, positive, anchors,
+                    brId, tsId, target, "-POS", AppendixILogicalDataValidator.Status.PASS, positiveResult);
+            ObjectNode negative = mutate(candidate);
+            var negativeResult = validator.validate(negative);
+            if (negativeResult.findings().stream().noneMatch(f -> target.equals(f.ruleId())
+                    && f.status() == AppendixILogicalDataValidator.Status.FAIL)) {
+                throw new IllegalStateException("Selected later-table negative was not detected: " + id);
+            }
+            appendReviewOnlyLogicalCase(cases, data, evaluations, candidate, negative, anchors,
+                    brId, tsId, target, "-NEG", AppendixILogicalDataValidator.Status.FAIL, negativeResult);
+        }
+        if (!selectedLaterSeen.equals(selectedLaterIds)) {
+            throw new IllegalStateException("Selected Table 068–081 candidate inventory is incomplete");
+        }
+        seen.addAll(selectedLaterSeen);
         if (!seen.equals(AppendixIScopedCandidateValidator.CANDIDATE_IDS)) {
             throw new IllegalStateException("Implemented candidate inventory is incomplete");
         }
@@ -183,7 +438,9 @@ public final class GenerateAppendixIScopedTraining {
         report.put("suppliedMutationCount", seen.size()).put("detectedSuppliedMutationCount", seen.size());
         report.put("appendixWideMutationThresholdEstablished", false).put("approvedRuleCount", 0)
                 .put("completeRequestCount", 0).put("certifiedCaseCount", 0);
-        report.put("aiComparison", "DEFERRED_BY_USER").put("mergeToDevelop", "USER_APPROVAL_REQUIRED");
+        report.put("aiComparison", "STRUCTURAL_TRACEABILITY_ONLY_REVIEW_REQUIRED")
+            .put("aiComparisonReport", "../../ai-solution-independent-review/appendix-i-segment111-run1-comparison/comparison.json")
+            .put("mergeToDevelop", "USER_APPROVAL_REQUIRED");
         var ledger = report.putArray("ruleLedger");
         rules.forEach((ruleId, rule) -> {
             ObjectNode row = ledger.addObject();
@@ -208,6 +465,104 @@ public final class GenerateAppendixIScopedTraining {
             throw new IllegalArgumentException("A structured candidate is required for mutation");
         }
         ObjectNode result = candidate.deepCopy();
+        if ("APPI-C060-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            ((ArrayNode) result.path("syntheticData").path("records")).add(mutation.path("value").deepCopy());
+            return result;
+        }
+        if ("APPI-C063-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            ((ObjectNode) result.path("syntheticData")).set("logicalPayloadLength", mutation.path("replacement").deepCopy());
+            return result;
+        }
+        if ("APPI-C056-N08-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            String path = mutation.path("path").asText();
+            int bracket = path.indexOf('[');
+            int index = Integer.parseInt(path.substring(bracket + 1, path.length() - 1));
+            ((ArrayNode) result.path("syntheticData").path("sequenceSeries"))
+                    .set(index, mutation.path("replacement").deepCopy());
+            return result;
+        }
+        if ("APPI-C066-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            ((ArrayNode) result.path("syntheticData").path("records")).remove(2);
+            return result;
+        }
+        if ("APPI-C052-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            ((ArrayNode) result.path("syntheticData").path("nestedRecords")).remove(1);
+            return result;
+        }
+        if (candidate.path("candidateId").asText().matches("APPI-C07[0-3]-001|APPI-C06[89]-001")
+            || Set.of("APPI-C075-001", "APPI-C075-002", "APPI-C075-003", "APPI-C075-004",
+                "APPI-C075-005", "APPI-C075-006", "APPI-C076-001", "APPI-C076-002",
+                "APPI-C077-001", "APPI-C080-001", "APPI-C081-001")
+                    .contains(candidate.path("candidateId").asText())
+            || candidate.path("candidateId").asText().matches("APPI-C078-0(0[1-9]|1[0-3])|APPI-C079-00[1-7]")) {
+            ObjectNode synthetic = (ObjectNode) result.path("syntheticData");
+            synthetic.set("active", synthetic.path("negative").deepCopy());
+            return result;
+        }
+        if ("APPI-C062-OUTER-001".equals(candidate.path("candidateId").asText())) {
+            JsonNode mutation = candidate.path("mutation").path("cases").path(0);
+            ObjectNode firstRecord = (ObjectNode) result.path("syntheticData").path("records").get(0);
+            firstRecord.set("logicalLength", mutation.path("replacement").deepCopy());
+            return result;
+        }
+        if (Set.of("APPI-C050-OUTER-001", "APPI-C051-OUTER-001", "APPI-C052-N01-001",
+            "APPI-C052-N02-001", "APPI-C065-OUTER-001", "APPI-C067-OUTER-001", "APPI-C053-OUTER-001",
+            "APPI-C054-OUTER-001", "APPI-C055-OUTER-001", "APPI-C057-OUTER-001",
+            "APPI-C058-OUTER-001", "APPI-C059-OUTER-001", "APPI-C062-N01-001", "APPI-C062-N02-001",
+            "APPI-C060-N01-001", "APPI-C060-N02-001", "APPI-C066-N01-001", "APPI-C066-N02-001",
+            "APPI-C066-N03-001", "APPI-C066-N04-001",
+            "APPI-C064-OUTER-001", "APPI-C064-N01-001", "APPI-C064-N02-001", "APPI-C056-OUTER-001",
+            "APPI-C056-N01-001", "APPI-C056-N02-001", "APPI-C056-N03-001", "APPI-C056-N04-001",
+            "APPI-C056-N05-001", "APPI-C056-N06-001", "APPI-C056-N07-001", "APPI-C056-N09-001",
+            "APPI-C056-N12-001", "APPI-C056-N13-001",
+            "APPI-C064-N03-001", "APPI-C064-N04-001")
+                .contains(candidate.path("candidateId").asText())) {
+            String id = candidate.path("candidateId").asText();
+            int mutationIndex = "APPI-C053-OUTER-001".equals(id) ? 2 : 0;
+            JsonNode mutation = candidate.path("mutation").path("cases").path(mutationIndex);
+            String[] path = mutation.path("path").asText().split("\\.");
+            ObjectNode parent = (ObjectNode) result.path("syntheticData");
+            for (int index = 0; index < path.length - 1; index++) {
+                JsonNode child = parent.path(path[index]);
+                if (!child.isObject()) throw new IllegalArgumentException("Invalid mutation path: " + String.join(".", path));
+                parent = (ObjectNode) child;
+            }
+            String field = path[path.length - 1];
+            if ("remove".equals(mutation.path("operation").asText())) {
+                parent.remove(field);
+            } else {
+                JsonNode replacement = mutation.get("replacement");
+                if (replacement == null) throw new IllegalArgumentException("Missing mutation replacement: " + field);
+                parent.set(field, replacement.deepCopy());
+            }
+            return result;
+        }
+        if ("049".equals(candidate.path("tableId").asText())) {
+            ObjectNode fields = (ObjectNode) result.path("structuredLogicalFields");
+            String baseline = fields.path("baselinePositiveData").asText();
+            String target = candidate.path("mutation").path("target").asText();
+            String replacement = candidate.path("mutation").path("to").asText();
+            if ("data".equals(target)) {
+                fields.put("baselinePositiveData", replacement);
+            } else if (target.matches("data\\.character\\[[0-9]+]")) {
+                int position = Integer.parseInt(target.replaceAll(".*\\[([0-9]+)]", "$1")) - 1;
+                if (position < 0 || position >= baseline.length() || replacement.length() != 1) {
+                    throw new IllegalArgumentException("Invalid Table 049 character mutation: " + target);
+                }
+                JsonNode declaredLengths = fields.path("declaredDataLengthsByData");
+                if (!fields.has("declaredDataLength") && declaredLengths.has(baseline)) {
+                    fields.put("declaredDataLength", declaredLengths.path(baseline).asText());
+                }
+                fields.put("baselinePositiveData", baseline.substring(0, position) + replacement
+                        + baseline.substring(position + 1));
+            } else {
+                throw new IllegalArgumentException("Unsupported Table 049 mutation path: " + target);
+            }
+            return result;
+        }
         String path = candidate.path("mutation").path("path").asText();
         JsonNode replacement = candidate.path("mutation").get("value");
         if (path.isBlank() || replacement == null) throw new IllegalArgumentException("Missing targeted mutation");
@@ -225,6 +580,37 @@ public final class GenerateAppendixIScopedTraining {
         parent.set(field, replacement.deepCopy());
         return result;
     }
+
+        private static void appendReviewOnlyLogicalCase(ArrayNode cases, ArrayNode data, ArrayNode evaluations,
+            JsonNode sourceCandidate, ObjectNode input, ArrayNode anchors, String brId, String tsId,
+            String target, String suffix, AppendixILogicalDataValidator.Status expected,
+            AppendixILogicalDataValidator.Result result) {
+        String candidateId = sourceCandidate.path("candidateId").asText();
+        String tcId = "TC-" + candidateId + suffix;
+        String tdId = "TD-" + candidateId + suffix;
+        String file = "fixtures/" + tdId + ".json";
+        ObjectNode tc = cases.addObject();
+        tc.put("id", tcId).put("expectedOutcome", expected.name()).put("status", "REVIEW_REQUIRED")
+            .put("category", "logical-predicate").put("priority", "high").put("testDataFile", file);
+        tc.putArray("scenarioIds").add(tsId);
+        tc.set("sourceAnchors", anchors.deepCopy());
+        ObjectNode td = data.addObject();
+        td.put("id", tdId).put("expectedValidation", expected.name()).put("readiness", "REVIEW_REQUIRED")
+            .put("fileName", file);
+        td.putArray("testCaseIds").add(tcId);
+        td.set("sourceAnchors", anchors.deepCopy());
+        td.putObject("payload").put("scope", "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST");
+        ((ObjectNode) td.path("payload")).putObject("request").set("appendixILogicalCandidate", input);
+        td.putObject("response").put("assessment", "NOT_EXECUTED_NO_HOST_RESPONSE");
+        ObjectNode evaluation = evaluations.addObject();
+        evaluation.put("candidateId", candidateId).put("testDataId", tdId).put("mutationTarget", target)
+            .put("expectedTargetOutcome", expected.name()).put("targetOutcomeVerified", true);
+        evaluation.set("sourceRuleIds", sourceCandidate.path("ruleIds").deepCopy());
+        evaluation.set("sourceEvidence", sourceCandidate.path("sourceEvidence").deepCopy());
+        evaluation.set("excludedClaims", sourceCandidate.path("excludedClaims").deepCopy());
+        evaluation.set("findings", MAPPER.valueToTree(result.findings()));
+        evaluation.put("certified", false);
+        }
 
     private static void write(Path path, JsonNode node) throws IOException {
         MAPPER.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), node);

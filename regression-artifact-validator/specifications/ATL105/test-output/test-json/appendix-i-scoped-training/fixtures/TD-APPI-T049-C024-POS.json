@@ -1,0 +1,74 @@
+{
+  "id" : "TD-APPI-T049-C024-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C024-POS.json",
+  "testCaseIds" : [ "TC-APPI-T049-C024-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-50",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r048-APPI-T049-C024"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C024",
+        "tableId" : "049",
+        "nestedSelector" : "24",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R048" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-50",
+          "startLine" : 29880,
+          "endLine" : 29909
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "24",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "Y" ],
+          "baselinePositiveData" : "Y",
+          "negativeLogicalFields" : {
+            "data" : "N"
+          },
+          "preconditions" : {
+            "network" : "Visa",
+            "merchantAcceptsTokenUpdateFirstUse" : true
+          }
+        },
+        "clearScope" : "Visa first-use acceptance flag, not an assertion of first use.",
+        "excludedClaims" : [ "Token update occurred", "Token eligibility", "Guaranteed response043", "Live token data" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "token-first-use-acceptance-code-is-Y",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "visa-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "token-first-use-acceptance-code-is-Y",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "Y",
+          "to" : "N",
+          "targetPredicate" : "token-first-use-acceptance-code-is-Y"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

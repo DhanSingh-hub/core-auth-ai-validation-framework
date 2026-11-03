@@ -1,0 +1,88 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-007-DECLINE-CODE",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "linkedCaseCount": 0,
+    "element": "26"
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:031",
+      "obligationGroupId": "OBL-61CB4D674D2B",
+      "claim": "Decline Code must be alphanumeric and must not exceed 2 bytes.",
+      "sourceRuleId": "ENT-ELEM-26",
+      "sourceAlignment": "PARTIALLY_ALIGNED",
+      "sourceDetail": "Element 26 is Character Type AN, maximum length two bytes, and fixed length of two alphanumeric characters. The AI captures character class and maximum but omits fixed length."
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:032",
+      "obligationGroupId": "OBL-C04524B7B7A6",
+      "claim": "Decline Code must be one of: 2D, 3A, 3F, CB, FZ, I1, I2, I3, KS, W2, W3, 4I, 6C, 4M.",
+      "sourceRuleId": "ENT-ELEM-26",
+      "sourceAlignment": "PARTIAL_CONTEXTUAL_SUBSET_NOT_COMPLETE_ENUM",
+      "sourceDetail": "All 14 listed codes occur in Appendix H, but in multiple distinct contexts: 11 in the re-entry table, 4I/6C for timed-out transactions, and 4M for TransArmor token retrieval. Element 26 says 'Any valid Decline Code'; Appendix H is not declared to be the exhaustive set of all valid decline codes. The claim's generic 'must be one of' therefore is not established as complete."
+    }
+  ],
+  "aiClaimedCodes": ["2D", "3A", "3F", "CB", "FZ", "I1", "I2", "I3", "KS", "W2", "W3", "4I", "6C", "4M"],
+  "sourceEvidence": [
+    {"sourcePage": 372, "startLine": 20111, "quote": "Number: 26 Name: Decline Code"},
+    {"sourcePage": 372, "startLine": 20112, "quote": "Character Type: AN Maximum Length: 2 bytes"},
+    {"sourcePage": 372, "startLine": 20114, "quote": "Representation: Fixed length of two alphanumeric characters"},
+    {"sourcePage": 372, "startLine": 20125, "quote": "Valid Codes/Values: Any valid Decline Code."},
+    {"sourcePage": "Appendix H-2", "startLine": 27374, "quote": "The following table contains a list of valid Decline Codes that can be used to prompt a clerk/customer to reenter indicated data:"},
+    {"sourcePage": "Appendix H-2", "startLine": 27380, "quote": "!3 EBT INVALID PIN !3 Invalid PIN; please retry."},
+    {"sourcePage": "Appendix H-2", "startLine": 27381, "quote": "!W EBT INV VCHR DATA !W Invalid voucher/authorization number."},
+    {"sourcePage": "Appendix H-2", "startLine": 27382, "quote": ":H GASC INVALID PIN :H Invalid person identifier number."},
+    {"sourcePage": "Appendix H-2", "startLine": 27383, "quote": "2D HOST INVALID PIN 2D Invalid PIN."},
+    {"sourcePage": "Appendix H-3", "startLine": 27405, "quote": "The following table contains a list of Decline Codes identifying timed out transactions that should be resubmitted:"},
+    {"sourcePage": "Appendix H-3", "startLine": 27409, "quote": "4I AR PLEASE RETRY 4I Transaction timed out."},
+    {"sourcePage": "Appendix H-3", "startLine": 27410, "quote": "6C DIAL TRY AGAIN 6C Transaction timed out."},
+    {"sourcePage": "Appendix H-3", "startLine": 27416, "quote": "K= Visa\u00ae NOT APPROVED K="},
+    {"sourcePage": "Appendix H-3", "startLine": 27423, "quote": "The following table contains a Decline Code identifying a declined TransArmor transaction:"},
+    {"sourcePage": "Appendix H-3", "startLine": 27426, "quote": "4M AR PLEASE RETRY 4M"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "relevantTestBusinessRequirements": [
+      {"testBrId": "BR-RULE-SEG150-R-003", "title": "Decline Code (Element 26, 2 characters, indicates success or failure)", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Segment 150 response field, not the full Element 26 allowed-code universe.", "chain": "ONE_SYMBOLIC_SCENARIO_CASE_AND_DATA_PLACEHOLDER"},
+      {"testBrId": "BR-SEG100-ANN-H", "title": "Segment 100 financial responses interpret Appendix H decline codes for re-entry, timeout, retry, recurring-payment, and token behavior.", "status": "NOT_SET", "scope": "Contextual Appendix H response behavior; does not establish an exhaustive Element 26 enum.", "chain": "ONE_AUTHORED_SCENARIO_CASE_AND_DATA; APPROVAL/ORACLE STATUS REQUIRES REVIEW"}
+    ],
+    "relatedButDistinct": {"testBrId": "BR-RULE-SEG100-R-066", "title": "Declined financial responses carry a decline code", "sourceElement": "83", "note": "Response Code Element 83 is distinct from Decline Code Element 26."},
+    "directCompleteEnumRuleFound": false
+  },
+  "caseReview": {
+    "aiCaseCount": 0,
+    "aiCaseEvidence": "NO_LINKED_CASES_FOR_EITHER_AI_BR",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatClaimAlignment": "PARTIAL; SOURCE REQUIRES FIXED TWO-CHARACTER AN REPRESENTATION",
+    "allowedValuesClaimAlignment": "INSUFFICIENT_EVIDENCE_AS_EXHAUSTIVE_LIST; LISTED_CODES_ARE_VALID_IN_THEIR_SOURCE_CONTEXTS",
+    "testCounterparts": "RELATED_CONTEXTUAL_RULES_EXIST_BUT_ARE_NOT_COMPLETE_ELEMENT26_ENUM_COVERAGE",
+    "overall": "PRELIMINARY_PARTIAL_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Confirm whether the AI's 14-code set is intended to describe a specific transaction/response family; no such scope appears in the BR anchor or linked scenarios.",
+    "Obtain the producer's intended source for the complete allowed-value claim; do not infer that Appendix H's category tables are exhaustive of every valid decline code.",
+    "If the intended scope is Appendix H, retain category boundaries: re-entry (!3, !W, :H and listed codes), timeout (4I, 6C), Visa recurring (K=, K#), and TransArmor token retrieval (4M).",
+    "Create hash-bound positive and negative test cases with independent expected outcomes; both AI BRs currently have zero linked cases.",
+    "Keep Decline Code Element 26 distinct from financial Response Code Element 83."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

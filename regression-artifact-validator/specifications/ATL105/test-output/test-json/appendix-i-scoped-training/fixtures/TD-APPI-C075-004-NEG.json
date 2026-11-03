@@ -1,0 +1,75 @@
+{
+  "id" : "TD-APPI-C075-004-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-004-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C075-004-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t075-r004-APPI-C075-004"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-004",
+        "tableId" : "075",
+        "nestedSelector" : "03",
+        "ruleIds" : [ "APPI-T075-R004" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31927,
+          "endLine" : 31930
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tag" : "03",
+            "valueLength" : 4,
+            "value" : "P123",
+            "logicalRole" : "synthetic applied discount plan"
+          },
+          "negative" : {
+            "tag" : "03",
+            "valueLength" : 4,
+            "value" : "P12",
+            "logicalRole" : "synthetic applied discount plan"
+          },
+          "active" : {
+            "tag" : "03",
+            "valueLength" : 4,
+            "value" : "P12",
+            "logicalRole" : "synthetic applied discount plan"
+          }
+        },
+        "clearScope" : "Four-byte applied-plan identifier logical value.",
+        "excludedClaims" : [ "Real plan assignment", "Individual character-class restrictions", "Padding", "Serialized tag headers" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "actual plan value byte count equals stated valueLength 4",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "actual plan value byte count equals stated valueLength 4",
+            "outcome" : "FAIL"
+          } ]
+        },
+        "mutation" : {
+          "target" : "value",
+          "from" : "P123",
+          "to" : "P12",
+          "unchanged" : "tag, stated valueLength and role",
+          "targetedFailure" : "three-byte value for four-byte plan field"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

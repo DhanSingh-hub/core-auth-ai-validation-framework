@@ -1,0 +1,101 @@
+{
+  "id" : "TD-APPI-C076-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C076-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C076-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-81",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t076-r001-APPI-C076-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C076-001",
+        "tableId" : "076",
+        "ruleIds" : [ "APPI-T076-R001", "APPI-T076-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-81",
+          "startLine" : 31957,
+          "endLine" : 31998
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "076",
+            "declaredDataLength" : "052",
+            "data" : "1001025000000025000000000075000000000100000000034567",
+            "logicalContext" : {
+              "network" : "Visa",
+              "programParticipation" : "synthetic premise"
+            }
+          },
+          "negative" : {
+            "tableId" : "076",
+            "declaredDataLength" : "051",
+            "data" : "1001025000000025000000000075000000000100000000034567",
+            "logicalContext" : {
+              "network" : "Visa",
+              "programParticipation" : "synthetic premise"
+            }
+          },
+          "positiveVariants" : [ {
+            "numberOfLineItems" : "0",
+            "data" : "0",
+            "declaredDataLength" : "001",
+            "scope" : "count-zero syntax only"
+          }, {
+            "numberOfLineItems" : "5",
+            "repeatItemData" : "001025000000025000000000075000000000100000000034567",
+            "repetitions" : 5,
+            "derivedDataLength" : 256,
+            "scope" : "logical count plus five exact item strings; not a host transaction"
+          } ],
+          "active" : {
+            "tableId" : "076",
+            "declaredDataLength" : "051",
+            "data" : "1001025000000025000000000075000000000100000000034567",
+            "logicalContext" : {
+              "network" : "Visa",
+              "programParticipation" : "synthetic premise"
+            }
+          }
+        },
+        "clearScope" : "Actual positional payload string: count 1 followed by widths 3/4/8/12/12/12, totaling 52 bytes. Count syntax endpoints 0 and 5 modeled separately.",
+        "excludedClaims" : [ "Real enrollment/product assignment", "Unit/flat/total discount scales", "Host handling of count-zero entry", "Full segment" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "declaredDataLength equals actual data length 52",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "data length equals 1 + 51 times numeric leading count",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "declaredDataLength equals actual data length 52",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data length equals 1 + 51 times numeric leading count",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "declaredDataLength",
+          "from" : "052",
+          "to" : "051",
+          "unchanged" : "positional data and program premise",
+          "targetedFailure" : "one-byte outer count mismatch"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

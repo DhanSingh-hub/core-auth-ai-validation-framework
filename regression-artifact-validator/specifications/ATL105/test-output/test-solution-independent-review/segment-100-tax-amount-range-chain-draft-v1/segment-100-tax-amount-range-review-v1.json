@@ -1,0 +1,47 @@
+{
+  "reviewId": "ATL105-SEG100-TAX-AMOUNT-RANGE-REVIEW-001",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "authority": "SOURCE_CITED_REVIEW_NOT_APPROVAL",
+  "obligationGroupId": "OBL-77DA6C28EF19",
+  "aiBrId": "REQ-SRC-ATL105-PDF-001:1957",
+  "sourceFinding": {
+    "aiClaim": "Tax Amount valid value range is 1-9999999.",
+    "assessment": "The stated range matches ATL105's Element 99 valid-values range. It omits the numeric type and two assumed decimal places. The source permits eight bytes for American Express and seven bytes for other card types, but the valid-value ceiling itself remains 9999999.",
+    "sourceEvidenceIds": ["ATL105-2026-3-E99-NUMERIC-MAX", "ATL105-2026-3-E99-DECIMALS", "ATL105-2026-3-E99-CARD-WIDTHS", "ATL105-2026-3-E99-VALID-RANGE"],
+    "distinction": "Element 99 Tax Amount is distinct from Element 74 PC Tax Amount."
+  },
+  "independentTestAssessment": {
+    "existingRule": "SEG100-R-047",
+    "existingRuleScope": "Total tax amount semantics; not an Element 99 value-range rule.",
+    "chainState": "DRAFT_REVIEW_REQUIRED_PLACEHOLDER",
+    "candidateDraft": "segment-100-tax-amount-range-test-chain-package-v1.json",
+    "candidateDesign": "One scenario with inclusive minimum/maximum and out-of-range boundary vectors; no tax calculation or execution is claimed.",
+    "status": "REVIEW_REQUIRED"
+  },
+  "aiCaseReview": {
+    "caseCount": 6,
+    "cases": [
+      {"caseId": "TC-009272", "payloadSha256": "748e690d8c4bd4c4f529118b1655f9110739b17345856370e9edd07cdc7e72c8", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-009273", "payloadSha256": "fdcb0fb5f643e6f4ad3ed2c950b9e37fd9a6b827b427df4a0e3cf1da5cb619ab", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-009274", "payloadSha256": "40d9bbb74cabc107a3f7c4e51c1c537e183ade0241f0ecb22e33a62bd172588d", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-009275", "payloadSha256": "8600210a194db38d99ef08202e201212bde664f5a1eebf0e9d3d283971591c10", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-009276", "payloadSha256": "d6a94ba1c24f736afd39854be39ab67a3d8206bd9ea1d623526c6dcb4d80ec8c", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"},
+      {"caseId": "TC-009277", "payloadSha256": "a8e0e9737dcc2905237a993f43dc4730ace7ae22ba502383b3d314e7e17c10e1", "element99": "DECLARED_OMISSION_NO_EXACT_FIELD"}
+    ],
+    "conclusion": "All six frozen candidate payload observations declare Segment 100 Element 99 omitted. None demonstrates the correct range, numeric type, assumed-decimal representation, or the total-tax semantic rule."
+  },
+  "adjudicationGaps": [
+    "Confirm tax applicability and currency context for complete Segment 100 fixtures. ATL105 notes sales tax applies to EBT Cash Benefits only and not EBT Food Stamps.",
+    "Confirm the serialized meaning of the minimum value under the two assumed decimal places.",
+    "Keep Element 99 total tax semantics and Element 74 PC Tax Amount independent from this range oracle.",
+    "Review complete fixtures and expected outcomes with the authorized Test owner before promotion or execution."
+  ],
+  "guardrails": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "officialBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

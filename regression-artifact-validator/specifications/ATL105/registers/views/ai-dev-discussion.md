@@ -4,7 +4,7 @@
 
 Topics that need agreement between the Test Team and the AI Solution Team before either side changes its artifacts.
 
-**Status:** 4 open (4 total).
+**Status:** 5 open (5 total).
 
 | ID | Subject | Status | Owner | Raised |
 | --- | --- | --- | --- | --- |
@@ -12,6 +12,7 @@ Topics that need agreement between the Test Team and the AI Solution Team before
 | [AID-0002](#aid-0002) | Agree the message-family vocabulary | OPEN | Test Team + AI Solution Team | 2026-09-29 |
 | [AID-0003](#aid-0003) | Which segments may accompany a Financial Transaction Request? | OPEN | Test Team + AI Solution Team | 2026-09-29 |
 | [AID-0004](#aid-0004) | What Segment 111 content should an ECA/TeleCheck request carry? | OPEN | Test Team + AI Solution Team | 2026-09-29 |
+| [AID-0005](#aid-0005) | Agree the versioned mapping for Segment 100 account/track aliases and EMV data | OPEN | Test Team + AI Solution Team | 2026-10-16 |
 
 <a id="aid-0001"></a>
 ## AID-0001: Agree one QE payload naming convention
@@ -58,3 +59,15 @@ The Chapter 12 matrix places Segments 108, 110, 113 and 114 in the Financial Tra
 Section 11.3.1 requires Segment 111 (maximum 20 bytes) in ECA/TeleCheck requests but names no Variable Information table for it. The Test Solution fixtures use a synthetic Table ID 047 placeholder. Agree the table and content with the AI team once the SME confirms.
 
 **Related:** [SEG111-SME-001](../../docs/specs/kb/segment-111/segment-111-sme-tba-input-register.md#seg111-sme-001), [SEG113-SME-008](../../docs/specs/kb/segment-113/segment-113-sme-tba-input-register.md#seg113-sme-008)
+
+<a id="aid-0005"></a>
+## AID-0005: Agree the versioned mapping for Segment 100 account/track aliases and EMV data
+
+- **Status:** OPEN
+- **Owner:** Test Team + AI Solution Team
+- **Raised:** 2026-10-16 by Test Solution validation review
+- **Segments:** 100, 130
+
+A user-supplied Authorization JSON represents account/track information with a producer-level `TrackData` property and also includes Segment 130 EMV data. ATL105 Chapter 13 does not define `TrackData` as a Segment 100 wire element: for Track 2, Element 2 is the source data before `=`, and Element 12 is the source data after `=`; for Track 1, the split is at the first `^`. The supplied logical alias uses a different delimiter, but no producer-to-ATL105 converter contract was provided to establish what that delimiter means. Agree and version an adapter contract that declares entry method, distinguishes raw/aggregate track input from normalized Elements 2 and 12, specifies supported delimiters and conversion behavior, and maps Segment 130 EMV data independently. Supply synthetic positive, negative, boundary, and round-trip examples. Do not publish or copy the supplied account, track, or chip values; do not infer entry method, normalize the delimiter, or reject the request until the contract is established. This remains a format discussion, not a confirmed AI defect or SME decision.
+
+**Related:** [AIF-0007](ai-feedback.md#aif-0007)

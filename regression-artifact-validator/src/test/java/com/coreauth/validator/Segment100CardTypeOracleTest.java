@@ -1,12 +1,15 @@
 package com.coreauth.validator;
 
 import com.coreauth.validator.canonical.Segment100CardTypeOracle;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,6 +38,33 @@ class Segment100CardTypeOracleTest {
                         .as("Prompt Code %s%s", transactionType, cardCode).isEmpty();
             }
         }
+    }
+
+    @Test
+    void observedCertificationPairsPassSyntacticValidationWithoutBecomingAnExhaustiveMatrix() throws Exception {
+        Path evidencePath = Path.of("specifications", "ATL105", "docs", "specs", "kb", "segment-100", "coverage",
+                "segment-100-observed-prompt-code-pairs.json");
+        JsonNode evidence = MAPPER.readTree(evidencePath.toFile());
+        Segment100CardTypeOracle oracle = new Segment100CardTypeOracle();
+        Set<String> observedCodes = new HashSet<>();
+        int observedCases = 0;
+
+        assertThat(evidence.path("status").asText()).isEqualTo("OBSERVED_EXECUTION_EVIDENCE_NOT_EXHAUSTIVE_RULE");
+        for (JsonNode pair : evidence.path("pairs")) {
+            String transactionType = pair.path("transactionType").asText();
+            String cardType = pair.path("cardType").asText();
+            String promptCode = pair.path("promptCode").asText();
+            assertThat(promptCode).isEqualTo(transactionType + cardType);
+            assertThat(oracle.validateAiPayload(promptCode, payload(transactionType, cardType)).errors())
+                    .as("observed Prompt Code %s", promptCode).isEmpty();
+            observedCodes.add(promptCode);
+            observedCases += pair.path("caseCount").asInt();
+        }
+
+        assertThat(observedCodes).hasSize(evidence.path("observedPairCount").asInt()).hasSize(16);
+        assertThat(observedCases).isEqualTo(evidence.path("observedCaseCount").asInt()).isEqualTo(46);
+        assertThat(evidence.path("interpretationBoundaries").toString())
+                .contains("do not generate or approve the 13-by-36 cross product");
     }
 
     @Test

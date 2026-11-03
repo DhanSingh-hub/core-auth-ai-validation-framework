@@ -1,0 +1,79 @@
+{
+  "sampleId": "S03",
+  "sampleType": "single-leg",
+  "legCount": 1,
+  "source": {
+    "runFolder": "181026 Run",
+    "specId": "SRC-ATL105-PDF-001",
+    "specVersion": "2026-3",
+    "generatedAt": "2026-10-18T18:28:12.926647+00:00",
+    "requirementArtifact": "Requirement candidates/requirement_candidates.json",
+    "scenarioArtifact": "scenarios/scenarios/approved/approved_scenarios.json",
+    "testCaseArtifact": "test_case_candidates.json",
+    "matrixArtifact": "traceability_matrix_full.json",
+    "testDataDirectory": "qe_shaped_test_data/qe_shaped_test_data"
+  },
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:3875"
+    ],
+    "scenarioIds": [
+      "SC-1002"
+    ],
+    "testCaseId": "TC-000930",
+    "flowId": null,
+    "transactionType": "POS Purchase/Capture (0; completion context not established)",
+    "messageFormatType": "EMV Financial Transaction Request",
+    "promptCode": "0020",
+    "transactionTypeCode": "0",
+    "verificationStatus": [
+      "PASS"
+    ],
+    "matrixTraceStatuses": [
+      "FULLY_TRACED"
+    ],
+    "allRequirementsPresent": true,
+    "scenarioPresent": true,
+    "testCasePresent": true,
+    "allDataLegsPresent": true,
+    "links": [
+      {
+        "businessRequirement": {
+          "id": "REQ-SRC-ATL105-PDF-001:3875",
+          "file": "requirements/REQ-3875.json",
+          "statement": "In EMV Request Data Segment (Data Segment No. 130), field 6 (EMV Chip Data) is required and must be present.",
+          "sourceRuleId": "ENT-FIELD-130-6",
+          "sourcePage": 268,
+          "traceStatus": "FULLY_TRACED"
+        },
+        "scenario": {
+          "id": "SC-1002",
+          "file": "scenarios/SC-1002.json",
+          "name": "Negative — EMV Financial Transaction Request — EMV Chip Data violates: mandatory field omitted",
+          "chainSide": "request",
+          "linkBasis": "direct",
+          "flowId": null
+        },
+        "testCase": {
+          "id": "TC-000930",
+          "file": "test_cases/TC-000930.json",
+          "transactionType": "POS Purchase/Capture (Prompt Code 0; may also represent preauthorized completion; the one-leg data does not establish completion context)",
+          "sourceMessageFormatType": "EMV Financial Transaction Request",
+          "verificationStatus": "PASS"
+        },
+        "testData": [
+          {
+            "file": "test_data/TD-TC-000930.json",
+            "sourceFile": "qe_shaped_test_data/TD-TC-000930.json",
+            "sourceSha256": "28a5c8ab88450b6fafc0c81b328d8085c2a947a7d96518016eb0f8b3d41125e3",
+            "demoSha256": "c1724bbcae614aedd6e8c0566a742d1b58b47660262ba333c909c030e2af561f"
+          }
+        ]
+      }
+    ]
+  },
+  "dataSanitization": {
+    "applied": true,
+    "notice": "Sensitive-looking values in copied records are masked with X characters while preserving string length. The copy is not an executable fixture."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "id" : "TD-APPI-C079-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C079-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-86",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t079-r001-APPI-C079-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-001",
+        "tableId" : "079",
+        "ruleIds" : [ "APPI-T079-R001", "APPI-T079-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-86",
+          "startLine" : 32321,
+          "endLine" : 32328
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "079",
+            "declaredDataLength" : "021",
+            "logicalContext" : {
+              "network" : "Visa",
+              "card" : "commercial",
+              "scope" : "future aggregate data"
+            },
+            "subTables" : [ {
+              "id" : "01",
+              "declaredValueLength" : "01",
+              "data" : "1"
+            }, {
+              "id" : "02",
+              "declaredValueLength" : "12",
+              "data" : "000000000125"
+            } ]
+          },
+          "negative" : {
+            "tableId" : "079",
+            "declaredDataLength" : "020",
+            "logicalContext" : {
+              "network" : "Visa",
+              "card" : "commercial",
+              "scope" : "future aggregate data"
+            },
+            "subTables" : [ {
+              "id" : "01",
+              "declaredValueLength" : "01",
+              "data" : "1"
+            }, {
+              "id" : "02",
+              "declaredValueLength" : "12",
+              "data" : "000000000125"
+            } ]
+          }
+        },
+        "clearScope" : "Small logical aggregate fragment; two formal sub-tables occupy (2+2+1)+(2+2+12)=21 bytes under their explicit local header widths.",
+        "excludedClaims" : [ "Mandatory pair or order", "Empty/duplicate handling", "Maximum effective payload", "078 aggregate reconciliation", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "declaredDataLength equals sum of explicit sub-table header and value widths, 21",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "declaredDataLength equals sum of explicit sub-table header and value widths, 21",
+            "outcome" : "FAIL"
+          } ]
+        },
+        "mutation" : {
+          "target" : "declaredDataLength",
+          "from" : "021",
+          "to" : "020",
+          "unchanged" : "aggregate context and two sub-tables",
+          "targetedFailure" : "outer data count mismatches logical sub-table widths"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

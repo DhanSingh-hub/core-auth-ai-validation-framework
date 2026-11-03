@@ -1,0 +1,62 @@
+brId,family,page,quote,scope,section,status
+BR-POSEM-001,FORMAT,548,"Note: The POS Entry Mode field must be populated for all transactions, which include EMV, Magstripe, and Key Entered transactions from all POS devices for any given solution.",ALL,Appendix I. Variable Information Data Layouts - Point-of-Service Entry Mode Information (Table ID 005),ACTIVE
+BR-POSEM-002,FORMAT,548,Table ID n Fixed value: 005,ALL,Appendix I. Variable Information Data Layouts - Point-of-Service Entry Mode Information (Table ID 005),ACTIVE
+BR-POSEM-002,FORMAT,416,005 Point-of-service entry mode indicator,ALL,13 Element No. 111 Variable Information Indicator,ACTIVE
+BR-POSEM-003,FORMAT,548,Table Length n 3 Table Data n Fixed Len.: 3,ALL,Appendix I. Variable Information Data Layouts - Point-of-Service Entry Mode Information (Table ID 005),ACTIVE
+BR-POSEM-004,FORMAT,631,A valid 3-digit Point-of-Service Entry Mode code has the following components: • 2-digit PAN Entry Mode code in position nos. 1–2 • 1-digit Terminal Capability Mode code in position no. 3,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-005,FORMAT,631,Valid PAN Entry Mode Codes Pos. Nos. 1–2 Description,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-006,FORMAT,632,Position 3 Description,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-010,LIFECYCLE,631,"Note: The POS Entry Mode values listed below must persist throughout the lifecycle of the transactions, except as noted below the Valid PAN Entry Mode Codes table.",ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-011,LIFECYCLE,631,"Due to credit authorizer (American Express, Diners Club®, Discover® Network, JCB®, MasterCard®, MasterCard® Fleet, Visa®, and Visa® Fleet) and debit authorizer regulatory requirements regarding storage of full track data",Credit authorizers and debit authorizers; EBT unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-011,LIFECYCLE,631,previously authorized credit and debit transactions (Voids and Completions) can only pass the account number and expiration date to BUYPASS.,Credit authorizers and debit authorizers; EBT unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-011,LIFECYCLE,631,"These transactions will use the same PAN Entry Mode code as their corresponding original Purchase or Authorization transaction, with one exception:",Credit authorizers and debit authorizers; EBT unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-012,LIFECYCLE,631,previously authorized credit and debit transactions (Voids and Completions) can only pass the account number and expiration date to BUYPASS.,Credit authorizers and debit authorizers; EBT unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-012,LIFECYCLE,631,They will use a PAN Entry Mode code 02 when referencing an original Purchase or Authorization transaction in which a PAN Entry Mode code 90 was used.,Credit authorizers and debit authorizers; EBT unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-020,COF,631,"Entry Mode 10 is applicable to Visa Credit, MasterCard Credit, Discover Credit, and Amex transactions where merchant or cardholder is initiating a transaction based on the credentials already stored on the file.",VISA/MASTERCARD/DISCOVER credit and AMEX; other groups review,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-021,COF,631,The value is NOT applicable to the first transaction where credentials are being verified or stored.,VISA/MASTERCARD/DISCOVER credit and AMEX,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-021,COF,706,"The original POS Entry mode (for example: 02, 90 etc. respectively as defined in Appendix J) will be sent",VISA/MASTERCARD/DISCOVER credit and AMEX,Appendix Z. Stored Credential,ACTIVE
+BR-POSEM-022,COF,631,The value is also applicable to the subsequent Debit Completions and Debit Reversals when the original transaction was initiated as a Credit COF transaction.,DEBIT; STAR Signature Debit unconfirmed,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-023,COF,568,POS Entry Mode 10 should be used for all subsequent COF transactions (when the COF indicator is ‘C’).,VISA/MASTERCARD/DISCOVER credit and AMEX; other groups review,Appendix I. Variable Information Data Layouts - Table ID 049 Sub Table ID 02,ACTIVE
+BR-POSEM-023,COF,706,"For all card types, POS Entry Mode value of ‘10’ must be submitted in Data Element 111, Table ID 05 - Point-of-Service Entry Mode",VISA/MASTERCARD/DISCOVER credit and AMEX; other groups review,Appendix Z. Stored Credential,ACTIVE
+BR-POSEM-023,COF,706,"The use cases apply to Visa, MasterCard, Discover, and Amex.",VISA/MASTERCARD/DISCOVER credit and AMEX; other groups review,Appendix Z. Stored Credential,ACTIVE
+BR-POSEM-024,DISCOVER,631,"For Discover, POS Entry Mode ‘10’ must NOT be present in the following scenarios:",DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-024,DISCOVER,631,QR Code/Bar Code/Payment Code transactions,DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-025,DISCOVER,631,"For Discover, POS Entry Mode ‘10’ must NOT be present in the following scenarios:",DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-025,DISCOVER,631,Card Sales with card account information stored by an Issuer or provisioned in a digital wallet,DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-026,DISCOVER,631,"For Discover, Entry Mode 82 must NOT be assigned to card transactions for which the cardholder uses their stored card account information.",DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-027,DISCOVER,631,Discover Credential on File transactions must use the POS Entry Mode value of '10'.,DISCOVER,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-030,CAPABILITY,632,"If a Contactless MSR is attached to the POS device and it has no chip capability, then all transactions will use Terminal PIN Entry Capability Mode code 8",ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-031,CAPABILITY,632,For EMV Contact and Contactless the valid PIN Entry Capability Mode code is 1 and not 8. The PIN Entry Capability Mode code 8 is reserved only for Contactless MSR,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-032,CAPABILITY,632,"If no Contactless MSR is attached, and the POS device has the PIN debit feature enabled, then all transactions will use Terminal PIN Entry Capability Mode code 1",ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-033,CAPABILITY,632,"If no Contactless MSR is attached, and the POS device has the PIN debit feature disabled, then all transactions will use Terminal PIN Entry Capability Mode code 2.",ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-034,CAPABILITY,632,PIN entry capability mode code 3 is applicable only to MasterCard Mobile POS transactions.,MASTERCARD; named non-MasterCard networks reject; generic groups review,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-035,CAPABILITY,632,mPOS Devices Phone/Tablet + Dongle with PIN Pad should have PIN Entry Capability Mode code as 1.,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-036,CAPABILITY,632,mPOS Devices Phone/Tablet + Dongle without PIN Pad should have PIN Entry Capability Mode code as 3.,MASTERCARD; other groups review,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-040,RFID,84,"Even if the transaction is swiped, manually keyed, or uses a card type for which RFID is not applicable, Point-of-Sale Entry Mode must be populated correctly in the transaction request from the point-of-sale when an RFID receiver is present.",ALL,10.1.5 Radio Frequency Identification Service,ACTIVE
+BR-POSEM-041,GIFT,123,Bar Code Scanned Gift card should be treated as a manually entered transaction.,Gift card program context,10.7.2.2 Manual Entry/Bar Code,ACTIVE
+BR-POSEM-041,GIFT,123,The entry mode should be “01”.,Gift card program context,10.7.2.2 Manual Entry/Bar Code,ACTIVE
+BR-POSEM-042,GIFT,123,The entry mode should be received as “90” for Blackhawk Scanned transactions.,Gift card program context,10.7.2.2 Manual Entry/Bar Code,ACTIVE
+BR-POSEM-043,FALLBACK,159,"Regardless, a Fallback will occur whenever an EMV Certified solution cannot read or obtain a viable matching AID.",ALL,10.14.4 EMV Fallback Transaction Processing,ACTIVE
+BR-POSEM-043,FALLBACK,159,Always send the Fallback Entry Mode of ‘80’or spec equivalent,ALL,10.14.4 EMV Fallback Transaction Processing,ACTIVE
+BR-POSEM-044,FALLBACK,159,Send as a MSR Entry Mode of ‘90’or spec equivalent,ALL,10.14.4 EMV Fallback Transaction Processing,ACTIVE
+BR-POSEM-045,TOKEN,681,A value that is used to indicate the token presentment mode through which the token is presented for payment.,AMEX/VISA/MASTERCARD/DISCOVER,Appendix O. Payment Token Terminologies,REVIEW_REQUIRED
+BR-POSEM-PAN-00,CODE_VALUES,631,00 Unspecified,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-01,CODE_VALUES,631,01 Manual/keyed,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-02,CODE_VALUES,631,02 Magnetic stripe read with partial track data1 sent to the host,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-04,CODE_VALUES,631,04 Bar Code Scan,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-05,CODE_VALUES,631,05 Integrated circuit card (ICC) read – CVV data reliable (used for EMV chip,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-07,CODE_VALUES,631,07 Contactless chip read (used for contactless chip),ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-10,CODE_VALUES,631,10 Credential on file2,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-79,CODE_VALUES,631,79 Contact and Contactless chip fallback to manual,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-80,CODE_VALUES,631,80 Chip card capable – unaltered track data read (used for contact EMV fall,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-82,CODE_VALUES,631,82 Contactless mobile commerce device3,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-86,CODE_VALUES,631,86 Dual interface contactless chip to contact chip,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-90,CODE_VALUES,631,90 Magnetic stripe read with full track data1 sent to the host,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-91,CODE_VALUES,631,91 Full contactless magnetic stripe read with track data1 sent to the host,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-PAN-95,CODE_VALUES,631,95 Integrated circuit card (ICC) read – CVV data unreliable,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-0,CODE_VALUES,632,0 Unspecified,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-1,CODE_VALUES,632,1 PIN entry capability (including both EMV Contact and Contactless),ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-2,CODE_VALUES,632,2 No PIN entry capability (including both EMV Contact and Contactless),ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-3,CODE_VALUES,632,3 mPOS Software-based PIN Entry Capability,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-6,CODE_VALUES,632,6 PIN pad inoperative,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE
+BR-POSEM-CAP-8,CODE_VALUES,632,8 Contactless Magnetic Stripe Read Capability,ALL,Appendix J. Valid Point-of-Service Entry Mode Codes,ACTIVE

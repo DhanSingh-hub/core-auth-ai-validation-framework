@@ -1,0 +1,106 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-SEG130-EMV-CHIP-LENGTH-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-ACB52512D020",
+  "aiBrRecords": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:1347", "sourcePage": 267, "sourceRuleId": "BR-267-4", "linkedCaseId": "TC-007688"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:2265", "sourcePage": 470, "sourceRuleId": "BR-470-7", "linkedCaseId": "TC-010223"}
+  ],
+  "aiStatement": "EMV Chip Data Length valid values are 000-999.",
+  "independentTestBrId": "BR-RULE-SEG130-R-007",
+  "decisions": {
+    "brAlignment": "ALIGNED_TO_VALUE_DOMAIN_ONLY",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceConclusion": {
+    "sourceEvidenceIds": ["ATL105-2026-3-CH13-E189", "ATL105-2026-3-CH13-E190", "ATL105-2026-3-APPENDIX-R-CHIP-LENGTH"],
+    "facts": [
+      "Element 189 is required in all EMV transactions, fixed length of three digits, and has valid values 000 through 999.",
+      "Element 189 identifies the length of the following Element 190 field.",
+      "Element 190 is required in all EMV transactions and is preceded by a three-digit length indicator."
+    ],
+    "scopeNote": "The AI BR accurately states the value domain but omits the required presence and length-to-following-data relation in the broader Test BR."
+  },
+  "aiCaseEvidence": [
+    {
+      "caseId": "TC-007688",
+      "scenarioId": "SC-6721",
+      "transaction": "EMV Financial Transaction Request",
+      "intent": "business_rule",
+      "violatedElement": null,
+      "payloadObservationState": "HASH_VERIFIED_OBSERVATIONS_ONLY",
+      "payloadSha256": "93446785cc4008b3afbfad403fa38c49bc63792b970942015b700605da987610",
+      "candidatePayloadCopies": 2,
+      "element189Value": "000",
+      "element190": "NON_EMPTY",
+      "assessment": "The candidate payload observation records a zero length indicator alongside non-empty following data; this does not demonstrate a conforming length/data pair."
+    },
+    {
+      "caseId": "TC-010223",
+      "scenarioId": "SC-7639",
+      "transaction": "EMV Financial Transaction Request",
+      "intent": "business_rule",
+      "violatedElement": null,
+      "payloadObservationState": "HASH_VERIFIED_OBSERVATIONS_ONLY",
+      "payloadSha256": "fffa5682189dcf98bc1a36bd9cd43a4a373062e93e4157ac6342d88003dcce4c",
+      "candidatePayloadCopies": 2,
+      "element189Value": "000",
+      "element190": "NON_EMPTY",
+      "assessment": "The candidate payload observation records a zero length indicator alongside non-empty following data; this does not demonstrate a conforming length/data pair."
+    }
+  ],
+  "independentTestModel": {
+    "sourceDerivedRule": "SEG130-R-007",
+    "officialPlaceholderScenario": "TS-REVIEW-BR-RULE-SEG130-R-007",
+    "officialPlaceholderCase": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG130-R-007",
+    "officialPlaceholderData": "TD-REVIEW-TC-REVIEW-BR-RULE-SEG130-R-007",
+    "placeholderScenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"],
+    "authoredCandidateChain": {
+      "businessRequirement": "BR-SEG100-APPR-CHIP-LENGTH",
+      "testScenario": "TS-SEG100-APPR-CHIP-DATA",
+      "testCase": "TC-SEG100-APPR-CHIP-DATA",
+      "testData": "TD-SEG100-APPR-CHIP-LENGTH",
+      "existingVector": "Element 189 = 010; Element 190 = 9F0607A0000000980840 (10 encoded bytes)",
+      "testDataReadiness": "REVIEW_REQUIRED",
+      "negativeDataVectorCount": 0,
+      "assessment": "Useful positive design reference; the case text mentions length mismatch, but the package has no concrete mismatch Test Data vector and no execution evidence."
+    }
+  },
+  "supplementalDraft": {
+    "path": "segment-130-emv-chip-length-test-chain-package-v1.json",
+    "scenarioCount": 1,
+    "newMismatchCases": ["TC-DRAFT-SEG130-E189-MISMATCH-ZERO", "TC-DRAFT-SEG130-E189-MISMATCH-PLUS-ONE"],
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "candidateTestBrIdsNotPromoted": [
+    "SEG130-R-007",
+    "BR-SEG100-APPR-CHIP-LENGTH",
+    "BR-SEG100-APPR-TLV-FORMAT",
+    "SEG131-R-008",
+    "SEG130-R-008",
+    "BR-SEG100-ANN-R",
+    "SEG130-R-012",
+    "BR-SEG100-APPR-CROSS-FIELD",
+    "SEG130-R-009",
+    "SEG130-R-006"
+  ],
+  "requiredEvidenceForAdjudication": [
+    "Authorized Test-owner confirmation of the Element 189 length unit for BCD-packed/hex data.",
+    "Full payload and sidecar review for each AI case, beyond the bounded hash-verified field observations.",
+    "Approved full EMV request fixtures and expected validation behavior for a mismatched Element 189/190 pair.",
+    "Readiness review and execution evidence for the existing or supplemental Test vectors."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "producerResponseOracleAccepted": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

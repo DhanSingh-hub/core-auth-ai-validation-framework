@@ -1,0 +1,96 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SEG102-UNIT-PRICE-PRESENCE-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use Product Code Data Segment field 8's R marker for required presence; use the explicit 0.059/three-assumed-decimal example only as a source-backed populated-value design.",
+      "dataPolicy": "Presence-focused field design only. Do not infer all Unit Price values use three decimal places; the decimal count and product context are explicit per vector.",
+      "baselinePolicy": "References the Segment 102 source field table and existing SEG102-R-013 format rule; adds a review-only presence component, not an official rule.",
+      "promotionGate": "Authorized Test review must confirm a valid complete Product Code Data Segment request, contextual decimal places, omission handling, and readiness before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG102-UNIT-PRICE-PRESENCE-DRAFT",
+      "title": "Product Code Data Segment field 8 / Element 107 Unit Price is required when the segment's product record is present.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.3", "segment": "102", "element": "107", "rule": "unit-price-required-in-product-data"}
+    },
+    {
+      "id": "BR-RULE-SEG102-R-013",
+      "title": "Unit Price preserves the assumed-decimal-place leading digit",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.3", "segment": "102", "element": "107", "rule": "unit-price-assumed-decimal"},
+      "relationship": "EXISTING_FORMAT_RULE_REFERENCE_ONLY_NOT_PROMOTED_BY_PRESENCE_DRAFT"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG102-FIELD8-E107-REQUIRED",
+      "sourcePage": 228,
+      "startLine": 11695,
+      "quote": "8 107 Unit Price 9 R Identifies the price per unit of measure for the product sold.",
+      "interpretation": "Segment 102 Product Code Data field 8 / Element 107 is marked Required (R)."
+    },
+    {
+      "id": "ATL105-2026-3-SEG102-E107-DECIMAL-EXAMPLE",
+      "sourcePage": 228,
+      "startLine": 11704,
+      "quote": "Example: If the unit price is $0.059 and the number of assumed decimal places is 3, then this should be represented as ‘3059’. ‘359’ will be considered invalid.",
+      "interpretation": "For the positive presence design, the source explicitly supplies Unit Price value 3059 for $0.059 with three assumed decimal places. This is an example context, not a universal decimal rule."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-05869590D8DE",
+    "aiBrId": "REQ-SRC-ATL105-PDF-001:3282",
+    "caseGroups": {
+      "producerMissingFieldCases": ["TC-002689", "TC-003025", "TC-003108", "TC-003437"],
+      "producerPopulatedFieldCases": ["TC-012030", "TC-012031", "TC-012032", "TC-012033"]
+    },
+    "observations": "All eight candidate payloads bind Segment 102 Element 107 Unit Price; four are declared omissions and four have exact value 000. Each candidate case has two hash-identical catalog-copy observations. These are producer candidate records, not independent Test results.",
+    "interpretation": "The AI chain supplies preliminary producer-side presence/omission variation. Its values do not exercise the cited decimal example; no semantic match or expected response is approved."
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG102-E107-REQUIRED-PRESENCE",
+      "requirementIds": ["BR-RULE-SEG102-UNIT-PRICE-PRESENCE-DRAFT"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG102-FIELD8-E107-REQUIRED", "ATL105-2026-3-SEG102-E107-DECIMAL-EXAMPLE"],
+      "intent": "For a reviewed-valid Segment 102 product record using the source's 0.059/three-assumed-decimal example, include Element 107 Unit Price and compare with a field-omission mutation.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG102-E107-PRESENT-3059", "scenarioIds": ["TS-DRAFT-SEG102-E107-REQUIRED-PRESENCE"], "testDataIds": ["TD-DRAFT-SEG102-E107-PRESENT-3059"], "assertion": "Unit Price Element 107 is present with the source example value 3059 for $0.059 at three assumed decimal places.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG102-E107-OMITTED", "scenarioIds": ["TS-DRAFT-SEG102-E107-REQUIRED-PRESENCE"], "testDataIds": ["TD-DRAFT-SEG102-E107-OMITTED"], "assertion": "Unit Price Element 107 is omitted from the otherwise reviewed-valid Segment 102 product record.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_STRUCTURAL_ORACLE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG102-E107-PRESENT-3059", "testCaseIds": ["TC-DRAFT-SEG102-E107-PRESENT-3059"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "102", "element": "107", "value": "3059", "unitPrice": "0.059", "assumedDecimalPlaces": 3}},
+    {"id": "TD-DRAFT-SEG102-E107-OMITTED", "testCaseIds": ["TC-DRAFT-SEG102-E107-OMITTED"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "FIELD_DESIGN_NOT_CONVERTER_READY", "segment": "102", "element": "107", "omitted": true, "unitPriceContext": "0.059", "assumedDecimalPlaces": 3}}
+  ],
+  "openQuestions": [
+    "Confirm the complete product-code segment and unit-of-measure context for the 0.059 Unit Price example.",
+    "Confirm required companion fields and field separators for a complete executable Segment 102 request.",
+    "Confirm expected structural handling for an omitted required Unit Price; no host response is inferred.",
+    "Keep the separate Unit Price decimal-format rule SEG102-R-013 under its own review; this draft addresses presence only."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

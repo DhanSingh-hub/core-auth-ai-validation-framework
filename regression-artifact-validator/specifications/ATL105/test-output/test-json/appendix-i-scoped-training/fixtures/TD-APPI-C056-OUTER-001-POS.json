@@ -1,0 +1,362 @@
+{
+  "id" : "TD-APPI-C056-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-62",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r014-APPI-C056-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-OUTER-001",
+        "tableId" : "056",
+        "ruleIds" : [ "APPI-T056-R001", "APPI-T056-R009", "APPI-T056-R013", "APPI-T056-R014", "APPI-T056-R015", "APPI-T056-R016", "APPI-T056-R017", "APPI-T056-R018", "APPI-T056-R019", "APPI-T056-R020" ],
+        "syntheticData" : {
+          "tableSelector" : "056",
+          "context" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "cardType" : "020",
+            "issuerCountryIsSyntheticPrecondition" : true,
+            "payment" : "recurring",
+            "firstRegistrationSucceeded" : true,
+            "firstAuthenticationSucceeded" : true,
+            "firstAuthorizationSucceeded" : true
+          },
+          "registrationReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "registrationHistory" : {
+            "initialReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "modificationReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "subsequentReference" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "subsequentAtThreshold" : {
+            "amountCurrency" : "INR",
+            "amount" : "15000.00",
+            "event12" : "2",
+            "recurringIndicator013" : "R",
+            "ecommerce" : false,
+            "cavvPresent" : false,
+            "table030Present" : true
+          },
+          "subsequentAboveThreshold" : {
+            "amountCurrency" : "INR",
+            "amount" : "15000.01",
+            "event12" : "2",
+            "recurringIndicator013" : "R",
+            "ecommerce" : true,
+            "terminalType030" : "25",
+            "cavvPresent" : true
+          },
+          "modification" : {
+            "changedParameter" : "Frequency",
+            "originalFrequency" : "04",
+            "newFrequency" : "02",
+            "event12" : "3",
+            "ecommerce" : true,
+            "terminalType030" : "25",
+            "cavvPresent" : true,
+            "recurringIndicator013" : "R"
+          },
+          "cancellation" : {
+            "event12" : "4",
+            "amount" : "0.00",
+            "transactionContext" : "account verification",
+            "ecommerce" : true,
+            "terminalType030" : "25",
+            "cavvPresent" : true,
+            "recurringIndicator013" : "R"
+          },
+          "cavv035StructuralBytes" : {
+            "xidByteHex" : "01",
+            "xidRepeatCount" : 20,
+            "cavvByteHex" : "02",
+            "cavvRepeatCount" : 20,
+            "logicalRawByteCount" : 40,
+            "representation" : "Structured byte description only; not hexadecimal text on wire"
+          }
+        },
+        "clearScope" : "Direct-INR threshold equality,registered history,COF Table030 presence,modification/cancellation flags and zero amount,stable reference,raw035 component order; clear parameter rules do not resolve conflicting wire positions.",
+        "excludedClaims" : [ "Actual card country/BIN authority", "Currency conversion or revised RBI thresholds", "Cryptogram validity and195-versus035 scenario choice", "Table030 terminal-class conflict andtype25 nonrecurring wording", "Full registration authorization success", "Serialized multi-record056 request" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Threshold15000 inclusive non-ecommerce/noCAVV versus15000.01 ecommerce/CAVV",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "First registration/authentication/authorization prerequisites",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Modification event3 and authenticated context",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Cancellation event4 andzero account verification",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Raw035 XID20+CAVV20 order",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Conflicted terminal/wire predicates",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "subsequentAboveThreshold.cavvPresent",
+            "replacement" : false,
+            "expected" : "FAIL above-threshold CAVV requirement"
+          }, {
+            "path" : "subsequentAtThreshold.cavvPresent",
+            "replacement" : true,
+            "expected" : "FAIL stated below/equal-threshold noCAVV condition"
+          }, {
+            "path" : "context.firstAuthorizationSucceeded",
+            "replacement" : false,
+            "expected" : "FAIL subsequent history prerequisite"
+          }, {
+            "path" : "subsequentAtThreshold.table030Present",
+            "replacement" : false,
+            "expected" : "FAIL COF030 presence"
+          }, {
+            "path" : "modification.event12",
+            "replacement" : "2",
+            "expected" : "FAIL modification event"
+          }, {
+            "path" : "cancellation.amount",
+            "replacement" : "0.01",
+            "expected" : "FAIL cancellation zero amount"
+          }, {
+            "path" : "registrationReference",
+            "replacement" : "BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "expected" : "FAIL initial-reference equality when this is subsequent value"
+          }, {
+            "path" : "cavv035StructuralBytes.logicalRawByteCount",
+            "replacement" : 80,
+            "expected" : "FAIL raw035 maximum if interpreted ashex-text replacement; no genuine wire payload is generated"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "directInrAmounts" : [ "14999.99", "15000.00", "15000.01" ],
+          "definedSelectors" : [ "01", "02", "03", "04", "05", "06", "07", "08", "09", "12", "13" ],
+          "allocatedButUndefinedSelectors" : [ "10", "11", "14-24" ],
+          "aggregateMaximum" : 200,
+          "oneOverMaximum" : 201
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30213,
+          "section" : "Appendix I-55",
+          "endLine" : 30260
+        }, {
+          "startLine" : 30261,
+          "section" : "Appendix I-56",
+          "endLine" : 30319
+        }, {
+          "startLine" : 30320,
+          "section" : "Appendix I-57",
+          "endLine" : 30387
+        }, {
+          "startLine" : 30388,
+          "section" : "Appendix I-58",
+          "endLine" : 30454
+        }, {
+          "startLine" : 30455,
+          "section" : "Appendix I-59",
+          "endLine" : 30512
+        }, {
+          "startLine" : 30513,
+          "section" : "Appendix I-60",
+          "endLine" : 30574
+        }, {
+          "startLine" : 30575,
+          "section" : "Appendix I-61",
+          "endLine" : 30643
+        }, {
+          "startLine" : 30644,
+          "section" : "Appendix I-62",
+          "endLine" : 30706
+        }, {
+          "startLine" : 30707,
+          "section" : "Appendix I-63",
+          "endLine" : 30769
+        }, {
+          "startLine" : 30770,
+          "section" : "Appendix I-64",
+          "endLine" : 30771
+        }, {
+          "startLine" : 30221,
+          "section" : "Appendix I-55",
+          "endLine" : 30246
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        }, {
+          "startLine" : 30648,
+          "section" : "Appendix I-62",
+          "endLine" : 30675
+        }, {
+          "startLine" : 30677,
+          "section" : "Appendix I-62",
+          "endLine" : 30690
+        }, {
+          "startLine" : 27801,
+          "section" : "Appendix I-9",
+          "endLine" : 27812
+        }, {
+          "startLine" : 27813,
+          "section" : "Appendix I-10",
+          "endLine" : 27822
+        }, {
+          "startLine" : 28209,
+          "section" : "Appendix I-19",
+          "endLine" : 28236
+        }, {
+          "startLine" : 28795,
+          "section" : "Appendix I-31",
+          "endLine" : 28810
+        }, {
+          "startLine" : 28811,
+          "section" : "Appendix I-32",
+          "endLine" : 28826
+        }, {
+          "startLine" : 35219,
+          "section" : "Appendix Q-3",
+          "endLine" : 35246
+        }, {
+          "startLine" : 35939,
+          "section" : "Appendix Y-2",
+          "endLine" : 35992
+        }, {
+          "startLine" : 35993,
+          "section" : "Appendix Y-3",
+          "endLine" : 36040
+        }, {
+          "startLine" : 30692,
+          "section" : "Appendix I-62",
+          "endLine" : 30706
+        }, {
+          "startLine" : 30707,
+          "section" : "Appendix I-63",
+          "endLine" : 30708
+        }, {
+          "startLine" : 30710,
+          "section" : "Appendix I-63",
+          "endLine" : 30717
+        }, {
+          "startLine" : 30747,
+          "section" : "Appendix I-63",
+          "endLine" : 30769
+        }, {
+          "startLine" : 30718,
+          "section" : "Appendix I-63",
+          "endLine" : 30757
+        }, {
+          "section" : "Appendix I-62",
+          "startLine" : 30683,
+          "endLine" : 30698
+        }, {
+          "section" : "Appendix I-32",
+          "startLine" : 28812,
+          "endLine" : 28826
+        }, {
+          "section" : "Appendix Y-2",
+          "startLine" : 35939,
+          "endLine" : 35974
+        }, {
+          "section" : "12.19",
+          "startLine" : 13816,
+          "endLine" : 13826
+        }, {
+          "section" : "12.19",
+          "startLine" : 13857,
+          "endLine" : 13870
+        }, {
+          "section" : "12.19",
+          "startLine" : 13970,
+          "endLine" : 13987
+        }, {
+          "section" : "13 / Element 237",
+          "startLine" : 25222,
+          "endLine" : 25235
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 056",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30221,
+            "section" : "Appendix I-55",
+            "endLine" : 30223
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; variable payload up to 200",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30224,
+            "section" : "Appendix I-55",
+            "endLine" : 30230
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "ans200",
+          "sourceLength" : "maximum 200 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30231,
+            "section" : "Appendix I-55",
+            "endLine" : 30246
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

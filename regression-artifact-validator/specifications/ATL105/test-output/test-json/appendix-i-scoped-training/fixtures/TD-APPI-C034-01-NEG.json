@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C034-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C034-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C034-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-31",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t034-r001-APPI-C034-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C034-01",
+        "tableId" : "034",
+        "ruleIds" : [ "APPI-T034-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-31",
+          "startLine" : 28775,
+          "endLine" : 28782
+        } ],
+        "logicalFields" : {
+          "brand" : "Discover",
+          "firstNameField" : "                                SYN",
+          "lastNameField" : "TEST                               "
+        },
+        "clearScope" : [ "Concrete35-character left-aligned space-filled components in first/last order" ],
+        "excludedClaims" : [ "Short variable aggregate encoding", "Numeric prose versus names", "No aggregate serialization" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "First name field left-aligned and space-filled to35",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "firstNameField",
+          "value" : "                                SYN",
+          "targetedNegative" : "Same35 characters but right-aligned"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

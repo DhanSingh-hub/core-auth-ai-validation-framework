@@ -1,0 +1,134 @@
+{
+  "artifact": "AI_BR_REVIEW_CONTINUATION",
+  "date": "2026-10-16",
+  "scheduledBatchId": "002",
+  "reviewDepth": "BR_OBLIGATION_AND_CHAIN_SUMMARY_SCREENING",
+  "fullPayloadReviewCompleted": false,
+  "physicalSampleEvidence": {
+    "catalogRelativeDirectory": "test_data_10_oct/test_data_10_oct/candidates/qe_shaped_test_data",
+    "hashesVerifiedAgainstFrozenInventory": true,
+    "scope": "One available payload per BR with cases; normalized field names inspected, not all payloads or expected responses. Missing named fields are observations, not proof of an invalid omission.",
+    "samples": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:010", "file": "TC-002874.json", "sha256": "564949c3018e9a04ba02b8d344b4ba713298381b09e8b9dc4b1e87ed3cda034c", "observation": "Negative case: BlockNumber=0000, consistent with an overlength probe; independent outcome not verified."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:011", "file": "TC-000695.json", "sha256": "90edf1e369934609d29f8d125209abb4106f8483f125607872a9303a28cb7820", "observation": "BlockNumber=000; a scalar value does not demonstrate block-transfer state or validate the AI enumeration."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:012", "file": "TC-002206.json", "sha256": "2e9a7cfa5a2ca40ce3b5ecf17549a4987c47a149bc2dac48f45aa40f2b67b260", "observation": "No CardDiscretionaryBlockData key found by the normalized-name check. Alias, conditional omission and negative-case intent need further inspection."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:013", "file": "TC-000001.json", "sha256": "682f6d0f778f18f657ef03dd255cf750f6fd1371c16e0eaebedb425240c6e2b9", "observation": "No CardDiscretionaryBlockData key found by the normalized-name check; declared linkage alone does not demonstrate the parsed value-list obligation."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:014", "file": "TC-003124.json", "sha256": "4d165045a5a9a71e19875330d2fa01a83c6b227225a2fd57dabff6897ef51a26", "observation": "Negative case: CardLabel=AAAAA, consistent with a probe beyond four characters; expected outcome not independently checked."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:015", "file": "TC-001127.json", "sha256": "a94741b2f8cff3d1875bca6571b4fec9ac2f38e6522c7d9d2461eab791d70f8a", "observation": "CardLabel=AO; one observed label cannot establish the full mapping or transaction applicability."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:018", "file": "TC-003126.json", "sha256": "f9ece34b94ce3c373c29bf15f90e140a412b0e94172ed972b1128b925b9cbdfa", "observation": "Negative-labelled case has CardTypeTotalAmount=00000000. The intended violation is unresolved; do not infer a successful length test from linkage."},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:019", "file": "TC-003127.json", "sha256": "6814ebaa3b5fe8134845dcf0e7f0bb6a776122a4887421331f7c3603bd6d021c", "observation": "Negative case: CardTypeTotalCount=000000, consistent with a probe beyond five digits; independent outcome not verified."}
+    ]
+  },
+  "testChainInspection": [
+    {"testBrId": "BR-SEG100-GAP-DISCRETIONARY", "scenarios": 1, "cases": 1, "data": 1, "expectedOutcome": "PASS_AND_FAIL", "dataReadiness": "REVIEW_REQUIRED"},
+    {"testBrId": "BR-SEG100-APPE-TABLE-LOAD-CODE-001", "scenarios": 1, "cases": 1, "data": 1, "expectedOutcome": "PASS", "dataReadiness": "EXECUTABLE", "limitation": "Package readiness label only; not independently executed or semantically approved. This individual code is a candidate for part of the AI list, not equivalence of the full list."},
+    {"testBrIds": ["BR-RULE-SEG109-R-012", "BR-RULE-SEG118-R-018", "BR-RULE-SEG105-R-015", "BR-RULE-SEG119-R-024"], "eachChain": {"scenarios": 1, "cases": 1, "data": 1, "expectedOutcome": "REVIEW_REQUIRED", "dataReadiness": "REVIEW_REQUIRED"}}
+  ],
+  "semanticApprovalGranted": false,
+  "aiScenarioApprovalRequired": false,
+  "targetPopulationFinding": {
+    "fullPackageBrCount": 1330,
+    "rankedCatalogBrCount": 605,
+    "additionalAuthoredBrCount": 725,
+    "limitation": "The existing ranked queue excludes 725 authored Test BR records. A missing ranked lead does not establish a missing Test counterpart. These are separate authored records, not 725 proven additional atomic obligations."
+  },
+  "trackingPolicy": "These ten rows are additional preliminary screenings, not completed chain reviews or authorized decisions. Existing batches 002-004 remain partially reviewed. The original batch index is unchanged; union these IDs with earlier preliminary records to track 38 screened IDs and 6842 not screened.",
+  "sourceArtifacts": [
+    "all-ai-br-review-register.csv",
+    "ai-br-chain-evidence.jsonl.gz",
+    "../../test-solution-independent-review/complete-all-test-solution-br-ts-tc-td-package.json"
+  ],
+  "records": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:010",
+      "obligation": "Block Number numeric, at most three bytes",
+      "chain": {"scenarios": 28, "cases": 24, "caseTypes": {"negative": 18, "boundary": 6}},
+      "candidateTestBrIds": ["BR-RULE-SEG109-R-012", "BR-RULE-SEG118-R-018", "BR-RULE-SEG132-R-010"],
+      "relation": "FORMAT_OVERLAP_WITH_STRONGER_FIXED_LENGTH_AND_SEGMENT_SCOPE",
+      "rationale": "Each candidate specifies a three-digit Block Number in its own segment. Exactly three numeric characters is stronger than a maximum of three bytes. Segment-specific applicability and short-value cases need review.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:011",
+      "obligation": "Block Number allowed-value claim contains descriptive transfer prose",
+      "chain": {"scenarios": 603, "cases": 553, "caseTypes": {"positive": 547, "negative": 6}},
+      "candidateTestBrIds": ["BR-RULE-SEG118-R-018", "BR-RULE-SEG118-R-027", "BR-RULE-SEG132-R-010"],
+      "relation": "RELATED_BLOCK_TRANSFER_BEHAVIOR_NOT_VALIDATED_ENUMERATION",
+      "rationale": "The AI list contains sentences about subsequent requests, not a defensible value set. Test rules describe block echo, increment/final-block behavior and CA-file transfers. A common Block Number subject does not validate the AI enum or demonstrate a multi-block chain.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:012",
+      "obligation": "Card Discretionary Block Data alphanumeric, at most 51 bytes",
+      "chain": {"scenarios": 7, "cases": 7, "caseTypes": {"negative": 7}},
+      "candidateTestBrIds": ["BR-RULE-SEG100-R-042", "BR-SEG100-GAP-DISCRETIONARY"],
+      "relation": "SAME_FIELD_CONDITIONAL_LENGTH_RULE_NOT_CONFIRMED_GLOBAL_LIMIT",
+      "rationale": "The authored BR omitted by the 605-rule ranking explicitly addresses conditional length and usage. Neither inspected Test statement independently establishes a universal AN/51-byte rule. Conditional contexts and negative mutations must be compared.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:013",
+      "obligation": "Card Discretionary Block Data allowed-value claim contains application and expiry-date prose",
+      "chain": {"scenarios": 1278, "cases": 1278, "caseTypes": {"positive": 1271, "negative": 7}},
+      "candidateTestBrIds": ["BR-RULE-SEG100-R-042", "BR-SEG100-GAP-DISCRETIONARY"],
+      "relation": "SAME_FIELD_AI_ENUM_EXTRACTION_REVIEW_REQUIRED",
+      "rationale": "Fragments such as depends upon the application and for expired cards are not literal allowed values. Test conditional-use rules are related but cannot confirm this parsed enum. Large case counts do not establish correct obligation coverage.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:014",
+      "obligation": "Card Label alphanumeric, at most four bytes",
+      "chain": {"scenarios": 12, "cases": 12, "caseTypes": {"negative": 9, "boundary": 3}},
+      "candidateTestBrIds": ["BR-RULE-SEG105-R-015", "BR-RULE-SEG119-R-024"],
+      "relation": "SAME_FIELD_REQUIREDNESS_ONLY",
+      "rationale": "The totals rules require Card Label but the inspected statements do not state its character set or four-byte bound. Segment 105 composite was not an exact-element candidate in the old queue.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:015",
+      "obligation": "Card Label mapping combines labels, codes and table headings",
+      "chain": {"scenarios": 620, "cases": 620, "caseTypes": {"positive": 617, "negative": 3}},
+      "candidateTestBrIds": ["BR-RULE-SEG105-R-015", "BR-RULE-SEG119-R-024"],
+      "relation": "SAME_FIELD_PRESENCE_NOT_ENUM_EQUIVALENCE",
+      "rationale": "Requiredness does not validate the label-to-code mapping. Header text and trademark fragments in the AI statement require extraction review. Receipt Card Type ID rules must not be substituted without proving the field/context identity.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:016",
+      "obligation": "Card Type alphanumeric, at most three bytes; source segment unresolved",
+      "chain": {"scenarios": 1, "cases": 0, "caseTypes": {}},
+      "candidateTestBrIds": ["BR-RULE-SEGDL1-R-004", "BR-RULE-SEGDL1-R-005"],
+      "relation": "ELEMENT_14_CONTEXT_LEADS_NOT_FORMAT_MATCHES",
+      "rationale": "Test DL1 rules identify repeated Card Type element 14 and a special value 173. They offer segment-context leads beyond the unresolved AI anchor, but not proof of the three-byte AN predicate or a complete chain.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:017",
+      "obligation": "Card Type allowed-value list; source segment unresolved",
+      "chain": {"scenarios": 1, "cases": 0, "caseTypes": {}},
+      "candidateTestBrIds": ["BR-RULE-SEGDL1-R-005"],
+      "additionalSearchScope": "BR-SEG100-APPE-TABLE-LOAD-CODE-* authored rules in the full package",
+      "relation": "POTENTIAL_DISTRIBUTED_VALUE_SET_COUNTERPARTS",
+      "rationale": "The full Test package contains individual Appendix E Table Load code BRs absent from the 605-rule ranking. The AI list mixes code families; compare each value and family separately before claiming a set match. The missing segment must not be guessed from numeric overlap.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:018",
+      "obligation": "Card Type Total Amount numeric, at most eight bytes",
+      "chain": {"scenarios": 3, "cases": 3, "caseTypes": {"negative": 3}},
+      "candidateTestBrIds": ["BR-RULE-SEG105-R-015", "BR-RULE-SEG119-R-026"],
+      "relation": "SAME_FIELD_REQUIREDNESS_NOT_FORMAT_EQUIVALENCE",
+      "rationale": "Totals rules require the amount but the inspected statements do not establish an eight-byte numeric constraint. Segment 105 composite is an additional related lead.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:019",
+      "obligation": "Card Type Total Count numeric, at most five bytes",
+      "chain": {"scenarios": 12, "cases": 12, "caseTypes": {"negative": 9, "boundary": 3}},
+      "candidateTestBrIds": ["BR-RULE-SEG105-R-015", "BR-RULE-SEG119-R-025"],
+      "relation": "SAME_FIELD_REQUIREDNESS_NOT_FORMAT_EQUIVALENCE",
+      "rationale": "Totals rules require the count but the inspected statements do not establish its numeric character set or five-byte limit. Segment 105 composite is an additional related lead.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    }
+  ]
+}

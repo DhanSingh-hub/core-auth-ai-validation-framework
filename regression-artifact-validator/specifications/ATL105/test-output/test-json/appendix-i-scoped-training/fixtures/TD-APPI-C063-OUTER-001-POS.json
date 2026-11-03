@@ -1,0 +1,339 @@
+{
+  "id" : "TD-APPI-C063-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C063-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C063-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-67",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t063-r001-APPI-C063-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C063-OUTER-001",
+        "tableId" : "063",
+        "ruleIds" : [ "APPI-T063-R001", "APPI-T063-R002", "APPI-T063-R003", "APPI-T063-R004", "APPI-T063-R005", "APPI-T063-R006" ],
+        "syntheticData" : {
+          "tableSelector" : "063",
+          "logicalPayloadLength" : 11,
+          "arrivalDate" : "0407",
+          "duration" : "03",
+          "terminalTransactionNumber" : "0123",
+          "preferredCustomerIndicator" : "P",
+          "logicalPayloadObservation" : "0407030123P",
+          "context" : {
+            "cardBrand" : "Visa",
+            "transactionContext" : "Lodging",
+            "permittedMerchantSyntheticPrecondition" : true,
+            "finalAmountInitiallyUnknown" : true
+          },
+          "series" : {
+            "cardBrand" : "American Express",
+            "fixtureScope" : "Independent American Express estimated-authorization series, not an extension of the Visa outer-layout context",
+            "initial" : {
+              "sequence" : "001",
+              "transactionIdentifierAlias" : "TX-A",
+              "terminalTransactionNumber" : "0123",
+              "estimatedTrace09" : "1",
+              "approvalAlias" : "APP-A"
+            },
+            "increment" : {
+              "sequence" : "001",
+              "transactionIdentifierAlias" : "TX-A",
+              "terminalTransactionNumber" : "0123",
+              "estimatedTrace09Present" : false,
+              "originalApprovalAlias" : "APP-A"
+            },
+            "completion" : {
+              "terminalTransactionNumber" : "0123",
+              "finalAmountKnown" : true
+            }
+          },
+          "expiryLogicalFixtures" : {
+            "cardBrand" : "American Express",
+            "endpointAcceptance" : "REVIEW_REQUIRED: relative 7/14-day intervals and initial origin only; no acceptance decision at either named endpoint without timezone/day-count clarification",
+            "lodging" : {
+              "initialDay" : 0,
+              "incrementDay" : 10,
+              "completeFirstDay" : 14,
+              "startNextDay" : 14,
+              "approvalExpiresAfterInitialDays" : 14
+            },
+            "campground" : {
+              "initialDay" : 0,
+              "incrementDay" : 4,
+              "completeFirstDay" : 7,
+              "startNextDay" : 7,
+              "approvalExpiresAfterInitialDays" : 7
+            }
+          },
+          "unusedEvVariant" : {
+            "arrivalDate" : "    ",
+            "duration" : "  ",
+            "terminalTransactionNumber" : "0123",
+            "preferredCustomerIndicator" : " ",
+            "logicalPayloadObservation" : "      0123 "
+          }
+        },
+        "clearScope" : "Ordered4+2+4+1bytes,dateMMDD,durationdays,unusedspaces,Ppreferred;seriesnumberstable,AEestimatedpreconditionsand7/14-dayinitialclock.",
+        "excludedClaims" : [ "Terminalnumberglobaluniqueness/reuse", "MissingAETransactionIdentifiersegmentlocator", "Wireplusseparatorresolution", "Expirytimezone/dayrounding", "Dateyear/calendarvalidator", "Fullestimatedrequestorapproval" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Fixed11orderedpayload",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Unusedspaceexceptions",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Seriesmatchinglogicalidentifiers",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "AEexpiryinitialorigin/notincrementreset",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Conflict/unknownclockandidentifierwirelocation",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "logicalPayloadLength",
+            "replacement" : 10,
+            "expected" : "FAIL fixed11"
+          }, {
+            "path" : "series.increment.terminalTransactionNumber",
+            "replacement" : "0124",
+            "expected" : "FAIL sameincrementalseries"
+          }, {
+            "path" : "series.increment.sequence",
+            "replacement" : "002",
+            "expected" : "FAIL AEmatchingsequence"
+          }, {
+            "path" : "series.increment.transactionIdentifierAlias",
+            "replacement" : "TX-B",
+            "expected" : "FAIL statedidentifier equality,wirelocatorremainsunresolved"
+          }, {
+            "path" : "series.increment.estimatedTrace09Present",
+            "replacement" : true,
+            "expected" : "FAIL initialestimatedindicatornotonincrements"
+          }, {
+            "path" : "expiryLogicalFixtures.lodging.approvalExpiresAfterInitialDays",
+            "replacement" : 24,
+            "expected" : "FAIL14-dayinitialclock"
+          }, {
+            "path" : "unusedEvVariant.arrivalDate",
+            "replacement" : "0000",
+            "expected" : "FAIL unusedfourspaces"
+          }, {
+            "path" : "preferredCustomerIndicator",
+            "replacement" : "X",
+            "expected" : "FAIL onlylistedpreferredcodeP;noothercodeisasserted"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "approvalDayObservations" : [ 7, 8, 14, 15 ],
+          "mccScope" : {
+            "4121" : "CNPonly",
+            "5411" : "CNPonly",
+            "5552" : "EV"
+          },
+          "positionalLayoutNotNested" : true
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31015,
+          "section" : "Appendix I-67",
+          "endLine" : 31055
+        }, {
+          "startLine" : 31056,
+          "section" : "Appendix I-68",
+          "endLine" : 31124
+        }, {
+          "startLine" : 31125,
+          "section" : "Appendix I-69",
+          "endLine" : 31198
+        }, {
+          "startLine" : 31199,
+          "section" : "Appendix I-70",
+          "endLine" : 31263
+        }, {
+          "startLine" : 31264,
+          "section" : "Appendix I-71",
+          "endLine" : 31325
+        }, {
+          "startLine" : 31326,
+          "section" : "Appendix I-72",
+          "endLine" : 31342
+        }, {
+          "startLine" : 31023,
+          "section" : "Appendix I-67",
+          "endLine" : 31055
+        }, {
+          "startLine" : 31056,
+          "section" : "Appendix I-68",
+          "endLine" : 31063
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31030,
+          "section" : "Appendix I-67",
+          "endLine" : 31037
+        }, {
+          "startLine" : 31060,
+          "section" : "Appendix I-68",
+          "endLine" : 31063
+        }, {
+          "startLine" : 31126,
+          "section" : "Appendix I-69",
+          "endLine" : 31152
+        }, {
+          "startLine" : 31200,
+          "section" : "Appendix I-70",
+          "endLine" : 31247
+        }, {
+          "startLine" : 31327,
+          "section" : "Appendix I-72",
+          "endLine" : 31342
+        }, {
+          "startLine" : 31038,
+          "section" : "Appendix I-67",
+          "endLine" : 31055
+        }, {
+          "startLine" : 31056,
+          "section" : "Appendix I-68",
+          "endLine" : 31057
+        }, {
+          "startLine" : 31153,
+          "section" : "Appendix I-69",
+          "endLine" : 31190
+        }, {
+          "startLine" : 31248,
+          "section" : "Appendix I-70",
+          "endLine" : 31263
+        }, {
+          "startLine" : 31264,
+          "section" : "Appendix I-71",
+          "endLine" : 31316
+        }, {
+          "startLine" : 31064,
+          "section" : "Appendix I-68",
+          "endLine" : 31124
+        }, {
+          "section" : "Appendix I-67",
+          "startLine" : 31038,
+          "endLine" : 31047
+        }, {
+          "section" : "Appendix I-68",
+          "startLine" : 31057,
+          "endLine" : 31057
+        }, {
+          "section" : "Appendix AE-1",
+          "startLine" : 36844,
+          "endLine" : 36869
+        }, {
+          "section" : "Appendix AE-1",
+          "startLine" : 36841,
+          "endLine" : 36877
+        }, {
+          "section" : "Appendix I-67",
+          "startLine" : 31044,
+          "endLine" : 31047
+        }, {
+          "section" : "Appendix AE-1",
+          "startLine" : 36870,
+          "endLine" : 36877
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 063",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31023,
+            "section" : "Appendix I-67",
+            "endLine" : 31025
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed 011",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31026,
+            "section" : "Appendix I-67",
+            "endLine" : 31029
+          } ]
+        }, {
+          "path" : "113[1-4].Arrival Date",
+          "sourceType" : "n4",
+          "sourceLength" : "4 bytes; MMDD; spaces when unused",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31030,
+            "section" : "Appendix I-67",
+            "endLine" : 31034
+          } ]
+        }, {
+          "path" : "113[5-6].Duration",
+          "sourceType" : "n2",
+          "sourceLength" : "2 bytes; days of stay; spaces when unused",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31035,
+            "section" : "Appendix I-67",
+            "endLine" : 31037
+          } ]
+        }, {
+          "path" : "113[7-10].Terminal Transaction Number",
+          "sourceType" : "n4",
+          "sourceLength" : "4 digits",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31038,
+            "section" : "Appendix I-67",
+            "endLine" : 31055
+          }, {
+            "startLine" : 31056,
+            "section" : "Appendix I-68",
+            "endLine" : 31057
+          } ]
+        }, {
+          "path" : "113[11].Preferred Customer Indicator",
+          "sourceType" : "an1",
+          "sourceLength" : "1 byte; P preferred; examples use space when non-T&E/EV",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31060,
+            "section" : "Appendix I-68",
+            "endLine" : 31063
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

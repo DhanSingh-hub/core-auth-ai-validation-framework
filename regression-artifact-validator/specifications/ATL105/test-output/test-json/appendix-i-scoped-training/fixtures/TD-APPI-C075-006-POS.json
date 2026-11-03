@@ -1,0 +1,82 @@
+{
+  "id" : "TD-APPI-C075-006-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C075-006-POS.json",
+  "testCaseIds" : [ "TC-APPI-C075-006-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-80",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t075-r006-APPI-C075-006"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C075-006",
+        "tableId" : "075",
+        "nestedSelector" : "05",
+        "ruleIds" : [ "APPI-T075-R006" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-80",
+          "startLine" : 31937,
+          "endLine" : 31940
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tag" : "05",
+            "valueLength" : 12,
+            "value" : "000000012345",
+            "logicalPrice" : "1.2345",
+            "impliedDecimalPlaces" : 4
+          },
+          "negative" : {
+            "tag" : "05",
+            "valueLength" : 12,
+            "value" : "000000012345",
+            "logicalPrice" : "123.45",
+            "impliedDecimalPlaces" : 4
+          },
+          "positiveVariants" : [ {
+            "value" : "000000000001",
+            "logicalPrice" : "0.0001",
+            "impliedDecimalPlaces" : 4
+          } ]
+        },
+        "clearScope" : "Twelve-byte illustration of the explicit four-implied-decimal net-fuel-price rule.",
+        "excludedClaims" : [ "New numeric-only source constraint", "Price rounding", "Business maximum", "TLV serialization" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalPrice equals numeric illustrative value divided by 10000",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "value length is 12",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalPrice equals numeric illustrative value divided by 10000",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "value length is 12",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalPrice",
+          "from" : "1.2345",
+          "to" : "123.45",
+          "unchanged" : "encoded value, length and source precision",
+          "targetedFailure" : "two-decimal interpretation instead of four"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id" : "TD-APPI-C080-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C080-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C080-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-88",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t080-r001-APPI-C080-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C080-001",
+        "tableId" : "080",
+        "ruleIds" : [ "APPI-T080-R001", "APPI-T080-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-88",
+          "startLine" : 32460,
+          "endLine" : 32465
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "080",
+            "data" : "WALLET00001",
+            "logicalRole" : "synthetic provider issuing the transaction token",
+            "headerLengthState" : "N2 versus element112 n3 unresolved",
+            "assignmentVerified" : false
+          },
+          "negative" : {
+            "tableId" : "080",
+            "data" : "WALLET0000",
+            "logicalRole" : "synthetic provider issuing the transaction token",
+            "headerLengthState" : "N2 versus element112 n3 unresolved",
+            "assignmentVerified" : false
+          },
+          "active" : {
+            "tableId" : "080",
+            "data" : "WALLET0000",
+            "logicalRole" : "synthetic provider issuing the transaction token",
+            "headerLengthState" : "N2 versus element112 n3 unresolved",
+            "assignmentVerified" : false
+          }
+        },
+        "clearScope" : "Exactly eleven alphanumeric staged-wallet-provider data bytes; no disputed header encoded.",
+        "excludedClaims" : [ "Choice of 11 versus 011 header", "Real wallet assignment", "Universal/network-specific presence", "Full message" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data has exactly eleven ASCII alphanumeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "length header encoding can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ],
+          "negative" : [ {
+            "predicate" : "data has exactly eleven ASCII alphanumeric bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "length header encoding can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "WALLET00001",
+          "to" : "WALLET0000",
+          "unchanged" : "selector, role and header gate",
+          "targetedFailure" : "ten-byte wallet ID"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

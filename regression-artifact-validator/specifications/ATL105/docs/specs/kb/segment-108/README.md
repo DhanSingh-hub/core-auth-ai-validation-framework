@@ -7,6 +7,20 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed-wire continuation
+
+The opt-in actual bridge measures N3 length and the 142-byte cap, compares
+observed source order and empty-field FS, and explicitly checks the FS after
+field 13 before supplied fields 14–15 (source 12118–12119). A dedicated mutation
+removes that FS; 142/143-byte probes use valid-width Track2 observations.
+Missing optional-field observations are not manufactured as blanks. The
+field-13 final-FS wording versus later optional fields/catalog final-FS wording
+remains a source conflict: either final-field terminator convention is still
+review, not full transport certification. Scalar loyalty and reversal/history
+dependencies remain distinct from this physical execution. See
+`Chapter12LegacyWireMicrIntegrationTest` and the current
+[gap register](../chapter-coverage-gap-register.md).
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)

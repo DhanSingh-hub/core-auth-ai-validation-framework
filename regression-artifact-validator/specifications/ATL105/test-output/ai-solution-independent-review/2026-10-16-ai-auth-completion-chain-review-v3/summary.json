@@ -1,0 +1,53 @@
+{
+  "artifact": "ATL105-AI-AUTHORIZATION-COMPLETION-CHAIN-REVIEW",
+  "population": {
+    "authorizationCompletionCases": 138,
+    "distinctAiBrsLinked": 5,
+    "casesWithDirectBrLink": 14,
+    "casesWithoutDirectBrLink": 124,
+    "declaredPhysicalStepFiles": 337
+  },
+  "flows": {
+    "FLOW-AUTH-COMPLETION": 28,
+    "FLOW-AUTH-COMPLETION-DUPLICATE": 32,
+    "FLOW-AUTH-COMPLETION-VOID": 27,
+    "FLOW-AUTH-PARTIAL-COMPLETION": 32,
+    "FLOW-EMV-AUTH-COMPLETION": 17,
+    "FLOW-ESTIMATED-INCREMENTAL-AUTH": 2
+  },
+  "lifecycleChecks": {
+    "promptCodePairsPassing": 138,
+    "sequenceCarryPairsPassing": 138,
+    "sameTerminalPairsPassing": 0,
+    "terminalIdShapePairsPassing": 138,
+    "completionApprovalShapePairsPassing": 133,
+    "completionApprovalsRequiringLiveHostValue": 133,
+    "casesWithAmountChangeNeedingHostApprovedAmountReview": 35,
+    "casesWithAllPhysicalLegIdentityAndHashChecksPassing": 138
+  },
+  "testBrMapping": {
+    "candidatePairRows": 55,
+    "distinctTestBrCandidates": 30,
+    "semanticDecisions": 0,
+    "status": "RETRIEVAL_AND_ANCHOR_CANDIDATES_ONLY"
+  },
+  "sourceHashes": {
+    "deliveryWideSummary": "8b5166ae35435c9f6776d85418dc5cbafa01640ed7995f898e77adb7e7fa0e74",
+    "deliveryFileInventory": "2d3dd2d2cd033395157b06cf25bf731adae1e8104a1a33e5deafd3efa8514cfd",
+    "testPackage": "94454139659bcd56f2ad5f72293d5b0ce0b3ddb7b5a61544bb0a243d1d3f36a9",
+    "allChainReviewManifest": "886a8f93ee9f5514f2727524b2011ebc83581f7fd7af3fac8f85f83563b1404b"
+  },
+  "policy": "AI chains are screened structurally using explicit flow IDs, step roles and Prompt Codes. Test BR candidates are not matches. Host approval values that are flow-synthesized remain placeholders until runtime.",
+  "limitations": [
+    "This report does not establish semantic equivalence or host execution.",
+    "Terminal ID equality is a lifecycle identity check; assigned BUYPASS device/merchant legitimacy is not verified by string shape.",
+    "Amount changes are flagged for comparison with the actual host-approved amount and applicable amount-change rules, not auto-failed.",
+    "All AI data values are withheld from the generated matrix; the OneDrive source remains unchanged.",
+    "Test BR mapping contains exact-anchor and top-K retrieval leads only; full Test BR adjudication is still required."
+  ],
+  "files": [
+    "authorization-completion-case-register.csv",
+    "authorization-completion-br-ts-tc-td-matrix.csv",
+    "authorization-completion-ai-test-br-mapping.csv"
+  ]
+}

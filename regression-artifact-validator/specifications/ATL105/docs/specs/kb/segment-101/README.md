@@ -8,6 +8,22 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed-wire continuation
+
+The opt-in actual bridge executes the source base-field order and retained
+interior FS at extracted line 11406, measured N3 length and the 61-byte base
+cap. Five observed tag slots extend that order; a missing earlier slot is not
+silently manufactured empty. Extended maximum-length ambiguity remains review.
+`Segment101PayloadValidator.validateActualTagContext` now executes the
+0220-only and Host-Prompts-supported clauses at 11517–11519. Actual MessageType
+is authoritative, not a metadata flag or Prompt Code S alone. Support evidence
+uses `context.hostPrompts {supported, TerminalIdentifier}` and must bind to the
+actual Standard terminal. Missing observations remain review; malformed or
+contradictory supplied evidence is invalid. Configuration authenticity and final
+FS convention are not certified. Canonical probes and actual intake are covered
+by `Chapter12LegacyWireMicrIntegrationTest`; see the current
+[gap register](../chapter-coverage-gap-register.md).
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md))

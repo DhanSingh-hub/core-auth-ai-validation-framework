@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C021-02-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C021-02-POS.json",
+  "testCaseIds" : [ "TC-APPI-C021-02-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-14",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t021-r002-APPI-C021-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C021-02",
+        "tableId" : "021",
+        "ruleIds" : [ "APPI-T021-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-14",
+          "startLine" : 28024,
+          "endLine" : 28027
+        } ],
+        "data" : "X",
+        "context" : {
+          "transactionPhase" : "Follow-up",
+          "originalProcessing" : "Non-traditional Signature Debit"
+        },
+        "clearScope" : [ "X follow-up-only restriction" ],
+        "excludedClaims" : [ "Signature Debit enablement", "Actual original processing trace" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "X confined to follow-up",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "context.transactionPhase",
+          "value" : "Initial",
+          "targetedNegative" : "X in initial transaction"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

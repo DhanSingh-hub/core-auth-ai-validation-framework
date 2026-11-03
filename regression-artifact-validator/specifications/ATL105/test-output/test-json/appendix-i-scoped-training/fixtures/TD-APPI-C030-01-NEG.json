@@ -1,0 +1,84 @@
+{
+  "id" : "TD-APPI-C030-01-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C030-01-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C030-01-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-19",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t030-r002-APPI-C030-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C030-01",
+        "tableId" : "030",
+        "ruleIds" : [ "APPI-T030-R001", "APPI-T030-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-19",
+          "startLine" : 28219,
+          "endLine" : 28236
+        }, {
+          "section" : "Appendix Q-2",
+          "startLine" : 35190,
+          "endLine" : 35208
+        }, {
+          "section" : "Appendix Q-6",
+          "startLine" : 35334,
+          "endLine" : 35364
+        }, {
+          "section" : "Appendix Q-7",
+          "startLine" : 35386,
+          "endLine" : 35395
+        } ],
+        "logicalFields" : {
+          "tablePresent" : true,
+          "context" : {
+            "emv" : true,
+            "terminalAttendance" : "Attended",
+            "terminalOperator" : "Customer",
+            "location" : "On premise",
+            "customerPresent" : true,
+            "cardPresent" : true,
+            "cardRetention" : false,
+            "presentment" : "Original",
+            "security" : "No concern"
+          },
+          "qComponents" : {
+            "attendance" : "0",
+            "operator" : "0",
+            "location" : "0",
+            "customerPresence" : "0",
+            "cardPresence" : "0",
+            "retention" : "0",
+            "presentment" : "0",
+            "security" : "1",
+            "terminalType" : "01"
+          }
+        },
+        "clearScope" : [ "Individual Q position meanings", "030 required in explicit EMV context" ],
+        "excludedClaims" : [ "I terminal class1-2 versus Q1-3; components not concatenated", "Certified complete POS condition code" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Security code matches no-concern context",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "qComponents.security",
+          "value" : "1",
+          "targetedNegative" : "Suspected-fraud code instead of no concern"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

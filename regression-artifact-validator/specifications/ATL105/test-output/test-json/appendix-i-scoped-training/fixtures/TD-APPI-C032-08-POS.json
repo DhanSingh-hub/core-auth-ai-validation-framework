@@ -1,0 +1,78 @@
+{
+  "id" : "TD-APPI-C032-08-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-08-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-08-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-26",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r008-APPI-C032-08"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-08",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R008", "APPI-T032-R009", "APPI-T032-R010", "APPI-T032-R011" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-25",
+          "startLine" : 28470,
+          "endLine" : 28480
+        }, {
+          "section" : "Appendix I-26",
+          "startLine" : 28494,
+          "endLine" : 28515
+        }, {
+          "section" : "Appendix I-41",
+          "startLine" : 29307,
+          "endLine" : 29319
+        }, {
+          "section" : "Appendix J-1",
+          "startLine" : 32493,
+          "endLine" : 32509
+        } ],
+        "logicalFields" : {
+          "subTableId" : "08",
+          "subTableLength" : "001",
+          "initialValue" : "I",
+          "subsequentValue" : "C",
+          "companion049Sub02" : "M",
+          "companion049Sub02Length" : "1",
+          "panEntryMode" : "10",
+          "terminalPINCapability" : "1",
+          "paymentIndicator" : "R",
+          "retainedOriginalTransactionId" : "SYN000000000101",
+          "context" : {
+            "brand" : "Visa",
+            "cardType" : "020",
+            "initiation" : "MIT",
+            "cofPhase" : "Subsequent",
+            "instructionKind" : "Recurring"
+          }
+        },
+        "clearScope" : [ "InitialI/subsequentC distinction", "MIT companionM and its one-digit nested length", "Explicit10 plus explicit PIN capability1 retained as separate components", "Concrete recurring/reference retention preconditions" ],
+        "excludedClaims" : [ "Broad entry-mode exclusions", "Full005 or049 tuple encoding", "Assignment/authentication of retainedID" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Subsequent COF indicatorC",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "subsequentValue",
+          "value" : "I",
+          "targetedNegative" : "Initial indicator on subsequent fixture"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

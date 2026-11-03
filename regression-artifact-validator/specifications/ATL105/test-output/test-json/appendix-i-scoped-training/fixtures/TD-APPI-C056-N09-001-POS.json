@@ -1,0 +1,147 @@
+{
+  "id" : "TD-APPI-C056-N09-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N09-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N09-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-61",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r012-APPI-C056-N09-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N09-001",
+        "tableId" : "056",
+        "nestedSelector" : "09",
+        "ruleIds" : [ "APPI-T056-R012" ],
+        "syntheticData" : {
+          "selector" : "09",
+          "logicalLength" : 4,
+          "categoryCode" : "M103",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "initiator" : "merchant",
+            "payment" : "subscription",
+            "amountPattern" : "fixed",
+            "frequencyPattern" : "fixed"
+          }
+        },
+        "clearScope" : "All eight CIT/MIT named scenario codes; MasterCard-only,four bytes.",
+        "excludedClaims" : [ "Discover/Visa field inheritance", "Actual merchant standing agreement" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "MasterCard subscriptionMIT mapsM103",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "categoryCode",
+            "replacement" : "C103",
+            "expected" : "FAIL merchant initiator mapping; code itself islisted"
+          }, {
+            "path" : "categoryCode",
+            "replacement" : "M105",
+            "expected" : "FAIL listed code domain"
+          }, {
+            "path" : "context.cardBrand",
+            "replacement" : "Visa",
+            "expected" : "FAIL brand scope"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 3,
+            "expected" : "FAIL width"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "scenarioPairs" : [ {
+            "code" : "C101",
+            "scenario" : "CIT adhoc credential-on-file"
+          }, {
+            "code" : "C102",
+            "scenario" : "CIT standing order variable amount/fixed frequency"
+          }, {
+            "code" : "C103",
+            "scenario" : "CIT subscription fixed amount/fixed frequency"
+          }, {
+            "code" : "C104",
+            "scenario" : "CIT installment"
+          }, {
+            "code" : "M101",
+            "scenario" : "MIT unscheduled credential-on-file"
+          }, {
+            "code" : "M102",
+            "scenario" : "MIT standing order variable amount/fixed frequency"
+          }, {
+            "code" : "M103",
+            "scenario" : "MIT subscription fixed amount/fixed frequency"
+          }, {
+            "code" : "M104",
+            "scenario" : "MIT installment"
+          } ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30593,
+          "section" : "Appendix I-61",
+          "endLine" : 30643
+        }, {
+          "startLine" : 30644,
+          "section" : "Appendix I-62",
+          "endLine" : 30646
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.09.Sub-Table ID",
+          "sourceType" : "N2",
+          "sourceLength" : "fixed 09",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30596,
+            "section" : "Appendix I-61",
+            "endLine" : 30598
+          } ]
+        }, {
+          "path" : "113.09.Sub-Table Length",
+          "sourceType" : "N2",
+          "sourceLength" : "fixed 04",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30599,
+            "section" : "Appendix I-61",
+            "endLine" : 30602
+          } ]
+        }, {
+          "path" : "113.09.Sub-Table Data",
+          "sourceType" : "AN4",
+          "sourceLength" : "4 bytes",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30603,
+            "section" : "Appendix I-61",
+            "endLine" : 30643
+          }, {
+            "startLine" : 30644,
+            "section" : "Appendix I-62",
+            "endLine" : 30646
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

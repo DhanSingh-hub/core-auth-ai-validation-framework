@@ -1,0 +1,146 @@
+{
+  "id" : "TD-APPI-C060-N02-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C060-N02-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C060-N02-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-66",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t060-r004-APPI-C060-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C060-N02-001",
+        "tableId" : "060",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T060-R001", "APPI-T060-R002", "APPI-T060-R004" ],
+        "syntheticData" : {
+          "selector" : "02",
+          "logicalLength" : 1,
+          "value" : "O",
+          "context" : {
+            "cardBrand" : "Visa",
+            "cardPresence" : "not present",
+            "transactionType" : "Sale",
+            "record01Absent" : true
+          },
+          "syntheticServiceObservation" : {
+            "authOptimizationInvoked" : false,
+            "realTimeUpdaterInvoked" : false
+          }
+        },
+        "clearScope" : "OnlyO;explicitnooptimization;eligibleVisa/MC,CNP,A/S/Refund;mutuallyexclusive01.",
+        "excludedClaims" : [ "ADparticipating-trigger conflictresolution", "Actualserviceinvocation evidence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Ooverrideeffect",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Exclusive01absence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "value",
+            "replacement" : "Y",
+            "expected" : "FAIL overridecode"
+          }, {
+            "path" : "syntheticServiceObservation.authOptimizationInvoked",
+            "replacement" : true,
+            "expected" : "FAIL overrideeffect"
+          }, {
+            "path" : "syntheticServiceObservation.realTimeUpdaterInvoked",
+            "replacement" : true,
+            "expected" : "FAIL updaterisalsooverridden"
+          }, {
+            "path" : "context.record01Absent",
+            "replacement" : false,
+            "expected" : "FAIL exclusivity"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed1"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "omissionInterpretation" : "Omissiondoesnotguaranteeoptimizationruns"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30922,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "startLine" : 30856,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30917,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "startLine" : 30932,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30925,
+            "section" : "Appendix I-66",
+            "endLine" : 30927
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30928,
+            "section" : "Appendix I-66",
+            "endLine" : 30931
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "an1",
+          "sourceLength" : "1 byte; O",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30932,
+            "section" : "Appendix I-66",
+            "endLine" : 30946
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

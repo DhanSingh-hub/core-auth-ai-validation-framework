@@ -1,0 +1,55 @@
+{
+  "id" : "TD-APPI-C022-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C022-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C022-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-16",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t022-width-APPI-C022-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C022-02",
+        "tableId" : "022",
+        "ruleIds" : [ "APPI-T022-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-16",
+          "startLine" : 28116,
+          "endLine" : 28118
+        } ],
+        "data" : "100",
+        "context" : {
+          "reservedRangeMeaning" : "Future type may occur without prior notice"
+        },
+        "clearScope" : [ "Reserved35-99 is not automatically invalid", "Two-digit capacity" ],
+        "excludedClaims" : [ "Specific future device semantics" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Numeric originating-device value fits two digits",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "35 invalid solely because reserved",
+          "positive" : "FAIL",
+          "mutated" : "NOT_APPLICABLE"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "100",
+          "targetedNegative" : "Three-digit value outside capacity, not reserved-range rejection"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

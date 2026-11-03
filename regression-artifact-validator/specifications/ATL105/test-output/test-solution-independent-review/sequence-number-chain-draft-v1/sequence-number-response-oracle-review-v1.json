@@ -1,0 +1,85 @@
+{
+  "artifact": "SEQUENCE_NUMBER_RESPONSE_ORACLE_SOURCE_REVIEW",
+  "reviewDate": "2026-10-16",
+  "status": "SOURCE_CODE_MEANINGS_CONFIRMED_CASE_ORACLES_OPEN",
+  "authorizedSemanticDecision": false,
+  "caseExpectedOutcomesValidated": 0,
+  "executionPerformed": false,
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-APPENDIX-G-RESPONSE-CODES",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": 397,
+      "startLine": 21227,
+      "quote": "Valid Codes/Values: Transaction Code Description\n0 Approved—Purchase/Capture\n1 Approved—Communications Test\nDeclined—All other transactions\n2 Approved—Authorization only\n3 Approved—Authorization only with AVS\n4 Approved—Purchase/Capture with AVS\n5 Approved—Totals\n6 Approved—Totals with electronic mail retrieval pending\n7 Declined—Totals with electronic mail retrieval pending\n8 Approved—Electronic mail\n9 Approved—Electronic mail and more mail pending\nB Approved—Totals with electronic mail retrieval pending and proprietary data pending\nC Declined—Totals with electronic mail retrieval pending and proprietary data pending\nD Approved—Totals with proprietary data pending\nE Declined—Totals with proprietary data pending\nF Approved—Partial approval\nG Approved—Electronic mail and end of proprietary data block\nH Approved—Proprietary data retrieval, more pending\nJ Approved—Electronic Mail, reset",
+      "interpretation": "These are code meanings/response states. The source excerpt does not map the Sequence Number omission, field-constraint or supplemental-entity scenarios to one particular response code.",
+      "status": "SOURCE_TEXT_VERIFIED_CASE_APPLICABILITY_NOT_ESTABLISHED"
+    },
+    {
+      "id": "ATL105-2026-3-SEC11-5-2-RESPONSE-CODE-SOURCE",
+      "sourcePath": "specifications/ATL105/docs/specs/extracted_text.txt",
+      "sourcePage": "11-23",
+      "startLine": 8725,
+      "quote": "1 83 Response Code 1 1 R Identifies the type of response. Source: Host",
+      "interpretation": "The Host supplies the response code; the response code's required presence does not define which value applies to a particular request.",
+      "status": "SOURCE_TEXT_VERIFIED_CASE_APPLICABILITY_NOT_ESTABLISHED"
+    }
+  ],
+  "caseGroups": [
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:3251"],
+      "caseIds": ["TC-003851", "TC-003956"],
+      "scenarioType": "negative/missing_mandatory",
+      "approvedCandidateRequestContent": "IDENTICAL",
+      "sequenceNumber": "OMITTED_FROM_SEGMENT_100",
+      "producerResponseOracle": {"value": "1", "tier": "ASSERT", "approvedCandidateBodies": "IDENTICAL", "responseTemplateAvailable": false},
+      "sourceSupportedInterpretation": "Code 1 includes Declined—All other transactions (and separately Approved—Communications Test). A decline value is compatible with the transaction family, but the cited source does not establish that this exact missing-field request must return code 1.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1937"],
+      "caseIds": ["TC-009206", "TC-009207"],
+      "scenarioType": "business_rule",
+      "approvedCandidateRequestContent": "IDENTICAL",
+      "sequenceNumber": "000001_IN_SEGMENT_109",
+      "producerResponseOracle": {"approvedTier": "FLAG", "candidateTier": "INFER", "candidateValues": ["8", "9", "G", "J"], "responseTemplateAvailable": false},
+      "sourceSupportedInterpretation": "Appendix G defines all four as approved Electronic Mail/proprietary-data response states. It does not select one for these cases or supply the host pending-data state; candidate flags explicitly report that dependency.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:3251"],
+      "caseIds": ["TC-011912", "TC-011913"],
+      "scenarioType": "field_constraint",
+      "approvedCandidateRequestContent": "IDENTICAL",
+      "sequenceNumber": "000001_IN_SEGMENT_109",
+      "producerResponseOracle": {"approvedTier": "FLAG", "candidateTier": "INFER", "candidateValues": ["8", "9", "G", "J"], "responseTemplateAvailable": false},
+      "sourceSupportedInterpretation": "The source defines code meanings but no case-specific response oracle for this request; the field value is in Segment 109, not the narrower Segment 100 presence assertion.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:6098"],
+      "caseIds": ["TC-019860", "TC-019861"],
+      "scenarioType": "supplemental_entity",
+      "approvedCandidateRequestContent": "IDENTICAL",
+      "sequenceNumber": "000001_IN_SEGMENT_109",
+      "producerResponseOracle": {"approvedTier": "FLAG", "candidateTier": "INFER", "candidateValues": ["8", "9", "G", "J"], "responseTemplateAvailable": false},
+      "sourceSupportedInterpretation": "The source defines code meanings but does not establish a response outcome from this supplemental field example; no response message template is available in the AI case.",
+      "reviewStatus": "OPEN_REVIEW_REQUIRED"
+    }
+  ],
+  "summary": {
+    "approvedCandidateCaseRequestContentDifferences": 0,
+    "metadataOnlyConflictCases": 2,
+    "responseOracleConflictCases": 6,
+    "producerCode1ExpectedValuesSourceMeaningFound": true,
+    "producerCodes8_9_G_JMeaningFound": true,
+    "caseSpecificOutcomeMappingFound": false,
+    "independentExpectedOutcomesValidated": 0,
+    "semanticMatchesConfirmed": 0
+  },
+  "requiredNextEvidence": [
+    "Independent Host/issuer or authorized Test oracle for each transaction/state-dependent response.",
+    "Resolved Electronic Mail request/response pairing and pending-data state where codes 8/9/G/J are possible.",
+    "Independent approval of the invalid Sequence Number request outcome; code-set membership alone is not an oracle."
+  ]
+}

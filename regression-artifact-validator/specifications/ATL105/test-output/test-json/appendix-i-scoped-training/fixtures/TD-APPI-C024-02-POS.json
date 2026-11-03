@@ -1,0 +1,60 @@
+{
+  "id" : "TD-APPI-C024-02-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C024-02-POS.json",
+  "testCaseIds" : [ "TC-APPI-C024-02-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-17",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t024-r001-APPI-C024-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C024-02",
+        "tableId" : "024",
+        "ruleIds" : [ "APPI-T024-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-17",
+          "startLine" : 28134,
+          "endLine" : 28139
+        } ],
+        "logicalFields" : {
+          "micrType" : "T$",
+          "associatedMicr" : "T000000000A00000000C0001",
+          "components" : {
+            "aba" : "000000000",
+            "account" : "00000000",
+            "checkNumber" : "0001"
+          }
+        },
+        "clearScope" : [ "Explicit T$/T-ABA-A-account-C-check-number mapping" ],
+        "excludedClaims" : [ "Numeric type conformance unresolved", "Bank validation", "Wire encoding" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Structured fixture selects listedT$ mapping",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "T$ satisfies numeric attribute",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "micrType",
+          "value" : "19",
+          "targetedNegative" : "Bottom-numerals classification rather than structured format"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

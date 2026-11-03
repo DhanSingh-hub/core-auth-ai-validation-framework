@@ -1,0 +1,637 @@
+{
+  "artifact": "ATL105-SECTION-10-2-SOURCE-BACKED-OUTCOME-ORACLE-CANDIDATES",
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+  "oracleCount": 11,
+  "oracles": [
+    {
+      "oracleId": "OR-10-2-EXPIRY-ONLINE-AUTH",
+      "sourceRuleKey": "DEBIT_EXPIRATION_ONLINE",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-001",
+        "scenarioId": "SCN-DRAFT-10-2-001",
+        "testCaseId": "TC-DRAFT-10-2-001",
+        "testDataId": "TD-DRAFT-10-2-001",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "cardState": "DEBIT_CARD_EXPIRATION_CLASSIFIED_EXPIRED_BY_TEST_PROFILE",
+        "deviceAction": "PROCESS_AS_DEBIT"
+      },
+      "expectedDeviceOutcome": {
+        "localExpirationRejection": false,
+        "onlineAuthorizationRequested": true
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4388,
+        "endLine": 4390,
+        "quote": "The device does not perform expiration date validation on a debit card when the card is \nprocessed as a debit transaction.  On-line authorization must be requested for the transaction \nregardless of the expiration date on the card. "
+      },
+      "blockers": [
+        "Debit BIN/network profile and device authorization trace are unavailable."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-COMPLETION-RETRY-NEXT-DIAL",
+      "sourceRuleKey": "COMPLETION_NO_RESPONSE_RETRY",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-003",
+        "scenarioId": "SCN-DRAFT-10-2-003",
+        "testCaseId": "TC-DRAFT-10-2-003",
+        "testDataId": "TD-DRAFT-10-2-003",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "responseReceived": false,
+        "minutesSinceSend": 8,
+        "minutesUntilNextDial": 5
+      },
+      "expectedDeviceOutcome": {
+        "retryDueAt": "NEXT_DIAL",
+        "retryDueWithinMinutes": 5
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4395,
+        "endLine": 4397,
+        "quote": "In the event the device sends a Debit Card Completion transaction to BUYPASS and does not \nreceive a response, the device should resend the request on the next dial attempt or 30 minutes \nlater\u2014whichever occurs first.  If the device receives a Response Code value of 1 (indicating a "
+      },
+      "blockers": [
+        "Device clock/dial scheduler and retry persistence are unavailable."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-COMPLETION-RETRY-30-MINUTES",
+      "sourceRuleKey": "COMPLETION_NO_RESPONSE_RETRY",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-003",
+        "scenarioId": "SCN-DRAFT-10-2-003",
+        "testCaseId": "TC-DRAFT-10-2-003",
+        "testDataId": "TD-DRAFT-10-2-003",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "responseReceived": false,
+        "minutesSinceSend": 8,
+        "minutesUntilNextDial": 35
+      },
+      "expectedDeviceOutcome": {
+        "retryDueAt": "THIRTY_MINUTES_AFTER_SEND",
+        "retryDueWithinMinutes": 22
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4395,
+        "endLine": 4397,
+        "quote": "In the event the device sends a Debit Card Completion transaction to BUYPASS and does not \nreceive a response, the device should resend the request on the next dial attempt or 30 minutes \nlater\u2014whichever occurs first.  If the device receives a Response Code value of 1 (indicating a "
+      },
+      "blockers": [
+        "Device clock/dial scheduler and retry persistence are unavailable."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-COMPLETION-DECLINE24-ALREADY-CAPTURED",
+      "sourceRuleKey": "COMPLETION_DECLINE24_CAPTURED",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-004",
+        "scenarioId": "SCN-DRAFT-10-2-004",
+        "testCaseId": "TC-DRAFT-10-2-004",
+        "testDataId": "TD-DRAFT-10-2-004",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "injectedResponse": {
+          "responseCode": "1",
+          "declineCode": "24"
+        }
+      },
+      "expectedDeviceOutcome": {
+        "completionDisposition": "ALREADY_CAPTURED",
+        "deviceTotalsDisposition": "APPROVED"
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4397,
+        "endLine": 4400,
+        "quote": "later\u2014whichever occurs first.  If the device receives a Response Code value of 1 (indicating a \n\"decline\") and a Decline Code value of 24 in the transaction response message, then the device \nshould treat the response as already captured on BUYPASS and update the device totals as \n\"approved.\" "
+      },
+      "blockers": [
+        "The response is a test vector, not a response captured from BUYPASS or a debit network."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-COMPLETION-ANY-RESPONSE-STOPS-RETRY",
+      "sourceRuleKey": "COMPLETION_RESPONSE_STOPS_RETRY",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-005",
+        "scenarioId": "SCN-DRAFT-10-2-005",
+        "testCaseId": "TC-DRAFT-10-2-005",
+        "testDataId": "TD-DRAFT-10-2-005",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "responseClasses": [
+          "APPROVED",
+          "DECLINED"
+        ]
+      },
+      "expectedDeviceOutcome": {
+        "retryAttemptsAfterResponse": 0
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4401,
+        "endLine": 4402,
+        "quote": "Any response from BUYPASS to a Debit Card Completion transaction should end attempts to \nretry a Debit Card Completion whether \"approved\" or \"declined.\" "
+      },
+      "blockers": [
+        "Device retry queue and response-processing runtime are unavailable."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-THREE-UNREADABLE-SWIPES-TERMINATE",
+      "sourceRuleKey": "DEBIT_UNREADABLE_CARD_RETRIES",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-009",
+        "scenarioId": "SCN-DRAFT-10-2-009",
+        "testCaseId": "TC-DRAFT-10-2-009",
+        "testDataId": "TD-DRAFT-10-2-009",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "readResults": [
+          "UNREADABLE",
+          "UNREADABLE",
+          "UNREADABLE"
+        ]
+      },
+      "expectedDeviceOutcome": {
+        "swipeAttempts": 3,
+        "clerkMessageDisplayed": true,
+        "transactionEnded": true,
+        "manualEntryOffered": false
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4408,
+        "endLine": 4411,
+        "quote": "Manual entry is not allowed on a debit card transaction.  If the device is unable to read the \ncard's magnetic strip, it should prompt the user to swipe the card again\u2014up to three times.  If \nunable to read the magnetic strip after three attempts, a message should be displayed to the \nclerk and the transaction ended. "
+      },
+      "blockers": [
+        "POS swipe interface and UI observation channel are unavailable."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-PARTIAL-APPROVAL-RESPONSE-F",
+      "sourceRuleKey": "DEBIT_PARTIAL_APPROVAL_RESPONSE",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-012",
+        "scenarioId": "SCN-DRAFT-10-2-012",
+        "testCaseId": "TC-DRAFT-10-2-012",
+        "testDataId": "TD-DRAFT-10-2-012",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "partialApprovalIndicator": "1",
+        "networkSupportsPartialApproval": "UNVERIFIED",
+        "responseCode": "F",
+        "approvedAmount": "FROM_INJECTED_RESPONSE"
+      },
+      "expectedDeviceOutcome": {
+        "posPromptsForRemainingBalance": true,
+        "issuerBalanceSegment112": "PRESENT_ONLY_IF_RETURNED_BY_ISSUER"
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "CONDITIONAL_SOURCE_BACKED_CANDIDATE_BLOCKED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4447,
+        "endLine": 4454,
+        "quote": "Note: This information is returned when a Partial Approval Indicator value of 1 is sent in Partial \nApproval Indicator (Element No. 121). \n\u2022 A Response Code (Element No. 83) value of F (Indicates \u201capproval, partial amount \napproved.\u201d) \n\u2022 Approved Amount (Element No. 6) contains the approved partial amount, and the POS \ndevice must prompt for payment of the remaining balance due on the sale. \n\u2022 The card balance\u2014if returned by the issuer\u2014is in the Additional Information Data Segment \n(Segment No. 112). "
+      },
+      "blockers": [
+        "Debit network capability, issuer response, and POS remaining-balance prompt are unverified."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-PARTIAL-CASHBACK-AMOUNT-SPLIT",
+      "sourceRuleKey": "DEBIT_PARTIAL_CASHBACK_ALLOCATION",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-015",
+        "scenarioId": "SCN-DRAFT-10-2-015",
+        "testCaseId": "TC-DRAFT-10-2-015",
+        "testDataId": "TD-DRAFT-10-2-015",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "amountUnits": "SYNTHETIC_MINOR_UNITS_FOR_STATE_VECTOR_ONLY",
+        "purchaseAmount": 8000,
+        "cashbackAmount": 2000,
+        "injectedApprovedAmount": 6000
+      },
+      "expectedDeviceOutcome": {
+        "approvedPurchaseAmount": 6000,
+        "approvedCashbackAmount": 0
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4464,
+        "endLine": 4476,
+        "quote": "allow for this mandate. If any debit transaction requesting authorization for purchase with \n--- PAGE 96 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n10-19 \ncashback is partially approved, then the partially approved amount will be for the purchase only \nand not cashback. "
+      },
+      "blockers": [
+        "Numbers are abstract state-vector values, not a converter-ready monetary encoding or issuer observation."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-PARTIAL-REVERSAL-REUSES-APPROVED-AMOUNT",
+      "sourceRuleKey": "DEBIT_PARTIAL_REVERSAL_AMOUNT",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-016",
+        "scenarioId": "SCN-DRAFT-10-2-016",
+        "testCaseId": "TC-DRAFT-10-2-016",
+        "testDataId": "TD-DRAFT-10-2-016",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "amountUnits": "SYNTHETIC_MINOR_UNITS_FOR_STATE_VECTOR_ONLY",
+        "originalApprovedAmount": 6000
+      },
+      "expectedDeviceOutcome": {
+        "reversalAmount": 6000
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4477,
+        "endLine": 4478,
+        "quote": "The amount in a Reversal (Void) request must be the amount approved in the original \ntransaction response when a transaction has been partially approved. "
+      },
+      "blockers": [
+        "No original debit authorization/response pair or reversal processor is available."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-PARTIAL-TOR-REUSES-AMOUNT-AND-SEQUENCE",
+      "sourceRuleKey": "DEBIT_PARTIAL_TOR_AMOUNT_SEQUENCE",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-017",
+        "scenarioId": "SCN-DRAFT-10-2-017",
+        "testCaseId": "TC-DRAFT-10-2-017",
+        "testDataId": "TD-DRAFT-10-2-017",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "amountUnits": "SYNTHETIC_MINOR_UNITS_FOR_STATE_VECTOR_ONLY",
+        "originalApprovedAmount": 6000,
+        "originalSequenceNumber": "123456"
+      },
+      "expectedDeviceOutcome": {
+        "torAmount": 6000,
+        "torSequenceNumber": "123456"
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4479,
+        "endLine": 4482,
+        "quote": "The amount in a TOR request must be the amount approved in the original transaction \nresponse when a transaction has been partially approved. \nThe Sequence Number must be the Sequence Number contained in the original transaction \nrequest.    "
+      },
+      "blockers": [
+        "No original debit authorization/response pair or retry processor is available."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    },
+    {
+      "oracleId": "OR-10-2-AUTH-REVERSAL-MATCHING",
+      "sourceRuleKey": "DEBIT_AUTH_REVERSAL_CONTEXT",
+      "linkedDraftChain": {
+        "businessRequirementId": "BR-DRAFT-10-2-018",
+        "scenarioId": "SCN-DRAFT-10-2-018",
+        "testCaseId": "TC-DRAFT-10-2-018",
+        "testDataId": "TD-DRAFT-10-2-018",
+        "status": "REVIEW_REQUIRED"
+      },
+      "fixtureKind": "DEVICE_STATE_VECTOR_NOT_ATL105_WIRE_PAYLOAD",
+      "inputVector": {
+        "originalApprovalNumber": "SYNTHETIC-APPROVAL",
+        "reversalApprovalNumber": "SYNTHETIC-APPROVAL",
+        "originalSequenceNumber": "123456",
+        "reversalSequenceNumber": "123456",
+        "reversalPromptCode": "S"
+      },
+      "expectedDeviceOutcome": {
+        "element5Matches": true,
+        "element86Matches": true,
+        "element78PromptCode": "S"
+      },
+      "oracleKind": "SOURCE_DEFINED_DETERMINISTIC",
+      "candidateStatus": "SOURCE_BACKED_CANDIDATE_NOT_EXECUTED",
+      "executionStatus": "NOT_EXECUTED",
+      "sourceEvidence": {
+        "file": "docs/specs/extracted_text.txt",
+        "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "startLine": 4508,
+        "endLine": 4514,
+        "quote": "Successful reversal matching requires the following: \n\u2022 Element No. 5 (Approval Number)\u2014present in the original transaction\u2014must be present \nand identical in the Authorization Only Reversal transaction. \n\u2022 Element No.86 (Sequence Number)\u2014present in the original transaction\u2014must be present \nand identical in the Authorization Only Reversal transaction. \n\u2022 Element No. 78 (Prompt Code) must contain a Transaction Type code \u201cS\u201d to indicate \ncancellation. "
+      },
+      "blockers": [
+        "Approval-number format, request serialization, and acquirer/issuer behavior are not verified."
+      ],
+      "ruleCoverageStatus": "CANDIDATE_VECTOR_ONLY_NOT_RULE_COVERAGE"
+    }
+  ],
+  "executionCertified": false,
+  "coverageCredit": 0,
+  "candidateVectorRuleKeyCount": 10,
+  "draftRuleCount": 29,
+  "unmaterializedRuleCount": 19,
+  "blockedRules": [
+    {
+      "ruleKey": "COMPLETION_SINGLE_CAPTURE",
+      "businessRequirementId": "BR-DRAFT-10-2-002",
+      "scenarioId": "SCN-DRAFT-10-2-002",
+      "testCaseId": "TC-DRAFT-10-2-002",
+      "testDataId": "TD-DRAFT-10-2-002",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No debit-capable device/runtime fixture and independently bound request/response outcome evidence.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_PIN_REQUIRED",
+      "businessRequirementId": "BR-DRAFT-10-2-006",
+      "scenarioId": "SCN-DRAFT-10-2-006",
+      "testCaseId": "TC-DRAFT-10-2-006",
+      "testDataId": "TD-DRAFT-10-2-006",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No DES-compliant PIN-entry device, approved DUKPT test keys, KSN policy, or PIN-block lifecycle capture.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_PIN_ENCRYPTION",
+      "businessRequirementId": "BR-DRAFT-10-2-007",
+      "scenarioId": "SCN-DRAFT-10-2-007",
+      "testCaseId": "TC-DRAFT-10-2-007",
+      "testDataId": "TD-DRAFT-10-2-007",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No DES-compliant PIN-entry device, approved DUKPT test keys, KSN policy, or PIN-block lifecycle capture.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_MANUAL_ENTRY_PROHIBITED",
+      "businessRequirementId": "BR-DRAFT-10-2-008",
+      "scenarioId": "SCN-DRAFT-10-2-008",
+      "testCaseId": "TC-DRAFT-10-2-008",
+      "testDataId": "TD-DRAFT-10-2-008",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No debit-capable device/runtime fixture and independently bound request/response outcome evidence.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_POS_TRANSACTION_TYPES",
+      "businessRequirementId": "BR-DRAFT-10-2-010",
+      "scenarioId": "SCN-DRAFT-10-2-010",
+      "testCaseId": "TC-DRAFT-10-2-010",
+      "testDataId": "TD-DRAFT-10-2-010",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No complete per-transaction request/response fixture matrix or validated debit transaction-code mapping.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_CAT_TRANSACTION_TYPES",
+      "businessRequirementId": "BR-DRAFT-10-2-011",
+      "scenarioId": "SCN-DRAFT-10-2-011",
+      "testCaseId": "TC-DRAFT-10-2-011",
+      "testDataId": "TD-DRAFT-10-2-011",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No complete per-transaction request/response fixture matrix or validated debit transaction-code mapping.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_PARTIAL_APPROVAL_CONTEXTS",
+      "businessRequirementId": "BR-DRAFT-10-2-013",
+      "scenarioId": "SCN-DRAFT-10-2-013",
+      "testCaseId": "TC-DRAFT-10-2-013",
+      "testDataId": "TD-DRAFT-10-2-013",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified debit-network support, merchant mandate profile, issuer response, or approved-amount host oracle.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "INTERLINK_CASHBACK_MANDATE",
+      "businessRequirementId": "BR-DRAFT-10-2-014",
+      "scenarioId": "SCN-DRAFT-10-2-014",
+      "testCaseId": "TC-DRAFT-10-2-014",
+      "testDataId": "TD-DRAFT-10-2-014",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified debit-network support, merchant mandate profile, issuer response, or approved-amount host oracle.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HEALTHCARE_ISSUER_SCOPE",
+      "businessRequirementId": "BR-DRAFT-10-2-019",
+      "scenarioId": "SCN-DRAFT-10-2-019",
+      "testCaseId": "TC-DRAFT-10-2-019",
+      "testDataId": "TD-DRAFT-10-2-019",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified eligible-benefit BIN, issuer/network capability profile, QHP product fixture, or companion-segment host response.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HEALTHCARE_REQUEST_CONTEXT",
+      "businessRequirementId": "BR-DRAFT-10-2-020",
+      "scenarioId": "SCN-DRAFT-10-2-020",
+      "testCaseId": "TC-DRAFT-10-2-020",
+      "testDataId": "TD-DRAFT-10-2-020",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified eligible-benefit BIN, issuer/network capability profile, QHP product fixture, or companion-segment host response.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HEALTHCARE_RESPONSE_STANDARD",
+      "businessRequirementId": "BR-DRAFT-10-2-021",
+      "scenarioId": "SCN-DRAFT-10-2-021",
+      "testCaseId": "TC-DRAFT-10-2-021",
+      "testDataId": "TD-DRAFT-10-2-021",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified eligible-benefit BIN, issuer/network capability profile, QHP product fixture, or companion-segment host response.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HEALTHCARE_TYPES",
+      "businessRequirementId": "BR-DRAFT-10-2-022",
+      "scenarioId": "SCN-DRAFT-10-2-022",
+      "testCaseId": "TC-DRAFT-10-2-022",
+      "testDataId": "TD-DRAFT-10-2-022",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified eligible-benefit BIN, issuer/network capability profile, QHP product fixture, or companion-segment host response.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HEALTHCARE_RECEIPT",
+      "businessRequirementId": "BR-DRAFT-10-2-023",
+      "scenarioId": "SCN-DRAFT-10-2-023",
+      "testCaseId": "TC-DRAFT-10-2-023",
+      "testDataId": "TD-DRAFT-10-2-023",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No verified eligible-benefit BIN, issuer/network capability profile, QHP product fixture, or companion-segment host response.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_RECEIPT_PIN_USED",
+      "businessRequirementId": "BR-DRAFT-10-2-024",
+      "scenarioId": "SCN-DRAFT-10-2-024",
+      "testCaseId": "TC-DRAFT-10-2-024",
+      "testDataId": "TD-DRAFT-10-2-024",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No printer/output capture; inherited Section 10.1 receipt chains remain DRAFT_REVIEW_REQUIRED.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_RECEIPT_SIGNATURE",
+      "businessRequirementId": "BR-DRAFT-10-2-025",
+      "scenarioId": "SCN-DRAFT-10-2-025",
+      "testCaseId": "TC-DRAFT-10-2-025",
+      "testDataId": "TD-DRAFT-10-2-025",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No printer/output capture; inherited Section 10.1 receipt chains remain DRAFT_REVIEW_REQUIRED.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_PIN_BLOCK_FOLLOW_ON",
+      "businessRequirementId": "BR-DRAFT-10-2-026",
+      "scenarioId": "SCN-DRAFT-10-2-026",
+      "testCaseId": "TC-DRAFT-10-2-026",
+      "testDataId": "TD-DRAFT-10-2-026",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No DES-compliant PIN-entry device, approved DUKPT test keys, KSN policy, or PIN-block lifecycle capture.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_TRACK2_DEFAULT",
+      "businessRequirementId": "BR-DRAFT-10-2-027",
+      "scenarioId": "SCN-DRAFT-10-2-027",
+      "testCaseId": "TC-DRAFT-10-2-027",
+      "testDataId": "TD-DRAFT-10-2-027",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No compliant host wire capture or controlled storage/clearance observation; full track data is intentionally not copied into this evidence pack.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_HOST_CARD_DATA",
+      "businessRequirementId": "BR-DRAFT-10-2-028",
+      "scenarioId": "SCN-DRAFT-10-2-028",
+      "testCaseId": "TC-DRAFT-10-2-028",
+      "testDataId": "TD-DRAFT-10-2-028",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No compliant host wire capture or controlled storage/clearance observation; full track data is intentionally not copied into this evidence pack.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    },
+    {
+      "ruleKey": "DEBIT_INFLIGHT_TRACK2",
+      "businessRequirementId": "BR-DRAFT-10-2-029",
+      "scenarioId": "SCN-DRAFT-10-2-029",
+      "testCaseId": "TC-DRAFT-10-2-029",
+      "testDataId": "TD-DRAFT-10-2-029",
+      "disposition": "NO_CANDIDATE_VECTOR_MATERIALIZED",
+      "status": "REVIEW_REQUIRED",
+      "blocker": "No compliant host wire capture or controlled storage/clearance observation; full track data is intentionally not copied into this evidence pack.",
+      "executionAllowed": false,
+      "coverageCredit": 0
+    }
+  ]
+}

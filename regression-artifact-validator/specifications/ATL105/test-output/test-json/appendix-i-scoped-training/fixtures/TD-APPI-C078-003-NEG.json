@@ -1,0 +1,82 @@
+{
+  "id" : "TD-APPI-C078-003-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-003-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-003-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-83",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r004-APPI-C078-003"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-003",
+        "tableId" : "078",
+        "nestedSelector" : "product-line-item-group",
+        "ruleIds" : [ "APPI-T078-R004", "APPI-T078-R006" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-82",
+          "startLine" : 32045,
+          "endLine" : 32046
+        }, {
+          "section" : "Appendix I-83",
+          "startLine" : 32091,
+          "endLine" : 32097
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "productCode" : "001",
+            "matchingSegment102Code" : "001",
+            "productLengthState" : "unresolved; no encoded length candidate"
+          },
+          "negative" : {
+            "productCode" : "01",
+            "matchingSegment102Code" : "001",
+            "productLengthState" : "unresolved; no encoded length candidate"
+          },
+          "active" : {
+            "productCode" : "01",
+            "matchingSegment102Code" : "001",
+            "productLengthState" : "unresolved; no encoded length candidate"
+          }
+        },
+        "clearScope" : "Numeric POS product-code field is three bytes with leading zeros; product-length field remains a gap.",
+        "excludedClaims" : [ "Resolved productLength", "Actual product assignment", "Full group serialization", "Reverse requirement that every 102 code needs 078" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "productCode is exactly three numeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "product-length interpretation can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ],
+          "negative" : [ {
+            "predicate" : "productCode is exactly three numeric bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "product-length interpretation can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "productCode",
+          "from" : "001",
+          "to" : "01",
+          "unchanged" : "companion code and unresolved length state",
+          "targetedFailure" : "dropped leading zero violates three-digit field"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

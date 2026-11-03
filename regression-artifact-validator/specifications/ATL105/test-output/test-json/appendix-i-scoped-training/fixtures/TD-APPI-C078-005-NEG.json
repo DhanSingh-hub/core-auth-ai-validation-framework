@@ -1,0 +1,89 @@
+{
+  "id" : "TD-APPI-C078-005-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-005-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-005-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-83",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r008-APPI-C078-005"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-005",
+        "tableId" : "078",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T078-R008" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-83",
+          "startLine" : 32119,
+          "endLine" : 32135
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "02",
+            "logicalDescription" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHI",
+            "context" : "fuel",
+            "presence" : "optional",
+            "lengthInterpretation" : "fixed 35 versus variable alpha unresolved"
+          },
+          "negative" : {
+            "id" : "02",
+            "logicalDescription" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH1",
+            "context" : "fuel",
+            "presence" : "optional",
+            "lengthInterpretation" : "fixed 35 versus variable alpha unresolved"
+          },
+          "positiveVariants" : [ {
+            "context" : "fuel",
+            "presence" : "omitted",
+            "logicalOutcome" : "source explicitly permits fuel omission"
+          } ],
+          "active" : {
+            "id" : "02",
+            "logicalDescription" : "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGH1",
+            "context" : "fuel",
+            "presence" : "optional",
+            "lengthInterpretation" : "fixed 35 versus variable alpha unresolved"
+          }
+        },
+        "clearScope" : "Alpha description, explicitly optional for fuel; supplied included value happens to have 35 bytes without adopting an unresolved padding policy.",
+        "excludedClaims" : [ "Approved fixed/variable width reconciliation", "Header serialization", "Padding", "Nonfuel mandatory presence" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "logicalDescription contains only alpha characters",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "description wire-length policy can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ],
+          "negative" : [ {
+            "predicate" : "logicalDescription contains only alpha characters",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "description wire-length policy can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "logicalDescription[34]",
+          "from" : "I",
+          "to" : "1",
+          "unchanged" : "35-byte count, context and width gate",
+          "targetedFailure" : "numeric character conflicts with alpha description type"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id" : "TD-APPI-C079-007-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C079-007-POS.json",
+  "testCaseIds" : [ "TC-APPI-C079-007-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-87",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t079-r008-APPI-C079-007"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C079-007",
+        "tableId" : "079",
+        "nestedSelector" : "09",
+        "ruleIds" : [ "APPI-T079-R008" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-87",
+          "startLine" : 32428,
+          "endLine" : 32444
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "09",
+            "declaredValueLength" : "04",
+            "data" : "0325",
+            "logicalPercentage" : "3.25",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "negative" : {
+            "id" : "09",
+            "declaredValueLength" : "04",
+            "data" : "03A5",
+            "logicalPercentage" : "3.25",
+            "impliedDecimalPlaces" : 2,
+            "productContext" : "fuel"
+          },
+          "positiveVariants" : [ {
+            "data" : "0001",
+            "logicalPercentage" : "0.01"
+          } ]
+        },
+        "clearScope" : "Formal 079 other-tax-rate selector 09, n4, two decimals and fuel context.",
+        "excludedClaims" : [ "Missing 078 selector definition", "Nonfuel/mixed-product rate logic", "Host decline", "Tax formula" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data is exactly four numeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "logical percentage equals numeric data divided by 100",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data is exactly four numeric bytes",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "decimal conversion of invalid data",
+            "outcome" : "NOT_EVALUATED_TYPE_FAILURE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data[2]",
+          "from" : "2",
+          "to" : "A",
+          "unchanged" : "width, header and fuel context",
+          "targetedFailure" : "nonnumeric tax-rate data"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

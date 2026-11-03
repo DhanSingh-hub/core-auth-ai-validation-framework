@@ -72,7 +72,7 @@ _No open provisional items are linked to these rules._
 
 ## Current Validator Boundary
 
-No `Segment112PayloadValidator` exists yet. These rules are documented but not yet enforced in code.
+`Segment112PayloadValidator` now enforces the response flag/presence relationship, Segment Type, declared length, triad shape and shared 984/990/999 bounds. The transaction-flow coordinator rejects Segment 112 in requests and Segment 111 in responses. Table-specific semantics remain partial; see the [combined supplemental-information flow](../supplemental-information-111-112-flow.md).
 
 ## Review Checklist
 

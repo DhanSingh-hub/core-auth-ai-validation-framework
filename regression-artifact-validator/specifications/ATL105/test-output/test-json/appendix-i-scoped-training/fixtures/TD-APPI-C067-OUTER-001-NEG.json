@@ -1,0 +1,133 @@
+{
+  "id" : "TD-APPI-C067-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C067-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C067-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-77",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t067-r001-APPI-C067-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C067-OUTER-001",
+        "tableId" : "067",
+        "ruleIds" : [ "APPI-T067-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "067",
+          "logicalPayloadObservation" : "00000005.000",
+          "logicalObservedLength" : 12,
+          "logicalAnticipatedMajorAmount" : "50.00",
+          "context" : {
+            "cardBrand" : "Visa",
+            "transactionContext" : "verification/product eligibility",
+            "currency" : "USD",
+            "currencyExponentSyntheticPrecondition" : 2
+          }
+        },
+        "clearScope" : "Numericamount,rightjustifiedleadingzeros,currencyimplieddecimal,Visa-only;12-bytefixtureisalogicalproseexample,notresolvedwirewidth.",
+        "excludedClaims" : [ "Fixed12versusvariableupto12resolution", "Authorityforallcurrencyexponents", "Financialmax/minlimits", "Mandatory067presence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Numericimplied-decimal50.00underexponent2",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Visa-onlyscope",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Fixed/variablewidthandsourceeight-byteexample",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "logicalPayloadObservation",
+            "replacement" : "00000005.000",
+            "expected" : "FAIL numeric-onlyimplieddecimal"
+          }, {
+            "path" : "context.cardBrand",
+            "replacement" : "MasterCard",
+            "expected" : "FAIL Visa-only"
+          }, {
+            "path" : "logicalObservedLength",
+            "replacement" : 11,
+            "expected" : "FAIL observationofthisspecific12-bytefixture,notavariable-widthadjudication"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "sourceEightByteObservation" : "00500000",
+          "proseTwelveByteObservation" : "000000005000",
+          "thirteenByteOverMaximum" : "0000000005000",
+          "zeroExponentSyntheticVariant" : {
+            "currencyExponent" : 0,
+            "majorAmount" : "50",
+            "numericObservation" : "000000000050"
+          }
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31712,
+          "section" : "Appendix I-77",
+          "endLine" : 31737
+        }, {
+          "startLine" : 31720,
+          "section" : "Appendix I-77",
+          "endLine" : 31737
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed067",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 31720,
+            "section" : "Appendix I-77",
+            "endLine" : 31722
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; source says variable up to12",
+          "coverage" : "WIRE_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Source selector/length contradiction retained; logical identity/count observations only",
+          "sourceEvidence" : [ {
+            "startLine" : 31723,
+            "section" : "Appendix I-77",
+            "endLine" : 31727
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "n12",
+          "sourceLength" : "source says12-character amount, right-justified/leading zeros; example uses8",
+          "coverage" : "LOGICAL_NUMERIC_CANDIDATE_WIDTH_REVIEW_REQUIRED",
+          "excludedWireClaim" : "Variable up-to12 versus12-character prose andeight-byteexample",
+          "sourceEvidence" : [ {
+            "startLine" : 31728,
+            "section" : "Appendix I-77",
+            "endLine" : 31737
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

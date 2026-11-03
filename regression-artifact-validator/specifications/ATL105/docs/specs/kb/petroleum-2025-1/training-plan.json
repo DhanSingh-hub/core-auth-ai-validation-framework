@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "id": "PETRO-2025-1-TRAINING-PLAN",
+  "sourceId": "BUYPASS-PETROLEUM-2025-1",
+  "sourceVersion": "2025-1",
+  "status": "IN_PROGRESS",
+  "pilotContext": "MASTERCARD_FLEET",
+  "rolloutOrder": [
+    {"order": 1, "context": "MASTERCARD_FLEET", "chapters": ["7"], "pdfPageRanges": [[51, 57]]},
+    {"order": 2, "context": "VISA_FLEET_AND_VOYAGER", "chapters": ["8", "9"], "pdfPageRanges": [[58, 92]]},
+    {"order": 3, "context": "WEX_FLEET_AND_WEX_OTR", "chapters": ["10", "15", "16"], "pdfPageRanges": [[93, 124], [137, 141]]},
+    {"order": 4, "context": "COMDATA", "chapters": ["11", "12", "13", "14"], "pdfPageRanges": [[125, 136]]},
+    {"order": 5, "context": "FLEET_ONE_AND_FUELMAN", "chapters": ["5", "6"], "pdfPageRanges": [[36, 50]]},
+    {"order": 6, "context": "AFP_TRANSACTION_AND_RECEIPT_FLOWS", "chapters": ["2", "3", "4"], "pdfPageRanges": [[15, 35]]},
+    {"order": 7, "context": "PETROLEUM_EMV", "chapters": ["17"], "pdfPageRanges": [[142, 142]]},
+    {"order": 8, "context": "PETROLEUM_APPENDICES_A_TO_M", "chapters": ["A-M"], "pdfPageRanges": [[143, 226]]}
+  ],
+  "phases": [
+    {
+      "phase": 0, "id": "P0-SCOPE", "name": "Scope and pilot selection", "frameworkGate": null,
+      "steps": [
+        {"id": "P0.1", "action": "Select the context and record its chapters, physical PDF pages and printed page labels."},
+        {"id": "P0.2", "action": "List the supported transactions and entry modes exactly as the source states them."},
+        {"id": "P0.3", "action": "Record exclusions, including look-alike programs and generic card processing that must not inherit fleet rules."},
+        {"id": "P0.4", "action": "Obtain SME sign-off on the scope record."}
+      ],
+      "deliverables": ["Context scope record in the context training package"],
+      "acceptanceCriteria": ["Every scoped page lies inside the chapter bookmarks", "Exclusions are explicit", "SME sign-off recorded"]
+    },
+    {
+      "phase": 1, "id": "P1-INVENTORY", "name": "Source inventory", "frameworkGate": "SOURCE_INVENTORY",
+      "steps": [
+        {"id": "P1.1", "action": "Classify every scoped section as overview, rule, table, card layout, example, cross-reference or note."},
+        {"id": "P1.2", "action": "Anchor each item to a page-local quote, page ID and page text hash."},
+        {"id": "P1.3", "action": "Prove that every PDF bookmark inside the scope is covered by at least one item."},
+        {"id": "P1.4", "action": "List cross-references to ATL105 and to document-local Petroleum appendices."}
+      ],
+      "deliverables": ["Source inventory with bookmark coverage"],
+      "acceptanceCriteria": ["100% scoped bookmark coverage", "All quotes resolve on their stated page"]
+    },
+    {
+      "phase": 2, "id": "P2-RECONCILE", "name": "Version reconciliation", "frameworkGate": null,
+      "steps": [
+        {"id": "P2.1", "action": "Compare every inventoried rule with ATL105 2026-3 and 2026-4 using quoted, page-local evidence."},
+        {"id": "P2.2", "action": "Assign a disposition: aligned, Petroleum narrows ATL105, Petroleum-only, interpretation required, distinct program or potential conflict."},
+        {"id": "P2.3", "action": "Verify claimed absences by searching both ATL105 releases at build time."},
+        {"id": "P2.4", "action": "Raise an owned question for every non-aligned item and obtain SME dispositions."}
+      ],
+      "deliverables": ["Reconciliation matrix"],
+      "acceptanceCriteria": ["Every inventoried rule is reconciled", "No unresolved conflict remains in scope"]
+    },
+    {
+      "phase": 3, "id": "P3-TABLES", "name": "Table and card-layout extraction", "frameworkGate": "SEGMENT_KNOWLEDGE_MODEL",
+      "steps": [
+        {"id": "P3.1", "action": "Convert track layouts into structured fields whose row text is verified on the source page."},
+        {"id": "P3.2", "action": "Extract BIN ranges and enumerations; check that every page repeating them agrees."},
+        {"id": "P3.3", "action": "Check source examples against the layouts, BIN ranges and check-digit rule."},
+        {"id": "P3.4", "action": "Keep Petroleum appendix identities document-local and send anomalies to source review."}
+      ],
+      "deliverables": ["Structured card and field catalog with example checks"],
+      "acceptanceCriteria": ["Layouts are contiguous and source-verified", "Repeated values agree", "Example anomalies are reviewed against the original PDF"]
+    },
+    {
+      "phase": 4, "id": "P4-CONTEXT-MATRIX", "name": "Context matrix", "frameworkGate": "CONTEXT_MATRIX",
+      "steps": [
+        {"id": "P4.1", "action": "Map supported transactions to ATL105 transaction types and full Prompt Codes."},
+        {"id": "P4.2", "action": "Combine transactions with entry modes, prompt requirements and AFP or receipt flows."},
+        {"id": "P4.3", "action": "Mark every combination supported, unsupported or review-required with evidence."}
+      ],
+      "deliverables": ["Context matrix"],
+      "acceptanceCriteria": ["Every combination has a disposition and evidence"]
+    },
+    {
+      "phase": 5, "id": "P5-BR", "name": "Independent BR derivation", "frameworkGate": "INDEPENDENT_BR_DERIVATION",
+      "steps": [
+        {"id": "P5.1", "action": "Write atomic BRs from reconciled rules without using AI producer output."},
+        {"id": "P5.2", "action": "Attach source anchors, context applicability and ATL105 dependencies to every BR."},
+        {"id": "P5.3", "action": "Reject duplicate, blended or unanchored BRs."}
+      ],
+      "deliverables": ["Petroleum BR catalog"],
+      "acceptanceCriteria": ["Every BR is atomic and anchored"]
+    },
+    {
+      "phase": 6, "id": "P6-CHAINS", "name": "TS, TC and TD chains", "frameworkGate": "TS_TC_TEST_DATA_CHAIN",
+      "steps": [
+        {"id": "P6.1", "action": "Derive positive, negative and boundary scenarios for every BR."},
+        {"id": "P6.2", "action": "Create test cases and concrete test data; flag placeholders."},
+        {"id": "P6.3", "action": "Validate canonical BR to TS to TC to TD traceability."}
+      ],
+      "deliverables": ["Canonical Petroleum training package"],
+      "acceptanceCriteria": ["Every BR has a complete chain", "Placeholders are never counted as executable"]
+    },
+    {
+      "phase": 7, "id": "P7-FLOWS", "name": "AFP and specialized flows", "frameworkGate": "LIFECYCLE_AND_SPECIALIZED_FLOWS",
+      "steps": [
+        {"id": "P7.1", "action": "Model AFP pre-authorization, completion, offline receipts and retry rules."},
+        {"id": "P7.2", "action": "Model reversal and follow-on card-data rules."},
+        {"id": "P7.3", "action": "Link every state transition to evidence and a test chain."}
+      ],
+      "deliverables": ["Flow and lifecycle model"],
+      "acceptanceCriteria": ["Every transition has evidence and a chain"]
+    },
+    {
+      "phase": 8, "id": "P8-MUTATION", "name": "Serialization and mutation", "frameworkGate": "SERIALIZATION_AND_MUTATION",
+      "steps": [
+        {"id": "P8.1", "action": "Serialize test data with the existing ATL105 converter."},
+        {"id": "P8.2", "action": "Add mutations for check digit, BIN boundary, product totals and masking."},
+        {"id": "P8.3", "action": "Prove that the validator rejects every mutation."}
+      ],
+      "deliverables": ["Mutation suite"],
+      "acceptanceCriteria": ["Valid data serializes and every mutation is caught"]
+    },
+    {
+      "phase": 9, "id": "P9-AI-INTAKE", "name": "AI artifact intake", "frameworkGate": "INDEPENDENT_AI_ARTIFACT_INTAKE",
+      "steps": [
+        {"id": "P9.1", "action": "Obtain an AI-produced Petroleum BR/TS/TC/TD package."},
+        {"id": "P9.2", "action": "Compare it with the independent package for coverage, correctness, traceability and test data."},
+        {"id": "P9.3", "action": "Triage and track every difference."}
+      ],
+      "deliverables": ["AI validation report"],
+      "acceptanceCriteria": ["Every difference has a triage decision"]
+    },
+    {
+      "phase": 10, "id": "P10-EXECUTION", "name": "Execution and certification", "frameworkGate": "CONVERTER_AND_EXECUTION_READINESS",
+      "steps": [
+        {"id": "P10.1", "action": "Execute ready test data on the host or simulator."},
+        {"id": "P10.2", "action": "Record actual outcomes against independent oracles."},
+        {"id": "P10.3", "action": "Record SME or TBA approval before promoting the context."}
+      ],
+      "deliverables": ["Execution evidence and approval record"],
+      "acceptanceCriteria": ["All gates evidenced before TRAINED_FOR_INTAKE"]
+    }
+  ],
+  "guardrails": [
+    "Fleet rules apply only to their card program and never to generic card processing.",
+    "Petroleum 2025-1 supplements ATL105 2026-3 and 2026-4; it does not replace either release.",
+    "Petroleum appendices keep document-scoped identities.",
+    "Retrieval results are leads, not approved rules.",
+    "Executable means ready to run; only actually executed test data counts as executed.",
+    "No status is promoted without source evidence and a recorded SME decision."
+  ]
+}

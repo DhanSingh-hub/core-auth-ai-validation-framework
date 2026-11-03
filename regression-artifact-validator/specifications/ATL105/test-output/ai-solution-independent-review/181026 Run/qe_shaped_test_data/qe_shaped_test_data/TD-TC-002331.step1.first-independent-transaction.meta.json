@@ -1,0 +1,637 @@
+{
+  "configurationVersion": "1.0",
+  "specification": "ATL105",
+  "generatedAt": "2026-10-18T17:10:59.611032+00:00",
+  "testCaseId": "TC-002331",
+  "testCaseName": "Flow — Two independent transactions forced to share a Sequence Number (negative) (Financial Transaction Request → Financial Transaction Request) [maximal-multi-brand]",
+  "flowId": "FLOW-DUPLICATE-SEQUENCE-NUMBER-VIOLATION",
+  "flowVariantId": "maximal-multi-brand",
+  "flowVariantName": "Maximal profile across card brands",
+  "flowAxisValues": {
+    "card_brand": "DS",
+    "entry_mode": "10",
+    "field_profile": "maximal",
+    "pin_entry_capability": "2"
+  },
+  "step": 1,
+  "role": "first_independent_transaction",
+  "previousStep": null,
+  "scenarioId": "SC-2639",
+  "requirementId": null,
+  "sourceRuleId": "BR-38-10",
+  "sourcePage": null,
+  "messageFamily": "Financial Transaction Request",
+  "scenarioType": "flow",
+  "priority": "P1",
+  "negativeClass": null,
+  "violatedElementName": null,
+  "qeCoverage": {
+    "qeFields": 2,
+    "totalFields": 24,
+    "ratio": 0.0833
+  },
+  "dataSections": {
+    "1": {
+      "elements": [
+        "MessageFormatVersionIdentifier",
+        "NumberofSegments"
+      ]
+    },
+    "2": {
+      "segments": [
+        "100"
+      ],
+      "source": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "position": 0
+      }
+    },
+    "3": {
+      "segments": [
+        "111"
+      ],
+      "source": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "position": 6
+      }
+    }
+  },
+  "fields": [
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "derived_stripped",
+      "value": "100",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "InformationByte",
+      "specElementName": "Information Byte",
+      "nameSource": "derived_stripped",
+      "value": "0",
+      "dataSource": "qe_sample_observed",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "TerminalIdentifier",
+      "specElementName": "Terminal Identifier",
+      "nameSource": "derived_stripped",
+      "value": "ZNFJ990841936392206732",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "PromptCode",
+      "specElementName": "Prompt Code",
+      "nameSource": "derived_stripped",
+      "value": "0020",
+      "dataSource": "catalog_preserved_deliberate_or_fixed",
+      "provisional": null,
+      "sourceSamples": [],
+      "reshapedInto": "PromptCode",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "AccountNumber",
+      "specElementName": "Account Number",
+      "nameSource": "derived_stripped",
+      "value": "6011881422475886",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "note": "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "CardDiscretionaryBlockData",
+      "specElementName": "Card Discretionary Block Data",
+      "nameSource": "derived_stripped",
+      "value": "0331",
+      "dataSource": "platform_default",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "EncryptedPINBlockData",
+      "specElementName": "Encrypted PIN Block Data",
+      "nameSource": "derived_stripped",
+      "value": "16",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "PumpLaneNumber",
+      "specElementName": "Pump/Lane Number",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "FuelPurchaseAmount",
+      "specElementName": "Fuel Purchase Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "NonfuelAmount",
+      "specElementName": "Nonfuel Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "TaxAmount",
+      "specElementName": "Tax Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "CashAmount",
+      "specElementName": "Cash Amount",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "SequenceNumber",
+      "specElementName": "Sequence Number",
+      "nameSource": "derived_stripped",
+      "value": "000001",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "LocalDateandLocalTime",
+      "specElementName": "Local Date and Local Time",
+      "nameSource": "derived_stripped",
+      "value": "0615251430",
+      "dataSource": "client_supplied",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "PartialApprovalIndicator",
+      "specElementName": "Partial Approval Indicator",
+      "nameSource": "derived_stripped",
+      "value": "1",
+      "dataSource": "qe_sample_observed",
+      "provisional": true,
+      "sourceSamples": [],
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "100",
+      "segmentFriendlyName": "Standard Message Data Segment",
+      "element": "SegmentLength",
+      "specElementName": "Segment Length",
+      "nameSource": "derived_stripped",
+      "value": "094",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "note": "SEGMENT_LENGTH_PROVISIONAL: Account Number's own separator ('=' Track 2 / '^' Track 1 instead of a Field Separator when swiped, p.356-359/364) depends on card entry mode, which composed test data does not model yet — computed using the default Field-Separator convention only, flagged provisional",
+      "dataSection": "2",
+      "dataSectionSource": {
+        "rule": "Financial Transaction Request",
+        "page": 164,
+        "basis": "named in Financial Transaction Request's (p.164) own Data Section No. 2 clause",
+        "position": 0
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "SegmentType",
+      "specElementName": "Segment Type",
+      "nameSource": "derived_stripped",
+      "value": "111",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformationIndicator",
+      "specElementName": "Variable Information Indicator",
+      "nameSource": "derived_stripped",
+      "value": "005",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformationLength",
+      "specElementName": "Variable Information Length",
+      "nameSource": "derived_stripped",
+      "value": "003",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformation",
+      "specElementName": "Variable Information",
+      "nameSource": "derived_stripped",
+      "value": "102",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformationIndicator",
+      "specElementName": "Variable Information Indicator [2]",
+      "nameSource": "derived_stripped",
+      "value": "031",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformationLength",
+      "specElementName": "Variable Information Length [2]",
+      "nameSource": "derived_stripped",
+      "value": "002",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "VariableInformation",
+      "specElementName": "Variable Information [2]",
+      "nameSource": "derived_stripped",
+      "value": "00",
+      "dataSource": "spec_derived",
+      "provisional": true,
+      "sourceSamples": [],
+      "foldedInto": "VariableInformationSection",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "111",
+      "segmentFriendlyName": "Variable Information Data Segment",
+      "element": "SegmentLength",
+      "specElementName": "Segment Length",
+      "nameSource": "derived_stripped",
+      "value": "026",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "note": "ATTR-84 (p.399): calculated from this segment's own rendered bytes plus Field Separators",
+      "dataSection": "3",
+      "dataSectionSource": {
+        "rule": "CH12-SEGMENT-MATRIX",
+        "page": 219,
+        "basis": "named in CH12-SEGMENT-MATRIX's (p.219) own Data Section No. 3 clause",
+        "position": 6
+      }
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "MessageFormatVersionIdentifier",
+      "specElementName": "MessageFormatVersionIdentifier",
+      "nameSource": "spec_element_name",
+      "value": "ATL105",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "ELEMENT-55-PROCESSING-RULES (p.384); value: ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST (p.209)"
+    },
+    {
+      "segment": "DS1",
+      "segmentFriendlyName": "Data Section No. 1",
+      "element": "NumberofSegments",
+      "specElementName": "NumberofSegments",
+      "nameSource": "spec_element_name",
+      "value": "02",
+      "dataSource": "spec_derived",
+      "provisional": false,
+      "sourceSamples": [],
+      "dataSection": "1",
+      "note": "Financial Transaction Request (p.164); value: Financial Transaction Request (p.164)"
+    }
+  ],
+  "unavailableFields": [
+    {
+      "segment": "100",
+      "element": "Approval Number",
+      "friendly": "ApprovalNumber",
+      "reason": "omitted by composer (inclusion profile / R-O-C entry)",
+      "dataSource": "not_applicable"
+    }
+  ],
+  "unavailableSegments": [
+    {
+      "segment": "101",
+      "specSegmentName": "Fleet Data Segment",
+      "fieldCount": 18,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 101 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "102",
+      "specSegmentName": "Product Code Data Segment",
+      "fieldCount": 9,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 102 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "103",
+      "specSegmentName": "EBT Data Segment",
+      "fieldCount": 7,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 103 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "104",
+      "specSegmentName": "Purchase Card Data Segment",
+      "fieldCount": 10,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 104 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "108",
+      "specSegmentName": "Loyalty Card Data Segment",
+      "fieldCount": 15,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 108 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "110",
+      "specSegmentName": "Check Data Segment",
+      "fieldCount": 12,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 110 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "113",
+      "specSegmentName": "ECA/ TeleCheck Data Segment Format ®",
+      "fieldCount": 9,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 113 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "114",
+      "specSegmentName": "SKU Data Segment",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 114 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "123",
+      "specSegmentName": "NFC Payment Tokenization Data Segment",
+      "fieldCount": 10,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 123 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "135",
+      "specSegmentName": "Moneris Data Segment (Request)",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 135 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "143",
+      "specSegmentName": "Tax by Product Data Segment",
+      "fieldCount": 13,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 143 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "145",
+      "specSegmentName": "Enhanced Fleet Request",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 145 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "151",
+      "specSegmentName": "Request InComm OTC Market Basket Data",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 151 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "153",
+      "specSegmentName": "Network Token Data Request",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 153 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    },
+    {
+      "segment": "156",
+      "specSegmentName": "EV Charging Data Segment",
+      "fieldCount": 3,
+      "reason": "DATA_SECTION_3_NOT_REQUIRED: Data Section No. 3 segment 156 is optional in this message and carries no value this test case requires (no scenario parameter, boundary/negative value, flow link or mandatory table) — sent 'only on transactions requiring' its data"
+    }
+  ],
+  "presenceUnknownSegments": [],
+  "runtimeSubstitutions": [],
+  "sourceBatch": null,
+  "sourceBatchSha256": null,
+  "testDataId": "TD-TC-002331.step1.first-independent-transaction"
+}

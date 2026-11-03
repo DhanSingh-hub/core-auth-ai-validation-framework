@@ -4,6 +4,19 @@ This folder is the focused learning and analysis module for the ATL105 Purchase 
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+## Independent Chapter 12 observed-wire continuation
+
+The opt-in actual bridge compares the ten source fields in order, retains
+explicit empty-field FS (extracted line 11815), measures the observed N3 length
+and applies the actual 86-byte cap. No optional field is manufactured as a
+blank. The existing purchase-card helper remains the field oracle; postal and
+cardinality source conflicts remain open. `SEG104-R-005` has distinct actual
+wire-order and measured-length finding scopes, not a new canonical identity.
+Terminal FS convention and merchant applicability are not certified by these
+predicates. `Chapter12LegacyWireMicrIntegrationTest` exercises valid, malformed,
+86/87-byte and missing-observation probes through actual intake. See the current
+[gap register](../chapter-coverage-gap-register.md).
+
 ## Training and Validation Entry Points
 
 - [8-Item Framework (Training Handbook)](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md#test-solution-implementation-8-item-framework)

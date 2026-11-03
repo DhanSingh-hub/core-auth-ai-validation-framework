@@ -7,6 +7,36 @@
 
 **Common strategy:** [Common LLM Segment Training Strategy](../COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md)
 
+> **EMV companion-reference update (2026-10-27):** The "First Data EMV Implementation Guide" that §10.14
+> requires has been ingested as the Fiserv EMV and Chip Implementation Guide v2025.RG20; see the
+> [EMV companion knowledge](../../../test-validation-strategy/ATL105-EMV-Implementation-Guide-Training-Knowledge.md).
+>
+> It supplies companion evidence for:
+> - `SEG130-SME-003`: cross-field formulas
+> - `SEG130-SME-008/012`: AID-based EMV product eligibility instead of Appendix E codes
+> - `SEG130-SME-009/013`: candidate Generic Proprietary AIDs
+> - `SEG130-SME-004`: cryptogram authenticity confirmed external
+> - `SEG130-R-017`: EMV data on reversals is still not required; when present, it follows guide Table 10 and RQ4600
+>
+> It also adds an ATL105-sourced check: Element 188 must mirror Tag 5F34.
+>
+> Register statuses are unchanged until the communication register is updated (backlog B-10). `SEG130-SME-007`, `-010` and `-011` are not addressed by the guide.
+
+## Independent Chapter 12 observed CAPK event ordering
+
+The existing observed-session oracle now supplements checksum/device/exchange
+binding with `capk-load-event-order`. Source 10752–10757 and 24321–24325 require
+the received checksum for subsequent EMV requests. Supplied load request
+sentAt, response receivedAt and current context.transactionObservedAt must
+establish that order. Offset-bearing timestamps compare instants, not local
+clock strings; equal captured instants remain review rather than fabricated
+order. Actual Standard sequence/device authority is preserved even when metadata
+offers replacement identities. Ten canonical/intake probes cover normal,
+adjacent/equal, reversed, malformed and missing observations in
+`Chapter12CapkEventOrderIntegrationTest`. This does not certify latest trusted
+CAPK state, complete block transport or cryptographic/kernel authenticity.
+See the current [gap register](../chapter-coverage-gap-register.md).
+
 ---
 
 ## Learning Module Index (mirrors [Segment 100 Learning Module](../segment-100/README.md) topic-note pattern)
@@ -138,6 +168,30 @@ See [segment-130-ai-vs-test-requirement-comparison.md](segment-130-ai-vs-test-re
 ---
 
 ## 7. Do-Not-Assume Rules
+
+### Executed binary-wire continuation
+
+[EmvSegmentWireValidator](../../../../../../src/main/java/com/coreauth/validator/canonical/EmvSegmentWireValidator.java)
+compares actual `serializedSegmentHex` bytes with ordered ASCII headers,
+decoded packed chip bytes and actual additional-information triples. Empty
+optional fields retain their separators. Repeated triples have no inserted
+separator; the final separator is measured. A chip byte equal to FS is chip
+content, not a structural delimiter. N4 length is checked against the byte
+count, not the length of a hexadecimal string.
+
+[Chapter12ActualPayloadAdapter](../../../../../../src/main/java/com/coreauth/validator/canonical/Chapter12ActualPayloadAdapter.java)
+maps actual named EMV fields and `SerializedSegmentHex`. The additional
+information may be an actual array or a single actual indicator/length/value
+triple; supplying both is invalid. Text `SerializedSegment` is explicitly
+reviewed, not silently treated as packed binary. Metadata never supplies
+missing actual fields/wire. The observed EMV Financial Transaction Request
+family is checked separately from direction.
+
+Positive/negative byte-layout and measured-length executions are persisted
+in the [Chapter 12 report](../../../../test-output/test-json/chapter-12-training-evidence.json).
+These checks do not prove chip-to-Segment-100 semantic agreement,
+transaction/load-session provenance, key authenticity or cryptographic
+validity. Published length/requiredness/placement conflicts remain reviews.
 
 1. **Do not** reject Segment 103 (EBT) as a Segment 130 companion — it **is** permitted. The Section 11.8.1 prose bullet list is an abbreviated summary; the table beneath it and the Chapter 12 matrix both include 103. *(This corrects an error in the prior revision of this KB.)*
 2. Do not treat a missing Segment 130 as automatically invalid — Reversals/TORs waive EMV data (`SEG130-R-017`) and fallback/MSR entry modes exclude it (`SEG130-R-019`). These need distinct diagnostics.

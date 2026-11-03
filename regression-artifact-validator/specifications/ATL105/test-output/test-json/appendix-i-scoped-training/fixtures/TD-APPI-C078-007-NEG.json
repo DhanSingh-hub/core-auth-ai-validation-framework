@@ -1,0 +1,78 @@
+{
+  "id" : "TD-APPI-C078-007-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C078-007-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C078-007-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-84",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t078-r010-APPI-C078-007"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C078-007",
+        "tableId" : "078",
+        "nestedSelector" : "04",
+        "ruleIds" : [ "APPI-T078-R010" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-84",
+          "startLine" : 32165,
+          "endLine" : 32183
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "id" : "04",
+            "declaredValueLength" : "01",
+            "data" : "1",
+            "logicalMeaning" : "unit cost includes local tax"
+          },
+          "negative" : {
+            "id" : "04",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "logicalMeaning" : "unit cost includes local tax"
+          },
+          "active" : {
+            "id" : "04",
+            "declaredValueLength" : "01",
+            "data" : "0",
+            "logicalMeaning" : "unit cost includes local tax"
+          }
+        },
+        "clearScope" : "Defined selector 04 and true-only listed included-local-tax code.",
+        "excludedClaims" : [ "Allowed false encoding", "Absent-tag semantics", "Mandatory presence of 05", "Whole blob" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data belongs to source-listed set {1}",
+            "outcome" : "PASS"
+          } ],
+          "negative" : [ {
+            "predicate" : "data belongs to source-listed set {1}",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "data width/type still n1",
+            "outcome" : "PASS"
+          } ]
+        },
+        "mutation" : {
+          "target" : "data",
+          "from" : "1",
+          "to" : "0",
+          "unchanged" : "id, length and intended included-local-tax meaning",
+          "targetedFailure" : "unlisted code cannot represent the unchanged intended meaning; no false semantics invented"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

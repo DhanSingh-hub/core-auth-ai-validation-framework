@@ -1,0 +1,88 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-009-DOWNLOAD-INDICATOR",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "aiBrCount": 2,
+    "linkedCaseCount": 0,
+    "element": "30"
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:036",
+      "obligationGroupId": "OBL-581B7BC9EA0A",
+      "claim": "Download Indicator must be numeric and must not exceed 1 bytes.",
+      "sourceRuleId": "ENT-ELEM-30",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 30 is numeric and fixed length of one digit; its source purpose and processing rules are context-sensitive to load requests.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:037",
+      "obligationGroupId": "OBL-34AE84ABC50A",
+      "claim": "Download Indicator must be one of: 0 No Download Request., Key.",
+      "sourceRuleId": "ENT-ELEM-30",
+      "sourceAlignment": "INSUFFICIENT_EVIDENCE_MALFORMED_INCOMPLETE_ENUM",
+      "sourceDetail": "ATL105 enumerates four values: 0 (No Download Request), 1 (request partial load), 8 (update Key ID and Key), and 9 (update Public Key). The extracted AI claim is truncated/ambiguous after 'Key.' and omits at least values 1 and 9; no operation context narrows the field to a subset.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0
+    }
+  ],
+  "sourceEvidence": [
+    {"sourcePage": 373, "startLine": 20175, "quote": "Number: 30 Name: Download Indicator"},
+    {"sourcePage": 373, "startLine": 20176, "quote": "Character Type: N Maximum Length: 1 byte"},
+    {"sourcePage": 373, "startLine": 20178, "quote": "Representation: Fixed length of one digit"},
+    {"sourcePage": 373, "startLine": 20179, "quote": "Purpose: Indicates whether the device should request a load; and, if so, what type."},
+    {"sourcePage": 373, "startLine": 20181, "quote": "Processing Rules: BUYPASS leaves communications established so that a Load Request can be initiated."},
+    {"sourcePage": 373, "startLine": 20183, "quote": "Required for TransArmor PKI Encryption and Tokenization. This value indicates the device must update its Key ID and Key because the current Key ID is due to expire or has expired."},
+      {"sourcePage": 373, "startLine": 20186, "quote": "Required for EMV Public Key loads. This value indicates that the device must update its CA Public Key File because the checksum in the EMV Financial Transaction Request does not match the checksum value at the host."},
+    {"sourcePage": 373, "startLine": 20190, "quote": "Valid Codes/Values: Code Description"},
+    {"sourcePage": 373, "startLine": 20191, "quote": "0 No Download Request."},
+    {"sourcePage": 374, "startLine": 20202, "quote": "1 Indicates device should request a partial load."},
+    {"sourcePage": 374, "startLine": 20203, "quote": "8 Indicates the device must update its Key ID and Key"},
+    {"sourcePage": 374, "startLine": 20205, "quote": "9 Indicates that the device can update its Public Key"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "relatedCurrentTestRules": [
+      {"testBrId": "BR-RULE-SEG109-R-022", "title": "Electronic Mail Response contains required Response Code, Download Indicator, Initiation Date, Initiation Time, Sequence Number, and Block Number", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Message layout/requiredness, not allowed-value enum."},
+      {"testBrId": "BR-RULE-SEG118-R-025", "title": "Proprietary Data Load Response envelope contains Download Indicator in Data Section 1", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Response envelope/requiredness, not allowed-value enum."},
+      {"testBrId": "BR-RULE-SEGDL4-R-007", "title": "Software update processing sequence returns Download Indicator 1 and follows through to DL4/DL5 loads", "status": "DRAFT_REVIEW_REQUIRED", "scope": "Lifecycle context; not a complete Element 30 enum rule."}
+    ],
+    "directCompleteElement30EnumRuleFound": false,
+    "chainStatus": "RELATED_RULES_HAVE_DRAFT_PLACEHOLDER_CHAINS"
+  },
+  "caseReview": {
+    "aiCaseCount": 0,
+    "aiCaseEvidence": "NO_LINKED_CASES_FOR_EITHER_AI_BR",
+    "outcomeOracle": "NOT_PROVIDED",
+    "executionPerformed": false
+  },
+  "analystDisposition": {
+    "formatClaimAlignment": "SOURCE_ALIGNED_BUT_FIXED_LENGTH_DETAIL_OMITTED",
+    "enumClaimAlignment": "INSUFFICIENT_EVIDENCE_MALFORMED_INCOMPLETE_SOURCE_ENUM",
+    "testCounterparts": "RESPONSE_LAYOUT_AND_DL4_LIFECYCLE_RULES_EXIST_BUT_NO_DIRECT_COMPLETE_ENUM_CHAIN",
+    "overall": "PRELIMINARY_REVIEW; NO_MATCH_GRANTED",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchStatus": "NOT_ASSESSED",
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Recover the intended complete enum/source claim for AI BR :037; do not guess that 'Key' means value 8 or that omitted 1/9 values are excluded.",
+    "Confirm which response/load contexts the AI enum is intended to cover; Element 30 values indicate different load types and processing rules.",
+    "Create hash-bound cases for 0, 1, 8, 9 and invalid values with independent, context-specific expected outcomes.",
+    "Keep the DL4 lifecycle sequence separate from the Element 30 field format/enum rule."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

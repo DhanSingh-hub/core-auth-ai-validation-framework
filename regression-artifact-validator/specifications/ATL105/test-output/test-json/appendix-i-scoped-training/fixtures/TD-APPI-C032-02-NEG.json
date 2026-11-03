@@ -1,0 +1,64 @@
+{
+  "id" : "TD-APPI-C032-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-22",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r003-APPI-C032-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-02",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-21",
+          "startLine" : 28326,
+          "endLine" : 28337
+        }, {
+          "section" : "Appendix I-22",
+          "startLine" : 28349,
+          "endLine" : 28358
+        } ],
+        "logicalFields" : {
+          "subTableId" : "02",
+          "subTableLength" : "004",
+          "value" : "1000",
+          "subTablePresent" : false,
+          "context" : {
+            "brand" : "Amex",
+            "cardPresent" : true,
+            "cardKind" : "Credit",
+            "giftCardIncluded" : true,
+            "otherProductsIncluded" : true
+          }
+        },
+        "clearScope" : [ "Gift-card product group1000 includes mixed basket", "Nested four-character payload" ],
+        "excludedClaims" : [ "Erroneous enclosing example lengths", "Actual purchase" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Required product group present when gift card included",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "subTablePresent",
+          "value" : false,
+          "targetedNegative" : "Required nested field omitted"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

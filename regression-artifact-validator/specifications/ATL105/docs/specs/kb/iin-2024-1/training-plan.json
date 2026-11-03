@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "id": "IIN-2024-1-TRAINING-PLAN",
+  "sourceId": "BUYPASS-IIN-2024-1",
+  "sourceVersion": "2024-1",
+  "status": "IN_PROGRESS",
+  "pilotContext": "CARD_TYPE_CATALOG",
+  "rolloutOrder": [
+    {"order": 1, "context": "CARD_TYPE_CATALOG", "tables": ["Table 1", "Table 2"], "pdfPageRanges": [[1, 10]]}
+  ],
+  "phases": [
+    {
+      "phase": 0, "id": "P0-SCOPE", "name": "Scope and identity", "frameworkGate": null,
+      "steps": [
+        {"id": "P0.1", "action": "Confirm document identity: title, release date, version, SHA-256 fingerprint and page count."},
+        {"id": "P0.2", "action": "Confirm the PDF outline bookmarks match the registered source exactly."},
+        {"id": "P0.3", "action": "Record the full 15-card-type Introduction list and the separate 16-card-type Table 1/Table 2 list; flag the difference for review."},
+        {"id": "P0.4", "action": "Obtain SME sign-off on the scope record."}
+      ],
+      "deliverables": ["Document identity and scope record in the training package"],
+      "acceptanceCriteria": ["Fingerprint, page count and outline match the registered source", "The Introduction/table card-type mismatch is explicitly recorded", "SME sign-off recorded"]
+    },
+    {
+      "phase": 1, "id": "P1-INVENTORY", "name": "Source inventory", "frameworkGate": "SOURCE_INVENTORY",
+      "steps": [
+        {"id": "P1.1", "action": "Classify every section as overview, note, table row or cross-reference."},
+        {"id": "P1.2", "action": "Anchor each item to a page-local quote, page ID and page text hash."},
+        {"id": "P1.3", "action": "Prove that all 16 Table 1 rows and all 16 Table 2 rows are covered by at least one inventory item."},
+        {"id": "P1.4", "action": "List the single ATL105 cross-reference (Element 2, Account Number) and the revision-history notes."}
+      ],
+      "deliverables": ["Source inventory with full table-row coverage"],
+      "acceptanceCriteria": ["100% of Table 1 and Table 2 rows covered", "All quotes resolve on their stated page"]
+    },
+    {
+      "phase": 2, "id": "P2-RECONCILE", "name": "ATL105 and internal reconciliation", "frameworkGate": null,
+      "steps": [
+        {"id": "P2.1", "action": "Compare the Element 2, Account Number referral with ATL105 2026-3 and 2026-4 using quoted, page-local evidence."},
+        {"id": "P2.2", "action": "Compare the Table 1 Card Type ID column with ATL105 section 10.1.7.3's printed Card Type IDs."},
+        {"id": "P2.3", "action": "Check internal consistency: duplicate Card Type IDs, mixed PAN lengths, and the Introduction/table card-type mismatch."},
+        {"id": "P2.4", "action": "Cross-check Visa Fleet PAN ranges against the independently trained Petroleum 2025-1 Visa Fleet BIN prefixes."},
+        {"id": "P2.5", "action": "Raise an owned question for every non-aligned or internally inconsistent item and obtain SME dispositions."}
+      ],
+      "deliverables": ["Reconciliation matrix and internal consistency findings"],
+      "acceptanceCriteria": ["Every inventoried rule is reconciled or has a tracked finding", "No unresolved conflict is hidden"]
+    },
+    {
+      "phase": 3, "id": "P3-CATALOG", "name": "Card type catalog extraction", "frameworkGate": "SEGMENT_KNOWLEDGE_MODEL",
+      "steps": [
+        {"id": "P3.1", "action": "Derive every PAN range for all 16 card types directly from the source page text, grouped by declared digit length."},
+        {"id": "P3.2", "action": "Verify PAN range digit-length matches the declared PAN Length column, except declared-wildcard rows."},
+        {"id": "P3.3", "action": "Verify every low bound is numerically less than its paired high bound."},
+        {"id": "P3.4", "action": "Record the single externally evidenced check-digit rule (MasterCard Fleet Mod 10, cited from the Petroleum 2025-1 training lesson) and leave all other card types without an invented check-digit algorithm."}
+      ],
+      "deliverables": ["Structured card-type catalog with 100 PAN ranges across 16 card types"],
+      "acceptanceCriteria": ["Every range is source-derived, not hand-entered", "Length and ordering checks pass or are explicitly flagged"]
+    },
+    {
+      "phase": 4, "id": "P4-CONTEXT-MATRIX", "name": "Entry-mode context matrix", "frameworkGate": "CONTEXT_MATRIX",
+      "steps": [
+        {"id": "P4.1", "action": "Combine each card type with its Table 2 Manual Entry, Encrypted PIN Required and IIN Entered flags."},
+        {"id": "P4.2", "action": "Mark every combination supported, not-applicable or review-required with evidence."},
+        {"id": "P4.3", "action": "Confirm Table 1 and Table 2 list the same 16 card types in the same order."}
+      ],
+      "deliverables": ["Card type x entry-mode context matrix"],
+      "acceptanceCriteria": ["Every combination has a disposition and evidence", "Table 1/Table 2 card-type sets match exactly"]
+    },
+    {
+      "phase": 5, "id": "P5-BR", "name": "Independent BR derivation", "frameworkGate": "INDEPENDENT_BR_DERIVATION",
+      "steps": [
+        {"id": "P5.1", "action": "Write one atomic BR per card type stating its IIN Length, PAN Length(s) and PAN range(s)."},
+        {"id": "P5.2", "action": "Attach source anchors and the ATL105 Element 2 dependency to every BR."},
+        {"id": "P5.3", "action": "Exclude Debit and EBT from range-boundary BRs since their declared length is a placeholder, not a fixed structure."}
+      ],
+      "deliverables": ["IIN Reference Manual BR catalog"],
+      "acceptanceCriteria": ["Every BR is atomic and anchored", "Placeholder rows are not asserted as fixed-length rules"]
+    },
+    {
+      "phase": 6, "id": "P6-CHAINS", "name": "TS, TC and TD chains", "frameworkGate": "TS_TC_TEST_DATA_CHAIN",
+      "steps": [
+        {"id": "P6.1", "action": "Derive low-boundary-valid, high-boundary-valid, below-low-invalid, above-high-invalid and wrong-length-invalid scenarios for every ranged BR."},
+        {"id": "P6.2", "action": "Create test cases and concrete test data computed arithmetically from the verified range bounds."},
+        {"id": "P6.3", "action": "Validate canonical BR to TS to TC to TD traceability."}
+      ],
+      "deliverables": ["Canonical IIN Reference Manual training package"],
+      "acceptanceCriteria": ["Every ranged BR has a complete chain", "Test data is derived, not invented"]
+    },
+    {
+      "phase": 7, "id": "P7-FLOWS", "name": "Lifecycle and specialized flows", "frameworkGate": "LIFECYCLE_AND_SPECIALIZED_FLOWS",
+      "steps": [
+        {"id": "P7.1", "action": "Model the 2021-2 to 2024-1 Visa Fleet PAN range revision and the 2021-1 to 2021-2 JCB/Discover revisions as lifecycle evidence."},
+        {"id": "P7.2", "action": "Model the 8-digit BIN transition (April 2022) as a specialized flow affecting Visa, MasterCard and Discover only."},
+        {"id": "P7.3", "action": "Link every modeled transition to evidence and a test chain."}
+      ],
+      "deliverables": ["Flow and lifecycle model"],
+      "acceptanceCriteria": ["Every transition has evidence and a chain"]
+    },
+    {
+      "phase": 8, "id": "P8-MUTATION", "name": "Validator and mutation", "frameworkGate": "SERIALIZATION_AND_MUTATION",
+      "steps": [
+        {"id": "P8.1", "action": "Implement a PAN validator (length and range membership) directly from the derived catalog."},
+        {"id": "P8.2", "action": "Add mutations for range-boundary violation, wrong length, and (for MasterCard Fleet only) Mod 10 violation."},
+        {"id": "P8.3", "action": "Prove that the validator rejects every mutation and accepts every valid boundary value."}
+      ],
+      "deliverables": ["Mutation suite"],
+      "acceptanceCriteria": ["Valid boundary data passes and every mutation is caught"]
+    },
+    {
+      "phase": 9, "id": "P9-AI-INTAKE", "name": "AI artifact intake", "frameworkGate": "INDEPENDENT_AI_ARTIFACT_INTAKE",
+      "steps": [
+        {"id": "P9.1", "action": "Obtain an AI-produced IIN Reference Manual BR/TS/TC/TD package."},
+        {"id": "P9.2", "action": "Compare it with the independent package for coverage, correctness, traceability and test data."},
+        {"id": "P9.3", "action": "Triage and track every difference."}
+      ],
+      "deliverables": ["AI validation report"],
+      "acceptanceCriteria": ["Every difference has a triage decision"]
+    },
+    {
+      "phase": 10, "id": "P10-EXECUTION", "name": "Execution and certification", "frameworkGate": "CONVERTER_AND_EXECUTION_READINESS",
+      "steps": [
+        {"id": "P10.1", "action": "Execute ready test data on the host or simulator."},
+        {"id": "P10.2", "action": "Record actual outcomes against independent oracles."},
+        {"id": "P10.3", "action": "Record SME or TBA approval before promoting the context."}
+      ],
+      "deliverables": ["Execution evidence and approval record"],
+      "acceptanceCriteria": ["All gates evidenced before TRAINED_FOR_INTAKE"]
+    }
+  ],
+  "guardrails": [
+    "IIN Reference Manual 2024-1 supplements ATL105 2026-3 and 2026-4; it does not replace either release.",
+    "Fleet card rows in this manual are not treated as authoritative over the Petroleum specification without SME confirmation (IIN-2024-1-Q05).",
+    "No check-digit algorithm is invented for a card type unless independently evidenced in this document or a verified cross-document lesson.",
+    "Retrieval results are leads, not approved rules.",
+    "Executable means ready to run; only actually executed test data counts as executed.",
+    "No status is promoted without source evidence and a recorded SME decision."
+  ]
+}

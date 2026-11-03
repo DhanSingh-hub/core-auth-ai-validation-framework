@@ -1,0 +1,96 @@
+{
+  "id": "TC-005024",
+  "name": "Business Rule — BR-365-11: Card Label code 'CC' represents MasterCard/Visa and 'TE' represents Amex in Totals Response. [Totals Request]",
+  "scenario_id": "SC-4582",
+  "scenario_type": "business_rule",
+  "transaction_type": "Totals Request",
+  "priority": "P3",
+  "priority_score": 0.2175,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:1696",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1696"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "completeness_status": "COMPLETE",
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "source_rule_id": "BR-365-11",
+  "source_page": 365,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "INFER",
+      "field": "ResponseCode",
+      "value": null,
+      "acceptable_values": [
+        "5",
+        "6",
+        "B",
+        "D",
+        "N",
+        "W"
+      ],
+      "flags": [
+        "HOST_STATE_DEPENDENT: the spec documents multiple valid Approved codes for this transaction (p396-398, 'Source: Host'); which one depends on host-side pending-data state not present in the request",
+        "SPEC_RESPONSE_CODE_UNRESOLVED: transaction type None has no Appendix G meaning"
+      ],
+      "grounding": "ATL105 Response Code valid values (Element 83) scoped to this response message"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "business_rule": {
+      "tier": "ASSERT",
+      "assertion": "Card Label = CC (MasterCard/Visa) or TE (Amex)",
+      "source_page": 365,
+      "confidence_score": 0.85,
+      "grounding": "step4_deep_extraction business_rules (confidence-gated proxy for SME approval)"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'Totals Request' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "business_rule_assertion": "Card Label = CC (MasterCard/Visa) or TE (Amex)",
+  "related_entity_ids": [
+    "ENT-ELEM-13"
+  ],
+  "confidence_score": 0.85,
+  "confidence_pct": 58,
+  "confidence_band": "MEDIUM",
+  "test_data_file": "qe_shaped_test_data/TD-TC-005024.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": []
+  },
+  "test_data": [
+    {
+      "step": 1,
+      "role": "single",
+      "transaction_type": "Other - Totals Request",
+      "prompt_code": "990",
+      "file": "TD-TC-005024.json"
+    }
+  ]
+}

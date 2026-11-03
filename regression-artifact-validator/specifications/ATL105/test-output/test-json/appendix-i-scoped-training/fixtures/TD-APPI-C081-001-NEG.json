@@ -1,0 +1,104 @@
+{
+  "id" : "TD-APPI-C081-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C081-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C081-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-88",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t081-r002-APPI-C081-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C081-001",
+        "tableId" : "081",
+        "ruleIds" : [ "APPI-T081-R001", "APPI-T081-R002", "APPI-T081-R003" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-88",
+          "startLine" : 32472,
+          "endLine" : 32481
+        } ],
+        "syntheticData" : {
+          "positive" : {
+            "tableId" : "081",
+            "data" : "GATEWAY0001",
+            "tablePresent" : true,
+            "logicalContext" : {
+              "network" : "Visa",
+              "submitter" : "gateway acting for merchant"
+            },
+            "headerLengthState" : "n2 versus element112 n3 unresolved",
+            "reservedBytesState" : "placement and width unspecified",
+            "assignmentVerified" : false
+          },
+          "negative" : {
+            "tableId" : "081",
+            "data" : "GATEWAY0001",
+            "tablePresent" : false,
+            "logicalContext" : {
+              "network" : "Visa",
+              "submitter" : "gateway acting for merchant"
+            },
+            "headerLengthState" : "n2 versus element112 n3 unresolved",
+            "reservedBytesState" : "placement and width unspecified",
+            "assignmentVerified" : false
+          },
+          "active" : {
+            "tableId" : "081",
+            "data" : "GATEWAY0001",
+            "tablePresent" : false,
+            "logicalContext" : {
+              "network" : "Visa",
+              "submitter" : "gateway acting for merchant"
+            },
+            "headerLengthState" : "n2 versus element112 n3 unresolved",
+            "reservedBytesState" : "placement and width unspecified",
+            "assignmentVerified" : false
+          }
+        },
+        "clearScope" : "Eleven-alphanumeric-byte logical gateway value and explicit mandatory presence when a gateway submits for a merchant. Negative retains proposed field model but marks it absent from the logical transaction.",
+        "excludedClaims" : [ "Encoded full request", "Choice of 11 versus 011 header", "Reserved bytes fill/width", "Real Visa assignment", "Missing-ID host decline/default" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "gateway-submitted transaction has table081 present",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "proposed gateway data is eleven alphanumeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "header/reserved-area wire encoding can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ],
+          "negative" : [ {
+            "predicate" : "gateway-submitted transaction has table081 present",
+            "outcome" : "FAIL"
+          }, {
+            "predicate" : "retained proposed value still has eleven alphanumeric bytes",
+            "outcome" : "PASS"
+          }, {
+            "predicate" : "header/reserved-area wire encoding can be approved",
+            "outcome" : "NOT_EVALUATED_REVIEW_GATE"
+          } ]
+        },
+        "mutation" : {
+          "target" : "tablePresent",
+          "from" : true,
+          "to" : false,
+          "unchanged" : "proposed field value, context and gates",
+          "targetedFailure" : "required table omitted in gateway-on-behalf-of-merchant context"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

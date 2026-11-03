@@ -1,0 +1,67 @@
+{
+  "id" : "TD-APPI-C032-09-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-09-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-09-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-26",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r012-APPI-C032-09"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-09",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R012" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-26",
+          "startLine" : 28517,
+          "endLine" : 28537
+        }, {
+          "section" : "Appendix AE-1",
+          "startLine" : 36861,
+          "endLine" : 36869
+        } ],
+        "logicalFields" : {
+          "subTableId" : "09",
+          "subTableLength" : "001",
+          "value" : "1",
+          "initialIndicatorPresent" : true,
+          "incrementalIndicatorPresent" : true,
+          "context" : {
+            "brand" : "Visa",
+            "merchantEligibility" : "Explicit permitted-merchant assumption",
+            "finalAmountKnownAtInitial" : false
+          }
+        },
+        "clearScope" : [ "Estimated1 on eligible unknown-final initial", "Subsequent incremental omits estimated indicator" ],
+        "excludedClaims" : [ "AE label ambiguity", "Actual eligibility", "Incomplete identifier-segment routing", "Timing rules not exercised" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Incremental does not carry estimated09",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        }, {
+          "predicate" : "Merchant eligibility established",
+          "positive" : "REVIEW_REQUIRED",
+          "mutated" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "path" : "incrementalIndicatorPresent",
+          "value" : true,
+          "targetedNegative" : "Estimated indicator wrongly retained on incremental"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

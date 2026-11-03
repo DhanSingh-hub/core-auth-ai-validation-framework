@@ -16,7 +16,7 @@ public final class Segment100MultiStepCoverageValidator {
         AUTHORIZATION_VOID(Set.of("3", "5", "B"), Set.of("8")),
         REFUND_VOID_OF_RETURN(Set.of("7"), Set.of("U")),
         SALE_VOID(Set.of("0", "4", "6"), Set.of("8", "C")),
-        TIMEOUT_REVERSAL(Set.of("0", "3", "4", "5", "6", "B"), Set.of("Z"));
+        TIMEOUT_REVERSAL(Set.of("0", "4", "6"), Set.of("Z"));
 
         private final Set<String> originalCodes;
         private final Set<String> followUpCodes;
@@ -51,6 +51,57 @@ public final class Segment100MultiStepCoverageValidator {
             validatePair(flow, originalFile.getFileName().toString(), original, followUpFile.getFileName().toString(), followUp, result);
         } catch (IOException exception) {
             result.addError("Segment100MultiStepCoverage", "Unable to read lifecycle JSON: " + exception.getMessage());
+        }
+        return result;
+    }
+
+    public ValidationResult validateAuthorizationCompletionWithHostResponse(
+            JsonNode authorizationRequest, JsonNode authorizationResponse, JsonNode completionRequest) {
+        ValidationResult result = new ValidationResult("authorization-completion-host-binding");
+        if (authorizationRequest == null || authorizationResponse == null || completionRequest == null) {
+            result.addError("Segment100MultiStepCoverage", "Authorization request, actual host response, and completion request are required");
+            return result;
+        }
+        result.merge(oracle.validateAiPayload("authorization-request", authorizationRequest));
+        result.merge(oracle.validateAiPayload("completion-request", completionRequest));
+        result.merge(new Segment100ResponseCodeValidator().validate("authorization-host-response", authorizationResponse));
+        if (!result.isValid()) {
+            return result;
+        }
+
+        JsonNode authorizationSegment = segment(authorizationRequest);
+        JsonNode completionSegment = segment(completionRequest);
+        JsonNode response = authorizationResponse.path("Financial Response");
+        String authorizationCode = transactionCode(authorizationSegment);
+        String completionCode = transactionCode(completionSegment);
+        if (!Flow.AUTHORIZATION_COMPLETION.originalCodes.contains(authorizationCode)
+                || !Flow.AUTHORIZATION_COMPLETION.followUpCodes.contains(completionCode)) {
+            result.addError("Segment100MultiStepCoverage", "Authorization/Completion transaction codes are incompatible with this lifecycle");
+            return result;
+        }
+        if (!Set.of("2", "3").contains(response.path("ResponseCode").asText(null))) {
+            result.addError("Segment100MultiStepCoverage", "Authorization host response must be an approved Authorization outcome");
+        }
+
+        String requestSequence = authorizationSegment.path("SequenceNumber").asText(null);
+        String responseSequence = response.path("SequenceNumber").asText(null);
+        String completionSequence = completionSegment.path("SequenceNumber").asText(null);
+        if (!sameSixDigitValue(requestSequence, responseSequence)) {
+            result.addError("Segment100MultiStepCoverage", "Authorization host response SequenceNumber must match the authorization request");
+        }
+        if (!sameSixDigitValue(requestSequence, completionSequence)) {
+            result.addError("Segment100MultiStepCoverage", "Completion must reuse the original authorization SequenceNumber");
+        }
+
+        String hostApproval = response.path("ApprovalNumber").asText("");
+        String completionApproval = completionSegment.path("ApprovalNumber").asText("");
+        if (!hostApproval.matches("^[A-Za-z0-9 ]{6}$")) {
+            result.addError("Segment100MultiStepCoverage", "Actual Authorization response must contain a six-character ApprovalNumber");
+        }
+        if (!completionApproval.matches("^[A-Za-z0-9 ]{6}$")) {
+            result.addError("Segment100MultiStepCoverage", "Completion must contain the six-character ApprovalNumber from the host response");
+        } else if (!hostApproval.equals(completionApproval)) {
+            result.addError("Segment100MultiStepCoverage", "Completion ApprovalNumber must equal the actual Authorization response ApprovalNumber");
         }
         return result;
     }
@@ -129,6 +180,43 @@ public final class Segment100MultiStepCoverageValidator {
 
         JsonNode originalSegment = segment(original);
         JsonNode followUpSegment = segment(followUp);
+        validateObservedPair(flow, originalId, originalSegment, followUpId, followUpSegment, result);
+    }
+
+    public ValidationResult validateObservedPair(Flow flow, JsonNode originalElements, JsonNode followUpElements) {
+        ValidationResult result = new ValidationResult("observed-standard-lifecycle");
+        if (flow == null || originalElements == null || !originalElements.isObject()
+                || followUpElements == null || !followUpElements.isObject()) {
+            result.addError("Segment100MultiStepCoverage", "Explicit flow and both observed numbered Standard element sets are required");
+            return result;
+        }
+        for (JsonNode elements : java.util.List.of(originalElements, followUpElements)) {
+            for (String id : java.util.List.of("78", "86", "102"))
+                if (!elements.path(id).isTextual() || elements.path(id).textValue().isEmpty())
+                    result.addError("Segment100MultiStepCoverage", "Observed lifecycle " + id + " must be nonempty text");
+            if (!elements.path("78").isTextual() || !elements.path("78").textValue().matches("[A-Za-z0-9]{4}"))
+                result.addError("Segment100MultiStepCoverage", "Observed financial PromptCode must contain four characters");
+            if (elements.has("5") && !elements.path("5").isTextual())
+                result.addError("Segment100MultiStepCoverage", "Observed original approval cannot be coerced");
+        }
+        if (!result.isValid()) return result;
+        validateObservedPair(flow, "observed original", observedSegment(originalElements),
+                "observed follow-up", observedSegment(followUpElements), result);
+        return result;
+    }
+
+    private JsonNode observedSegment(JsonNode elements) {
+        var segment = objectMapper.createObjectNode();
+        for (var field : java.util.Map.of("86", "SequenceNumber", "102", "TerminalID", "5", "ApprovalNumber").entrySet())
+            if (elements.has(field.getKey())) segment.set(field.getValue(), elements.get(field.getKey()).deepCopy());
+        JsonNode prompt = elements.get("78");
+        if (prompt != null && prompt.isTextual() && prompt.textValue().matches("[A-Za-z0-9]{4}"))
+            segment.putObject("PromptCode").put("TransactionType", prompt.textValue().substring(0, 1));
+        return segment;
+    }
+
+    private static void validateObservedPair(Flow flow, String originalId, JsonNode originalSegment, String followUpId,
+                                            JsonNode followUpSegment, ValidationResult result) {
         String originalCode = transactionCode(originalSegment);
         String followUpCode = transactionCode(followUpSegment);
         if (!flow.originalCodes.contains(originalCode)) {
@@ -151,10 +239,15 @@ public final class Segment100MultiStepCoverageValidator {
         }
         String originalTerminal = originalSegment.path("TerminalID").asText(null);
         String followUpTerminal = followUpSegment.path("TerminalID").asText(null);
-        if (originalTerminal != null && followUpTerminal != null && !originalTerminal.equals(followUpTerminal)) {
+        if (flow == Flow.TIMEOUT_REVERSAL && originalTerminal != null && followUpTerminal != null
+            && !originalTerminal.equals(followUpTerminal)) {
             result.addError("Segment100MultiStepCoverage", flow + " follow-up must use the original TerminalID");
         }
-        if (flow.followUpCodes.contains("8") || flow.followUpCodes.contains("C")) {
+        // ATL105 13-28 (Element 5): reversal-family follow-ups (Purchase Reversal "8"/"C",
+        // Authorization Only Cancellation "S", and Void of a Merchandise Return "U") must
+        // carry the original transaction's Approval Number, identical to the original.
+        if (flow.followUpCodes.contains("8") || flow.followUpCodes.contains("C")
+                || flow.followUpCodes.contains("S") || flow.followUpCodes.contains("U")) {
             String approvalNumber = followUpSegment.path("ApprovalNumber").asText("");
             if (approvalNumber.isBlank()) {
                 result.addError("Segment100MultiStepCoverage", flow + " follow-up requires ApprovalNumber");
@@ -168,6 +261,10 @@ public final class Segment100MultiStepCoverageValidator {
 
     private static String transactionCode(JsonNode segment) {
         return segment.path("PromptCode").path("TransactionType").asText(null);
+    }
+
+    private static boolean sameSixDigitValue(String left, String right) {
+        return left != null && right != null && left.matches("^[0-9]{6}$") && left.equals(right);
     }
 
     private static boolean sameIdentity(JsonNode left, JsonNode right) {

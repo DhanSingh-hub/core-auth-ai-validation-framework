@@ -1,0 +1,80 @@
+{
+  "id" : "TD-APPI-T049-C001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C001-POS.json",
+  "testCaseIds" : [ "TC-APPI-T049-C001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-40",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r006-APPI-T049-C001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C001",
+        "tableId" : "049",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R005", "APPI-T049-R006" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-40",
+          "startLine" : 29249,
+          "endLine" : 29281
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "01",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "Y" ],
+          "baselinePositiveData" : "Y",
+          "negativeLogicalFields" : {
+            "data" : "N"
+          },
+          "preconditions" : {
+            "network" : "Visa",
+            "transaction" : "Purchase",
+            "merchantLocallyApproved" : true,
+            "connectivityAtCapture" : "Unavailable",
+            "connectivityAtSubmission" : "Restored"
+          }
+        },
+        "clearScope" : "Deferred code, fixed length and listed Visa purchase resubmission context; source recommends indicator presence.",
+        "excludedClaims" : [ "Segment length018 or019 correctness", "Successful resubmission or approval", "Support for other deferred operations" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "deferred-code-is-Y",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "listed-deferred-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "deferred-code-is-Y",
+            "outcome" : "VIOLATED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "Y",
+          "to" : "N",
+          "targetPredicate" : "deferred-code-is-Y"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "id" : "TD-APPI-C066-N02-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C066-N02-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C066-N02-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-76",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t066-r003-APPI-C066-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C066-N02-001",
+        "tableId" : "066",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T066-R001", "APPI-T066-R003", "APPI-T066-R005" ],
+        "syntheticData" : {
+          "selector" : "02",
+          "logicalLength" : 1,
+          "programType" : "5",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "scenario" : "Mastercard QR X QR",
+            "phase" : "Auth"
+          },
+          "completionRecordPresent" : true
+        },
+        "clearScope" : "Listedprogram0/3/4/5/6,singlebyte,scenarioidentity,MC/Maestro,Authcompletionpresence.",
+        "excludedClaims" : [ "Biometricdomainmapping", "Actualprogramenrollment/securityperformance" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "XQRcode6andlistedwidth",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Continuationpresence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "programType",
+            "replacement" : "5",
+            "expected" : "FAIL XQRscenario,thoughPayByLinkcodeislisted"
+          }, {
+            "path" : "programType",
+            "replacement" : "7",
+            "expected" : "FAIL unlistedcode"
+          }, {
+            "path" : "completionRecordPresent",
+            "replacement" : false,
+            "expected" : "FAIL continuation"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed1"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "scenarioPairs" : [ {
+            "value" : "0",
+            "scenario" : "Multi-Program"
+          }, {
+            "value" : "3",
+            "scenario" : "In-store Biometric"
+          }, {
+            "value" : "4",
+            "scenario" : "NextGen POI"
+          }, {
+            "value" : "5",
+            "scenario" : "Pay by Link"
+          }, {
+            "value" : "6",
+            "scenario" : "X QR"
+          } ],
+          "unlistedValues" : [ "1", "2", "7" ]
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 31625,
+          "section" : "Appendix I-76",
+          "endLine" : 31656
+        }, {
+          "startLine" : 31563,
+          "section" : "Appendix I-75",
+          "endLine" : 31595
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 31619,
+          "section" : "Appendix I-76",
+          "endLine" : 31619
+        }, {
+          "startLine" : 31653,
+          "section" : "Appendix I-76",
+          "endLine" : 31654
+        }, {
+          "startLine" : 31686,
+          "section" : "Appendix I-77",
+          "endLine" : 31688
+        }, {
+          "startLine" : 31709,
+          "section" : "Appendix I-77",
+          "endLine" : 31711
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31632,
+            "section" : "Appendix I-76",
+            "endLine" : 31634
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "fixed001",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31635,
+            "section" : "Appendix I-76",
+            "endLine" : 31638
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "n1",
+          "sourceLength" : "one digit; 0,3,4,5,6",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31639,
+            "section" : "Appendix I-76",
+            "endLine" : 31656
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

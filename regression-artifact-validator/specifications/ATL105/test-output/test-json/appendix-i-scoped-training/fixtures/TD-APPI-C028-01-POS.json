@@ -1,0 +1,56 @@
+{
+  "id" : "TD-APPI-C028-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C028-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C028-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-18",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t028-r002-APPI-C028-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C028-01",
+        "tableId" : "028",
+        "ruleIds" : [ "APPI-T028-R001", "APPI-T028-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-18",
+          "startLine" : 28178,
+          "endLine" : 28183
+        }, {
+          "section" : "Appendix K-23",
+          "startLine" : 33818,
+          "endLine" : 33825
+        } ],
+        "logicalFields" : {
+          "useUniqueId" : "Y",
+          "responseUUID" : "SYN-UUID-0001",
+          "responseUUIDPresent" : true
+        },
+        "clearScope" : [ "Y requests logical response UUID presence", "One-character flag" ],
+        "excludedClaims" : [ "Host-generated UUID", "Actual response message" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Y request has UUID in response fixture",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "responseUUIDPresent",
+          "value" : false,
+          "targetedNegative" : "Promised response item omitted; UUID value ignored when presence false"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

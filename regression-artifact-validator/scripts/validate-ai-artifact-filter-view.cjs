@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
+const {createHash} = require('node:crypto');
 const {JSDOM, VirtualConsole} = require(process.argv[3] || 'jsdom');
 const directory = path.resolve(process.argv[2]);
 const errors = [];
@@ -72,6 +73,64 @@ choose('coverage-mode','types');
 assert.equal(element('coverage-types').rows.length,data.coverage.scenarioTypes.length);
 assert.equal(data.coverage.scenarioTypes.reduce((count,row)=>count+row.scenarios,0),12679);
 assert.equal(data.coverage.executionCertified,false);
+if(data.autonomousQualification){
+  const autonomous=data.autonomousQualification;
+  assert.equal(autonomous.selectedPhysicalControls,20);
+  assert.equal(autonomous.syntheticNegativeProbes,40);
+  assert.equal(autonomous.javaGateCounts.negativeIsolation.PASS,40);
+  assert.equal(autonomous.javaGateCounts.negativeEffectiveness.PASS,0);
+  assert.equal(autonomous.executionCertified,false);
+  assert.equal(autonomous.hostExecutionPerformed,false);
+  assert.equal(autonomous.providedCatalogComparison.sameContent,true);
+  for(const [name,digest] of Object.entries(autonomous.artifactSha256))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,autonomous.runDirectory,name))).digest('hex'),digest);
+  assert.ok(element('autonomous-qualification').textContent.includes('40 / 40'));
+  if(autonomous.publicationHistory){
+    assert.equal(Object.keys(autonomous.publicationHistory.files).length,30);
+    for(const [name,digest] of Object.entries(autonomous.publicationHistory.files))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,autonomous.publicationHistory.directory,name))).digest('hex'),digest);
+  }
+}
+if(data.lateMatrix){
+  document.querySelector('[data-tab="matrix-history"]').click();
+  assert.equal(element('matrix-history').hidden,false);
+  assert.equal(element('coverage').hidden,true);
+  assert.ok(element('matrix-history').textContent.includes('61,107'));
+  assert.ok(element('matrix-history').textContent.includes('REVIEW_REQUIRED'));
+  assert.equal(data.lateMatrix.independent.leafRows,2000);
+  assert.equal(data.lateMatrix.independent.detailRequirementCount,200);
+  assert.equal(data.lateMatrix.independent.directOrScenarioBrs,3659);
+  assert.equal(data.lateMatrix.issues.length,75);
+  assert.deepEqual(data.lateMatrix.independent.matrixOnlyTracedBrIds,['REQ-SRC-ATL105-PDF-001:3226','REQ-SRC-ATL105-PDF-001:521']);
+  assert.equal(Object.keys(data.lateMatrix.history.files).length,24);
+  for(const [name,digest] of Object.entries(data.lateMatrix.history.files)){
+    const file=path.join(directory,data.lateMatrix.history.directory,name);
+    assert.equal(createHash('sha256').update(fs.readFileSync(file)).digest('hex'),digest,'Historical snapshot changed: '+name);
+  }
+  for(const link of element('matrix-history').querySelectorAll('a')){
+    assert.ok(fs.existsSync(path.resolve(directory,link.getAttribute('href'))),'Missing matrix/history target: '+link.getAttribute('href'));
+  }
+  assert.equal(createHash('sha256').update(fs.readFileSync(data.lateMatrix.intake.file)).digest('hex'),data.lateMatrix.intake.sha256);
+  if(data.lateMatrix.reconstruction){
+    const rebuilt=data.lateMatrix.reconstruction;
+    assert.equal(rebuilt.leafRows,61044);
+    assert.equal(rebuilt.requirementsRepresented,6887);
+    assert.equal(rebuilt.rowCountDelta,-63);
+    assert.equal(rebuilt.detailStatusAgreementCount,200);
+    assert.equal(rebuilt.flatExcerptStatusDisagreements.length,75);
+    assert.deepEqual(rebuilt.leafStatusCounts,{SCENARIO_ONLY:4400,FULLY_TRACED:56617,TEST_CASE_NO_DATA:27});
+    assert.equal(rebuilt.logicalCasesWithAllDataFiles,21096);
+    assert.equal(rebuilt.hashVerifiedPhysicalFiles,21210);
+    assert.equal(rebuilt.orphanCaseIds.length,155);
+    assert.equal(Object.keys(data.lateMatrix.supplementHistory.files).length,27);
+    for(const [name,digest] of Object.entries(data.lateMatrix.supplementHistory.files))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,data.lateMatrix.supplementHistory.directory,name))).digest('hex'),digest);
+    for(const [name,digest] of Object.entries(rebuilt.outputSha256))assert.equal(createHash('sha256').update(fs.readFileSync(path.join(directory,name))).digest('hex'),digest);
+    const full=JSON.parse(fs.readFileSync(path.join(directory,rebuilt.completeJson),'utf8'));
+    assert.equal(full.producer,'TEST_SOLUTION_INDEPENDENT_RECONSTRUCTION');
+    assert.equal(full.leaves.length,61044);
+    assert.equal(full.unlinkedCases.length,155);
+    assert.equal(full.summary.executionCertified,false);
+    assert.ok(element('matrix-history').textContent.includes('Complete independent reconstruction'));
+  }
+}
 assert.deepEqual(errors,[]);
 dom.window.close();
 console.log('PASS: filters, CSV, pagination, queues, full registers and all five Coverage dimensions');

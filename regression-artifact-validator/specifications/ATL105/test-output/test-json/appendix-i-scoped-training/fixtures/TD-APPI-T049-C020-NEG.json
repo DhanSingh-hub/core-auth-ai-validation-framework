@@ -1,0 +1,74 @@
+{
+  "id" : "TD-APPI-T049-C020-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C020-NEG.json",
+  "testCaseIds" : [ "TC-APPI-T049-C020-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-48",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r039-APPI-T049-C020"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C020",
+        "tableId" : "049",
+        "nestedSelector" : "20",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R039" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-48",
+          "startLine" : 29745,
+          "endLine" : 29771
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "20",
+          "declaredDataLength" : "1",
+          "positiveDataValues" : [ "Y" ],
+          "baselinePositiveData" : "N",
+          "negativeLogicalFields" : {
+            "data" : "N"
+          },
+          "preconditions" : {
+            "network" : "Visa",
+            "merchantAcceptsAccountInformation" : true
+          }
+        },
+        "clearScope" : "Visa account-information acceptance flag.",
+        "excludedClaims" : [ "Guaranteed response036 or037", "Account type or funding source values encoded in flag" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "account-acceptance-code-is-Y",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "visa-context",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "account-acceptance-code-is-Y",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-one",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "Y",
+          "to" : "N",
+          "targetPredicate" : "account-acceptance-code-is-Y"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

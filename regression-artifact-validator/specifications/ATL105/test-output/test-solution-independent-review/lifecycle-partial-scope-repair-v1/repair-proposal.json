@@ -1,0 +1,1343 @@
+{
+  "manifest": {
+    "proposalId": "ATL105-LIFECYCLE-SIX-PARTIAL-SCOPE-REPAIR",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION",
+    "aiArtifactsIncluded": false,
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "canonicalPackageMutated": false,
+    "executionCertified": false
+  },
+  "inputs": {
+    "canonicalTestPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa"
+  },
+  "repairSummary": {
+    "partialRulesTargeted": 6,
+    "draftCases": 25,
+    "authorizedDecisions": 0,
+    "executedCases": 0
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-RULE-SEG100-R-023",
+      "currentTitle": "Lifecycle messages preserve required original references",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10",
+          "segment": "100",
+          "rule": "lifecycle-correlation"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Authorization Only Reversal (Prompt Code transaction type S): preserve original Approval Number and Sequence Number when present and identical.",
+        "Purchase Reversal / Time-out Reversal: preserve original Sequence Number; for partial approval, use the source-defined approved/requested amount in the corresponding reversal path."
+      ],
+      "draftCaseIds": [
+        "LIFE-023-AUTH-REV-MATCH",
+        "LIFE-023-AUTH-REV-SEQ-MISMATCH",
+        "LIFE-023-AUTH-REV-APPROVAL-MISSING",
+        "LIFE-023-PURCHASE-TOR-SEQ",
+        "LIFE-023-PARTIAL-AMOUNT"
+      ],
+      "sourceEvidenceIds": [
+        "AUTH_ONLY_REVERSAL_REFERENCES",
+        "PURCHASE_AND_TIMEOUT_REVERSAL_REFERENCES"
+      ],
+      "openScope": "The broad Test title must be split/scoped by transaction class; do not apply Authorization Only cancellation rules to every lifecycle message.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    },
+    {
+      "id": "BR-RULE-SEG101-R-007",
+      "currentTitle": "Field order matches Section 12.2 (base fields 1-13, Auth Completion tag fields 14-18)",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.2",
+          "segment": "101",
+          "rule": "segment-101-field-order"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Base Fleet Data fields 1-13 retain Section 12.2 order.",
+        "Fleet Tag fields 14-18 follow the base fields in Auth Completion when applicable."
+      ],
+      "draftCaseIds": [
+        "LIFE-101-ORDER-POS",
+        "LIFE-101-ORDER-NEG",
+        "LIFE-101-TAGS-CONTEXT"
+      ],
+      "sourceEvidenceIds": [
+        "FLEET_SEGMENT_FIELD_ORDER_AND_COMPLETION_TAGS"
+      ],
+      "openScope": null,
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    },
+    {
+      "id": "BR-RULE-SEG103-R-024",
+      "currentTitle": "Segment 103 applicability matrix: REQUIRED for Food Stamp Electronic Voucher (Voucher ID) and eWIC Purchase Completion/Voucher Clear (WIC data); OPTIONAL for all other EBT/eWIC transaction types listed in Section 10.5.3; PROHIBITED for eWIC Return",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.5.2,10.5.3,10.5.4.8,10.5.5,10.5.6",
+          "segment": "103",
+          "rule": "segment-103-applicability-matrix"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Food Stamp Electronic Voucher includes the manually entered Voucher ID in the EBT Data context.",
+        "eWIC Purchase Completion and Voucher Clear use Segment 103 WIC data where those operations require WIC product/discount data.",
+        "eWIC Return is unsupported.",
+        "Presence/absence classification for every other EBT/eWIC transaction type remains unresolved unless a message-layout clause makes it explicit."
+      ],
+      "draftCaseIds": [
+        "LIFE-103-VOUCHER-ID",
+        "LIFE-103-EWIC-COMPLETION",
+        "LIFE-103-EWIC-VOUCHER-CLEAR",
+        "LIFE-103-EWIC-RETURN",
+        "LIFE-103-OTHER-TYPES"
+      ],
+      "sourceEvidenceIds": [
+        "EBT_FOOD_VOUCHERS_AND_SUPPORTED_TYPES",
+        "EBT_SEGMENT_103_FIELDS",
+        "EWIC_COMPLETION_AND_VOUCHER_CLEAR",
+        "EWIC_RETURN_AND_INITIAL_FLOWS"
+      ],
+      "openScope": "Do not promote the proposed Optional classification for all other EBT/eWIC types without a message-layout source or SME decision.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-001",
+      "currentTitle": "Segment 130 is Required in every EMV authorization-class Financial Transaction Request; the Section 11.8.1 Data Section 3 table marks it R with the note 'This segment is the only segment required for all EMV financial transactions'",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "11.8.1,12.20",
+          "segment": "130",
+          "rule": "emv-transaction-required"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Segment 130 is required in EMV Financial Transaction Requests under Section 11.8.1.",
+        "Section 10.14.2.4 explicitly allows EMV data to be absent on Reversal transactions."
+      ],
+      "draftCaseIds": [
+        "LIFE-130-REQ-POS",
+        "LIFE-130-REQ-NEG",
+        "LIFE-130-REVERSAL-EXCEPTION"
+      ],
+      "sourceEvidenceIds": [
+        "EMV_FINANCIAL_REQUEST_LAYOUT",
+        "EMV_REVERSAL_EXCEPTION",
+        "EMV_SEGMENT_130_LAYOUT"
+      ],
+      "openScope": "The authorization-class qualifier and product/network exceptions require context binding; do not generalize this rule to every EMV-related message.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-020",
+      "currentTitle": "Appendix T Table ID 001 (EMV Table Data) carries exactly EMVYES or EMVNOT, length 6, sent only in an EMV Transaction request; if returned in an authorization response the device echoes it on any subsequent advice or batch upload request",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "AppendixT",
+          "segment": "130",
+          "element": "191,192,118",
+          "rule": "appendix-t-table-001-emv-table-data"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Appendix T Table 001 uses six-character EMVYES or EMVNOT only on an EMV Transaction request.",
+        "If the table is returned in an authorization response, echo it on subsequent advice or batch upload."
+      ],
+      "draftCaseIds": [
+        "LIFE-130-T001-YES",
+        "LIFE-130-T001-NOT",
+        "LIFE-130-T001-NEG",
+        "LIFE-130-T001-ECHO"
+      ],
+      "sourceEvidenceIds": [
+        "APPENDIX_T_EMV_TABLE_001"
+      ],
+      "openScope": "Link response/follow-up cases to an authorized response oracle; this proposal does not execute a host flow.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    },
+    {
+      "id": "BR-RULE-SEG130-R-023",
+      "currentTitle": "Segment 131 (EMV Response Data Segment) uses inverted serialization rules and must not reuse the Segment 130 parser: no Field Separators at all, maximum length 3,834, EMV Additional Information Section cap 2,800 bytes, CA Public Key File Checksum Required rather than Optional, and no EMV Card Sequence Number field",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "12.21",
+          "segment": "131",
+          "rule": "segment-131-contrast"
+        }
+      ],
+      "currentStatus": "DRAFT_REVIEW_REQUIRED",
+      "scopeExpansion": [
+        "Segment 131 is positional/no-separator and host-originated.",
+        "Maximum segment length is 3,834; EMV Additional Information cap is 2,800 bytes.",
+        "Checksum is required; the Section 12.21 field list has no EMV Card Sequence Number."
+      ],
+      "draftCaseIds": [
+        "LIFE-131-NO-SEPARATORS",
+        "LIFE-131-SEGMENT-LENGTH",
+        "LIFE-131-ADDITIONAL-INFO",
+        "LIFE-131-CHECKSUM-REQUIRED",
+        "LIFE-131-NOT-SEG130-PARSER"
+      ],
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_130_LAYOUT",
+        "EMV_SEGMENT_131_LAYOUT"
+      ],
+      "openScope": "Length-boundary vectors are logical validator tests only; complete EMV response bytes and authentic cryptograms require separately approved fixtures/oracles.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "authorizedDecision": "NOT_RECORDED"
+    }
+  ],
+  "testCaseProposals": [
+    {
+      "caseId": "LIFE-023-AUTH-REV-MATCH",
+      "testBrId": "BR-RULE-SEG100-R-023",
+      "intent": "Authorization Only Reversal matches original references",
+      "sourceEvidenceIds": [
+        "AUTH_ONLY_REVERSAL_REFERENCES"
+      ],
+      "inputShape": {
+        "original": {
+          "transactionType": "3",
+          "approvalNumber": "SYNTHETIC-APPROVAL",
+          "sequenceNumber": "SYN001"
+        },
+        "reversal": {
+          "transactionType": "S",
+          "approvalNumber": "SYNTHETIC-APPROVAL",
+          "sequenceNumber": "SYN001"
+        }
+      },
+      "assertions": [
+        "reversal Prompt Code transaction type is S",
+        "Approval Number matches original when present",
+        "Sequence Number matches original when present"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-023-AUTH-REV-SEQ-MISMATCH",
+      "testBrId": "BR-RULE-SEG100-R-023",
+      "intent": "Reject Authorization Only Reversal with mismatched Sequence Number",
+      "sourceEvidenceIds": [
+        "AUTH_ONLY_REVERSAL_REFERENCES"
+      ],
+      "inputShape": {
+        "originalSequenceNumber": "SYN001",
+        "reversalSequenceNumber": "SYN002"
+      },
+      "assertions": [
+        "reject or source-validator failure cites Sequence Number mismatch"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-023-AUTH-REV-APPROVAL-MISSING",
+      "testBrId": "BR-RULE-SEG100-R-023",
+      "intent": "Require original Approval Number on matched Authorization Only Reversal",
+      "sourceEvidenceIds": [
+        "AUTH_ONLY_REVERSAL_REFERENCES"
+      ],
+      "inputShape": {
+        "originalApprovalNumberPresent": true,
+        "reversalApprovalNumberPresent": false
+      },
+      "assertions": [
+        "reject or source-validator failure cites required identical Approval Number"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-023-PURCHASE-TOR-SEQ",
+      "testBrId": "BR-RULE-SEG100-R-023",
+      "intent": "Preserve original Sequence Number on Purchase Reversal and TOR",
+      "sourceEvidenceIds": [
+        "PURCHASE_AND_TIMEOUT_REVERSAL_REFERENCES"
+      ],
+      "inputShape": {
+        "originalSequenceNumber": "SYN001",
+        "purchaseReversalSequenceNumber": "SYN001",
+        "timeoutReversalSequenceNumber": "SYN001"
+      },
+      "assertions": [
+        "each applicable reversal Sequence Number equals the original request"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-023-PARTIAL-AMOUNT",
+      "testBrId": "BR-RULE-SEG100-R-023",
+      "intent": "Use source-defined original amount on partial-approval reversal paths",
+      "sourceEvidenceIds": [
+        "PURCHASE_AND_TIMEOUT_REVERSAL_REFERENCES"
+      ],
+      "inputShape": {
+        "originalRequestedAmount": "SYNTHETIC-REQUEST-AMOUNT",
+        "originalApprovedAmount": "SYNTHETIC-APPROVED-AMOUNT",
+        "reversalAmount": "SYNTHETIC-APPROVED-AMOUNT"
+      },
+      "assertions": [
+        "reversal amount matches the source-specified approved/requested amount for the selected reversal class"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-101-ORDER-POS",
+      "testBrId": "BR-RULE-SEG101-R-007",
+      "intent": "Accept Section 12.2 base fields followed by Fleet Tag fields",
+      "sourceEvidenceIds": [
+        "FLEET_SEGMENT_FIELD_ORDER_AND_COMPLETION_TAGS"
+      ],
+      "inputShape": {
+        "messageType": "AUTH_COMPLETION_0220",
+        "fieldNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "assertions": [
+        "base fields occupy positions 1-13 in source order",
+        "Fleet Tag fields occupy positions 14-18"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-101-ORDER-NEG",
+      "testBrId": "BR-RULE-SEG101-R-007",
+      "intent": "Reject reordered or interleaved Fleet Tag fields",
+      "sourceEvidenceIds": [
+        "FLEET_SEGMENT_FIELD_ORDER_AND_COMPLETION_TAGS"
+      ],
+      "inputShape": {
+        "messageType": "AUTH_COMPLETION_0220",
+        "fieldNumbers": [
+          1,
+          2,
+          14,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "assertions": [
+        "field order violation is detected against the Section 12.2 order"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-101-TAGS-CONTEXT",
+      "testBrId": "BR-RULE-SEG101-R-007",
+      "intent": "Scope fields 14-18 to Auth Completion/Host Prompts",
+      "sourceEvidenceIds": [
+        "FLEET_SEGMENT_FIELD_ORDER_AND_COMPLETION_TAGS"
+      ],
+      "inputShape": {
+        "messageType": "AUTH_REQUEST",
+        "hostPrompts": true,
+        "fleetTagFieldPresent": true
+      },
+      "assertions": [
+        "context-gate is enforced; expected rejection requires Test Team confirmation of validator behavior"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "unresolvedQuestion": "Section 12.2 says Fleet Tags are sent only on Auth Completion; exact rejection-vs-ignore behavior is not specified.",
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-103-VOUCHER-ID",
+      "testBrId": "BR-RULE-SEG103-R-024",
+      "intent": "Require Voucher ID for Food Stamp Electronic Voucher case",
+      "sourceEvidenceIds": [
+        "EBT_FOOD_VOUCHERS_AND_SUPPORTED_TYPES",
+        "EBT_SEGMENT_103_FIELDS"
+      ],
+      "inputShape": {
+        "transactionType": "FOOD_STAMP_ELECTRONIC_VOUCHER",
+        "segment103": {
+          "voucherId": "SYNTHETIC-VOUCHER-ID"
+        }
+      },
+      "assertions": [
+        "Voucher ID field is represented in the EBT Data Segment for the voucher flow"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-103-EWIC-COMPLETION",
+      "testBrId": "BR-RULE-SEG103-R-024",
+      "intent": "Exercise Segment 103 WIC fields on eWIC Purchase Completion",
+      "sourceEvidenceIds": [
+        "EWIC_COMPLETION_AND_VOUCHER_CLEAR",
+        "EBT_SEGMENT_103_FIELDS"
+      ],
+      "inputShape": {
+        "transactionType": "EWIC_PURCHASE_COMPLETION",
+        "segment103": {
+          "wicProductData": "SYNTHETIC-WIC-DATA"
+        }
+      },
+      "assertions": [
+        "WIC-specific data remains scoped to eWIC Purchase Completion"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-103-EWIC-VOUCHER-CLEAR",
+      "testBrId": "BR-RULE-SEG103-R-024",
+      "intent": "Exercise Segment 103 WIC fields on eWIC Voucher Clear",
+      "sourceEvidenceIds": [
+        "EWIC_COMPLETION_AND_VOUCHER_CLEAR",
+        "EBT_SEGMENT_103_FIELDS"
+      ],
+      "inputShape": {
+        "transactionType": "EWIC_VOUCHER_CLEAR",
+        "segment103": {
+          "voucherId": "SYNTHETIC-VOUCHER-ID",
+          "wicProductData": "SYNTHETIC-WIC-DATA"
+        }
+      },
+      "assertions": [
+        "voucher-clear WIC data is scoped to the source-defined operation"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-103-EWIC-RETURN",
+      "testBrId": "BR-RULE-SEG103-R-024",
+      "intent": "Block unsupported eWIC Return",
+      "sourceEvidenceIds": [
+        "EWIC_RETURN_AND_INITIAL_FLOWS"
+      ],
+      "inputShape": {
+        "program": "EWIC",
+        "transactionType": "RETURN",
+        "segment103Present": true
+      },
+      "assertions": [
+        "reject/block unsupported eWIC Return before host request"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-103-OTHER-TYPES",
+      "testBrId": "BR-RULE-SEG103-R-024",
+      "intent": "Keep remaining EBT/eWIC Segment 103 presence matrix open",
+      "sourceEvidenceIds": [
+        "EBT_FOOD_VOUCHERS_AND_SUPPORTED_TYPES",
+        "EWIC_RETURN_AND_INITIAL_FLOWS"
+      ],
+      "inputShape": {
+        "transactionTypes": [
+          "FOOD_STAMP_PURCHASE",
+          "FOOD_STAMP_REVERSAL",
+          "FOOD_STAMP_RETURN",
+          "CASH_BENEFIT_PURCHASE",
+          "CASH_BENEFIT_REVERSAL",
+          "BALANCE_INQUIRY",
+          "CASH_BACK",
+          "TIMEOUT_REVERSAL"
+        ]
+      },
+      "assertions": [
+        "derive required/optional/prohibited independently per message type; no inferred blanket optionality"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED",
+      "unresolvedQuestion": "Sections 10.5.3/10.5.5 enumerate supported operations but do not by themselves settle Segment 103 presence for every operation.",
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-REQ-POS",
+      "testBrId": "BR-RULE-SEG130-R-001",
+      "intent": "Accept EMV authorization-class request containing Segment 130",
+      "sourceEvidenceIds": [
+        "EMV_FINANCIAL_REQUEST_LAYOUT",
+        "EMV_SEGMENT_130_LAYOUT"
+      ],
+      "inputShape": {
+        "messageFamily": "EMV_FINANCIAL_TRANSACTION_REQUEST",
+        "segment100Present": true,
+        "segment130Present": true
+      },
+      "assertions": [
+        "Segment 130 present in the EMV Financial Transaction Request"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-REQ-NEG",
+      "testBrId": "BR-RULE-SEG130-R-001",
+      "intent": "Reject EMV authorization-class request missing Segment 130",
+      "sourceEvidenceIds": [
+        "EMV_FINANCIAL_REQUEST_LAYOUT",
+        "EMV_SEGMENT_130_LAYOUT"
+      ],
+      "inputShape": {
+        "messageFamily": "EMV_FINANCIAL_TRANSACTION_REQUEST",
+        "segment100Present": true,
+        "segment130Present": false
+      },
+      "assertions": [
+        "required Segment 130 absence is detected"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-REVERSAL-EXCEPTION",
+      "testBrId": "BR-RULE-SEG130-R-001",
+      "intent": "Allow source-defined EMV reversal without Segment 130",
+      "sourceEvidenceIds": [
+        "EMV_REVERSAL_EXCEPTION"
+      ],
+      "inputShape": {
+        "messageFamily": "FINANCIAL_TRANSACTION_REQUEST",
+        "transactionType": "EMV_PURCHASE_REVERSAL",
+        "segment130Present": false
+      },
+      "assertions": [
+        "do not flag missing Segment 130 as invalid for source-defined reversal context"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-T001-YES",
+      "testBrId": "BR-RULE-SEG130-R-020",
+      "intent": "Accept EMVYES request value at six characters",
+      "sourceEvidenceIds": [
+        "APPENDIX_T_EMV_TABLE_001"
+      ],
+      "inputShape": {
+        "tableId": "001",
+        "tableLength": "006",
+        "value": "EMVYES",
+        "messageDirection": "REQUEST",
+        "emvTransaction": true
+      },
+      "assertions": [
+        "fixed Table ID 001",
+        "six-character value EMVYES",
+        "EMV request context"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-T001-NOT",
+      "testBrId": "BR-RULE-SEG130-R-020",
+      "intent": "Accept EMVNOT request value at six characters",
+      "sourceEvidenceIds": [
+        "APPENDIX_T_EMV_TABLE_001"
+      ],
+      "inputShape": {
+        "tableId": "001",
+        "tableLength": "006",
+        "value": "EMVNOT",
+        "messageDirection": "REQUEST",
+        "emvTransaction": true
+      },
+      "assertions": [
+        "fixed Table ID 001",
+        "six-character value EMVNOT",
+        "EMV request context"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-T001-NEG",
+      "testBrId": "BR-RULE-SEG130-R-020",
+      "intent": "Reject wrong Table ID, length, value or non-EMV request context",
+      "sourceEvidenceIds": [
+        "APPENDIX_T_EMV_TABLE_001"
+      ],
+      "inputShape": {
+        "invalidVariants": [
+          {
+            "tableId": "002"
+          },
+          {
+            "length": "005"
+          },
+          {
+            "value": "EMVXXX"
+          },
+          {
+            "messageDirection": "REQUEST",
+            "emvTransaction": false
+          }
+        ]
+      },
+      "assertions": [
+        "each source-defined constraint is checked independently"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-130-T001-ECHO",
+      "testBrId": "BR-RULE-SEG130-R-020",
+      "intent": "Echo response Table 001 data on subsequent advice/batch upload",
+      "sourceEvidenceIds": [
+        "APPENDIX_T_EMV_TABLE_001"
+      ],
+      "inputShape": {
+        "authorizationResponseIncludesTable001": true,
+        "followUpType": [
+          "ADVICE",
+          "BATCH_UPLOAD"
+        ],
+        "sameValueRequired": true
+      },
+      "assertions": [
+        "follow-up value equals value included in authorization response"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-131-NO-SEPARATORS",
+      "testBrId": "BR-RULE-SEG130-R-023",
+      "intent": "Parse Segment 131 without Field Separators",
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_131_LAYOUT"
+      ],
+      "inputShape": {
+        "segmentType": "131",
+        "serialization": "POSITIONAL",
+        "fieldSeparatorsPresent": false
+      },
+      "assertions": [
+        "all Segment 131 fields are positional; no Field Separators"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-131-SEGMENT-LENGTH",
+      "testBrId": "BR-RULE-SEG130-R-023",
+      "intent": "Enforce Segment 131 maximum length 3834",
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_131_LAYOUT"
+      ],
+      "inputShape": {
+        "lengthBoundary": [
+          3834,
+          3835
+        ]
+      },
+      "assertions": [
+        "3834 accepted at length gate; 3835 rejected at length gate"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-131-ADDITIONAL-INFO",
+      "testBrId": "BR-RULE-SEG130-R-023",
+      "intent": "Enforce Segment 131 Additional Information cap 2800 bytes",
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_131_LAYOUT"
+      ],
+      "inputShape": {
+        "additionalInformationBytesBoundary": [
+          2800,
+          2801
+        ]
+      },
+      "assertions": [
+        "2800 accepted at cap gate; 2801 rejected at cap gate"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-131-CHECKSUM-REQUIRED",
+      "testBrId": "BR-RULE-SEG130-R-023",
+      "intent": "Require CA Public Key File Checksum and omit card-sequence field",
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_131_LAYOUT"
+      ],
+      "inputShape": {
+        "checksumPresent": true,
+        "emvCardSequenceNumberField": "NOT_IN_SEGMENT_131_LAYOUT"
+      },
+      "assertions": [
+        "checksum required",
+        "do not parse EMV Card Sequence Number as a Segment 131 field"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    },
+    {
+      "caseId": "LIFE-131-NOT-SEG130-PARSER",
+      "testBrId": "BR-RULE-SEG130-R-023",
+      "intent": "Use Segment 131 response layout, not Segment 130 request parser",
+      "sourceEvidenceIds": [
+        "EMV_SEGMENT_131_LAYOUT",
+        "EMV_SEGMENT_130_LAYOUT"
+      ],
+      "inputShape": {
+        "requestSegment130Separators": true,
+        "responseSegment131Separators": false
+      },
+      "assertions": [
+        "response parser accepts the source-defined positional response layout independently of the request parser"
+      ],
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "unresolvedQuestion": null,
+      "executionStatus": "NOT_EXECUTED",
+      "independence": "DERIVED_FROM_ATL105_ONLY",
+      "canonicalPackageMutation": false,
+      "aiArtifactsUsedAsTrainingTruth": false
+    }
+  ],
+  "testDataProposals": [
+    {
+      "caseId": "LIFE-023-AUTH-REV-MATCH",
+      "logicalInput": {
+        "original": {
+          "transactionType": "3",
+          "approvalNumber": "SYNTHETIC-APPROVAL",
+          "sequenceNumber": "SYN001"
+        },
+        "reversal": {
+          "transactionType": "S",
+          "approvalNumber": "SYNTHETIC-APPROVAL",
+          "sequenceNumber": "SYN001"
+        }
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-023-AUTH-REV-SEQ-MISMATCH",
+      "logicalInput": {
+        "originalSequenceNumber": "SYN001",
+        "reversalSequenceNumber": "SYN002"
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-023-AUTH-REV-APPROVAL-MISSING",
+      "logicalInput": {
+        "originalApprovalNumberPresent": true,
+        "reversalApprovalNumberPresent": false
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-023-PURCHASE-TOR-SEQ",
+      "logicalInput": {
+        "originalSequenceNumber": "SYN001",
+        "purchaseReversalSequenceNumber": "SYN001",
+        "timeoutReversalSequenceNumber": "SYN001"
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-023-PARTIAL-AMOUNT",
+      "logicalInput": {
+        "originalRequestedAmount": "SYNTHETIC-REQUEST-AMOUNT",
+        "originalApprovedAmount": "SYNTHETIC-APPROVED-AMOUNT",
+        "reversalAmount": "SYNTHETIC-APPROVED-AMOUNT"
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-101-ORDER-POS",
+      "logicalInput": {
+        "messageType": "AUTH_COMPLETION_0220",
+        "fieldNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-101-ORDER-NEG",
+      "logicalInput": {
+        "messageType": "AUTH_COMPLETION_0220",
+        "fieldNumbers": [
+          1,
+          2,
+          14,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-101-TAGS-CONTEXT",
+      "logicalInput": {
+        "messageType": "AUTH_REQUEST",
+        "hostPrompts": true,
+        "fleetTagFieldPresent": true
+      },
+      "readiness": "REVIEW_REQUIRED",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-103-VOUCHER-ID",
+      "logicalInput": {
+        "transactionType": "FOOD_STAMP_ELECTRONIC_VOUCHER",
+        "segment103": {
+          "voucherId": "SYNTHETIC-VOUCHER-ID"
+        }
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-103-EWIC-COMPLETION",
+      "logicalInput": {
+        "transactionType": "EWIC_PURCHASE_COMPLETION",
+        "segment103": {
+          "wicProductData": "SYNTHETIC-WIC-DATA"
+        }
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-103-EWIC-VOUCHER-CLEAR",
+      "logicalInput": {
+        "transactionType": "EWIC_VOUCHER_CLEAR",
+        "segment103": {
+          "voucherId": "SYNTHETIC-VOUCHER-ID",
+          "wicProductData": "SYNTHETIC-WIC-DATA"
+        }
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-103-EWIC-RETURN",
+      "logicalInput": {
+        "program": "EWIC",
+        "transactionType": "RETURN",
+        "segment103Present": true
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-103-OTHER-TYPES",
+      "logicalInput": {
+        "transactionTypes": [
+          "FOOD_STAMP_PURCHASE",
+          "FOOD_STAMP_REVERSAL",
+          "FOOD_STAMP_RETURN",
+          "CASH_BENEFIT_PURCHASE",
+          "CASH_BENEFIT_REVERSAL",
+          "BALANCE_INQUIRY",
+          "CASH_BACK",
+          "TIMEOUT_REVERSAL"
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-REQ-POS",
+      "logicalInput": {
+        "messageFamily": "EMV_FINANCIAL_TRANSACTION_REQUEST",
+        "segment100Present": true,
+        "segment130Present": true
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-REQ-NEG",
+      "logicalInput": {
+        "messageFamily": "EMV_FINANCIAL_TRANSACTION_REQUEST",
+        "segment100Present": true,
+        "segment130Present": false
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-REVERSAL-EXCEPTION",
+      "logicalInput": {
+        "messageFamily": "FINANCIAL_TRANSACTION_REQUEST",
+        "transactionType": "EMV_PURCHASE_REVERSAL",
+        "segment130Present": false
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-T001-YES",
+      "logicalInput": {
+        "tableId": "001",
+        "tableLength": "006",
+        "value": "EMVYES",
+        "messageDirection": "REQUEST",
+        "emvTransaction": true
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-T001-NOT",
+      "logicalInput": {
+        "tableId": "001",
+        "tableLength": "006",
+        "value": "EMVNOT",
+        "messageDirection": "REQUEST",
+        "emvTransaction": true
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-T001-NEG",
+      "logicalInput": {
+        "invalidVariants": [
+          {
+            "tableId": "002"
+          },
+          {
+            "length": "005"
+          },
+          {
+            "value": "EMVXXX"
+          },
+          {
+            "messageDirection": "REQUEST",
+            "emvTransaction": false
+          }
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-130-T001-ECHO",
+      "logicalInput": {
+        "authorizationResponseIncludesTable001": true,
+        "followUpType": [
+          "ADVICE",
+          "BATCH_UPLOAD"
+        ],
+        "sameValueRequired": true
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-131-NO-SEPARATORS",
+      "logicalInput": {
+        "segmentType": "131",
+        "serialization": "POSITIONAL",
+        "fieldSeparatorsPresent": false
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-131-SEGMENT-LENGTH",
+      "logicalInput": {
+        "lengthBoundary": [
+          3834,
+          3835
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-131-ADDITIONAL-INFO",
+      "logicalInput": {
+        "additionalInformationBytesBoundary": [
+          2800,
+          2801
+        ]
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-131-CHECKSUM-REQUIRED",
+      "logicalInput": {
+        "checksumPresent": true,
+        "emvCardSequenceNumberField": "NOT_IN_SEGMENT_131_LAYOUT"
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    },
+    {
+      "caseId": "LIFE-131-NOT-SEG130-PARSER",
+      "logicalInput": {
+        "requestSegment130Separators": true,
+        "responseSegment131Separators": false
+      },
+      "readiness": "REVIEW_REQUIRED_SOURCE_DERIVED_DRAFT",
+      "expectedOutcome": "REVIEW_REQUIRED",
+      "payloadValuesAreSyntheticOrSymbolic": true
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "evidenceId": "AUTH_ONLY_REVERSAL_REFERENCES",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 3938,
+      "endLine": 3965,
+      "quote": "10.1.2.2 Authorization Only Reversal Transaction \nIn support of the following requirements, BUYPASS supports the Authorization Only Reversal \ntransaction: \n\u2022 All approved and partially approved authorization transactions must be either cleared or \nreversed. \n\u2022 Acquirers must ensure that their merchants process authorization reversals for \nauthorizations submitted in error and/or cardholder cancelled card-present transactions \nwithin 24 hours.  Card-absent merchants are allowed up to 72 hours to process the required \npartial or full authorization reversals. \n\u2022 Issuers must immediately process matched reversal transactions, subject to the issuer\u2019s risk \nor fraud control policies, and release any applicable holds on cardholder available funds. \n\u2022 It is recommended for merchants who use velocity processing to send the SIC Information \nCode (Data Segment 111, Table ID 007) of \u201c5542\u201d for CAT (outside) transactions and \n\u201c5541\u201d for inside transactions. \nThis transaction enables a merchant to reverse the following credit card transactions within \nrequired timeframes: \n\u2022 POS Authorization Only (Transaction Type code \u201c3\u201d) \n\u2022 CAT Authorization Only (Transaction Type code \u201c5\u201d) \nSuccessful reversal matching requires the following: \n\u2022 Element No. 5 (Approval Number)\u2014present in the original transaction\u2014must be present \nand identical in the Authorization Only Reversal transaction. \n\u2022 Element No.86 (Sequence Number)\u2014present in the original transaction\u2014must be present \nand identical in the Authorization Only Reversal transaction. \n\u2022 Element No. 78 (Prompt Code) must contain a Transaction Type code \u201cS\u201d to indicate \ncancellation. \n--- PAGE 84 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "PURCHASE_AND_TIMEOUT_REVERSAL_REFERENCES",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 4144,
+      "endLine": 4168,
+      "quote": "10.1.6.4.2 Purchase Reversal \nThe Partial Approval Indicator is required in a FSA/HRA Purchase Reversal transaction. \nAll approved Purchase Reversal transactions are subtracted from the count and amount of the \ncard type totals bucket. \nThe amount in a Reversal (Void) request must be the amount approved in the original \ntransaction response when a transaction has been partially approved. \nThe Sequence Number must be the Sequence Number contained in the original transaction \n10.1.6.4.3 Merchandise Return \nAll approved Merchandise Return transactions are added to the count and subtracted from the \namount of the card type totals bucket. \n10.1.6.4.4 Time-out Reversal \nThe Partial Approval Indicator is required in a FSA/HRA TOR transaction. \nAll approved TOR transactions are subtracted from the count and amount of the card type totals \nbucket. \nThe amount in a TOR request must be the amount approved in the original transaction \nresponse when a transaction has been partially approved. \nThe Sequence Number must be the Sequence Number contained in the original transaction \n  \n--- PAGE 88 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "FLEET_SEGMENT_FIELD_ORDER_AND_COMPLETION_TAGS",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 11396,
+      "endLine": 11555,
+      "quote": "12.2 Fleet Data Segment \nThis section describes Data Segment No. 101, Fleet Data Segment. \nThis data segment can appear in any of the fields in Data Section No. 3.  (Please refer to \nsection 11.1, \u201cFinancial Transactions,\u201d for additional information about Data Section No. 3.)  It \nhas a maximum length of 61 alphanumeric characters (01\u201361/a\u2013z/A\u2013Z).  It originates at the \ndevice. \nThe Fleet Data Segment is included in all fleet card transaction requests. \nNote: In spite of the above, Merchants should not send the Fleet segment (Data Segment No. \n101) and the Enhanced fleet segment together (Data Segment No. 145). \nThe following table illustrates the layout of the Fleet Data Segment: \nNote: All fields are separated by Field Separators.  When a field is not populated, still send the \nField Separator. \nFleet Data Segment Format \nData Segment No. 101 \nField \nNo. \nElement \nNo. \n \nElement Name \n \nLen. \nEntry is: \nR/O/C1 \n \nDescription \n1 85 Segment \nType \n3 R Identifies the type of data segment being \nformatted. \nFixed value:  101 \nSource:  Device \n2 84 Segment \nLength \n3 R Identifies the data segment\u2019s length, \nincluding Segment Type\u2019s length and \nField Separators. \nSource:  Device \n3 64 Odometer 8 C Identifies the vehicle\u2019s odometer reading \nkeyed in by the customer or clerk. \nSource:  Device \n4 108 Vehicle \nNumber \n10 C Identifies the Vehicle Number. \nSource:  Device \n5 47 Job Number 10 C Identifies the Job Number. \nSource:  Device \n6 31 Driver \n/Identification \nNumber \n10 C Identifies the unencrypted Driver Number \nor Identification Number. \nSource:  Device \n7 40 Fleet \nEmployee \nNumber \n10 C Identifies the Fleet Employee Number. \nSource:  Device \n8 158 License # 10 C Identifies the License # of the fleet card \nuser. \nSource:  Device \n9 159 Job ID 12 C Identifies the Job ID. \nSource:  Device \n10 160 Department # 12 C Identifies the Department #. \nSource:  Device \n--- PAGE 224 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-10 \nFleet Data Segment Format \nData Segment No. 101 \nField \nNo. \nElement \nNo. \n \nElement Name \n \nLen. \nEntry is: \nR/O/C1 \n \nDescription \n11 161 Customer \nData \n12 C Identifies the Customer Data. \nSource:  Device \n12 162 User ID 12 C Identifies the User ID. \nSource:  Device \n13 163 Vehicle ID# 8 C Identifies the Vehicle ID#. \nSource:  Device \n14  Fleet Tag 1 34 C Sent only in Auth Completion message in \nthe following data format: \nTag \u2013 3 bytes fixed length \nData \u2013 Up to 31 bytes \n15  Fleet Tag 2 34 C Sent only in Auth Completion message in \nthe following data format: \nTag \u2013 3 bytes fixed length \nData \u2013 Up to 31 bytes \n16  Fleet Tag 3 34 C Sent only in Auth Completion message in \nthe following data format: \nTag \u2013 3 bytes fixed length \nData \u2013 Up to 31 bytes \n17  Fleet Tag 4 34 C Sent only in Auth Completion message in \nthe following data format: \nTag \u2013 3 bytes fixed length \nData \u2013 Up to 31 bytes \n18  Fleet Tag 5 34 C Sent only in Auth Completion message in \nthe following data format: \nTag \u2013 3 bytes fixed length \nData \u2013 Up to 31 bytes \n1Required/Optional/Conditional  \nRefer the table below for the valid values of the 3 byte tag that can be sent on a Auth \nCompletion (0220) message only when Host Prompts are supported: \n \nValid Values of 3 Byte Fleet Tag \nUsed in the Completion Message \nCode Max Length Description \nDLS an3 Driver License State/Province Abbreviation \nDLN an22 Driver License nameation \nPON an31 Work Order/P.O. Number \nINV an31 Invoice Number \nTRP an15 Trip Number \nUNT an31 Unit Number \n--- PAGE 225 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-11 \nValid Values of 3 Byte Fleet Tag \nUsed in the Completion Message \nCode Max Length Description \nTLH n6 Trailer Hours/Refer Hours \nDOB n8 Date of Birth \nZIP an9 ZIP/Postal Code \nEND an31 Entered Data (Alphanumeric) \nMID an31 Maintenance ID \nVIN an17 VIN \nTRA an15 Tractor Number \nHUB n9 Hubometer \nTLR an15 Trailer Number \nCBA n6 Cashback Amount \nVHT an10 Vehicle Tag \n \n \n--- PAGE 226 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EBT_FOOD_VOUCHERS_AND_SUPPORTED_TYPES",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 5145,
+      "endLine": 5187,
+      "quote": "10.5.2 Food Stamp Electronic Vouchers \nElectronic vouchers electronically submit food stamp approvals received over the phone during \na device, BUYPASS, or authorizing host outage.  Electronic vouchers must prompt for the \nfollowing items: \n\u2022 Account Number prompt \n\u2022 Approval Number prompt \n\u2022 Voucher Number prompt \n10.5.2.1 Account Number Prompt \nIf the store system can retain the account information from an original transaction attempt, the \nremainder of the information can be entered at the controller level or directly into the device in \nthe lane.  For stand-alone equipment, the electronic voucher transaction must allow for manual \nentry of the Account Number and the Expiration Date. \nIn cases where the PAN is printed on transaction receipts, it must be truncated to its last four \ndigits.  A series of X's equal to the number of truncated digits precede these four digits for a field \nlength equal to the original Account Number's length. \nExample.  The Account Number 1234567890123456 prints as XXXXXXXXXXXX3456. \n10.5.2.2 Approval Number Prompt \nThe device must allow for entry of the Approval Number received over the phone. \n10.5.2.3 Voucher Number Prompt \nThe device must allow for entry of the Voucher Number from the manual voucher ticket. \n10.5.3 Supported Transaction Types \nThe following transaction types are supported for EBT processing: \n\u2022 Food Stamp Purchase \n\u2022 Food Stamp Reversal (Void) \n\u2022 Food Stamp Return \n\u2022 Cash Benefit Purchase \n\u2022 Cash Benefit Reversal (Void) \n\u2022 Food Stamp Balance Inquiry \n\u2022 Food Stamp Electronic Voucher \n\u2022 Cash Benefit Purchase with Cash Back \n\u2022 Cash Benefit Balance Inquiry \n\u2022 Time-out Reversal \n\u2022 Food Stamp Void of a Merchandise Return \n--- PAGE 113 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n10-36 ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EWIC_RETURN_AND_INITIAL_FLOWS",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 5287,
+      "endLine": 5320,
+      "quote": "10.5.5.1 eWIC Transaction Types \nNote: These specifications do not support Return transactions. \nThe following nonfinancial transaction types are supported for eWIC: \n\u2022 eWIC Authorization (a.k.a. Benefits Inquiry) \nThis transaction enables an eWIC client to query the eWIC host for the following information: \n\uf0e0 eWIC client list of eWIC-approved products \n\uf0e0 eWIC client account balance information \nThis transaction is initiated by swiping an existing eWIC card at a POS device (device).  \nWhen prompted, the eWIC client keys the necessary PIN into the device, and the device \nsends the eWIC Authorization Request to BUYPASS.  BUYPASS processes the Request, \nand forwards the eWIC Authorization Response to the device. \n\u2022 eWIC Authorization (a.k.a. Benefits Inquiry) Cancellation \nThis transaction cancels a previously submitted Authorization. \nNote: If there is a time-out or the eWIC client cancels the order, an eWIC Authorization \nCancellation transaction is required. \nThis transaction is initiated by swiping an existing eWIC card at a POS device (device).  \nWhen prompted, the eWIC client keys the necessary PIN into the device, and the device \nsends the eWIC Authorization Cancellation Request to BUYPASS.  BUYPASS processes \nthe Request, and forwards the eWIC Authorization Cancellation Response to the device.  \nThe device displays/prints the eWIC account balance information from the Response. \n\u2022 eWIC Balance Inquiry \nThis transaction enables an eWIC client to query the eWIC host for remaining eWIC account \nbalance information. \nThis transaction is initiated by swiping an existing eWIC card at a POS device (device).  \nWhen prompted, the eWIC client keys the necessary PIN into the device, and the device \nsends the eWIC Balance Inquiry Request to BUYPASS.  BUYPASS processes the Request, \nand forwards the eWIC Balance Inquiry Response to the device.  The device displays/prints \nthe eWIC account balance information from the Response. \n  \n--- PAGE 116 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EWIC_COMPLETION_AND_VOUCHER_CLEAR",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 5320,
+      "endLine": 5410,
+      "quote": " \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n10-39 \nThe following nonfinancial transaction types are supported for eWIC: \n\u2022 eWIC Purchase Completion \nThis transaction performs an eWIC client\u2019s purchase. \nNote: If there is a time-out or the eWIC client cancels the order, an eWIC Authorization \nCancellation transaction is required. \nThis transaction is initiated by swiping an existing eWIC card at a POS device (device).  \nWhen prompted, the eWIC client keys the necessary PIN into the device, and the device \nsends the eWIC Authorization Request to BUYPASS.  BUYPASS processes the Request, \nand forwards the eWIC Authorization Response to the device.  The device displays/prints \nthe eWIC account balance information from the Response.  The clerk scans the items and \nenters any applicable manufacturer/cents-off discount coupon amount(s).  The device sends \nthe eWIC Purchase Completion Request to BUYPASS.  BUYPASS processes the Request, \nand sends the eWIC Purchase Completion Response to the device.  The device receives \nthe Response. \n\u2022 eWIC Purchase Reversal/Void \nThis transaction guarantees reversal/void of the effects of an eWIC Purchase Request at the \neWIC host when an eWIC Purchase Response is not received or is received \u201clate\u201d (a time-\nout or a late response) at the POS device (device). \nNotes: This transaction must be completed (The eWIC Purchase Reversal/Void Response \nmust be received by the device.) before any additional eWIC transactions can be \nsent from the device that originated the eWIC Purchase Reversal/Void Request. \nIf the eWIC host responds to the Purchase Reversal/Void Request, the Purchase \nReversal/Void transaction is considered \u201cprocessed\u201d regardless of the Response \nCode. \nIf no Purchase Reversal/Void Response is received, the Merchant must repeat the \nprocess at its earliest opportunity until a Purchase Reversal/Void Response to the \neWIC Purchase Reversal/Void Request is received. \nThis transaction is initiated by the clerk determining that one of the following situations has \noccurred: \n\uf0e0 An eWIC Purchase Response has been received late; or \n\uf0e0 A time-out situation exists. \nThe clerk sends the eWIC Purchase Reversal/Void Request from the device to BUYPASS.  \nBUYPASS processes the Request, and sends the eWIC Purchase Reversal/Void Response \nto the device.  The device displays/prints the eWIC account balance information from the \nResponse. \n  \n--- PAGE 117 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n10-40 \n\u2022 eWIC Voucher Clear \nNote: This transaction is an optional transaction. \nThis transaction allows the settlement of a previously authorized eWIC Voucher by \nelectronically submitting\u2014within established Merchant time limits\u2014eWIC approvals received \nover the phone during a device/BUYPASS/eWIC host outage. \nThis transaction is initiated by the clerk determining that the device/BUYPASS/eWIC host is \noffline.  The eWIC client\u2019s purchase (including manufacturer discount(s)/cents-off coupons) \nis called in to the authorization center (center).  The center notifies the clerk whether the \npurchase is approved/declined. \nIf the center declines the transaction, the eWIC client leaves. \nIf the center approves the transaction, the center gives the clerk an eWIC Approval Number, \nand the clerk issues a paper eWIC Voucher to the eWIC client.  The eWIC Voucher contains \nthe following information: \n\uf0e0 eWIC Voucher Number \n\uf0e0 eWIC Account Number \n\uf0e0 eWIC Approval Number \n\uf0e0 eWIC Transaction Amount \nNote: This information must be electronically submitted to the eWIC host within the \nMerchant\u2019s specified time limit in order for the Merchant to receive payment. \nUsing the information on the Merchant\u2019s copy of the eWIC Voucher, the clerk keys the \nabove information into the device together with any applicable manufacturer/cents-off \ndiscount coupon amount(s).  The device sends the eWIC Voucher Clear Request to \nBUYPASS.  BUYPASS processes the Request, and sends an eWIC Voucher Clear \nResponse to the device.  The device displays/prints the eWIC information from the eWIC \nVoucher Clear Response. \n  \n--- PAGE 118 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n10-41 \n10.5.5.2 eWIC Prompt Codes \nThe following Processing Codes and Message Codes are supported by these specifications: \nNote: Please refer to the following appendixes for additional information: ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EBT_SEGMENT_103_FIELDS",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 11735,
+      "endLine": 11805,
+      "quote": "This section describes Data Segment No. 103, EBT Data Segment. \nThis data segment can appear in any of the fields in Data Section No. 3.  (Please refer to \nsection 11.1, \u201cFinancial Transactions,\u201d for additional information about Data Section No. 3.) \nIt has a maximum length of 3,334 alphanumeric characters (01\u20133,334/a\u2013z/A\u2013Z). \nIt originates at the device. \nThe following table illustrates the layout of the EBT Data Segment: \nNote: When a Financial Transaction request includes the EBT Data Segment, all fields are \nseparated by Field Separators.  When a field is not populated, still send the Field \nSeparator. \n When a Financial Transaction response includes the EBT Data Segment, there is no \nField Separator between fields in this message. \nEBT Data Segment Format \nData Segment No. 103 \nField \nNo. \nElement \nNo. \n \nElement Name \n \nLen. \nEntry is: \nR/O/C1 \n \nDescription \n1 85 Segment \nType \n3 R Identifies the type of data segment being \nformatted. \nFixed value:  103 \nSource:  Device \n2 84 Segment \nLength \n3 or \n4 \nR Identifies the data segment\u2019s length, \nincluding Segment Type\u2019s length and \nField Separators. \nSource:  Device \nNote: Length should be \u201c4\u201d for EBT with \neWIC data transactions. \n3 18 Clerk ID 10 C Identifies the clerk\u2019s Identification \nNumber. \nSource:  Device \n4 109 Voucher ID 10 C Identifies the preprinted EBT voucher \nused in a local Approval transaction. \nSource:  Device \n5 153 WIC Discount \nAmount \n40 C Identifies discounts/cents-off coupon \namounts unique to eWIC transactions. \nSource:  Device/Host \n6 154 WIC Product \nData \n3001 C Identifies data unique to eWIC \ntransactions. \nSource:  Device/Host \n7 164 EBT Program \nData \n267 C Identifies data unique to EBT \ntransactions. \nSource:  Device/Host \n1Required/Optional/Conditional \n--- PAGE 230 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EMV_FINANCIAL_REQUEST_LAYOUT",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 10015,
+      "endLine": 10095,
+      "quote": "Field \nNo. \nSegment \nNo. \n \nSegment Name \nMax\n. \nLen. \nEntry is: \nR/O/C1 \n \nDescription \n3 100 Standard \nMessage Data \nSegment \n619 R Contains the standard data \nrequired for all EMV card \ntransactions. \nThis segment is required for all \nEMV card transactions. \n \n  \n--- PAGE 203 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n11-43 \nData Section No. 3 \nAll EMV Financial Transaction Requests contain one, or more of the following data segments \nin Field Nos. 4\u20138. \nField \nNo. \nSegment \nNo. \n \nSegment Name \nMax\n. \nLen. \nEntry is: \nR/O/C1 \n \nDescription \n4\u20138 101 Fleet Data \nSegment \n308 C Contains fleet-specific data. \nSent only on transactions \nrequiring fleet data. \n 102 Product Code \nData Segment \n381 C Contains product-specific data. \nSent only on transactions \nrequiring product data. \n 103 EBT Data \nSegment \n3,33\n4 \nC Contains EBT-specific data. \nSent only on transactions \nrequiring EBT data. \n 104 Purchase Card \nData Segment \n86 C Contains purchase card-specific \ndata. \nSent only on transactions \nrequiring purchase card data. \n 111 Variable \nInformation Data \nSegment \n999 C Contains data elements unique to \ntransactions requiring variable \ninformation. \n 123 NFC Payment \nTokenization \nData Segment ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EMV_REVERSAL_EXCEPTION",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 7335,
+      "endLine": 7355,
+      "quote": "10.14.2.4 Supported Transaction Types \nThe following point-of-sale transactions are supported for EMV card processing: \n\u2022 Purchase \n\u2022 Purchase/Capture \n\u2022 Authorization Only \n\u2022 Merchandise Return \n\u2022 Purchase Reversal \n\u2022 Balance Inquiry \n\u2022 Cancellation \n\u2022 Time-out Reversal (TOR) \nNote: A Time-out Reversal (TOR) transaction is used to reverse a transaction, if the device \nfails, or the transaction is aborted after communication has been initiated to the host. \n EMV data is not required on Reversal transactions. \n10.14.2.5 Receipt Requirements \nThe credit card receipt requirements listed in section 10.1.7, \u201cReceipt Requirements,\u201d also apply \nto EMV cards. \nTwo elements of the receipt (whether to print a signature line and what to display as a card \ntype) are provided in the authorization response message for a Common AID transaction.  The \ndisposition of the transaction is also provided indicating how the transaction was authorized \u2013 as \na single message (debit) transaction or as a Dual message (credit) transaction. \n ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EMV_SEGMENT_130_LAYOUT",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 14012,
+      "endLine": 14115,
+      "quote": "12.20 EMV Request Data Segment \nThis section describes Data Segment No. 130, EMV Request Data Segment. \nIt always appears in Data Section No. 3 of an EMV Financial Transaction Request. \nIt has a maximum length of 3043 alphanumeric characters (001\u20133043/a-z/A\u2013Z). \nIt originates at the device. \nThe following table illustrates the layout of the EMV Request Data Segment: \nNote: There is a Field Separator between Field Nos.1 and 2, Field Nos. 2 and 3, Field Nos. 3 \nand 4, Field Nos. 4 and 5, Field Nos. 5 and 6 and between Field No. 6 and EMV \nAdditional Information Section. Even when a field is not populated, you still need to send \nthe Field Separator. Field Separators are not present between the elements in EMV \nAdditional Information Section. Field Separators are not present between repetitions of \nEMV Additional Information Section. A Field Separator follows the final EMV Additional \nInformation Section. \nEMV Request Data Segment \nData Segment No. 130 \nField \nNo. \nElement \nNo. \n \nElement Name \nMax\n.Len\n. \nEntry is: \nR/O/C1 \n \nDescription  \n1 85 Segment Type 3 R Identifies the type of data \nsegment being formatted. \nFixed value:  130 \nSource:  Device \n2 84 Segment Length 4 R Identifies the data segment's \nlength, including Segment Type's \nlength and Field Separators. \nSource:  Device \n3 187 CA Public Key \nFile Checksum \n25 O Identifies the checksum received \nin the last CA Public Key \ndownload and currently in use at \nthe host and device. \nSource:  Device/Host \n4 188 EMV Card \nSequence \nNumber \n3 C Identifies the sequence number of \nthe EMV card. \nSource:  Device \n5 189 EMV Chip Data \nLength \n3 R Identifies the length of the \nfollowing field (EMV Chip Data). \nValid values:  000\u2014999 \nSource:  Device \n--- PAGE 268 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-54 \nEMV Request Data Segment \nData Segment No. 130 \nField \nNo. \nElement \nNo. \n \nElement Name \nMax\n.Len\n. \nEntry is: \nR/O/C1 \n \nDescription  \n6 190 EMV Chip Data 999 R Identifies the EMV chip data. \nSource:  Device \n \nEMV Request Data Segment \nData Segment No. 130 \nEMV Additional Information Section \nThis section is repeated \u2013 by EMV Additional Information Indicator \u2013 for a maximum length of  \n2,000 bytes.  The Field Separator that follows Field No. 9 is included with the last repetition. \nField \nNo. \nElement \nNo. \n \nElement Name \nMax\n.Len\n. \nEntry is: \nR/O/C1 \n \nDescription  \n7 191 EMV Additional \nInformation \nIndicator ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "APPENDIX_T_EMV_TABLE_001",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 35562,
+      "endLine": 35598,
+      "quote": "\u2022 EMV Table Data (Code 001) \n\u2022 Card Authentication Results Code (CARC) \nThe following table contains the following layout information for each type of EMV additional \ninformation: \n\u2022 Indicator name \n\u2022 Data field attributes \n\u2022 Data field description \nEMV Additional Information Data Layouts \nEMV Table Data \nField Attributes Description \nTable ID n3 Fixed value:  001 \nTable Length n Fixed \nMaximum Length n6 Len.:  6 \nIdentifies the EMV table data which is used to \nnotify the chip when the MasterCard X-Code \nsystem was unable to go online.  This is to \nensure proper processing by a chip card \npersonalized for full grade processing. \nRequest \nValid Codes/Values: \nCode Description \nEMVYES This code indicates that the device \nis able to receive EMV Table Data.  \nIt is only sent in an EMV \nTransaction request. \nEMVNOT This code indicates that the device \nis unable to receive EMV Table \nData.  It is only sent in an EMV \nTransaction request. \nResponse \nIf this field is included in an authorization \nresponse, the device will echo it back on any \nsubsequent advice or batch upload request. \n \n \n--- PAGE 695 ---\nBUYPASS\u00ae Platform ATL105 Message Format Specifications ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    },
+    {
+      "evidenceId": "EMV_SEGMENT_131_LAYOUT",
+      "source": "C:\\Users\\F5H46GZ\\VS Projects\\core-auth-ai-validation-framework\\regression-artifact-validator\\specifications\\ATL105\\docs\\specs\\extracted_text.txt",
+      "sha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+      "startLine": 14145,
+      "endLine": 14225,
+      "quote": "12.21 EMV Response Data Segment \nThis section describes Data Segment No. 131, EMV Response Data Segment. \nIt always appears in Field No. 4 in Data Section No. 3. \nIt has a maximum length of 3834 alphanumeric characters (001\u20133834/a-z/A\u2013Z). \nIt originates at BUYPASS. \nThe following table illustrates the layout of the EMV Response Data Segment: \nNote: Fields are not separated by Field Separators. When a field is not populated, the next \nfield immediately follows. \nEMV Response Data Segment \nData Segment No. 131 \nField \nNo. \nElement \nNo. \n \nElement Name \nMax\n.Len\n. \nEntry is: \nR/O/C1 \n \nDescription  \n1 85 Segment Type 3 R Identifies the type of data \nsegment being formatted. \nFixed value:  131 \nSource:  Host \n2 84 Segment Length 4 R Identifies the data segment's \nlength, including Segment Type's \nlength and Field Separators. \nSource:  Host \n3 187 CA Public Key \nFile Checksum \n25 R Identifies the checksum received \nin the last CA Public Key \ndownload and currently in use at \nthe host and device.  This is \nechoed from the Request. \nSource:  Device/Host \n4 189 EMV Chip Data \nLength \n3 R Identifies the length of the \nfollowing field (EMV Chip Data). \nSource:  Device \n5 190 EMV Chip Data 999 R Identifies the EMV chip data. \nSource:  Device \n  \n--- PAGE 270 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications \n \n \n \n \nSoftware Version:  ATL105 \nSpecification Release Version:    2026-3 \nAugust 07, 2026 \n12-56 \nEMV Additional Information Section \nThis section is repeated \u2013 by EMV Additional Information Indicator \u2013 for a maximum length of  \n2,800 bytes. \n6 191 EMV Additional \nInformation \nIndicator \n3 R Identifies the type of EMV \nadditional information being \ntransmitted. \nSource:  Host \n7 192 EMV Additional \nInformation \nLength \n3 R Identifies the length of the EMV \nAdditional Information. \nSource:  Host \n8 118 EMV Additional \nInformation \nVar. R Identifies the EMV additional \ninformation. \nSource Host \n1Required/Optional/Conditional \n--- PAGE 271 ---\n BUYPASS\u00ae Platform ATL105 Message Format Specifications ",
+      "interpretationStatus": "REVIEW_REQUIRED"
+    }
+  ],
+  "limitations": [
+    "All proposed cases remain review-required and are not inserted into the canonical package.",
+    "The EBT applicability matrix retains unresolved presence branches where source operation lists do not specify segment presence.",
+    "No network/host execution, approved independent outcome oracle, wire capture, or production cryptogram is supplied.",
+    "The external Authorization.json attachment was not read or used; no PAN, track or cryptogram values are copied."
+  ]
+}

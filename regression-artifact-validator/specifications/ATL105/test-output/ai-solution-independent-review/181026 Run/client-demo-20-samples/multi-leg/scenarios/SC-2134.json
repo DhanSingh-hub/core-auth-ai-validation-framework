@@ -1,0 +1,137 @@
+{
+  "name": "Flow — Authorization followed by Partial Completion (Financial Transaction Request → Purchase/Capture) [boundary-at-limit-cash-amount]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:018",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Cash Amount": "<flow at-limit valid value, exact max length>"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-AUTH-PARTIAL-COMPLETION",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "partial_completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Sequence Number must match the original transaction request.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Fuel Purchase Amount",
+          "rule": "Capture amount is less than the authorized amount. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Nonfuel Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Tax Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        },
+        {
+          "type": "amount_relation",
+          "from_step": 1,
+          "relation": "partial",
+          "element_name": "Cash Amount",
+          "rule": "Capture amount is less than the authorized amount.",
+          "citation_kind": "unresolved_kb_gap"
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 0.8,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-17",
+  "source_page": null,
+  "business_rule_assertion": "Sequence Number must match the original transaction request.; Capture amount is less than the authorized amount. Fix 2026-09-28: 'Transaction Amount' is not a real ATL105 element (no field of that name exists in any extracted template) — ATL105's Standard Message Data Segment has no single combined amount field, only Fuel Purchase Amount/Nonfuel Amount/Tax Amount/Cash Amount; split into one amount_relation link per real field below instead of guessing which one field was meant.; Capture amount is less than the authorized amount.; Capture amount is less than the authorized amount.; Capture amount is less than the authorized amount.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "2dcfe89d22769b3058fc732922d592192a9321bd3b12eac09b770b1c3eb96a6f",
+  "dedup_key": "fabca294616874a5795d7e52c713485121bab5f259ef2a2ae912f05edad9b1c1",
+  "flow_variant_id": "boundary-at-limit-cash-amount",
+  "flow_variant_name": "Boundary — Cash Amount at max length (8 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1921"
+  ],
+  "flow_boundary_element": "Cash Amount",
+  "flow_boundary_max_bytes": 8,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2134",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:018",
+      "REQ-SRC-ATL105-PDF-001:1921"
+    ],
+    "testCaseIds": [
+      "TC-001826"
+    ],
+    "chainSide": "request",
+    "flowId": "FLOW-AUTH-PARTIAL-COMPLETION"
+  }
+}

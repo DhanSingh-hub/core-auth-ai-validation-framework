@@ -38,6 +38,16 @@ class Segment100AiJsonCompatibilityValidatorTest {
     }
 
     @Test
+    void acceptsOneDigitLogicalSegmentCountForConverterNormalization() {
+        ObjectNode payload = validPayload();
+        ((ObjectNode) payload.path("Financial Request")).put("NumSegments", "3");
+
+        var result = new Segment100AiJsonCompatibilityValidator().validatePayload(payload);
+
+        assertThat(result.errors()).isEmpty();
+    }
+
+    @Test
     void rejectsMalformedPromptCode() {
         ObjectNode payload = validPayload();
         ((ObjectNode) payload.path("Financial Request").path("Standard Segment").path("PromptCode"))

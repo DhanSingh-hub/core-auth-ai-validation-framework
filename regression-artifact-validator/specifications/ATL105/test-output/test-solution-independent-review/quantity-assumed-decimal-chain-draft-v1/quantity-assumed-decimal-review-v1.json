@@ -1,0 +1,80 @@
+{
+  "artifact": "AI_BR_AND_CHAIN_PRELIMINARY_REVIEW",
+  "reviewId": "ATL105-QUANTITY-ASSUMED-DECIMAL-REVIEW-001",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_REVIEW_OPEN",
+  "obligationGroupId": "OBL-B385A20C5306",
+  "aiStatement": "Quantity value must contain a digit for every position of assumed decimal places.",
+  "independentTestCandidates": [
+    {"testBrId": "BR-RULE-SEG102-R-012", "sourceScope": "Segment 102, Element 81", "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED"},
+    {"testBrId": "BR-RULE-SEG157-R-009", "sourceScope": "Segment 157 composite layout including Element 81", "chainStatus": "PLACEHOLDER_REVIEW_REQUIRED", "scopeNote": "Composite candidate; not an atomic Quantity-only rule."}
+  ],
+  "decisions": {
+    "brAlignment": "SOURCE_CLAIM_SUPPORTED_IN_BOTH_SEGMENTS",
+    "chainAdequacy": "INSUFFICIENT_EVIDENCE",
+    "semanticMatchApproved": false,
+    "coverageCredit": 0
+  },
+  "sourceEvidenceIds": ["ATL105-2026-3-SEG102-E81-ASSUMED-DECIMAL", "ATL105-2026-3-SEG157-E81-ASSUMED-DECIMAL"],
+  "perBrFindings": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1206",
+      "sourcePage": 227,
+      "sourceRuleId": "BR-227-5",
+      "sourceScope": "Segment 102, Element 81 Quantity",
+      "brAlignment": "ALIGNED",
+      "chainAdequacy": "INSUFFICIENT_EVIDENCE",
+      "caseIds": ["TC-007281", "TC-007282", "TC-007283", "TC-007284"],
+      "observation": "All four candidate payloads have exact Segment 102 Quantity = 01, Unit of Measure = C, Product Code = 001, Unit Price = 000, and Product Amount = 1. The linked cases do not state the assumed decimal-place count or validate this quantity against a source-backed quantity/unit context.",
+      "payloadSha256ByCase": {
+        "TC-007281": "043841859a3c8097a846a81008ad5e1f78424fe12a28d4c9d7f2401f6824e621",
+        "TC-007282": "9e027e14ad8e1592535032682e6d641cb1f5457cd5de040969196aede72fed83",
+        "TC-007283": "660e0654151f8f0459dbc9a6e98b68ae909fb66eab9ac782d18bd7aa4bfe0690",
+        "TC-007284": "66a1de594cd9f4bfbbbbd235b3b3bbb47e718b367ff21b93fa34f16a8f06a567"
+      }
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:1578",
+      "sourcePage": 322,
+      "sourceRuleId": "BR-322-1",
+      "sourceScope": "Segment 157, Element 81 Quantity",
+      "brAlignment": "ALIGNED",
+      "chainAdequacy": "INSUFFICIENT_EVIDENCE_SCOPE_MISMATCH",
+      "caseIds": ["TC-008093", "TC-008094", "TC-008095", "TC-008096"],
+      "observation": "All four candidate payloads bind Quantity = 01 to Segment 102; none contains a Segment 157 Quantity observation. The source claim is valid for Segment 157, but the linked chain does not exercise that source scope.",
+      "payloadSha256ByCase": {
+        "TC-008093": "bf309eac5cdb4892e2ff3ee0d3f2ebbe52ca2c7e995168ff8d146e4d4fbb2386",
+        "TC-008094": "9e027e14ad8e1592535032682e6d641cb1f5457cd5de040969196aede72fed83",
+        "TC-008095": "660e0654151f8f0459dbc9a6e98b68ae909fb66eab9ac782d18bd7aa4bfe0690",
+        "TC-008096": "4fdb92be874c9a51a125eefe4c763f800b6945608d18d0360c3b86070654066f"
+      }
+    }
+  ],
+  "officialTestChain": {
+    "SEG102-R-012": {"scenario": "TS-REVIEW-BR-RULE-SEG102-R-012", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-012", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG102-R-012", "status": "REVIEW_REQUIRED", "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]},
+    "SEG157-R-009": {"scenario": "TS-REVIEW-BR-RULE-SEG157-R-009", "case": "TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-009", "data": "TD-REVIEW-TC-REVIEW-TS-REVIEW-BR-RULE-SEG157-R-009", "status": "REVIEW_REQUIRED", "scenarioGaps": ["APPLICABILITY_AND_PRECONDITIONS_NOT_DERIVED", "TRANSACTION_OR_OPERATION_CONTEXT_NOT_DERIVED", "POSITIVE_NEGATIVE_AND_BOUNDARY_CASES_NOT_DERIVED", "EXPECTED_OUTCOME_NOT_DERIVED"]}
+  },
+  "supplementalDraft": {
+    "path": "quantity-assumed-decimal-test-chain-package-v1.json",
+    "scenarioCount": 2,
+    "caseCount": 4,
+    "testDataDesignCount": 4,
+    "vectorsPerScope": {"Segment 102": ["205 valid", "25 invalid"], "Segment 157": ["205 valid", "25 invalid"]},
+    "readiness": "REVIEW_REQUIRED",
+    "executionPerformed": false
+  },
+  "limitations": [
+    "All candidate observations are hash-verified observations only; full payload and sidecar semantic review was not performed.",
+    "The assumed decimal count and its source for the AI cases' Unit of Measure C are unresolved.",
+    "The Segment 157-linked AI cases contain no observed Segment 157 Quantity value in the bounded screen.",
+    "All new Test Data are field-level designs and not converter-ready segment requests.",
+    "No producer response oracle was accepted and no response behavior was inferred."
+  ],
+  "guardrails": {
+    "aiScenarioApprovalRequired": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "officialBaselineModified": false,
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  }
+}

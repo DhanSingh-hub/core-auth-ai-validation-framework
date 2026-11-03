@@ -1,0 +1,107 @@
+{
+  "reviewId": "ATL105-FULL-CORPUS-BATCH-002-DL3-DATETIME",
+  "reviewedAt": "2026-10-19",
+  "authority": "PRELIMINARY_ANALYST_REVIEW_NOT_AUTHORIZED_APPROVAL",
+  "corpusSnapshot": {
+    "aiBusinessRequirements": 6880,
+    "currentTestBusinessRequirements": 1343,
+    "queue": "2026-10-19-all-ai-br-chain-test-br-review-v3",
+    "grouping": "2026-10-19-obligation-groups-v1",
+    "reviewedAiBrCount": 3,
+    "linkedCaseCount": 0
+  },
+  "aiReviews": [
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:024",
+      "obligationGroupId": "OBL-09F8E77D91C5",
+      "claim": "Current Date must be numeric and must not exceed 6 bytes.",
+      "sourceRuleId": "ENT-ELEM-21",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 21 is numeric, fixed six digits in MMDDYY form, originates at BUYPASS, and lists component ranges for month, day, and two-digit year.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0,
+      "chainAdequacy": "MISSING_EXECUTABLE_CASES_AND_EXPECTED_OUTCOMES",
+      "testCandidates": ["SEGDL3-R-002", "SEGDL3-R-005"]
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:025",
+      "obligationGroupId": "OBL-3CA31752B446",
+      "claim": "Current Time must be numeric and must not exceed 4 bytes.",
+      "sourceRuleId": "ENT-ELEM-22",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 22 is numeric, fixed four digits in HHMM form, originates at BUYPASS, and includes time-zone and daylight-saving adjustment.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0,
+      "chainAdequacy": "MISSING_EXECUTABLE_CASES_AND_EXPECTED_OUTCOMES",
+      "testCandidates": ["SEGDL3-R-002", "SEGDL3-R-005"]
+    },
+    {
+      "aiBrId": "REQ-SRC-ATL105-PDF-001:026",
+      "obligationGroupId": "OBL-28CE42F219B9",
+      "claim": "Cut Time must be numeric and must not exceed 4 bytes.",
+      "sourceRuleId": "ENT-ELEM-23",
+      "sourceAlignment": "ALIGNED_BUT_UNDERSPECIFIED",
+      "sourceDetail": "Element 23 is numeric, fixed four digits in HHMM form, identifies the merchant's end-of-day settlement time, and has a separate automatic-settlement timing rule.",
+      "linkedScenarioCount": 1,
+      "linkedCaseCount": 0,
+      "chainAdequacy": "MISSING_EXECUTABLE_CASES_AND_EXPECTED_OUTCOMES",
+      "testCandidates": ["SEGDL3-R-002", "SEGDL3-R-005", "SEGDL3-R-009"]
+    }
+  ],
+  "sourceEvidence": [
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:024", "sourcePage": 369, "startLine": 19992, "quote": "Number: 21 Name: Current Date"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:024", "sourcePage": 369, "startLine": 19995, "quote": "Representation: Fixed length of six digits (MMDDYY)"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:024", "sourcePage": 369, "startLine": 19997, "quote": "Processing Rules: Originates at BUYPASS."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:024", "sourcePage": 369, "startLine": 19998, "quote": "Valid Codes/Values: Code Description 01–12 Month of the year 01–31 Day of the month 00–99 Last two digits of the year"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:025", "sourcePage": 370, "startLine": 20015, "quote": "Number: 22 Name: Current Time"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:025", "sourcePage": 370, "startLine": 20018, "quote": "Representation: Fixed length of four digits (HHMM)"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:025", "sourcePage": 370, "startLine": 20020, "quote": "Processing Rules: Originates at BUYPASS."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:025", "sourcePage": 370, "startLine": 20021, "quote": "Includes adjustments for the time zone and daylight saving time."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:025", "sourcePage": 370, "startLine": 20022, "quote": "Valid Codes/Values: Code Description 01–24 Hour of the day 01–60 Minute of the hour"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20027, "quote": "Number: 23 Name: Cut Time"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20028, "quote": "Character Type: N Maximum Length: 4 bytes"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20030, "quote": "Representation: Fixed length 4-digit number (HHMM)"},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20031, "quote": "Purpose: Identifies the merchant’s end-of-day settlement time."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20032, "quote": "Processing Rules: For devices that use an automatic cut time, the device should start the settlement procedure 30 minutes prior to the merchant’s cut time if the settlement has not been completed by the clerk for that business day."},
+    {"aiBrId": "REQ-SRC-ATL105-PDF-001:026", "sourcePage": 370, "startLine": 20036, "quote": "Valid Codes/Values: Code Description 01–24 Hour of the day 01–60 Minute of the hour"}
+  ],
+  "fullTestModelReview": {
+    "searchedUniqueTestBrCount": 1343,
+    "directDl3Element21And22Records": [
+      {"testBrId": "BR-RULE-SEGDL3-R-002", "title": "Day of the Week, Current Date, Current Time, and Cut Time are all required and Host-sourced", "status": "DRAFT_REVIEW_REQUIRED", "chain": {"scenarioCount": 1, "caseCount": 1, "testDataCount": 1, "scenarioStatus": "REVIEW_REQUIRED", "caseStatus": "REVIEW_REQUIRED", "testDataReadiness": "REVIEW_REQUIRED"}},
+      {"testBrId": "BR-RULE-SEGDL3-R-005", "title": "Day of the Week, Current Date MMDDYY, Current Time and Cut Time HHMM; Current Time includes time-zone and daylight-saving adjustment", "status": "DRAFT_REVIEW_REQUIRED", "chain": {"scenarioCount": 1, "caseCount": 1, "testDataCount": 1, "scenarioStatus": "REVIEW_REQUIRED", "caseStatus": "REVIEW_REQUIRED", "testDataReadiness": "REVIEW_REQUIRED"}}
+    ],
+    "directDl3Element23Records": [
+      {"testBrId": "BR-RULE-SEGDL3-R-002", "scope": "Required and Host-sourced DL3 fields", "status": "DRAFT_REVIEW_REQUIRED"},
+      {"testBrId": "BR-RULE-SEGDL3-R-005", "scope": "Cut Time is HHMM", "status": "DRAFT_REVIEW_REQUIRED"},
+      {"testBrId": "BR-RULE-SEGDL3-R-009", "scope": "Automatic-cut-time settlement should start 30 minutes before Cut Time when settlement is incomplete", "status": "DRAFT_REVIEW_REQUIRED", "note": "The source says should; do not strengthen this to must without authorized interpretation."}
+    ],
+    "disposition": "SOURCE_ALIGNED_TEST_COUNTERPARTS_EXIST_BUT_ALL_CHAINS_ARE_SYMBOLIC_PLACEHOLDERS",
+    "semanticMatchStatus": "NOT_ASSESSED"
+  },
+  "analystDisposition": {
+    "sourceClaimAlignment": "ALIGNED_BUT_LESS_SPECIFIC_THAN_SOURCE_FOR_ALL_THREE_AI_BRS",
+    "aiCaseCoverage": "NO_LINKED_CASES_FOR_ANY_OF_THE_THREE_AI_BRS",
+    "testChainAdequacy": "MISSING_EXECUTABLE_CASES_AND_EXPECTED_OUTCOMES",
+    "overall": "PRELIMINARY_ALIGNMENT_WITH_INCOMPLETE_CHAIN_AND_DISTINCT_CUT_TIME_SEMANTICS",
+    "authorizedReviewerDecision": "PENDING",
+    "semanticMatchesConfirmed": 0,
+    "coverageCredit": 0
+  },
+  "requiredFollowUp": [
+    "Confirm whether the source-listed date component ranges are the intended complete validation rules; do not invent calendar-validity constraints such as month/day combinations not stated here.",
+    "Resolve the source's exact time endpoint semantics (01-24 hour and 01-60 minute) with the authorized Test owner; do not normalize to conventional clock ranges.",
+    "Resolve the source's exact Cut Time endpoint semantics (01-24 hour and 01-60 minute) with the authorized Test owner; do not normalize to conventional clock ranges.",
+    "Author complete host-sourced DL3 fixtures, including expected outcomes, while keeping Current Date, Current Time, and Cut Time claims separate.",
+    "Keep the automatic-settlement 30-minute Cut Time rule separate and preserve its source's advisory 'should' wording.",
+    "Keep the companion Day of the Week and Cut Time rules in the same DL3 scenario only if the authorized Test design confirms the shared message context."
+  ],
+  "guardrails": {
+    "officialTestBaselineModified": false,
+    "currentTestPackageModified": false,
+    "sourceAiArtifactsModified": false,
+    "externalAuthorizationAttachmentUsed": false,
+    "executionPerformed": false,
+    "semanticMatchStatus": "NOT_ASSESSED"
+  }
+}

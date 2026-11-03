@@ -3,6 +3,7 @@ package com.coreauth.validator.coverage;
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalTestCase;
 import com.coreauth.validator.canonical.CanonicalTestData;
+import com.coreauth.validator.canonical.CanonicalTestAssertion;
 import com.coreauth.validator.validation.ValidationResult;
 
 import java.util.HashSet;
@@ -38,6 +39,22 @@ public final class CanonicalTestCaseQualityValidator {
             }
             if (!testCasesWithData.contains(testCase.getId())) {
                 result.addError("TestCaseQuality", testCase.getId() + " has no linked test-data artifact");
+            }
+            if ("EXECUTION_READY".equals(testCase.getStatus())) {
+                List<CanonicalTestAssertion> assertions = testCase.getAssertions();
+                if (assertions == null || assertions.isEmpty()) {
+                    result.addError("TestCaseQuality", testCase.getId()
+                            + " must contain per-requirement assertions before execution readiness");
+                } else {
+                    for (CanonicalTestAssertion assertion : assertions) {
+                        if (assertion == null || blank(assertion.getRequirementId()) || blank(assertion.getAssertion())
+                                || blank(assertion.getExpectedResult()) || assertion.getSourceAnchors() == null
+                                || assertion.getSourceAnchors().isEmpty()) {
+                            result.addError("TestCaseQuality", testCase.getId()
+                                    + " contains an incomplete per-requirement assertion");
+                        }
+                    }
+                }
             }
         }
         return result;

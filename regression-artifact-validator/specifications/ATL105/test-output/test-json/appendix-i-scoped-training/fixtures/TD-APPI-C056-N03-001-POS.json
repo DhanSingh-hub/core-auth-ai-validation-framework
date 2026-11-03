@@ -1,0 +1,173 @@
+{
+  "id" : "TD-APPI-C056-N03-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N03-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N03-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-57",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r005-APPI-C056-N03-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N03-001",
+        "tableId" : "056",
+        "nestedSelector" : "03",
+        "ruleIds" : [ "APPI-T056-R005", "APPI-T056-R009" ],
+        "syntheticData" : {
+          "selector" : "03",
+          "logicalLength" : 12,
+          "mitAmount" : "000000005000",
+          "logicalMitMajorAmount" : "50.00",
+          "currency" : "USD",
+          "transactionAmount" : "1.00",
+          "transactionCurrency" : "USD",
+          "context" : {
+            "cardBrand" : "Visa",
+            "issuerCountry" : "India",
+            "payment" : "recurring"
+          },
+          "history" : {
+            "initial" : "000000005000",
+            "lastModification" : "000000006000",
+            "subsequent" : "000000006000"
+          }
+        },
+        "clearScope" : "Twelve numeric characters withleading zeros,two decimals,same currency; transaction amount may differ; Visa India required/history.",
+        "excludedClaims" : [ "Financial limits", "A required equal transaction amount", "Universal currency-decimal policy borrowed from067" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Numeric twelve-byte amount representing50.00",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Same currency,not necessarily same amount",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Permitted history",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "mitAmount",
+            "replacement" : "00000005.000",
+            "expected" : "FAIL numeric-only representation"
+          }, {
+            "path" : "transactionCurrency",
+            "replacement" : "EUR",
+            "expected" : "FAIL same-currency predicate"
+          }, {
+            "path" : "history.subsequent",
+            "replacement" : "000000007000",
+            "expected" : "FAIL history"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 11,
+            "expected" : "FAIL twelve-byte declaration"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "zeroWidthFixture" : "000000000000",
+          "maxWidthFixture" : "999999999999",
+          "elevenDigits" : "00000005000",
+          "thirteenDigits" : "0000000005000"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30361,
+          "section" : "Appendix I-57",
+          "endLine" : 30387
+        }, {
+          "startLine" : 30388,
+          "section" : "Appendix I-58",
+          "endLine" : 30405
+        }, {
+          "startLine" : 30367,
+          "section" : "Appendix I-57",
+          "endLine" : 30379
+        }, {
+          "startLine" : 30390,
+          "section" : "Appendix I-58",
+          "endLine" : 30405
+        }, {
+          "startLine" : 30298,
+          "section" : "Appendix I-56",
+          "endLine" : 30300
+        }, {
+          "startLine" : 30355,
+          "section" : "Appendix I-57",
+          "endLine" : 30357
+        }, {
+          "startLine" : 30400,
+          "section" : "Appendix I-58",
+          "endLine" : 30402
+        }, {
+          "startLine" : 30488,
+          "section" : "Appendix I-59",
+          "endLine" : 30490
+        }, {
+          "startLine" : 30539,
+          "section" : "Appendix I-60",
+          "endLine" : 30542
+        }, {
+          "startLine" : 30741,
+          "section" : "Appendix I-63",
+          "endLine" : 30743
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.03.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 03",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30364,
+            "section" : "Appendix I-57",
+            "endLine" : 30366
+          } ]
+        }, {
+          "path" : "113.03.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 12",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30367,
+            "section" : "Appendix I-57",
+            "endLine" : 30370
+          } ]
+        }, {
+          "path" : "113.03.Sub-Table Data",
+          "sourceType" : "n12",
+          "sourceLength" : "12 digits; leading zeros; 2 implied decimals",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30371,
+            "section" : "Appendix I-57",
+            "endLine" : 30387
+          }, {
+            "startLine" : 30388,
+            "section" : "Appendix I-58",
+            "endLine" : 30405
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

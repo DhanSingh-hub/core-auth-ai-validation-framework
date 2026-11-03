@@ -1,0 +1,808 @@
+{
+  "id": "TC-000569",
+  "scenario_id": "SC-0581",
+  "scenario_type": "positive",
+  "transaction_type": "EMV Request Transaction",
+  "priority": "P2",
+  "priority_score": 0.4,
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:095",
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:013",
+    "REQ-SRC-ATL105-PDF-001:052",
+    "REQ-SRC-ATL105-PDF-001:095",
+    "REQ-SRC-ATL105-PDF-001:127",
+    "REQ-SRC-ATL105-PDF-001:130",
+    "REQ-SRC-ATL105-PDF-001:142",
+    "REQ-SRC-ATL105-PDF-001:167",
+    "REQ-SRC-ATL105-PDF-001:173",
+    "REQ-SRC-ATL105-PDF-001:176"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "68f20ba6298940b4226e4ca562024e1696a533a49908a52c4f70682301044595",
+  "request": {
+    "Standard Message Data Segment": {
+      "Segment Type": {
+        "value": "100",
+        "method": "fixed_value",
+        "source_page": 220,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 220,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Information Byte": {
+        "value": "0",
+        "method": "qe_example_value",
+        "source_page": 220,
+        "flags": [
+          "SCENARIO_VALUE_REJECTED: 'Information Byte'/'?' failed character_type/length validation",
+          "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value"
+        ],
+        "element_no": "44",
+        "data_ref": {
+          "segment": "100",
+          "element": "Information Byte",
+          "variant": "valid"
+        }
+      },
+      "Terminal Identifier": {
+        "value": "PCAZ961847709524504704",
+        "method": "realistic_terminal_id",
+        "source_page": 220,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "102",
+        "data_ref": {
+          "segment": "100",
+          "element": "Terminal Identifier",
+          "variant": "valid"
+        }
+      },
+      "Prompt Code": {
+        "value": "0001",
+        "method": "composite_from_spec_parts",
+        "source_page": 220,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+          "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+          "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)"
+        ],
+        "element_no": "78",
+        "data_ref": {
+          "segment": "100",
+          "element": "Prompt Code",
+          "variant": "valid"
+        }
+      },
+      "Account Number": {
+        "value": "499759601399687086021610",
+        "method": "realistic_pan",
+        "source_page": 221,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+          "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+          "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "2",
+        "data_ref": {
+          "segment": "100",
+          "element": "Account Number",
+          "variant": "valid"
+        }
+      },
+      "Card Discretionary Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "12",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Card Discretionary Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Encrypted PIN Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "33",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Encrypted PIN Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Pump/Lane Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "79",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Pump/Lane Number",
+          "variant": "omitted"
+        }
+      },
+      "Fuel Purchase Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "41",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Fuel Purchase Amount",
+          "variant": "omitted"
+        }
+      },
+      "Nonfuel Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "58",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Nonfuel Amount",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "99",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "Cash Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "17",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Cash Amount",
+          "variant": "omitted"
+        }
+      },
+      "Sequence Number": {
+        "value": "000001",
+        "method": "qe_example_value",
+        "source_page": 221,
+        "flags": [],
+        "element_no": "86",
+        "data_ref": {
+          "segment": "100",
+          "element": "Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "Approval Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "5",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Approval Number",
+          "variant": "omitted"
+        }
+      },
+      "Local Date and Local Time": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "49",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Local Date and Local Time",
+          "variant": "omitted"
+        }
+      },
+      "Partial Approval Indicator": {
+        "value": "0",
+        "method": "qe_example_value",
+        "source_page": 222,
+        "flags": [],
+        "element_no": "121",
+        "data_ref": {
+          "segment": "100",
+          "element": "Partial Approval Indicator",
+          "variant": "valid"
+        }
+      }
+    },
+    "Loyalty Card Data Segment": {
+      "Segment Type": {
+        "value": "108",
+        "method": "fixed_value",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 235,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Program ID": {
+        "value": "261222",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [
+          "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "138",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Program ID",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Account Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "139",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Account Number",
+          "variant": "omitted"
+        }
+      },
+      "Points to Redeem": {
+        "value": "196498",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "140",
+        "data_ref": {
+          "segment": "108",
+          "element": "Points to Redeem",
+          "variant": "valid"
+        }
+      },
+      "Coupon ID": {
+        "value": "0158951517678191047",
+        "method": "format_synthesis",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "141",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon ID",
+          "variant": "valid"
+        }
+      },
+      "Coupon Amount": {
+        "value": "80943494",
+        "method": "realistic_amount",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "142",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon Amount",
+          "variant": "valid"
+        }
+      },
+      "Update Code": {
+        "value": "C",
+        "method": "scenario_parameter_literal",
+        "source_page": 235,
+        "flags": [],
+        "element_no": "143",
+        "data_ref": {
+          "segment": "108",
+          "element": "Update Code",
+          "variant": "valid"
+        }
+      },
+      "Street Address": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "144",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Street Address",
+          "variant": "omitted"
+        }
+      },
+      "Phone Number, Loyalty": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "145",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Phone Number, Loyalty",
+          "variant": "omitted"
+        }
+      },
+      "Expiration Date": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "146",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Expiration Date",
+          "variant": "omitted"
+        }
+      },
+      "Payment Tender Type": {
+        "value": "DS",
+        "method": "scenario_parameter_literal",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "148",
+        "data_ref": {
+          "segment": "108",
+          "element": "Payment Tender Type",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Track 2 Data": {
+        "value": "48877216545817510632362439171226410133",
+        "method": "realistic_track2_data",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "147",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Track 2 Data",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Information Version": {
+        "value": "1",
+        "method": "qe_example_value",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "150",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Information Version",
+          "variant": "valid"
+        }
+      },
+      "Unit of Work": {
+        "value": "6839864844328210016",
+        "method": "format_synthesis",
+        "source_page": 236,
+        "flags": [],
+        "element_no": "151",
+        "data_ref": {
+          "segment": "108",
+          "element": "Unit of Work",
+          "variant": "valid"
+        }
+      }
+    },
+    "Variable Information Data Segment": {
+      "Segment Type": {
+        "value": "111",
+        "method": "fixed_value",
+        "source_page": 243,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 243,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator": {
+        "value": "005",
+        "method": "fixed_value",
+        "source_page": 548,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length": {
+        "value": "003",
+        "method": "derived_from_table_data",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 — replace with the client's real value via VarInfoTable[005]"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information": {
+        "value": "000",
+        "method": "spec_unspecified_code",
+        "source_page": 243,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 — replace with the client's real value via VarInfoTable[005]"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator [2]": {
+        "value": "031",
+        "method": "fixed_value",
+        "source_page": 562,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length [2]": {
+        "value": "002",
+        "method": "derived_from_table_data",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information [2]": {
+        "value": "00",
+        "method": "spec_unspecified_code",
+        "source_page": null,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      }
+    },
+    "SKU Data Segment": {
+      "Segment Type": {
+        "value": "103",
+        "method": "scenario_parameter_literal",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 248,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "SKU Data": {
+        "value": "UDQ6Z8WUMBI21C6NDVVGG3V3VZIMB3YQIE740OB8URI35FLB6R94N4XMS83S8YPC116VGVC5ATSNVQ39NZDEFIF11687Z6TUD7O6F62G89Q9QPJKGSKQEXL4M1BE2ACU2N6S4BKOAHZ18LNMI6P1SOQ2WRTJCBZFE48I1E13Y9HC32T6HAL1BW4H9ATRM688CAPNFIFDE9VD9TPOLTO2CTUQBH32JBQAXTBC9S8B6YBQ1X0TFYUNS81N9W1ZS1FX246KAGTPCOVXZNOR44JAKLTO9ASJDCH8CO14LHE8JG856U83JF87R3XU41X8G5ZC8RJK77WTZ4O0SVUEXHGR9NPFS594MRUCZAG529Z44QI16I32R7LDVMC2RJCUUGKFNBNIFLRONCBRHNMKVAYWZ94GRAVDXH4BZK4HY0O3C5M0HBQ6DAMWEGCE4UUFBF7TVDA8CLLP7IYNA35AA3CB2DQ251FIDNB3QYBLTX1N0D5L3027EGS9JLEAPOVDKKJEGS6N1G4ZZ29536RGVUJH826UH8KOAEHI0KAPZVSRRRAH6MXW8CBAX36A4MR6GEXS114YXIM57IRUIXTXO1YA6J9CTE8AMGKTBZJGEJ686BGAN8QANP0KDDNM68PPVVK90PAO4C0EWFCHJSKWNM4RDBA3OF0KFCZUP4UNJVV4SP41BKZUKQONF8SY13D7G6YPHZ82X6RARNQ3KWORSV8A4F3V9PGQ7LI3Y2RWM56CT5JZNJ39EP8ZVU5UZC997927217VRHOASOCLWZ21SQMKKBV4U9CADRJ2JCDAK6A1JPDM3MZHR3A1JF99NURCO6AW238WD81T364H9VPPONKW7VHKMCS0UP292SGNEAR0EJ09UIFN51HTHAJA66P3DG61U9FL8TAOO7BO12QVJQ9F38A33PZB374XIPC46H9YZP3YLYT0AE4HG6IREAX1G4T1HAEM4XEXCUS3LALBV3ZLQEEDZO3OHBEJDSNLU6PA",
+        "method": "format_synthesis",
+        "source_page": 248,
+        "flags": [],
+        "element_no": "149",
+        "data_ref": {
+          "segment": "114",
+          "element": "SKU Data",
+          "variant": "valid"
+        }
+      }
+    },
+    "EV Charging Data Segment": {
+      "Segment Type": {
+        "value": "156",
+        "method": "fixed_value",
+        "source_page": 314,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 314,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "EV Charging Data": {
+        "value": "01",
+        "method": "qe_example_value",
+        "source_page": 314,
+        "flags": [],
+        "element_no": "242",
+        "data_ref": {
+          "segment": "156",
+          "element": "EV Charging Data",
+          "variant": "valid"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "100": "?",
+    "108": "?",
+    "111": "?",
+    "114": "?",
+    "156": "?"
+  },
+  "forced_segments": [
+    "111"
+  ],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 384,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            209
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        }
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 388,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        }
+      }
+    },
+    "source": "universal_request_envelope"
+  },
+  "flags": [
+    "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+    "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+    "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)",
+    "CONDITIONAL_FIELD_OMITTED",
+    "CONSTRAINT_RULE_UNDEFINED: element '2' ('Account Number') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=24 is one arbitrary catalog pick, not length-verifiable",
+    "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) — see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 005 'must be populated for all transactions' (p548); spec 'unspecified' code from Appendix J p631,632 — replace with the client's real value via VarInfoTable[005]",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p562); spec 'unspecified' code from ENT-TABLE-I-031 p562 — replace with the client's real value via VarInfoTable[031]",
+    "QE_EXAMPLE_CONDITIONALLY_SCOPED_SKIPPED: 'Account Number'/'TOTALS REQUEST' is only documented for a specific precondition (\"Loyalty card Totals Request (Update Code = 'T'): value\") this test case's context cannot verify — skipped rather than misapplied as a universal value",
+    "QE_EXAMPLE_DEFAULT_REJECTED: 'Information Byte'/'?' failed character_type/length validation, using a later documented value",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Account Number''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Card Discretionary Block Data' maps to no catalogued element",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Loyalty Information Version' maps to no catalogued element",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Partial Approval Indicator' maps to no catalogued element",
+    "SCENARIO_PARAMETER_NOT_PLACED: 'Variable Information Indicator' maps to no catalogued element",
+    "SCENARIO_VALUE_REJECTED: 'Information Byte'/'?' failed character_type/length validation",
+    "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+  ],
+  "completeness_status": "INCOMPLETE_PARAMETER_NOT_PLACED",
+  "completeness_findings": [
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Card Discretionary Block Data' maps to no catalogued element"
+    },
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Loyalty Information Version' maps to no catalogued element"
+    },
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Partial Approval Indicator' maps to no catalogued element"
+    },
+    {
+      "tier": "T1",
+      "kind": "PARAMETER_NOT_PLACED",
+      "detail": "SCENARIO_PARAMETER_NOT_PLACED: 'Variable Information Indicator' maps to no catalogued element"
+    }
+  ],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": "Level C (chatbot-sourced, see step0_acquisition/knowledge) — validate against ATL105 PDF Ch.13 before trusting as ground truth"
+  },
+  "source_rule_id": null,
+  "source_page": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "0",
+      "meaning": "Approved-Purchase/Capture",
+      "source_page": 396,
+      "grounding": "ATL105 Response Code valid values (attribute catalog) + Prompt Code transaction type"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario — no decline expected"
+    },
+    "response_message": {
+      "available": false,
+      "response_transaction_type": null,
+      "flags": [
+        "NO_RESPONSE_TEMPLATE: no paired response template for 'EMV Request Transaction' in the assembled catalog; expected response message cannot be constructed"
+      ],
+      "segments": {}
+    }
+  },
+  "confidence_score": 0.9,
+  "confidence_pct": 24,
+  "confidence_band": "LOW",
+  "confidence_factors": [
+    "prior_confidence_score=0.9",
+    "minor_flags=-66"
+  ],
+  "test_data_file": "qe_shaped_test_data/TC-000569.json",
+  "verification": {
+    "status": "PASS",
+    "reasons": [],
+    "advisories": [
+      "CONSTRAINT_NOT_VERIFIABLE: Standard Message Data Segment.Account Number (element 2) has no DEFINED length rule (UNRESOLVED_KB_GAP) — conformance was not verified"
+    ],
+    "attempts": 1
+  }
+}

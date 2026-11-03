@@ -70,8 +70,15 @@ final class AppendixSyntheticFixtureDrafts {
             }
             case "TD-SEG100-APPO-ENTRY-MODE" -> {
                 standardSegment(request).put("accountNumber", "5555555555554444");
-                standardSegment(request).put("posEntryMode", "10");
+                // Appendix J: 3-digit Table 005 value in Segment 111 (2-digit "10" was invalid and meant COF).
+                ObjectNode segment111 = request.withObject("dataSection2").withObject("segment111");
+                segment111.put("segmentType", "111");
+                segment111.putArray("variableInformationSections").addObject()
+                        .put("variableInformationIndicator", "005")
+                        .put("variableInformationLength", "003")
+                        .put("variableInformation", "071");
                 controls.put("tokenPresentmentMode", "REVIEW_REQUIRED");
+                controls.put("entryModeAssertion", "APPENDIX_J_CODE_RECOGNITION_ONLY");
             }
             case "TD-SEG100-APPR-EMV-COMPANION" -> {
                 request.putObject("dataSection1").put("numberOfSegments", "02");

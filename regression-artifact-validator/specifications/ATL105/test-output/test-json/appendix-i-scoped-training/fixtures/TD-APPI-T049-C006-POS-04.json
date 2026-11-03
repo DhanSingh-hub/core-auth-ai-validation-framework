@@ -1,0 +1,96 @@
+{
+  "id" : "TD-APPI-T049-C006-POS-04",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-T049-C006-POS-04.json",
+  "testCaseIds" : [ "TC-APPI-T049-C006-POS-04" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-43",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t049-r016-APPI-T049-C006"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-T049-C006",
+        "tableId" : "049",
+        "nestedSelector" : "06",
+        "ruleIds" : [ "APPI-T049-R003", "APPI-T049-R016", "APPI-T049-R017", "APPI-T049-R019" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-43",
+          "startLine" : 29434,
+          "endLine" : 29470
+        }, {
+          "section" : "Appendix I-21",
+          "startLine" : 28306,
+          "endLine" : 28334
+        } ],
+        "structuredLogicalFields" : {
+          "subTableId" : "06",
+          "declaredDataLength" : "2",
+          "positiveDataValues" : [ "AC", "AS", "CC", "CS" ],
+          "baselinePositiveData" : "CS",
+          "negativeLogicalFields" : {
+            "data" : "CX"
+          },
+          "preconditions" : {
+            "network" : "MasterCard",
+            "terminalType" : "mPOS",
+            "table032SubTable01" : "M"
+          },
+          "preconditionsByData" : {
+            "AC" : {
+              "deviceClass" : "Contact/contactless dongle without PIN pad"
+            },
+            "AS" : {
+              "deviceClass" : "Contact/contactless dongle with PIN on Glass"
+            },
+            "CC" : {
+              "deviceClass" : "Contactless-only COTS without PIN"
+            },
+            "CS" : {
+              "deviceClass" : "Contactless-only COTS with PIN on Glass"
+            }
+          }
+        },
+        "clearScope" : "All four codes for unambiguous MasterCard mPOS context; logical forwarding prerequisite032/01=M.",
+        "excludedClaims" : [ "JCB/Diners forwarding resolved", "External terminal certification", "Amex mandatory-omission test", "Actual authorizer forwarding" ],
+        "expectedPredicateOutcomes" : {
+          "positive" : [ {
+            "predicate" : "classification-code-in-AC-AS-CC-CS",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "mastercard-classification-code-set",
+            "outcome" : "SATISFIED"
+          }, {
+            "predicate" : "logical-mpos-forwarding-prerequisite",
+            "outcome" : "SATISFIED"
+          } ],
+          "negative" : [ {
+            "predicate" : "classification-code-in-AC-AS-CC-CS",
+            "outcome" : "VIOLATED"
+          }, {
+            "predicate" : "data-length-equals-two",
+            "outcome" : "SATISFIED"
+          } ]
+        },
+        "mutation" : {
+          "operation" : "REPLACE",
+          "target" : "data",
+          "from" : "CC",
+          "to" : "CX",
+          "targetPredicate" : "classification-code-in-AC-AS-CC-CS"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

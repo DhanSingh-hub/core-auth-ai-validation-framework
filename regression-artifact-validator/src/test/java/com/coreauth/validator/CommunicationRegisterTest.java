@@ -30,6 +30,38 @@ class CommunicationRegisterTest {
     }
 
     @Test
+    void unresolvedTrackDataAliasIsAnAiDeveloperDiscussionNotAConfirmedDefect() throws IOException {
+        JsonNode items = register().path("items");
+        JsonNode discussion = null;
+        for (JsonNode item : items) {
+            if ("AID-0005".equals(item.path("id").asText())) discussion = item;
+        }
+
+        assertThat(discussion).isNotNull();
+        assertThat(discussion.path("channel").asText()).isEqualTo("AI_DEV_DISCUSSION");
+        assertThat(discussion.path("status").asText()).isEqualTo("OPEN");
+        assertThat(discussion.path("relatedItems").toString()).contains("AIF-0007");
+        assertThat(discussion.path("detail").asText()).contains("not a confirmed AI defect");
+    }
+
+    @Test
+    void cardTypeCoverageFeedbackKeepsTheIndependentDenominatorAndNoCrossProductClaim() throws IOException {
+        JsonNode items = register().path("items");
+        JsonNode feedback = null;
+        for (JsonNode item : items) {
+            if ("AIF-0020".equals(item.path("id").asText())) feedback = item;
+        }
+
+        assertThat(feedback).isNotNull();
+        assertThat(feedback.path("channel").asText()).isEqualTo("AI_FEEDBACK");
+        assertThat(feedback.path("status").asText()).isEqualTo("OPEN");
+        assertThat(feedback.path("detail").asText()).contains("1 of the 36", "2,359 conflicted Test Case IDs",
+                "Do not infer or require a network-by-card-type Cartesian product");
+        assertThat(feedback.path("evidence").toString()).contains("2026-10-16-ai-network-cardtype-coverage-v4");
+        assertThat(feedback.path("relatedItems").toString()).contains("AIF-0018");
+    }
+
+    @Test
     void generatedViewsAreUpToDate() throws IOException {
         Map<Path, String> views = new GenerateCommunicationRegisterViews().render(register());
 

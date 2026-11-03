@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "contextId": "MASTERCARD_FLEET",
+  "planId": "PETRO-2025-1-TRAINING-PLAN",
+  "sourceVersion": "2025-1",
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "approvals": [],
+  "scope": {
+    "chapter": "7",
+    "title": "MasterCard Fleet Card Processing",
+    "pdfPageRange": [51, 57],
+    "appendixPages": [
+      {"appendix": "A", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "pdfPages": [143, 145]},
+      {"appendix": "B", "bookmark": "Appendix B. Valid Payment Systems Product Codes", "pdfPages": [148, 168]}
+    ],
+    "supportedTransactions": {
+      "pdfPage": 51,
+      "quote": "The following transactions are supported for the MasterCard fleet card:",
+      "values": [
+        "POS Purchase/Capture Transaction",
+        "POS Authorization Only Transaction",
+        "CAT Purchase/Capture Transaction",
+        "CAT Authorization Only Transaction",
+        "POS Return/Refund Transaction",
+        "POS Reversal/Void Transaction"
+      ]
+    },
+    "entryModes": [
+      {"mode": "TRACK_2_DEFAULT", "pdfPage": 53, "quote": "The default track that is sent to BUYPASS on an original transaction should be Track 2."},
+      {"mode": "TRACK_1_FALLBACK", "pdfPage": 53, "quote": "If the device cannot read Track 2, then the device should send unaltered Track 1 before attempting manual entry."},
+      {"mode": "MANUAL_ENTRY", "pdfPage": 52, "quote": "Manual entry is allowed on MasterCard fleet card transactions."},
+      {"mode": "FOLLOW_ON_PARTIAL_TRACK_2", "pdfPage": 53, "quote": "Card data provided in a follow-on transaction must be partial Track 2 Data."}
+    ],
+    "exclusions": [
+      "MasterCard Enhanced Fleet EMV (ATL105 Product IDs MCF and MGF) is a distinct program; see reconciliation MCF-R13.",
+      "Generic Mastercard credit purchases do not inherit any rule in this context.",
+      "Petroleum Appendix A is limited to its MasterCard Fleet row and Appendix B to product codes; other card rows belong to later contexts.",
+      "Cross-card AFP, transaction and receipt chapters 2 to 4 belong to a later context."
+    ]
+  },
+  "inventory": [
+    {"id": "MCF-I01", "bookmark": "7. MasterCard Fleet Card Processing", "classification": "OVERVIEW", "pdfPage": 51, "quote": "This chapter discusses the following topics related to MasterCard fleet card processing:"},
+    {"id": "MCF-I02", "bookmark": "7.1. Processing Requirements", "classification": "OVERVIEW", "pdfPage": 51, "quote": "This section discusses the following processing requirements for the MasterCard fleet card:"},
+    {"id": "MCF-I03", "bookmark": "7.1.1. Supported Transactions", "classification": "RULE", "pdfPage": 51, "quote": "The following transactions are supported for the MasterCard fleet card:"},
+    {"id": "MCF-I04", "bookmark": "7.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 52, "quote": "the transaction is processed and sent to BUYPASS as a regular MasterCard transaction using Prompt Code 20."},
+    {"id": "MCF-I05", "bookmark": "7.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 52, "quote": "the Merchant Profile at BUYPASS must have Terminal Special Code 034 enabled."},
+    {"id": "MCF-I06", "bookmark": "7.1.2. Terminal Special/Prompt Codes", "classification": "RULE", "pdfPage": 52, "quote": "The POS application must be able to read the Card Type code 080 sent in the Table Load response."},
+    {"id": "MCF-I07", "bookmark": "7.1.2. Terminal Special/Prompt Codes", "classification": "CROSS_REFERENCE", "pdfPage": 52, "quote": "Please refer to the applicable message format specifications for information about valid Prompt Codes for the MasterCard fleet card.", "crossReferences": ["ATL105 message format specifications", "Petroleum Appendix A"]},
+    {"id": "MCF-I08", "bookmark": "7.1.3. Driver ID Encryption", "classification": "RULE", "pdfPage": 52, "quote": "If it is required, the Driver ID can have a length of 1–6 digits. It should be unencrypted in the message format for BUYPASS."},
+    {"id": "MCF-I09", "bookmark": "7.1.4. Manual Entry", "classification": "RULE", "pdfPage": 52, "quote": "it should prompt the user to swipe the card again—up to three times."},
+    {"id": "MCF-I10", "bookmark": "7.1.4. Manual Entry", "classification": "RULE", "pdfPage": 52, "quote": "all six digits of the embossed 6-digit ISO Number and all ten digits of the embossed 10-digit Personal Account Number must be entered."},
+    {"id": "MCF-I11", "bookmark": "7.1.5. Expiration Date", "classification": "RULE", "pdfPage": 52, "quote": "The device must perform an expiration date validation on all MasterCard fleet card transactions."},
+    {"id": "MCF-I12", "bookmark": "7.1.5. Expiration Date", "classification": "RULE", "pdfPage": 52, "quote": "The MasterCard fleet card expiration date is suppressed on the cardholder’s copy of the receipt."},
+    {"id": "MCF-I13", "bookmark": "7.1.5. Expiration Date", "classification": "RULE", "pdfPage": 52, "quote": "Note: For all authorizations, merchants must send a value even for expired cards."},
+    {"id": "MCF-I14", "bookmark": "7.1.6. Check Digit Calculation", "classification": "RULE", "pdfPage": 52, "quote": "For MasterCard fleet cards, a Mod 10 Check Digit evaluation is performed on the full Account Number."},
+    {"id": "MCF-I15", "bookmark": "7.1.7. Odometer Reading", "classification": "RULE", "pdfPage": 53, "quote": "If it is required, the odometer reading can have a length of 1–8 digits."},
+    {"id": "MCF-I16", "bookmark": "7.1.8. Vehicle Number", "classification": "RULE", "pdfPage": 53, "quote": "If it is required, the Vehicle Number can have a length of 1–6 digits."},
+    {"id": "MCF-I17", "bookmark": "7.1.9. Product Restriction Code", "classification": "RULE", "pdfPage": 53, "quote": "The device must perform an interrogation on the Product Restriction Code", "crossReferences": ["Petroleum Appendix B"]},
+    {"id": "MCF-I18", "bookmark": "7.1.9. Product Restriction Code", "classification": "RULE", "pdfPage": 53, "quote": "Note: A unique Product Code must be sent for each type of fuel purchase."},
+    {"id": "MCF-I19", "bookmark": "7.1.10. Product Code Data", "classification": "RULE", "pdfPage": 53, "quote": "The Product Code Data must be sent in all fleet transactions. The sum of all the products in the product segment must equal the total transaction amount."},
+    {"id": "MCF-I20", "bookmark": "7.1.11. Track Support Requirements", "classification": "RULE", "pdfPage": 53, "quote": "The default track that is sent to BUYPASS on an original transaction should be Track 2."},
+    {"id": "MCF-I21", "bookmark": "7.1.11. Track Support Requirements", "classification": "RULE", "pdfPage": 53, "quote": "Card data provided in a follow-on transaction must be partial Track 2 Data."},
+    {"id": "MCF-I22", "bookmark": "7.2. Card Layout", "classification": "OVERVIEW", "pdfPage": 54, "quote": "7.2. Card Layout This section discusses the following topics:"},
+    {"id": "MCF-I23", "bookmark": "7.2.1. Track 1 Format", "classification": "CARD_LAYOUT", "pdfPage": 54, "quote": "The following table contains Track 1 card layout information for MasterCard fleet cards:"},
+    {"id": "MCF-I24", "bookmark": "7.2.1. Track 1 Format", "classification": "RULE", "pdfPage": 54, "quote": "Note: The device should not transmit the Start Sentinel in any transaction."},
+    {"id": "MCF-I25", "bookmark": "7.2.1. Track 1 Format", "classification": "EXAMPLE", "pdfPage": 55, "quote": "Example. MasterCard fleet card Track 1 data string:"},
+    {"id": "MCF-I26", "bookmark": "7.2.2. Track 2 Format", "classification": "CARD_LAYOUT", "pdfPage": 56, "quote": "The following table contains Track 2 card layout information for the MasterCard fleet card:"},
+    {"id": "MCF-I27", "bookmark": "7.2.2. Track 2 Format", "classification": "EXAMPLE", "pdfPage": 56, "quote": "Example. MasterCard fleet card Track 2 data string:"},
+    {"id": "MCF-I28", "bookmark": "7.3. Embossing Standards", "classification": "EXAMPLE", "pdfPage": 57, "quote": "The following example describes the embossed data on MasterCard fleet cards."},
+    {"id": "MCF-I29", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Prompt if Product Type Code = 1, 2, 3, or 4. Value: maximum of 7 digits."},
+    {"id": "MCF-I30", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Fuel only if Product Restriction Code = 2. All products allowed if Product Restriction Code is any other value."},
+    {"id": "MCF-I31", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Keyed Not prompted. Prompted. Not prompted Prompted All products allowed."},
+    {"id": "MCF-I32", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Prompt if Product Type Code = 3. Value: maximum of 6 digits."},
+    {"id": "MCF-I33", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Prompt if Product Type Code = 2. Value: maximum of 6 digits."},
+    {"id": "MCF-I34", "bookmark": "Appendix A. Petroleum Industry Device Prompt Requirements", "classification": "RULE", "pdfPage": 145, "quote": "Prompt if Product Type Code = 1. Value: maximum of 6 digits."},
+    {"id": "MCF-I35", "bookmark": "Appendix B. Valid Payment Systems Product Codes", "classification": "RULE", "pdfPage": 148, "quote": "Any product in these tables should be represented in messages to BUYPASS by the Product Code assigned to it in the following tables."},
+    {"id": "MCF-I36", "bookmark": "Appendix B. Valid Payment Systems Product Codes", "classification": "TABLE", "pdfPage": 149, "quote": "001 Unleaded (88 octane or less)"}
+  ],
+  "reconciliation": [
+    {"id": "MCF-R01", "topic": "Card Type 080 identifies MasterCard fleet", "inventoryRefs": ["MCF-I06"], "disposition": "ALIGNED", "reviewRequired": false,
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 512, "quote": "080 MasterCard® fleet Fleet"},
+       {"version": "2026-3", "extractedPage": 515, "quote": "080 MasterCard® fleet Fleet"},
+       {"version": "2026-4", "extractedPage": 519, "quote": "080 MasterCard® fleet Fleet"},
+       {"version": "2026-4", "extractedPage": 522, "quote": "080 MasterCard® fleet Fleet"}
+     ]},
+    {"id": "MCF-R02", "topic": "Fallback to regular MasterCard processing with Prompt Code 20", "inventoryRefs": ["MCF-I04", "MCF-I07"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true,
+     "note": "In ATL105, 020 is the generic Credit card type; a full Prompt Code combines a transaction type with a card type. The exact four-character fleet and fallback Prompt Codes per transaction remain unconfirmed.",
+     "question": "Confirm the full Prompt Codes for MasterCard fleet (card type 080) and for the regular-MasterCard fallback (card type 020) for each supported transaction.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 511, "quote": "preceded by a valid Transaction Type code (See Appendix G. Valid Transaction Type Codes.) to create a valid Prompt Code (Element No. 78)."},
+       {"version": "2026-3", "extractedPage": 514, "quote": "020 Credit Credit"},
+       {"version": "2026-4", "extractedPage": 518, "quote": "preceded by a valid Transaction Type code (See Appendix G. Valid Transaction Type Codes.) to create a valid Prompt Code (Element No. 78)."},
+       {"version": "2026-4", "extractedPage": 521, "quote": "020 Credit Credit"}
+     ]},
+    {"id": "MCF-R03", "topic": "Terminal Special Code 034 in the BUYPASS Merchant Profile", "inventoryRefs": ["MCF-I05"], "disposition": "PETROLEUM_ONLY", "reviewRequired": true,
+     "note": "Merchant Profile configuration is not defined in ATL105. Do not alias it to ATL105 Appendix K table ID 034.",
+     "question": "Confirm how Terminal Special Code 034 enablement is provisioned and evidenced in test environments.",
+     "atl105Absent": ["Terminal Special Code", "Special Code 034"]},
+    {"id": "MCF-R04", "topic": "Track 2 is the default track; unaltered Track 1 is the fallback before manual entry", "inventoryRefs": ["MCF-I20"], "disposition": "ALIGNED", "reviewRequired": false,
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 92, "quote": "MasterCard®, MasterCard® Fleet, Visa®, and Visa® Fleet) transactions"},
+       {"version": "2026-3", "extractedPage": 92, "quote": "The default track that is sent to the host should be Track 2 if the device supports Track 2. If the device cannot read Track 2, then the device should send unaltered Track 1 before attempting manual entry."},
+       {"version": "2026-4", "extractedPage": 94, "quote": "MasterCard®, MasterCard® Fleet, Visa®, and Visa® Fleet) transactions"},
+       {"version": "2026-4", "extractedPage": 94, "quote": "The default track that is sent to the host should be Track 2 if the device supports Track 2. If the device cannot read Track 2, then the device should send unaltered Track 1 before attempting manual entry."}
+     ]},
+    {"id": "MCF-R05", "topic": "Follow-on card data is partial Track 2 (account number, equals sign, YYMM expiry)", "inventoryRefs": ["MCF-I21"], "disposition": "ALIGNED", "reviewRequired": true,
+     "note": "Petroleum says follow-on transaction; ATL105 describes the scenario for previously authorized credit transactions. Confirm both terms cover the same transactions.",
+     "question": "Confirm that Petroleum follow-on transactions match the ATL105 transactions that must carry only account number and expiration date.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 92, "quote": "The host message should only contain the Account Number, followed by an account delimiter (=), followed by the 4 digit Expiration Date (Storage format – YYMM)."},
+       {"version": "2026-4", "extractedPage": 94, "quote": "The host message should only contain the Account Number, followed by an account delimiter (=), followed by the 4 digit Expiration Date (Storage format – YYMM)."}
+     ]},
+    {"id": "MCF-R06", "topic": "Authorizations send an expiration value even for expired cards", "inventoryRefs": ["MCF-I13"], "disposition": "ALIGNED", "reviewRequired": false,
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 365, "quote": "Note: For all authorizations, merchants must send a value even for expired cards."},
+       {"version": "2026-4", "extractedPage": 372, "quote": "Note: For all authorizations, merchants must send a value even for expired cards."}
+     ]},
+    {"id": "MCF-R07", "topic": "Device expiration validation on every MasterCard fleet transaction", "inventoryRefs": ["MCF-I11"], "disposition": "PETROLEUM_NARROWS_ATL105", "reviewRequired": true,
+     "note": "ATL105 requires island devices or controllers to verify expiration data when applicable; Petroleum makes it mandatory for all MasterCard fleet transactions. Expiry validation must stay separate from the rule to transmit expired-card values (MCF-R06).",
+     "question": "Confirm the expected device or host outcome when expiry validation fails, given that authorizations still transmit expired-card values.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 60, "quote": "The island device/controller must verify the following card data when applicable: • ISO number • Expiration data • Check digit calculation • Card range"},
+       {"version": "2026-4", "extractedPage": 62, "quote": "The island device/controller must verify the following card data when applicable: • ISO number • Expiration data • Check digit calculation • Card range"}
+     ]},
+    {"id": "MCF-R08", "topic": "Mod 10 check digit on the full account number", "inventoryRefs": ["MCF-I14"], "disposition": "PETROLEUM_NARROWS_ATL105", "reviewRequired": true,
+     "note": "ATL105 requires island devices or controllers to verify the check digit when applicable; Petroleum specifies Mod 10 on the full MasterCard fleet account number.",
+     "question": "Confirm whether a Mod 10 failure blocks transmission or produces a host response that tests should expect.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 60, "quote": "The island device/controller must verify the following card data when applicable: • ISO number • Expiration data • Check digit calculation • Card range"},
+       {"version": "2026-4", "extractedPage": 62, "quote": "The island device/controller must verify the following card data when applicable: • ISO number • Expiration data • Check digit calculation • Card range"}
+     ]},
+    {"id": "MCF-R09", "topic": "Driver ID is 1 to 6 digits and unencrypted", "inventoryRefs": ["MCF-I08"], "disposition": "PETROLEUM_NARROWS_ATL105", "reviewRequired": true,
+     "note": "ATL105 Element 31 allows up to 10 digits and defers issuer requirements to the Petroleum specification.",
+     "question": "Confirm the 1 to 6 digit limit for MasterCard fleet Driver ID within ATL105 Element 31.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 374, "quote": "Name: Driver/Identification Number Character Type: N Maximum Length: 10 bytes"},
+       {"version": "2026-3", "extractedPage": 374, "quote": "If required by the issuer, this number must be an unencrypted Driver/Identification Number."},
+       {"version": "2026-4", "extractedPage": 381, "quote": "Name: Driver/Identification Number Character Type: N Maximum Length: 10 bytes"},
+       {"version": "2026-4", "extractedPage": 381, "quote": "If required by the issuer, this number must be an unencrypted Driver/Identification Number."}
+     ]},
+    {"id": "MCF-R10", "topic": "Odometer reading is 1 to 8 digits", "inventoryRefs": ["MCF-I15"], "disposition": "ALIGNED", "reviewRequired": false,
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 389, "quote": "Name: Odometer Character Type: N Maximum Length: 8 bytes Representation: Variable length of one to eight digits"},
+       {"version": "2026-4", "extractedPage": 396, "quote": "Name: Odometer Character Type: N Maximum Length: 8 bytes Representation: Variable length of one to eight digits"}
+     ]},
+    {"id": "MCF-R11", "topic": "Vehicle Number is 1 to 6 digits", "inventoryRefs": ["MCF-I16"], "disposition": "PETROLEUM_NARROWS_ATL105", "reviewRequired": true,
+     "note": "ATL105 Element 108 allows up to 10 digits and defers issuer requirements to the Petroleum specification.",
+     "question": "Confirm the 1 to 6 digit limit for MasterCard fleet Vehicle Number within ATL105 Element 108.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 414, "quote": "Name: Vehicle Number Character Type: N Maximum Length: 10 bytes Representation: Variable length of up to 10 digits"},
+       {"version": "2026-4", "extractedPage": 421, "quote": "Name: Vehicle Number Character Type: N Maximum Length: 10 bytes Representation: Variable length of up to 10 digits"}
+     ]},
+    {"id": "MCF-R12", "topic": "Product sum equals the total transaction amount", "inventoryRefs": ["MCF-I19"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true,
+     "note": "ATL105 Element 41 nets discounts and coupons from fuel product amounts. The Petroleum equality rule needs a defined treatment of discounts, coupons, taxes and rounding.",
+     "question": "Define how discounts, coupons, taxes and rounding affect the product-sum equality (links PETRO-Q002).",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 378, "quote": "this amount is the net amount derived by subtracting the discount and/or coupon amount from the sum of fuel products in Product Amount (No. 76)."},
+       {"version": "2026-4", "extractedPage": 385, "quote": "this amount is the net amount derived by subtracting the discount and/or coupon amount from the sum of fuel products in Product Amount (No. 76)."}
+     ]},
+    {"id": "MCF-R13", "topic": "MasterCard Enhanced Fleet EMV is a different program", "inventoryRefs": ["MCF-I01"], "disposition": "DISTINCT_PROGRAM_DO_NOT_ALIAS", "reviewRequired": true,
+     "note": "Petroleum chapter 7 describes magnetic-stripe MasterCard fleet cards. ATL105 Enhanced Fleet EMV rules must not be applied to this context, or vice versa.",
+     "question": "Confirm whether any Enhanced Fleet EMV rule also applies to Petroleum chapter 7 MasterCard fleet transactions.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 589, "quote": "Purchase Restriction Method MUST be present for ALL MasterCard Enhanced EMV Fleet transactions (Product IDs MCF and MGF)"},
+       {"version": "2026-4", "extractedPage": 595, "quote": "Purchase Restriction Method MUST be present for ALL MasterCard Enhanced EMV Fleet transactions (Product IDs MCF and MGF)"}
+     ]},
+    {"id": "MCF-R14", "topic": "Manual entry after three failed swipes and full embossed number entry", "inventoryRefs": ["MCF-I09", "MCF-I10"], "disposition": "NO_COUNTERPART_IDENTIFIED", "reviewRequired": true,
+     "note": "Device prompting behaviour; reconcile with ATL105 PAN entry mode values in phase 4.",
+     "question": "Confirm the PAN entry mode and prompt data expected after manual entry fallback."},
+    {"id": "MCF-R15", "topic": "Product Restriction Code interrogation and unique fuel Product Codes", "inventoryRefs": ["MCF-I17", "MCF-I18"], "disposition": "ALIGNED", "reviewRequired": true,
+     "note": "Unique fuel Product Codes match ATL105 Appendix F. Petroleum Appendix B (document-local) supplies the codes; the fuel-only restriction is reconciled in MCF-R20.",
+     "question": "Confirm which Appendix B categories count as fuel for the fuel-only Product Restriction Code.",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 516, "quote": "a unique Product Code must be sent for each type of fuel purchase"},
+       {"version": "2026-4", "extractedPage": 523, "quote": "a unique Product Code must be sent for each type of fuel purchase"}
+     ]},
+    {"id": "MCF-R16", "topic": "Supported transaction list", "inventoryRefs": ["MCF-I03"], "disposition": "INTERPRETATION_REQUIRED", "reviewRequired": true,
+     "note": "Mapping to ATL105 transaction types belongs to the phase 4 context matrix.",
+     "question": "Map each supported transaction to its ATL105 transaction type code."},
+    {"id": "MCF-R17", "topic": "Track 1 Start Sentinel is never transmitted", "inventoryRefs": ["MCF-I24"], "disposition": "NO_COUNTERPART_IDENTIFIED", "reviewRequired": true,
+     "note": "Applies to the Track 1 layout in this context.",
+     "question": "Confirm the expected Track 1 content in Card Discretionary Block Data for MasterCard fleet."},
+    {"id": "MCF-R18", "topic": "Expiration date suppressed on the cardholder receipt", "inventoryRefs": ["MCF-I12"], "disposition": "NO_COUNTERPART_IDENTIFIED", "reviewRequired": true,
+     "note": "Receipt behaviour; reconcile with Petroleum chapter 4 receipt requirements in the AFP and receipt context.",
+     "question": "Confirm how receipt expiry suppression is evidenced in tests for MasterCard fleet."},
+    {"id": "MCF-R19", "topic": "Odometer maximum: 7 digits in Appendix A versus 8 in chapter 7 and ATL105", "inventoryRefs": ["MCF-I15", "MCF-I29"], "disposition": "POTENTIAL_CONFLICT", "reviewRequired": true,
+     "note": "Chapter 7.1.7 and ATL105 Element 64 allow 1 to 8 digits; the Appendix A MasterCard Fleet row says a maximum of 7. Drafts accept 8 digits and flag that oracle as conflicting.",
+     "question": "Which maximum controls MasterCard fleet odometer prompts: 7 digits (Appendix A) or 8 digits (chapter 7 and ATL105 Element 64)?",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 389, "quote": "Name: Odometer Character Type: N Maximum Length: 8 bytes Representation: Variable length of one to eight digits"},
+       {"version": "2026-4", "extractedPage": 396, "quote": "Name: Odometer Character Type: N Maximum Length: 8 bytes Representation: Variable length of one to eight digits"}
+     ]},
+    {"id": "MCF-R20", "topic": "Product Restriction Code values other than 1 and 2", "inventoryRefs": ["MCF-I17", "MCF-I30"], "disposition": "POTENTIAL_CONFLICT", "reviewRequired": true,
+     "note": "The track layouts list only values 1 and 2; Appendix A allows all products for any value other than 2. Drafts reject other values and flag that oracle as conflicting.",
+     "question": "Should a Product Restriction Code other than 1 or 2 be rejected as invalid track data or treated as all products allowed?"},
+    {"id": "MCF-R21", "topic": "Prompts by Product Type Code and keyed entry", "inventoryRefs": ["MCF-I08", "MCF-I09", "MCF-I16", "MCF-I31", "MCF-I32", "MCF-I33", "MCF-I34"], "disposition": "CONSISTENT_WITHIN_PETROLEUM", "reviewRequired": true,
+     "note": "Appendix A confirms Driver ID for type 3, Vehicle Number for type 2, ID for type 1 (each up to 6 digits) and, when keyed, prompts for ID and Odometer only, matching chapter 7.",
+     "question": "Confirm that the Appendix A 'ID No.' prompt is carried in ATL105 Element 31 Driver/Identification Number."},
+    {"id": "MCF-R22", "topic": "Petroleum Appendix B product codes versus ATL105 Appendix F", "inventoryRefs": ["MCF-I35", "MCF-I36"], "disposition": "ALIGNED_WITH_EXCEPTIONS", "reviewRequired": true,
+     "note": "The build compares every row of both tables: codes match except ATL105-only range 541-549 (Undefined health and beauty care); description differences are wording only.",
+     "question": "Is product code range 541-549, defined only in ATL105 Appendix F, valid for MasterCard fleet transactions?",
+     "atl105": [
+       {"version": "2026-3", "extractedPage": 516, "quote": "Any product in these tables should be represented in messages to BUYPASS by the Product Code assigned to it in the following tables."},
+       {"version": "2026-3", "extractedPage": 517, "quote": "001 Unleaded (88 octane or less)"},
+       {"version": "2026-4", "extractedPage": 523, "quote": "Any product in these tables should be represented in messages to BUYPASS by the Product Code assigned to it in the following tables."},
+       {"version": "2026-4", "extractedPage": 524, "quote": "001 Unleaded (88 octane or less)"}
+     ]}
+  ],
+  "catalog": {
+    "binRanges": {
+      "accountRangesPage": 52,
+      "prefixPages": [54, 56, 57],
+      "prefixes": [["553231", "553380"], ["556083", "556099"], ["556100", "556599"], ["556700", "556999"]]
+    },
+    "enumerations": {
+      "pdfPage": 56,
+      "productRestrictionCode": {"1": "Fuel and other products", "2": "Fuel only"},
+      "productTypeCode": {
+        "1": "ID Number and Odometer Reading",
+        "2": "Vehicle Number and Odometer Reading",
+        "3": "Driver ID and Odometer Reading",
+        "4": "Odometer Reading only",
+        "5": "No fleet information needed"
+      }
+    },
+    "promptDataLengths": [
+      {"field": "DRIVER_ID", "min": 1, "max": 6, "pdfPage": 52, "quote": "the Driver ID can have a length of 1–6 digits"},
+      {"field": "ODOMETER", "min": 1, "max": 8, "pdfPage": 53, "quote": "the odometer reading can have a length of 1–8 digits"},
+      {"field": "VEHICLE_NUMBER", "min": 1, "max": 6, "pdfPage": 53, "quote": "the Vehicle Number can have a length of 1–6 digits"}
+    ],
+    "trackLayouts": {
+      "TRACK_1": {
+        "rowFormat": "NO_LABEL_POS_LEN",
+        "fields": [
+          {"no": 1, "name": "START_SENTINEL", "label": "Start Sentinel", "pos": 0, "len": 1, "pdfPage": 54, "fixed": "%"},
+          {"no": 2, "name": "FORMAT_CODE", "label": "Format Code", "pos": 1, "len": 1, "pdfPage": 54, "fixed": "B"},
+          {"no": 3, "name": "BIN", "label": "BIN", "pos": 2, "len": 6, "pdfPage": 54},
+          {"no": 4, "name": "PAN", "label": "PAN", "pos": 8, "len": 10, "pdfPage": 54},
+          {"no": 5, "name": "FIELD_SEPARATOR", "label": "Field Separator", "pos": 18, "len": 1, "pdfPage": 54, "fixed": "^"},
+          {"no": 6, "name": "CARDHOLDER_NAME", "label": "Cardholder’s Name", "pos": 19, "len": 26, "pdfPage": 54, "variable": true},
+          {"no": 7, "name": "FIELD_SEPARATOR", "label": "Field Separator", "pos": 45, "len": 1, "pdfPage": 54, "fixed": "^"},
+          {"no": 8, "name": "EXPIRATION_YYMM", "label": "Expiration Date", "pos": 46, "len": 4, "pdfPage": 54},
+          {"no": 9, "name": "CARD_TYPE", "label": "Card Type", "pos": 50, "len": 3, "pdfPage": 54},
+          {"no": 10, "name": "DISCRETIONARY_DATA", "label": "Discretionary Data", "pos": 53, "len": 22, "pdfPage": 54},
+          {"no": 11, "name": "PRODUCT_RESTRICTION_CODE", "label": "Product Restriction Code", "pos": 75, "len": 1, "pdfPage": 54},
+          {"no": 12, "name": "PRODUCT_TYPE_CODE", "label": "Product Type", "pos": 76, "len": 1, "pdfPage": 54},
+          {"no": 13, "name": "END_SENTINEL", "label": "End Sentinel", "pos": 77, "len": 1, "pdfPage": 55, "fixed": "?"},
+          {"no": 14, "name": "LRC", "label": "LRC", "pos": 78, "len": 1, "pdfPage": 55}
+        ],
+        "example": {"pdfPage": 55, "quote": "%B5568432211445331^CardholderbJanebDoe^15061113417567801012300096 1412?"}
+      },
+      "TRACK_2": {
+        "rowFormat": "NO_POS_LEN_LABEL",
+        "fields": [
+          {"no": 1, "name": "START_SENTINEL", "label": "Start Sentinel", "pos": 0, "len": 1, "pdfPage": 56, "fixed": ";"},
+          {"no": 2, "name": "BIN", "label": "BIN", "pos": 1, "len": 6, "pdfPage": 56},
+          {"no": 3, "name": "PAN", "label": "PAN with Check Digit", "pos": 7, "len": 10, "pdfPage": 56},
+          {"no": 4, "name": "FIELD_SEPARATOR", "label": "Field Separator", "pos": 17, "len": 1, "pdfPage": 56, "fixed": "="},
+          {"no": 5, "name": "EXPIRATION_YYMM", "label": "Expiration Date (YYMM)", "pos": 18, "len": 4, "pdfPage": 56},
+          {"no": 6, "name": "CARD_TYPE", "label": "Card Type", "pos": 22, "len": 3, "pdfPage": 56},
+          {"no": 7, "name": "DISCRETIONARY_DATA", "label": "Discretionary Data", "pos": 25, "len": 11, "pdfPage": 56},
+          {"no": 8, "name": "PRODUCT_RESTRICTION_CODE", "label": "Product Restriction Code", "pos": 36, "len": 1, "pdfPage": 56},
+          {"no": 9, "name": "PRODUCT_TYPE_CODE", "label": "Product Type Code", "pos": 37, "len": 1, "pdfPage": 56},
+          {"no": 10, "name": "END_SENTINEL", "label": "Fixed value: ?", "pos": 38, "len": 1, "pdfPage": 56, "fixed": "?"},
+          {"no": 11, "name": "LRC", "label": "LRC", "pos": 39, "len": 1, "pdfPage": 56}
+        ],
+        "example": {"pdfPage": 56, "quote": ";5567550123456780=15037779876543210915?"}
+      }
+    },
+    "embossing": {
+      "pdfPage": 57,
+      "quotes": ["Where Line 2 = the Expiration Date (MMYY);", "Where X = the Account Number;"],
+      "note": "Embossed expiry is MMYY while encoded track expiry is YYMM; tests must not confuse the two formats."
+    },
+    "productCodes": {
+      "pdfPages": [148, 168],
+      "categoryPage": 148,
+      "minimumRows": 370,
+      "fuelCategories": ["Motor fuel codes", "Aviation fuel codes", "Marine fuel codes", "Other fuel codes"],
+      "fuelInterpretation": "Fuel-only purchases are drafted as codes in the motor, aviation, marine and other fuel categories; for example DEF (062) sits in the motor fuel range. Needs SME confirmation.",
+      "atl105": {
+        "2026-3": {"appendix": "F", "pages": [516, 537]},
+        "2026-4": {"appendix": "F", "pages": [523, 544]}
+      },
+      "expectedDifferences": {"onlyPetroleum": [], "onlyAtl105": ["541-549"]}
+    }
+  },
+  "openQuestions": [
+    {"id": "MCF-Q-SCOPE", "owner": "BUYPASS SME", "status": "REVIEW_REQUIRED", "question": "Sign off the MasterCard fleet pilot scope and exclusions."},
+    {"id": "MCF-Q-EXAMPLES", "owner": "Source reviewer", "status": "REVIEW_REQUIRED", "question": "Review every example check marked REVIEW_REQUIRED against the rendered PDF."}
+  ]
+}

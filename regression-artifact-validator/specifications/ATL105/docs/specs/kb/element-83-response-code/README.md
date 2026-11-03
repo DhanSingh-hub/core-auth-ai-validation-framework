@@ -7,6 +7,7 @@
 **Element 83 BR/validity matrix:** [All code-family meanings and validity rule](coverage/element-83-response-code-br-validation-matrix.json)  
 **Focused code-0 training:** [Code 0, Approved Purchase/Capture](response-code-0-approved-purchase-capture.md)  
 **Structured scope record:** [Element 83 code-0 training record](coverage/element-83-code-0-training.json)
+**Actual execution evidence:** [Masked, hash-bound execution evidence](coverage/element-83-actual-execution-evidence.json)
 
 ## Element Ownership
 
@@ -34,3 +35,9 @@ See the structured record for request-side segments, conditional response compan
 ## Approval Boundary
 
 The code-family map and this module are source-derived Test Solution training evidence; they are not Fiserv approval. The master template catalog remains `EXTRACTED` and `human_review_required`. The response-code BR package remains `REVIEW`, and no family-level BR-to-executable-test-data chain is certified by the presence of this module.
+
+## Actual Execution Evidence Boundary
+
+The execution-evidence record preserves user-confirmed, independently supplied PDF, XLS, ZIP, and DOCX evidence by filename and SHA-256 without copying production payloads. The March Visa Fleet PDF contains actual Element 83 outcomes for its 11 cases; these observations are not generalized beyond that run. The embedded one-byte code-description rows in the E2E documents are reference text, not proof those codes were returned in each execution. Their two-byte `Response Code` data rows (including `00` and `10`) remain unmapped to Element 83 because ATL105 defines Element 83 as one byte and Element 8 Authorizer Response Code as two bytes. Do not use those rows as Element 83 training data until the field identity is confirmed.
+
+The certification workbook's `PASS` and `200` values are harness/report fields, not evidence that all financial transactions were approved or that Element 83 equaled `200`. The direct-vs-target workbook remains parity evidence; its eight mismatches do not establish individual protocol rules without field-level analysis. All evidence is observation-only, the trainer questionnaire is pending, and no execution observation promotes a source rule or changes the independent response-code oracle.

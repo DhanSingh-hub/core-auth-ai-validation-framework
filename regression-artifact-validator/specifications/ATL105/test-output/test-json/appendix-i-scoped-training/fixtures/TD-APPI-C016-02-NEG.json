@@ -1,0 +1,52 @@
+{
+  "id" : "TD-APPI-C016-02-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C016-02-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C016-02-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-11",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t016-r002-APPI-C016-02"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C016-02",
+        "tableId" : "016",
+        "ruleIds" : [ "APPI-T016-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-11",
+          "startLine" : 27860,
+          "endLine" : 27862
+        } ],
+        "logicalFields" : {
+          "tag" : "9F02",
+          "length" : "12",
+          "value" : "00000004500"
+        },
+        "clearScope" : [ "Amount-authorized tag and N12 component width" ],
+        "excludedClaims" : [ "Cryptogram generation", "Currency scale not specified here", "Tag mandatory presence" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "9F02 value contains12 digits matching declared12",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "00000004500",
+          "targetedNegative" : "Eleven digits"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

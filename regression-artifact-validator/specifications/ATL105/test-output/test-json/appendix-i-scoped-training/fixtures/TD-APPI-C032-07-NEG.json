@@ -1,0 +1,65 @@
+{
+  "id" : "TD-APPI-C032-07-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-07-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C032-07-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-25",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r007-APPI-C032-07"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-07",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R007" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-25",
+          "startLine" : 28443,
+          "endLine" : 28466
+        } ],
+        "logicalFields" : {
+          "subTableId" : "07",
+          "subTableLength" : "002",
+          "value" : "01",
+          "context" : {
+            "wallet" : "WEX Wallet"
+          },
+          "printedMappings" : {
+            "applePay" : "01",
+            "androidPay" : "02",
+            "samsungPay" : "03",
+            "walmartPay" : "04",
+            "walmartScanNGo" : "05",
+            "samsClubScanNGo" : "06",
+            "clickToPay" : "07",
+            "wexWallet" : "08"
+          }
+        },
+        "clearScope" : [ "All printed wallet mappings retained as concrete logical values", "WEX two-character selection" ],
+        "excludedClaims" : [ "Wallet eligibility or enrollment" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "WEX Wallet maps08",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "value",
+          "value" : "01",
+          "targetedNegative" : "Apple Pay code for WEX fixture"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "BUYPASS-INCOMM-MBD-2023-1",
+    "title": "BUYPASS InComm Market Basket Data Format",
+    "version": "2023-1",
+    "releaseDate": "2023-08-18",
+    "path": "docs/specs/BUYPASS_Platform_InComm_Market_Basket_Data_Format_2023-1.pdf",
+    "sha256": "bd8066de6eb5ec9794e8fd89bd6387f91f5ad397aa1cee51434ef0b84c67424d"
+  },
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "usage": "CHAPTER_SPANS_FROM_BOOKMARKS_HEADINGS_VERIFIED",
+  "chapters": [
+    {
+      "id": "CH-REV",
+      "title": "Revision History",
+      "level": 0,
+      "pdfPages": [
+        2,
+        2
+      ],
+      "printedPages": [],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0002"
+      ],
+      "summary": "Version 2023-1 (18 Aug 2023) is the first release of this document; there is no prior version to diff against.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L001"
+      ],
+      "datasets": [],
+      "usageMatrices": [],
+      "openQuestionIds": []
+    },
+    {
+      "id": "CH-TOC",
+      "title": "Table of Contents",
+      "level": 0,
+      "pdfPages": [
+        3,
+        3
+      ],
+      "printedPages": [
+        "i"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0003"
+      ],
+      "summary": "Navigation only: one chapter (Introduction) with eleven sub-sections 1.1 to 1.11.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [],
+      "lessonIds": [],
+      "datasets": [],
+      "usageMatrices": [],
+      "openQuestionIds": []
+    },
+    {
+      "id": "CH-1",
+      "title": "1. Introduction",
+      "level": 0,
+      "pdfPages": [
+        4,
+        4
+      ],
+      "printedPages": [
+        "1-1"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0004"
+      ],
+      "summary": "Market Basket Data follows InComm ISO 8583 Generic Interface v6.2.3 Appendix B. The transaction type is the 3-digit code sent in Merchant Supplementary Data: 310 Benefit Eligibility & Balance Lookup, 910 Item Qualification, 920 Limited Spend, 200 Limited Spend Refund.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-001",
+        "INCOMM-MBD-BR-010",
+        "INCOMM-MBD-BR-011",
+        "INCOMM-MBD-BR-012"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L002",
+        "INCOMM-MBD-2023-1-L003"
+      ],
+      "datasets": [],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q12"
+      ]
+    },
+    {
+      "id": "CH-1.1",
+      "title": "1.1 Dataset Format",
+      "level": 1,
+      "pdfPages": [
+        4,
+        4
+      ],
+      "printedPages": [
+        "1-1"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0004"
+      ],
+      "summary": "Every dataset is a modified TLV: 2-char Tag + 3-digit Length + 8-char bitmap + field values. Length counts bitmap and values but not Tag/Length. Worked example: DV0134000000001.01.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-002",
+        "INCOMM-MBD-BR-003",
+        "INCOMM-MBD-BR-004",
+        "INCOMM-MBD-BR-005",
+        "INCOMM-MBD-BR-006"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L004",
+        "INCOMM-MBD-2023-1-L005",
+        "INCOMM-MBD-2023-1-L006",
+        "INCOMM-MBD-2023-1-L007"
+      ],
+      "datasets": [],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q13",
+        "INCOMM-MBD-2023-1-Q15",
+        "INCOMM-MBD-2023-1-Q16"
+      ]
+    },
+    {
+      "id": "CH-1.2",
+      "title": "1.2 Defined Datasets",
+      "level": 1,
+      "pdfPages": [
+        4,
+        5
+      ],
+      "printedPages": [
+        "1-1",
+        "1-2"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0004",
+        "INCOMM-MBD-2023-1-P0005"
+      ],
+      "summary": "Five datasets exist for InComm Healthcare (IH): DV (data version), PI (purchase item), PU (purse), OF (offer) and OC (offer counts). OF and OC apply only when the market basket is not exchanged in real time.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-007",
+        "INCOMM-MBD-BR-008"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L008",
+        "INCOMM-MBD-2023-1-L009"
+      ],
+      "datasets": [],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q01"
+      ]
+    },
+    {
+      "id": "CH-1.3",
+      "title": "1.3 DV Dataset",
+      "level": 1,
+      "pdfPages": [
+        5,
+        6
+      ],
+      "printedPages": [
+        "1-2",
+        "1-3"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0005",
+        "INCOMM-MBD-2023-1-P0006"
+      ],
+      "summary": "DV is mandatory for every new IH implementation. Bit 2 Dataset Version (MM.mm, supplied by InComm) is required; Offer/Purse File Versions are required only for non-real-time implementations.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-009",
+        "INCOMM-MBD-BR-036"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L010",
+        "INCOMM-MBD-2023-1-L011"
+      ],
+      "datasets": [
+        "DV"
+      ],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q07"
+      ]
+    },
+    {
+      "id": "CH-1.4",
+      "title": "1.4 PI Dataset",
+      "level": 1,
+      "pdfPages": [
+        6,
+        10
+      ],
+      "printedPages": [
+        "1-3",
+        "1-4",
+        "1-5",
+        "1-6",
+        "1-7"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0006",
+        "INCOMM-MBD-2023-1-P0007",
+        "INCOMM-MBD-2023-1-P0008",
+        "INCOMM-MBD-2023-1-P0009",
+        "INCOMM-MBD-2023-1-P0010"
+      ],
+      "summary": "One PI per distinct product line: item code, quantity, net price, POS and InComm (MBAS) discounts, eligibility flags, redemption amount, item reference number and purse link. Amounts are in cents; split responses keep the original Item Reference Number.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-013",
+        "INCOMM-MBD-BR-014",
+        "INCOMM-MBD-BR-015",
+        "INCOMM-MBD-BR-016",
+        "INCOMM-MBD-BR-017",
+        "INCOMM-MBD-BR-018",
+        "INCOMM-MBD-BR-019",
+        "INCOMM-MBD-BR-020",
+        "INCOMM-MBD-BR-021",
+        "INCOMM-MBD-BR-022",
+        "INCOMM-MBD-BR-023",
+        "INCOMM-MBD-BR-024",
+        "INCOMM-MBD-BR-026"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L012",
+        "INCOMM-MBD-2023-1-L013",
+        "INCOMM-MBD-2023-1-L014",
+        "INCOMM-MBD-2023-1-L015",
+        "INCOMM-MBD-2023-1-L016",
+        "INCOMM-MBD-2023-1-L017",
+        "INCOMM-MBD-2023-1-L018",
+        "INCOMM-MBD-2023-1-L019",
+        "INCOMM-MBD-2023-1-L020",
+        "INCOMM-MBD-2023-1-L021",
+        "INCOMM-MBD-2023-1-L033",
+        "INCOMM-MBD-2023-1-L034"
+      ],
+      "datasets": [
+        "PI"
+      ],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q02",
+        "INCOMM-MBD-2023-1-Q06",
+        "INCOMM-MBD-2023-1-Q09",
+        "INCOMM-MBD-2023-1-Q18",
+        "INCOMM-MBD-2023-1-Q19"
+      ]
+    },
+    {
+      "id": "CH-1.5",
+      "title": "1.5 PI Dataset Field Usage",
+      "level": 1,
+      "pdfPages": [
+        10,
+        11
+      ],
+      "printedPages": [
+        "1-7",
+        "1-8"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0010",
+        "INCOMM-MBD-2023-1-P0011"
+      ],
+      "summary": "Request/response requirement matrix for PI fields by transaction type pair (310 & 910 vs 920 & 200). POS discount fields travel in requests; MBAS discount fields come back in responses.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-025",
+        "INCOMM-MBD-BR-027",
+        "INCOMM-MBD-BR-035"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L022",
+        "INCOMM-MBD-2023-1-L035"
+      ],
+      "datasets": [],
+      "usageMatrices": [
+        "PI"
+      ],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q10",
+        "INCOMM-MBD-2023-1-Q11",
+        "INCOMM-MBD-2023-1-Q14"
+      ]
+    },
+    {
+      "id": "CH-1.6",
+      "title": "1.6 PU Dataset",
+      "level": 1,
+      "pdfPages": [
+        11,
+        12
+      ],
+      "printedPages": [
+        "1-8",
+        "1-9"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0011",
+        "INCOMM-MBD-2023-1-P0012"
+      ],
+      "summary": "InComm returns one PU per active purse, including zero-balance purses: description, purse ID, remaining balance, amount authorized, response code; unique ID and redemption amount only for non-real-time.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-028",
+        "INCOMM-MBD-BR-029",
+        "INCOMM-MBD-BR-030",
+        "INCOMM-MBD-BR-031"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L023",
+        "INCOMM-MBD-2023-1-L024",
+        "INCOMM-MBD-2023-1-L025",
+        "INCOMM-MBD-2023-1-L026"
+      ],
+      "datasets": [
+        "PU"
+      ],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q08",
+        "INCOMM-MBD-2023-1-Q17"
+      ]
+    },
+    {
+      "id": "CH-1.7",
+      "title": "1.7 PU Dataset Field Usage",
+      "level": 1,
+      "pdfPages": [
+        12,
+        13
+      ],
+      "printedPages": [
+        "1-9",
+        "1-10"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0012",
+        "INCOMM-MBD-2023-1-P0013"
+      ],
+      "summary": "Requirement matrix for PU fields. The response side has duplicated column headings (310 twice, 920 & 200 twice) whose meaning is not stated; see open question INCOMM-MBD-2023-1-Q03.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-032"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L027"
+      ],
+      "datasets": [],
+      "usageMatrices": [
+        "PU"
+      ],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q03"
+      ]
+    },
+    {
+      "id": "CH-1.8",
+      "title": "1.8 OF Dataset",
+      "level": 1,
+      "pdfPages": [
+        13,
+        14
+      ],
+      "printedPages": [
+        "1-10",
+        "1-11"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0013",
+        "INCOMM-MBD-2023-1-P0014"
+      ],
+      "summary": "Offers (non-real-time only): Offer ID, Offer Tag, receipt print text (max 25) and longer verbiage (max 100).",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-033"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L028"
+      ],
+      "datasets": [
+        "OF"
+      ],
+      "usageMatrices": [],
+      "openQuestionIds": []
+    },
+    {
+      "id": "CH-1.9",
+      "title": "1.9 OF Dataset Field Usage",
+      "level": 1,
+      "pdfPages": [
+        14,
+        14
+      ],
+      "printedPages": [
+        "1-11"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0014"
+      ],
+      "summary": "910 request carries only Offer ID; 310 response carries Offer ID, Tag, Print Text and Verbiage.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L031"
+      ],
+      "datasets": [],
+      "usageMatrices": [
+        "OF"
+      ],
+      "openQuestionIds": []
+    },
+    {
+      "id": "CH-1.10",
+      "title": "1.10 OC Dataset",
+      "level": 1,
+      "pdfPages": [
+        14,
+        15
+      ],
+      "printedPages": [
+        "1-11",
+        "1-12"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0014",
+        "INCOMM-MBD-2023-1-P0015"
+      ],
+      "summary": "Offer counters (non-real-time only): Offer ID, Times, Amount (pennies) and Type. Account Lookup response types: tallyEarn, tallyRedeem, redeemedCount. Offer Redemption request types: incrementedEarn, incrementedRedeem, timesRedeemed, totalAmountAwarded.",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [
+        "INCOMM-MBD-BR-034"
+      ],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L029",
+        "INCOMM-MBD-2023-1-L030"
+      ],
+      "datasets": [
+        "OC"
+      ],
+      "usageMatrices": [],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q05"
+      ]
+    },
+    {
+      "id": "CH-1.11",
+      "title": "1.11 OC Dataset Field Usage",
+      "level": 1,
+      "pdfPages": [
+        16,
+        16
+      ],
+      "printedPages": [
+        "1-13"
+      ],
+      "pageIds": [
+        "INCOMM-MBD-2023-1-P0016"
+      ],
+      "summary": "910 request: Offer ID required, counters conditional; 310 response: all conditional. The caption says 'OF fields' although the table is the OC dataset (see INCOMM-MBD-2023-1-Q04).",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "brIds": [],
+      "lessonIds": [
+        "INCOMM-MBD-2023-1-L032"
+      ],
+      "datasets": [],
+      "usageMatrices": [
+        "OC"
+      ],
+      "openQuestionIds": [
+        "INCOMM-MBD-2023-1-Q04"
+      ]
+    }
+  ]
+}

@@ -80,6 +80,14 @@ public final class Segment111SerializationValidator {
 
     private static JsonNode segment111(JsonNode request) {
         JsonNode section3 = request.path("dataSection3");
+        if (section3.isArray()) {
+            for (JsonNode segment : section3) {
+                if ("111".equals(text(segment, "segmentType", "SegmentType"))) return segment;
+                JsonNode canonical = firstObject(segment, "variableInfoSegment", "Variable Information Data Segment",
+                        "variableInformationSegment");
+                if (canonical.isObject()) return canonical;
+            }
+        }
         if (section3.isObject()) {
             JsonNode canonical = firstObject(section3, "variableInfoSegment", "Variable Information Data Segment", "variableInformationSegment");
             if (canonical.isObject()) {

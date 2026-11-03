@@ -1,0 +1,167 @@
+{
+  "name": "Flow — Authorization, Completion, then Void (Financial Transaction Request → Purchase/Capture → Purchase Reversal) [boundary-at-limit-sequence-number]",
+  "requirement_id": "REQ-SRC-ATL105-PDF-001:089",
+  "type": "flow",
+  "is_negative": false,
+  "parameters": {
+    "Sequence Number": "<flow at-limit valid value, exact max length>"
+  },
+  "table_placements": [],
+  "flow_id": "FLOW-AUTH-COMPLETION-VOID",
+  "flow_steps": [
+    {
+      "step": 1,
+      "role": "authorization",
+      "transaction": "Financial Transaction Request",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "3"
+      }
+    },
+    {
+      "step": 2,
+      "role": "completion",
+      "transaction": "Purchase/Capture",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "0"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 1,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-1",
+          "source_page": null,
+          "rule": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.",
+          "spec_anchor": {
+            "keywords": [
+              "sequence number must persist",
+              "subsequent transactions"
+            ],
+            "element_no": "86"
+          }
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "role": "void",
+      "transaction": "Purchase Reversal",
+      "fixed_elements": {
+        "Prompt Code.TransactionType": "8"
+      },
+      "links": [
+        {
+          "type": "carry_request_field",
+          "from_step": 2,
+          "element_name": "Sequence Number",
+          "source_rule_id": "BR-402-3",
+          "source_page": null,
+          "rule": "CORRECTED 2026-10-01 (was from_step 1): a code '8' Void reverses a purchase (Appendix G p.539) — the Completion (step 2) is the purchase being voided, not the Authorization. REVIEW_REQUIRED, see flow description.",
+          "spec_anchor": {
+            "keywords": [
+              "purchase reversal void",
+              "time-out reversal",
+              "must match original transaction request"
+            ],
+            "element_no": "86"
+          }
+        },
+        {
+          "type": "carry_response_field",
+          "from_step": 2,
+          "element_name": "Approval Number",
+          "source_rule_id": "BR-361-1",
+          "source_page": 361,
+          "rule": "Declared explicitly so auto-derivation (which resolves origin by the Authorization's quoted Transaction Type code '3') cannot re-attach this to step 1 instead of step 2. Same correction and REVIEW_REQUIRED status as the Sequence Number link above.",
+          "spec_anchor": {
+            "keywords": [
+              "approval number is required on reversals",
+              "matching information to the original purchase"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "flow_risk_weight": 1,
+  "target_transaction": "Financial Transaction Request",
+  "related_entity_ids": [],
+  "source_rule_id": "ENT-ELEM-86",
+  "source_page": 361,
+  "business_rule_assertion": "Sequence Number must persist in all subsequent transactions associated with the initial authorization request.; CORRECTED 2026-10-01 (was from_step 1): a code '8' Void reverses a purchase (Appendix G p.539) — the Completion (step 2) is the purchase being voided, not the Authorization. REVIEW_REQUIRED, see flow description.; Declared explicitly so auto-derivation (which resolves origin by the Authorization's quoted Transaction Type code '3') cannot re-attach this to step 1 instead of step 2. Same correction and REVIEW_REQUIRED status as the Sequence Number link above.",
+  "expected_response_code": null,
+  "expected_decline_code": null,
+  "oracle_authority": "config/transaction_flows.json declared flow; inter-step linking rules are spec-cited, but per-step approval/decline outcome is processor logic absent from the ATL105 spec",
+  "flags": [
+    "NEEDS_AUTHORIZER_DOC: per-step flow outcome requires processor business rules",
+    "LLM_JUDGE_NOT_APPLIED: built from config/transaction_flows.json declared chain data, not spec prose; no free-text claim to verify"
+  ],
+  "source": "auto_generated_flow",
+  "fingerprint": "c66ba5d2ca2249d6b5ef068eeb1dc8b0f5df893849e94b5cc8f78110b88eb214",
+  "dedup_key": "35f7f873b61420a75e0cc94dc50e6fa20252ee90c91380ea3fcbdde75b2a9eb4",
+  "flow_variant_id": "boundary-at-limit-sequence-number",
+  "flow_variant_name": "Boundary — Sequence Number at max length (6 bytes)",
+  "flow_axis_values": {},
+  "flow_axis_provenance": {},
+  "requirement_ids": [
+    "REQ-SRC-ATL105-PDF-001:1661",
+    "REQ-SRC-ATL105-PDF-001:1921",
+    "REQ-SRC-ATL105-PDF-001:1923"
+  ],
+  "flow_boundary_element": "Sequence Number",
+  "flow_boundary_max_bytes": 6,
+  "requirement_links": [
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1921",
+      "rule_id": "BR-402-1",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 2,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1923",
+      "rule_id": "BR-402-3",
+      "basis": "flow_link",
+      "link_type": "carry_request_field",
+      "step": 3,
+      "element_name": "Sequence Number",
+      "confidence_band": "HIGH"
+    },
+    {
+      "requirement_id": "REQ-SRC-ATL105-PDF-001:1661",
+      "rule_id": "BR-361-1",
+      "basis": "flow_link",
+      "link_type": "carry_response_field",
+      "step": 3,
+      "element_name": "Approval Number",
+      "confidence_band": "HIGH"
+    }
+  ],
+  "axis_requirement_ids": [],
+  "id": "SC-2408",
+  "spec_id": "SRC-ATL105-PDF-001",
+  "spec_version": "2026-3",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "confidence_pct": 50,
+  "confidence_band": "MEDIUM",
+  "confidence_factors": [
+    "unscored_default=50"
+  ],
+  "traceability": {
+    "businessRequirementIds": [
+      "REQ-SRC-ATL105-PDF-001:089",
+      "REQ-SRC-ATL105-PDF-001:1661",
+      "REQ-SRC-ATL105-PDF-001:1921",
+      "REQ-SRC-ATL105-PDF-001:1923"
+    ],
+    "testCaseIds": [
+      "TC-002100"
+    ],
+    "chainSide": "request",
+    "flowId": "FLOW-AUTH-COMPLETION-VOID"
+  }
+}

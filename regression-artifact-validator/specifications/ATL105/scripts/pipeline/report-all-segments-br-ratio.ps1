@@ -226,7 +226,14 @@ $html = $html.Replace('</body>', $paginationScript + '</body>')
 $html | Set-Content $htmlPath -Encoding utf8
 
 $markdownPath = Join-Path $OutputDirectory 'all-segments-br-ratio.md'
-@("# All Segments BR Coverage Ratio: AI Solution vs Test Solution",'',"- Test Solution BRs: **$allTest**","- AI BRs: **$allAi**","- Confirmed Test Solution baseline coverage: **$allCoverage% ($allCovered/$allTest)**","- Review queue: **$allReview**",'', 'All candidates remain reviewable until independently validated.') | Set-Content $markdownPath -Encoding utf8
+@(
+    "# All Segments BR Coverage Ratio: AI Solution vs Test Solution",'',
+    "- Test Solution BRs: **$allTest**",
+    "- AI BRs: **$allAi**",
+    "- Confirmed Test Solution baseline coverage: **$allCoverage% ($allCovered/$allTest)**",
+    "- Review queue: **$allReview**",'',
+    'All candidates remain reviewable until independently validated.',''
+) + @(& (Join-Path $PSScriptRoot 'qe-feedback-br-overlay.ps1')) | Set-Content $markdownPath -Encoding utf8
 Write-Output "HTML: $htmlPath"
 Write-Output "CSV: $csvPath"
 Write-Output "JSON: $jsonPath"

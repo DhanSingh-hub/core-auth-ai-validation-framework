@@ -4,6 +4,8 @@ import com.coreauth.validator.canonical.ArtifactStatus;
 import com.coreauth.validator.canonical.CanonicalArtifactPackage;
 import com.coreauth.validator.canonical.CanonicalRequirement;
 import com.coreauth.validator.canonical.CanonicalScenario;
+import com.coreauth.validator.canonical.CanonicalSourceEvidence;
+import com.coreauth.validator.canonical.CanonicalTestAssertion;
 import com.coreauth.validator.canonical.CanonicalTestCase;
 import com.coreauth.validator.canonical.CanonicalTestData;
 import com.coreauth.validator.canonical.PackageManifest;
@@ -177,6 +179,20 @@ class AiCoverageAssessmentServiceTest {
         assertThat(report.strategyReadiness().get("INDEPENDENT_TRACEABILITY")).isFalse();
     }
 
+    @Test
+    void executionReadyCaseWithoutAssertionsFailsTestCaseQuality() {
+        SourceAnchor anchor = anchor("account-number-format");
+        CanonicalArtifactPackage artifactPackage = fullChainPackage(anchor);
+        artifactPackage.getTestCases().getFirst().setAssertions(List.of());
+
+        AiCoverageAssessmentReport report = service.assess(artifactPackage, baseline(anchor), List.of(validPayloadValidator()));
+
+        assertThat(report.strategyReadiness().get("TEST_CASE_QUALITY")).isFalse();
+        assertThat(report.testCaseValidation().errors())
+                .anyMatch(error -> error.reason().contains("per-requirement assertions"));
+        assertThat(report.executionReady()).isFalse();
+    }
+
         @Test
         void keepsAiRequirementInventorySeparateFromIndependentRuleDenominator() {
         SourceAnchor anchor = anchor("account-number-format");
@@ -335,15 +351,33 @@ class AiCoverageAssessmentServiceTest {
 
         CanonicalRequirement requirement = new CanonicalRequirement();
         requirement.setId("AI-BR-1");
+        requirement.setStatement("Account numbers on transaction receipts show only their last four digits.");
+        requirement.setAtomicity("ATOMIC");
         requirement.setSourceAnchors(List.of(anchor));
         requirement.setCategory("field");
         requirement.setApplicability("Segment 100 request");
         requirement.setPriority("high");
         requirement.setExecutionStatus("EXECUTION_READY");
+        Path extractedSource = Path.of("specifications", "ATL105", "docs", "specs", "extracted_text.txt");
+        CanonicalSourceEvidence sourceEvidence = new CanonicalSourceEvidence();
+        sourceEvidence.setSourcePath("docs/specs/extracted_text.txt");
+        try {
+            sourceEvidence.setSha256(java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+                    .digest(Files.readAllBytes(extractedSource))));
+        } catch (java.security.NoSuchAlgorithmException exception) {
+            throw new IllegalStateException(exception);
+        } catch (java.io.IOException exception) {
+            throw new IllegalStateException(exception);
+        }
+        sourceEvidence.setLocator("ATL105 Section 10.1.7.4, Account Number");
+        sourceEvidence.setQuote("A series of X's equal to the number of suppressed digits precedes these last four digits for a");
+        requirement.setSourceEvidence(List.of(sourceEvidence));
 
         CanonicalScenario scenario = new CanonicalScenario();
         scenario.setId("AI-SC-1");
         scenario.setRequirementIds(List.of(requirement.getId()));
+        scenario.setIntent("Verify account-number masking on a transaction receipt.");
+        scenario.setPreconditions(List.of("A transaction receipt is produced."));
         scenario.setSourceAnchors(List.of(anchor));
         scenario.setStatus(ArtifactStatus.EXECUTION_READY);
 
@@ -352,6 +386,12 @@ class AiCoverageAssessmentServiceTest {
         testCase.setScenarioIds(List.of(scenario.getId()));
         testCase.setSourceAnchors(List.of(anchor));
         testCase.setExpectedOutcome("The account number is accepted");
+        CanonicalTestAssertion assertion = new CanonicalTestAssertion();
+        assertion.setRequirementId(requirement.getId());
+        assertion.setAssertion("The receipt masks every account-number digit except the last four.");
+        assertion.setExpectedResult("The displayed account number ends in the source account's last four digits.");
+        assertion.setSourceAnchors(List.of(anchor));
+        testCase.setAssertions(List.of(assertion));
         testCase.setTestDataFile("AI-TD-1.json");
         testCase.setStatus("EXECUTION_READY");
 

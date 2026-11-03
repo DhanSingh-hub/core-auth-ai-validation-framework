@@ -1,0 +1,4769 @@
+{
+  "manifest": {
+    "packageId": "ATL105-SECTION-10-1-CREDIT-CARD-DRAFT-REVIEW-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "artifactContractVersion": "2",
+    "strictExecutionContract": false,
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "scope": "Section 10.1 Credit Card Processing Requirements, subsections 10.1.1-10.1.8",
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "independentBaselineRuleCount": 601,
+    "newDraftRulesInBaseline": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "preexistingIndependentBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingCompleteChainPackageSha256": "b539de131c201cd6d96c5ea3cdc256878b88608bd3d4128f5d2dc90a0a2c04b9"
+  },
+  "businessRequirements": [
+    {
+      "id": "BR-DRAFT-10-1-001",
+      "title": "Credit card expiration date is validated",
+      "requirement": "For a credit-card transaction, the device validates the expiration date of the presented card.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.1",
+          "segment": "100",
+          "rule": "section-10-1-card-expiry-validation"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.1",
+          "verbatimExcerpt": "The device performs expiration date validation in a credit card transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-002",
+      "title": "Track selection uses the supported default and fallback",
+      "requirement": "When Track 2 is supported, the device sends Track 2 by default; if it cannot read Track 2, it sends unaltered Track 1 before manual entry, subject to the Amex-specific rule.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-track2-default-fallback"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.2",
+          "verbatimExcerpt": "The default track that is sent to the host should be Track 2 if the device supports Track 2."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-003",
+      "title": "American Express track selection uses Track 1 first",
+      "requirement": "For American Express, the device sends Track 1 by default and sends unaltered Track 2 before manual entry when Track 1 cannot be read.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-amex-track1-default"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.2",
+          "verbatimExcerpt": "For American Express, the default track should be Track 1."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-004",
+      "title": "Encrypted AFD Track 1 data is carried in its encryption block",
+      "requirement": "For an AFD transaction with encrypted TransArmor data, Track 1 is present in the Encryption Block and the Encryption Target identifies Track 1.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-afd-encrypted-track1"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.2",
+          "verbatimExcerpt": "If the AFD transaction being submitted contains encrypted data in the TransArmor Encryption Block, Track 1 data must be present inside the Encryption Block with Encryption Target as Track 1."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-005",
+      "title": "Offline pre-authorization and sale preserve full track data",
+      "requirement": "An offline-approved Pre-Auth or Sale sends full track data; follow-up transactions use truncated Track 2 or truncated Track 2 facsimile.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-offline-track-data"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.2",
+          "verbatimExcerpt": "If a Pre-Auth transaction is approved offline, the full track data must be sent. Also if a Sale transaction is approved offline, the full track data must be sent."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-006",
+      "title": "Manual entry follows three unsuccessful magnetic-stripe attempts",
+      "requirement": "After three unsuccessful magnetic-stripe reads, the device prompts for manual Account Number and Expiration Date in MMYY format.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.3",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-retry"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.3",
+          "verbatimExcerpt": "If unable to read the magnetic strip after three attempts, the device should prompt for manual entry of the Account Number and Expiration Date (Format:  MMYY)."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-007",
+      "title": "Manual entry is identified on receipt and journal",
+      "requirement": "When manual entry is used, an asterisk precedes the Account Number on the receipt and journal.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.1.3",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-receipt-marker"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.1.3",
+          "verbatimExcerpt": "If manual entry is used, this fact is indicated on the receipt and journal by an asterisk (*) before the Account Number."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-008",
+      "title": "POS credit-card processing supports the documented transaction set",
+      "requirement": "Point-of-sale credit processing supports the transaction types enumerated in Section 10.1.2, including purchase/capture, reversal, authorization-only, return, timeout reversal, mail/phone, void, balance inquiry, partial approval, and authorization-only reversal.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-pos-credit-transaction-types"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2",
+          "verbatimExcerpt": "The following point-of-sale transactions are supported for credit card processing:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-009",
+      "title": "Customer-activated credit processing supports its documented transaction set",
+      "requirement": "Customer-activated credit processing supports Purchase/Capture, Authorization Only, Time-out Reversal, Partial Approval, and Authorization Only Reversal.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-cat-credit-transaction-types"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2",
+          "verbatimExcerpt": "The following customer-activated transactions are supported for credit card processing:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-010",
+      "title": "Partial approval response identifies the approved amount and remaining balance",
+      "requirement": "With Partial Approval Indicator 1, the network response uses Response Code F, provides the approved amount, and prompts payment of the remaining balance; issuer-returned balance is carried in Segment 112.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-response"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.1",
+          "verbatimExcerpt": "A Response Code (Element No. 83) value of F (Indicates \u201capproval, partial amount approved.\u201d)"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-011",
+      "title": "Partial approval applies only to the documented POS and CAT transaction contexts",
+      "requirement": "Partial Approval is supported for POS Purchase, POS Authorization Only, and CAT Authorization Only.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-contexts"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.1",
+          "verbatimExcerpt": "Partial Approval transactions are supported for:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-012",
+      "title": "Partial-approval reversal uses the approved amount and is not a partial reversal",
+      "requirement": "A reversal of a partially approved authorization uses the amount approved in the original response; BUYPASS supports reversal of the partially approved authorization, not a partial reversal of an original transaction.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-reversal-amount"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.1",
+          "verbatimExcerpt": "The amount in a Reversal (Void) request must be the amount approved in the original transaction response when a transaction has been partially approved."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-013",
+      "title": "Partial-approval timeout reversal preserves original requested amount and sequence",
+      "requirement": "For a partially approved transaction, the TOR uses the amount requested in the original request and the original request's Sequence Number.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-tor-original-request"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.1",
+          "verbatimExcerpt": "The amount in a TOR request must be the amount requested in the original transaction response when a transaction has been partially approved."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-014",
+      "title": "Approved authorizations are cleared or reversed within applicable timeframes",
+      "requirement": "Approved and partially approved authorizations are cleared or reversed; the source gives separate 24-hour card-present and 72-hour card-absent merchant windows.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-timelines"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.2",
+          "verbatimExcerpt": "All approved and partially approved authorization transactions must be either cleared or reversed."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-015",
+      "title": "Authorization-only reversal supports POS and CAT authorization-only types",
+      "requirement": "The supported reversal contexts are POS Authorization Only type 3 and CAT Authorization Only type 5.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-types"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.2",
+          "verbatimExcerpt": "POS Authorization Only (Transaction Type code \u201c3\u201d)"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-016",
+      "title": "Authorization-only reversal matches original approval and sequence",
+      "requirement": "Successful matching requires the original Approval Number and Sequence Number to be present and identical, and Prompt Code S to identify cancellation.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.2.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-matching"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.2.2",
+          "verbatimExcerpt": "Element No. 5 (Approval Number)\u2014present in the original transaction\u2014must be present and identical in the Authorization Only Reversal transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-017",
+      "title": "AVS request and response data use their specified data segments",
+      "requirement": "AVS information is sent in the Variable Information Data Segment and returned in the Additional Information Data Segment alongside the authorization response code.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.3",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100,111,112",
+          "rule": "section-10-1-avs-request-response-path"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.3",
+          "verbatimExcerpt": "The device sends a transaction request to BUYPASS containing the AVS information in the Variable Information Data Segment"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-018",
+      "title": "AVS result does not override approval; merchant rejection uses purchase reversal",
+      "requirement": "BUYPASS processes an approved Purchase/Capture regardless of AVS result; if the merchant rejects due to AVS, the merchant performs a Purchase Reversal.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.3",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100",
+          "rule": "section-10-1-avs-merchant-decision"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.3",
+          "verbatimExcerpt": "BUYPASS processes all Purchase/Capture transactions when the Response Code is an approval, regardless of the AVS information."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-019",
+      "title": "Bill-payment, recurring, and installment transactions carry the Variable Information Indicator",
+      "requirement": "The optional bill-payment/recurring/installment service is identified by a Variable Information Indicator in Segment 111.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.4",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.4",
+          "segment": "111",
+          "rule": "section-10-1-bill-recurring-installment-indicator"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.4",
+          "verbatimExcerpt": "These transactions must be identified by a Variable Information Indicator located in the Variable Information section of the Variable Information Data Segment (Segment No. 111)."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-020",
+      "title": "RFID credit-card capture transmits unaltered Track 2 without card contact",
+      "requirement": "RFID capture obtains and transmits full, unaltered Track 2 data wirelessly when the card is near the receiver.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.5",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100",
+          "rule": "section-10-1-rfid-track2-capture"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.5",
+          "verbatimExcerpt": "it refers to the capability of a point-of-sale device to capture and transmit full, unaltered Track 2 data from a card without requiring the card to have contact with the point-of-sale device."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-021",
+      "title": "RFID receiver presence determines Point-of-Sale Entry Mode on every transaction",
+      "requirement": "When an RFID receiver is connected, Point-of-Sale Entry Mode is populated correctly for all transactions, including swiped, manually keyed, and non-RFID-applicable cards.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.5",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100,111",
+          "rule": "section-10-1-rfid-entry-mode"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.5",
+          "verbatimExcerpt": "Point-of-Sale Entry Mode (Contained in Element No. 113, Variable Information.) on all transactions when an RFID receiver is connected to the point-of-sale device or controller."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-022",
+      "title": "Healthcare auto-substantiation supports the documented credit and PIN-debit issuers",
+      "requirement": "The service identifies and substantiates medical and OTC purchases for FSA and HRA accounts using the supported issuer/card contexts.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-service-scope"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6",
+          "verbatimExcerpt": "The Healthcare Auto-Substantiation Service provided by credit card issuers (Amex\u00ae, Discover\u00ae Network, MasterCard\u00ae, Visa\u00ae) and PIN debit card issuers, is supported by these specifications."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-023",
+      "title": "Eligible healthcare benefit cards are identified by stored nine-digit BINs",
+      "requirement": "The POS stores eligible benefit-card BIN information for use when the card is swiped.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.1.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-benefit-bin"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.1.1",
+          "verbatimExcerpt": "Eligible benefit cards are identified by a 9-digit BIN."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-024",
+      "title": "Healthcare partial approval and split tender handle qualified and nonqualified amounts",
+      "requirement": "When partial approval is unsupported, the request is fully approved or declined; when partial approval returns, the POS prompts for remaining balance using another payment method for nonqualified items.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.1.2,10.1.6.1.3",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.2,10.1.6.1.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-partial-split-tender"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.1.2,10.1.6.1.3",
+          "verbatimExcerpt": "A Split Tender transaction results when a Partial Approval is returned to the POS in the transaction response."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-025",
+      "title": "Qualified healthcare product totals follow the documented product-code table",
+      "requirement": "FSA/HRA qualified medical categories and associated Product Codes follow the Section 10.1.6.1.4 table, including required Total QHP Amount code 894 and optional category codes.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.1.4",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.4",
+          "segment": "102",
+          "rule": "section-10-1-healthcare-qualified-products"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.1.4",
+          "verbatimExcerpt": "The following table lists supported product categories, whether or not they are required in messages, their Product Codes, and brief descriptions:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-026",
+      "title": "Healthcare requests include MSDI, Partial Approval Indicator, and Product Code data",
+      "requirement": "FSA/HRA transaction requests include Market-Specific Data Indicator in Segment 111, Partial Approval Indicator in Segment 100, and Product Code Segment 102.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.2",
+          "segment": "100,102,111",
+          "rule": "section-10-1-healthcare-request-fields"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.2",
+          "verbatimExcerpt": "FSA/HRA transaction requests include the following data fields:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-027",
+      "title": "Healthcare responses use standard response data without FSA/HRA-specific elements",
+      "requirement": "The response contains standard response data; this service defines no additional FSA/HRA-specific response elements.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.3",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-response-standard"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.3",
+          "verbatimExcerpt": "There are no data elements specific to FSA/HRA transactions."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-028",
+      "title": "Healthcare card processing supports the documented purchase, reversal, return, and timeout types",
+      "requirement": "FSA/HRA supports Purchase/Capture, Purchase Reversal, Merchandise Return, and Time-out Reversal.",
+      "category": "TRANSACTION_TYPE",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.4",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-transaction-types"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.4",
+          "verbatimExcerpt": "Purchase/Capture"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-029",
+      "title": "Approved healthcare purchases update the card-type totals bucket",
+      "requirement": "An approved FSA/HRA Purchase/Capture requires Partial Approval Indicator and Product Code Segment and adds to the card-type totals count and amount.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.4.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-totals"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.4.1",
+          "verbatimExcerpt": "The Partial Approval Indicator and Product Code Data Segment fields are required in a FSA/HRA Purchase/Capture transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-030",
+      "title": "Healthcare purchase reversal requires the indicator and reverses totals",
+      "requirement": "FSA/HRA Purchase Reversal requires Partial Approval Indicator and subtracts approved reversal count and amount from the card-type totals bucket.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.4.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.2",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-reversal-totals"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.4.2",
+          "verbatimExcerpt": "The Partial Approval Indicator is required in a FSA/HRA Purchase Reversal transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-031",
+      "title": "Approved healthcare merchandise returns update totals with the source-defined signs",
+      "requirement": "An approved Merchandise Return adds to the card-type totals count and subtracts from the amount.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.4.3",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-return-totals"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.4.3",
+          "verbatimExcerpt": "All approved Merchandise Return transactions are added to the count and subtracted from the amount of the card type totals bucket."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-032",
+      "title": "Healthcare timeout reversal requires the indicator and reverses totals",
+      "requirement": "FSA/HRA TOR requires Partial Approval Indicator and subtracts approved TOR count and amount from the card-type totals bucket.",
+      "category": "LIFECYCLE",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.4.4",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-tor-totals"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.4.4",
+          "verbatimExcerpt": "The Partial Approval Indicator is required in a FSA/HRA TOR transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-033",
+      "title": "Approved healthcare receipt shows the QHP indicator and subtotal",
+      "requirement": "Approved FSA/HRA receipts print the QHP item indicator and subtotal including taxes and discounts, in addition to general credit-card receipt requirements.",
+      "category": "COMPANION_DOMAIN",
+      "applicability": "ATL105 credit-card processing context in 10.1.6.5",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.5",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-receipt-additions"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.6.5",
+          "verbatimExcerpt": "Indicator that identifies the QHP items on the customer receipt"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-034",
+      "title": "Credit-card receipts display the source-required merchant and transaction information",
+      "requirement": "The receipt contains merchant information, transaction type, card type ID, account number, expiration date handling, transaction date/time, sequence number, product and balance information, approval/decline message, and signature-line handling.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-required-fields"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7",
+          "verbatimExcerpt": "This section discusses the following information that must print on credit card receipts:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-035",
+      "title": "Credit-card receipt masks the account number and suppresses expiration date",
+      "requirement": "The receipt masks the PAN to its last four digits with Xs for suppressed digits and suppresses the expiration date; manual entry is marked separately by an asterisk.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.4,10.1.7.5",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.4,10.1.7.5",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-masking"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.4,10.1.7.5",
+          "verbatimExcerpt": "The Account Number (Element No. 2) must be truncated\u2014suppressed to its last four digits\u2014on all transaction receipts."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-036",
+      "title": "Credit-card receipt prints transaction date, time, and sequence number",
+      "requirement": "The transaction date, time, and Sequence Number appear on credit-card receipts.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.6,10.1.7.7,10.1.7.8",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-transaction-fields"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "verbatimExcerpt": "The date of the transaction prints on all credit card receipts."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-037",
+      "title": "Approved credit receipt shows fuel or nonfuel product details",
+      "requirement": "Approved transaction receipts show fuel type, quantity, unit price, total fuel amount or nonfuel quantity, unit price, and total product amount.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.9",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.9",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-product-fields"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.9",
+          "verbatimExcerpt": "The following product information must appear on a receipt for an \"approved\" transaction:"
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-038",
+      "title": "Receipt prints returned balance for partial approval or balance-return purchase",
+      "requirement": "When the issuer returns available balance, it prints for Partial Approval and Balance Return with Purchase on approved or declined receipts.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.10",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.10",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-balance-fields"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.10",
+          "verbatimExcerpt": "Balance information prints on a credit card receipt for a Partial Approval transaction and a Balance Return with Purchase transaction."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-039",
+      "title": "Credit-card receipt shows approval code or decline message according to device context",
+      "requirement": "Approved POS receipts include the approval phrase and code; declined POS receipts include a decline message when preprint is used; customer-activated devices display the decline message on screen.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.11",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.11",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-approval-decline"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.11",
+          "verbatimExcerpt": "The approval phrase, including the approval code, must be on a receipt for an \"approved\" transaction that involves a point-of-sale device."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-040",
+      "title": "Credit receipt signature line appears only on merchant copy",
+      "requirement": "A signature line appears only on the merchant copy of a credit-card transaction receipt.",
+      "category": "RESPONSE_NETWORK",
+      "applicability": "ATL105 credit-card processing context in 10.1.7.12",
+      "priority": "medium",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.12",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-signature"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.7.12",
+          "verbatimExcerpt": "A signature line prints only on the merchant\u2019s copy of the credit card transaction receipt."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-041",
+      "title": "Credit processing restricts card-read data displayed or stored at point of interaction",
+      "requirement": "A device must not display/store card-read data other than account number, expiration date, and cardholder name if present; merchants must not store full magnetic-stripe data.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-card-data-display"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.1",
+          "verbatimExcerpt": "A device at the point of interaction must not display/store any card-read data except the card\u2019s account number, card\u2019s expiration date, and cardholder\u2019s name, if present."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-042",
+      "title": "Permitted research records are limited and securely maintained",
+      "requirement": "For research, only account number, expiration date, and cardholder name may be recorded in the specified files and must be kept securely; full card-read/discretionary data is prohibited.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.1",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-research-storage"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.1",
+          "verbatimExcerpt": "The merchant\u2014or any agent representative thereof\u2014may record only the card\u2019s account number, card\u2019s expiration date, and cardholder\u2019s name on paper, microfiche, or an online authorization file, for research purposes at its site."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-043",
+      "title": "Credit clearing data is not reconstructed from previously captured full track data",
+      "requirement": "Full card-read data is not stored or reused to produce later authorization/clearing data, except for the explicitly stated TransArmor-Verifone exception.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.1,10.1.8.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1,10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-clearing-source"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.1,10.1.8.2",
+          "verbatimExcerpt": "Card data provided in a clearing transaction must not be the result of previously captured full card-read data."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-044",
+      "title": "Regulatory track selection uses the card-specific default and unaltered fallback",
+      "requirement": "Track 2 is default when supported, otherwise unaltered Track 1 before manual entry; Amex uses Track 1 by default and unaltered Track 2 fallback.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-track-selection"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.2",
+          "verbatimExcerpt": "The default track that is sent to the host should be Track 2 if the device supports Track 2."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-045",
+      "title": "Host card-data format contains only account number and expiration after an equals delimiter",
+      "requirement": "For the enumerated credit transaction types, the host message uses account number, '=' delimiter, and four-digit YYMM expiration date with no further Card Discretionary Data after the date.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-host-card-data"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.2",
+          "verbatimExcerpt": "The host message should only contain the Account Number, followed by an account delimiter (=), followed by the 4 digit Expiration Date (Storage format \u2013 YYMM)."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    },
+    {
+      "id": "BR-DRAFT-10-1-046",
+      "title": "In-flight track retention is temporary and offline transactions send full unaltered tracks",
+      "requirement": "Track 2 may be retained in the In Flight Table only while a transaction is in process and is removed when complete; offline transactions send full unaltered Track 1 and Track 2.",
+      "category": "CORE_STRUCTURE",
+      "applicability": "ATL105 credit-card processing context in 10.1.8.2",
+      "priority": "high",
+      "executionStatus": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-in-flight-exception"
+        }
+      ],
+      "sourceEvidence": [
+        {
+          "section": "10.1.8.2",
+          "verbatimExcerpt": "Track 2 data is kept in this table while the transaction is in process."
+        }
+      ],
+      "testSolutionDisposition": "DRAFT_REVIEW_REQUIRED_NOT_YET_INDEPENDENT_BASELINE"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "SCN-DRAFT-10-1-001",
+      "name": "Review card expiry validation",
+      "requirementIds": [
+        "BR-DRAFT-10-1-001"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.1",
+          "segment": "100",
+          "rule": "section-10-1-card-expiry-validation"
+        }
+      ],
+      "testIntent": "For a credit-card transaction, the device validates the expiration date of the presented card."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-002",
+      "name": "Review track2 default fallback",
+      "requirementIds": [
+        "BR-DRAFT-10-1-002"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-track2-default-fallback"
+        }
+      ],
+      "testIntent": "When Track 2 is supported, the device sends Track 2 by default; if it cannot read Track 2, it sends unaltered Track 1 before manual entry, subject to the Amex-specific rule."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-003",
+      "name": "Review amex track1 default",
+      "requirementIds": [
+        "BR-DRAFT-10-1-003"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-amex-track1-default"
+        }
+      ],
+      "testIntent": "For American Express, the device sends Track 1 by default and sends unaltered Track 2 before manual entry when Track 1 cannot be read."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-004",
+      "name": "Review afd encrypted track1",
+      "requirementIds": [
+        "BR-DRAFT-10-1-004"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-afd-encrypted-track1"
+        }
+      ],
+      "testIntent": "For an AFD transaction with encrypted TransArmor data, Track 1 is present in the Encryption Block and the Encryption Target identifies Track 1."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-005",
+      "name": "Review offline track data",
+      "requirementIds": [
+        "BR-DRAFT-10-1-005"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-offline-track-data"
+        }
+      ],
+      "testIntent": "An offline-approved Pre-Auth or Sale sends full track data; follow-up transactions use truncated Track 2 or truncated Track 2 facsimile."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-006",
+      "name": "Review manual entry retry",
+      "requirementIds": [
+        "BR-DRAFT-10-1-006"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-retry"
+        }
+      ],
+      "testIntent": "After three unsuccessful magnetic-stripe reads, the device prompts for manual Account Number and Expiration Date in MMYY format."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-007",
+      "name": "Review manual entry receipt marker",
+      "requirementIds": [
+        "BR-DRAFT-10-1-007"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-receipt-marker"
+        }
+      ],
+      "testIntent": "When manual entry is used, an asterisk precedes the Account Number on the receipt and journal."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-008",
+      "name": "Review pos credit transaction types",
+      "requirementIds": [
+        "BR-DRAFT-10-1-008"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-pos-credit-transaction-types"
+        }
+      ],
+      "testIntent": "Point-of-sale credit processing supports the transaction types enumerated in Section 10.1.2, including purchase/capture, reversal, authorization-only, return, timeout reversal, mail/phone, void, balance inquiry, partial approval, and authorization-only reversal."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-009",
+      "name": "Review cat credit transaction types",
+      "requirementIds": [
+        "BR-DRAFT-10-1-009"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-cat-credit-transaction-types"
+        }
+      ],
+      "testIntent": "Customer-activated credit processing supports Purchase/Capture, Authorization Only, Time-out Reversal, Partial Approval, and Authorization Only Reversal."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-010",
+      "name": "Review partial approval response",
+      "requirementIds": [
+        "BR-DRAFT-10-1-010"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-response"
+        }
+      ],
+      "testIntent": "With Partial Approval Indicator 1, the network response uses Response Code F, provides the approved amount, and prompts payment of the remaining balance; issuer-returned balance is carried in Segment 112."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-011",
+      "name": "Review partial approval contexts",
+      "requirementIds": [
+        "BR-DRAFT-10-1-011"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-contexts"
+        }
+      ],
+      "testIntent": "Partial Approval is supported for POS Purchase, POS Authorization Only, and CAT Authorization Only."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-012",
+      "name": "Review partial reversal amount",
+      "requirementIds": [
+        "BR-DRAFT-10-1-012"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-reversal-amount"
+        }
+      ],
+      "testIntent": "A reversal of a partially approved authorization uses the amount approved in the original response; BUYPASS supports reversal of the partially approved authorization, not a partial reversal of an original transaction."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-013",
+      "name": "Review partial tor original request",
+      "requirementIds": [
+        "BR-DRAFT-10-1-013"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-tor-original-request"
+        }
+      ],
+      "testIntent": "For a partially approved transaction, the TOR uses the amount requested in the original request and the original request's Sequence Number."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-014",
+      "name": "Review auth reversal timelines",
+      "requirementIds": [
+        "BR-DRAFT-10-1-014"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-timelines"
+        }
+      ],
+      "testIntent": "Approved and partially approved authorizations are cleared or reversed; the source gives separate 24-hour card-present and 72-hour card-absent merchant windows."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-015",
+      "name": "Review auth reversal types",
+      "requirementIds": [
+        "BR-DRAFT-10-1-015"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-types"
+        }
+      ],
+      "testIntent": "The supported reversal contexts are POS Authorization Only type 3 and CAT Authorization Only type 5."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-016",
+      "name": "Review auth reversal matching",
+      "requirementIds": [
+        "BR-DRAFT-10-1-016"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-matching"
+        }
+      ],
+      "testIntent": "Successful matching requires the original Approval Number and Sequence Number to be present and identical, and Prompt Code S to identify cancellation."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-017",
+      "name": "Review avs request response path",
+      "requirementIds": [
+        "BR-DRAFT-10-1-017"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100,111,112",
+          "rule": "section-10-1-avs-request-response-path"
+        }
+      ],
+      "testIntent": "AVS information is sent in the Variable Information Data Segment and returned in the Additional Information Data Segment alongside the authorization response code."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-018",
+      "name": "Review avs merchant decision",
+      "requirementIds": [
+        "BR-DRAFT-10-1-018"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100",
+          "rule": "section-10-1-avs-merchant-decision"
+        }
+      ],
+      "testIntent": "BUYPASS processes an approved Purchase/Capture regardless of AVS result; if the merchant rejects due to AVS, the merchant performs a Purchase Reversal."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-019",
+      "name": "Review bill recurring installment indicator",
+      "requirementIds": [
+        "BR-DRAFT-10-1-019"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.4",
+          "segment": "111",
+          "rule": "section-10-1-bill-recurring-installment-indicator"
+        }
+      ],
+      "testIntent": "The optional bill-payment/recurring/installment service is identified by a Variable Information Indicator in Segment 111."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-020",
+      "name": "Review rfid track2 capture",
+      "requirementIds": [
+        "BR-DRAFT-10-1-020"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100",
+          "rule": "section-10-1-rfid-track2-capture"
+        }
+      ],
+      "testIntent": "RFID capture obtains and transmits full, unaltered Track 2 data wirelessly when the card is near the receiver."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-021",
+      "name": "Review rfid entry mode",
+      "requirementIds": [
+        "BR-DRAFT-10-1-021"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100,111",
+          "rule": "section-10-1-rfid-entry-mode"
+        }
+      ],
+      "testIntent": "When an RFID receiver is connected, Point-of-Sale Entry Mode is populated correctly for all transactions, including swiped, manually keyed, and non-RFID-applicable cards."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-022",
+      "name": "Review healthcare service scope",
+      "requirementIds": [
+        "BR-DRAFT-10-1-022"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-service-scope"
+        }
+      ],
+      "testIntent": "The service identifies and substantiates medical and OTC purchases for FSA and HRA accounts using the supported issuer/card contexts."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-023",
+      "name": "Review healthcare benefit bin",
+      "requirementIds": [
+        "BR-DRAFT-10-1-023"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-benefit-bin"
+        }
+      ],
+      "testIntent": "The POS stores eligible benefit-card BIN information for use when the card is swiped."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-024",
+      "name": "Review healthcare partial split tender",
+      "requirementIds": [
+        "BR-DRAFT-10-1-024"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.2,10.1.6.1.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-partial-split-tender"
+        }
+      ],
+      "testIntent": "When partial approval is unsupported, the request is fully approved or declined; when partial approval returns, the POS prompts for remaining balance using another payment method for nonqualified items."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-025",
+      "name": "Review healthcare qualified products",
+      "requirementIds": [
+        "BR-DRAFT-10-1-025"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.4",
+          "segment": "102",
+          "rule": "section-10-1-healthcare-qualified-products"
+        }
+      ],
+      "testIntent": "FSA/HRA qualified medical categories and associated Product Codes follow the Section 10.1.6.1.4 table, including required Total QHP Amount code 894 and optional category codes."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-026",
+      "name": "Review healthcare request fields",
+      "requirementIds": [
+        "BR-DRAFT-10-1-026"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.2",
+          "segment": "100,102,111",
+          "rule": "section-10-1-healthcare-request-fields"
+        }
+      ],
+      "testIntent": "FSA/HRA transaction requests include Market-Specific Data Indicator in Segment 111, Partial Approval Indicator in Segment 100, and Product Code Segment 102."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-027",
+      "name": "Review healthcare response standard",
+      "requirementIds": [
+        "BR-DRAFT-10-1-027"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-response-standard"
+        }
+      ],
+      "testIntent": "The response contains standard response data; this service defines no additional FSA/HRA-specific response elements."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-028",
+      "name": "Review healthcare transaction types",
+      "requirementIds": [
+        "BR-DRAFT-10-1-028"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-transaction-types"
+        }
+      ],
+      "testIntent": "FSA/HRA supports Purchase/Capture, Purchase Reversal, Merchandise Return, and Time-out Reversal."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-029",
+      "name": "Review healthcare purchase totals",
+      "requirementIds": [
+        "BR-DRAFT-10-1-029"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-totals"
+        }
+      ],
+      "testIntent": "An approved FSA/HRA Purchase/Capture requires Partial Approval Indicator and Product Code Segment and adds to the card-type totals count and amount."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-030",
+      "name": "Review healthcare purchase reversal totals",
+      "requirementIds": [
+        "BR-DRAFT-10-1-030"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.2",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-reversal-totals"
+        }
+      ],
+      "testIntent": "FSA/HRA Purchase Reversal requires Partial Approval Indicator and subtracts approved reversal count and amount from the card-type totals bucket."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-031",
+      "name": "Review healthcare return totals",
+      "requirementIds": [
+        "BR-DRAFT-10-1-031"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-return-totals"
+        }
+      ],
+      "testIntent": "An approved Merchandise Return adds to the card-type totals count and subtracts from the amount."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-032",
+      "name": "Review healthcare tor totals",
+      "requirementIds": [
+        "BR-DRAFT-10-1-032"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-tor-totals"
+        }
+      ],
+      "testIntent": "FSA/HRA TOR requires Partial Approval Indicator and subtracts approved TOR count and amount from the card-type totals bucket."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-033",
+      "name": "Review healthcare receipt additions",
+      "requirementIds": [
+        "BR-DRAFT-10-1-033"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.5",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-receipt-additions"
+        }
+      ],
+      "testIntent": "Approved FSA/HRA receipts print the QHP item indicator and subtotal including taxes and discounts, in addition to general credit-card receipt requirements."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-034",
+      "name": "Review credit receipt required fields",
+      "requirementIds": [
+        "BR-DRAFT-10-1-034"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-required-fields"
+        }
+      ],
+      "testIntent": "The receipt contains merchant information, transaction type, card type ID, account number, expiration date handling, transaction date/time, sequence number, product and balance information, approval/decline message, and signature-line handling."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-035",
+      "name": "Review credit receipt masking",
+      "requirementIds": [
+        "BR-DRAFT-10-1-035"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.4,10.1.7.5",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-masking"
+        }
+      ],
+      "testIntent": "The receipt masks the PAN to its last four digits with Xs for suppressed digits and suppresses the expiration date; manual entry is marked separately by an asterisk."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-036",
+      "name": "Review credit receipt transaction fields",
+      "requirementIds": [
+        "BR-DRAFT-10-1-036"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-transaction-fields"
+        }
+      ],
+      "testIntent": "The transaction date, time, and Sequence Number appear on credit-card receipts."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-037",
+      "name": "Review credit receipt product fields",
+      "requirementIds": [
+        "BR-DRAFT-10-1-037"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.9",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-product-fields"
+        }
+      ],
+      "testIntent": "Approved transaction receipts show fuel type, quantity, unit price, total fuel amount or nonfuel quantity, unit price, and total product amount."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-038",
+      "name": "Review credit receipt balance fields",
+      "requirementIds": [
+        "BR-DRAFT-10-1-038"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.10",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-balance-fields"
+        }
+      ],
+      "testIntent": "When the issuer returns available balance, it prints for Partial Approval and Balance Return with Purchase on approved or declined receipts."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-039",
+      "name": "Review credit receipt approval decline",
+      "requirementIds": [
+        "BR-DRAFT-10-1-039"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.11",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-approval-decline"
+        }
+      ],
+      "testIntent": "Approved POS receipts include the approval phrase and code; declined POS receipts include a decline message when preprint is used; customer-activated devices display the decline message on screen."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-040",
+      "name": "Review credit receipt signature",
+      "requirementIds": [
+        "BR-DRAFT-10-1-040"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.12",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-signature"
+        }
+      ],
+      "testIntent": "A signature line appears only on the merchant copy of a credit-card transaction receipt."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-041",
+      "name": "Review regulatory card data display",
+      "requirementIds": [
+        "BR-DRAFT-10-1-041"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-card-data-display"
+        }
+      ],
+      "testIntent": "A device must not display/store card-read data other than account number, expiration date, and cardholder name if present; merchants must not store full magnetic-stripe data."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-042",
+      "name": "Review regulatory research storage",
+      "requirementIds": [
+        "BR-DRAFT-10-1-042"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-research-storage"
+        }
+      ],
+      "testIntent": "For research, only account number, expiration date, and cardholder name may be recorded in the specified files and must be kept securely; full card-read/discretionary data is prohibited."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-043",
+      "name": "Review regulatory clearing source",
+      "requirementIds": [
+        "BR-DRAFT-10-1-043"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1,10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-clearing-source"
+        }
+      ],
+      "testIntent": "Full card-read data is not stored or reused to produce later authorization/clearing data, except for the explicitly stated TransArmor-Verifone exception."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-044",
+      "name": "Review regulatory track selection",
+      "requirementIds": [
+        "BR-DRAFT-10-1-044"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-track-selection"
+        }
+      ],
+      "testIntent": "Track 2 is default when supported, otherwise unaltered Track 1 before manual entry; Amex uses Track 1 by default and unaltered Track 2 fallback."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-045",
+      "name": "Review regulatory host card data",
+      "requirementIds": [
+        "BR-DRAFT-10-1-045"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-host-card-data"
+        }
+      ],
+      "testIntent": "For the enumerated credit transaction types, the host message uses account number, '=' delimiter, and four-digit YYMM expiration date with no further Card Discretionary Data after the date."
+    },
+    {
+      "id": "SCN-DRAFT-10-1-046",
+      "name": "Review regulatory in flight exception",
+      "requirementIds": [
+        "BR-DRAFT-10-1-046"
+      ],
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-in-flight-exception"
+        }
+      ],
+      "testIntent": "Track 2 may be retained in the In Flight Table only while a transaction is in process and is removed when complete; offline transactions send full unaltered Track 1 and Track 2."
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-DRAFT-10-1-001",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-001"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-001.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "card_expiry_validation"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.1",
+          "segment": "100",
+          "rule": "section-10-1-card-expiry-validation"
+        }
+      ],
+      "reviewObjective": "For a credit-card transaction, the device validates the expiration date of the presented card."
+    },
+    {
+      "id": "TC-DRAFT-10-1-002",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-002"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-002.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "track2_default_fallback"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-track2-default-fallback"
+        }
+      ],
+      "reviewObjective": "When Track 2 is supported, the device sends Track 2 by default; if it cannot read Track 2, it sends unaltered Track 1 before manual entry, subject to the Amex-specific rule."
+    },
+    {
+      "id": "TC-DRAFT-10-1-003",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-003"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-003.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "amex_track1_default"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-amex-track1-default"
+        }
+      ],
+      "reviewObjective": "For American Express, the device sends Track 1 by default and sends unaltered Track 2 before manual entry when Track 1 cannot be read."
+    },
+    {
+      "id": "TC-DRAFT-10-1-004",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-004"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-004.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "afd_encrypted_track1"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-afd-encrypted-track1"
+        }
+      ],
+      "reviewObjective": "For an AFD transaction with encrypted TransArmor data, Track 1 is present in the Encryption Block and the Encryption Target identifies Track 1."
+    },
+    {
+      "id": "TC-DRAFT-10-1-005",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-005"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-005.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "offline_track_data"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-offline-track-data"
+        }
+      ],
+      "reviewObjective": "An offline-approved Pre-Auth or Sale sends full track data; follow-up transactions use truncated Track 2 or truncated Track 2 facsimile."
+    },
+    {
+      "id": "TC-DRAFT-10-1-006",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-006"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-006.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "manual_entry_retry"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-retry"
+        }
+      ],
+      "reviewObjective": "After three unsuccessful magnetic-stripe reads, the device prompts for manual Account Number and Expiration Date in MMYY format."
+    },
+    {
+      "id": "TC-DRAFT-10-1-007",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-007"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-007.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "manual_entry_receipt_marker"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-receipt-marker"
+        }
+      ],
+      "reviewObjective": "When manual entry is used, an asterisk precedes the Account Number on the receipt and journal."
+    },
+    {
+      "id": "TC-DRAFT-10-1-008",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-008"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-008.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "pos_credit_transaction_types"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-pos-credit-transaction-types"
+        }
+      ],
+      "reviewObjective": "Point-of-sale credit processing supports the transaction types enumerated in Section 10.1.2, including purchase/capture, reversal, authorization-only, return, timeout reversal, mail/phone, void, balance inquiry, partial approval, and authorization-only reversal."
+    },
+    {
+      "id": "TC-DRAFT-10-1-009",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-009"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-009.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "cat_credit_transaction_types"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-cat-credit-transaction-types"
+        }
+      ],
+      "reviewObjective": "Customer-activated credit processing supports Purchase/Capture, Authorization Only, Time-out Reversal, Partial Approval, and Authorization Only Reversal."
+    },
+    {
+      "id": "TC-DRAFT-10-1-010",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-010"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-010.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "partial_approval_response"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-response"
+        }
+      ],
+      "reviewObjective": "With Partial Approval Indicator 1, the network response uses Response Code F, provides the approved amount, and prompts payment of the remaining balance; issuer-returned balance is carried in Segment 112."
+    },
+    {
+      "id": "TC-DRAFT-10-1-011",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-011"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-011.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "partial_approval_contexts"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-contexts"
+        }
+      ],
+      "reviewObjective": "Partial Approval is supported for POS Purchase, POS Authorization Only, and CAT Authorization Only."
+    },
+    {
+      "id": "TC-DRAFT-10-1-012",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-012"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-012.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "partial_reversal_amount"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-reversal-amount"
+        }
+      ],
+      "reviewObjective": "A reversal of a partially approved authorization uses the amount approved in the original response; BUYPASS supports reversal of the partially approved authorization, not a partial reversal of an original transaction."
+    },
+    {
+      "id": "TC-DRAFT-10-1-013",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-013"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-013.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "partial_tor_original_request"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-tor-original-request"
+        }
+      ],
+      "reviewObjective": "For a partially approved transaction, the TOR uses the amount requested in the original request and the original request's Sequence Number."
+    },
+    {
+      "id": "TC-DRAFT-10-1-014",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-014"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-014.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "auth_reversal_timelines"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-timelines"
+        }
+      ],
+      "reviewObjective": "Approved and partially approved authorizations are cleared or reversed; the source gives separate 24-hour card-present and 72-hour card-absent merchant windows."
+    },
+    {
+      "id": "TC-DRAFT-10-1-015",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-015"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-015.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "auth_reversal_types"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-types"
+        }
+      ],
+      "reviewObjective": "The supported reversal contexts are POS Authorization Only type 3 and CAT Authorization Only type 5."
+    },
+    {
+      "id": "TC-DRAFT-10-1-016",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-016"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-016.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "auth_reversal_matching"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-matching"
+        }
+      ],
+      "reviewObjective": "Successful matching requires the original Approval Number and Sequence Number to be present and identical, and Prompt Code S to identify cancellation."
+    },
+    {
+      "id": "TC-DRAFT-10-1-017",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-017"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-017.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "avs_request_response_path"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100,111,112",
+          "rule": "section-10-1-avs-request-response-path"
+        }
+      ],
+      "reviewObjective": "AVS information is sent in the Variable Information Data Segment and returned in the Additional Information Data Segment alongside the authorization response code."
+    },
+    {
+      "id": "TC-DRAFT-10-1-018",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-018"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-018.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "avs_merchant_decision"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100",
+          "rule": "section-10-1-avs-merchant-decision"
+        }
+      ],
+      "reviewObjective": "BUYPASS processes an approved Purchase/Capture regardless of AVS result; if the merchant rejects due to AVS, the merchant performs a Purchase Reversal."
+    },
+    {
+      "id": "TC-DRAFT-10-1-019",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-019"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-019.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "bill_recurring_installment_indicator"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.4",
+          "segment": "111",
+          "rule": "section-10-1-bill-recurring-installment-indicator"
+        }
+      ],
+      "reviewObjective": "The optional bill-payment/recurring/installment service is identified by a Variable Information Indicator in Segment 111."
+    },
+    {
+      "id": "TC-DRAFT-10-1-020",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-020"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-020.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "rfid_track2_capture"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100",
+          "rule": "section-10-1-rfid-track2-capture"
+        }
+      ],
+      "reviewObjective": "RFID capture obtains and transmits full, unaltered Track 2 data wirelessly when the card is near the receiver."
+    },
+    {
+      "id": "TC-DRAFT-10-1-021",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-021"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-021.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "rfid_entry_mode"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100,111",
+          "rule": "section-10-1-rfid-entry-mode"
+        }
+      ],
+      "reviewObjective": "When an RFID receiver is connected, Point-of-Sale Entry Mode is populated correctly for all transactions, including swiped, manually keyed, and non-RFID-applicable cards."
+    },
+    {
+      "id": "TC-DRAFT-10-1-022",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-022"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-022.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_service_scope"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-service-scope"
+        }
+      ],
+      "reviewObjective": "The service identifies and substantiates medical and OTC purchases for FSA and HRA accounts using the supported issuer/card contexts."
+    },
+    {
+      "id": "TC-DRAFT-10-1-023",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-023"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-023.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_benefit_bin"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-benefit-bin"
+        }
+      ],
+      "reviewObjective": "The POS stores eligible benefit-card BIN information for use when the card is swiped."
+    },
+    {
+      "id": "TC-DRAFT-10-1-024",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-024"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-024.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_partial_split_tender"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.2,10.1.6.1.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-partial-split-tender"
+        }
+      ],
+      "reviewObjective": "When partial approval is unsupported, the request is fully approved or declined; when partial approval returns, the POS prompts for remaining balance using another payment method for nonqualified items."
+    },
+    {
+      "id": "TC-DRAFT-10-1-025",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-025"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-025.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_qualified_products"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.4",
+          "segment": "102",
+          "rule": "section-10-1-healthcare-qualified-products"
+        }
+      ],
+      "reviewObjective": "FSA/HRA qualified medical categories and associated Product Codes follow the Section 10.1.6.1.4 table, including required Total QHP Amount code 894 and optional category codes."
+    },
+    {
+      "id": "TC-DRAFT-10-1-026",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-026"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-026.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_request_fields"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.2",
+          "segment": "100,102,111",
+          "rule": "section-10-1-healthcare-request-fields"
+        }
+      ],
+      "reviewObjective": "FSA/HRA transaction requests include Market-Specific Data Indicator in Segment 111, Partial Approval Indicator in Segment 100, and Product Code Segment 102."
+    },
+    {
+      "id": "TC-DRAFT-10-1-027",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-027"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-027.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_response_standard"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-response-standard"
+        }
+      ],
+      "reviewObjective": "The response contains standard response data; this service defines no additional FSA/HRA-specific response elements."
+    },
+    {
+      "id": "TC-DRAFT-10-1-028",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-028"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-028.json",
+      "category": "transaction_type",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_transaction_types"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-transaction-types"
+        }
+      ],
+      "reviewObjective": "FSA/HRA supports Purchase/Capture, Purchase Reversal, Merchandise Return, and Time-out Reversal."
+    },
+    {
+      "id": "TC-DRAFT-10-1-029",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-029"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-029.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_purchase_totals"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-totals"
+        }
+      ],
+      "reviewObjective": "An approved FSA/HRA Purchase/Capture requires Partial Approval Indicator and Product Code Segment and adds to the card-type totals count and amount."
+    },
+    {
+      "id": "TC-DRAFT-10-1-030",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-030"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-030.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_purchase_reversal_totals"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.2",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-reversal-totals"
+        }
+      ],
+      "reviewObjective": "FSA/HRA Purchase Reversal requires Partial Approval Indicator and subtracts approved reversal count and amount from the card-type totals bucket."
+    },
+    {
+      "id": "TC-DRAFT-10-1-031",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-031"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-031.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_return_totals"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-return-totals"
+        }
+      ],
+      "reviewObjective": "An approved Merchandise Return adds to the card-type totals count and subtracts from the amount."
+    },
+    {
+      "id": "TC-DRAFT-10-1-032",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-032"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-032.json",
+      "category": "lifecycle",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_tor_totals"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-tor-totals"
+        }
+      ],
+      "reviewObjective": "FSA/HRA TOR requires Partial Approval Indicator and subtracts approved TOR count and amount from the card-type totals bucket."
+    },
+    {
+      "id": "TC-DRAFT-10-1-033",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-033"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-033.json",
+      "category": "companion_domain",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "healthcare_receipt_additions"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.5",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-receipt-additions"
+        }
+      ],
+      "reviewObjective": "Approved FSA/HRA receipts print the QHP item indicator and subtotal including taxes and discounts, in addition to general credit-card receipt requirements."
+    },
+    {
+      "id": "TC-DRAFT-10-1-034",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-034"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-034.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_required_fields"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-required-fields"
+        }
+      ],
+      "reviewObjective": "The receipt contains merchant information, transaction type, card type ID, account number, expiration date handling, transaction date/time, sequence number, product and balance information, approval/decline message, and signature-line handling."
+    },
+    {
+      "id": "TC-DRAFT-10-1-035",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-035"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-035.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_masking"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.4,10.1.7.5",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-masking"
+        }
+      ],
+      "reviewObjective": "The receipt masks the PAN to its last four digits with Xs for suppressed digits and suppresses the expiration date; manual entry is marked separately by an asterisk."
+    },
+    {
+      "id": "TC-DRAFT-10-1-036",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-036"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-036.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_transaction_fields"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-transaction-fields"
+        }
+      ],
+      "reviewObjective": "The transaction date, time, and Sequence Number appear on credit-card receipts."
+    },
+    {
+      "id": "TC-DRAFT-10-1-037",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-037"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-037.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_product_fields"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.9",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-product-fields"
+        }
+      ],
+      "reviewObjective": "Approved transaction receipts show fuel type, quantity, unit price, total fuel amount or nonfuel quantity, unit price, and total product amount."
+    },
+    {
+      "id": "TC-DRAFT-10-1-038",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-038"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-038.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_balance_fields"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.10",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-balance-fields"
+        }
+      ],
+      "reviewObjective": "When the issuer returns available balance, it prints for Partial Approval and Balance Return with Purchase on approved or declined receipts."
+    },
+    {
+      "id": "TC-DRAFT-10-1-039",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-039"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-039.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_approval_decline"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.11",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-approval-decline"
+        }
+      ],
+      "reviewObjective": "Approved POS receipts include the approval phrase and code; declined POS receipts include a decline message when preprint is used; customer-activated devices display the decline message on screen."
+    },
+    {
+      "id": "TC-DRAFT-10-1-040",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-040"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-040.json",
+      "category": "response_network",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "credit_receipt_signature"
+      ],
+      "priority": "medium",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.12",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-signature"
+        }
+      ],
+      "reviewObjective": "A signature line appears only on the merchant copy of a credit-card transaction receipt."
+    },
+    {
+      "id": "TC-DRAFT-10-1-041",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-041"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-041.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_card_data_display"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-card-data-display"
+        }
+      ],
+      "reviewObjective": "A device must not display/store card-read data other than account number, expiration date, and cardholder name if present; merchants must not store full magnetic-stripe data."
+    },
+    {
+      "id": "TC-DRAFT-10-1-042",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-042"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-042.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_research_storage"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-research-storage"
+        }
+      ],
+      "reviewObjective": "For research, only account number, expiration date, and cardholder name may be recorded in the specified files and must be kept securely; full card-read/discretionary data is prohibited."
+    },
+    {
+      "id": "TC-DRAFT-10-1-043",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-043"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-043.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_clearing_source"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1,10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-clearing-source"
+        }
+      ],
+      "reviewObjective": "Full card-read data is not stored or reused to produce later authorization/clearing data, except for the explicitly stated TransArmor-Verifone exception."
+    },
+    {
+      "id": "TC-DRAFT-10-1-044",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-044"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-044.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_track_selection"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-track-selection"
+        }
+      ],
+      "reviewObjective": "Track 2 is default when supported, otherwise unaltered Track 1 before manual entry; Amex uses Track 1 by default and unaltered Track 2 fallback."
+    },
+    {
+      "id": "TC-DRAFT-10-1-045",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-045"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-045.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_host_card_data"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-host-card-data"
+        }
+      ],
+      "reviewObjective": "For the enumerated credit transaction types, the host message uses account number, '=' delimiter, and four-digit YYMM expiration date with no further Card Discretionary Data after the date."
+    },
+    {
+      "id": "TC-DRAFT-10-1-046",
+      "scenarioIds": [
+        "SCN-DRAFT-10-1-046"
+      ],
+      "expectedOutcome": "REVIEW",
+      "testDataFile": "test-data/TC-DRAFT-10-1-046.json",
+      "category": "core_structure",
+      "tags": [
+        "section-10.1",
+        "draft-review-required",
+        "regulatory_in_flight_exception"
+      ],
+      "priority": "high",
+      "status": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-in-flight-exception"
+        }
+      ],
+      "reviewObjective": "Track 2 may be retained in the In Flight Table only while a transaction is in process and is removed when complete; offline transactions send full unaltered Track 1 and Track 2."
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-DRAFT-10-1-001",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-001"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-001.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.1",
+          "segment": "100",
+          "rule": "section-10-1-card-expiry-validation"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "valid in-range expiration",
+            "expired or malformed expiration",
+            "century boundary up to 1249"
+          ],
+          "requiredContext": "CARD_EXPIRY_VALIDATION",
+          "sourceSection": "10.1.1.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-002",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-002"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-002.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-track2-default-fallback"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "card brand",
+            "reader track capabilities",
+            "readable track data"
+          ],
+          "requiredContext": "TRACK2_DEFAULT_FALLBACK",
+          "sourceSection": "10.1.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-003",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-003"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-003.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-amex-track1-default"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "Amex card context",
+            "Track 1 readable/unreadable"
+          ],
+          "requiredContext": "AMEX_TRACK1_DEFAULT",
+          "sourceSection": "10.1.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-004",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-004"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-004.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-afd-encrypted-track1"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "AFD transaction",
+            "encrypted TransArmor block",
+            "Track 1 target"
+          ],
+          "requiredContext": "AFD_ENCRYPTED_TRACK1",
+          "sourceSection": "10.1.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-005",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-005"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-005.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.2",
+          "segment": "100",
+          "rule": "section-10-1-offline-track-data"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "Pre-Auth/Sale",
+            "offline approval",
+            "follow-up transaction"
+          ],
+          "requiredContext": "OFFLINE_TRACK_DATA",
+          "sourceSection": "10.1.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-006",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-006"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-006.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-retry"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "credit card",
+            "three failed swipes",
+            "manual entry prompt"
+          ],
+          "requiredContext": "MANUAL_ENTRY_RETRY",
+          "sourceSection": "10.1.1.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-007",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-007"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-007.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.1.3",
+          "segment": "100",
+          "rule": "section-10-1-manual-entry-receipt-marker"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "manual entry",
+            "receipt",
+            "journal"
+          ],
+          "requiredContext": "MANUAL_ENTRY_RECEIPT_MARKER",
+          "sourceSection": "10.1.1.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-008",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-008"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-008.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-pos-credit-transaction-types"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "POS credit-card processing",
+            "each documented transaction type"
+          ],
+          "requiredContext": "POS_CREDIT_TRANSACTION_TYPES",
+          "sourceSection": "10.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-009",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-009"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-009.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2",
+          "segment": "100",
+          "rule": "section-10-1-cat-credit-transaction-types"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "CAT credit-card processing",
+            "each documented transaction type"
+          ],
+          "requiredContext": "CAT_CREDIT_TRANSACTION_TYPES",
+          "sourceSection": "10.1.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-010",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-010"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-010.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-response"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "Partial Approval Indicator 1",
+            "response code F",
+            "approved amount",
+            "remaining balance",
+            "optional Segment 112 balance"
+          ],
+          "requiredContext": "PARTIAL_APPROVAL_RESPONSE",
+          "sourceSection": "10.1.2.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-011",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-011"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-011.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-approval-contexts"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "POS Purchase",
+            "POS Authorization Only",
+            "CAT Authorization Only"
+          ],
+          "requiredContext": "PARTIAL_APPROVAL_CONTEXTS",
+          "sourceSection": "10.1.2.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-012",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-012"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-012.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-reversal-amount"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "partial approval",
+            "authorization reversal",
+            "original approved amount"
+          ],
+          "requiredContext": "PARTIAL_REVERSAL_AMOUNT",
+          "sourceSection": "10.1.2.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-013",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-013"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-013.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.1",
+          "segment": "100",
+          "rule": "section-10-1-partial-tor-original-request"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "partial approval",
+            "timeout reversal",
+            "original amount",
+            "original Sequence Number"
+          ],
+          "requiredContext": "PARTIAL_TOR_ORIGINAL_REQUEST",
+          "sourceSection": "10.1.2.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-014",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-014"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-014.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-timelines"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "approved authorization",
+            "card-present/card-absent context",
+            "24/72-hour timing"
+          ],
+          "requiredContext": "AUTH_REVERSAL_TIMELINES",
+          "sourceSection": "10.1.2.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-015",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-015"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-015.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-types"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "POS type 3",
+            "CAT type 5"
+          ],
+          "requiredContext": "AUTH_REVERSAL_TYPES",
+          "sourceSection": "10.1.2.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-016",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-016"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-016.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.2.2",
+          "segment": "100",
+          "rule": "section-10-1-auth-reversal-matching"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "original authorization",
+            "approval number",
+            "sequence number",
+            "Prompt Code S"
+          ],
+          "requiredContext": "AUTH_REVERSAL_MATCHING",
+          "sourceSection": "10.1.2.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-017",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-017"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-017.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100,111,112",
+          "rule": "section-10-1-avs-request-response-path"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "non-face-to-face transaction",
+            "request Segment 111",
+            "response Segment 112"
+          ],
+          "requiredContext": "AVS_REQUEST_RESPONSE_PATH",
+          "sourceSection": "10.1.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-018",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-018"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-018.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.3",
+          "segment": "100",
+          "rule": "section-10-1-avs-merchant-decision"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "approved Purchase/Capture",
+            "AVS result",
+            "merchant rejection and reversal"
+          ],
+          "requiredContext": "AVS_MERCHANT_DECISION",
+          "sourceSection": "10.1.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-019",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-019"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-019.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.4",
+          "segment": "111",
+          "rule": "section-10-1-bill-recurring-installment-indicator"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "bill payment",
+            "recurring",
+            "installment",
+            "Segment 111 indicator"
+          ],
+          "requiredContext": "BILL_RECURRING_INSTALLMENT_INDICATOR",
+          "sourceSection": "10.1.4",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-020",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-020"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-020.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100",
+          "rule": "section-10-1-rfid-track2-capture"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "RFID receiver",
+            "contactless card",
+            "full unaltered Track 2"
+          ],
+          "requiredContext": "RFID_TRACK2_CAPTURE",
+          "sourceSection": "10.1.5",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-021",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-021"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-021.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.5",
+          "segment": "100,111",
+          "rule": "section-10-1-rfid-entry-mode"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "receiver present/absent",
+            "swiped/manual/nonapplicable card contexts",
+            "Element 113"
+          ],
+          "requiredContext": "RFID_ENTRY_MODE",
+          "sourceSection": "10.1.5",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-022",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-022"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-022.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-service-scope"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA",
+            "credit and PIN-debit issuers",
+            "medical/OTC purchase"
+          ],
+          "requiredContext": "HEALTHCARE_SERVICE_SCOPE",
+          "sourceSection": "10.1.6",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-023",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-023"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-023.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-benefit-bin"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "eligible benefit card",
+            "nine-digit BIN",
+            "card swipe"
+          ],
+          "requiredContext": "HEALTHCARE_BENEFIT_BIN",
+          "sourceSection": "10.1.6.1.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-024",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-024"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-024.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.2,10.1.6.1.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-partial-split-tender"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA",
+            "partial approval supported/unsupported",
+            "qualified/nonqualified items",
+            "remaining balance tender"
+          ],
+          "requiredContext": "HEALTHCARE_PARTIAL_SPLIT_TENDER",
+          "sourceSection": "10.1.6.1.2,10.1.6.1.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-025",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-025"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-025.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.1.4",
+          "segment": "102",
+          "rule": "section-10-1-healthcare-qualified-products"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "QHP product categories",
+            "code 894 required total",
+            "taxes/shipping/discounts"
+          ],
+          "requiredContext": "HEALTHCARE_QUALIFIED_PRODUCTS",
+          "sourceSection": "10.1.6.1.4",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-026",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-026"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-026.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.2",
+          "segment": "100,102,111",
+          "rule": "section-10-1-healthcare-request-fields"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA request",
+            "MSDI Segment 111",
+            "Partial Approval Indicator Segment 100",
+            "Product Code Segment 102"
+          ],
+          "requiredContext": "HEALTHCARE_REQUEST_FIELDS",
+          "sourceSection": "10.1.6.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-027",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-027"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-027.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-response-standard"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA response",
+            "standard response data"
+          ],
+          "requiredContext": "HEALTHCARE_RESPONSE_STANDARD",
+          "sourceSection": "10.1.6.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-028",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-028"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-028.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-transaction-types"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA",
+            "each supported transaction type"
+          ],
+          "requiredContext": "HEALTHCARE_TRANSACTION_TYPES",
+          "sourceSection": "10.1.6.4",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-029",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-029"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-029.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.1",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-totals"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA Purchase/Capture",
+            "required fields",
+            "approved totals update"
+          ],
+          "requiredContext": "HEALTHCARE_PURCHASE_TOTALS",
+          "sourceSection": "10.1.6.4.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-030",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-030"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-030.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.2",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-purchase-reversal-totals"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA Purchase Reversal",
+            "totals decrement"
+          ],
+          "requiredContext": "HEALTHCARE_PURCHASE_REVERSAL_TOTALS",
+          "sourceSection": "10.1.6.4.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-031",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-031"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-031.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.3",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-return-totals"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA Merchandise Return",
+            "count increment",
+            "amount decrement"
+          ],
+          "requiredContext": "HEALTHCARE_RETURN_TOTALS",
+          "sourceSection": "10.1.6.4.3",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-032",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-032"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-032.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.4.4",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-tor-totals"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "FSA/HRA TOR",
+            "totals decrement"
+          ],
+          "requiredContext": "HEALTHCARE_TOR_TOTALS",
+          "sourceSection": "10.1.6.4.4",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-033",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-033"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-033.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.6.5",
+          "segment": "100",
+          "rule": "section-10-1-healthcare-receipt-additions"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "approved FSA/HRA receipt",
+            "QHP indicator",
+            "subtotal incl. taxes/discounts"
+          ],
+          "requiredContext": "HEALTHCARE_RECEIPT_ADDITIONS",
+          "sourceSection": "10.1.6.5",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-034",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-034"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-034.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-required-fields"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "POS receipt",
+            "each enumerated receipt item"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_REQUIRED_FIELDS",
+          "sourceSection": "10.1.7",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-035",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-035"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-035.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.4,10.1.7.5",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-masking"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "all credit-card receipts",
+            "PAN masking",
+            "expiration suppression"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_MASKING",
+          "sourceSection": "10.1.7.4,10.1.7.5",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-036",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-036"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-036.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-transaction-fields"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "credit-card receipt",
+            "transaction date",
+            "transaction time",
+            "sequence number"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_TRANSACTION_FIELDS",
+          "sourceSection": "10.1.7.6,10.1.7.7,10.1.7.8",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-037",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-037"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-037.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.9",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-product-fields"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "approved POS transaction",
+            "fuel/nonfuel product details"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_PRODUCT_FIELDS",
+          "sourceSection": "10.1.7.9",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-038",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-038"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-038.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.10",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-balance-fields"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "issuer returned balance",
+            "partial approval/balance-return purchase",
+            "approved/declined receipt"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_BALANCE_FIELDS",
+          "sourceSection": "10.1.7.10",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-039",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-039"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-039.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.11",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-approval-decline"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "approved/declined transaction",
+            "POS preprint",
+            "customer-activated terminal"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_APPROVAL_DECLINE",
+          "sourceSection": "10.1.7.11",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-040",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-040"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-040.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.7.12",
+          "segment": "100",
+          "rule": "section-10-1-credit-receipt-signature"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "merchant receipt copy",
+            "customer copy"
+          ],
+          "requiredContext": "CREDIT_RECEIPT_SIGNATURE",
+          "sourceSection": "10.1.7.12",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-041",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-041"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-041.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-card-data-display"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "all electronic credit transactions",
+            "display/storage controls"
+          ],
+          "requiredContext": "REGULATORY_CARD_DATA_DISPLAY",
+          "sourceSection": "10.1.8.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-042",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-042"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-042.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-research-storage"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "research-purpose storage",
+            "permitted fields",
+            "secure retention"
+          ],
+          "requiredContext": "REGULATORY_RESEARCH_STORAGE",
+          "sourceSection": "10.1.8.1",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-043",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-043"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-043.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.1,10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-clearing-source"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "clearing transaction",
+            "prior full track capture",
+            "TransArmor-Verifone exception"
+          ],
+          "requiredContext": "REGULATORY_CLEARING_SOURCE",
+          "sourceSection": "10.1.8.1,10.1.8.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-044",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-044"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-044.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-track-selection"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "all electronic credit transactions",
+            "Amex/non-Amex",
+            "track reader capability"
+          ],
+          "requiredContext": "REGULATORY_TRACK_SELECTION",
+          "sourceSection": "10.1.8.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-045",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-045"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-045.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-host-card-data"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "credit completion",
+            "POS purchase reversal",
+            "TOR",
+            "POS cancellation"
+          ],
+          "requiredContext": "REGULATORY_HOST_CARD_DATA",
+          "sourceSection": "10.1.8.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    },
+    {
+      "id": "TD-DRAFT-10-1-046",
+      "testCaseIds": [
+        "TC-DRAFT-10-1-046"
+      ],
+      "expectedValidation": "REVIEW",
+      "fileName": "test-data/TC-DRAFT-10-1-046.json",
+      "readiness": "REVIEW_REQUIRED",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-3",
+          "section": "10.1.8.2",
+          "segment": "100",
+          "rule": "section-10-1-regulatory-in-flight-exception"
+        }
+      ],
+      "payload": {
+        "request": {
+          "reviewOnly": true,
+          "testDataDesign": "NOT_A_CONVERTER_READY_ATL105_REQUEST",
+          "fixturePlan": [
+            "in-flight state",
+            "completion removes data",
+            "offline transaction"
+          ],
+          "requiredContext": "REGULATORY_IN_FLIGHT_EXCEPTION",
+          "sourceSection": "10.1.8.2",
+          "executionAllowed": false
+        }
+      },
+      "dataStatus": "DRAFT_TEST_DATA_DESIGN_NOT_EXECUTABLE",
+      "responseOracle": null
+    }
+  ],
+  "reviewPolicy": {
+    "allStatuses": "REVIEW_REQUIRED",
+    "dataPolicy": "TD files are fixture-design placeholders, not converter-ready requests; no response/host oracle is invented.",
+    "matchPolicy": "Existing rules are references only. No AI/Test semantic crosswalk or coverage credit is asserted.",
+    "promotionGate": "Authorized Test Solution review must approve BR wording/source applicability and complete real TD/request/response oracles before execution readiness."
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "id" : "TD-APPI-C052-OUTER-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C052-OUTER-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C052-OUTER-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-53",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t052-r002-APPI-C052-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C052-OUTER-001",
+        "tableId" : "052",
+        "ruleIds" : [ "APPI-T052-R001", "APPI-T052-R002" ],
+        "syntheticData" : {
+          "tableSelector" : "052",
+          "logicalPayloadLength" : 17,
+          "context" : {
+            "encryption" : "AES DUKPT"
+          },
+          "nestedRecords" : [ {
+            "selector" : "01",
+            "logicalLength" : 4,
+            "data" : "ABCD"
+          } ],
+          "logicalRecordObservation" : "01004ABCD02003NCR"
+        },
+        "clearScope" : "Displayed nested ID-length-data order; AES needs KSN and device; each field limit40/8; outer allocation100.",
+        "excludedClaims" : [ "Choosing between conflicting first-three-digits wording and displayed framing", "DUKPT/TDES/OnGuard key validity", "Acceptance of literal source example count051" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "AES KSN and device presence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "17 observed bytes from two displayed logical nested records",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Executable outer framing",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "nestedRecords[1]",
+            "operation" : "remove",
+            "expected" : "FAIL AES device presence"
+          }, {
+            "path" : "nestedRecords[0].logicalLength",
+            "replacement" : 5,
+            "expected" : "FAIL nested-count agreement"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 16,
+            "expected" : "FAIL aggregate logical count"
+          }, {
+            "path" : "context.encryption",
+            "replacement" : "TDES",
+            "expected" : "PASS device remains permissible; this change alone is not a negative"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "maximumDeclaredAllocation" : 100,
+          "oneOverDeclaredAllocation" : 101,
+          "note" : "Do not fabricate extra sub-tables to fill100; demonstrated two-record payload has maximum58 bytes."
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30076,
+          "section" : "Appendix I-53",
+          "endLine" : 30140
+        }, {
+          "startLine" : 30141,
+          "section" : "Appendix I-54",
+          "endLine" : 30143
+        }, {
+          "startLine" : 30080,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30108,
+          "section" : "Appendix I-53",
+          "endLine" : 30132
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 052",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30080,
+            "section" : "Appendix I-53",
+            "endLine" : 30082
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte payload length; maximum 100",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30083,
+            "section" : "Appendix I-53",
+            "endLine" : 30085
+          } ]
+        }, {
+          "path" : "113.Table Data",
+          "sourceType" : "an100",
+          "sourceLength" : "variable up to 100; source calls units digits and describes TLV",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30086,
+            "section" : "Appendix I-53",
+            "endLine" : 30094
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

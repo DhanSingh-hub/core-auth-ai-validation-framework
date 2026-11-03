@@ -1,0 +1,210 @@
+{
+  "id" : "TD-APPI-C060-N01-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C060-N01-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C060-N01-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-65",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t060-r003-APPI-C060-N01-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C060-N01-001",
+        "tableId" : "060",
+        "nestedSelector" : "01",
+        "ruleIds" : [ "APPI-T060-R001", "APPI-T060-R002", "APPI-T060-R003", "APPI-T060-R005", "APPI-T060-R007" ],
+        "syntheticData" : {
+          "selector" : "01",
+          "logicalLength" : 1,
+          "value" : "I",
+          "context" : {
+            "cardBrand" : "MasterCard",
+            "cardPresence" : "not present",
+            "transactionType" : "Refund",
+            "record02Absent" : true,
+            "optimizerQualified" : true,
+            "optimizerUsed" : true
+          },
+          "response" : {
+            "statusOnly" : "E",
+            "fullAccountInformationPresent" : false
+          }
+        },
+        "clearScope" : "Yallavailable accountinfo/Iindicators;absent01noaccountinfo;Visa/MC CNPA/S/Refund;no02.",
+        "excludedClaims" : [ "Whatfutureallocation03-25means", "Whetherupdateavailable", "Participatingmerchantoverride exception" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Iindicator-only andeligiblecontext",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "OnebyteY/Idomain",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "value",
+            "replacement" : "N",
+            "expected" : "FAIL listedY/Idomain"
+          }, {
+            "path" : "response.fullAccountInformationPresent",
+            "replacement" : true,
+            "expected" : "FAIL Ifull-data prohibition"
+          }, {
+            "path" : "context.record02Absent",
+            "replacement" : false,
+            "expected" : "FAIL mutualexclusion"
+          }, {
+            "path" : "context.transactionType",
+            "replacement" : "Completion",
+            "expected" : "FAIL listedtransactiontypes"
+          }, {
+            "path" : "logicalLength",
+            "replacement" : 2,
+            "expected" : "FAIL fixed1"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "electionY" : "Y",
+          "electionI" : "I",
+          "absentElectionResponse" : {
+            "fullAccountInformationPresent" : false,
+            "indicatorsPresent" : false
+          },
+          "availableUpdateRequirement" : "No guaranteeofupdates fromYalone"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30883,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30921
+        }, {
+          "startLine" : 30856,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30917,
+          "section" : "Appendix I-66",
+          "endLine" : 30946
+        }, {
+          "startLine" : 30893,
+          "section" : "Appendix I-65",
+          "endLine" : 30908
+        }, {
+          "startLine" : 30909,
+          "section" : "Appendix I-66",
+          "endLine" : 30914
+        }, {
+          "section" : "Appendix I-65",
+          "startLine" : 30870,
+          "endLine" : 30882
+        }, {
+          "section" : "Appendix AD-1",
+          "startLine" : 36815,
+          "endLine" : 36828
+        }, {
+          "section" : "Appendix AD-1",
+          "startLine" : 36807,
+          "endLine" : 36830
+        }, {
+          "section" : "Appendix I-66",
+          "startLine" : 30910,
+          "endLine" : 30914
+        }, {
+          "section" : "12.39",
+          "startLine" : 16426,
+          "endLine" : 16542
+        }, {
+          "section" : "12.39",
+          "startLine" : 16551,
+          "endLine" : 16622
+        }, {
+          "section" : "12.39 / 12-96",
+          "startLine" : 16426,
+          "endLine" : 16481
+        }, {
+          "section" : "12.39 / 12-97",
+          "startLine" : 16492,
+          "endLine" : 16542
+        }, {
+          "section" : "12.39 / 12-98",
+          "startLine" : 16551,
+          "endLine" : 16576
+        }, {
+          "section" : "12.39 / 12-99",
+          "startLine" : 16587,
+          "endLine" : 16622
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.01.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30886,
+            "section" : "Appendix I-65",
+            "endLine" : 30888
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 01",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30889,
+            "section" : "Appendix I-65",
+            "endLine" : 30892
+          } ]
+        }, {
+          "path" : "113.01.Sub-Table Data",
+          "sourceType" : "an1",
+          "sourceLength" : "1 byte; Y or I",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30893,
+            "section" : "Appendix I-65",
+            "endLine" : 30908
+          }, {
+            "startLine" : 30909,
+            "section" : "Appendix I-66",
+            "endLine" : 30921
+          }, {
+            "section" : "Appendix AD-1",
+            "startLine" : 36824,
+            "endLine" : 36828
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

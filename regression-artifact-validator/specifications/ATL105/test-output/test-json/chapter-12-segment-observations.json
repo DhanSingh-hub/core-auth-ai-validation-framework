@@ -1,0 +1,5810 @@
+{
+  "specification": "ATL105",
+  "specificationVersion": "2026-3",
+  "producer": "TEST_SOLUTION",
+  "scope": "Independent synthetic numbered-element observations, not host-approved messages. Missing wire and cross-message context remain review-required.",
+  "observations": [
+    {
+      "id": "TD-TEST-CH12-DL1-FIELDS",
+      "ruleId": "SEGDL1-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "DL1",
+        "messageFamily": "Table Load Response",
+        "direction": "RESPONSE",
+        "elements": {
+          "24": "#",
+          "53": "SYNTHETIC",
+          "98": "0000000000000001",
+          "3": "TEST STREET",
+          "4": "TEST CITY    CA 12345",
+          "54": "(123)456-7890",
+          "59": "01",
+          "34": "~"
+        },
+        "cardTypes": ["001"],
+        "context": {"merchantLoadFlag": "TABL"}
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-119-FIELDS",
+      "ruleId": "SEG119-R-008",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "119",
+        "SegmentLength": "147",
+        "InformationByte": "0",
+        "TerminalID": "1D13500101001",
+        "PromptCode": "990",
+        "EmployeeNumber": "",
+        "Password": "",
+        "TotalsDate": "333333",
+        "HardwareVersion": "HW01",
+        "SoftwareVersion": "SW000001",
+        "FirmwareVersion": "FW000001",
+        "SequenceNumber": "000001",
+        "DeviceCardTableVersion": "00000000000000000000000000000000001",
+        "HostDiscountTimestamp": "202610091930",
+        "CurrencyCode": "840",
+        "GrandTotal": "00000100",
+        "CategoryTotals": [
+          {
+            "CardLabel": "CC",
+            "CardTypeTotalCount": "00001",
+            "CardTypeTotalAmount": "00000100"
+          }
+        ]
+      },
+      "actualEvidence": {
+        "context": {
+          "bucketCoverageComplete": true
+        },
+        "history": {
+          "totals": {
+            "requestDate": "333333",
+            "responseDate": "261009",
+            "activityHistoryComplete": true,
+            "activityDates": [
+              "2026-10-09",
+              "2026-10-08",
+              "2026-10-07"
+            ]
+          }
+        }
+      },
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-TIMESTAMP-VALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "discount-timestamp",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-TIMESTAMP-INVALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "discount-timestamp",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "HostDiscountTimestamp": "202602291930"
+          }
+        },
+        {
+          "id": "ACTUAL-SEQUENCE-ZERO",
+          "ruleId": "SEG119-R-019",
+          "scope": "sequence",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "SequenceNumber": "000000"
+          }
+        },
+        {
+          "id": "ACTUAL-BUCKET-NONTEXT",
+          "ruleId": "SEG119-R-025",
+          "scope": "bucket-count-width",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "CategoryTotals": [
+              {
+                "CardLabel": "CC",
+                "CardTypeTotalCount": 1,
+                "CardTypeTotalAmount": "00000100"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ACTUAL-HISTORY-SELECTOR",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-RESPONSE",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-HISTORY-RESPONSE-INVALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-RESPONSE",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "333333",
+                "responseDate": "261008",
+                "activityHistoryComplete": true,
+                "activityDates": [
+                  "2026-10-09",
+                  "2026-10-08",
+                  "2026-10-07"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-ROLL-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-ROLL",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "actualFields": {
+            "TotalsDate": "222222"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "222222",
+                "responseDate": "261009",
+                "currentSettlementDate": "2026-10-09",
+                "nextSettlementDate": "2026-10-12",
+                "settlementDateAfter": "2026-10-12",
+                "endedSettlementDates": [
+                  "2026-10-09"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-ROLL-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-ROLL",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "TotalsDate": "222222"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "222222",
+                "responseDate": "261009",
+                "currentSettlementDate": "2026-10-09",
+                "nextSettlementDate": "2026-10-12",
+                "settlementDateAfter": "2026-10-09",
+                "endedSettlementDates": [
+                  "2026-10-09"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-ACCUMULATION-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "actualFields": {
+            "TotalsDate": "111111"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "111111",
+                "responseDate": "111111",
+                "accumulatedTotalsBefore": {
+                  "CC": "100",
+                  "DB": "200"
+                },
+                "accumulatedTotalsAfter": {
+                  "CC": "100",
+                  "DB": "200"
+                },
+                "lastResetEventId": "RESET-1",
+                "returnedPeriodStartEventId": "RESET-1"
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-ACCUMULATION-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "TotalsDate": "111111"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "111111",
+                "responseDate": "111111",
+                "accumulatedTotalsBefore": {
+                  "CC": "100",
+                  "DB": "200"
+                },
+                "accumulatedTotalsAfter": {
+                  "CC": "100",
+                  "DB": "0"
+                },
+                "lastResetEventId": "RESET-1",
+                "returnedPeriodStartEventId": "RESET-1"
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-RESET-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "actualFields": {
+            "TotalsDate": "999999"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "999999",
+                "responseDate": "999999",
+                "accumulatedTotalsBefore": {
+                  "CC": "100",
+                  "DB": "200"
+                },
+                "accumulatedTotalsAfter": {
+                  "CC": "0",
+                  "DB": "0"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-RESET-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "TotalsDate": "999999"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "999999",
+                "responseDate": "999999",
+                "accumulatedTotalsBefore": {
+                  "CC": "100",
+                  "DB": "200"
+                },
+                "accumulatedTotalsAfter": {
+                  "CC": "0",
+                  "DB": "200"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-WINDOW-VALID",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-ACTIVITY-WINDOW",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "actualFields": {
+            "TotalsDate": "100726"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "100726",
+                "responseDate": "261007",
+                "requestedSettlementDate": "2026-10-07",
+                "activityHistoryComplete": true,
+                "activityDates": [
+                  "2026-10-07",
+                  "2026-10-09",
+                  "2026-10-08"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-WINDOW-TOO-OLD",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-ACTIVITY-WINDOW",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "TotalsDate": "100626"
+          },
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestDate": "100626",
+                "responseDate": "261006",
+                "requestedSettlementDate": "2026-10-06",
+                "activityHistoryComplete": true,
+                "activityDates": [
+                  "2026-10-07",
+                  "2026-10-09",
+                  "2026-10-08"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-SEQUENCE-CORRELATION-VALID",
+          "ruleId": "SEG119-R-032",
+          "scope": "sequence-correlation",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestSequenceNumber": "000001",
+                "responseSequenceNumber": "000001"
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-SEQUENCE-CORRELATION-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "scope": "sequence-correlation",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "history": {
+              "totals": {
+                "requestSequenceNumber": "000001",
+                "responseSequenceNumber": "000002"
+              }
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-LOADED-VERSION-VALID",
+          "ruleId": "SEG119-R-020",
+          "scope": "loaded-card-table",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "evidence": {
+            "context": {
+              "loadedDeviceCardTableVersion": "00000000000000000000000000000000001"
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-LOADED-VERSION-BROKEN",
+          "ruleId": "SEG119-R-020",
+          "scope": "loaded-card-table",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "context": {
+              "loadedDeviceCardTableVersion": "00000000000000000000000000000000002"
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-LOADED-DISCOUNT-VALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "loaded-discount-timestamp",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "evidence": {
+            "context": {
+              "hostDiscountTimestampInUse": "202610091930"
+            }
+          }
+        },
+        {
+          "id": "ACTUAL-LOADED-DISCOUNT-BROKEN",
+          "ruleId": "SEG119-R-021",
+          "scope": "loaded-discount-timestamp",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "context": {
+              "hostDiscountTimestampInUse": "202610091931"
+            }
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "DATE-VALID",
+          "ruleId": "SEG119-R-015",
+          "scope": "totals-date",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DATE-INVALID",
+          "ruleId": "SEG119-R-015",
+          "scope": "totals-date",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "105": "023126"
+          }
+        },
+        {
+          "id": "TIMESTAMP-VALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "discount-timestamp",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TIMESTAMP-INVALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "discount-timestamp",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "179": "202602291930"
+          }
+        },
+        {
+          "id": "SEQUENCE-VALID",
+          "ruleId": "SEG119-R-019",
+          "scope": "sequence",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SEQUENCE-ZERO",
+          "ruleId": "SEG119-R-019",
+          "scope": "sequence",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "86": "000000"
+          }
+        },
+        {
+          "id": "BUCKET-ORDER-VALID",
+          "ruleId": "SEG119-R-027",
+          "scope": "bucket-order",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "BUCKET-LABEL-INVALID",
+          "ruleId": "SEG119-R-024",
+          "scope": "bucket-label",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "cardBuckets": [
+            {
+              "13": "ZZ  ",
+              "16": "00001",
+              "15": "00000100"
+            }
+          ]
+        },
+        {
+          "id": "BUCKET-COUNT-ZERO",
+          "ruleId": "SEG119-R-025",
+          "scope": "bucket-count-width",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "cardBuckets": [
+            {
+              "13": "CC  ",
+              "16": "00000",
+              "15": "00000100"
+            }
+          ]
+        },
+        {
+          "id": "BUCKET-AMOUNT-INVALID",
+          "ruleId": "SEG119-R-026",
+          "scope": "bucket-amount",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "cardBuckets": [
+            {
+              "13": "CC  ",
+              "16": "00001",
+              "15": "-0000100"
+            }
+          ]
+        },
+        {
+          "id": "TOTAL-VALID",
+          "ruleId": "SEG119-R-030",
+          "scope": "grand-total-exclusion",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TOTAL-INVALID",
+          "ruleId": "SEG119-R-030",
+          "scope": "grand-total-exclusion",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "42": "00000101"
+          }
+        },
+        {
+          "id": "TOTAL-EXCLUDE-NONFINANCIAL",
+          "ruleId": "SEG119-R-030",
+          "scope": "grand-total-exclusion",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "cardBuckets": [
+            {
+              "13": "CC  ",
+              "16": "00001",
+              "15": "00000100"
+            },
+            {
+              "13": "AO  ",
+              "16": "00001",
+              "15": "00000500"
+            },
+            {
+              "13": "HD  ",
+              "16": "00001",
+              "15": "00000700"
+            }
+          ]
+        },
+        {
+          "id": "TOTAL-INCLUDED-NONFINANCIAL",
+          "ruleId": "SEG119-R-030",
+          "scope": "grand-total-exclusion",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "42": "00001300"
+          },
+          "cardBuckets": [
+            {
+              "13": "CC  ",
+              "16": "00001",
+              "15": "00000100"
+            },
+            {
+              "13": "AO  ",
+              "16": "00001",
+              "15": "00000500"
+            },
+            {
+              "13": "HD  ",
+              "16": "00001",
+              "15": "00000700"
+            }
+          ]
+        },
+        {
+          "id": "TOTAL-PARTIAL-REVIEW",
+          "ruleId": "SEG119-R-030",
+          "scope": "grand-total-exclusion",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "context": {
+            "bucketCoverageComplete": false
+          }
+        },
+        {
+          "id": "WIRE-VALID",
+          "ruleId": "SEG119-R-009",
+          "scope": "wire-measured-length",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-LENGTH-INVALID",
+          "ruleId": "SEG119-R-009",
+          "scope": "wire-measured-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "158"
+          }
+        },
+        {
+          "id": "WIRE-SOURCE-REVIEW",
+          "ruleId": "SEG119-R-039",
+          "scope": "source-wire-conflict",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "HISTORY-WINDOW-VALID",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-ACTIVITY-WINDOW",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "100726"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "100726",
+              "responseDate": "261007",
+              "requestedSettlementDate": "2026-10-07",
+              "activityHistoryComplete": true,
+              "activityDates": [
+                "2026-10-07",
+                "2026-10-09",
+                "2026-10-08"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-WINDOW-TOO-OLD",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-ACTIVITY-WINDOW",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "100626"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "100626",
+              "responseDate": "261006",
+              "requestedSettlementDate": "2026-10-06",
+              "activityHistoryComplete": true,
+              "activityDates": [
+                "2026-10-07",
+                "2026-10-09",
+                "2026-10-08"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-ROLL-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-ROLL",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "222222"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "222222",
+              "responseDate": "261009",
+              "currentSettlementDate": "2026-10-09",
+              "nextSettlementDate": "2026-10-12",
+              "settlementDateAfter": "2026-10-12",
+              "endedSettlementDates": [
+                "2026-10-09"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-ROLL-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-ROLL",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "222222"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "222222",
+              "responseDate": "261009",
+              "currentSettlementDate": "2026-10-09",
+              "nextSettlementDate": "2026-10-12",
+              "settlementDateAfter": "2026-10-09",
+              "endedSettlementDates": [
+                "2026-10-09"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-END-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-END",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "222222"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "222222",
+              "responseDate": "261009",
+              "currentSettlementDate": "2026-10-09",
+              "nextSettlementDate": "2026-10-12",
+              "settlementDateAfter": "2026-10-12",
+              "endedSettlementDates": [
+                "2026-10-09"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-END-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-SETTLEMENT-END",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "222222"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "222222",
+              "responseDate": "261009",
+              "currentSettlementDate": "2026-10-09",
+              "nextSettlementDate": "2026-10-12",
+              "settlementDateAfter": "2026-10-12",
+              "endedSettlementDates": []
+            }
+          }
+        },
+        {
+          "id": "HISTORY-ACCUMULATION-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "111111"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "111111",
+              "responseDate": "111111",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "lastResetEventId": "RESET-1",
+              "returnedPeriodStartEventId": "RESET-1"
+            }
+          }
+        },
+        {
+          "id": "HISTORY-ACCUMULATION-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "111111"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "111111",
+              "responseDate": "111111",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "100",
+                "DB": "0"
+              },
+              "lastResetEventId": "RESET-1",
+              "returnedPeriodStartEventId": "RESET-1"
+            }
+          }
+        },
+        {
+          "id": "HISTORY-PERIOD-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION-PERIOD",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "111111"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "111111",
+              "responseDate": "111111",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "lastResetEventId": "RESET-1",
+              "returnedPeriodStartEventId": "RESET-1"
+            }
+          }
+        },
+        {
+          "id": "HISTORY-PERIOD-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION-PERIOD",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "111111"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "111111",
+              "responseDate": "111111",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "lastResetEventId": "RESET-1",
+              "returnedPeriodStartEventId": "RESET-2"
+            }
+          }
+        },
+        {
+          "id": "HISTORY-RESET-VALID",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "999999"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "999999",
+              "responseDate": "999999",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "0",
+                "DB": "0"
+              }
+            }
+          }
+        },
+        {
+          "id": "HISTORY-RESET-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-ACCUMULATION",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "999999"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "999999",
+              "responseDate": "999999",
+              "accumulatedTotalsBefore": {
+                "CC": "100",
+                "DB": "200"
+              },
+              "accumulatedTotalsAfter": {
+                "CC": "0",
+                "DB": "200"
+              }
+            }
+          }
+        },
+        {
+          "id": "HISTORY-PARTIAL",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-ACTIVITY-HISTORY",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "omitSerializedSegment": true,
+          "elements": {
+            "105": "333333"
+          },
+          "history": {
+            "totals": {
+              "requestDate": "333333",
+              "responseDate": "261009",
+              "activityHistoryComplete": false,
+              "activityDates": [
+                "2026-10-09"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-MALFORMED",
+          "ruleId": "SEG119-R-032",
+          "targetRuleId": "CH13-E105-PROCESSING-HISTORY-INPUT",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "history": {
+            "totals": []
+          }
+        },
+        {
+          "id": "HISTORY-CORRELATION-VALID",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-OBSERVATION-CORRELATION",
+          "scope": "observed-history",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "history": {
+            "totals": {
+              "requestDate": "100926",
+              "responseDate": "261009",
+              "requestedSettlementDate": "2026-10-09",
+              "activityHistoryComplete": true,
+              "activityDates": [
+                "2026-10-09",
+                "2026-10-08",
+                "2026-10-07"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HISTORY-CORRELATION-BROKEN",
+          "ruleId": "SEG119-R-015",
+          "targetRuleId": "CH13-E105-PROCESSING-OBSERVATION-CORRELATION",
+          "scope": "observed-history",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "history": {
+            "totals": {
+              "requestDate": "100826",
+              "responseDate": "261008",
+              "requestedSettlementDate": "2026-10-08",
+              "activityHistoryComplete": true,
+              "activityDates": [
+                "2026-10-09",
+                "2026-10-08",
+                "2026-10-07"
+              ]
+            }
+          }
+        },
+        {
+          "id": "SEQUENCE-CORRELATION-VALID",
+          "ruleId": "SEG119-R-032",
+          "scope": "sequence-correlation",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "history": {
+            "totals": {
+              "requestSequenceNumber": "000001",
+              "responseSequenceNumber": "000001"
+            }
+          }
+        },
+        {
+          "id": "SEQUENCE-CORRELATION-BROKEN",
+          "ruleId": "SEG119-R-032",
+          "scope": "sequence-correlation",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "history": {
+            "totals": {
+              "requestSequenceNumber": "000001",
+              "responseSequenceNumber": "000002"
+            }
+          }
+        },
+        {
+          "id": "LOADED-VERSION-VALID",
+          "ruleId": "SEG119-R-020",
+          "scope": "loaded-card-table",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "loadedDeviceCardTableVersion": "00000000000000000000000000000000001"
+          }
+        },
+        {
+          "id": "LOADED-VERSION-BROKEN",
+          "ruleId": "SEG119-R-020",
+          "scope": "loaded-card-table",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "loadedDeviceCardTableVersion": "00000000000000000000000000000000002"
+          }
+        },
+        {
+          "id": "LOADED-DISCOUNT-VALID",
+          "ruleId": "SEG119-R-021",
+          "scope": "loaded-discount-timestamp",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "hostDiscountTimestampInUse": "202610091930"
+          }
+        },
+        {
+          "id": "LOADED-DISCOUNT-BROKEN",
+          "ruleId": "SEG119-R-021",
+          "scope": "loaded-discount-timestamp",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "hostDiscountTimestampInUse": "202610091931"
+          }
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "119",
+        "direction": "REQUEST",
+        "messageFamily": "Totals with Proprietary Data Load Request",
+        "dataSection": 3,
+        "fieldNumber": 3,
+        "elements": {
+          "85": "119",
+          "84": "147",
+          "44": "0",
+          "102": "1D13500101001",
+          "78": "990",
+          "32": "",
+          "65": "",
+          "105": "100926",
+          "43": "HW01",
+          "96": "SW000001",
+          "39": "FW000001",
+          "86": "000001",
+          "176": "00000000000000000000000000000000001",
+          "179": "202610091930",
+          "20": "840",
+          "42": "00000100"
+        },
+        "context": {
+          "totalsRequired": true,
+          "employeeNumberRequired": false,
+          "passwordRequired": false,
+          "bucketCoverageComplete": true,
+          "wireProfile": "TABLE_17_19"
+        },
+        "cardBuckets": [
+          {
+            "13": "CC  ",
+            "16": "00001",
+            "15": "00000100"
+          }
+        ],
+        "serializedSegment": "119\u001c147\u001c0\u001c1D13500101001\u001c990\u001c\u001c\u001c100926\u001cHW01\u001cSW000001\u001cFW000001\u001c000001\u001c00000000000000000000000000000000001\u001c202610091930\u001c840\u001c00000100\u001cCC  0000100000100\u001c"
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-115-FIELDS",
+      "ruleId": "SEG115-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "115",
+        "SegmentLength": "0014",
+        "PrintData": "TERMS",
+        "SerializedSegment": "115\u001c0014\u001cTERMS"
+      },
+      "actualEvidence": {
+        "context": {
+          "additionalInformationFlag": "1",
+          "requestLoyaltyVersion": "2"
+        }
+      },
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-PRINT-WIRE-VALID",
+          "ruleId": "SEG115-R-006",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-PRINT-WIRE-BROKEN",
+          "ruleId": "SEG115-R-006",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "SerializedSegment": "115\u001c0014\u001cTERMS\u001c"
+          }
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "115",
+        "direction": "RESPONSE",
+        "messageFamily": "Financial Transaction Response",
+        "elements": {
+          "85": "115",
+          "84": "0014",
+          "152": "TERMS"
+        },
+        "context": {
+          "additionalInformationFlag": "1",
+          "requestLoyaltyVersion": "2"
+        },
+        "serializedSegment": "115\u001c0014\u001cTERMS"
+      },
+      "predicateProbes": [
+        {
+          "id": "FAMILY-VALID",
+          "ruleId": "SEG115-R-001",
+          "scope": "family",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "FAMILY-INVALID",
+          "ruleId": "SEG115-R-001",
+          "scope": "family",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "messageFamily": "Bogus Family"
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG115-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG115-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "99999"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "SOURCE-LENGTH-CONFLICT-DOCUMENTED",
+          "ruleId": "SEG115-R-005",
+          "scope": "source-length-conflict",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "SEPARATORS-VALID",
+          "ruleId": "SEG115-R-007",
+          "scope": "field-separators",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SEPARATORS-INVALID",
+          "ruleId": "SEG115-R-007",
+          "scope": "field-separators",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "115\u001c0014\u001cTERMS\u001c"
+        },
+        {
+          "id": "PRINT-DATA-LENGTH-VALID",
+          "ruleId": "SEG115-R-008",
+          "scope": "element-152",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "PRINT-DATA-LENGTH-INVALID",
+          "ruleId": "SEG115-R-008",
+          "scope": "element-152",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "152": ""
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ORIGIN-HOST-DOCUMENTED",
+          "ruleId": "SEG115-R-009",
+          "scope": "origin-metadata",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "COMPANION-SOURCE-CONFLICT-DOCUMENTED",
+          "ruleId": "SEG115-R-010",
+          "scope": "companion-source-conflict",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-116-FIELDS",
+      "ruleId": "SEG116-R-004",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {
+          "id": "TYPE-VALID",
+          "ruleId": "SEG116-R-003",
+          "scope": "element-85",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TYPE-INVALID",
+          "ruleId": "SEG116-R-003",
+          "scope": "element-85",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "85": "999"
+          }
+        },
+        {
+          "id": "LENGTH-VALID",
+          "ruleId": "SEG116-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-INVALID",
+          "ruleId": "SEG116-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "51"
+          }
+        },
+        {
+          "id": "FIELD-LAYOUT-GAP",
+          "ruleId": "SEG116-R-006",
+          "scope": "field-layout",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "116",
+        "elements": {
+          "85": "116",
+          "84": "50"
+        }
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-139-FIELDS",
+      "ruleId": "SEG139-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "139",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "139",
+          "84": "099",
+          "102": "1D13500101001",
+          "206": "DV12TERM1234        CLERK1202610081230MS01123000",
+          "207": "TERM1234",
+          "208": "MERCHANT12345",
+          "214": "001",
+          "215": "3"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "LIFECYCLE-REVIEW",
+          "ruleId": "SEG139-R-001",
+          "scope": "lifecycle",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "FIELDS-VALID",
+          "ruleId": "SEG139-R-003",
+          "scope": "element-102",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "FIELDS-INVALID",
+          "ruleId": "SEG139-R-003",
+          "scope": "element-102",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "102": ""
+          }
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG139-R-004",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-140-FIELDS",
+      "ruleId": "SEG140-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "140",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "140",
+          "84": "200",
+          "102": "1D13500101001",
+          "206": "DV12TERM1234        CLERK1202610081230MS01123000",
+          "207": "TERM1234",
+          "208": "MERCHANT12345",
+          "214": "001",
+          "216": "BATCH ACCEPTED  ",
+          "217": "0001",
+          "218": "+000000000000000100",
+          "219": "0000",
+          "220": "+000000000000000000",
+          "221": "0000",
+          "222": "+000000000000000000"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "LIFECYCLE-REVIEW",
+          "ruleId": "SEG140-R-001",
+          "scope": "lifecycle",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "DOLLAR-FORMAT-VALID",
+          "ruleId": "SEG140-R-003",
+          "scope": "element-218",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DOLLAR-FORMAT-INVALID",
+          "ruleId": "SEG140-R-003",
+          "scope": "element-218",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "218": "100.00"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-141-FIELDS",
+      "ruleId": "SEG141-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "141",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "141",
+          "84": "200",
+          "102": "1D13500101001",
+          "206": "DV12TERM1234        CLERK1202610081230MS01123000",
+          "207": "TERM1234",
+          "208": "MERCHANT12345",
+          "214": "001",
+          "215": "3",
+          "217": "0001",
+          "218": "+000000000000000100",
+          "219": "0000",
+          "220": "+000000000000000000",
+          "221": "0000",
+          "222": "+000000000000000000"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "LIFECYCLE-REVIEW",
+          "ruleId": "SEG141-R-001",
+          "scope": "lifecycle",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG141-R-002",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-142-FIELDS",
+      "ruleId": "SEG142-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "142",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "142",
+          "84": "120",
+          "102": "1D13500101001",
+          "206": "DV12TERM1234        CLERK1202610081230MS01123000",
+          "207": "TERM1234",
+          "208": "MERCHANT12345",
+          "214": "001",
+          "216": "BATCH ACCEPTED  ",
+          "210": "0123456789ABCDEF"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "LIFECYCLE-REVIEW",
+          "ruleId": "SEG142-R-001",
+          "scope": "lifecycle",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "MAC-REVIEW",
+          "ruleId": "SEG142-R-003",
+          "scope": "mac-authenticity",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-143-FIELDS",
+      "ruleId": "SEG143-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "143",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "143",
+          "84": "015",
+          "62": "01"
+        },
+        "taxProducts": [
+          {
+            "productCode": "001",
+            "taxes": [
+              {
+                "flag": "N"
+              }
+            ]
+          }
+        ],
+        "context": {
+          "country": "CANADA",
+          "segment102ProductCodes": [
+            "001"
+          ]
+        },
+        "serializedSegment": "143\u001c015\u001c01001N\u001c"
+      },
+      "predicateProbes": [
+        {
+          "id": "COMPANION-ORDER-VALID",
+          "ruleId": "SEG143-R-001",
+          "scope": "companion-order",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "COMPANION-ORDER-INVALID",
+          "ruleId": "SEG143-R-001",
+          "scope": "companion-order",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "country": "CANADA",
+            "segment102ProductCodes": [
+              "999"
+            ]
+          }
+        },
+        {
+          "id": "TAX-VALUE-POLICY-REVIEW",
+          "ruleId": "SEG143-R-002",
+          "scope": "tax-value-policy",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "COUNT-VALID",
+          "ruleId": "SEG143-R-004",
+          "scope": "count",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "COUNT-INVALID",
+          "ruleId": "SEG143-R-004",
+          "scope": "count",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "62": "02"
+          }
+        },
+        {
+          "id": "PRODUCTS-CAP-INVALID",
+          "ruleId": "SEG143-R-005",
+          "scope": "products",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ELEMENT-PRODUCTCODE-INVALID",
+          "ruleId": "SEG143-R-005",
+          "scope": "element-productCode",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [
+            {
+              "productCode": "1",
+              "taxes": [
+                {
+                  "flag": "N"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TAX-COUNT-INVALID",
+          "ruleId": "SEG143-R-005",
+          "scope": "tax-count",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": []
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "OMISSION-VALID",
+          "ruleId": "SEG143-R-006",
+          "scope": "omission",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "OMISSION-INVALID",
+          "ruleId": "SEG143-R-006",
+          "scope": "omission",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "N",
+                  "type": "GST"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ELEMENT-TYPE-VALID",
+          "ruleId": "SEG143-R-007",
+          "scope": "element-type",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "I",
+                  "type": "GST",
+                  "amount": "000000100"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ELEMENT-TYPE-INVALID",
+          "ruleId": "SEG143-R-007",
+          "scope": "element-type",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "I",
+                  "type": "GS",
+                  "amount": "000000100"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TAX-TYPE-ENUM-VALID",
+          "ruleId": "SEG143-R-007",
+          "scope": "tax-type-enumeration",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "I",
+                  "type": "GST",
+                  "amount": "000000100"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TAX-TYPE-ENUM-INVALID",
+          "ruleId": "SEG143-R-007",
+          "scope": "tax-type-enumeration",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "I",
+                  "type": "XXX",
+                  "amount": "000000100"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "COUNTRY-CONTEXT-REVIEW",
+          "ruleId": "SEG143-R-007",
+          "scope": "country-context",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "I",
+                  "type": "XXX",
+                  "amount": "000000100"
+                }
+              ]
+            }
+          ],
+          "context": {
+            "country": "USA",
+            "segment102ProductCodes": [
+              "001"
+            ]
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "WIRE-VALID",
+          "ruleId": "SEG143-R-008",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-INVALID",
+          "ruleId": "SEG143-R-008",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "143\u001c015\u001c01001N9"
+        },
+        {
+          "id": "EARLY-TERMINATION-VALID",
+          "ruleId": "SEG143-R-009",
+          "scope": "early-termination-separator",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "EARLY-TERMINATION-INVALID",
+          "ruleId": "SEG143-R-009",
+          "scope": "early-termination-separator",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "143\u001c015\u001c01001N9"
+        },
+        {
+          "id": "EARLY-TERMINATION-APPLICABILITY",
+          "ruleId": "SEG143-R-009",
+          "scope": "applicability",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "taxProducts": [
+            {
+              "productCode": "001",
+              "taxes": [
+                {
+                  "flag": "N"
+                },
+                {
+                  "flag": "N"
+                },
+                {
+                  "flag": "N"
+                }
+              ]
+            }
+          ],
+          "omitSerializedSegment": true
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-145-FIELDS",
+      "ruleId": "SEG145-R-005",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "145",
+        "SegmentLength": "023",
+        "EnhancedFleetData": "004011|DRID:1100|"
+      },
+      "actualEvidence": {
+        "context": {
+          "authorizer": "COMDATA",
+          "segmentsPresent": [
+            "100",
+            "145"
+          ]
+        },
+        "history": {
+          "fleet": {
+            "promptFormats": {
+              "DRID": "V1100"
+            }
+          }
+        }
+      },
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-FLEET-MASK-VALID",
+          "ruleId": "SEG145-R-008",
+          "targetRuleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-FLEET-MASK-BROKEN",
+          "ruleId": "SEG145-R-008",
+          "targetRuleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "EnhancedFleetData": "004011|DRID:1101|"
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "FLEET-CAP-VALID",
+          "ruleId": "SEG145-R-006",
+          "scope": "fleet-table-cap",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "FLEET-CAP-INVALID",
+          "ruleId": "SEG145-R-006",
+          "scope": "fleet-table-cap",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "WEX_OTR",
+            "segmentsPresent": [
+              "100",
+              "145"
+            ]
+          },
+          "tables": [
+            {
+              "id": "007",
+              "length": "016",
+              "value": "1234567890123456"
+            }
+          ]
+        },
+        {
+          "id": "MONEY-CODE-VALID",
+          "ruleId": "SEG145-R-006",
+          "scope": "money-code-check",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "WEX_OTR",
+            "moneyCodeTransaction": true,
+            "segmentsPresent": [
+              "100",
+              "145"
+            ]
+          },
+          "tables": [
+            {
+              "id": "007",
+              "length": "009",
+              "value": "249567891"
+            }
+          ]
+        },
+        {
+          "id": "MONEY-CODE-MISSING",
+          "ruleId": "SEG145-R-006",
+          "scope": "money-code-check",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "WEX_OTR",
+            "moneyCodeTransaction": true,
+            "segmentsPresent": [
+              "100",
+              "145"
+            ]
+          }
+        },
+        {
+          "id": "PAYEE-VALID",
+          "ruleId": "SEG145-R-006",
+          "scope": "payee-name",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "WEX_OTR",
+            "segmentsPresent": [
+              "100",
+              "145"
+            ]
+          },
+          "tables": [
+            {
+              "id": "006",
+              "length": "007",
+              "value": "SMITH,B"
+            }
+          ]
+        },
+        {
+          "id": "PAYEE-INVALID",
+          "ruleId": "SEG145-R-006",
+          "scope": "payee-name",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "WEX_OTR",
+            "segmentsPresent": [
+              "100",
+              "145"
+            ]
+          },
+          "tables": [
+            {
+              "id": "006",
+              "length": "006",
+              "value": "SMITHB"
+            }
+          ]
+        },
+        {
+          "id": "PROMPT-FRAMING-VALID",
+          "ruleId": "SEG145-R-008",
+          "scope": "prompt-framing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "PROMPT-FRAMING-BROKEN",
+          "ruleId": "SEG145-R-008",
+          "scope": "prompt-framing",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "010",
+              "value": "|DRID:1100"
+            }
+          ]
+        },
+        {
+          "id": "PROMPT-AUTHORIZER-VALID",
+          "ruleId": "SEG145-R-008",
+          "scope": "authorizer-prompt",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "PROMPT-AUTHORIZER-BROKEN",
+          "ruleId": "SEG145-R-008",
+          "scope": "authorizer-prompt",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "008",
+              "value": "|ZZZZ:1|"
+            }
+          ]
+        },
+        {
+          "id": "FLEET-NONFUEL-VALID",
+          "ruleId": "SEG145-R-007",
+          "targetRuleId": "SEG145-R-006",
+          "scope": "nonfuel-purchase",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "WEX_OTR"
+          },
+          "tables": [
+            {
+              "id": "002",
+              "length": "014",
+              "value": "|SCLE:1,10.00|"
+            }
+          ]
+        },
+        {
+          "id": "FLEET-NONFUEL-BROKEN",
+          "ruleId": "SEG145-R-007",
+          "targetRuleId": "SEG145-R-006",
+          "scope": "nonfuel-purchase",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "WEX_OTR"
+          },
+          "tables": [
+            {
+              "id": "002",
+              "length": "011",
+              "value": "|SCLE:1,10|"
+            }
+          ]
+        },
+        {
+          "id": "CATEGORY-SUM-VALID",
+          "ruleId": "SEG145-R-007",
+          "scope": "fleet-product-correlation",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "WEX_OTR"
+          },
+          "tables": [
+            {
+              "id": "002",
+              "length": "014",
+              "value": "|SCLE:3,30.00|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "nonfuelProductsComplete": true,
+              "nonfuelProducts": [
+                {
+                  "category": "SCLE",
+                  "quantity": "1",
+                  "amount": "10.00"
+                },
+                {
+                  "category": "SCLE",
+                  "quantity": "2",
+                  "amount": "20.00"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "CATEGORY-SUM-BROKEN",
+          "ruleId": "SEG145-R-007",
+          "scope": "fleet-product-correlation",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "WEX_OTR"
+          },
+          "tables": [
+            {
+              "id": "002",
+              "length": "014",
+              "value": "|SCLE:3,30.00|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "nonfuelProductsComplete": true,
+              "nonfuelProducts": [
+                {
+                  "category": "SCLE",
+                  "quantity": "1",
+                  "amount": "10.00"
+                },
+                {
+                  "category": "SCLE",
+                  "quantity": "2",
+                  "amount": "20.01"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "FLEET-VISA-ONE-ID",
+          "ruleId": "SEG145-R-008",
+          "scope": "visa-shared-prompt",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "VISA_FLEET_2"
+          },
+          "tables": [
+            {
+              "id": "004",
+              "length": "007",
+              "value": "|GEN:1|"
+            }
+          ]
+        },
+        {
+          "id": "FLEET-VISA-TWO-IDS",
+          "ruleId": "SEG145-R-008",
+          "scope": "visa-shared-prompt",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "VISA_FLEET_2"
+          },
+          "tables": [
+            {
+              "id": "004",
+              "length": "013",
+              "value": "|GEN:1|VHI:2|"
+            }
+          ]
+        },
+        {
+          "id": "DIRECTION-VALID",
+          "ruleId": "SEG145-R-001",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DIRECTION-INVALID",
+          "ruleId": "SEG145-R-001",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "RESPONSE"
+        },
+        {
+          "id": "COMPANION-EXCLUSION-VALID",
+          "ruleId": "SEG145-R-002",
+          "scope": "companion-exclusion",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "COMPANION-EXCLUSION-INVALID",
+          "ruleId": "SEG145-R-002",
+          "scope": "companion-exclusion",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "authorizer": "COMDATA",
+            "segmentsPresent": [
+              "100",
+              "101",
+              "145"
+            ]
+          }
+        },
+        {
+          "id": "RESTRICTED-TABLE-VALID",
+          "ruleId": "SEG145-R-003",
+          "scope": "restricted-table",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "RESTRICTED-TABLE-INVALID",
+          "ruleId": "SEG145-R-003",
+          "scope": "restricted-table",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "002",
+              "length": "014",
+              "value": "|SCLE:1,10.00|"
+            }
+          ]
+        },
+        {
+          "id": "PRODUCTION-AVAILABILITY-REVIEW",
+          "ruleId": "SEG145-R-004",
+          "scope": "production-availability",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "145",
+        "direction": "REQUEST",
+        "messageFamily": "Financial Transaction Request",
+        "elements": {
+          "85": "145",
+          "84": "023"
+        },
+        "tables": [
+          {
+            "id": "004",
+            "length": "011",
+            "value": "|DRID:1100|"
+          }
+        ],
+        "context": {
+          "authorizer": "COMDATA",
+          "segmentsPresent": [
+            "100",
+            "145"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-146-FIELDS",
+      "ruleId": "SEG146-R-001",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "146",
+        "SegmentLength": "024",
+        "EnhancedFleetData": "004012|DRID:V1100|"
+      },
+      "actualEvidence": {
+        "context": {
+          "authorizer": "COMDATA"
+        },
+        "history": {
+          "fleet": {
+            "capturedResponses": {
+              "DRID": "1100"
+            }
+          }
+        }
+      },
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-FLEET-RESPONSE-VALID",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-FLEET-RESPONSE-BROKEN",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "context": {
+              "authorizer": "COMDATA"
+            },
+            "history": {
+              "fleet": {
+                "capturedResponses": {
+                  "DRID": "1101"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "SETTLEMENT-FLAG-VALID",
+          "ruleId": "SEG146-R-002",
+          "scope": "settlement-flag",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SETTLEMENT-FLAG-INVALID",
+          "ruleId": "SEG146-R-002",
+          "scope": "settlement-flag",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "001",
+              "length": "002",
+              "value": "XX"
+            }
+          ]
+        },
+        {
+          "id": "EDIT-MASK-VALID",
+          "ruleId": "SEG146-R-004",
+          "scope": "edit-mask-grammar",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "authorizer": "WEX_OTR"
+          },
+          "tables": [
+            {
+              "id": "004",
+              "length": "018",
+              "value": "|ODRD:N;TS;M1;X25|"
+            }
+          ]
+        },
+        {
+          "id": "EDIT-MASK-INVALID",
+          "ruleId": "SEG146-R-004",
+          "scope": "edit-mask-grammar",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "008",
+              "value": "|DRID:Q|"
+            }
+          ]
+        },
+        {
+          "id": "MASK-EXACT-VALID",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "004",
+              "length": "012",
+              "value": "|DRID:V1100|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "1100"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-EXACT-BROKEN",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "012",
+              "value": "|DRID:V1100|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "1101"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-NUMERIC-BOUNDARY",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "004",
+              "length": "015",
+              "value": "|DRID:TN;M1;X9|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "9"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-NUMERIC-ABOVE",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "015",
+              "value": "|DRID:TN;M1;X9|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "10"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-OPTIONAL-OMITTED",
+          "ruleId": "SEG146-R-004",
+          "scope": "prompt-requiredness",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "004",
+              "length": "016",
+              "value": "|UNIT:O;PUN####|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {}
+            }
+          }
+        },
+        {
+          "id": "MASK-REQUIRED-OMITTED",
+          "ruleId": "SEG146-R-004",
+          "scope": "prompt-requiredness",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "014",
+              "value": "|UNIT:PUN####|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {}
+            }
+          }
+        },
+        {
+          "id": "MASK-CAPTURE-NO-RESEND",
+          "ruleId": "SEG146-R-004",
+          "scope": "capture-without-resend",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "004",
+              "length": "016",
+              "value": "|UNIT:Z;PUN####|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "UNIT": "UN1234"
+              },
+              "subsequentResponses": {}
+            }
+          }
+        },
+        {
+          "id": "MASK-CAPTURE-RESENT",
+          "ruleId": "SEG146-R-004",
+          "scope": "capture-without-resend",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "016",
+              "value": "|UNIT:Z;PUN####|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "UNIT": "UN1234"
+              },
+              "subsequentResponses": {
+                "UNIT": "UN1234"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-REPROMPT-VALID",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "004",
+              "length": "008",
+              "value": "|DRID:?|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "1100"
+              },
+              "priorPromptFormats": {
+                "DRID": "V1100"
+              }
+            }
+          }
+        },
+        {
+          "id": "MASK-REPROMPT-BROKEN",
+          "ruleId": "SEG146-R-004",
+          "scope": "mask-value",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "008",
+              "value": "|DRID:?|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "capturedResponses": {
+                "DRID": "1101"
+              },
+              "priorPromptFormats": {
+                "DRID": "V1100"
+              }
+            }
+          }
+        },
+        {
+          "id": "FUEL-LIMIT-CODE-VALID",
+          "ruleId": "SEG146-R-005",
+          "scope": "fuel-limit-code",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "003",
+              "length": "012",
+              "value": "|001:100.00|"
+            }
+          ]
+        },
+        {
+          "id": "FUEL-LIMIT-CODE-NONFUEL",
+          "ruleId": "SEG146-R-005",
+          "scope": "fuel-limit-code",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "003",
+              "length": "012",
+              "value": "|500:100.00|"
+            }
+          ]
+        },
+        {
+          "id": "FUEL-PURCHASE-LIMIT-VALID",
+          "ruleId": "SEG146-R-005",
+          "scope": "fleet-product-correlation",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "003",
+              "length": "012",
+              "value": "|001:100.00|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "fuelProductsComplete": true,
+              "fuelProducts": [
+                {
+                  "productCode": "001",
+                  "amount": "100.00"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "FUEL-PURCHASE-LIMIT-BROKEN",
+          "ruleId": "SEG146-R-005",
+          "scope": "fleet-product-correlation",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "003",
+              "length": "012",
+              "value": "|001:100.00|"
+            }
+          ],
+          "history": {
+            "fleet": {
+              "fuelProductsComplete": true,
+              "fuelProducts": [
+                {
+                  "productCode": "001",
+                  "amount": "100.01"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "ADDITIONAL-LABEL-VALID",
+          "ruleId": "SEG146-R-002",
+          "scope": "additional-response-label",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "010",
+              "length": "011",
+              "value": "|FNAM:JOHN|"
+            }
+          ]
+        },
+        {
+          "id": "ADDITIONAL-LABEL-BROKEN",
+          "ruleId": "SEG146-R-002",
+          "scope": "additional-response-label",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "010",
+              "length": "011",
+              "value": "|ZZZZ:JOHN|"
+            }
+          ]
+        },
+        {
+          "id": "COMDATA-NONFUEL-TABLE-ABSENT-VALID",
+          "ruleId": "SEG146-R-003",
+          "scope": "comdata-table",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "001",
+              "length": "002",
+              "value": "CP"
+            }
+          ]
+        },
+        {
+          "id": "COMDATA-NONFUEL-TABLE-PRESENT-INVALID",
+          "ruleId": "SEG146-R-003",
+          "scope": "comdata-table",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "002",
+              "length": "003",
+              "value": "001"
+            }
+          ]
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "146",
+        "direction": "RESPONSE",
+        "messageFamily": "Financial Transaction Response",
+        "elements": {
+          "85": "146",
+          "84": "014"
+        },
+        "tables": [
+          {
+            "id": "001",
+            "length": "002",
+            "value": "CP"
+          }
+        ],
+        "context": {
+          "authorizer": "COMDATA"
+        }
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-148-FIELDS",
+      "ruleId": "SEG148-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "148",
+        "SegmentLength": "017",
+        "AvailableProductInformation": "00=100,50 G"
+      },
+      "actualEvidence": {
+        "context": {
+          "authorizer": "WEX"
+        }
+      },
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-WEX-ROUTING-VALID",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-WEX-ROUTING-BROKEN",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "evidence": {
+            "context": {
+              "authorizer": "COMDATA"
+            }
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "ROUTING-WEX-VALID",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "messageFamily": "Financial Transaction Response",
+          "context": {
+            "authorizer": "WEX"
+          }
+        },
+        {
+          "id": "ROUTING-WRONG-HOST",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "messageFamily": "Financial Transaction Response",
+          "context": {
+            "authorizer": "COMDATA"
+          }
+        },
+        {
+          "id": "ROUTING-WRONG-FAMILY",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "messageFamily": "Totals with Proprietary Data Load Response",
+          "context": {
+            "authorizer": "WEX"
+          }
+        },
+        {
+          "id": "ROUTING-MISSING",
+          "ruleId": "SEG148-R-001",
+          "scope": "routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "SOURCE-CONFLICT-REVIEW",
+          "ruleId": "SEG148-R-003",
+          "scope": "source-conflict",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "FUEL-GROUP-VALID",
+          "ruleId": "SEG148-R-004",
+          "scope": "fuel-group",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "FUEL-GROUP-INVALID",
+          "ruleId": "SEG148-R-004",
+          "scope": "fuel-group",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "240": "99=100,50 G"
+          }
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "148",
+        "direction": "RESPONSE",
+        "messageFamily": "Financial Transaction Response",
+        "elements": {
+          "85": "148",
+          "84": "017",
+          "240": "00=100,50 G"
+        }
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-149-FIELDS",
+      "ruleId": "SEG149-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "149",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "149",
+          "84": "045",
+          "102": "1D13500101001",
+          "241": "|CASS:03.00|CRSS:3.05|"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "PRICE-POLICY-REVIEW",
+          "ruleId": "SEG149-R-001",
+          "scope": "price-policy",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG149-R-002",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-150-FIELDS",
+      "ruleId": "SEG150-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "150",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "150",
+          "84": "022",
+          "102": "1D13500101001",
+          "26": "00"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "LIFECYCLE-REVIEW",
+          "ruleId": "SEG150-R-001",
+          "scope": "lifecycle",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG150-R-002",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-151-FIELDS",
+      "ruleId": "SEG151-R-004",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "151",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "151",
+          "84": "0009"
+        },
+        "marketBasketData": "DV",
+        "datasets": [
+          {
+            "type": "DV"
+          }
+        ]
+      },
+      "predicateProbes": [
+        {
+          "id": "PLACEMENT-REVIEW",
+          "ruleId": "SEG151-R-001",
+          "scope": "placement",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "SOURCE-CONFLICT-REVIEW",
+          "ruleId": "SEG151-R-002",
+          "scope": "source-conflict",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "FIELD-SEPARATOR-WIRE-REVIEW",
+          "ruleId": "SEG151-R-003",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "MARKET-BASKET-DATA-LENGTH-VALID",
+          "ruleId": "SEG151-R-005",
+          "scope": "element-marketBasketData",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "MARKET-BASKET-DATA-LENGTH-EMPTY-INVALID",
+          "ruleId": "SEG151-R-005",
+          "scope": "element-marketBasketData",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "marketBasketData": ""
+        },
+        {
+          "id": "FIELD-SEPARATOR-WIRE-VALID",
+          "ruleId": "SEG151-R-003",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "serializedSegment": "151\u001c0012\u001cDV\u001c",
+          "elements": {
+            "84": "0012"
+          }
+        },
+        {
+          "id": "FIELD-SEPARATOR-WIRE-BROKEN",
+          "ruleId": "SEG151-R-003",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "1510012\u001cDV\u001c",
+          "elements": {
+            "84": "0012"
+          }
+        },
+        {
+          "id": "FIELD-SEPARATOR-DECLARED-LENGTH-INVALID",
+          "ruleId": "SEG151-R-003",
+          "scope": "wire-declared-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "151\u001c0999\u001cDV\u001c",
+          "elements": {
+            "84": "0999"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-152-FIELDS",
+      "ruleId": "SEG152-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "152",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "152",
+          "84": "0009"
+        },
+        "marketBasketData": "DV",
+        "datasets": [
+          {
+            "type": "DV"
+          }
+        ]
+      },
+      "predicateProbes": [
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG152-R-001",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "EXTERNAL-FORMAT-REVIEW",
+          "ruleId": "SEG152-R-003",
+          "scope": "external-format",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "WIRE-VALID",
+          "ruleId": "SEG152-R-001",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "serializedSegment": "1520010DV\u001c",
+          "elements": {
+            "84": "0010"
+          }
+        },
+        {
+          "id": "WIRE-BROKEN",
+          "ruleId": "SEG152-R-001",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "152\u001c0010DV\u001c",
+          "elements": {
+            "84": "0010"
+          }
+        },
+        {
+          "id": "WIRE-DECLARED-LENGTH-INVALID",
+          "ruleId": "SEG152-R-001",
+          "scope": "wire-declared-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "1520999DV\u001c",
+          "elements": {
+            "84": "0999"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-155-FIELDS",
+      "ruleId": "SEG155-R-006",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "155",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "155",
+          "84": "013"
+        },
+        "tables": [
+          {
+            "id": "004",
+            "length": "001",
+            "value": "A"
+          }
+        ],
+        "serializedSegment": "155013004001A"
+      },
+      "predicateProbes": [
+        {
+          "id": "OPTIMIZER-DIRECTION-VALID",
+          "ruleId": "SEG155-R-001",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "OPTIMIZER-DIRECTION-INVALID",
+          "ruleId": "SEG155-R-001",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "REQUEST"
+        },
+        {
+          "id": "WIRE-ORDER-VALID",
+          "ruleId": "SEG155-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-ORDER-INVALID",
+          "ruleId": "SEG155-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "155013004001B"
+        },
+        {
+          "id": "TABLE-ID-WIDTH-VALID",
+          "ruleId": "SEG155-R-003",
+          "scope": "table-id",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TABLE-ID-WIDTH-INVALID",
+          "ruleId": "SEG155-R-003",
+          "scope": "table-id",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "04",
+              "length": "001",
+              "value": "A"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CARD-STATUS-VALID",
+          "ruleId": "SEG155-R-004",
+          "scope": "card-status-enumeration",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CARD-STATUS-INVALID",
+          "ruleId": "SEG155-R-004",
+          "scope": "card-status-enumeration",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "004",
+              "length": "001",
+              "value": "Z"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "RESULT-CODE-VALID",
+          "ruleId": "SEG155-R-005",
+          "scope": "result-enumeration",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "006",
+              "length": "006",
+              "value": "VAU001"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "RESULT-CODE-INVALID",
+          "ruleId": "SEG155-R-005",
+          "scope": "result-enumeration",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "006",
+              "length": "006",
+              "value": "VAU999"
+            }
+          ],
+          "omitSerializedSegment": true
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-103-FIELDS",
+      "ruleId": "SEG103-R-006",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "103",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "103",
+          "84": "024",
+          "18": "1234567890",
+          "109": "",
+          "153": "",
+          "154": "",
+          "164": ""
+        },
+        "serializedSegment": "103\u001c024\u001c1234567890\u001c\u001c\u001c\u001c\u001c"
+      },
+      "predicateProbes": [
+        {
+          "id": "EBT-PLACEMENT-REVIEW",
+          "ruleId": "SEG103-R-001",
+          "scope": "placement",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "EBT-APPLICABILITY-REVIEW",
+          "ruleId": "SEG103-R-002",
+          "scope": "context",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "EBT-TYPE-VALID",
+          "ruleId": "SEG103-R-003",
+          "scope": "element-85",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "EBT-TYPE-INVALID",
+          "ruleId": "SEG103-R-003",
+          "scope": "element-85",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "85": "999"
+          }
+        },
+        {
+          "id": "EBT-LENGTH-WIDTH-VALID-EWIC",
+          "ruleId": "SEG103-R-004",
+          "scope": "length-width",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0024",
+            "154": "EF0000000000000000"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-LENGTH-WIDTH-INVALID-EWIC",
+          "ruleId": "SEG103-R-004",
+          "scope": "length-width",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "024",
+            "154": "EF0000000000000000"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-LENGTH-MAX-VALID",
+          "ruleId": "SEG103-R-005",
+          "scope": "length-max",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "3334"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-LENGTH-MAX-INVALID",
+          "ruleId": "SEG103-R-005",
+          "scope": "length-max",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "3335"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-REQUEST-SEPARATOR-VALID",
+          "ruleId": "SEG103-R-007",
+          "scope": "field-separator",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "EBT-REQUEST-SEPARATOR-INVALID",
+          "ruleId": "SEG103-R-007",
+          "scope": "field-separator",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "103\u001c024\u001c1234567890\u001c\u001c\u001c\u001c"
+        },
+        {
+          "id": "EBT-RESPONSE-NO-SEPARATOR-VALID",
+          "ruleId": "SEG103-R-008",
+          "scope": "no-field-separator",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "direction": "RESPONSE",
+          "serializedSegment": "1030241234567890"
+        },
+        {
+          "id": "EBT-RESPONSE-SEPARATOR-INVALID",
+          "ruleId": "SEG103-R-008",
+          "scope": "no-field-separator",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "RESPONSE",
+          "serializedSegment": "103\u001c0241234567890"
+        },
+        {
+          "id": "EBT-CLERK-ABSENT-REVIEW",
+          "ruleId": "SEG103-R-009",
+          "scope": "clerk-id",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "elements": {
+            "18": ""
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-CLERK-VALID",
+          "ruleId": "SEG103-R-009",
+          "scope": "element-18",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "EBT-CLERK-INVALID",
+          "ruleId": "SEG103-R-009",
+          "scope": "element-18",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "18": "12A4567890"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-VOUCHER-ABSENT-REVIEW",
+          "ruleId": "SEG103-R-010",
+          "scope": "voucher-id",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "EBT-VOUCHER-VALID",
+          "ruleId": "SEG103-R-010",
+          "scope": "element-109",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "109": "12345"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-VOUCHER-INVALID",
+          "ruleId": "SEG103-R-010",
+          "scope": "element-109",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "109": "ABCDE"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "EBT-ORIGIN-REVIEW",
+          "ruleId": "SEG103-R-019",
+          "scope": "origin",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "EBT-ORIGIN-DEVICE-VALID",
+          "ruleId": "SEG103-R-019",
+          "scope": "origin",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "origin": "device"
+          }
+        },
+        {
+          "id": "EBT-ORIGIN-HOST-INVALID",
+          "ruleId": "SEG103-R-019",
+          "scope": "origin",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "origin": "HOST"
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-123-FIELDS",
+      "ruleId": "SEG123-R-001",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "123",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "123",
+          "84": "016",
+          "195": "",
+          "196": "",
+          "197": "",
+          "202": "",
+          "203": "",
+          "204": "",
+          "237": "",
+          "238": ""
+        },
+        "serializedSegment": "123\u001c016\u001c\u001c\u001c\u001c\u001c\u001c\u001c\u001c\u001c"
+      },
+      "predicateProbes": [
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG123-R-002",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG123-R-002",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "1000"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "MAX-LENGTH-VALID",
+          "ruleId": "SEG123-R-003",
+          "scope": "max-length",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "MAX-LENGTH-INVALID",
+          "ruleId": "SEG123-R-003",
+          "scope": "max-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "203": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "WIRE-ORDER-VALID",
+          "ruleId": "SEG123-R-004",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-ORDER-INVALID",
+          "ruleId": "SEG123-R-004",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "123\u001c017\u001c\u001c\u001c\u001c\u001c\u001c\u001c\u001c\u001c"
+        },
+        {
+          "id": "REQUIREDNESS-REVIEW",
+          "ruleId": "SEG123-R-005",
+          "scope": "context",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "RESPONSE-DIRECTION-VALID",
+          "ruleId": "SEG123-R-006",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "direction": "RESPONSE",
+          "elements": {
+            "197": "1234"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "RESPONSE-DIRECTION-INVALID",
+          "ruleId": "SEG123-R-006",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "REQUEST",
+          "elements": {
+            "197": "1234"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CAVV-WIDTH-VALID",
+          "ruleId": "SEG123-R-007",
+          "scope": "element-195",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "195": "AAAAAAAAAAAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CAVV-WIDTH-INVALID",
+          "ruleId": "SEG123-R-007",
+          "scope": "element-195",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "195": "AAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CRYPTOGRAM-BLOCK-VALID",
+          "ruleId": "SEG123-R-008",
+          "scope": "cryptogram-block-length",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "202": "AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CRYPTOGRAM-BLOCK-INVALID",
+          "ruleId": "SEG123-R-008",
+          "scope": "cryptogram-block-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "202": "AAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "SAFEKEY-FRAMING-VALID",
+          "ruleId": "SEG123-R-009",
+          "scope": "safekey-framing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "203": "SKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "SAFEKEY-FRAMING-INVALID",
+          "ruleId": "SEG123-R-009",
+          "scope": "safekey-framing",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "203": "XXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TAVV-PATTERN-VALID",
+          "ruleId": "SEG123-R-010",
+          "scope": "element-237",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "direction": "REQUEST",
+          "elements": {
+            "237": "AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TAVV-PATTERN-INVALID",
+          "ruleId": "SEG123-R-010",
+          "scope": "element-237",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "REQUEST",
+          "elements": {
+            "237": "!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "DSRP-ROUTING-REVIEW",
+          "ruleId": "SEG123-R-011",
+          "scope": "3ds-routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "TOKEN-REQUESTOR-WIDTH-VALID",
+          "ruleId": "SEG123-R-012",
+          "scope": "element-196",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "196": "AAAAAAAAAAA"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TOKEN-REQUESTOR-WIDTH-INVALID",
+          "ruleId": "SEG123-R-012",
+          "scope": "element-196",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "196": "AAAAA"
+          },
+          "omitSerializedSegment": true
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-130-FIELDS",
+      "ruleId": "SEG130-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "130",
+        "SegmentLength": "0035",
+        "CAPublicKeyFileChecksum": "",
+        "EMVCardSequenceNumber": "",
+        "EMVChipDataLength": "009",
+        "EMVChipData": "8407A0000000041010",
+        "EMVAdditionalInformation": [
+          {
+            "id": "001",
+            "length": "003",
+            "value": "ABC"
+          }
+        ],
+        "SerializedSegmentHex": "3133301C303033351C1C1C3030391C8407A00000000410101C3030313030334142431C"
+      },
+      "actualEvidence": {},
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-EMV-WIRE-VALID",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-EMV-WIRE-BROKEN",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "SerializedSegmentHex": "3133301C303033351C1C3030391C8407A00000000410101C3030313030334142431C"
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "LOADED-CHECKSUM-VALID",
+          "ruleId": "SEG130-R-005",
+          "scope": "loaded-checksum",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "187": "0000000000000000000000001"
+          },
+          "context": {
+            "loadedCapkChecksum": "0000000000000000000000001"
+          }
+        },
+        {
+          "id": "LOADED-CHECKSUM-INVALID",
+          "ruleId": "SEG130-R-005",
+          "scope": "loaded-checksum",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "187": "0000000000000000000000001"
+          },
+          "context": {
+            "loadedCapkChecksum": "0000000000000000000000002"
+          }
+        },
+        {
+          "id": "EMV-REQUEST-BINARY-VALID",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0035"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033351C1C1C3030391C8407A00000000410101C3030313030334142431C"
+        },
+        {
+          "id": "EMV-REQUEST-BINARY-BROKEN",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "0035"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033351C1C3030391C8407A00000000410101C3030313030334142431C"
+        },
+        {
+          "id": "EMV-REQUEST-BYTE-LENGTH-VALID",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0035"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033351C1C1C3030391C8407A00000000410101C3030313030334142431C"
+        },
+        {
+          "id": "EMV-REQUEST-BYTE-LENGTH-BROKEN",
+          "ruleId": "SEG130-R-013",
+          "scope": "binary-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "0036"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033351C1C1C3030391C8407A00000000410101C3030313030334142431C"
+        },
+        {
+          "id": "CARD-SEQUENCE-SUPPLIED-VALID",
+          "ruleId": "SEG130-R-006",
+          "scope": "element-188",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "188": "012",
+            "189": "013",
+            "190": "8407A00000000410105F340112"
+          }
+        },
+        {
+          "id": "CARD-SEQUENCE-SPACE-FILLED-VALID",
+          "ruleId": "SEG130-R-006",
+          "scope": "element-188",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "188": "   "
+          }
+        },
+        {
+          "id": "CARD-SEQUENCE-BOUNDARY-OUT-OF-RANGE",
+          "ruleId": "SEG130-R-006",
+          "scope": "element-188",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "188": "100"
+          }
+        },
+        {
+          "id": "CARD-SEQUENCE-MALFORMED",
+          "ruleId": "SEG130-R-006",
+          "scope": "element-188",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "188": "AB1"
+          }
+        },
+        {
+          "id": "APPLICABILITY-REVIEW",
+          "ruleId": "SEG130-R-001",
+          "scope": "applicability",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG130-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG130-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "99999"
+          }
+        },
+        {
+          "id": "LENGTH-CAP-VALID",
+          "ruleId": "SEG130-R-004",
+          "scope": "length-cap-3043",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-CAP-INVALID",
+          "ruleId": "SEG130-R-004",
+          "scope": "length-cap-3043",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "9999"
+          }
+        },
+        {
+          "id": "CHIP-LENGTH-PATTERN-VALID",
+          "ruleId": "SEG130-R-007",
+          "scope": "element-189",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CHIP-LENGTH-PATTERN-INVALID",
+          "ruleId": "SEG130-R-007",
+          "scope": "element-189",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "189": "9A9"
+          }
+        },
+        {
+          "id": "CHIP-DATA-VALID",
+          "ruleId": "SEG130-R-008",
+          "scope": "element-190",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CHIP-DATA-LENGTH-MISMATCH-INVALID",
+          "ruleId": "SEG130-R-008",
+          "scope": "element-190",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "189": "008",
+            "190": "8407A0000000041010"
+          }
+        },
+        {
+          "id": "ADDITIONAL-INFO-FRAMING-VALID",
+          "ruleId": "SEG130-R-011",
+          "scope": "additional-information-framing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-118-REUSE-REVIEW",
+          "ruleId": "SEG130-R-012",
+          "scope": "element-118-reuse",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "DIRECTION-VALID",
+          "ruleId": "SEG130-R-014",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DIRECTION-INVALID",
+          "ruleId": "SEG130-R-014",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "RESPONSE"
+        },
+        {
+          "id": "CHECKSUM-ECHO-HANDSHAKE-REVIEW",
+          "ruleId": "SEG130-R-015",
+          "scope": "checksum-echo-handshake",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "CRYPTOGRAM-AUTHENTICITY-REVIEW",
+          "ruleId": "SEG130-R-010",
+          "scope": "cryptogram-authenticity",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "REVERSAL-EXEMPTION-REVIEW",
+          "ruleId": "SEG130-R-017",
+          "scope": "reversal-exemption",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "COMPANION-SLOT-CAP-REVIEW",
+          "ruleId": "SEG130-R-018",
+          "scope": "companion-slot-cap",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "ENTRY-MODE-EXCLUSION-REVIEW",
+          "ruleId": "SEG130-R-019",
+          "scope": "entry-mode-exclusion",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "APPENDIX-T-001-VALID",
+          "ruleId": "SEG130-R-020",
+          "scope": "appendix-t-table-001",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "001",
+              "length": "006",
+              "value": "EMVYES"
+            }
+          ]
+        },
+        {
+          "id": "APPENDIX-T-001-INVALID",
+          "ruleId": "SEG130-R-020",
+          "scope": "appendix-t-table-001",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "XYZ"
+            }
+          ]
+        },
+        {
+          "id": "APPENDIX-T-002-VALID",
+          "ruleId": "SEG130-R-021",
+          "scope": "appendix-t-table-002",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "002",
+              "length": "001",
+              "value": "A"
+            }
+          ]
+        },
+        {
+          "id": "APPENDIX-T-002-INVALID",
+          "ruleId": "SEG130-R-021",
+          "scope": "appendix-t-table-002",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "002",
+              "length": "002",
+              "value": "AB"
+            }
+          ]
+        },
+        {
+          "id": "FIXED-FIELD-SEPARATORS-VALID",
+          "ruleId": "SEG130-R-022",
+          "scope": "fixed-field-separators",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "tables": [
+            {
+              "id": "001",
+              "length": "006",
+              "value": "EMVYES"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033381C1C1C3030391C8407A00000000410101C303031303036454D565945531C",
+          "elements": {
+            "84": "0038"
+          }
+        },
+        {
+          "id": "FIXED-FIELD-SEPARATORS-BROKEN",
+          "ruleId": "SEG130-R-022",
+          "scope": "fixed-field-separators",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "001",
+              "length": "006",
+              "value": "EMVYES"
+            }
+          ],
+          "serializedSegmentHex": "3133301C303033381C3030391C8407A00000000410101C303031303036454D565945531C",
+          "elements": {
+            "84": "0038"
+          }
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "130",
+        "direction": "REQUEST",
+        "messageFamily": "EMV Financial Transaction Request",
+        "elements": {
+          "85": "130",
+          "84": "0040",
+          "187": "",
+          "188": "",
+          "189": "009",
+          "190": "8407A0000000041010"
+        },
+        "tables": []
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-131-FIELDS",
+      "ruleId": "SEG131-R-003",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "actualPayload": {
+        "SegmentType": "131",
+        "SegmentLength": "0053",
+        "CAPublicKeyFileChecksum": "0000000000000000000000001",
+        "EMVChipDataLength": "009",
+        "EMVChipData": "8407A0000000041010",
+        "EMVAdditionalInformation": [
+          {
+            "id": "001",
+            "length": "003",
+            "value": "ABC"
+          }
+        ],
+        "SerializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A0000000041010303031303033414243"
+      },
+      "actualEvidence": {},
+      "actualPayloadProbes": [
+        {
+          "id": "ACTUAL-EMV-RESPONSE-WIRE-VALID",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ACTUAL-EMV-RESPONSE-WIRE-BROKEN",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "actualFields": {
+            "SerializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A00000000410103030313030334142431C"
+          }
+        }
+      ],
+      "predicateProbes": [
+        {
+          "id": "CHECKSUM-ECHO-VALID",
+          "ruleId": "SEG131-R-007",
+          "scope": "checksum-echo",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "history": {
+            "emv": {
+              "request": {
+                "segment": "130",
+                "specificationVersion": "2026-3",
+                "elements": {
+                  "187": "0000000000000000000000001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "CHECKSUM-ECHO-INVALID",
+          "ruleId": "SEG131-R-007",
+          "scope": "checksum-echo",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "history": {
+            "emv": {
+              "request": {
+                "segment": "130",
+                "specificationVersion": "2026-3",
+                "elements": {
+                  "187": "0000000000000000000000002"
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "EMV-RESPONSE-BINARY-VALID",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0053"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A0000000041010303031303033414243"
+        },
+        {
+          "id": "EMV-RESPONSE-BINARY-BROKEN",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-wire",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "0053"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A00000000410103030313030334142431C"
+        },
+        {
+          "id": "EMV-RESPONSE-BYTE-LENGTH-VALID",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-length",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0053"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A0000000041010303031303033414243"
+        },
+        {
+          "id": "EMV-RESPONSE-BYTE-LENGTH-BROKEN",
+          "ruleId": "SEG131-R-006",
+          "scope": "binary-length",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "0054"
+          },
+          "tables": [
+            {
+              "id": "001",
+              "length": "003",
+              "value": "ABC"
+            }
+          ],
+          "serializedSegmentHex": "31333130303533303030303030303030303030303030303030303030303030313030398407A0000000041010303031303033414243"
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG131-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG131-R-004",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "99999"
+          }
+        },
+        {
+          "id": "LENGTH-CAP-VALID",
+          "ruleId": "SEG131-R-005",
+          "scope": "length-cap-3834",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-CAP-INVALID",
+          "ruleId": "SEG131-R-005",
+          "scope": "length-cap-3834",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "9999"
+          }
+        },
+        {
+          "id": "CHIP-LENGTH-AND-DATA-VALID",
+          "ruleId": "SEG131-R-008",
+          "scope": "element-190",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CHIP-DATA-LENGTH-MISMATCH-INVALID",
+          "ruleId": "SEG131-R-008",
+          "scope": "element-190",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "189": "008",
+            "190": "8407A0000000041010"
+          }
+        },
+        {
+          "id": "ADDITIONAL-INFO-FRAMING-VALID",
+          "ruleId": "SEG131-R-009",
+          "scope": "additional-information-framing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-118-REUSE-REVIEW",
+          "ruleId": "SEG131-R-010",
+          "scope": "element-118-reuse",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "PLACEMENT-CONTRADICTION-REVIEW",
+          "ruleId": "SEG131-R-001",
+          "scope": "placement-contradiction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "PLACEMENT-ORDER-REVIEW",
+          "ruleId": "SEG131-R-012",
+          "scope": "placement-order",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "ORIGIN-DIRECTION-VALID",
+          "ruleId": "SEG131-R-011",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ORIGIN-DIRECTION-INVALID",
+          "ruleId": "SEG131-R-011",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "REQUEST"
+        },
+        {
+          "id": "NO-FIELD-SEPARATORS-VALID",
+          "ruleId": "SEG130-R-023",
+          "scope": "no-field-separators",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "84": "0044"
+          },
+          "serializedSegmentHex": "31333130303434303030303030303030303030303030303030303030303030313030398407A0000000041010"
+        },
+        {
+          "id": "NO-FIELD-SEPARATORS-BROKEN",
+          "ruleId": "SEG130-R-023",
+          "scope": "no-field-separators",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegmentHex": "1C31333130303434303030303030303030303030303030303030303030303030313030398407A0000000041010",
+          "elements": {
+            "84": "0044"
+          }
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "131",
+        "direction": "RESPONSE",
+        "messageFamily": "EMV Financial Transaction Response",
+        "elements": {
+          "85": "131",
+          "84": "0060",
+          "187": "0000000000000000000000001",
+          "189": "009",
+          "190": "8407A0000000041010"
+        },
+        "tables": []
+      }
+    },
+    {
+      "id": "TD-TEST-CH12-132-FIELDS",
+      "ruleId": "SEG132-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "132",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "132",
+          "84": "077",
+          "86": "100001",
+          "102": "+*13500101001",
+          "48": "K",
+          "43": "0001",
+          "96": "00000001",
+          "39": "00000001",
+          "187": "0000000000000000000000001",
+          "11": "001"
+        },
+        "context": {
+          "protocol": "MULTITHREADED_DIAL"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "PLACEMENT-REVIEW",
+          "ruleId": "SEG132-R-001",
+          "scope": "placement",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "SEGTYPE-VALID",
+          "ruleId": "SEG132-R-002",
+          "scope": "element-85",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SEGTYPE-INVALID",
+          "ruleId": "SEG132-R-002",
+          "scope": "element-85",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "85": "999"
+          }
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG132-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG132-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "9999"
+          }
+        },
+        {
+          "id": "LENGTH-CAP-VALID",
+          "ruleId": "SEG132-R-004",
+          "scope": "length-cap-77",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-CAP-INVALID",
+          "ruleId": "SEG132-R-004",
+          "scope": "length-cap-77",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "100"
+          }
+        },
+        {
+          "id": "SEQUENCE-VALID",
+          "ruleId": "SEG132-R-005",
+          "scope": "element-86",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "context": {
+            "protocol": "DIRECT"
+          }
+        },
+        {
+          "id": "SEQUENCE-INVALID",
+          "ruleId": "SEG132-R-005",
+          "scope": "element-86",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "protocol": "DIRECT"
+          },
+          "elements": {
+            "86": "000000"
+          }
+        },
+        {
+          "id": "SEQUENCE-PROTOCOL-REVIEW",
+          "ruleId": "SEG132-R-005",
+          "scope": "protocol",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED",
+          "context": {
+            "protocol": ""
+          }
+        },
+        {
+          "id": "TERMINAL-ID-VALID",
+          "ruleId": "SEG132-R-006",
+          "scope": "element-102",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TERMINAL-ID-INVALID",
+          "ruleId": "SEG132-R-006",
+          "scope": "element-102",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "102": "AB13500101001"
+          }
+        },
+        {
+          "id": "LOAD-TYPE-VALID",
+          "ruleId": "SEG132-R-007",
+          "scope": "element-48",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LOAD-TYPE-INVALID",
+          "ruleId": "SEG132-R-007",
+          "scope": "element-48",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "48": "L"
+          }
+        },
+        {
+          "id": "DEVICE-VERSIONS-VALID",
+          "ruleId": "SEG132-R-008",
+          "scope": "element-43",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DEVICE-VERSIONS-INVALID",
+          "ruleId": "SEG132-R-008",
+          "scope": "element-43",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "43": "001"
+          }
+        },
+        {
+          "id": "CHECKSUM-VALID",
+          "ruleId": "SEG132-R-009",
+          "scope": "element-187",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CHECKSUM-INVALID",
+          "ruleId": "SEG132-R-009",
+          "scope": "element-187",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "187": "000000000000000000000001"
+          }
+        },
+        {
+          "id": "BLOCK-NUMBER-VALID",
+          "ruleId": "SEG132-R-010",
+          "scope": "element-11",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "BLOCK-NUMBER-INVALID",
+          "ruleId": "SEG132-R-010",
+          "scope": "element-11",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "11": "1"
+          }
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG132-R-011",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "DIRECTION-VALID",
+          "ruleId": "SEG132-R-012",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DIRECTION-INVALID",
+          "ruleId": "SEG132-R-012",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "RESPONSE"
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-134-FIELDS",
+      "ruleId": "SEG134-R-004",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "134",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "134",
+          "84": "0019",
+          "198": "D",
+          "199": " ",
+          "200": "STAR      "
+        },
+        "serializedSegment": "1340019D STAR      "
+      },
+      "predicateProbes": [
+        {
+          "id": "DIRECTION-VALID",
+          "ruleId": "SEG134-R-001",
+          "scope": "direction",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DIRECTION-INVALID",
+          "ruleId": "SEG134-R-001",
+          "scope": "direction",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "direction": "REQUEST"
+        },
+        {
+          "id": "WIRE-ORDER-VALID",
+          "ruleId": "SEG134-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-ORDER-INVALID",
+          "ruleId": "SEG134-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "1340019S STAR      "
+        },
+        {
+          "id": "ENCODED-SIZE-VALID",
+          "ruleId": "SEG134-R-003",
+          "scope": "encoded-size",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ENCODED-SIZE-INVALID",
+          "ruleId": "SEG134-R-003",
+          "scope": "encoded-size",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "199": ""
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "AVAILABILITY-GRANTED",
+          "ruleId": "SEG134-R-005",
+          "scope": "availability",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "elements": {
+            "198": "X"
+          },
+          "context": {
+            "signatureDebitAvailable": true
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "AVAILABILITY-DENIED",
+          "ruleId": "SEG134-R-005",
+          "scope": "availability",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "198": "X"
+          },
+          "context": {
+            "signatureDebitAvailable": false
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ELEMENT-199-VALID",
+          "ruleId": "SEG134-R-006",
+          "scope": "element-199",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-199-INVALID",
+          "ruleId": "SEG134-R-006",
+          "scope": "element-199",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "199": "Q"
+          },
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "ELEMENT-200-VALID",
+          "ruleId": "SEG134-R-007",
+          "scope": "element-200",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-200-INVALID",
+          "ruleId": "SEG134-R-007",
+          "scope": "element-200",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "200": "STAR"
+          },
+          "omitSerializedSegment": true
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-135-FIELDS",
+      "ruleId": "SEG135-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "135",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "135",
+          "84": "016",
+          "213": "0040013"
+        },
+        "serializedSegment": "135\u001c016\u001c0040013\u001c"
+      },
+      "predicateProbes": [
+        {
+          "id": "ROUTING-REVIEW",
+          "ruleId": "SEG135-R-001",
+          "scope": "routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG135-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG135-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "16"
+          }
+        },
+        {
+          "id": "WIRE-ORDER-VALID",
+          "ruleId": "SEG135-R-004",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-ORDER-INVALID",
+          "ruleId": "SEG135-R-004",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "135\u001c016\u001c9999999\u001c"
+        },
+        {
+          "id": "ELEMENT-213-VALID",
+          "ruleId": "SEG135-R-005",
+          "scope": "element-213",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-213-INVALID",
+          "ruleId": "SEG135-R-005",
+          "scope": "element-213",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "213": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-136-FIELDS",
+      "ruleId": "SEG136-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "136",
+        "direction": "RESPONSE",
+        "elements": {
+          "85": "136",
+          "84": "022",
+          "213": "004010SEQ1234567"
+        }
+      },
+      "predicateProbes": [
+        {
+          "id": "ROUTING-REVIEW",
+          "ruleId": "SEG136-R-001",
+          "scope": "routing",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "LENGTH-WIDTH-VALID",
+          "ruleId": "SEG136-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "LENGTH-WIDTH-INVALID",
+          "ruleId": "SEG136-R-003",
+          "scope": "length-width-range",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "22"
+          }
+        },
+        {
+          "id": "WIRE-REVIEW",
+          "ruleId": "SEG136-R-004",
+          "scope": "wire",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        },
+        {
+          "id": "ELEMENT-213-VALID",
+          "ruleId": "SEG136-R-005",
+          "scope": "element-213",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "ELEMENT-213-INVALID",
+          "ruleId": "SEG136-R-005",
+          "scope": "element-213",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "213": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-153-FIELDS",
+      "ruleId": "SEG153-R-002",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "153",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "153",
+          "84": "063"
+        },
+        "tables": [
+          {
+            "id": "001",
+            "length": "013",
+            "value": "SYNTHETICTOKN"
+          },
+          {
+            "id": "002",
+            "length": "004",
+            "value": "2610"
+          },
+          {
+            "id": "003",
+            "length": "001",
+            "value": "Y"
+          },
+          {
+            "id": "004",
+            "length": "001",
+            "value": "Y"
+          },
+          {
+            "id": "005",
+            "length": "001",
+            "value": "Y"
+          },
+          {
+            "id": "006",
+            "length": "001",
+            "value": "Y"
+          }
+        ]
+      },
+      "predicateProbes": [
+        {
+          "id": "ENCODED-TABLE-VALID",
+          "ruleId": "SEG153-R-001",
+          "scope": "encoded-table-order",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED",
+          "encodedTableData": "001013SYNTHETICTOKN0020042610003001Y004001Y005001Y006001Y"
+        },
+        {
+          "id": "ENCODED-TABLE-INVALID",
+          "ruleId": "SEG153-R-001",
+          "scope": "encoded-table-order",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "encodedTableData": "WRONG-ENCODED-DATA"
+        },
+        {
+          "id": "TABLE-CATALOG-VALID",
+          "ruleId": "SEG153-R-003",
+          "scope": "nonempty-section",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TABLE-CATALOG-INVALID",
+          "ruleId": "SEG153-R-003",
+          "scope": "nonempty-section",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": []
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-156-FIELDS",
+      "ruleId": "SEG156-R-008",
+      "expectedStatus": "CHECKS_PASSED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "156",
+        "direction": "REQUEST",
+        "elements": {
+          "85": "156",
+          "84": "102"
+        },
+        "tables": [
+          {
+            "id": "01",
+            "length": "001",
+            "value": "Y"
+          },
+          {
+            "id": "02",
+            "length": "006",
+            "value": "995959"
+          },
+          {
+            "id": "03",
+            "length": "006",
+            "value": "000000"
+          },
+          {
+            "id": "04",
+            "length": "006",
+            "value": "000000"
+          },
+          {
+            "id": "05",
+            "length": "006",
+            "value": "235959"
+          },
+          {
+            "id": "06",
+            "length": "001",
+            "value": "1"
+          },
+          {
+            "id": "07",
+            "length": "003",
+            "value": "100"
+          },
+          {
+            "id": "08",
+            "length": "001",
+            "value": "1"
+          },
+          {
+            "id": "09",
+            "length": "001",
+            "value": "1"
+          },
+          {
+            "id": "10",
+            "length": "001",
+            "value": "1"
+          },
+          {
+            "id": "11",
+            "length": "001",
+            "value": "1"
+          },
+          {
+            "id": "12",
+            "length": "003",
+            "value": "001"
+          }
+        ],
+        "context": {
+          "brand": "VISA",
+          "segment102ProductCodes": [
+            "308"
+          ]
+        },
+        "serializedSegment": "15610201001Y020069959590300600000004006000000050062359590600110700310008001109001110001111001112003001"
+      },
+      "predicateProbes": [
+        {
+          "id": "APPLICABILITY-VALID",
+          "ruleId": "SEG156-R-001",
+          "scope": "applicability",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "APPLICABILITY-INVALID",
+          "ruleId": "SEG156-R-001",
+          "scope": "applicability",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "context": {
+            "brand": "MASTERCARD",
+            "segment102ProductCodes": [
+              "308"
+            ]
+          }
+        },
+        {
+          "id": "WIRE-ORDER-VALID",
+          "ruleId": "SEG156-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "WIRE-ORDER-INVALID",
+          "ruleId": "SEG156-R-002",
+          "scope": "wire-order-delimiters",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "serializedSegment": "15610201001Y020069959590300600000004006000000050062359590600110700310008001109001110001111001112003009"
+        },
+        {
+          "id": "MANDATORY-INDICATOR-VALID",
+          "ruleId": "SEG156-R-003",
+          "scope": "mandatory-indicator",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "MANDATORY-INDICATOR-INVALID",
+          "ruleId": "SEG156-R-003",
+          "scope": "mandatory-indicator",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "N"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "995959"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "100"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "001"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "TIME-SUBTABLE-VALID",
+          "ruleId": "SEG156-R-004",
+          "scope": "table-002",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "TIME-SUBTABLE-INVALID",
+          "ruleId": "SEG156-R-004",
+          "scope": "table-002",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "Y"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "996099"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "100"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "001"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CHARGING-REASON-VALID",
+          "ruleId": "SEG156-R-005",
+          "scope": "table-007",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CHARGING-REASON-INVALID",
+          "ruleId": "SEG156-R-005",
+          "scope": "table-007",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "Y"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "995959"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "999"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "001"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "CONNECTOR-TYPE-VALID",
+          "ruleId": "SEG156-R-006",
+          "scope": "table-012",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "CONNECTOR-TYPE-INVALID",
+          "ruleId": "SEG156-R-006",
+          "scope": "table-012",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "Y"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "995959"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "100"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "999"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "NUMERIC-MEASUREMENT-VALID",
+          "ruleId": "SEG156-R-007",
+          "scope": "table-006",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "NUMERIC-MEASUREMENT-INVALID",
+          "ruleId": "SEG156-R-007",
+          "scope": "table-006",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "Y"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "995959"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "A"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "100"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "001"
+            }
+          ],
+          "omitSerializedSegment": true
+        },
+        {
+          "id": "SECTION-CAP-VALID",
+          "ruleId": "SEG156-R-009",
+          "scope": "section-cap",
+          "expectedStatus": "CHECKS_PASSED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SECTION-CAP-INVALID",
+          "ruleId": "SEG156-R-009",
+          "scope": "section-cap",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "tables": [
+            {
+              "id": "01",
+              "length": "001",
+              "value": "Y"
+            },
+            {
+              "id": "02",
+              "length": "006",
+              "value": "995959"
+            },
+            {
+              "id": "03",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "04",
+              "length": "006",
+              "value": "000000"
+            },
+            {
+              "id": "05",
+              "length": "006",
+              "value": "235959"
+            },
+            {
+              "id": "06",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "07",
+              "length": "003",
+              "value": "100"
+            },
+            {
+              "id": "08",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "09",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "10",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "11",
+              "length": "001",
+              "value": "1"
+            },
+            {
+              "id": "12",
+              "length": "003",
+              "value": "001"
+            },
+            {
+              "id": "13",
+              "length": "020",
+              "value": "AAAAAAAAAAAAAAAAAAAA"
+            }
+          ],
+          "omitSerializedSegment": true
+        }
+      ]
+    },
+    {
+      "id": "TD-TEST-CH12-DL8-FIELDS",
+      "ruleId": "SEGDL8-R-001",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "predicateProbes": [
+        {
+          "id": "DATA-TYPE-VALID",
+          "ruleId": "SEGDL8-R-002",
+          "scope": "data-type-indicator",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "DATA-TYPE-INVALID",
+          "ruleId": "SEGDL8-R-002",
+          "scope": "data-type-indicator",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "24": "&"
+          }
+        },
+        {
+          "id": "SEGMENT-LENGTH-VALID",
+          "ruleId": "SEGDL8-R-002",
+          "scope": "segment-length-exclusive",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "CHECKS_PASSED"
+        },
+        {
+          "id": "SEGMENT-LENGTH-INVALID",
+          "ruleId": "SEGDL8-R-002",
+          "scope": "segment-length-exclusive",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "elements": {
+            "84": "999"
+          }
+        },
+        {
+          "id": "GROUPS-MISSING",
+          "ruleId": "SEGDL8-R-003",
+          "scope": "floor-limit-groups",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "floorLimitGroups": []
+        },
+        {
+          "id": "GROUP-FIELD-INVALID",
+          "ruleId": "SEGDL8-R-003",
+          "scope": "floor-limit-groups",
+          "expectedStatus": "INVALID",
+          "expectedTargetStatus": "INVALID",
+          "floorLimitGroups": [
+            {
+              "rid": "BAD",
+              "standInIndicator": "9",
+              "floorLimit": "abc",
+              "cardType": "XY"
+            }
+          ]
+        },
+        {
+          "id": "SPECIAL-FLAG-GAP",
+          "ruleId": "SEGDL8-R-001",
+          "scope": "special-flag-gated-table-load",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "expectedTargetStatus": "REVIEW_REQUIRED"
+        }
+      ],
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "DL8",
+        "elements": {
+          "24": "%",
+          "84": "052"
+        },
+        "floorLimitGroups": [
+          {
+            "rid": "A000000003",
+            "standInIndicator": "1",
+            "floorLimit": "000000050000",
+            "cardType": "001"
+          },
+          {
+            "rid": "A000000004",
+            "standInIndicator": "2",
+            "floorLimit": "000000100000",
+            "cardType": "002"
+          }
+        ]
+      }
+    }
+  ],
+  "productExecutions": [
+    {
+      "id": "ACTUAL-102-ONE-PRODUCT",
+      "executionOnly": true,
+      "ruleId": "SEG102-R-020",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "102",
+        "productPayload": {
+          "Standard Segment": {
+            "FuelPurchaseAmount": "200",
+            "NonFuelAmount": "",
+            "TaxAmount": "10",
+            "CashAmount": "",
+            "PromptCode": {
+              "CardType": "001"
+            }
+          },
+          "Product Code Data Segment": {
+            "SegmentType": "102",
+            "SegmentLength": "028",
+            "ServiceLevel": "S",
+            "NumberofProducts": "01",
+            "ProductCode": "001",
+            "UnitofMeasure": "G",
+            "Quantity": "205",
+            "UnitPrice": "3005",
+            "ProductAmount": "210",
+            "SerializedSegment": "102\u001c028\u001cS01001G205\\3005\\210\u001c"
+          }
+        }
+      },
+      "probes": [
+        {
+          "id": "ACTUAL-102-WIRE-BROKEN",
+          "ruleId": "SEG102-R-020",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "SerializedSegment": "102\u001c028\u001cS01001G205\u001c3005\\210\u001c"
+          }
+        },
+        {
+          "id": "ACTUAL-102-LENGTH-BROKEN",
+          "ruleId": "SEG102-R-023",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "SegmentLength": "001"
+          }
+        },
+        {
+          "id": "ACTUAL-102-AMBIGUOUS",
+          "ruleId": "SEG102-R-005",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "Products": [
+              {
+                "ProductCode": "001",
+                "UnitOfMeasure": "G",
+                "Quantity": "205",
+                "UnitPrice": "3005",
+                "ProductAmount": "210"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ACTUAL-102-MULTIPLE-PRODUCTS",
+          "ruleId": "SEG102-R-021",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "standardSegment": {
+            "FuelPurchaseAmount": "200",
+            "NonfuelAmount": "10",
+            "TaxAmount": "10",
+            "CashAmount": "",
+            "PromptCode": {
+              "CardType": "001"
+            }
+          },
+          "productSegment": {
+            "SegmentType": "102",
+            "SegmentLength": "042",
+            "ServiceLevel": "S",
+            "NumberOfProducts": "02",
+            "Products": [
+              {
+                "ProductCode": "001",
+                "UnitOfMeasure": "G",
+                "Quantity": "205",
+                "UnitPrice": "3005",
+                "ProductAmount": "210"
+              },
+              {
+                "ProductCode": "500",
+                "UnitOfMeasure": "U",
+                "Quantity": "01",
+                "UnitPrice": "010",
+                "ProductAmount": "10"
+              }
+            ],
+            "SerializedSegment": "102\u001c042\u001cS02001G205\\3005\\210\\500U01\\010\\10\u001c"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ACTUAL-157-ONE-PRODUCT",
+      "executionOnly": true,
+      "ruleId": "SEG157-R-008",
+      "expectedStatus": "REVIEW_REQUIRED",
+      "payload": {
+        "specificationVersion": "2026-3",
+        "segment": "157",
+        "productPayload": {
+          "Standard Segment": {
+            "FuelPurchaseAmount": "200",
+            "NonFuelAmount": "",
+            "TaxAmount": "10",
+            "CashAmount": "",
+            "PromptCode": {
+              "CardType": "094"
+            }
+          },
+          "Adjusted Product Code Data Segment": {
+            "SegmentType": "157",
+            "SegmentLength": "028",
+            "ServiceLevel": "S",
+            "NumberofProducts": "01",
+            "ProductCode": "001",
+            "UnitofMeasure": "G",
+            "Quantity": "205",
+            "UnitPrice": "3005",
+            "ProductAmount": "210",
+            "SerializedSegment": "157\u001c028\u001cS01001G205\\3005\\210\u001c"
+          }
+        }
+      },
+      "probes": [
+        {
+          "id": "ACTUAL-157-WIRE-BROKEN",
+          "ruleId": "SEG157-R-008",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "SerializedSegment": "157\u001c028\u001cS01001G205\u001c3005\\210\u001c"
+          }
+        },
+        {
+          "id": "ACTUAL-157-LENGTH-BROKEN",
+          "ruleId": "SEG157-R-009",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "SegmentLength": "001"
+          }
+        },
+        {
+          "id": "ACTUAL-157-AMBIGUOUS",
+          "ruleId": "SEG157-R-009",
+          "expectedStatus": "INVALID",
+          "productFields": {
+            "Products": [
+              {
+                "ProductCode": "001",
+                "UnitOfMeasure": "G",
+                "Quantity": "205",
+                "UnitPrice": "3005",
+                "ProductAmount": "210"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ACTUAL-157-MULTIPLE-PRODUCTS",
+          "ruleId": "SEG157-R-008",
+          "expectedStatus": "REVIEW_REQUIRED",
+          "standardSegment": {
+            "FuelPurchaseAmount": "200",
+            "NonfuelAmount": "10",
+            "TaxAmount": "10",
+            "CashAmount": "",
+            "PromptCode": {
+              "CardType": "094"
+            }
+          },
+          "productSegment": {
+            "SegmentType": "157",
+            "SegmentLength": "042",
+            "ServiceLevel": "S",
+            "NumberOfProducts": "02",
+            "Products": [
+              {
+                "ProductCode": "001",
+                "UnitOfMeasure": "G",
+                "Quantity": "205",
+                "UnitPrice": "3005",
+                "ProductAmount": "210"
+              },
+              {
+                "ProductCode": "500",
+                "UnitOfMeasure": "U",
+                "Quantity": "01",
+                "UnitPrice": "010",
+                "ProductAmount": "10"
+              }
+            ],
+            "SerializedSegment": "157\u001c042\u001cS02001G205\\3005\\210\\500U01\\010\\10\u001c"
+          }
+        }
+      ]
+    }
+  ]
+}

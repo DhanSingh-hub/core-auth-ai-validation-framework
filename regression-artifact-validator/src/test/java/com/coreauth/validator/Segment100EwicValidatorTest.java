@@ -34,12 +34,60 @@ class Segment100EwicValidatorTest {
 
     @Test
     void rejectsMissingSegment103() {
+        ObjectNode payload = payload("0", "100001", "TERM001");
+        ObjectNode request = (ObjectNode) payload.path("Financial Request");
+        request.remove("EBT Data Segment");
+        request.put("NumSegments", "01");
+
+        var result = new Segment100EwicValidator().validateRequest("MISSING-103", payload, "VOUCHER_CLEAR");
+
+        assertThat(result.errors()).anyMatch(error -> error.reason().contains("requires the EBT Data Segment"));
+    }
+
+    @Test
+    void acceptsOptionalEwicOperationsWithoutSegment103() {
+        Segment100EwicValidator validator = new Segment100EwicValidator();
+        String[][] cases = {
+                {"AUTHORIZATION", "3"},
+                {"CANCELLATION", "S"},
+                {"BALANCE_INQUIRY", "E"},
+                {"REVERSAL_VOID", "8"}
+        };
+        for (String[] candidate : cases) {
+            ObjectNode payload = payload(candidate[1], "100001", "TERM001");
+            ObjectNode request = (ObjectNode) payload.path("Financial Request");
+            request.remove("EBT Data Segment");
+            request.put("NumSegments", "01");
+
+            assertThat(validator.validateRequest(candidate[0], payload, candidate[0]).errors())
+                    .as(candidate[0]).isEmpty();
+        }
+    }
+
+    @Test
+    void rejectsNumSegmentsThatDoesNotMatchIncludedEwicSegments() {
+        ObjectNode absentSegment = payload("3", "100001", "TERM001");
+        ObjectNode absentRequest = (ObjectNode) absentSegment.path("Financial Request");
+        absentRequest.remove("EBT Data Segment");
+        absentRequest.put("NumSegments", "02");
+        assertThat(new Segment100EwicValidator().validateRequest("COUNT-WITHOUT-103", absentSegment, "AUTHORIZATION").errors())
+                .anyMatch(error -> error.reason().contains("segment-object count 01"));
+
+        ObjectNode includedSegment = payload("3", "100001", "TERM001");
+        ((ObjectNode) includedSegment.path("Financial Request")).put("NumSegments", "01");
+        assertThat(new Segment100EwicValidator().validateRequest("COUNT-WITH-103", includedSegment, "AUTHORIZATION").errors())
+                .anyMatch(error -> error.reason().contains("segment-object count 02"));
+    }
+
+    @Test
+    void countsAnAdditionalBuypassSegmentInNumSegments() {
         ObjectNode payload = payload("3", "100001", "TERM001");
-        ((ObjectNode) payload.path("Financial Request")).remove("EBT Data Segment");
+        ObjectNode request = (ObjectNode) payload.path("Financial Request");
+        request.putObject("Variable Information Data Segment").put("SegmentType", "111");
+        request.put("NumSegments", "03");
 
-        var result = new Segment100EwicValidator().validateRequest("MISSING-103", payload, "AUTHORIZATION");
-
-        assertThat(result.errors()).anyMatch(error -> error.reason().contains("requires Segment 103"));
+        assertThat(new Segment100EwicValidator().validateRequest("COUNT-WITH-111", payload, "AUTHORIZATION").errors())
+                .isEmpty();
     }
 
     @Test

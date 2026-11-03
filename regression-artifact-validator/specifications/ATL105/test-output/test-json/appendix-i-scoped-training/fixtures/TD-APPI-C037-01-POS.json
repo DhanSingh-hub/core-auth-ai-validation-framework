@@ -1,0 +1,48 @@
+{
+  "id" : "TD-APPI-C037-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C037-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C037-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-34",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t037-r001-APPI-C037-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C037-01",
+        "tableId" : "037",
+        "ruleIds" : [ "APPI-T037-R001" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-34",
+          "startLine" : 28907,
+          "endLine" : 28915
+        } ],
+        "data" : "SYNMCX                                  ",
+        "clearScope" : [ "Actual40-character left-justified space-filled token-shaped data" ],
+        "excludedClaims" : [ "Real MCX token", "Network acceptance" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Token occupies40 characters with right-space fill",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "data",
+          "value" : "SYNMCX                                 ",
+          "targetedNegative" : "One padding space removed;39 characters"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

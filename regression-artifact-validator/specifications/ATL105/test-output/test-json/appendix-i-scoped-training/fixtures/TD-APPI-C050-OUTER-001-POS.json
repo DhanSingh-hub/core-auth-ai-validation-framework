@@ -1,0 +1,123 @@
+{
+  "id" : "TD-APPI-C050-OUTER-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C050-OUTER-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C050-OUTER-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-52",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t050-r001-APPI-C050-OUTER-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C050-OUTER-001",
+        "tableId" : "050",
+        "ruleIds" : [ "APPI-T050-R001" ],
+        "syntheticData" : {
+          "tableSelector" : "050",
+          "logicalPayloadLength" : 4,
+          "securityCode" : "A7B9",
+          "context" : {
+            "cardProgram" : "SVS"
+          }
+        },
+        "clearScope" : "Three-digit selector and payload count; alphanumeric security code; SVS exactly four bytes; non-SVS length1-16.",
+        "excludedClaims" : [ "Whether this optional table is required for a particular merchant", "Security-code authenticity" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "SVS four-byte code",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Declared count equals actual data bytes",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "securityCode",
+            "replacement" : "A7B9X",
+            "baseline" : "SVS fixture",
+            "expected" : "FAIL SVS exact-four predicate; other logical metadata is unchanged"
+          }, {
+            "path" : "logicalPayloadLength",
+            "replacement" : 3,
+            "baseline" : "four-byte SVS fixture",
+            "expected" : "FAIL declared-count predicate"
+          }, {
+            "path" : "securityCode",
+            "replacement" : "A7!9",
+            "baseline" : "SVS fixture",
+            "expected" : "FAIL alphanumeric predicate"
+          }, {
+            "path" : "tableSelector",
+            "replacement" : "999",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "nonSvsMinimum" : "A",
+          "nonSvsMaximum" : "ABCDEFGHIJKLMNOP",
+          "nonSvsOverMaximum" : "ABCDEFGHIJKLMNOPQ"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30037,
+          "section" : "Appendix I-52",
+          "endLine" : 30052
+        }, {
+          "startLine" : 30041,
+          "section" : "Appendix I-52",
+          "endLine" : 30052
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "111",
+          "sourceType" : "n3",
+          "sourceLength" : "3 bytes; fixed 050",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30041,
+            "section" : "Appendix I-52",
+            "endLine" : 30043
+          } ]
+        }, {
+          "path" : "112",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte length of Element 113",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30044,
+            "section" : "Appendix I-52",
+            "endLine" : 30046
+          } ]
+        }, {
+          "path" : "113.Security Code",
+          "sourceType" : "an16",
+          "sourceLength" : "1-16 bytes; SVS exactly 4",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30047,
+            "section" : "Appendix I-52",
+            "endLine" : 30052
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

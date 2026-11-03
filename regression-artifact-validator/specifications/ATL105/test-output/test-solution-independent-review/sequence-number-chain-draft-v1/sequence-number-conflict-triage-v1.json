@@ -1,0 +1,70 @@
+{
+  "artifact": "SEQUENCE_NUMBER_AI_CASE_CATALOG_CONFLICT_TRIAGE",
+  "reviewDate": "2026-10-16",
+  "status": "PRELIMINARY_STRUCTURAL_TRIAGE",
+  "semanticDecisionGranted": false,
+  "sourceCatalogs": {
+    "test_data_10_oct/test_data_10_oct/approved/test_case_catalog.json": "df45720b3e3fc60ada266d677e863cdfb73fc1df526f5e5719faeec2a6920297",
+    "test_data_10_oct/test_data_10_oct/candidates/test_case_candidates.json": "c323e4bab66a9f8220d269860ff69b7cd457c6c5fff6986368f1b9086f4d7448",
+    "test_generation/test_generation/approved/test_case_catalog.json": "df45720b3e3fc60ada266d677e863cdfb73fc1df526f5e5719faeec2a6920297",
+    "test_generation/test_generation/candidates/test_case_candidates.json": "c323e4bab66a9f8220d269860ff69b7cd457c6c5fff6986368f1b9086f4d7448"
+  },
+  "comparisonMethod": "Compared JSON records by case ID across all four frozen catalogs. Inspected requirement IDs, scenario ID/type, negative class, request object, Sequence Number field path/value and expected_response response-code tier/values/flags/template availability.",
+  "commonFindings": {
+    "caseIds": ["TC-003851", "TC-003956", "TC-009206", "TC-009207", "TC-011912", "TC-011913", "TC-019860", "TC-019861"],
+    "catalogOccurrencesPerCase": 4,
+    "distinctRecordHashesPerCase": 2,
+    "requirementIdsScenarioIdsScenarioTypesAndNegativeClassesAgree": true,
+    "requestObjectsAgreeAcrossApprovedAndCandidate": true,
+    "sequenceNumberFieldPathsAndValuesAgreeAcrossApprovedAndCandidate": true,
+    "implication": "The approved/candidate record conflict does not change the Sequence Number request value or the linked AI BR for these eight cases. It does not validate request semantics or the producer's expected outcome."
+  },
+  "caseGroups": [
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:3251"],
+      "caseIds": ["TC-003851", "TC-003956"],
+      "scenarioType": "negative",
+      "negativeClass": "missing_mandatory",
+      "sequenceField": "Segment 100 / Sequence Number",
+      "sequenceMetadataValue": null,
+      "approvedAndCandidateResponse": {"value": "1", "tier": "ASSERT", "same": true, "responseTemplateAvailable": false},
+      "recordDifferences": ["reviewed_by", "review_status", "review_note"],
+      "assessment": "Sequence omission mutation is consistent across the frozen case-record copies. Response code 1 is still a producer declaration, not an independently verified oracle."
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:1937"],
+      "caseIds": ["TC-009206", "TC-009207"],
+      "scenarioType": "business_rule",
+      "sequenceField": "Segment 109 / Sequence Number",
+      "sequenceMetadataValue": "000001",
+      "approvedResponse": {"tier": "FLAG", "value": null, "flags": ["NEEDS_AUTHORIZER_DOC", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "candidateResponse": {"tier": "INFER", "value": null, "acceptableValues": ["8", "9", "G", "J"], "flags": ["HOST_STATE_DEPENDENT", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "recordDifferences": ["reviewed_by", "expected_response", "review_status", "review_note"],
+      "assessment": "Sequence request evidence is the same, but approved/candidate response-oracle claims conflict and both lack a response template. Do not use these outcomes to validate the Sequence Number obligation."
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:3251"],
+      "caseIds": ["TC-011912", "TC-011913"],
+      "scenarioType": "field_constraint",
+      "sequenceField": "Segment 109 / Sequence Number",
+      "sequenceMetadataValue": "000001",
+      "approvedResponse": {"tier": "FLAG", "value": null, "flags": ["NEEDS_AUTHORIZER_DOC", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "candidateResponse": {"tier": "INFER", "value": null, "acceptableValues": ["8", "9", "G", "J"], "flags": ["HOST_STATE_DEPENDENT", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "recordDifferences": ["reviewed_by", "expected_response", "review_status", "review_note"],
+      "assessment": "These are Segment 109 cases, not evidence for the narrower Segment 100 presence claim. Their response-oracle claims conflict and are not independent."
+    },
+    {
+      "aiBrIds": ["REQ-SRC-ATL105-PDF-001:6098"],
+      "caseIds": ["TC-019860", "TC-019861"],
+      "scenarioType": "supplemental_entity",
+      "sequenceField": "Segment 109 / Sequence Number",
+      "sequenceMetadataValue": "000001",
+      "approvedResponse": {"tier": "FLAG", "value": null, "flags": ["NEEDS_AUTHORIZER_DOC", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "candidateResponse": {"tier": "INFER", "value": null, "acceptableValues": ["8", "9", "G", "J"], "flags": ["HOST_STATE_DEPENDENT", "SPEC_RESPONSE_CODE_UNRESOLVED"], "responseTemplateAvailable": false},
+      "recordDifferences": ["reviewed_by", "expected_response", "review_status", "review_note"],
+      "assessment": "Sequence request evidence agrees; producer response oracle conflicts, is host-state dependent and lacks a response template. These cases do not establish lifetime uniqueness."
+    }
+  ],
+  "decision": "No Sequence Number field-value discrepancy was found between approved and candidate case-record copies in these eight IDs. Preserve the record conflicts because review metadata and six expected_response objects differ. No case is semantically approved, executed, or credited.",
+  "remainingActions": ["Resolve the six response-oracle record conflicts with an independent response source.", "Review the two metadata-only record conflicts and their authority status.", "Retain case IDs as separate cases and review Segment 100 versus Segment 109 scope explicitly."]
+}

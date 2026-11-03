@@ -1,0 +1,107 @@
+{
+  "manifest": {
+    "packageId": "ATL105-QUANTITY-ASSUMED-DECIMAL-CHAIN-DRAFT-001",
+    "specification": "ATL105",
+    "specificationVersion": "2026-3",
+    "authority": "INDEPENDENT_TEST_SOLUTION_DRAFT",
+    "status": "DRAFT_REVIEW_REQUIRED",
+    "aiArtifactsIncluded": false,
+    "officialBaselineModified": false,
+    "executionCertified": false,
+    "coverageCredit": 0,
+    "executionReady": false,
+    "sourceTextSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+    "sourceDerivedBaselineSha256": "371499ffb82c545724d28e32f4b688f6124ccb9c746b99d0ef47e06d56dd1d16",
+    "preexistingChainPackageSha256": "b6a7bd53ac2dd11d2e2983e5db3a26377a3ae01d4a5d77a7c3ff897afab949e4",
+    "reviewPolicy": {
+      "allNewStatuses": "REVIEW_REQUIRED",
+      "sourcePolicy": "Use the explicit Quantity example for the stated 0.05 value and two assumed decimal places; keep Segment 102 and Segment 157 chains separate.",
+      "dataPolicy": "The four vectors are field-level design fragments, not complete product-data segment fixtures. Product context, Unit of Measure semantics, surrounding fields, and wire separators remain review gates.",
+      "baselinePolicy": "References SEG102-R-012 and the Quantity component within SEG157-R-009; no official Test record is modified.",
+      "promotionGate": "Authorized Test review must confirm applicable product contexts, decimal-place source, full segment rendering, and readiness before promotion or execution."
+    }
+  },
+  "requirementReferences": [
+    {
+      "id": "BR-RULE-SEG102-R-012",
+      "title": "Quantity preserves the assumed-decimal-place leading digit",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.3", "segment": "102", "element": "81", "rule": "quantity-assumed-decimal"}
+    },
+    {
+      "id": "BR-RULE-SEG157-R-009",
+      "title": "Adjusted Product Code Segment field layout, including Quantity decimal-place encoding",
+      "status": "DRAFT_REVIEW_REQUIRED",
+      "sourceAnchor": {"specification": "ATL105", "version": "2026-3", "section": "12.41", "segment": "157", "element": "81", "rule": "adjusted-product-code-field-layout"},
+      "scopeNote": "Composite candidate; this draft addresses only its Quantity sub-obligation."
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "id": "ATL105-2026-3-SEG102-E81-ASSUMED-DECIMAL",
+      "sourcePage": 227,
+      "startLine": 11672,
+      "quote": "Quantity value must contain a digit for every position of assumed decimal places. Example: If the quantity is 0.05 and the number of assumed decimal places is 2, then this should be represented as ‘205’. ‘25’ will be considered invalid.",
+      "interpretation": "The source explicitly identifies 205 as the representation for quantity 0.05 at two assumed decimal places and says 25 is invalid."
+    },
+    {
+      "id": "ATL105-2026-3-SEG157-E81-ASSUMED-DECIMAL",
+      "sourcePage": 322,
+      "startLine": 17041,
+      "quote": "Quantity value must contain a digit for every position of assumed decimal places. Example: If the quantity is 0.05 and the number of assumed decimal places is 2, then this should be represented as ‘205’. ‘25’ will be considered invalid.",
+      "interpretation": "The same explicit representation example appears in the Adjusted Product Code Data Segment's Quantity field."
+    }
+  ],
+  "aiReviewReferences": {
+    "obligationGroupId": "OBL-B385A20C5306",
+    "aiBrRecords": [
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1206", "sourcePage": 227, "sourceRuleId": "BR-227-5", "linkedCases": ["TC-007281", "TC-007282", "TC-007283", "TC-007284"]},
+      {"aiBrId": "REQ-SRC-ATL105-PDF-001:1578", "sourcePage": 322, "sourceRuleId": "BR-322-1", "linkedCases": ["TC-008093", "TC-008094", "TC-008095", "TC-008096"]}
+    ],
+    "screenedCaseObservation": "All eight candidate payloads place Element 81 Quantity in Segment 102 and set it to 01; none places Quantity in Segment 157. Each candidate copy is hash-verified in the bounded screen, but full payload/sidecar review was not performed.",
+    "interpretation": "The Segment 102 cases do not state the assumed decimal-place count or a source-grounded quantity value, so their 01 values cannot be adjudicated as valid or invalid from the field observation alone. The Segment 157-linked cases have a segment-scope mismatch because the observed Quantity is in Segment 102.",
+    "producerResponseOracleAccepted": false
+  },
+  "testScenarios": [
+    {
+      "id": "TS-DRAFT-SEG102-E81-DECIMAL-ENCODING",
+      "requirementIds": ["BR-RULE-SEG102-R-012"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG102-E81-ASSUMED-DECIMAL"],
+      "intent": "For the source example quantity 0.05 with two assumed decimal places, verify the Segment 102 Element 81 encoding; compare the explicitly valid and invalid encodings.",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-DRAFT-SEG157-E81-DECIMAL-ENCODING",
+      "requirementIds": ["BR-RULE-SEG157-R-009"],
+      "sourceEvidenceIds": ["ATL105-2026-3-SEG157-E81-ASSUMED-DECIMAL"],
+      "intent": "For the source example quantity 0.05 with two assumed decimal places, verify the Segment 157 Element 81 encoding in an otherwise valid Adjusted Product Code Data Segment.",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {"id": "TC-DRAFT-SEG102-E81-DEC2-205", "scenarioIds": ["TS-DRAFT-SEG102-E81-DECIMAL-ENCODING"], "testDataIds": ["TD-DRAFT-SEG102-E81-DEC2-205"], "assertion": "For 0.05 with two assumed decimal places, Element 81 is represented as 205.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG102-E81-DEC2-25", "scenarioIds": ["TS-DRAFT-SEG102-E81-DECIMAL-ENCODING"], "testDataIds": ["TD-DRAFT-SEG102-E81-DEC2-25"], "assertion": "For 0.05 with two assumed decimal places, Element 81 value 25 is invalid because it omits a required position.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG157-E81-DEC2-205", "scenarioIds": ["TS-DRAFT-SEG157-E81-DECIMAL-ENCODING"], "testDataIds": ["TD-DRAFT-SEG157-E81-DEC2-205"], "assertion": "For 0.05 with two assumed decimal places, Segment 157 Element 81 is represented as 205.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"},
+    {"id": "TC-DRAFT-SEG157-E81-DEC2-25", "scenarioIds": ["TS-DRAFT-SEG157-E81-DECIMAL-ENCODING"], "testDataIds": ["TD-DRAFT-SEG157-E81-DEC2-25"], "assertion": "For 0.05 with two assumed decimal places, Segment 157 Element 81 value 25 is invalid because it omits a required position.", "expectedOutcome": "REVIEW_REQUIRED_SOURCE_CONFORMANCE", "status": "REVIEW_REQUIRED"}
+  ],
+  "testData": [
+    {"id": "TD-DRAFT-SEG102-E81-DEC2-205", "testCaseIds": ["TC-DRAFT-SEG102-E81-DEC2-205"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "102", "element81": "205", "quantityContext": "0.05", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG102-E81-DEC2-25", "testCaseIds": ["TC-DRAFT-SEG102-E81-DEC2-25"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "102", "element81": "25", "quantityContext": "0.05", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG157-E81-DEC2-205", "testCaseIds": ["TC-DRAFT-SEG157-E81-DEC2-205"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "157", "element81": "205", "quantityContext": "0.05", "assumedDecimalPlaces": 2}},
+    {"id": "TD-DRAFT-SEG157-E81-DEC2-25", "testCaseIds": ["TC-DRAFT-SEG157-E81-DEC2-25"], "readiness": "REVIEW_REQUIRED", "expectedValidation": "REVIEW_REQUIRED", "payload": {"fixtureStatus": "DESIGN_ONLY_NOT_CONVERTER_READY", "segment": "157", "element81": "25", "quantityContext": "0.05", "assumedDecimalPlaces": 2}}
+  ],
+  "openQuestions": [
+    "Confirm full valid product-data segment context and how the assumed decimal-place count is determined for each product/unit combination.",
+    "Review the Segment 102 candidate payloads and sidecars to determine whether Quantity 01 has a source-grounded decimal context.",
+    "Review the Segment 157-linked cases against the Segment 157 source anchor; their bounded payload observations currently identify Segment 102 only.",
+    "Review and approve complete Segment 102 and 157 Test Data before execution or promotion."
+  ],
+  "reviewLimits": {
+    "semanticMatchesConfirmed": 0,
+    "aiCasesAdjudicated": 0,
+    "executionPerformed": false,
+    "coverageCredit": 0,
+    "sourceDerivedBaselineModified": false,
+    "externalAuthorizationAttachmentUsed": false
+  }
+}

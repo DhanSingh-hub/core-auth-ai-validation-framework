@@ -1,0 +1,119 @@
+{
+  "id" : "TD-APPI-C056-N08-001-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C056-N08-001-POS.json",
+  "testCaseIds" : [ "TC-APPI-C056-N08-001-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-60",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t056-r011-APPI-C056-N08-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C056-N08-001",
+        "tableId" : "056",
+        "nestedSelector" : "08",
+        "ruleIds" : [ "APPI-T056-R011" ],
+        "syntheticData" : {
+          "selector" : "08",
+          "logicalLength" : 2,
+          "context" : {
+            "cardBrand" : "Discover",
+            "payment" : "multiple installments"
+          },
+          "sequenceSeries" : [ "01", "02", "03" ]
+        },
+        "clearScope" : "Two numeric bytes; ascending Discover installment sequence; no specifiedstart,increment size,wrap.",
+        "excludedClaims" : [ "Mandatory increments ofone", "Wrap99to00", "Specified initial number" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Ascending two-digit sequence",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "sequenceSeries[2]",
+            "replacement" : "01",
+            "expected" : "FAIL ascending"
+          }, {
+            "path" : "sequenceSeries[1]",
+            "replacement" : "01",
+            "expected" : "FAIL strict ascending"
+          }, {
+            "path" : "sequenceSeries[0]",
+            "replacement" : "1",
+            "expected" : "FAIL fixed2"
+          }, {
+            "path" : "context.cardBrand",
+            "replacement" : "MasterCard",
+            "expected" : "FAIL Discover scope"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "lastTwoDigitObservation" : [ "98", "99" ],
+          "wrapNotAuthorized" : [ "99", "00" ],
+          "ascendingWithGap" : [ "01", "03" ],
+          "gapOutcome" : "PASS ascending predicate only; noincrement-by-one requirement is inferred"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30565,
+          "section" : "Appendix I-60",
+          "endLine" : 30574
+        }, {
+          "startLine" : 30575,
+          "section" : "Appendix I-61",
+          "endLine" : 30592
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.08.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 08",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30577,
+            "section" : "Appendix I-61",
+            "endLine" : 30579
+          } ]
+        }, {
+          "path" : "113.08.Sub-Table Length",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30580,
+            "section" : "Appendix I-61",
+            "endLine" : 30583
+          } ]
+        }, {
+          "path" : "113.08.Sub-Table Data",
+          "sourceType" : "n2",
+          "sourceLength" : "2 digits",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30584,
+            "section" : "Appendix I-61",
+            "endLine" : 30592
+          } ]
+        } ]
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

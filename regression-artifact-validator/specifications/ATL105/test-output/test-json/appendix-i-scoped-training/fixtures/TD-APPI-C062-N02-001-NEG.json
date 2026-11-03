@@ -1,0 +1,139 @@
+{
+  "id" : "TD-APPI-C062-N02-001-NEG",
+  "expectedValidation" : "FAIL",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C062-N02-001-NEG.json",
+  "testCaseIds" : [ "TC-APPI-C062-N02-001-NEG" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-66",
+    "segment" : "111",
+    "element" : "112",
+    "rule" : "scoped-appi-t062-r001-APPI-C062-N02-001"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C062-N02-001",
+        "tableId" : "062",
+        "nestedSelector" : "02",
+        "ruleIds" : [ "APPI-T062-R001", "APPI-T062-R002" ],
+        "syntheticData" : {
+          "selector" : "02",
+          "logicalLength" : 7,
+          "email" : "a@b.test",
+          "context" : {
+            "cardBrand" : "Visa",
+            "transactionContext" : "account verification"
+          }
+        },
+        "clearScope" : "Logicalemailcontactpurpose,Visa-only,maximum99andcountobservation8;characterclassunresolved.",
+        "excludedClaims" : [ "an99exceptionresolution", "EmailRFCvalidation", "Acceptanceofsourceexamplecount013" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "Eightobservedcharacterscount",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Visa-onlyscope",
+          "positive" : "PASS",
+          "negative" : "FAIL"
+        }, {
+          "predicate" : "Emailpunctuationversusan",
+          "positive" : "REVIEW_REQUIRED",
+          "negative" : "REVIEW_REQUIRED"
+        } ],
+        "mutation" : {
+          "cases" : [ {
+            "path" : "logicalLength",
+            "replacement" : 7,
+            "expected" : "FAIL actual8count"
+          }, {
+            "path" : "context.cardBrand",
+            "replacement" : "MasterCard",
+            "expected" : "FAIL scope"
+          }, {
+            "path" : "selector",
+            "replacement" : "99",
+            "expected" : "FAIL identity of this specific defined layout only; no host error or unknown-selector acceptance policy inferred"
+          } ]
+        },
+        "boundaryData" : {
+          "sourceEmailCountObservation" : {
+            "value" : "card@holder.com",
+            "actualCharacters" : 15,
+            "printedNestedCount" : 13,
+            "outcome" : "REVIEW_REQUIRED"
+          },
+          "max99and100" : "ConcretesyntheticstringsaddedaslengthBoundaryExamples"
+        },
+        "sourceEvidence" : [ {
+          "startLine" : 30996,
+          "section" : "Appendix I-67",
+          "endLine" : 31014
+        }, {
+          "startLine" : 30955,
+          "section" : "Appendix I-66",
+          "endLine" : 30977
+        }, {
+          "startLine" : 30978,
+          "section" : "Appendix I-67",
+          "endLine" : 31014
+        }, {
+          "section" : "12.10",
+          "startLine" : 12569,
+          "endLine" : 12624
+        }, {
+          "startLine" : 30989,
+          "section" : "Appendix I-67",
+          "endLine" : 31014
+        } ],
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT",
+        "fieldCoverage" : [ {
+          "path" : "113.02.Sub-Table ID",
+          "sourceType" : "n2",
+          "sourceLength" : "fixed 02",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 30999,
+            "section" : "Appendix I-67",
+            "endLine" : 31001
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Length",
+          "sourceType" : "n3",
+          "sourceLength" : "3-byte count; maximum 99",
+          "coverage" : "LOGICAL_SOURCE_PREDICATE_CANDIDATE",
+          "excludedWireClaim" : "No full-request or certification claim",
+          "sourceEvidence" : [ {
+            "startLine" : 31002,
+            "section" : "Appendix I-67",
+            "endLine" : 31007
+          } ]
+        }, {
+          "path" : "113.02.Sub-Table Data",
+          "sourceType" : "an99",
+          "sourceLength" : "variable up to 99 bytes; example includes @ and . despite an",
+          "coverage" : "LOGICAL_COUNT_SCOPE_ONLY_CHARACTER_CLASS_REVIEW_REQUIRED",
+          "excludedWireClaim" : "an99 versusemailpunctuation",
+          "sourceEvidence" : [ {
+            "startLine" : 31008,
+            "section" : "Appendix I-67",
+            "endLine" : 31014
+          } ]
+        } ],
+        "lengthBoundaryExamples" : {
+          "max99" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@b.test",
+          "over100" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@b.test",
+          "outcome" : "Maximum-count observations only; emailcharacterclass andrealaddressvalidity remainREVIEW_REQUIRED"
+        }
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}

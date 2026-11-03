@@ -1,0 +1,58 @@
+{
+  "id" : "TD-APPI-C032-01-POS",
+  "expectedValidation" : "PASS",
+  "readiness" : "REVIEW_REQUIRED",
+  "fileName" : "fixtures/TD-APPI-C032-01-POS.json",
+  "testCaseIds" : [ "TC-APPI-C032-01-POS" ],
+  "sourceAnchors" : [ {
+    "specification" : "ATL105",
+    "version" : "2026-3",
+    "section" : "Appendix I-21",
+    "segment" : "111",
+    "element" : "113",
+    "rule" : "scoped-appi-t032-r002-APPI-C032-01"
+  } ],
+  "payload" : {
+    "scope" : "LOGICAL_FRAGMENT_NOT_COMPLETE_REQUEST",
+    "request" : {
+      "appendixILogicalCandidate" : {
+        "candidateId" : "APPI-C032-01",
+        "tableId" : "032",
+        "ruleIds" : [ "APPI-T032-R002" ],
+        "sourceEvidence" : [ {
+          "section" : "Appendix I-21",
+          "startLine" : 28306,
+          "endLine" : 28325
+        } ],
+        "logicalFields" : {
+          "subTableId" : "01",
+          "subTableLength" : "001",
+          "value" : "M",
+          "context" : {
+            "brand" : "MasterCard",
+            "device" : "mPOS",
+            "attended" : true,
+            "cardholderActivated" : false
+          }
+        },
+        "clearScope" : [ "Nested selector01/length001/valueM", "Explicit brand/attendance restriction" ],
+        "excludedClaims" : [ "Aggregate032 serialization", "Other brand mPOS eligibility" ],
+        "expectedPredicateOutcomes" : [ {
+          "predicate" : "mPOS context attended and not cardholder activated",
+          "positive" : "PASS",
+          "mutated" : "FAIL"
+        } ],
+        "mutation" : {
+          "path" : "context.attended",
+          "value" : false,
+          "targetedNegative" : "Unattended context withM"
+        },
+        "readiness" : "REVIEW_REQUIRED",
+        "payloadScope" : "LOGICAL_FRAGMENT"
+      }
+    }
+  },
+  "response" : {
+    "assessment" : "NOT_EXECUTED_NO_HOST_RESPONSE"
+  }
+}
