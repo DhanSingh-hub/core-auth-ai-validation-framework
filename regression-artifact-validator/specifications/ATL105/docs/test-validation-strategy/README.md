@@ -48,3 +48,10 @@ The [Milestone 2 Test Plan: ATL105 Closure and ISO8583 Validation](MILESTONE-2-T
 
 - [Browser-ready HTML plan](MILESTONE-2-TEST-PLAN-ATL105-ISO8583.html)
 - [Markdown plan](MILESTONE-2-TEST-PLAN-ATL105-ISO8583.md)
+
+## New Team Member Onboarding
+
+Use the [New Test Member Knowledge Transfer Plan](NEW-TEST-MEMBER-KT-PLAN.md) to onboard cross-trained test resources through a two-week guided learning path, paired practice, and readiness review.
+
+- [CSV checklist and schedule](NEW-TEST-MEMBER-KT-PLAN.csv)
+- [Markdown plan](NEW-TEST-MEMBER-KT-PLAN.md)
