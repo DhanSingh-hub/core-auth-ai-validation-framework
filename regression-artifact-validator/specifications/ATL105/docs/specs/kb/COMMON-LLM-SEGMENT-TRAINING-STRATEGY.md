@@ -64,6 +64,47 @@ and [controls AIV-023, AIV-025 and AIV-026](../../test-validation-strategy/AI-AR
 
 ## Automatic Update Rule
 
+The [2026-4 Mastercard/Maestro overlay](segment-100/mastercard-maestro-2026-4-model/README.md)
+is a bounded source-authored draft. The preserved v1 has 26 obligations; v2 has
+38 obligations, 66 context scenarios and 132 logical control/mutant TC/TD pairs.
+Each quote must match its declared page and
+source hash. Keep the 1,343 legacy BRs and Petroleum Fleet companion draft in
+separate release/applicability/overlap review inventories. Do not silently inherit
+general credit rules into Fleet or turn generic savings/ACH codes into Maestro
+permissions. Candidate AI matches need the same primary source/page plus lexical
+evidence, but remain unconfirmed until independent semantic review. Preserve all
+unassessed AI supporting rules and failed/blocked scope decisions. Local predicate
+passes are not device/host observations. `training-status.json` records this as
+`IN_PROGRESS`, excluded from baseline counts, with approved denominator/coverage
+null. V2 retains all source pages/paragraphs for scope classification, compares
+every legacy anchor's old/new source block and records overlap candidates without
+merging or approving rules. Exact block identity is not whole-rule equivalence;
+an exhaustive paragraph scan is not an exhaustive classified BR denominator.
+Candidate matches include actual TS/TC/TD identity bindings. Fifteen synthetic
+Segment 100 ASCII controls/mutants test bounded physical predicates, and all 1,944
+delivery TD files receive bounded JSON-field observations. Neither is full-message
+validation or host evidence. Use `mastercard-maestro-v2-check` to rederive all
+generated evidence and verify source/delivery hashes and output population without
+writing. V1 evidence and its original build/check/test tasks remain available.
+
+Native business-layer delivery reviews must distinguish an umbrella BR from
+supporting-rule inventories. Scenario-wide rule references are lineage, not
+per-rule test objectives. The 31 October 2026 Mastercard Credit/Fleet review
+uses `report-mastercard-business-delivery.py` and the existing source-pinned
+native gates; Maestro Direct Debit is a separate network. Explicit TC
+`kb_rule_ids` plus physical TD remain unexecuted predicate lineage, not
+semantic confirmation. Freeze and recheck the input inventory, retain every
+unassessed rule, and keep the 2026-4 independent denominator/confirmed coverage
+null until release-qualified independent matching exists. The historical
+2026-3 Mastercard Purchase training denominator cannot replace it.
+
+For network-family consolidation, preserve per-network/program/card-type rows.
+Deduplicated producer-ID reach is not semantic BR coverage or all-card coverage.
+Scenario allowed codes do not prove physical variations: the 31 October Maestro
+package declares `011`/`012`/`013`, but its financial TD contains only `011`.
+Keep Signature Debit/Common-AID and unclassified issuer products unassessed;
+exclude nonfinancial totals TD from financial-card-code distributions.
+
 Assessment execution readiness always applies the strict execution contract, regardless of a producer's `strictExecutionContract` flag. BRs, scenarios and cases must declare `EXECUTION_READY`; TDs must declare `EXECUTABLE` and contain request/response envelopes. Future availability, unresolved outcomes, missing metadata, failed validators, empty denominators or incomplete strategy maps block readiness. Structural full-chain coverage may still be 100% while readiness is false. These checks validate declared states and contract evidence, not reviewer authenticity or SME approval; independent source/approval binding remains a separate gate.
 
 This document must be updated in the same change set whenever a training-relevant decision is made, not on request. This applies to (but is not limited to): adding or changing a phase or gate, adding a new artifact type (for example a field-alias crosswalk), changing required package field names or contract shapes, changing coverage-denominator or matching policy, or discovering a segment-package conformance defect. The update happens automatically as part of doing the work; do not wait for an explicit instruction to "update the training strategy."
@@ -966,6 +1007,8 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
+| 2026-11-03 | Added source-pinned Mastercard/Maestro 2026-4 draft model and context/denominator register, logical control/mutant fixtures, full legacy and AI review registers, indexed Fleet companion evidence and non-confirming delivery-bound crosswalk; added build/check/test tasks and IN_PROGRESS governance entry. No baseline replacement or approval. |
+| 2026-11-03 | Added hash-bound native Mastercard business-delivery review with separate Credit/Fleet and Maestro scopes, scenario-broadcast versus explicit predicate lineage, physical-TD ledgers and existing bounded native gates. No semantic coverage or readiness promotion; synchronized validation plan, controls, strategy and regression checks. |
 | 2026-10-27 | Ingested a second external-reference version: Conexxus PSPC v3.7 alongside v4.1. When ATL105 names an external document without a version and more than one version is supplied, train every version. Add a per-code version diff, and judge unbound values against all versions; disagreement is `REVIEW_REQUIRED` with `versionSensitive: true`. The PSPC v3.7 → v4.1 diff has 62 sensitive codes, and Appendix F follows the numbering from before the v3.5 deprecations. Record: [Conexxus-PSPC-Training-Record.md](../../test-validation-strategy/Conexxus-PSPC-Training-Record.md). |
 | 2026-10-27 | Added external-reference document training. When ATL105 delegates values to an outside document, follow the 12-step procedure in the [strategy's Test Solution Training Procedure and Memory section](../../test-validation-strategy/Core-Auth-Regression-Test-Validation-Strategy.md#test-solution-training-procedure-and-memory). Steps: anchor every dependency, check ATL105 version drift, store and extract the source, build a fail-fast oracle, write an independent validator, generate the chain package and crosswalk, and record the documents under `test-validation-strategy/<reference>/`. First applied to Conexxus PSPC v4.1 (Appendix K-27 Table 034). Element 77 stays governed by Appendix F. Assigned product names containing "Reserved" or "Proprietary" are not reservations. |
 | 2026-10-17 | Trained the Test Solution on the QE-Fiserv feedback workbook: 33 rules (`QEF-001`-`QEF-033`) in `contract/qe-feedback-rule-catalog.json`, enforced regardless of workbook status, executed by `scripts/apply-qe-feedback-rules.py` on the hash-verified 10 October delivery (6,880 BR / 12,254 TS / 21,254 TC / 17,769 payloads). Added readable per-segment traceability, 8-column manual tables and Test Case Cards, recorded source conflicts for SME confirmation, and L25. || 2026-10-16 | Added P2 Authorization-to-Completion training and post-BR whole-delivery validation guidance. Enforce transaction-code and Sequence Number rules, bind completion approvals to actual host responses, keep amount changes evidence-gated, and do not make Terminal-ID equality a universal auth-completion requirement. Added L24 and the producer-JSON mapping boundary for Segment 100 Elements 2/12 and Segment 130. `AID-0005` records the unresolved TrackData alias/delimiter contract; samples do not establish entry mode, converter behavior, semantic approval, or host validity. Added the independent 36-code AI coverage check and `AIF-0020`; brand-axis values remain a separate dimension. |

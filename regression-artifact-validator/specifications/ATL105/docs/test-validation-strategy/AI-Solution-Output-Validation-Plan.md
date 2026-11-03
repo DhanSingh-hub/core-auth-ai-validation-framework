@@ -12,6 +12,70 @@
 
 **Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
 
+**Independent model improvement (2026-11-03):**
+[Mastercard/Maestro 2026-4 draft model](../../test-output/test-solution-independent-review/mc-maestro-model-v1/REPORT.md)
+adds 26 source-pinned draft atomic obligations, 42 explicit context rows and 84
+logical control/mutant TC/TD pairs. Every literal quote resolves on its declared
+2026-4 page; old-release clause presence is reported separately from semantic
+equivalence. The 1,343 legacy BRs and existing Petroleum Mastercard Fleet draft
+are retained in separate review inventories; neither is silently relabelled,
+discarded or added to the overlay denominator. General credit rules do not
+automatically apply to Fleet; Maestro 012/013 applicability stays unresolved.
+The delivery-bound crosswalk uses same-primary-source/page lexical evidence only
+to propose candidates, retaining every AI supporting rule as review-required or
+unassessed. No lexical candidate is confirmed and no missing candidate proves
+absence. Recheck the frozen 2,021-file delivery inventory, source and model hashes
+before publication. `build-mastercard-maestro-model.py --check` rederives every
+artifact read-only; `test_mastercard_maestro_model.py` exercises source/page drift,
+isolated mutants, missing/type-invalid facts, context/approval refusal, legacy
+preservation, companion boundaries and candidate non-promotion. These are bounded
+logical fixtures, not a physical converter or execution certificate. Complete
+denominator, overlap, approvals and response/fixture evidence remain blocking.
+
+The [v2 continuation](../../test-output/test-solution-independent-review/mc-maestro-model-v2/REPORT.md)
+preserves v1 and expands to 38 draft BRs, 66 TS and 132 logical TC/TD. It retains
+every source page/paragraph (including front matter and tables), reconciles all
+1,343 legacy BR anchors with old/new source-block hashes and changed/missing/
+ambiguous statuses, and records overlap proposals without automatic merging.
+The source-unit inventory is not an atomic/applicable-rule denominator. Candidate
+crosswalks now bind actual scenario, case, explicit-predicate case and TD identities.
+Fifteen bounded synthetic ASCII Segment 100 controls/mutants check only framing,
+length, sequence and contextual card-code mapping. All 1,944 delivered TD JSON
+files are independently observed for bounded representations; object observations
+do not establish serialized-wire validity. Existing native-gate failures remain
+visible and blocking. `complete-mastercard-maestro-model.py --check` verifies all
+inputs, output values and file populations read-only; regression
+`test_mastercard_maestro_completion.py` covers release shifts/differences/ambiguity,
+source retention, no-auto-merge boundaries, isolated wire mutations and stale
+output detection. Semantic scope adjudication and external approval/execution
+remain pending; no full-message or host certification is claimed.
+
+**Native business-delivery review (2026-11-03):** The [31 October Mastercard report](../../test-output/ai-solution-independent-review/2026-10-31-mastercard-business-br-coverage-v1/REPORT.md)
+recomputes Credit and Fleet separately and retains Maestro Direct Debit as a separate
+network. `scripts/report-mastercard-business-delivery.py` reuses the strict native
+delivery parser, safe references and source-pinned `delivery_gates.py` predicates.
+Hash every selected input, including archives and unreferenced TD, and recheck the
+inventory before publication. Report umbrella BR linkage, scenario-wide supporting-rule
+lineage, explicit TC `kb_rule_ids` predicate lineage with all declared TD JSON, and
+response-check declarations separately. These are structural inventories, not semantic
+coverage. Predicate lineage does not mean the predicate was executed or is applicable.
+The 2026-4 delivery has no established release-qualified independent denominator or
+semantic crosswalk in this assessment: confirmed coverage and its denominator remain
+JSON `null` / `NOT_ASSESSED`. Do not substitute the historical 2026-3 Purchase
+168/189 training result. JSON segment-object count agreement is not serialized
+Element 63 validity. Named native-gate outcomes remain bounded, and execution
+readiness is blocked. Regression: `test_mastercard_business_delivery_report.py`
+plus existing native-delivery gate tests.
+
+The [Mastercard/Maestro consolidated report](../../test-output/ai-solution-independent-review/2026-10-31-mastercard-business-br-coverage-v1/CONSOLIDATED.md)
+adds a network-family presentation without changing validation gates. Deduplicate
+producer rule IDs only after checking shared-record equality, and label that union
+as producer inventory reach, not semantic deduplication or per-card coverage.
+Count physical card codes independently of scenario allow-lists; distinguish
+generic debit alternatives, authorizer codes, Signature Debit/Common-AID contexts
+and unclassified product subtypes. Nonfinancial totals TD is not a missing card-code
+fixture. Absent physical alternatives remain review gaps, not unsupported products.
+
 An isolated request/response sample without a frozen delivery inventory and explicit BR -> TS -> TC -> TD identity is not a coverage population. Record only sample-scoped validator outcomes; do not create a BR-match numerator, classify unseen requirements as `AI_ONLY`, or infer lifecycle coverage from a single leg. For the sanitized 2026-10-16 Authorization sample, the declared segment count and EMV byte count are structurally consistent. The new `AppendixREmvChipDataOracle.assessWithPackedLengthPrefix` candidate path validates the apparent packed-BCD count against the trailing TLV body and parses that body, but returns `REVIEW_REQUIRED` until the producer adapter declares the field boundary. The strict bare-TLV path remains unchanged; no prefix is silently stripped. Element 188 fails its N3 format and does not match the decoded card-sequence tag; the producer track alias is unmapped. No BR coverage percentage is calculable from that sample.
 
 **Execution-ready Test Model quality:** The canonical model carries a requirement `statement` and explicit `atomicity` disposition; a ready BR must be `ATOMIC` and include source evidence bound to a file hash, locator, and literal quote. Ready scenarios declare intent and preconditions. Ready test cases declare per-BR assertions with expected results and anchors shared with each linked requirement; every BR reached through the case's scenarios must be asserted. `CanonicalTraceabilityValidator.validateForExecution` enforces these deterministic contract checks and rejects source paths outside the trusted root, stale hashes, nonliteral quotes, incomplete assertions, and non-atomic dispositions. This is evidence/structure validation only: it does not decide that a rule is semantically atomic or approve the source interpretation. Draft/review packages remain loadable, and execution readiness remains blocked until authorized decisions and host evidence are supplied.

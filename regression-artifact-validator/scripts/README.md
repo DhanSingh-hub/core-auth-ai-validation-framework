@@ -17,6 +17,58 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Mastercard / Maestro 2026-4 independent draft model
+
+`build-mastercard-maestro-model.py --delivery 'C:\delivery\31-10-out'` creates
+the source-pinned bounded overlay, 1,343-BR legacy carry-forward review register,
+Fleet companion evidence index, full AI supporting-rule review register and
+delivery-bound candidate crosswalk under
+`test-output/test-solution-independent-review/mc-maestro-model-v1/`.
+The 26 draft BRs have 42 context-specific scenarios and 84 logical positive/negative
+TC/TD pairs. Build refuses existing output; `--check` rederives without writing.
+It verifies every frozen delivery file, both ATL105 source hashes and all quote pages.
+Use framework tasks `mastercard-maestro-model-build`, `mastercard-maestro-model-check`
+(both require `-ReviewDirectory`) and `mastercard-maestro-model-test`.
+Regression: `test_mastercard_maestro_model.py`.
+No approved denominator, semantic auto-confirmation or physical execution is claimed.
+
+`complete-mastercard-maestro-model.py --delivery 'C:\delivery\31-10-out'` preserves
+and rechecks v1, then writes a new `mc-maestro-model-v2` evidence directory:
+38 source-pinned draft BRs, 66 context TS and 132 logical control/mutant TC/TD.
+All source pages and nonempty paragraphs (including front matter and tables) are
+retained for scope review, not asserted to be atomic applicable BRs. All 1,343 legacy
+BR anchors are reconciled by old/new section/element/appendix block hashes;
+unchanged blocks, changed blocks and unresolved/ambiguous locators stay distinct.
+Overlap proposals never merge denominators. Delivery candidates now retain actual
+scenario, case, explicit-predicate case and physical TD identities.
+
+The v2 package includes 15 executed bounded ASCII Segment 100 framing/length/
+sequence/card-code fixtures and observations of all 1,944 delivered JSON TD files.
+Neither establishes full physical-message validity, runtime bindings, device or
+host outcomes. Complete semantic scope, approvals and external execution remain blocked.
+Use `mastercard-maestro-v2-build`, `mastercard-maestro-v2-check` (read-only exact
+output/input-population and hash verification) and `mastercard-maestro-v2-test`.
+Build refuses an existing output directory. Original v1 tasks remain available.
+
+### Mastercard business-delivery BR coverage review
+
+`report-mastercard-business-delivery.py` inventories the native `mastercard_credit`
+and `mastercard_fleet` packages, with `maestro_direct_debit` kept separate.
+It reuses `delivery_gates.py` strict parsing, safe reference resolution and
+source-pinned offline gates. The output must be new and outside the input.
+Every selected input file is SHA-256 inventoried and rechecked before publication.
+
+```powershell
+python .\scripts\report-mastercard-business-delivery.py --input 'C:\delivery\31-10-out' --output 'C:\review\mastercard-31-oct'
+python -m unittest discover -s .\scripts -p test_mastercard_business_delivery_report.py
+```
+
+Outputs include a Markdown report, JSON summary/native-gate findings and CSV
+input, supporting-rule, scenario, case and physical-TD ledgers. Scenario-wide
+rule lineage, explicit `kb_rule_ids` predicate lineage and response declarations
+are distinct. None certifies semantic BR coverage or host execution. A 2026-4
+delivery cannot reuse the 2026-3 Mastercard Purchase training denominator.
+
 ### Native business-model delivery gates and safe export repair
 
 The AI producer's `src/pipeline/business_model` implementation is not part of this

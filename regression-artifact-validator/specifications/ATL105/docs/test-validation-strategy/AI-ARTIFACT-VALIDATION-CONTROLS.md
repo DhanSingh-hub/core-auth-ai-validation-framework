@@ -16,6 +16,58 @@ The source of truth for the stages and methods is the [AI Solution Output Valida
 
 ## Control Catalogue
 
+Mastercard/Maestro source-model overlay (2026-11-03) supplies bounded
+`AIV-001`, `AIV-004`, `AIV-005`, `AIV-006` and `AIV-011` evidence:
+`build-mastercard-maestro-model.py` pins old/new sources and declared quote pages,
+retains legacy review rows and separate Fleet companion provenance, creates
+context-specific logical control/mutant chains, and proposes delivery-bound
+same-page lexical candidates without semantic promotion. Its full AI review
+register retains unmatched rules as `NOT_ASSESSED`. Every frozen delivery hash is
+reverified before output; `--check` compares all generated registers/packages.
+Regression `test_mastercard_maestro_model.py` checks source/page drift, context and
+approval refusal, missing/type-invalid observations, isolated mutations, complete
+links, legacy preservation, companion status and unmatched-candidate retention.
+[Result](../../test-output/test-solution-independent-review/mc-maestro-model-v1/REPORT.md).
+The 26-rule overlay is not a complete or approved denominator, SME sign-off,
+canonical execution certification, physical payload validity or host evidence.
+
+The [preserved-v1 / v2 continuation](../../test-output/test-solution-independent-review/mc-maestro-model-v2/REPORT.md)
+extends those controls plus bounded `AIV-017` physical-predicate evidence through
+`complete-mastercard-maestro-model.py`, `mastercard_maestro_reconciliation.py` and
+`mastercard_maestro_offline.py`. Every legacy BR is retained with per-anchor
+old/new block hashes or explicit unresolved/ambiguous findings; overlap candidates
+are not merged. All pages/paragraphs are inventoried without asserting semantic
+BR completeness. The 38-rule draft has 66 TS and 132 logical TC/TD. Candidate
+crosswalks bind actual TS/TC/TD identities without confirmation. Fifteen synthetic
+ASCII Segment 100 controls/mutants check bounded framing/length/sequence/card
+mapping, and all 1,944 TD JSON files receive field observations; neither passes a
+full message or host gate. `test_mastercard_maestro_completion.py` checks source
+drift, release shifts and ambiguous/missing locators, source-unit retention,
+no-auto-merge decisions, physical mutation isolation and read-only stale-output/
+population detection. Native delivery failures remain recorded; coverage stays
+null and readiness BLOCKED.
+
+Native Mastercard business-delivery evidence (2026-11-03), scoped to
+`AIV-001`, `AIV-004`, `AIV-006` and coverage-presentation boundaries:
+`scripts/report-mastercard-business-delivery.py` hashes and rechecks every selected
+input, reconstructs direct BR/TS/TC/TD links, retains supporting-rule and response
+declarations separately, and runs existing source-pinned `delivery_gates.py` gates.
+Credit and Fleet are separate scopes; Maestro Direct Debit is not added to them.
+Regression: `test_mastercard_business_delivery_report.py` checks duplicate-key/ID
+rejection, unsafe paths, all-leg TD presence, orphan TD, non-broadcast predicate
+counts, JSON-only segment counts, and null independent semantic coverage.
+Existing `test_delivery_gates.py` supplies bounded export/EMV predicate evidence.
+Result: [31 October Mastercard review](../../test-output/ai-solution-independent-review/2026-10-31-mastercard-business-br-coverage-v1/REPORT.md).
+This is not a new independent 2026-4 BR denominator, SME approval, whole-message
+validity or host-execution evidence.
+
+Consolidated presentation:
+[Mastercard/Maestro network-family report](../../test-output/ai-solution-independent-review/2026-10-31-mastercard-business-br-coverage-v1/CONSOLIDATED.md)
+and its card-type CSV retain observed physical codes versus declared alternatives.
+Evidence reconciliation checks shared rule-record equality, package-qualified
+totals, physical financial-code counts, nonfinancial totals and input hashes.
+No new validator behavior, semantic confirmation or all-product certification.
+
 Appendix I evidence for `AIV-005`, `AIV-011`, and `AIV-012`:
 `GenerateAppendixITrainingInventoryTest` verifies source boundaries/hashes and
 actual selector identity; `AppendixITrainingKnowledgeTest` verifies draft source
