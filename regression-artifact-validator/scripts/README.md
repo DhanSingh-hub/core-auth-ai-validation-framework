@@ -17,6 +17,59 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Non-Mastercard 2026-4 independent draft model
+
+`build-nonmaster-model.py --delivery 'C:\delivery\31-10-out'` creates
+[non-Mastercard evidence](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-model-v1/REPORT.md)
+without changing the original delivery or historical network/Mastercard evidence.
+It source-pins 30 draft BRs, 66 context-specific TS and 132 logical control/mutant
+TC/TD chains for Amex, Visa, Discover, Diners, JCB, Interlink and STAR Signature Debit.
+Visa Appendix AE continuity and 7/14-day boundaries are separate from Discover
+Appendix AF mandatory Table 82, original-approval continuity and closed-IA rules.
+Interlink PIN-debit and STAR single/dual-message restrictions are not interchangeable.
+
+The builder inventories all 730 source pages, release-compares all 1,343 legacy
+BRs and retains the historical 145-row shared review library. Section 5 categories
+and financial card codes are separate scope dimensions, not inferred networks.
+Fleet, benefit, proprietary and other program-specific chains remain incomplete.
+All Amex/Interlink files are hash-bound; native gates, file-level Element 188 width
+observations and candidate TS/TC/TD bindings are retained. Undelivered networks are
+`NOT_SUPPLIED`, not failures. Lexical matches never become semantic confirmations.
+Four shared synthetic Segment 100 framing fixtures are not complete valid messages.
+
+Use framework tasks `nonmaster-model-build`, `nonmaster-model-check` (both require
+`-ReviewDirectory`) and `nonmaster-model-test`. Build refuses an existing output;
+`--output` accepts a new directory. `--check` rederives exact output bytes and input
+populations without writing. Regression: `test_nonmaster_model.py`.
+Confirmed coverage and approved denominator stay null; full-message wire, runtime
+crypto, device/host responses, complete semantic classification and approvals remain pending.
+
+`complete-nonmaster-model.py --delivery 'C:\delivery\31-10-out'` preserves/rechecks
+v1 and creates a separate
+[v2 program/application continuation](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-model-v2/REPORT.md).
+It adds 41 source-pinned program BRs in 18 contexts (PINless, food/cash EBT,
+eWIC, stored-value, loyalty, check services and Petroleum fleet/operations).
+The combined package has 71 draft BRs, 115 TS and 230 logical TC/TD.
+Existing Visa/Voyager companions are rederived with their source and mutation
+checks; their 61 draft BRs and 115 TC/TD remain separate, not denominator additions.
+WEX recovery, COMDATA card SAF prohibition, COMDATA price-update retry and Money
+Code manual entry keep their own policies and source versions.
+
+`nonmaster_application.py` measures/parses complete Standard Segment 100 fields
+and scoped financial application bodies: all 17 fields, explicit interior blanks,
+header/count, segment boundaries, manual/Track1/Track2 account delimiters and
+required EMV segment presence. Nine controls/isolated mutants are executed.
+Conditional companion contents and transport are not certified. Every delivered
+Amex/Interlink TD receives JSON observations with TC negative-intent identities;
+field failures are not automatically AI defects. No account/PIN data is copied
+into those observations, and no missing values are manufactured.
+
+Use `nonmaster-v2-build`, `nonmaster-v2-check` and `nonmaster-v2-test`.
+Build refuses existing outputs; check is byte-exact and read-only. Source and
+delivery hashes/populations are rechecked before publication. The completion
+register deliberately separates **remaining repository semantic/conditional-oracle
+work** from missing external deliveries, approval and real execution.
+
 ### Mastercard / Maestro 2026-4 independent draft model
 
 `build-mastercard-maestro-model.py --delivery 'C:\delivery\31-10-out'` creates

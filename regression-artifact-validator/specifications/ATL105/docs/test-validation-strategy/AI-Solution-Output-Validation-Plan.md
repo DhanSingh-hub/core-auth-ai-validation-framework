@@ -13,6 +13,42 @@
 **Coverage invariant:** Keep the independent Test Solution rule denominator separate from the AI BR inventory. `confirmedRequirementCoveragePercent` is confirmed independent rules divided by in-scope independent rules; AI-BR inventory metrics use AI BR IDs as their own denominator. A missing crosswalk entry means `NOT_ASSESSED`, not `AI_ONLY`. If the independent denominator is structurally invalid or empty, coverage is `NOT_CALCULABLE` (JSON `null`), not `0%`. Segment AI BR inventories are not added into a run-wide denominator unless IDs have been deduplicated across segments.
 
 **Independent model improvement (2026-11-03):**
+The [non-Mastercard v2 continuation](../../test-output/test-solution-independent-review/nonmaster-model-v2/REPORT.md)
+preserves v1 and adds 41 source-pinned program BRs across 18 processing/program
+contexts; combined totals are 71 draft BRs, 115 TS and 230 logical TC/TD.
+Petroleum authority remains 2025-1. Existing Visa/Voyager companions are reexecuted
+through their source and mutation validators, not promoted or merged into a denominator.
+Complete scoped Standard Segment 100/application-body checks include all 17 fields,
+explicit blanks, measured ASCII lengths, message/count and length-delimited segment
+boundaries, manual versus Track1/Track2 account delimiters, and required EMV presence.
+Nine synthetic controls/mutants are not full business-valid/host-positive messages.
+All Amex/Interlink physical TD observations retain TC polarity/negative-class and
+intended violated-element identities so intentional negative data is not automatically
+called a producer defect. Missing serialized producer output remains review-required.
+`complete-nonmaster-model.py --check` rederives the exact output and rechecks frozen
+v1, Petroleum evidence, source/implementation populations and delivery hashes.
+`test_nonmaster_completion.py` covers multi-source pins, policy isolation, complete
+application framing and nonpromotion. The completion register explicitly retains
+whole-spec semantic classification/overlap and full conditional-segment oracles as
+repository work, separately from external delivery/approval/host blockers.
+
+[Non-Mastercard 2026-4 draft model](../../test-output/test-solution-independent-review/nonmaster-model-v1/REPORT.md)
+adds 30 independently source-authored BRs with 66 conditional network-context TS
+and 132 logical control/mutant TC/TD for Amex, Visa, Discover, Diners, JCB,
+Interlink and STAR Signature Debit. Discover AF mandatory Table 82 and closed-IA
+rules are not Visa AE continuity/window rules; generic PIN-debit does not govern
+STAR Signature Debit. Historical shared requirements and all legacy BRs are
+retained for release/scope review, not silently adopted as a complete denominator.
+The Amex/Interlink intake freezes 1,372 delivery files, retains all 963 supporting
+rules, records native failures and observes all 1,326 physical TD files for Element
+188 width (206 failures). Missing deliveries remain `NOT_SUPPLIED`, not failed.
+Four shared synthetic framing fixtures are not valid full-message test data.
+`build-nonmaster-model.py --check` rederives byte-exact evidence and file populations;
+`test_nonmaster_model.py` verifies source drift, network isolation, lifecycle ordering,
+exact 7/14-day boundaries, candidate identity/missing-file retention and stale output.
+Program-specific chains, semantic completeness/adjudication, approvals, full wire,
+runtime crypto and host-response evidence remain pending. Coverage remains null.
+
 [Mastercard/Maestro 2026-4 draft model](../../test-output/test-solution-independent-review/mc-maestro-model-v1/REPORT.md)
 adds 26 source-pinned draft atomic obligations, 42 explicit context rows and 84
 logical control/mutant TC/TD pairs. Every literal quote resolves on its declared

@@ -16,6 +16,30 @@ The source of truth for the stages and methods is the [AI Solution Output Valida
 
 ## Control Catalogue
 
+The [non-Mastercard v2 program/application continuation](../../test-output/test-solution-independent-review/nonmaster-model-v2/REPORT.md)
+extends the bounded controls below using `complete-nonmaster-model.py`,
+`nonmaster_application.py` and `test_nonmaster_completion.py`. It pins two source
+authorities, executes program-specific control/mutant chains, rederives existing
+Visa/Voyager source/mutation evidence and validates complete scoped application-body
+shape. Manual/Track1/Track2 account delimiters are separate from generic FS rules.
+Observed JSON fields, complete synthetic application bodies and host-valid messages
+are distinct evidence levels. TC negative intent is retained; a field failure is not
+automatic defect certification. All 17 standard fields are represented, but opaque
+companion contents remain review-required. The completion register must not
+misclassify unfinished repository semantic/serializer work as only an external blocker.
+
+The [non-Mastercard 2026-4 draft overlay](../../test-output/test-solution-independent-review/nonmaster-model-v1/REPORT.md)
+adds bounded `AIV-001`, `AIV-004`, `AIV-005`, `AIV-006`, `AIV-011` and
+`AIV-017` evidence through `build-nonmaster-model.py` and
+`test_nonmaster_model.py`: exact source/page pins, isolated logical control/mutant
+chains, legacy source reconciliation, hash-bound Amex/Interlink intake, full
+supporting-rule retention and identity-bound candidate crosswalks. Visa AE,
+Discover AF, Interlink PIN-debit and STAR Signature Debit keep separate conditions.
+Four shared framing fixtures and JSON Element 188 width observations are bounded,
+not full-wire or cryptographic checks. Missing network deliveries, program-specific
+chain gaps, semantic denominator approval and real host execution remain open.
+Native failures are preserved; no AI delivery is repaired or semantic coverage certified.
+
 Mastercard/Maestro source-model overlay (2026-11-03) supplies bounded
 `AIV-001`, `AIV-004`, `AIV-005`, `AIV-006` and `AIV-011` evidence:
 `build-mastercard-maestro-model.py` pins old/new sources and declared quote pages,

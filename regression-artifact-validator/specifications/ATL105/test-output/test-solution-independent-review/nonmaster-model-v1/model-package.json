@@ -1,0 +1,6015 @@
+{
+  "businessRequirements": [
+    {
+      "id": "BR-NM4-001",
+      "statement": "Sequence Number has six ASCII digits.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "13 Element 86",
+          "page": 409
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Representation: Fixed length of six digits"
+      },
+      "condition": "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT",
+        "INTERLINK_DEBIT",
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-002",
+      "statement": "Associated follow-up retains the original authorization sequence.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "13 Element 86",
+          "page": 409
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Sequence Number must persist in all the subsequent transactions that are associated with the initial authorization request."
+      },
+      "condition": "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT",
+        "INTERLINK_DEBIT",
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-003",
+      "statement": "EMV Card Sequence Number occupies three ASCII bytes.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "13 Element 188",
+          "page": 477
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Representation: Fixed length of three bytes, right-aligned and padded with zeroes"
+      },
+      "condition": "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT",
+        "INTERLINK_DEBIT",
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-004",
+      "statement": "Credit processing performs expiration validation.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.1.1",
+          "page": 81
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "The device performs expiration date validation in a credit card transaction."
+      },
+      "condition": "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-005",
+      "statement": "Non-Amex credit defaults to Track 2.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.1.2",
+          "page": 81
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "For all other card types, the default track should be Track 2."
+      },
+      "condition": "Section 10.1 electronic credit magnetic-stripe initial transaction; device supports readable Track 2; not EMV or a follow-up.",
+      "contexts": [
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-006",
+      "statement": "Unreadable Track 2 falls back to unaltered Track 1 before manual entry.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.1.2",
+          "page": 81
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "If the device cannot read Track 2, then the device should send unaltered Track 1 on the initial transaction, before attempting manual entry."
+      },
+      "condition": "Initial non-Amex electronic credit magnetic-stripe transaction; Track 2 unreadable, Track 1 readable.",
+      "contexts": [
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-007",
+      "statement": "Amex MSR/MSD AFD carries Track 1.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.1.2",
+          "page": 81
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Track 1 data is mandatory for all (both MSR and MSD) Amex AFD transactions"
+      },
+      "condition": "Amex AFD using MSR or MSD; not a universal entry-mode requirement.",
+      "contexts": [
+        "AMEX_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-008",
+      "statement": "Encrypted Amex AFD selects Track 1 as encryption target.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.1.2",
+          "page": 81
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Track 1 data must be present inside the Encryption Block with Encryption Target as Track 1."
+      },
+      "condition": "Amex AFD contains encrypted data in the TransArmor Encryption Block; Track 1 content separately checked.",
+      "contexts": [
+        "AMEX_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-009",
+      "statement": "Partial-approval credit reversal uses the approved amount.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.2.1",
+          "page": 84
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "The amount in a Reversal (Void) request must be the amount approved in the original transaction response when a transaction has been partially approved."
+      },
+      "condition": "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-010",
+      "statement": "Credit authorization reversal preserves the approval number.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.1.2.2",
+          "page": 85
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "must be present and identical in the Authorization Only Reversal transaction."
+      },
+      "condition": "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog.",
+      "contexts": [
+        "AMEX_CREDIT",
+        "VISA_CREDIT",
+        "DISCOVER_CREDIT",
+        "DINERS_CREDIT",
+        "JCB_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-011",
+      "statement": "Standard Interlink PIN-debit does not allow manual entry.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.2.1.4",
+          "page": 96
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Manual entry is not allowed on a debit card transaction."
+      },
+      "condition": "Transaction is independently classified under section 10.2 PIN-debit processing; do not apply to Signature Debit or PINless profiles.",
+      "contexts": [
+        "INTERLINK_DEBIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-012",
+      "statement": "Applicable PIN-debit encrypts the PIN using DUKPT.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.2.1.3",
+          "page": 96
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "it must be encrypted using the DUKPT PIN encryption method."
+      },
+      "condition": "Section 10.2 PIN entry is required; excludes Purchase Reversal PIN exception; method label is not cryptographic proof.",
+      "contexts": [
+        "INTERLINK_DEBIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-013",
+      "statement": "A received debit completion response stops retries.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.2.1.2",
+          "page": 96
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Any response from BUYPASS to a Debit Card Completion transaction should end attempts to retry a Debit Card Completion"
+      },
+      "condition": "BUYPASS response received for a Debit Card Completion, whether approved or declined.",
+      "contexts": [
+        "INTERLINK_DEBIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-014",
+      "statement": "Interlink cashback merchants support Partial Approval.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.2.2.1",
+          "page": 97
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Interlink requires that merchants supporting cashback must also support Partial Approval transactions."
+      },
+      "condition": "Merchant supports Interlink cashback; not proof every card or transaction permits cashback.",
+      "contexts": [
+        "INTERLINK_DEBIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-015",
+      "statement": "Partially approved PIN-debit TOR uses approved amount.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.2.2.1",
+          "page": 98
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "The amount in a TOR request must be the amount approved in the original transaction response when a transaction has been partially approved."
+      },
+      "condition": "Eligible section 10.2 partially approved debit transaction; not a debit Completion TOR.",
+      "contexts": [
+        "INTERLINK_DEBIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-016",
+      "statement": "STAR Signature Debit settlement currency is USD 840.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.4.3",
+          "page": 108
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "The transaction must be settled only in US Dollar (840)"
+      },
+      "condition": "Confirmed STAR Signature Debit single- or dual-message processing; routing and US/territory requirements separately reviewed.",
+      "contexts": [
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-017",
+      "statement": "STAR Signature Debit excludes cashback.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.4.3",
+          "page": 108
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Cash back is not supported"
+      },
+      "condition": "Confirmed STAR Signature Debit single- or dual-message profile.",
+      "contexts": [
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-018",
+      "statement": "STAR Signature Debit excludes eCommerce.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.4.3",
+          "page": 108
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "eCommerce transactions, including those using 3-D Secure Protocol, such as Verified by Visa, MC Secure code transactions, Amex SafeKey and Discover ProtectBuy are not supported"
+      },
+      "condition": "Confirmed STAR Signature Debit single- or dual-message profile; source states eCommerce is not supported.",
+      "contexts": [
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-019",
+      "statement": "STAR single-message transactions cannot be keyed.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.4.4",
+          "page": 109
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "The transactions cannot be keyed"
+      },
+      "condition": "Confirmed STAR Signature Debit single-message processing; do not extend to generic Signature Debit.",
+      "contexts": [
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-020",
+      "statement": "STAR single-message final amount matches authorization.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "10.4.4",
+          "page": 109
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Transactions must have the final amount same as the original authorization amount"
+      },
+      "condition": "Confirmed STAR Signature Debit single-message authorization and associated final transaction.",
+      "contexts": [
+        "STAR_SIGNATURE"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-021",
+      "statement": "Visa incremental authorization retains initial sequence.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Contains the same Sequence Number as the estimated or initial transaction request."
+      },
+      "condition": "Permitted merchant and eligible Visa Appendix AE incremental transaction; initial authorization supplied.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-022",
+      "statement": "Visa incremental authorization retains initial transaction identifier.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Contains the same Transaction Identifier in Segment as the estimated or initial transaction request."
+      },
+      "condition": "Eligible Appendix AE incremental; logical identifier supplied; source omits segment number so wire placement remains unresolved.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-023",
+      "statement": "Visa incremental retains initial terminal transaction number.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Contains the same Terminal transaction number (Table ID 63 in Segment 111) as the estimated or initial transaction request."
+      },
+      "condition": "Eligible Appendix AE incremental authorization with supplied original Table 63 terminal transaction number.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-024",
+      "statement": "Visa incremental follows an initial authorization.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Only follows an estimated / initial authorization."
+      },
+      "condition": "Eligible Appendix AE incremental lifecycle; ordered logical transaction roles, not wire messages.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-025",
+      "statement": "Visa lodging, cruise and car-rental window remains anchored to initial authorization.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "will expire 14 days after the initial estimated authorization."
+      },
+      "condition": "Permitted cruise, lodging or car/vehicle rental merchant; elapsed calendar days from initial, not latest incremental; timestamp/timezone cutoff unresolved.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-026",
+      "statement": "Visa other-rental window is seven days from initial authorization.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AE",
+          "page": 729
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "will expire seven days after the initial estimated authorization."
+      },
+      "condition": "Permitted other-rental merchant, such as trailer park or campground; elapsed calendar days; not an exhaustive MCC mapping or timestamp cutoff.",
+      "contexts": [
+        "VISA_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-027",
+      "statement": "Discover IA transactions carry Segment 111 Table 82.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AF",
+          "page": 730
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "All IA transaction types should contain Incremental Auth Data (Variable Information segment 111 Table 82). This is mandatory for Discover."
+      },
+      "condition": "Discover Appendix AF Original Auth, Incremental Auth, IA Reversal or IA Completion; not all ordinary Discover transactions.",
+      "contexts": [
+        "DISCOVER_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-028",
+      "statement": "Discover subsequent IA transactions follow Original Auth.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AF",
+          "page": 730
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Incremental Auths, IA Reversals, and IA Completions are all subsequent transactions, and must be preceded by an Original Auth."
+      },
+      "condition": "Eligible Appendix AF logical lifecycle; no host approval or merchant permission inferred.",
+      "contexts": [
+        "DISCOVER_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-029",
+      "statement": "Discover subsequent IA preserves approved Original Auth approval code.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AF",
+          "page": 730
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Subsequent IA transactions must contain the Approval Code (DE 39) that was received on the approved Original Auth."
+      },
+      "condition": "Original Auth approved; subsequent IA transaction independently eligible; response-derived approval supplied.",
+      "contexts": [
+        "DISCOVER_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "BR-NM4-030",
+      "statement": "Discover IA completion closes subsequent activity for that terminal transaction ID.",
+      "sourceAnchors": [
+        {
+          "specification": "ATL105",
+          "version": "2026-4",
+          "section": "Appendix AF",
+          "page": 730
+        }
+      ],
+      "sourceEvidence": {
+        "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quote": "Once an IA Completion is received, the IA is closed, and no more subsequent transactions will be approved for that Terminal Transaction ID."
+      },
+      "condition": "Ordered roles for one supplied Terminal Transaction ID; completion received; cross-ID allocation and host responses not simulated.",
+      "contexts": [
+        "DISCOVER_CREDIT"
+      ],
+      "atomicity": "DRAFT_NOT_CERTIFIED",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testScenarios": [
+    {
+      "id": "TS-NM4-001-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-001-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-001"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "A transaction carries Element 86; this representation does not prove sequence allocation or uniqueness."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-002-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-002"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "An independently eligible follow-up is associated with an initial authorization; original sequence is supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-003-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-003"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Applicable ICC transaction containing Element 188; this is width only, not tag agreement or cryptographic validity."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-004-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-004"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-004-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-004"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-004-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-004"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-004-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-004"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-004-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-004"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Electronic credit processing under section 10.1; excludes debit and separately governed product profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-005-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-005"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Section 10.1 electronic credit magnetic-stripe initial transaction; device supports readable Track 2; not EMV or a follow-up."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-005-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-005"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Section 10.1 electronic credit magnetic-stripe initial transaction; device supports readable Track 2; not EMV or a follow-up."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-005-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-005"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Section 10.1 electronic credit magnetic-stripe initial transaction; device supports readable Track 2; not EMV or a follow-up."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-005-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-005"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Section 10.1 electronic credit magnetic-stripe initial transaction; device supports readable Track 2; not EMV or a follow-up."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-006-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-006"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Initial non-Amex electronic credit magnetic-stripe transaction; Track 2 unreadable, Track 1 readable."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-006-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-006"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Initial non-Amex electronic credit magnetic-stripe transaction; Track 2 unreadable, Track 1 readable."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-006-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-006"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Initial non-Amex electronic credit magnetic-stripe transaction; Track 2 unreadable, Track 1 readable."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-006-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-006"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Initial non-Amex electronic credit magnetic-stripe transaction; Track 2 unreadable, Track 1 readable."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-007-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-007"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Amex AFD using MSR or MSD; not a universal entry-mode requirement."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-008-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-008"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Amex AFD contains encrypted data in the TransArmor Encryption Block; Track 1 content separately checked."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-009-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-009"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-009-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-009"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-009-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-009"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-009-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-009"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-009-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-009"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Network supports partial approval; original partially approved response and eligible reversal are supplied. Not TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-010-AMEX_CREDIT",
+      "requirementIds": [
+        "BR-NM4-010"
+      ],
+      "context": "AMEX_CREDIT",
+      "preconditions": [
+        "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-010-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-010"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-010-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-010"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-010-DINERS_CREDIT",
+      "requirementIds": [
+        "BR-NM4-010"
+      ],
+      "context": "DINERS_CREDIT",
+      "preconditions": [
+        "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-010-JCB_CREDIT",
+      "requirementIds": [
+        "BR-NM4-010"
+      ],
+      "context": "JCB_CREDIT",
+      "preconditions": [
+        "Eligible section 10.1.2.2 POS/CAT Authorization Only Reversal; original approval number present; field identity as named in this clause requires review against element catalog."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-011-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-011"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "Transaction is independently classified under section 10.2 PIN-debit processing; do not apply to Signature Debit or PINless profiles."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-012-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-012"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "Section 10.2 PIN entry is required; excludes Purchase Reversal PIN exception; method label is not cryptographic proof."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-013-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-013"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "BUYPASS response received for a Debit Card Completion, whether approved or declined."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-014-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-014"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "Merchant supports Interlink cashback; not proof every card or transaction permits cashback."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-015-INTERLINK_DEBIT",
+      "requirementIds": [
+        "BR-NM4-015"
+      ],
+      "context": "INTERLINK_DEBIT",
+      "preconditions": [
+        "Eligible section 10.2 partially approved debit transaction; not a debit Completion TOR."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-016-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-016"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Confirmed STAR Signature Debit single- or dual-message processing; routing and US/territory requirements separately reviewed."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-017-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-017"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Confirmed STAR Signature Debit single- or dual-message profile."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-018-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-018"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Confirmed STAR Signature Debit single- or dual-message profile; source states eCommerce is not supported."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-019-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-019"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Confirmed STAR Signature Debit single-message processing; do not extend to generic Signature Debit."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-020-STAR_SIGNATURE",
+      "requirementIds": [
+        "BR-NM4-020"
+      ],
+      "context": "STAR_SIGNATURE",
+      "preconditions": [
+        "Confirmed STAR Signature Debit single-message authorization and associated final transaction."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-021-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-021"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Permitted merchant and eligible Visa Appendix AE incremental transaction; initial authorization supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-022-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-022"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Eligible Appendix AE incremental; logical identifier supplied; source omits segment number so wire placement remains unresolved."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-023-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-023"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Eligible Appendix AE incremental authorization with supplied original Table 63 terminal transaction number."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-024-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-024"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Eligible Appendix AE incremental lifecycle; ordered logical transaction roles, not wire messages."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-025-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-025"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Permitted cruise, lodging or car/vehicle rental merchant; elapsed calendar days from initial, not latest incremental; timestamp/timezone cutoff unresolved."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-026-VISA_CREDIT",
+      "requirementIds": [
+        "BR-NM4-026"
+      ],
+      "context": "VISA_CREDIT",
+      "preconditions": [
+        "Permitted other-rental merchant, such as trailer park or campground; elapsed calendar days; not an exhaustive MCC mapping or timestamp cutoff."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-027-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-027"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Discover Appendix AF Original Auth, Incremental Auth, IA Reversal or IA Completion; not all ordinary Discover transactions."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-028-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-028"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Eligible Appendix AF logical lifecycle; no host approval or merchant permission inferred."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-029-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-029"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Original Auth approved; subsequent IA transaction independently eligible; response-derived approval supplied."
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TS-NM4-030-DISCOVER_CREDIT",
+      "requirementIds": [
+        "BR-NM4-030"
+      ],
+      "context": "DISCOVER_CREDIT",
+      "preconditions": [
+        "Ordered roles for one supplied Terminal Transaction ID; completion received; cross-ID allocation and host responses not simulated."
+      ],
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-NM4-001-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-001-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-001-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-001-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-001-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-001",
+          "predicate": {
+            "op": "digits",
+            "field": "sequence",
+            "width": 6
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-002-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-002-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-002-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-002-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-002",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "originalSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-003-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-003-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-003-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-003-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-003",
+          "predicate": {
+            "op": "asciiWidth",
+            "field": "cardSequence",
+            "width": 3
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-004-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-004-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-004-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-004-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-004-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-004-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-004-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-004-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-004-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-004-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-004-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-004-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-004",
+          "predicate": {
+            "op": "equals",
+            "field": "expirationValidated",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-005-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-005-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-005-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-005-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-005-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-005-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-005-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-005-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-005-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-005-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-005",
+          "predicate": {
+            "op": "equals",
+            "field": "selectedTrack",
+            "expected": "TRACK2"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-006-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-006-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-006-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-006-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-006-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-006-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-006-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-006-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-006-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-006-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-006",
+          "predicate": {
+            "op": "equals",
+            "field": "nextAction",
+            "expected": "SEND_UNALTERED_TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-007-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-007-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-007-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-007",
+          "predicate": {
+            "op": "equals",
+            "field": "track1Present",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-007-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-007-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-007-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-007",
+          "predicate": {
+            "op": "equals",
+            "field": "track1Present",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-008-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-008-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-008-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-008",
+          "predicate": {
+            "op": "equals",
+            "field": "encryptionTarget",
+            "expected": "TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-008-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-008-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-008-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-008",
+          "predicate": {
+            "op": "equals",
+            "field": "encryptionTarget",
+            "expected": "TRACK1"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-009-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-009-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-009-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-009-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-009-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-009-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-009-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-009-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-009-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-009-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-009-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-009-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-009",
+          "predicate": {
+            "op": "same",
+            "field": "reversalAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-AMEX_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-010-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-AMEX_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-AMEX_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-010-AMEX_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-AMEX_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-010-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-010-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-010-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-010-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-DINERS_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-010-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-DINERS_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-DINERS_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-010-DINERS_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-DINERS_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-JCB_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-010-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-JCB_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-010-JCB_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-010-JCB_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-010-JCB_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-010",
+          "predicate": {
+            "op": "same",
+            "field": "approval",
+            "other": "originalApproval"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-011-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-011-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-011-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-011",
+          "predicate": {
+            "op": "equals",
+            "field": "manualEntry",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-011-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-011-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-011-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-011",
+          "predicate": {
+            "op": "equals",
+            "field": "manualEntry",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-012-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-012-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-012-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-012",
+          "predicate": {
+            "op": "equals",
+            "field": "pinEncryptionMethod",
+            "expected": "DUKPT"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-012-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-012-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-012-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-012",
+          "predicate": {
+            "op": "equals",
+            "field": "pinEncryptionMethod",
+            "expected": "DUKPT"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-013-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-013-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-013-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-013",
+          "predicate": {
+            "op": "equals",
+            "field": "retryAfterResponse",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-013-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-013-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-013-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-013",
+          "predicate": {
+            "op": "equals",
+            "field": "retryAfterResponse",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-014-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-014-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-014-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-014",
+          "predicate": {
+            "op": "equals",
+            "field": "partialApprovalSupported",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-014-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-014-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-014-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-014",
+          "predicate": {
+            "op": "equals",
+            "field": "partialApprovalSupported",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-015-INTERLINK_DEBIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-015-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-015-INTERLINK_DEBIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-015",
+          "predicate": {
+            "op": "same",
+            "field": "torAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-015-INTERLINK_DEBIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-015-INTERLINK_DEBIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-015-INTERLINK_DEBIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-015",
+          "predicate": {
+            "op": "same",
+            "field": "torAmount",
+            "other": "approvedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-016-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-016-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-016-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-016",
+          "predicate": {
+            "op": "equals",
+            "field": "currency",
+            "expected": "840"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-016-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-016-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-016-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-016",
+          "predicate": {
+            "op": "equals",
+            "field": "currency",
+            "expected": "840"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-017-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-017-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-017-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-017",
+          "predicate": {
+            "op": "equals",
+            "field": "cashback",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-017-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-017-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-017-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-017",
+          "predicate": {
+            "op": "equals",
+            "field": "cashback",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-018-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-018-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-018-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-018",
+          "predicate": {
+            "op": "equals",
+            "field": "ecommerce",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-018-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-018-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-018-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-018",
+          "predicate": {
+            "op": "equals",
+            "field": "ecommerce",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-019-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-019-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-019-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-019",
+          "predicate": {
+            "op": "equals",
+            "field": "keyed",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-019-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-019-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-019-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-019",
+          "predicate": {
+            "op": "equals",
+            "field": "keyed",
+            "expected": false
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-020-STAR_SIGNATURE-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-020-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-020-STAR_SIGNATURE-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-020",
+          "predicate": {
+            "op": "same",
+            "field": "finalAmount",
+            "other": "authorizedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-020-STAR_SIGNATURE-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-020-STAR_SIGNATURE"
+      ],
+      "testDataIds": [
+        "TD-NM4-020-STAR_SIGNATURE-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-020",
+          "predicate": {
+            "op": "same",
+            "field": "finalAmount",
+            "other": "authorizedAmount"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-021-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-021-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-021-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-021",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "initialSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-021-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-021-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-021-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-021",
+          "predicate": {
+            "op": "same",
+            "field": "sequence",
+            "other": "initialSequence"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-022-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-022-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-022-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-022",
+          "predicate": {
+            "op": "same",
+            "field": "transactionIdentifier",
+            "other": "initialIdentifier"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-022-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-022-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-022-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-022",
+          "predicate": {
+            "op": "same",
+            "field": "transactionIdentifier",
+            "other": "initialIdentifier"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-023-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-023-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-023-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-023",
+          "predicate": {
+            "op": "same",
+            "field": "terminalTransactionNumber",
+            "other": "initialTerminalNumber"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-023-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-023-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-023-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-023",
+          "predicate": {
+            "op": "same",
+            "field": "terminalTransactionNumber",
+            "other": "initialTerminalNumber"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-024-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-024-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-024-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-024",
+          "predicate": {
+            "op": "precededBy",
+            "field": "roles",
+            "initial": "INITIAL",
+            "subsequent": [
+              "INCREMENTAL"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-024-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-024-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-024-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-024",
+          "predicate": {
+            "op": "precededBy",
+            "field": "roles",
+            "initial": "INITIAL",
+            "subsequent": [
+              "INCREMENTAL"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-025-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-025-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-025-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-025",
+          "predicate": {
+            "op": "maxDays",
+            "field": "daysFromInitial",
+            "maximum": 14
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-025-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-025-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-025-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-025",
+          "predicate": {
+            "op": "maxDays",
+            "field": "daysFromInitial",
+            "maximum": 14
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-026-VISA_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-026-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-026-VISA_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-026",
+          "predicate": {
+            "op": "maxDays",
+            "field": "daysFromInitial",
+            "maximum": 7
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-026-VISA_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-026-VISA_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-026-VISA_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-026",
+          "predicate": {
+            "op": "maxDays",
+            "field": "daysFromInitial",
+            "maximum": 7
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-027-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-027-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-027-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-027",
+          "predicate": {
+            "op": "equals",
+            "field": "table82Present",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-027-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-027-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-027-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-027",
+          "predicate": {
+            "op": "equals",
+            "field": "table82Present",
+            "expected": true
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-028-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-028-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-028-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-028",
+          "predicate": {
+            "op": "precededBy",
+            "field": "roles",
+            "initial": "ORIGINAL_AUTH",
+            "subsequent": [
+              "INCREMENTAL",
+              "IA_REVERSAL",
+              "IA_COMPLETION"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-028-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-028-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-028-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-028",
+          "predicate": {
+            "op": "precededBy",
+            "field": "roles",
+            "initial": "ORIGINAL_AUTH",
+            "subsequent": [
+              "INCREMENTAL",
+              "IA_REVERSAL",
+              "IA_COMPLETION"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-029-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-029-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-029-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-029",
+          "predicate": {
+            "op": "same",
+            "field": "approvalCode",
+            "other": "originalApprovalCode"
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-029-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-029-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-029-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-029",
+          "predicate": {
+            "op": "same",
+            "field": "approvalCode",
+            "other": "originalApprovalCode"
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-030-DISCOVER_CREDIT-CONTROL",
+      "scenarioIds": [
+        "TS-NM4-030-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-030-DISCOVER_CREDIT-CONTROL"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-030",
+          "predicate": {
+            "op": "closedAfter",
+            "field": "roles",
+            "closing": "IA_COMPLETION",
+            "subsequent": [
+              "INCREMENTAL",
+              "IA_REVERSAL",
+              "IA_COMPLETION"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "PASS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TC-NM4-030-DISCOVER_CREDIT-MUTANT",
+      "scenarioIds": [
+        "TS-NM4-030-DISCOVER_CREDIT"
+      ],
+      "testDataIds": [
+        "TD-NM4-030-DISCOVER_CREDIT-MUTANT"
+      ],
+      "assertions": [
+        {
+          "requirementId": "BR-NM4-030",
+          "predicate": {
+            "op": "closedAfter",
+            "field": "roles",
+            "closing": "IA_COMPLETION",
+            "subsequent": [
+              "INCREMENTAL",
+              "IA_REVERSAL",
+              "IA_COMPLETION"
+            ]
+          }
+        }
+      ],
+      "expectedOutcome": "FAIL",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-NM4-001-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-001-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-001-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-001-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "sequence": "12345"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-002-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-002-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-002-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "originalSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-003-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "cardSequence": "001"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-003-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-003-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "cardSequence": "01"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-004-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "expirationValidated": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-004-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "expirationValidated": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-004-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "expirationValidated": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-004-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "expirationValidated": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-004-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "expirationValidated": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-004-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "expirationValidated": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-004-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "expirationValidated": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-004-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "expirationValidated": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-004-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "expirationValidated": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-004-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-004-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "expirationValidated": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-005-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK2"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-005-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK1"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-005-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK2"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-005-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK1"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-005-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK2"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-005-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK1"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-005-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK2"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-005-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-005-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "selectedTrack": "TRACK1"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-006-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "nextAction": "SEND_UNALTERED_TRACK1"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-006-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "nextAction": "MANUAL_ENTRY"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-006-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "nextAction": "SEND_UNALTERED_TRACK1"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-006-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "nextAction": "MANUAL_ENTRY"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-006-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "nextAction": "SEND_UNALTERED_TRACK1"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-006-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "nextAction": "MANUAL_ENTRY"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-006-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "nextAction": "SEND_UNALTERED_TRACK1"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-006-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-006-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "nextAction": "MANUAL_ENTRY"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-007-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-007-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "track1Present": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-007-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-007-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "track1Present": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-008-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-008-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "encryptionTarget": "TRACK1"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-008-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-008-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "encryptionTarget": "TRACK2"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-009-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "reversalAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-009-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "reversalAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-009-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "reversalAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-009-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "reversalAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-009-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "reversalAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-009-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "reversalAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-009-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "reversalAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-009-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "reversalAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-009-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "reversalAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-009-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-009-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "reversalAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-AMEX_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-010-AMEX_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approval": "SYNTHETIC",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-AMEX_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-010-AMEX_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approval": "DIFFERENT",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-010-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approval": "SYNTHETIC",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-010-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approval": "DIFFERENT",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-010-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approval": "SYNTHETIC",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-010-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approval": "DIFFERENT",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-DINERS_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-010-DINERS_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approval": "SYNTHETIC",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-DINERS_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-010-DINERS_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approval": "DIFFERENT",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-JCB_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-010-JCB_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approval": "SYNTHETIC",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-010-JCB_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-010-JCB_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approval": "DIFFERENT",
+        "originalApproval": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-011-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-011-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "manualEntry": false
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-011-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-011-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "manualEntry": true
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-012-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-012-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "pinEncryptionMethod": "DUKPT"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-012-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-012-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "pinEncryptionMethod": "OTHER"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-013-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-013-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "retryAfterResponse": false
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-013-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-013-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "retryAfterResponse": true
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-014-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-014-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "partialApprovalSupported": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-014-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-014-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "partialApprovalSupported": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-015-INTERLINK_DEBIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-015-INTERLINK_DEBIT-CONTROL"
+      ],
+      "payload": {
+        "torAmount": "600",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-015-INTERLINK_DEBIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-015-INTERLINK_DEBIT-MUTANT"
+      ],
+      "payload": {
+        "torAmount": "1000",
+        "approvedAmount": "600"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-016-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-016-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "currency": "840"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-016-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-016-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "currency": "978"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-017-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-017-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "cashback": false
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-017-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-017-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "cashback": true
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-018-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-018-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "ecommerce": false
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-018-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-018-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "ecommerce": true
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-019-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-019-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "keyed": false
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-019-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-019-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "keyed": true
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-020-STAR_SIGNATURE-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-020-STAR_SIGNATURE-CONTROL"
+      ],
+      "payload": {
+        "finalAmount": "1000",
+        "authorizedAmount": "1000"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-020-STAR_SIGNATURE-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-020-STAR_SIGNATURE-MUTANT"
+      ],
+      "payload": {
+        "finalAmount": "1200",
+        "authorizedAmount": "1000"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-021-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-021-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "sequence": "123456",
+        "initialSequence": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-021-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-021-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "sequence": "123457",
+        "initialSequence": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-022-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-022-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "transactionIdentifier": "SYNTHETIC",
+        "initialIdentifier": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-022-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-022-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "transactionIdentifier": "OTHER",
+        "initialIdentifier": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-023-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-023-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "terminalTransactionNumber": "123456",
+        "initialTerminalNumber": "123456"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-023-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-023-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "terminalTransactionNumber": "123457",
+        "initialTerminalNumber": "123456"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-024-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-024-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "roles": [
+          "INITIAL",
+          "INCREMENTAL"
+        ]
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-024-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-024-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "roles": [
+          "INCREMENTAL"
+        ]
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-025-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-025-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "daysFromInitial": 14
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-025-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-025-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "daysFromInitial": 15
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-026-VISA_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-026-VISA_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "daysFromInitial": 7
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-026-VISA_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-026-VISA_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "daysFromInitial": 8
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-027-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-027-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "table82Present": true
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-027-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-027-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "table82Present": false
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-028-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-028-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "roles": [
+          "ORIGINAL_AUTH",
+          "INCREMENTAL",
+          "IA_REVERSAL",
+          "IA_COMPLETION"
+        ]
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-028-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-028-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "roles": [
+          "INCREMENTAL",
+          "IA_REVERSAL",
+          "IA_COMPLETION"
+        ]
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-029-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-029-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "approvalCode": "SYNTHETIC",
+        "originalApprovalCode": "SYNTHETIC"
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-029-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-029-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "approvalCode": "OTHER",
+        "originalApprovalCode": "SYNTHETIC"
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-030-DISCOVER_CREDIT-CONTROL",
+      "testCaseIds": [
+        "TC-NM4-030-DISCOVER_CREDIT-CONTROL"
+      ],
+      "payload": {
+        "roles": [
+          "ORIGINAL_AUTH",
+          "INCREMENTAL",
+          "IA_COMPLETION"
+        ]
+      },
+      "expectedValidation": "PASS",
+      "observedValidation": "PASS",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "TD-NM4-030-DISCOVER_CREDIT-MUTANT",
+      "testCaseIds": [
+        "TC-NM4-030-DISCOVER_CREDIT-MUTANT"
+      ],
+      "payload": {
+        "roles": [
+          "ORIGINAL_AUTH",
+          "INCREMENTAL",
+          "IA_COMPLETION",
+          "INCREMENTAL"
+        ]
+      },
+      "expectedValidation": "FAIL",
+      "observedValidation": "FAIL",
+      "kind": "SYNTHETIC_LOGICAL_NOT_HOST_MESSAGE",
+      "readiness": "REVIEW_REQUIRED"
+    }
+  ]
+}

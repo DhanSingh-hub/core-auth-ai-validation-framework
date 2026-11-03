@@ -35,6 +35,35 @@ Each segment uses this common strategy plus a segment-specific training addendum
 
 ## Standard Ownership and Mandatory Use
 
+The [non-Mastercard v2 program/application continuation](../../../test-output/test-solution-independent-review/nonmaster-model-v2/REPORT.md)
+adds conditional rules for PINless, EBT/eWIC, stored-value, loyalty, check and
+Petroleum programs while retaining the original source version for every clause.
+Do not inherit fleet policies: WEX storage/recovery, COMDATA card SAF prohibition,
+COMDATA fuel-price retry and WEX Money Code entry are different. Existing
+Visa/Voyager companion source checks and mutation suites are rerun, not approved.
+For physical checks, use complete Standard fields including required Element 121;
+manual fields use FS but Track2/Track1 join Account Number and Discretionary Data
+with `=`/`^` per Element 2. A complete application-body shape is still not a valid
+merchant/account, conditional companion, transport or host transaction. Retain TC
+negative intent when reporting physical failures. The completion register records
+unfinished repository semantic/conditional-oracle work separately from external
+approval and execution; do not certify completeness by inventory counts.
+
+The [non-Mastercard 2026-4 draft model](../../../test-output/test-solution-independent-review/nonmaster-model-v1/REPORT.md)
+adds source-pinned conditional BR/TS/TC/TD chains for Amex, Visa, Discover, Diners,
+JCB, Interlink and STAR Signature Debit without replacing the 2026-3 baseline.
+Train network-specific clauses separately: Discover Appendix AF requires Table 82
+for IA transactions and closes subsequent activity after completion; Visa AE has
+its own continuity and original-date 7/14-day windows. Standard PIN-debit manual
+entry restrictions do not apply wholesale to Signature Debit. Generic credit
+card code 020 does not identify a brand. Fleet/program, Section 5 category and
+network identity remain separate dimensions, and unclassified programs remain open.
+The model's 30 draft BRs, 66 TS and 132 logical TC/TD are bounded observations,
+not full-wire or host-ready messages. Build/check/test tasks preserve delivery
+bytes and historical evidence, retain unmatched AI rules and never auto-confirm
+lexical candidates. Complete semantic denominators, approval, runtime crypto and
+host execution remain blocking; do not teach candidate matches as training truth.
+
 This document is the standard process for training the Test Solution and validating AI Solution output. Every Test Team member, agent, or automation that creates, reviews, updates, or teaches a Test Solution rule must follow the phases and gates below. A segment addendum may add stricter controls, but it may not remove or bypass a common phase or gate.
 
 The Test Solution remains independent from the AI Solution. AI artifacts may be inspected and compared, but they must not be copied into the Test Solution or treated as Test Solution training truth. A claim without authoritative evidence remains `REVIEW_REQUIRED`.
@@ -1007,6 +1036,8 @@ The overall test strategy (phases, governance, RACI, sign-off) is in [Core-Auth-
 
 | Date | Change |
 |---|---|
+| 2026-11-03 | Extended non-Mastercard draft evidence with 18 program contexts, separate Petroleum authority, rerun Visa/Voyager mutations, complete scoped application-body shape/entry-delimiter fixtures and intent-bound physical observations. Preserved v1 and explicitly separated remaining repository work from external blockers. |
+| 2026-11-03 | Added non-Mastercard 2026-4 source-pinned draft chains for seven named network/program contexts; distinct Visa AE and Discover AF lifecycle predicates, Interlink and STAR restrictions, hash-bound Amex/Interlink gates and candidate identities, source/legacy review registers, build/check/test tasks and synchronized governance. Complete semantic denominator and physical execution remain blocked. |
 | 2026-11-03 | Added source-pinned Mastercard/Maestro 2026-4 draft model and context/denominator register, logical control/mutant fixtures, full legacy and AI review registers, indexed Fleet companion evidence and non-confirming delivery-bound crosswalk; added build/check/test tasks and IN_PROGRESS governance entry. No baseline replacement or approval. |
 | 2026-11-03 | Added hash-bound native Mastercard business-delivery review with separate Credit/Fleet and Maestro scopes, scenario-broadcast versus explicit predicate lineage, physical-TD ledgers and existing bounded native gates. No semantic coverage or readiness promotion; synchronized validation plan, controls, strategy and regression checks. |
 | 2026-10-27 | Ingested a second external-reference version: Conexxus PSPC v3.7 alongside v4.1. When ATL105 names an external document without a version and more than one version is supplied, train every version. Add a per-code version diff, and judge unbound values against all versions; disagreement is `REVIEW_REQUIRED` with `versionSensitive: true`. The PSPC v3.7 → v4.1 diff has 62 sensitive codes, and Appendix F follows the numbering from before the v3.5 deprecations. Record: [Conexxus-PSPC-Training-Record.md](../../test-validation-strategy/Conexxus-PSPC-Training-Record.md). |
