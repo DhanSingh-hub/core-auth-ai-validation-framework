@@ -1,0 +1,737 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "id": "SEG100-COMPANION-BOUNDED-PILOT-2026-4",
+    "specification": "ATL105",
+    "version": "2026-4",
+    "kind": "BOUNDED_PILOT",
+    "description": "Draft financial core presence, EMV companion presence and logical count checks.",
+    "outOfScope": [
+      "Whole-specification requirement completeness and business approval.",
+      "Fleet, fuel, EBT, NFC, purchase-card, variable-info and Moneris applicability.",
+      "Companion ordering, contents, full-message bytes, crypto and host execution."
+    ],
+    "review": null
+  },
+  "sources": [
+    {
+      "id": "ATL105-2026-4",
+      "specification": "ATL105",
+      "version": "2026-4",
+      "path": "specifications/ATL105/docs/specs/extracted_text_new.txt",
+      "sha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+      "anchors": [
+        {
+          "id": "CORE-100",
+          "page": 204,
+          "excerpt": "Standard Message Data Segment (Data Segment No. 100)"
+        },
+        {
+          "id": "EMV-130",
+          "page": 206,
+          "excerpt": "Contains the EMV data required for all EMV card transactions."
+        },
+        {
+          "id": "COUNT-63",
+          "page": 395,
+          "excerpt": "Identifies the number of BUYPASS-defined data segments included in the Financial Transaction Request"
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "CORE-100",
+      "statement": "A scoped financial request includes one Standard Message Data Segment 100.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "CORE-100"
+        }
+      ],
+      "applicability": "APPLICABLE",
+      "review": null,
+      "criteria": [
+        {
+          "id": "POSITIVE",
+          "variation": "POSITIVE",
+          "description": "Required scoped predicate holds in a logical control."
+        },
+        {
+          "id": "NEGATIVE",
+          "variation": "NEGATIVE",
+          "description": "An isolated scoped predicate violation is detected."
+        },
+        {
+          "id": "BOUNDARY",
+          "variation": "BOUNDARY",
+          "description": "The declared minimum/cardinality boundary is exercised."
+        },
+        {
+          "id": "CONDITIONAL",
+          "variation": "CONDITIONAL",
+          "description": "The predicate is exercised in a second explicitly declared financial profile."
+        }
+      ]
+    },
+    {
+      "id": "EMV-130",
+      "statement": "An EMV financial request includes Segment 130.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "EMV-130"
+        }
+      ],
+      "applicability": "APPLICABLE",
+      "review": null,
+      "criteria": [
+        {
+          "id": "POSITIVE",
+          "variation": "POSITIVE",
+          "description": "Required scoped predicate holds in a logical control."
+        },
+        {
+          "id": "NEGATIVE",
+          "variation": "NEGATIVE",
+          "description": "An isolated scoped predicate violation is detected."
+        },
+        {
+          "id": "BOUNDARY",
+          "variation": "BOUNDARY",
+          "description": "The declared minimum/cardinality boundary is exercised."
+        },
+        {
+          "id": "CONDITIONAL",
+          "variation": "CONDITIONAL",
+          "description": "The predicate is exercised in a second explicitly declared financial profile."
+        }
+      ]
+    },
+    {
+      "id": "COUNT-63",
+      "statement": "Element 63 identifies the number of segments in the financial request.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "COUNT-63"
+        }
+      ],
+      "applicability": "APPLICABLE",
+      "review": null,
+      "criteria": [
+        {
+          "id": "POSITIVE",
+          "variation": "POSITIVE",
+          "description": "Required scoped predicate holds in a logical control."
+        },
+        {
+          "id": "NEGATIVE",
+          "variation": "NEGATIVE",
+          "description": "An isolated scoped predicate violation is detected."
+        },
+        {
+          "id": "BOUNDARY",
+          "variation": "BOUNDARY",
+          "description": "The declared minimum/cardinality boundary is exercised."
+        },
+        {
+          "id": "CONDITIONAL",
+          "variation": "CONDITIONAL",
+          "description": "The predicate is exercised in a second explicitly declared financial profile."
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "TS-CORE-100",
+      "intent": "A scoped financial request includes one Standard Message Data Segment 100.",
+      "requirementIds": [
+        "CORE-100"
+      ],
+      "review": null
+    },
+    {
+      "id": "TS-EMV-130",
+      "intent": "An EMV financial request includes Segment 130.",
+      "requirementIds": [
+        "EMV-130"
+      ],
+      "review": null
+    },
+    {
+      "id": "TS-COUNT-63",
+      "intent": "Element 63 identifies the number of segments in the financial request.",
+      "requirementIds": [
+        "COUNT-63"
+      ],
+      "review": null
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-CORE-100-POSITIVE",
+      "scenarioId": "TS-CORE-100",
+      "intent": "POSITIVE: A scoped financial request includes one Standard Message Data Segment 100.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only CORE-100; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-CORE-100-POSITIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "CORE-100",
+          "criterionId": "POSITIVE",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-CORE-100-NEGATIVE",
+      "scenarioId": "TS-CORE-100",
+      "intent": "NEGATIVE: A scoped financial request includes one Standard Message Data Segment 100.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only CORE-100; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result FAIL; no host outcome asserted.",
+      "testDataIds": [
+        "TD-CORE-100-NEGATIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "CORE-100",
+          "criterionId": "NEGATIVE",
+          "expected": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "TC-CORE-100-BOUNDARY",
+      "scenarioId": "TS-CORE-100",
+      "intent": "BOUNDARY: A scoped financial request includes one Standard Message Data Segment 100.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only CORE-100; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result FAIL; no host outcome asserted.",
+      "testDataIds": [
+        "TD-CORE-100-BOUNDARY"
+      ],
+      "coverage": [
+        {
+          "requirementId": "CORE-100",
+          "criterionId": "BOUNDARY",
+          "expected": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "TC-CORE-100-CONDITIONAL",
+      "scenarioId": "TS-CORE-100",
+      "intent": "CONDITIONAL: A scoped financial request includes one Standard Message Data Segment 100.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only CORE-100; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-CORE-100-CONDITIONAL"
+      ],
+      "coverage": [
+        {
+          "requirementId": "CORE-100",
+          "criterionId": "CONDITIONAL",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-EMV-130-POSITIVE",
+      "scenarioId": "TS-EMV-130",
+      "intent": "POSITIVE: An EMV financial request includes Segment 130.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only EMV-130; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-EMV-130-POSITIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "EMV-130",
+          "criterionId": "POSITIVE",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-EMV-130-NEGATIVE",
+      "scenarioId": "TS-EMV-130",
+      "intent": "NEGATIVE: An EMV financial request includes Segment 130.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only EMV-130; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result FAIL; no host outcome asserted.",
+      "testDataIds": [
+        "TD-EMV-130-NEGATIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "EMV-130",
+          "criterionId": "NEGATIVE",
+          "expected": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "TC-EMV-130-BOUNDARY",
+      "scenarioId": "TS-EMV-130",
+      "intent": "BOUNDARY: An EMV financial request includes Segment 130.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only EMV-130; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-EMV-130-BOUNDARY"
+      ],
+      "coverage": [
+        {
+          "requirementId": "EMV-130",
+          "criterionId": "BOUNDARY",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-EMV-130-CONDITIONAL",
+      "scenarioId": "TS-EMV-130",
+      "intent": "CONDITIONAL: An EMV financial request includes Segment 130.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only EMV-130; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-EMV-130-CONDITIONAL"
+      ],
+      "coverage": [
+        {
+          "requirementId": "EMV-130",
+          "criterionId": "CONDITIONAL",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-COUNT-63-POSITIVE",
+      "scenarioId": "TS-COUNT-63",
+      "intent": "POSITIVE: Element 63 identifies the number of segments in the financial request.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only COUNT-63; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-COUNT-63-POSITIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "COUNT-63",
+          "criterionId": "POSITIVE",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-COUNT-63-NEGATIVE",
+      "scenarioId": "TS-COUNT-63",
+      "intent": "NEGATIVE: Element 63 identifies the number of segments in the financial request.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only COUNT-63; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result FAIL; no host outcome asserted.",
+      "testDataIds": [
+        "TD-COUNT-63-NEGATIVE"
+      ],
+      "coverage": [
+        {
+          "requirementId": "COUNT-63",
+          "criterionId": "NEGATIVE",
+          "expected": "FAIL"
+        }
+      ]
+    },
+    {
+      "id": "TC-COUNT-63-BOUNDARY",
+      "scenarioId": "TS-COUNT-63",
+      "intent": "BOUNDARY: Element 63 identifies the number of segments in the financial request.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only COUNT-63; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-COUNT-63-BOUNDARY"
+      ],
+      "coverage": [
+        {
+          "requirementId": "COUNT-63",
+          "criterionId": "BOUNDARY",
+          "expected": "PASS"
+        }
+      ]
+    },
+    {
+      "id": "TC-COUNT-63-CONDITIONAL",
+      "scenarioId": "TS-COUNT-63",
+      "intent": "CONDITIONAL: Element 63 identifies the number of segments in the financial request.",
+      "steps": [
+        "Inspect the declared logical financial profile and segment list.",
+        "Evaluate only COUNT-63; do not treat the fixture as an executable full message."
+      ],
+      "expectedOutcome": "Bounded predicate result PASS; no host outcome asserted.",
+      "testDataIds": [
+        "TD-COUNT-63-CONDITIONAL"
+      ],
+      "coverage": [
+        {
+          "requirementId": "COUNT-63",
+          "criterionId": "CONDITIONAL",
+          "expected": "PASS"
+        }
+      ]
+    }
+  ],
+  "testData": [
+    {
+      "id": "TD-CORE-100-POSITIVE",
+      "file": {
+        "path": "data/TD-CORE-100-POSITIVE.json",
+        "sha256": "5ccac05c9fed045204ae014caecbe08d6bb417da85b3346f134d37fc67e1d212"
+      }
+    },
+    {
+      "id": "TD-CORE-100-NEGATIVE",
+      "file": {
+        "path": "data/TD-CORE-100-NEGATIVE.json",
+        "sha256": "16a943fa52e9b5676c266537b5b50799eeeccc2fc57cc5d9808da7b2857e4b78"
+      }
+    },
+    {
+      "id": "TD-CORE-100-BOUNDARY",
+      "file": {
+        "path": "data/TD-CORE-100-BOUNDARY.json",
+        "sha256": "f995b8be3cd073571aca2b5f4821a44daa9ce907d9b75992890c0727bd5e11b9"
+      }
+    },
+    {
+      "id": "TD-CORE-100-CONDITIONAL",
+      "file": {
+        "path": "data/TD-CORE-100-CONDITIONAL.json",
+        "sha256": "e51bcfbe32acb0e3c83f17b4a6488a7979b2317b6c90a5507cea435190a5df45"
+      }
+    },
+    {
+      "id": "TD-EMV-130-POSITIVE",
+      "file": {
+        "path": "data/TD-EMV-130-POSITIVE.json",
+        "sha256": "5ccac05c9fed045204ae014caecbe08d6bb417da85b3346f134d37fc67e1d212"
+      }
+    },
+    {
+      "id": "TD-EMV-130-NEGATIVE",
+      "file": {
+        "path": "data/TD-EMV-130-NEGATIVE.json",
+        "sha256": "46b1c975c0acb66dbe126fd3362f6967f1e55b6ad86eba12bcfff755d3abd95d"
+      }
+    },
+    {
+      "id": "TD-EMV-130-BOUNDARY",
+      "file": {
+        "path": "data/TD-EMV-130-BOUNDARY.json",
+        "sha256": "5ccac05c9fed045204ae014caecbe08d6bb417da85b3346f134d37fc67e1d212"
+      }
+    },
+    {
+      "id": "TD-EMV-130-CONDITIONAL",
+      "file": {
+        "path": "data/TD-EMV-130-CONDITIONAL.json",
+        "sha256": "e51bcfbe32acb0e3c83f17b4a6488a7979b2317b6c90a5507cea435190a5df45"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-POSITIVE",
+      "file": {
+        "path": "data/TD-COUNT-63-POSITIVE.json",
+        "sha256": "5ccac05c9fed045204ae014caecbe08d6bb417da85b3346f134d37fc67e1d212"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-NEGATIVE",
+      "file": {
+        "path": "data/TD-COUNT-63-NEGATIVE.json",
+        "sha256": "7223ba74ff227230559efa91abef4e9c3360afe52f0bc1cef144375da034146a"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-BOUNDARY",
+      "file": {
+        "path": "data/TD-COUNT-63-BOUNDARY.json",
+        "sha256": "e51bcfbe32acb0e3c83f17b4a6488a7979b2317b6c90a5507cea435190a5df45"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-CONDITIONAL",
+      "file": {
+        "path": "data/TD-COUNT-63-CONDITIONAL.json",
+        "sha256": "25983cb509ad3f7ae199ab10eb3c0ee05a72f7969f5079180cf0e973009b29f0"
+      }
+    }
+  ],
+  "semanticPolicy": {
+    "TC": [
+      "intent",
+      "conditions",
+      "steps",
+      "expectedOutcome",
+      "ruleChecks",
+      "dataAssociation"
+    ],
+    "TD": [
+      "values",
+      "conditionalFields",
+      "dependencies",
+      "conflicts",
+      "ruleChecks"
+    ]
+  },
+  "semanticAssessments": [
+    {
+      "id": "TC-CORE-100-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-CORE-100-POSITIVE.json",
+        "sha256": "34c902a79b812734feace00b5c006a2e63154467ec0cc247aa09c59f61ed5dc3"
+      }
+    },
+    {
+      "id": "TD-CORE-100-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-CORE-100-POSITIVE.json",
+        "sha256": "4677d310bad52a53d0f07ea805caac6694938e6febffdf1a8782bb368cb87e52"
+      }
+    },
+    {
+      "id": "TC-CORE-100-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-CORE-100-NEGATIVE.json",
+        "sha256": "1897b939dc88e38cbe6cb509ed409b240a9e54f078dc0e7a40c10e8c298f5431"
+      }
+    },
+    {
+      "id": "TD-CORE-100-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-CORE-100-NEGATIVE.json",
+        "sha256": "2161e1949165fa54348af0a27a4c27c118f40df11e81b5992538f5c46f877c48"
+      }
+    },
+    {
+      "id": "TC-CORE-100-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-CORE-100-BOUNDARY.json",
+        "sha256": "ed308b150f7350c42a4d32ea5bc77d92cc9800ed2ba599647bdf3d8fe6c3d43d"
+      }
+    },
+    {
+      "id": "TD-CORE-100-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-CORE-100-BOUNDARY.json",
+        "sha256": "9b67b765fd3e14297fd924efbc78683db527ec56574d39ae834375958345c022"
+      }
+    },
+    {
+      "id": "TC-CORE-100-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-CORE-100-CONDITIONAL.json",
+        "sha256": "95678771bee88458a62e4c6ee85cbbdc6f704848d01afac513610536ffff2d78"
+      }
+    },
+    {
+      "id": "TD-CORE-100-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-CORE-100-CONDITIONAL.json",
+        "sha256": "332b8c6b195102423df7685a632844dfd8288e34444b52f5f5d747e93052df8a"
+      }
+    },
+    {
+      "id": "TC-EMV-130-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-EMV-130-POSITIVE.json",
+        "sha256": "9a99a0ca947a5a4082516b987398e49a0c268de828b285c484838a0f091c8494"
+      }
+    },
+    {
+      "id": "TD-EMV-130-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-EMV-130-POSITIVE.json",
+        "sha256": "d1b02b4cbb8274f69894b14fb8b3bb4a70ceaa2956838f7dc1c93a25e6894422"
+      }
+    },
+    {
+      "id": "TC-EMV-130-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-EMV-130-NEGATIVE.json",
+        "sha256": "676f20ceb32f534d0d4d397fad411be2374ecb75416e12832b07eff1657c4b50"
+      }
+    },
+    {
+      "id": "TD-EMV-130-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-EMV-130-NEGATIVE.json",
+        "sha256": "412ecb831368eb91298f7edd7e0bf429004a6df8565e1dccbf1bbfe4437fc492"
+      }
+    },
+    {
+      "id": "TC-EMV-130-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-EMV-130-BOUNDARY.json",
+        "sha256": "412f3d0890001fb063c8069b31a45ac9c3fd53eee67e60c842e6d4c144e24d8e"
+      }
+    },
+    {
+      "id": "TD-EMV-130-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-EMV-130-BOUNDARY.json",
+        "sha256": "6a2cf9bd3ba822a1c3fb2790e5b2fb12705dae1f4d5f33bf5eb2cf35904b7462"
+      }
+    },
+    {
+      "id": "TC-EMV-130-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-EMV-130-CONDITIONAL.json",
+        "sha256": "5e19b08ba59e364341b75f91754e34c12328f265dba9484029880feb7f7d72dc"
+      }
+    },
+    {
+      "id": "TD-EMV-130-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-EMV-130-CONDITIONAL.json",
+        "sha256": "b544c0efe20eb5a85f64fbf04f238a756abae11813c10c130df8de38a51bb600"
+      }
+    },
+    {
+      "id": "TC-COUNT-63-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-COUNT-63-POSITIVE.json",
+        "sha256": "f6b3a9a7c357c735fe9315d3083973429d3cd134fde29984e3828a790a845485"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-POSITIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-COUNT-63-POSITIVE.json",
+        "sha256": "b1aaa7911ba760f503472ed68c15c21465601c22d6d24efa3fc147587422eb5c"
+      }
+    },
+    {
+      "id": "TC-COUNT-63-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-COUNT-63-NEGATIVE.json",
+        "sha256": "6d2bb717f49c8e06cb39b9b3839ee78a0f8e280f67eb2d9a3851ee998815b409"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-NEGATIVE",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-COUNT-63-NEGATIVE.json",
+        "sha256": "c43769c527d1950347519f4f8e25beb48840a093a7cca56ffb788861eb2678e9"
+      }
+    },
+    {
+      "id": "TC-COUNT-63-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-COUNT-63-BOUNDARY.json",
+        "sha256": "572d22fec41ba0062124e71d73d24b68203ea91629d48cdefd45ec0e218e881d"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-BOUNDARY",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-COUNT-63-BOUNDARY.json",
+        "sha256": "a0db3601a22185616ebd8145592ff32933af108188411a4737f3301d0532a002"
+      }
+    },
+    {
+      "id": "TC-COUNT-63-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TC-COUNT-63-CONDITIONAL.json",
+        "sha256": "efd727350b16fa13fa161fbd1660760a1e9969cc81041f222d301c013c1d686a"
+      }
+    },
+    {
+      "id": "TD-COUNT-63-CONDITIONAL",
+      "review": null,
+      "evidence": {
+        "path": "evidence/TD-COUNT-63-CONDITIONAL.json",
+        "sha256": "3658821c7f0923ad065b8db9e536e8f612a7301306a98339884ebf993cd64037"
+      }
+    }
+  ],
+  "flows": [
+    {
+      "id": "FLOW-EMV-FINANCIAL",
+      "applicability": "APPLICABLE",
+      "review": null,
+      "steps": [
+        {
+          "id": "purchase",
+          "caseId": "TC-EMV-130-POSITIVE",
+          "assertions": [
+            {
+              "pointer": "/outcome",
+              "expected": "APPROVED"
+            }
+          ]
+        }
+      ],
+      "prerequisites": [
+        "APPROVED_FULL_MESSAGE_FIXTURE",
+        "AUTHORIZED_ENVIRONMENT",
+        "CARD_DEVICE_ROUTE_AND_CRYPTO",
+        "SOURCE_BACKED_HOST_EXPECTATION"
+      ]
+    }
+  ],
+  "runs": []
+}

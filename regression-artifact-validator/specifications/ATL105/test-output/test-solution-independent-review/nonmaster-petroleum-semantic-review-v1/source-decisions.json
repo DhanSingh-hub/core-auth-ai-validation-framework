@@ -1,0 +1,1089 @@
+[
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R01",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Table Load card type for Visa fleet",
+    "note": "ATL105 lists card type 020 as Visa Fleet Credit in one Table Load table and as generic Credit in another; the extracted table text is garbled. Drafts treat 020 as the Table Load card type and detect Visa fleet by the chapter 8 BIN list.",
+    "question": "Confirm the Table Load card type the POS application must read to allow Visa fleet cards, and whether 020 is shared with generic Visa credit.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 511,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "5d62d34cab01b9d3dc8d60ac79813d6580bba6f9d8cd2afc9ae4fd32213acd3e"
+      },
+      {
+        "version": "2026-3",
+        "page": 514,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "780f5e01f328e1968609768e91f58da1314a614d781db189448c33ba338a226c"
+      },
+      {
+        "version": "2026-4",
+        "page": 518,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "5d62d34cab01b9d3dc8d60ac79813d6580bba6f9d8cd2afc9ae4fd32213acd3e"
+      },
+      {
+        "version": "2026-4",
+        "page": 521,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "780f5e01f328e1968609768e91f58da1314a614d781db189448c33ba338a226c"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-04",
+      "VFC-BR-05"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R02",
+    "disposition": "PETROLEUM_ONLY",
+    "topic": "Merchant Profile credit option must be activated",
+    "note": "Merchant Profile configuration is not defined in ATL105.",
+    "question": "Confirm how credit option activation is provisioned and evidenced in test environments.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [
+      "credit option"
+    ],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-03"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R03",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Prompt Codes for Visa fleet",
+    "note": "A full Prompt Code combines a transaction type with a card type; the source defers valid Visa fleet Prompt Codes to the message format specifications.",
+    "question": "Confirm the full four-character Prompt Codes for Visa fleet for each supported transaction.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 538,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "847b11043be483e9e045b8b2c6a9faa5fbb999587e49425ed240d693ec89129c"
+      },
+      {
+        "version": "2026-4",
+        "page": 545,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "847b11043be483e9e045b8b2c6a9faa5fbb999587e49425ed240d693ec89129c"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-05"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R05",
+    "disposition": "ALIGNED",
+    "topic": "Follow-on card data is partial Track 2 (account number, equals sign, YYMM expiry)",
+    "note": "Petroleum says follow-on transaction; ATL105 describes previously authorized credit transactions. TransArmor-VeriFone Edition full Track 2 is excluded by the source.",
+    "question": "Confirm that Petroleum follow-on transactions match the ATL105 transactions that must carry only account number and expiration date.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 92,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "32ebb84232b57c8dbbc96f05a1881081ebc1c79c0378d3b7c3e5c69824ad4e0a"
+      },
+      {
+        "version": "2026-4",
+        "page": 94,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "32ebb84232b57c8dbbc96f05a1881081ebc1c79c0378d3b7c3e5c69824ad4e0a"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-18"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R07",
+    "disposition": "PETROLEUM_NARROWS_ATL105",
+    "topic": "Device expiration validation on Visa fleet transactions",
+    "note": "ATL105 requires island devices or controllers to verify expiration data when applicable; Petroleum states the device performs it for Visa fleet. Keep separate from VFC-R06.",
+    "question": "Confirm the expected device or host outcome when expiry validation fails, given that authorizations still transmit expired-card values.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 60,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "51b9708c8602338a4d4100b199d1007dfe9e03ab2c1767649e863996ad5767ff"
+      },
+      {
+        "version": "2026-4",
+        "page": 62,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "51b9708c8602338a4d4100b199d1007dfe9e03ab2c1767649e863996ad5767ff"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-13"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R08",
+    "disposition": "PETROLEUM_NARROWS_ATL105",
+    "topic": "Mod 10 check digit on the full account number",
+    "note": "ATL105 requires check digit verification when applicable; Petroleum specifies Mod 10 on the full Visa fleet account number.",
+    "question": "Confirm whether a Mod 10 failure blocks transmission or produces a host response that tests should expect.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 60,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "51b9708c8602338a4d4100b199d1007dfe9e03ab2c1767649e863996ad5767ff"
+      },
+      {
+        "version": "2026-4",
+        "page": 62,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "51b9708c8602338a4d4100b199d1007dfe9e03ab2c1767649e863996ad5767ff"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-16"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R09",
+    "disposition": "PETROLEUM_NARROWS_ATL105",
+    "topic": "Driver ID is 1 to 6 digits, unencrypted, prompted by the Service Prompt",
+    "note": "ATL105 Element 31 allows up to 10 digits and defers issuer requirements to the Petroleum specification.",
+    "question": "Confirm the 1 to 6 digit limit for Visa fleet Driver ID within ATL105 Element 31.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 374,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "d5d73b80774aa0ae4d3942a480e45bbf40d9c614a9ff7c717f5accb13243bc3f"
+      },
+      {
+        "version": "2026-3",
+        "page": 374,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "e2ceb8f51900feb0800fcf1cb84509db4f1f0b0496f0cb1e23bab95537185c38"
+      },
+      {
+        "version": "2026-4",
+        "page": 381,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "d5d73b80774aa0ae4d3942a480e45bbf40d9c614a9ff7c717f5accb13243bc3f"
+      },
+      {
+        "version": "2026-4",
+        "page": 381,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "e2ceb8f51900feb0800fcf1cb84509db4f1f0b0496f0cb1e23bab95537185c38"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-06"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R11",
+    "disposition": "PETROLEUM_NARROWS_ATL105",
+    "topic": "Vehicle Number is 1 to 6 digits",
+    "note": "ATL105 Element 108 allows up to 10 digits and defers issuer requirements to the Petroleum specification.",
+    "question": "Confirm the 1 to 6 digit limit for Visa fleet Vehicle Number within ATL105 Element 108.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 414,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "b0956c10fde02f3f9bcbe5519d2644678c9f6772f53c577cc3427806cdeceeaf"
+      },
+      {
+        "version": "2026-4",
+        "page": 421,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "b0956c10fde02f3f9bcbe5519d2644678c9f6772f53c577cc3427806cdeceeaf"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-08"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R12",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Product sum equals the total transaction amount",
+    "note": "ATL105 Element 41 nets discounts and coupons from fuel product amounts. The Petroleum equality rule needs a defined treatment of discounts, coupons, taxes and rounding.",
+    "question": "Define how discounts, coupons, taxes and rounding affect the product-sum equality for Visa fleet (links PETRO-Q002).",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 378,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "9840e2cbef0eb4605d25ac23c9499ccf555929960d1f878e7c67e15b48c368a5"
+      },
+      {
+        "version": "2026-4",
+        "page": 385,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "9840e2cbef0eb4605d25ac23c9499ccf555929960d1f878e7c67e15b48c368a5"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-24"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R13",
+    "disposition": "DISTINCT_PROGRAM_DO_NOT_ALIAS",
+    "topic": "Visa Fleet 2.0 EMV is a different program",
+    "note": "Petroleum chapter 8 describes magnetic-stripe Visa fleet cards. ATL105 Visa Fleet 2.0 EMV rules must not be applied to this context, or vice versa.",
+    "question": "Confirm whether any Visa Fleet 2.0 EMV rule also applies to Petroleum chapter 8 Visa fleet transactions.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 286,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "4b2ccf243db286e37e5402c467745fdadf205bcebbf4d3864a0ea41e5e594f28"
+      },
+      {
+        "version": "2026-4",
+        "page": 289,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "4b2ccf243db286e37e5402c467745fdadf205bcebbf4d3864a0ea41e5e594f28"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [],
+    "impactScope": "CONTEXT_LEVEL_DECISION_NO_EXPLICIT_BR_BINDING"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R14",
+    "disposition": "NO_COUNTERPART_IDENTIFIED",
+    "topic": "Manual entry after three failed swipes with a 16-digit account, ID and odometer",
+    "note": "Device prompting behaviour; reconcile with ATL105 PAN entry mode values when serialization is available.",
+    "question": "Confirm the PAN entry mode and prompt data expected after manual entry fallback.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-11"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R15",
+    "disposition": "ALIGNED",
+    "topic": "Unique fuel Product Codes",
+    "note": "Unique fuel Product Codes match ATL105 Appendix F. Drafts apply uniqueness to every product code in a transaction.",
+    "question": "Confirm whether uniqueness applies only to fuel codes or to every product code in a Visa fleet transaction.",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 516,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "06e9ae4e8190da1b1b4d99a80d19f7cca8a3202d9d39a07a95d8ded21e5aa365"
+      },
+      {
+        "version": "2026-4",
+        "page": 523,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "06e9ae4e8190da1b1b4d99a80d19f7cca8a3202d9d39a07a95d8ded21e5aa365"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-23"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R16",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Supported transaction list",
+    "note": "Mapping to ATL105 transaction types belongs to the phase 4 context matrix.",
+    "question": "Map each supported Visa fleet transaction to its ATL105 transaction type code.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-01"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R17",
+    "disposition": "NO_COUNTERPART_IDENTIFIED",
+    "topic": "Track 1 Start Sentinel is never transmitted",
+    "note": "Applies to the Track 1 layout in this context.",
+    "question": "Confirm the expected Track 1 content in Card Discretionary Block Data for Visa fleet.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-19"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R18",
+    "disposition": "NO_COUNTERPART_IDENTIFIED",
+    "topic": "Receipt: expiry suppressed and manual entry marked by an asterisk",
+    "note": "Receipt and journal behaviour; reconcile with Petroleum chapter 4 receipt requirements in the AFP and receipt context.",
+    "question": "Confirm how receipt expiry suppression and the manual-entry asterisk are evidenced in tests for Visa fleet.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-12",
+      "VFC-BR-14"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R19",
+    "disposition": "POTENTIAL_CONFLICT",
+    "topic": "Visa fleet BINs: chapter 8 list versus Appendix A ranges",
+    "note": "The build compares both lists BIN by BIN: 448616, 471562 and 471595 are only in chapter 8, and 63 ranges are only in Appendix A. Drafts follow the chapter 8 list and flag oracles on differing BINs.",
+    "question": "Which list controls Visa fleet detection: the chapter 8 BIN list or the Appendix A Visa Fleet ranges?",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-02"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R20",
+    "disposition": "POTENTIAL_CONFLICT",
+    "topic": "Service Enhancement Indicator values 3 to 9",
+    "note": "The track layouts mark values 3 to 9 as reserved; Appendix A allows all products for any value other than 1 and 2. Drafts follow Appendix A and flag that oracle as conflicting.",
+    "question": "Should a reserved Service Enhancement Indicator (3 to 9) be rejected as invalid track data or treated as all products allowed?",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-21",
+      "VFC-BR-22"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R21",
+    "disposition": "CONSISTENT_WITHIN_PETROLEUM",
+    "topic": "Prompts by Service Prompt and keyed entry",
+    "note": "Appendix A prompts Driver ID for Service Prompt 3, odometer for 1 to 4, Vehicle for 2 and ID for 1 or 6; keyed entry prompts ID and odometer only. This matches the chapter 8 Service Prompt values and manual entry text.",
+    "question": "Confirm that the Appendix A 'ID No.' prompt is carried in ATL105 Element 31 Driver/Identification Number.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-06",
+      "VFC-BR-07",
+      "VFC-BR-08",
+      "VFC-BR-09",
+      "VFC-BR-10",
+      "VFC-BR-26"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R22",
+    "disposition": "POTENTIAL_CONFLICT",
+    "topic": "ID length: 6-digit ID in the footnote versus a maximum of 6 digits in Appendix A",
+    "note": "Track footnote 3 says the cardholder enters a 6-digit ID; Appendix A says a maximum of 6 digits. Drafts accept 1 to 6 digits and flag shorter IDs as conflicting oracles.",
+    "question": "Must a Visa fleet ID be exactly 6 digits, or 1 to 6 digits?",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-09"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R23",
+    "disposition": "ALIGNED_WITH_EXCEPTIONS",
+    "topic": "Petroleum Appendix B product codes versus ATL105 Appendix F",
+    "note": "The build compares every row of both tables: codes match except ATL105-only range 541-549; description differences are wording only.",
+    "question": "Is product code range 541-549, defined only in ATL105 Appendix F, valid for Visa fleet transactions?",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 516,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "ab716514d5b6f5fd17063980627d92e42ea72e3d442698e9fb250c75e2ca5e34"
+      },
+      {
+        "version": "2026-3",
+        "page": 517,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "7cec1fc9c3b3245f9a425cc623f50fc496507d5b1d429d5fffe9bf7434153c6d"
+      },
+      {
+        "version": "2026-4",
+        "page": 523,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "ab716514d5b6f5fd17063980627d92e42ea72e3d442698e9fb250c75e2ca5e34"
+      },
+      {
+        "version": "2026-4",
+        "page": 524,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "7cec1fc9c3b3245f9a425cc623f50fc496507d5b1d429d5fffe9bf7434153c6d"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-25"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R24",
+    "disposition": "PETROLEUM_ONLY",
+    "topic": "Service Prompt, Service Enhancement Indicator and enhanced data obligations",
+    "note": "These magnetic-stripe fields and the Commercial Level II/III eligibility note have no ATL105 counterpart.",
+    "question": "Confirm how the Service Prompt and Service Enhancement Indicator values are evidenced in ATL105 messages for Visa fleet.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [
+      "service prompt",
+      "service enhancement",
+      "commercial level"
+    ],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-10",
+      "VFC-BR-21"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R25",
+    "disposition": "PETROLEUM_ONLY",
+    "topic": "No authorization signature for Vehicle Number prompts",
+    "note": "Signature capture is a device behaviour without an ATL105 counterpart; the draft validator does not model it.",
+    "question": "Confirm how the absence of a signature requirement for Vehicle Number prompts should be evidenced in tests.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [
+      "authorization signature"
+    ],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-08"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R26",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Track 2 sentinels, LRC and fleet positions",
+    "note": "Track 2 Field Nos. 1, 8 and 9 are not sent online. Drafted Track 2 strings keep the sentinels as a card-image representation; the third-to-last fleet position must be 0.",
+    "question": "Confirm the exact Track 2 content sent online for Visa fleet and whether the drafted card-image strings should drop the sentinels.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-20"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R27",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "ATL105 table 078 for Visa fleet line-item details",
+    "note": "ATL105 introduces table 078 as the primary table for future Visa fleet line items; its relation to the Petroleum product segment is not defined.",
+    "question": "Does ATL105 table 078 replace or supplement the Petroleum product segment for Visa fleet magnetic-stripe transactions?",
+    "atl105Evidence": [
+      {
+        "version": "2026-3",
+        "page": 624,
+        "sourceSha256": "6d03bf09f25b9126975b584aef83c21d1b7b081cabccfb9af3b89d46a26d06aa",
+        "quoteSha256": "29e92770f213eaabc18f4bbaedfaa757494833118a4aaec07450ee41fc1e7791"
+      },
+      {
+        "version": "2026-4",
+        "page": 630,
+        "sourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "quoteSha256": "29e92770f213eaabc18f4bbaedfaa757494833118a4aaec07450ee41fc1e7791"
+      }
+    ],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-24"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VISA_FLEET",
+    "id": "VFC-R28",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Meaning of maintenance for Service Enhancement Indicator 1",
+    "note": "Drafts treat maintenance as the Appendix B Automotive product/service codes (100-149).",
+    "question": "Which Appendix B categories count as maintenance for Service Enhancement Indicator 1?",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VFC-BR-22"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R01",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Supported transaction mappings",
+    "note": "",
+    "question": "Confirm the six Petroleum transaction names map to the drafted ATL105 transaction types.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-01"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R02",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Voyager enablement and card type",
+    "note": "",
+    "question": "Confirm Terminal Special Code 073, Table Load card type 060 and the non-Table-Load detection method for the deployed application.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-02",
+      "VYR-BR-03",
+      "VYR-BR-04"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R03",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Prompt Code message mapping",
+    "note": "",
+    "question": "Confirm the complete ATL105 Prompt Code mapping for Voyager fleet.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [],
+    "impactScope": "CONTEXT_LEVEL_DECISION_NO_EXPLICIT_BR_BINDING"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R04",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Magstripe driver prompting",
+    "note": "",
+    "question": "Confirm the Restriction Code to Driver ID prompt mapping and unencrypted message treatment.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-05",
+      "VYR-BR-08"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R05",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Manual-entry behavior",
+    "note": "",
+    "question": "Confirm retry count, 19-digit keyed number formation, Restriction Code placement, receipt marking and ISO Number entry.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-07",
+      "VYR-BR-14",
+      "VYR-BR-15"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R06",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Expiration and Mod 10 checks",
+    "note": "",
+    "question": "Confirm separate account and super check-digit calculations, including the manual-entry data spans.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-13",
+      "VYR-BR-20",
+      "VYR-BR-21"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R07",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Odometer and Vehicle Number",
+    "note": "",
+    "question": "Confirm how magstripe restriction flags drive odometer prompting and how the absence of a Vehicle Number is handled.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-06",
+      "VYR-BR-16"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R08",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Restriction Code and allowed products",
+    "note": "",
+    "question": "Confirm fuel-only and fuel-plus-other-product values and the unique Product Code requirement.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-09",
+      "VYR-BR-19"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R09",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Authorization amount processing",
+    "note": "",
+    "question": "Confirm CAT pump-limit precedence, POS authorization amount behavior and ATL100/ATL101 response handling.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-17",
+      "VYR-BR-18"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R10",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Product Code Data",
+    "note": "",
+    "question": "Confirm all Voyager fleet transactions require Product Code Data and exact sum reconciliation.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-10"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R11",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Track support and TransArmor exception",
+    "note": "",
+    "question": "Confirm original Track 2 default, follow-on partial Track 2 and the stated TransArmor-VeriFone exception.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-11",
+      "VYR-BR-12"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R12",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Chip technology selection and Truck Class",
+    "note": "",
+    "question": "Supply or confirm Voyager EMV terminal Specifications v1.5 for Truck Class field semantics.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-27"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R13",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Application selection",
+    "note": "",
+    "question": "Confirm AID priority and automatic selection behavior against the approved Voyager terminal baseline.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-23"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R14",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Voyager Third Party Data layout",
+    "note": "",
+    "question": "Confirm Tag 9F6E parsing, byte lengths and issuer-specific data handling.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-22"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R15",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Enhanced Fleet and terminal prompts",
+    "note": "",
+    "question": "Confirm Enhanced Fleet qualification, prompt bit order and Appendix I prompt script behavior.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-22",
+      "VYR-BR-28"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R16",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Chip Restriction Code",
+    "note": "",
+    "question": "Confirm Tag 9F6E Restriction Code interpretation and product eligibility.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-09"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R17",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Card removal and reversal",
+    "note": "",
+    "question": "Confirm abort, driver notification and reversal lifecycle on premature chip removal.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-24"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R18",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Troubleshooting evidence",
+    "note": "",
+    "question": "Confirm which chip and terminal action data must be retained and how long it is retained.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-29"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R19",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "EMV exception processing",
+    "note": "",
+    "question": "Confirm cancellation behavior across GENERATE AC stages and void processing.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-24"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R20",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Voyager AID",
+    "note": "",
+    "question": "Confirm the deployed Voyager AID and matching policy.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-23"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R21",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Terminal configuration",
+    "note": "",
+    "question": "Confirm all required terminal parameter values and Appendix J/K/L tables before implementation.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-30",
+      "VYR-BR-31"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R22",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Cardholder verification and offline authentication",
+    "note": "",
+    "question": "Confirm attended/unattended CVM behavior and supported offline CAM modes for each terminal profile.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-32",
+      "VYR-BR-33"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R23",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "EMV POS prompting and purchase restriction",
+    "note": "",
+    "question": "Confirm chip prompting and online purchase restriction behavior.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-25",
+      "VYR-BR-34"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R24",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Chip receipts",
+    "note": "",
+    "question": "Confirm receipt fields and interaction with the chapter 4 fleet receipt requirements.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-26"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R25",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Offline processing and purchase limits",
+    "note": "",
+    "question": "Confirm Chip Limit and call-for-authorization paths, fuel/non-fuel cap handling and tags DF32/DF34/DF35.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-25"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  },
+  {
+    "context": "VOYAGER_FLEET",
+    "id": "VYR-R26",
+    "disposition": "INTERPRETATION_REQUIRED",
+    "topic": "Voyager track layouts and embossing",
+    "note": "",
+    "question": "Confirm source-image layouts, 19-digit account structure, check-digit spans and embossing interpretation.",
+    "atl105Evidence": [],
+    "inheritedAbsenceClaims": [],
+    "absenceClaimMeaning": "HISTORICAL_SCAN_CLAIM_NOT_PROOF_OF_SEMANTIC_ABSENCE",
+    "reviewRequired": true,
+    "unresolved": true,
+    "impactedRuleIds": [
+      "VYR-BR-35"
+    ],
+    "impactScope": "EXPLICITLY_LINKED_COMPANION_BRS"
+  }
+]

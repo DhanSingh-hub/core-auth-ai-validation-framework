@@ -6,6 +6,18 @@ Segment 100 is the standard core of a standard ATL105 Financial Transaction Requ
 
 This is a learning and validation note, not a business approval record.
 
+## Bounded Measurement Pilot
+
+The reusable [business coverage assessment contract](../../../../../../../contract/business-coverage.md)
+and launcher task `business-coverage-companion-pilot` provide a separate,
+source-pinned ATL105 2026-4 pilot for Segment 100 presence, conditional Segment
+130 presence, and logical segment-count observations. It includes draft
+positive, negative, boundary and conditional fixtures, not a complete companion
+inventory, complete serialized requests, business approval or host execution.
+Official coverage remains unestablished until the independent inventory,
+applicability, mappings, semantic criteria and evidence receive the required
+review. Unknown combinations and unimplemented companion contexts remain open.
+
 ## Core Mental Model
 
 ```text

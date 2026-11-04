@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "status": "DRAFT_REVIEW_REQUIRED",
+  "scope": "APPENDIX_F_ROW_CLASSIFICATION_NOT_TRANSACTION_ACCEPTANCE",
+  "releases": [
+    {"version":"2026-3","firstPage":516,"lastPage":537},
+    {"version":"2026-4","firstPage":523,"lastPage":544}
+  ],
+  "tables": [
+    {"page":1,"table":"UNUSED","low":0,"high":0,"heading":"Unused Code Nos.","assignment":"UNUSED"},
+    {"page":2,"table":"MOTOR_FUEL","low":1,"high":99,"heading":"Motor Fuel Codes","assignment":"ASSIGNED"},
+    {"page":3,"table":"MOTOR_FUEL","low":1,"high":99,"heading":"Motor Fuel Codes","assignment":"ASSIGNED"},
+    {"page":4,"table":"MOTOR_FUEL","low":1,"high":99,"heading":"Motor Fuel Codes","assignment":"ASSIGNED"},
+    {"page":5,"table":"AUTOMOTIVE_PRODUCT_SERVICE","low":100,"high":149,"heading":"Automotive Product/Service Codes","assignment":"ASSIGNED"},
+    {"page":6,"table":"AUTOMOTIVE_PRODUCT_SERVICE","low":100,"high":149,"heading":"Automotive Product/Service Codes","assignment":"ASSIGNED"},
+    {"page":7,"table":"AVIATION_FUEL","low":150,"high":174,"heading":"Aviation Fuel Codes","assignment":"ASSIGNED"},
+    {"page":8,"table":"AVIATION_PRODUCT_SERVICE","low":175,"high":224,"heading":"Aviation Product/Service Codes","assignment":"ASSIGNED"},
+    {"page":9,"table":"AVIATION_PRODUCT_SERVICE","low":175,"high":224,"heading":"Aviation Product/Service Codes","assignment":"ASSIGNED"},
+    {"page":10,"table":"MARINE_FUEL","low":225,"high":249,"heading":"Marine Fuel Codes","assignment":"ASSIGNED"},
+    {"page":11,"table":"MARINE_PRODUCT_SERVICE","low":250,"high":299,"heading":"Marine Product/Service Codes","assignment":"ASSIGNED"},
+    {"page":12,"table":"OTHER_FUEL","low":300,"high":399,"heading":"Other Fuel Codes","assignment":"ASSIGNED"},
+    {"page":13,"table":"MERCHANDISE","low":400,"high":599,"heading":"Merchandise Codes","assignment":"ASSIGNED"},
+    {"page":14,"table":"MERCHANDISE","low":400,"high":599,"heading":"Merchandise Codes","assignment":"ASSIGNED"},
+    {"page":15,"table":"MERCHANDISE","low":400,"high":599,"heading":"Merchandise Codes","assignment":"ASSIGNED"},
+    {"page":16,"table":"RESERVED_FUTURE_USE_TABLE","low":600,"high":799,"heading":"Codes Reserved for Future Use","assignment":"ASSIGNED"},
+    {"page":17,"table":"DEBIT_SURCHARGE_TABLE","low":800,"high":809,"heading":"Debit Surcharge Codes","assignment":"ASSIGNED"},
+    {"page":18,"table":"PROPRIETARY_RESERVED","low":810,"high":889,"heading":"Codes Reserved for Proprietary Use","assignment":"RESERVED"},
+    {"page":19,"table":"FSA_HRA","low":890,"high":896,"heading":"FSA/HRA Product Codes","assignment":"ASSIGNED"},
+    {"page":20,"table":"PROPRIETARY_RESERVED","low":897,"high":899,"heading":"Codes Reserved for Proprietary Use","assignment":"RESERVED"},
+    {"page":21,"table":"NEGATIVE","low":900,"high":949,"heading":"Negative Codes","assignment":"ASSIGNED"},
+    {"page":22,"table":"ADMINISTRATIVE","low":950,"high":999,"heading":"Administrative Codes","assignment":"ASSIGNED"}
+  ],
+  "obligations": [
+    {"id":"NMP-O01","page":1,"start":"These codes are valid entries for Element No. 77, Product Code, which is part of the Product","end":"Data section in Data Segment No. 102, Product Code Data Segment.","statement":"Use Appendix F as the classification domain for Element 77 in the specified product-data context, not as permission for arbitrary message fields.","condition":"An applicable ATL105 transaction carries Element 77 in the product-data context.","kind":"FIELD_DOMAIN","legacy":["BR-RULE-SEG102-R-010"]},
+    {"id":"NMP-O02","page":1,"start":"Any product in these tables should be represented in messages to BUYPASS by the Product","end":"Code assigned to it in the following tables.","statement":"Represent a listed product using its source-assigned product code.","condition":"A source-listed product is represented in an otherwise eligible transaction.","kind":"PRODUCT_MAPPING","legacy":["BR-RULE-SEG102-R-010"]},
+    {"id":"NMP-O03","page":1,"start":"With regard to fuel purchases, a unique Product Code must be sent for each type of fuel","end":"purchase.","statement":"Use a distinct product code for each fuel type purchased; do not extend this statement to every nonfuel line.","condition":"A transaction contains fuel purchases.","kind":"FUEL_TYPE_UNIQUENESS","legacy":["BR-RULE-SEG102-R-009"],"repeatedPages":[2,7,10,21,22]},
+    {"id":"NMP-O04","page":17,"start":"Note: BUYPASS Product Code 800 is applicable for both","end":"credit (Visa/ MasterCard) and debit transactions.","statement":"Retain the explicitly stated credit/debit scope for code 800; the surcharge-table heading does not restrict this row to debit alone.","condition":"Evaluating the source applicability of product code 800; merchant and transaction eligibility remain independent.","kind":"EXPLICIT_CODE_APPLICABILITY","legacy":[]},
+    {"id":"NMP-O05","page":21,"start":"Discounts and coupons are applied first to nonfuel purchase amounts.","end":"Discounts and coupons are applied first to nonfuel purchase amounts.","statement":"Apply discounts and coupons to nonfuel purchase amounts before fuel amounts; this sentence does not specify complete rounding or accounting rules.","condition":"Discount or coupon product data is included in a transaction.","kind":"DISCOUNT_ORDER","legacy":["BR-RULE-SEG102-R-026"]}
+  ],
+  "currentComparison": {
+    "programEligibility":["BR-NM4-016","BR-NM4-017","BR-NM4-018","BR-NP-002","BR-NP-003","BR-NP-004","BR-NP-010","BR-NP-013","BR-NP-030","BR-NP-037"],
+    "programEligibilityReason":"These assertions constrain program/currency/product or transaction eligibility, not the descriptive classification of an Appendix F source row. WEX OTR unlisted-product rejection requires its own program category authority; source-table presence does not satisfy it.",
+    "otherReason":"Every other current rule is explicitly classified in the preceding semantic review as field representation, lifecycle, entry/track, expiry, retry, amount, crypto, receipt, configuration or companion-data behavior. None asserts the per-row Appendix F descriptive classification. This finite-universe comparison does not imply absence of other unreviewed legacy obligations."
+  },
+  "companionComparison": [
+    {"ids":["VFC-BR-25"],"relation":"RELATED_DIFFERENT_CATALOG_AUTHORITY","reason":"Petroleum Appendix B membership is not individual ATL105 Appendix F descriptive classification. Codes 541-549 are present only in ATL105 in the pinned inventories; keep source authorities separate."},
+    {"ids":["VFC-BR-21","VFC-BR-22","VYR-BR-09"],"relation":"ADDITIONAL_CARD_PRODUCT_RESTRICTION","reason":"A classified code can still be prohibited by a fleet service/restriction indicator. Fuel/maintenance interpretation is program-specific and is not approved by row membership."},
+    {"ids":["VFC-BR-23","VYR-BR-19"],"relation":"AGGREGATE_UNIQUENESS_NOT_CLASSIFICATION","reason":"A product-list uniqueness invariant compares multiple entries; a single source-row classification cannot establish it. Visa's all-product extension remains unresolved."},
+    {"ids":["VFC-BR-24","VYR-BR-10"],"relation":"AMOUNT_AND_PRESENCE_NOT_CLASSIFICATION","reason":"Product presence and sum reconciliation concern transaction content, not the source assignment or class of a code; tax/discount accounting cannot be inferred."},
+    {"ids":["VYR-BR-25"],"relation":"CHIP_LIMITS_NOT_CLASSIFICATION","reason":"Chip restrictions and offline/online product limits remain additional Voyager conditions; a source-row match neither proves chip permission nor supplies issuer limits."},
+    {"ids":["VFC-BR-01","VFC-BR-02","VFC-BR-03","VFC-BR-04","VFC-BR-05","VFC-BR-06","VFC-BR-07","VFC-BR-08","VFC-BR-09","VFC-BR-10","VFC-BR-11","VFC-BR-12","VFC-BR-13","VFC-BR-14","VFC-BR-15","VFC-BR-16","VFC-BR-17","VFC-BR-18","VFC-BR-19","VFC-BR-20","VFC-BR-26","VYR-BR-01","VYR-BR-02","VYR-BR-03","VYR-BR-04","VYR-BR-05","VYR-BR-06","VYR-BR-07","VYR-BR-08","VYR-BR-11","VYR-BR-12","VYR-BR-13","VYR-BR-14","VYR-BR-15","VYR-BR-16","VYR-BR-17","VYR-BR-18","VYR-BR-20","VYR-BR-21","VYR-BR-22","VYR-BR-23","VYR-BR-24","VYR-BR-26","VYR-BR-27","VYR-BR-28","VYR-BR-29","VYR-BR-30","VYR-BR-31","VYR-BR-32","VYR-BR-33","VYR-BR-34","VYR-BR-35"],"relation":"DIFFERENT_ASSERTION_NOT_ROW_CLASSIFICATION","reason":"These explicitly enumerated companion statements concern eligibility, card identification/configuration, account/track/entry, prompting, receipt, expiry, amount bounds, CVM, terminal capability, evidence retention or chip lifecycle. They do not assert Appendix F row descriptions/classification. Shared product-related context or a prompt field is not equivalent to this metadata assertion."}
+  ],
+  "conflict":{"codes":["895","896"],"overviewPage":1,"detailedPage":19,"followingReservedPage":20,"status":"SOURCE_PRECEDENCE_REVIEW_REQUIRED","meaning":"The overview ends FSA/HRA at 894 and begins proprietary reservation at 895; the detailed tables assign 895/896 and begin reservation at 897. Preserve both claims; do not silently reject or accept disputed codes."}
+}

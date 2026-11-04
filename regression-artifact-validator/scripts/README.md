@@ -17,6 +17,39 @@ Restoration refuses to overwrite differing local files. Use `-DestinationRoot C:
 
 ## Purpose Groups
 
+### Four-measure business coverage and companion pilot
+
+The [business coverage contract](../contract/business-coverage.md) separates
+scenario-inventory completeness, rule-variation adequacy, TC/TD semantics and
+authorized E2E execution evidence. `business_coverage.py` consumes an explicit
+independent inventory and hash-bound decisions/results; it never derives
+business approval from AI linkage or a producer PASS.
+
+From the module root:
+
+```powershell
+.\framework.ps1 -Task business-coverage-companion-pilot -OutputDirectory 'C:\reviews\companion-pilot'
+.\framework.ps1 -Task business-coverage-assess -ReviewDirectory 'C:\reviews\companion-pilot\input' -OutputDirectory 'C:\reviews\companion-reassessment'
+.\framework.ps1 -Task business-coverage-test
+```
+
+All output directories must be new. The source-pinned ATL105 2026-4 pilot
+generates three draft requirements, three scenarios and twelve synthetic
+positive/negative/boundary/conditional TC/TD pairs. It tests logical Segment 100
+cardinality, conditional Segment 130 presence and Element 63 count observations.
+It is **not** a complete companion compatibility inventory or wire serializer.
+Existing 2026-3 catalogs are not silently promoted to the 2026-4 baseline.
+
+The pilot intentionally has no business approvals or host runs. Official
+percentages stay null, partial semantic checks remain partial and its candidate
+EMV business flow is blocked. Hash-bound external SME/TBA decisions and
+authorized execution evidence can be supplied under the contract; actual
+signer authentication, host access, PIN/key/crypto generation and complete
+semantic adjudication remain outside this reporting tool. Existing native
+delivery/Java semantic validators remain authoritative for their bounded checks;
+normalize their real outputs into this contract without expanding their claims.
+Exit zero means a report was produced, not that the delivery is certified.
+
 ### Non-Mastercard 2026-4 independent draft model
 
 `build-nonmaster-model.py --delivery 'C:\delivery\31-10-out'` creates
@@ -69,6 +102,125 @@ Build refuses existing outputs; check is byte-exact and read-only. Source and
 delivery hashes/populations are rechecked before publication. The completion
 register deliberately separates **remaining repository semantic/conditional-oracle
 work** from missing external deliveries, approval and real execution.
+
+`review-nonmaster-semantics.py --delivery 'C:\delivery\31-10-out'` adds a
+[separate semantic review](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-semantic-review-v1/REPORT.md).
+It explicitly classifies all 71 current draft BRs, records 24 authored relationships
+covering 17 legacy BRs and recovers 42 missing legacy statements from six exact
+rule-ID/source-anchor catalog references. Recovered catalog aliases, provisional
+items and source versions remain visible. Equivalent core, compound component,
+specialization, trigger refinement and different-profile policies are distinct;
+no relationship automatically merges BRs or changes the approved denominator.
+The two equivalent cores require matching clauses on explicitly identified old
+and new source pages, not lexical scores or block hashes.
+
+All 1,343 legacy BRs and 2,936 source units remain in disposition ledgers.
+An unmatched legacy BR is **not adjudicated**, not proven distinct. A quoted
+proposition does not classify the rest of a source paragraph/table. Therefore
+whole-spec semantic completion remains repository work, not just approval.
+Petroleum companion semantic reconciliation is also still open. The report
+must remain `INCOMPLETE_REPOSITORY_SEMANTIC_WORK_REMAINS`; current BR
+classification is not confirmed AI coverage. This review rechecks v1/v2 and
+the delivery without changing them.
+
+Use `nonmaster-semantics-build`, `nonmaster-semantics-check` and
+`nonmaster-semantics-test`. Build requires a new output directory; `--check`
+rederives exact bytes read-only. Regression: `test_nonmaster_semantics.py`.
+
+`reconcile-nonmaster-petroleum.py --delivery 'C:\delivery\31-10-out'` creates a
+[retained-companion semantic reconciliation](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-petroleum-semantic-review-v1/REPORT.md).
+All 26 Visa chapter 8 and 35 Voyager chapter 9 BRs receive explicit preconditions,
+separated draft propositions, named current/legacy counterparts and preserved
+source decisions. Source references are checked against inventory ID, page,
+page-text hash and quote. ATL105 comparisons preserve release-specific hashes;
+Petroleum remains 2025-1. All context-level source questions are retained even
+when no BR explicitly references them. Linked TS/TC/TD are not evidence that
+every separated proposition was executed.
+
+The Visa chapter 8 versus Fleet 2.0 boundary, BIN precedence, short-ID conflict,
+product-code table differences, manual account/ISO boundaries, terminal appendix
+dependencies and provisional Mod 10 algorithms stay explicit. Voyager early
+removal means removal before the terminal requests card removal: if an
+authorization response was already received, the reversal branch still applies.
+Do not misread it as removal only before an outgoing authorization request.
+Named counterparts are not an exhaustive semantic search of the legacy library.
+The bounded companion register is fully populated; whole-spec derivation and
+the remaining legacy overlap/applicability task are **not complete**.
+
+Use `nonmaster-petroleum-semantics-build`, `nonmaster-petroleum-semantics-check`
+and `nonmaster-petroleum-semantics-test`. Build refuses an existing output;
+`--check` compares exact bytes without writing and rechecks the original delivery.
+Regression: `test_nonmaster_petroleum_semantics.py`.
+
+`derive-nonmaster-product-semantics.py --delivery 'C:\delivery\31-10-out'`
+publishes a separate
+[Appendix F semantic batch](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-product-semantic-review-v1/REPORT.md).
+It adjudicates all 380 legacy **source-classification** assertions against the
+exact row descriptions, intervals, table, assignment and source anchors in both
+pinned releases. It derives every retained line in the 23 Appendix F source
+units, including five distinct prose obligations, repeated fuel-uniqueness
+notes, source headings and the overview/detailed-table conflict for 895/896.
+Unknown lines or text inside a reviewed obligation boundary fail explicitly.
+This is not a wholesale replacement of source-unit review by modal-word scans.
+
+An explicit partition compares the classification assertions with every one of
+the 71 current and 61 retained companion BRs. Product eligibility, aggregate
+uniqueness, amount reconciliation, chip limits and catalog authority stay
+distinct. The complete 000-999 crosswalk preserves ATL105-only 541-549 and
+Petroleum prose-reserved 810-889/897-899. The historical numeric-row extractor
+does not enumerate those 83 prose-reserved values; missing numeric rows are
+not proof that the source omits the reservation or permits the transaction.
+No frozen parser or companion behavior is changed.
+
+This closes a **bounded classification/source-derivation batch**, not exhaustive
+cross-legacy overlap or all-source completion. Outside it, 946 legacy BRs lack
+new or prior explicit scoped decisions and 2,913 retained source units still
+need derivation. Cross-legacy comparisons outside the 380 row assertions and
+Petroleum-to-other-legacy review remain open; the approved denominator stays null.
+The existing frozen governance entries remain incomplete and unchanged.
+
+Use `nonmaster-product-semantics-build`, `nonmaster-product-semantics-check` and
+`nonmaster-product-semantics-test`. Build requires a new output directory;
+`--check` verifies exact bytes without writing. Source/model/delivery identities
+are rechecked before publication. Regression: `test_nonmaster_product_semantics.py`.
+
+`reconcile-nonmaster-petroleum-legacy.py --delivery 'C:\delivery\31-10-out'`
+publishes a separate
+[bounded Petroleum-to-legacy product review](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-petroleum-legacy-review-v1/REPORT.md).
+It checks eight named legacy product-code rules against their exact clauses in
+ATL105 2026-3 and 2026-4 and compares them with the relevant retained Visa/Voyager
+fleet BRs. Ordering, uniqueness, catalog authority, discount allocation, Host
+Discount codes and Segment 157 limits remain separate where their predicates or
+authority differ. The EV no-counterpart conclusion is limited to the retained
+companion registers. It does not claim exhaustive Petroleum-to-legacy review.
+This adds eight scoped legacy decisions; 938 legacy BRs still need broader
+decisions, and 2,913 source units still need derivation. The approved denominator
+and confirmed coverage remain null.
+
+Use `nonmaster-petroleum-legacy-build`, `nonmaster-petroleum-legacy-check` and
+`nonmaster-petroleum-legacy-test`. Build refuses an existing output;
+`--check` rederives exact evidence without writing and rechecks the frozen
+delivery. Regression: `test_nonmaster_petroleum_legacy.py`.
+
+`derive-nonmaster-appendix-g.py --delivery 'C:\delivery\31-10-out'`
+publishes a separate
+[Appendix G source derivation](../specifications/ATL105/test-output/test-solution-independent-review/nonmaster-appendix-g-semantic-review-v1/REPORT.md).
+It verifies every valid one-character transaction-type row against the existing
+canonical catalog in ATL105 2026-3 and 2026-4, accounts for all retained lines
+in both 2026-4 Appendix G units, and records the seven authored prose spans and
+24 existing source-classification/negative-boundary assertions. MasterCard
+hold/mapping text, the code-9 Card Type restriction, specialized labels, and
+the code-0/code-V notes remain source-scoped. The result does not certify full
+Prompt Code composition, specialized flows, network eligibility, or lifecycle
+behavior, and it does not close cross-legacy review.
+
+This batch brings the current evidence register to 914 legacy BRs without new
+or prior scoped decisions and 2,910 source units still requiring derivation.
+These are repository-work counts, not approval blockers or coverage statistics.
+Use `nonmaster-appendix-g-build`, `nonmaster-appendix-g-check` and
+`nonmaster-appendix-g-test`; build refuses an existing output and `--check`
+rederives exact bytes read-only. Regression:
+`test_nonmaster_appendix_g.py`.
 
 ### Mastercard / Maestro 2026-4 independent draft model
 

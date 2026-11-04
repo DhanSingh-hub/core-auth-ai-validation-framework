@@ -1,0 +1,744 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "id": "SEG100-COMPANION-BOUNDED-PILOT-2026-4",
+    "specification": "ATL105",
+    "version": "2026-4",
+    "kind": "BOUNDED_PILOT",
+    "description": "Draft financial core presence, EMV companion presence and logical count checks.",
+    "outOfScope": [
+      "Whole-specification requirement completeness and business approval.",
+      "Fleet, fuel, EBT, NFC, purchase-card, variable-info and Moneris applicability.",
+      "Companion ordering, contents, full-message bytes, crypto and host execution."
+    ]
+  },
+  "baselineReviewed": false,
+  "denominatorEstablished": false,
+  "inputSha256": "db4e528f57be3a36b04605c4b9fe317fb3cd0c9a0936ecf3b02c9513bb555998",
+  "metrics": {
+    "scenarioCompleteness": {
+      "status": "NOT_ESTABLISHED",
+      "numerator": 0,
+      "denominator": 3,
+      "percent": null,
+      "provisional": {
+        "numerator": 3,
+        "denominator": 3,
+        "percent": 100.0
+      },
+      "unresolved": 0,
+      "excluded": 0
+    },
+    "ruleAdequacy": {
+      "status": "NOT_QUANTIFIED",
+      "numerator": 0,
+      "denominator": 3,
+      "percent": null,
+      "provisional": {
+        "numerator": 3,
+        "denominator": 3,
+        "percent": 100.0
+      }
+    },
+    "semanticTC": {
+      "status": "NOT_CERTIFIED",
+      "numerator": 0,
+      "denominator": 0,
+      "percent": null,
+      "population": 12,
+      "notFullyAssessed": 12,
+      "failed": 0,
+      "boundedChecks": {
+        "numerator": 24,
+        "denominator": 24,
+        "percent": 100.0
+      }
+    },
+    "semanticTD": {
+      "status": "NOT_CERTIFIED",
+      "numerator": 0,
+      "denominator": 0,
+      "percent": null,
+      "population": 12,
+      "notFullyAssessed": 12,
+      "failed": 0,
+      "boundedChecks": {
+        "numerator": 12,
+        "denominator": 12,
+        "percent": 100.0
+      }
+    },
+    "execution": {
+      "status": "NOT_VERIFIED",
+      "passedOfAttempted": {
+        "numerator": 0,
+        "denominator": 0,
+        "percent": null
+      },
+      "executedOfApplicable": {
+        "numerator": 0,
+        "denominator": 1,
+        "percent": null
+      },
+      "blocked": 1,
+      "notRun": 0,
+      "incomplete": 0,
+      "failed": 0,
+      "unresolved": 0
+    }
+  },
+  "requirements": [
+    {
+      "id": "CORE-100",
+      "applicability": "APPLICABLE",
+      "reviewed": false,
+      "statement": "A scoped financial request includes one Standard Message Data Segment 100.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "CORE-100"
+        }
+      ],
+      "scenarioIds": [
+        "TS-CORE-100"
+      ],
+      "reviewedScenarioIds": [],
+      "requiredCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "observedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "acceptedCriteria": [],
+      "missingCriteria": [],
+      "missingAcceptedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "adequate": false,
+      "provisionalAdequate": true
+    },
+    {
+      "id": "EMV-130",
+      "applicability": "APPLICABLE",
+      "reviewed": false,
+      "statement": "An EMV financial request includes Segment 130.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "EMV-130"
+        }
+      ],
+      "scenarioIds": [
+        "TS-EMV-130"
+      ],
+      "reviewedScenarioIds": [],
+      "requiredCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "observedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "acceptedCriteria": [],
+      "missingCriteria": [],
+      "missingAcceptedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "adequate": false,
+      "provisionalAdequate": true
+    },
+    {
+      "id": "COUNT-63",
+      "applicability": "APPLICABLE",
+      "reviewed": false,
+      "statement": "Element 63 identifies the number of segments in the financial request.",
+      "sourceRefs": [
+        {
+          "sourceId": "ATL105-2026-4",
+          "anchorId": "COUNT-63"
+        }
+      ],
+      "scenarioIds": [
+        "TS-COUNT-63"
+      ],
+      "reviewedScenarioIds": [],
+      "requiredCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "observedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "acceptedCriteria": [],
+      "missingCriteria": [],
+      "missingAcceptedCriteria": [
+        "BOUNDARY",
+        "CONDITIONAL",
+        "NEGATIVE",
+        "POSITIVE"
+      ],
+      "adequate": false,
+      "provisionalAdequate": true
+    }
+  ],
+  "semantics": [
+    {
+      "id": "TC-CORE-100-POSITIVE",
+      "kind": "TC",
+      "artifactSha256": "9f3681ff5cf589a37ec9b642b1b52ef015f9e1f58917c981f30292c32ed49d10",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "CORE-100/POSITIVE": true
+      },
+      "evidencePath": "evidence/TC-CORE-100-POSITIVE.json",
+      "evidenceSha256": "34c902a79b812734feace00b5c006a2e63154467ec0cc247aa09c59f61ed5dc3"
+    },
+    {
+      "id": "TC-CORE-100-NEGATIVE",
+      "kind": "TC",
+      "artifactSha256": "061e954694584804908f0a66e42b4775a3bf3e4847022dbd8eeb2ee70481f5e4",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "CORE-100/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TC-CORE-100-NEGATIVE.json",
+      "evidenceSha256": "1897b939dc88e38cbe6cb509ed409b240a9e54f078dc0e7a40c10e8c298f5431"
+    },
+    {
+      "id": "TC-CORE-100-BOUNDARY",
+      "kind": "TC",
+      "artifactSha256": "b2a524f4d585cc6c49af53f4b09d277bccc57e654eb177bc3fb2f9613452683f",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "CORE-100/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TC-CORE-100-BOUNDARY.json",
+      "evidenceSha256": "ed308b150f7350c42a4d32ea5bc77d92cc9800ed2ba599647bdf3d8fe6c3d43d"
+    },
+    {
+      "id": "TC-CORE-100-CONDITIONAL",
+      "kind": "TC",
+      "artifactSha256": "d62754077445e043df0f730e188c4b1dd187f2a91e52345704a7b143f240d2f8",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "CORE-100/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TC-CORE-100-CONDITIONAL.json",
+      "evidenceSha256": "95678771bee88458a62e4c6ee85cbbdc6f704848d01afac513610536ffff2d78"
+    },
+    {
+      "id": "TC-EMV-130-POSITIVE",
+      "kind": "TC",
+      "artifactSha256": "7a420199202d52417dc3281cd671c8a32d6f8ee8c60db94cc9d3f409afcd99d0",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "EMV-130/POSITIVE": true
+      },
+      "evidencePath": "evidence/TC-EMV-130-POSITIVE.json",
+      "evidenceSha256": "9a99a0ca947a5a4082516b987398e49a0c268de828b285c484838a0f091c8494"
+    },
+    {
+      "id": "TC-EMV-130-NEGATIVE",
+      "kind": "TC",
+      "artifactSha256": "7f3ebc6636dc53f969ae202dc5862b6f1523779b8ebd9682d1a66f073a64e12f",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "EMV-130/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TC-EMV-130-NEGATIVE.json",
+      "evidenceSha256": "676f20ceb32f534d0d4d397fad411be2374ecb75416e12832b07eff1657c4b50"
+    },
+    {
+      "id": "TC-EMV-130-BOUNDARY",
+      "kind": "TC",
+      "artifactSha256": "dfdb60b9143b58e0e5a254528be2ab767f7e14d1eae74d3f22953346c7ba9042",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "EMV-130/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TC-EMV-130-BOUNDARY.json",
+      "evidenceSha256": "412f3d0890001fb063c8069b31a45ac9c3fd53eee67e60c842e6d4c144e24d8e"
+    },
+    {
+      "id": "TC-EMV-130-CONDITIONAL",
+      "kind": "TC",
+      "artifactSha256": "0ace7db644b58b8370a0930c7f2eb847a03d8417bdfe12a569c7a7104b08f900",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "EMV-130/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TC-EMV-130-CONDITIONAL.json",
+      "evidenceSha256": "5e19b08ba59e364341b75f91754e34c12328f265dba9484029880feb7f7d72dc"
+    },
+    {
+      "id": "TC-COUNT-63-POSITIVE",
+      "kind": "TC",
+      "artifactSha256": "fd3ea9c4fc66ab741d87ab01551504a7fd09dcd3213b44ba6cfd762d6f94ad97",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "COUNT-63/POSITIVE": true
+      },
+      "evidencePath": "evidence/TC-COUNT-63-POSITIVE.json",
+      "evidenceSha256": "f6b3a9a7c357c735fe9315d3083973429d3cd134fde29984e3828a790a845485"
+    },
+    {
+      "id": "TC-COUNT-63-NEGATIVE",
+      "kind": "TC",
+      "artifactSha256": "b3e2d92ba9c449127bbf4c95e5c28d32973155e891ccda70ea614f8adb37aa96",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "COUNT-63/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TC-COUNT-63-NEGATIVE.json",
+      "evidenceSha256": "6d2bb717f49c8e06cb39b9b3839ee78a0f8e280f67eb2d9a3851ee998815b409"
+    },
+    {
+      "id": "TC-COUNT-63-BOUNDARY",
+      "kind": "TC",
+      "artifactSha256": "3b6915faf8cc4c11ef46aee936c411aef2770f27fae24ca49497111b0547e626",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "COUNT-63/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TC-COUNT-63-BOUNDARY.json",
+      "evidenceSha256": "572d22fec41ba0062124e71d73d24b68203ea91629d48cdefd45ec0e218e881d"
+    },
+    {
+      "id": "TC-COUNT-63-CONDITIONAL",
+      "kind": "TC",
+      "artifactSha256": "2070f46d43e6a8dac67f57043e024d474a28fdfb37306459c368410355c74573",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 2,
+      "checksAssessed": 2,
+      "missingChecks": [
+        "conditions",
+        "expectedOutcome",
+        "intent",
+        "steps"
+      ],
+      "ruleResults": {
+        "COUNT-63/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TC-COUNT-63-CONDITIONAL.json",
+      "evidenceSha256": "efd727350b16fa13fa161fbd1660760a1e9969cc81041f222d301c013c1d686a"
+    },
+    {
+      "id": "TD-CORE-100-POSITIVE",
+      "kind": "TD",
+      "artifactSha256": "0abc4f5966e5b9cf6f27f7a557a3d7985ffc754f103c1756e6f84500b5e19a82",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "CORE-100/POSITIVE": true
+      },
+      "evidencePath": "evidence/TD-CORE-100-POSITIVE.json",
+      "evidenceSha256": "4677d310bad52a53d0f07ea805caac6694938e6febffdf1a8782bb368cb87e52"
+    },
+    {
+      "id": "TD-CORE-100-NEGATIVE",
+      "kind": "TD",
+      "artifactSha256": "818d2fd923a11899237bc24924a96b8c8128884fdbcbcaa30f4d29093483ed0c",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "CORE-100/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TD-CORE-100-NEGATIVE.json",
+      "evidenceSha256": "2161e1949165fa54348af0a27a4c27c118f40df11e81b5992538f5c46f877c48"
+    },
+    {
+      "id": "TD-CORE-100-BOUNDARY",
+      "kind": "TD",
+      "artifactSha256": "4708c9f963331b79f068d5394c7a5923da8a4773684cf5f2efe2a7f80c35d914",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "CORE-100/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TD-CORE-100-BOUNDARY.json",
+      "evidenceSha256": "9b67b765fd3e14297fd924efbc78683db527ec56574d39ae834375958345c022"
+    },
+    {
+      "id": "TD-CORE-100-CONDITIONAL",
+      "kind": "TD",
+      "artifactSha256": "73bae0f7c209fc78ef22615fdec3a0558662841095a1155ac68afb86da8de645",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "CORE-100/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TD-CORE-100-CONDITIONAL.json",
+      "evidenceSha256": "332b8c6b195102423df7685a632844dfd8288e34444b52f5f5d747e93052df8a"
+    },
+    {
+      "id": "TD-EMV-130-POSITIVE",
+      "kind": "TD",
+      "artifactSha256": "83febab8fdb7d34573159bfadf96c9c4c42d1fcbb1a08381a85f2e24942f4f84",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "EMV-130/POSITIVE": true
+      },
+      "evidencePath": "evidence/TD-EMV-130-POSITIVE.json",
+      "evidenceSha256": "d1b02b4cbb8274f69894b14fb8b3bb4a70ceaa2956838f7dc1c93a25e6894422"
+    },
+    {
+      "id": "TD-EMV-130-NEGATIVE",
+      "kind": "TD",
+      "artifactSha256": "8b78b907ae49c7417a3312d254ba0b1c33bf4834d1e2fdda95ea45250374772a",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "EMV-130/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TD-EMV-130-NEGATIVE.json",
+      "evidenceSha256": "412ecb831368eb91298f7edd7e0bf429004a6df8565e1dccbf1bbfe4437fc492"
+    },
+    {
+      "id": "TD-EMV-130-BOUNDARY",
+      "kind": "TD",
+      "artifactSha256": "146071e05a7906291eb4b3084c3a5f1e960c77879629a169443bd4d532f7f532",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "EMV-130/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TD-EMV-130-BOUNDARY.json",
+      "evidenceSha256": "6a2cf9bd3ba822a1c3fb2790e5b2fb12705dae1f4d5f33bf5eb2cf35904b7462"
+    },
+    {
+      "id": "TD-EMV-130-CONDITIONAL",
+      "kind": "TD",
+      "artifactSha256": "9dd212fc036d6d9909dc06c5f626995515f54526465b668724857df7cf1f18e6",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "EMV-130/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TD-EMV-130-CONDITIONAL.json",
+      "evidenceSha256": "b544c0efe20eb5a85f64fbf04f238a756abae11813c10c130df8de38a51bb600"
+    },
+    {
+      "id": "TD-COUNT-63-POSITIVE",
+      "kind": "TD",
+      "artifactSha256": "4e2810c839c805eabd9a4c0ab1d87a688dcf77b26e3e62a9cc24fb1250659ece",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "COUNT-63/POSITIVE": true
+      },
+      "evidencePath": "evidence/TD-COUNT-63-POSITIVE.json",
+      "evidenceSha256": "b1aaa7911ba760f503472ed68c15c21465601c22d6d24efa3fc147587422eb5c"
+    },
+    {
+      "id": "TD-COUNT-63-NEGATIVE",
+      "kind": "TD",
+      "artifactSha256": "821ad7939a9016388e38f48ca212fd3d844c6d1ac9f9239ad9c14c3a6cbe2885",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "COUNT-63/NEGATIVE": true
+      },
+      "evidencePath": "evidence/TD-COUNT-63-NEGATIVE.json",
+      "evidenceSha256": "c43769c527d1950347519f4f8e25beb48840a093a7cca56ffb788861eb2678e9"
+    },
+    {
+      "id": "TD-COUNT-63-BOUNDARY",
+      "kind": "TD",
+      "artifactSha256": "9b40f9f0a337911a160bf7c1b84d2a26969f9060a7a21ecff37444bf0027fca6",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "COUNT-63/BOUNDARY": true
+      },
+      "evidencePath": "evidence/TD-COUNT-63-BOUNDARY.json",
+      "evidenceSha256": "a0db3601a22185616ebd8145592ff32933af108188411a4737f3301d0532a002"
+    },
+    {
+      "id": "TD-COUNT-63-CONDITIONAL",
+      "kind": "TD",
+      "artifactSha256": "84473c1872ee046a9d2b1cd8569c44ee61ce714236d05471455e4a355a5950e1",
+      "status": "PARTIAL",
+      "complete": false,
+      "accepted": false,
+      "checksPassed": 1,
+      "checksAssessed": 1,
+      "missingChecks": [
+        "conditionalFields",
+        "conflicts",
+        "dependencies",
+        "values"
+      ],
+      "ruleResults": {
+        "COUNT-63/CONDITIONAL": true
+      },
+      "evidencePath": "evidence/TD-COUNT-63-CONDITIONAL.json",
+      "evidenceSha256": "3658821c7f0923ad065b8db9e536e8f612a7301306a98339884ebf993cd64037"
+    }
+  ],
+  "flows": [
+    {
+      "id": "FLOW-EMV-FINANCIAL",
+      "applicability": "APPLICABLE",
+      "reviewed": false,
+      "attempted": false,
+      "executed": false,
+      "passed": false,
+      "status": "BLOCKED",
+      "blockers": [
+        "APPROVED_FULL_MESSAGE_FIXTURE",
+        "AUTHORIZED_ENVIRONMENT",
+        "CARD_DEVICE_ROUTE_AND_CRYPTO",
+        "SOURCE_BACKED_HOST_EXPECTATION"
+      ],
+      "runId": null,
+      "requiredStepIds": [
+        "purchase"
+      ],
+      "executedStepIds": [],
+      "missingStepIds": [
+        "purchase"
+      ]
+    }
+  ],
+  "limitations": [
+    "Percentages apply only to the declared reviewed scope, never the whole specification.",
+    "Provisional mappings and bounded checks are not approved business or semantic coverage.",
+    "Review/authorization records are hash-bound attestations; signer identity is not authenticated by this tool.",
+    "Execution metrics validate supplied evidence; no host is contacted and execution is not independently certified.",
+    "Missing applicability, semantic or execution evidence remains visible; no success fallback is generated."
+  ]
+}

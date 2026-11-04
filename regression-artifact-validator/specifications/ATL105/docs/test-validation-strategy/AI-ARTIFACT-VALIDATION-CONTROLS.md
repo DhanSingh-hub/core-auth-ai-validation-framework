@@ -16,6 +16,61 @@ The source of truth for the stages and methods is the [AI Solution Output Valida
 
 ## Control Catalogue
 
+The [Appendix F semantic batch](../../test-output/test-solution-independent-review/nonmaster-product-semantic-review-v1/REPORT.md)
+uses `derive-nonmaster-product-semantics.py` and
+`test_nonmaster_product_semantics.py` to derive all 23 retained Appendix F units
+line by line and adjudicate the exact 380 legacy classification-only assertions.
+The code intervals cover 000-999 without gaps/overlaps; source rows, descriptions,
+table/assignment/role and old anchors are checked, not inferred from code identity.
+All 132 retained current/companion assertions are explicitly partitioned against
+that classification assertion. All-code Petroleum comparison includes prose
+reservations omitted by the historical numeric-row parser. The 895/896 conflict,
+mixed surcharge roles and code-800 scope remain visible. Classification does
+not imply product permission, merchant configuration, sum correctness or an
+approved denominator. Cross-legacy overlap outside the batch and the remaining
+2,910 source-unit derivations remain repository work; frozen governance/history
+is not overwritten to suggest otherwise.
+
+The [Petroleum retained-companion reconciliation](../../test-output/test-solution-independent-review/nonmaster-petroleum-semantic-review-v1/REPORT.md)
+provides a per-BR semantic record for all 61 existing Visa/Voyager companion BRs.
+`reconcile-nonmaster-petroleum.py` validates source inventory/page/quote identities,
+separates compound propositions, records named legacy/current counterparts and
+propagates every existing source question, including context-only decisions.
+`test_nonmaster_petroleum_semantics.py` checks complete retained-rule population,
+source drift, reference integrity, program/version non-inheritance and conditional
+removal/reversal, CVM and authentication branches. The register is not exhaustive
+legacy overlap or whole-spec obligation derivation. No source conflict is resolved
+by a logical PASS, common Luhn oracle or synthetic configuration Boolean.
+
+The [Appendix G semantic batch](../../test-output/test-solution-independent-review/nonmaster-appendix-g-semantic-review-v1/REPORT.md)
+uses `derive-nonmaster-appendix-g.py` and `test_nonmaster_appendix_g.py` to
+derive all three retained Appendix G units and classify all 88 nonblank lines.
+It checks the 23 source-listed code rows against the canonical catalog in both
+pinned releases and separately identifies the existing unknown/malformed
+negative-test boundary. MasterCard-specific mapping/hold prose, code-9 Card Type
+restriction, and specialized code descriptions remain scoped to their source;
+this is not full Prompt Code, special-flow or lifecycle certification. The
+batch leaves 914 legacy BRs and 2,910 source units without new or prior scoped
+decisions/derivations, respectively. Exhaustive cross-legacy/Petroleum review
+and denominator approval remain open.
+
+The [Petroleum-to-legacy product review](../../test-output/test-solution-independent-review/nonmaster-petroleum-legacy-review-v1/REPORT.md)
+records eight source-pinned legacy product-code decisions against 16 retained
+Visa/Voyager companion BR endpoints. Topic similarity does not imply semantic
+equivalence or permission; exhaustive Petroleum-to-legacy review remains open.
+
+The [explicit non-Mastercard semantic review](../../test-output/test-solution-independent-review/nonmaster-semantic-review-v1/REPORT.md)
+adds bounded semantic classification/overlap evidence through
+`review-nonmaster-semantics.py` and `test_nonmaster_semantics.py`. It classifies
+the existing 71 draft BRs, records 24 authored relations and restores 42 omitted
+legacy statements through exact catalog identity and matching source anchors.
+Catalog notes/provisional items and all original BR IDs remain intact. Two
+equivalent cores require the same clause under explicit old/new page locators;
+compound components, specializations and differing program policies cannot
+be collapsed by lexical matching. All legacy/source-unit dispositions are
+retained, with unadjudicated work explicitly open. The report is incomplete
+whole-spec semantic work, not an approved denominator or confirmed AI coverage.
+
 The [non-Mastercard v2 program/application continuation](../../test-output/test-solution-independent-review/nonmaster-model-v2/REPORT.md)
 extends the bounded controls below using `complete-nonmaster-model.py`,
 `nonmaster_application.py` and `test_nonmaster_completion.py`. It pins two source
