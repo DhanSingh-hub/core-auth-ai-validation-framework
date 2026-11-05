@@ -76,6 +76,15 @@ public final class TestDataSpecFieldValidationRunner {
             new FieldDef("EMVAdditionalInformation", "EMV Additional Information", "118", "R", "12.20 F9"));
 
     private static final Set<String> TABLE_031_CODES = Set.of("00", "01", "02", "03", "04", "05", "06", "07", "09", "12");
+    /** App. J PAN entry modes where Element 12 carries a manually entered MMYY expiry (13 E12 p.13-32). */
+    private static final Set<String> KEYED_ENTRY = Set.of("01", "10", "79");
+    /** App. J PAN entry modes where the card is read by chip, so the request is an EMV request (SEG130-R-001). */
+    private static final Set<String> CHIP_READ_ENTRY = Set.of("05", "07", "86");
+
+    static String networkOf(JsonNode tc) {
+        String n = tc == null ? "" : tc.path("dimensions").path("network").asText("");
+        return "AMERICAN_EXPRESS".equals(n) ? "AMEX" : n;
+    }
 
     private static final Map<String, String> TC_SEGMENT_NAMES = Map.of(
             "100", SEG100, "111", SEG111, "130", SEG130);
@@ -381,9 +390,12 @@ public final class TestDataSpecFieldValidationRunner {
             boolean reversal = REVERSAL_FAMILY.contains(ctx.txnCode);
             boolean completion = ctx.role.startsWith("completion");
             boolean has130 = root.has(SEG130);
-            Verdict v = has130 ? Verdict.FAIL : reversal ? Verdict.PASS : completion ? Verdict.REVIEW : Verdict.FAIL;
+            boolean chipRead = ctx.entryCode.isEmpty() || CHIP_READ_ENTRY.contains(ctx.entryCode);
+            Verdict v = has130 ? Verdict.FAIL : !chipRead ? Verdict.NA : reversal ? Verdict.PASS : completion ? Verdict.REVIEW : Verdict.FAIL;
             c.add(new Check("Segment presence", SEG130 + " (130)", "-", has130 ? "present" : "absent", "SEG130-R-017/R-001", v,
                     has130 ? "Segment 130 belongs only to the EMV Financial Transaction Request."
+                            : !chipRead ? "POS entry mode '" + ctx.entryCode + "' (" + appendixJ.panEntryModes().get(ctx.entryCode)
+                            + ") is not a chip read; no EMV data applies."
                             : reversal ? "EMV data is not required on Reversal transactions (type '" + ctx.txnCode
                             + "'); absence on this follow-on is legal."
                             : completion ? "Completion carrying the original Approval Number (preauthorized, BUYPASS does not go out "
@@ -399,6 +411,7 @@ public final class TestDataSpecFieldValidationRunner {
         Integer s102 = validateSeg102(root.get(SEG102), tc, ctx, c);
         Integer s111 = validateSeg111(root.get(SEG111), tc, ctx, c);
         Integer s130 = validateSeg130(root.get(SEG130), tc, ctx, c);
+        entryModeConsistency(tc, ctx, c);
         if (s100 != null && s111 != null && s130 != null) {
             msgLen += s100 + s111 + s130 + (s102 == null ? 0 : s102);
             c.add(chk("Message", "Total message length", "-", String.valueOf(msgLen), "11.8.1-MAX-4000",
@@ -427,7 +440,7 @@ public final class TestDataSpecFieldValidationRunner {
             return null;
         }
         String area = "Seg 100";
-        String network = tc == null ? "" : tc.path("dimensions").path("network").asText("");
+        String network = networkOf(tc);
         String txnCategory = tc == null ? "" : tc.path("dimensions").path("txn_category").asText("");
         layoutCheck(area, seg, SEG100_FIELDS, c);
         Map<String, String> v = new LinkedHashMap<>();
@@ -482,9 +495,9 @@ public final class TestDataSpecFieldValidationRunner {
                     "Appendix G: " + entry.map(AppendixGTransactionTypeCatalog.Entry::type).orElse("unknown")
                             + "; TC leg (role " + ctx.role + ") requires '" + expectedTt + "'.", "App. G (p.545)"));
             boolean creditCard = AppendixETableLoadCardTypeCodes.cardTypeCodes().contains(ct)
-                    && (!"MASTERCARD".equals(network) || "020".equals(ct));
+                    && (!Set.of("MASTERCARD", "AMEX").contains(network) || "020".equals(ct));
             c.add(chk(area, "PromptCode.CardType", "78", ct, "APPE-CARD-TYPE", creditCard,
-                    "Appendix E code 020 = Credit (MasterCard credit program).", "App. E-4"));
+                    "Appendix E code 020 = Credit (" + (network.isEmpty() ? "credit" : network) + " credit program).", "App. E-4"));
         }
 
         String pan = v.get("AccountNumber");
@@ -497,28 +510,42 @@ public final class TestDataSpecFieldValidationRunner {
             if ("MASTERCARD".equals(network)) {
                 c.add(chk(area, "AccountNumber.IIN", "2", pan.substring(0, 6), "PAN-IIN-MASTERCARD", isMastercard(pan),
                         "MasterCard IIN ranges 51-55 / 2221-2720 (TC network MASTERCARD).", "BUYPASS IIN Reference Manual"));
+            } else if ("AMEX".equals(network)) {
+                c.add(chk(area, "AccountNumber.IIN", "2", pan.substring(0, 6), "PAN-IIN-AMEX",
+                        pan.matches("3[47][0-9]{13}"),
+                        "American Express IIN 34 / 37, PAN length 15 (TC network AMERICAN_EXPRESS).", "BUYPASS IIN Reference Manual"));
             }
         }
 
         String cdbd = v.get("CardDiscretionaryBlockData");
+        boolean keyed = KEYED_ENTRY.contains(ctx.entryCode);
         boolean expiryOnly = cdbd != null && cdbd.matches("[0-9]{4}");
         boolean cdbdFmt = cdbd != null && cdbd.matches("[0-9]{4}|[0-9]{7,51}");
         c.add(chk(area, "CardDiscretionaryBlockData", "12", cdbd, "SEG100-R-042", cdbdFmt,
-                expiryOnly ? "AN up to 51; follow-on carries the expiration date only (4 digits)."
+                expiryOnly ? "AN up to 51; " + (keyed ? "manually entered card => expiration date MMYY." : "follow-on carries the expiration date only (4 digits).")
                         : "AN up to 51; Track 2 data after '=' => YYMM expiry + 3-digit service code + discretionary.",
                 "12.1 F7; 13 E12 (p.364-365)"));
         if (cdbdFmt) {
-            String yymm = cdbd.substring(0, 4);
-            int mm = Integer.parseInt(yymm.substring(2));
-            c.add(chk(area, "CardDiscretionaryBlockData.Expiry", "12", yymm, "TRACK2-EXPIRY-YYMM", mm >= 1 && mm <= 12,
-                    "Expiry YYMM month must be 01-12" + (yymm.compareTo(runYymm) < 0 ? " (EXPIRED as of " + runYymm + ")."
-                            : " (valid, not expired as of " + runYymm + ")."), "13 E12; Track 2 (ISO 7813)"));
+            boolean mmyy = keyed && expiryOnly;
+            String mm = mmyy ? cdbd.substring(0, 2) : cdbd.substring(2, 4);
+            String yy = mmyy ? cdbd.substring(2, 4) : cdbd.substring(0, 2);
+            String yymm = yy + mm;
+            int month = Integer.parseInt(mm);
+            c.add(chk(area, "CardDiscretionaryBlockData.Expiry", "12", cdbd.substring(0, 4),
+                    mmyy ? "E12-KEYED-EXPIRY-MMYY" : "TRACK2-EXPIRY-YYMM", month >= 1 && month <= 12,
+                    (mmyy ? "Keyed entry (POS entry " + ctx.entryCode + "): expiry is MMYY (13 E12 'manually entered ... MMYY format'); month '"
+                            : "Expiry YYMM; month '") + mm + "' must be 01-12" + (month < 1 || month > 12 ? " - INVALID month."
+                            : yymm.compareTo(runYymm) < 0 ? " (EXPIRED as of " + runYymm + ")." : " (valid, not expired as of " + runYymm + ")."),
+                    mmyy ? "13 E12 (p.13-32)" : "13 E12; Track 2 (ISO 7813)"));
         }
         if (cdbdFmt && !expiryOnly) {
             String svc = cdbd.substring(4, 7);
-            c.add(chk(area, "CardDiscretionaryBlockData.ServiceCode", "12", svc, "TRACK2-SERVICE-CODE-CHIP",
-                    svc.startsWith("2") || svc.startsWith("6"),
-                    "Service code 1st digit 2/6 = chip card (consistent with EMV contact entry).", "ISO 7813"));
+            boolean chipCard = Set.of("05", "07", "80", "86").contains(ctx.entryCode);
+            c.add(chk(area, "CardDiscretionaryBlockData.ServiceCode", "12", svc,
+                    chipCard ? "TRACK2-SERVICE-CODE-CHIP" : "TRACK2-SERVICE-CODE",
+                    chipCard ? svc.startsWith("2") || svc.startsWith("6") : svc.matches("[1-7][0-9]{2}"),
+                    chipCard ? "Service code 1st digit 2/6 = chip card (required for chip read / chip fallback, POS entry "
+                            + ctx.entryCode + ")." : "Service code 3 digits, 1st digit 1-7 (ISO 7813).", "ISO 7813"));
             if (pan != null) {
                 int combined = pan.length() + 1 + cdbd.length();
                 c.add(chk(area, "Account+Discretionary (Track 2)", "2+12", String.valueOf(combined), "TRACK2-COMBINED-37",
@@ -540,8 +567,9 @@ public final class TestDataSpecFieldValidationRunner {
                     "Balance Inquiry (type E) carries no transaction amount; Element 58 is conditional.", "12.1 F11; 13 E58"));
         } else if (isRuntimePlaceholder(amt)) {
             c.add(new Check(area, "NonfuelAmount", "58", amt, "SEG100-E58-RUNTIME", Verdict.REVIEW,
-                    "Runtime placeholder - value comes from the previous leg's response; must resolve to N 1-7 digits "
-                            + "(non-Amex) at execution.", "13 E58 (p.384)"));
+                    "Runtime placeholder - value comes from the previous leg's response; must resolve to N 1-"
+                            + ("AMEX".equals(network) ? "8 digits (American Express)" : "7 digits (non-Amex)") + " at execution.",
+                    "13 E58 (p.384)"));
         } else {
             int max = "AMEX".equals(network) ? 8 : 7;
             boolean ok = amt != null && amt.matches("[0-9]{1," + max + "}") && Long.parseLong(amt) > 0;
@@ -765,7 +793,7 @@ public final class TestDataSpecFieldValidationRunner {
         Map<String, String> v = new LinkedHashMap<>();
         s.fieldNames().forEachRemaining(k -> v.put(k, s.get(k).isValueNode() ? s.get(k).asText() : s.get(k).toString()));
         ctx.totals.putAll(v);
-        String network = tc == null ? "" : tc.path("dimensions").path("network").asText("");
+        String network = networkOf(tc);
 
         c.add(chk(area, "SegmentType", "85", v.get("SegmentType"), "E85-SEG105-TYPE", "105".equals(v.get("SegmentType")),
                 "N3, fixed value 105.", "12.6 F1"));
@@ -828,9 +856,10 @@ public final class TestDataSpecFieldValidationRunner {
         boolean hasCategory = label != null || count != null || amount != null;
         if (hasCategory) {
             String trimmed = label == null ? "" : label.trim();
+            String expectedLabel = "MASTERCARD".equals(network) ? "CC" : "AMEX".equals(network) ? "TE" : null;
             c.add(chk(area, "CardLabel (value)", "13", label, "SEG105-E13-VALUE", CARD_LABELS.contains(trimmed)
-                            && (!"MASTERCARD".equals(network) || "CC".equals(trimmed)),
-                    "Valid Card Label; MasterCard/Visa bucket = CC.", "12.6 F15; 13 E13"));
+                            && (expectedLabel == null || expectedLabel.equals(trimmed)),
+                    "Valid Card Label; MasterCard/Visa bucket = CC, American Express bucket = TE.", "12.6 F15; 13 E13; ATL105 p.69"));
             c.add(chk(area, "CardLabel (width)", "13", "'" + label + "'", "SEG105-E13-WIDTH", label != null && label.length() == 4,
                     "AN, FIXED length 4, left-aligned and space-filled" + (label != null && label.length() != 4
                             ? "; '" + label + "' is " + label.length() + " byte(s) - expected '" + String.format("%-4s", trimmed) + "'." : "."),
@@ -891,7 +920,7 @@ public final class TestDataSpecFieldValidationRunner {
             return 0;
         }
         String area = "Seg 111";
-        String network = tc == null ? "" : tc.path("dimensions").path("network").asText("");
+        String network = networkOf(tc);
         String entryMode = tc == null ? "" : tc.path("dimensions").path("entry_mode").asText("");
         String type = seg.path("SegmentType").asText(null);
         c.add(chk(area, "SegmentType", "85", type, "E85-SEG111-TYPE", "111".equals(type), "N3, fixed value 111.", "12.10 F1"));
@@ -1140,10 +1169,12 @@ public final class TestDataSpecFieldValidationRunner {
             }
         }
         String aid = t.getOrDefault("9F06", t.get("84"));
-        String network = tc == null ? "" : tc.path("dimensions").path("network").asText("");
+        String network = networkOf(tc);
+        String rid = "MASTERCARD".equals(network) ? "A000000004" : "AMEX".equals(network) ? "A000000025" : null;
         c.add(chk(area, "AID (9F06/84)", "190", aid, "BR-SEG100-APPR-MANDATORY-IDENTIFIER",
-                aid != null && (!"MASTERCARD".equals(network) || aid.startsWith("A000000004")),
-                "AID present; MasterCard RID A000000004 expected for network " + network + ".", "13 E190; App. R"));
+                aid != null && (rid == null || aid.startsWith(rid)),
+                "AID present; " + (rid == null ? "no network RID check" : network + " RID " + rid) + " expected for network " + network + ".",
+                "13 E190; App. R"));
         if (t.containsKey("9F06") && t.containsKey("84")) {
             c.add(chk(area, "Tag 9F06 vs Tag 84", "190", t.get("9F06") + " vs " + t.get("84"), "EMV-AID-DFNAME",
                     t.get("9F06").equals(t.get("84")), "Terminal AID and DF Name should identify the same application.", "EMV Book 1"));
@@ -1175,8 +1206,63 @@ public final class TestDataSpecFieldValidationRunner {
                     + " 9F33=" + t.get("9F33") + " CL-tags=" + clTags, "EMV-CONTACTLESS-PROFILE", Verdict.REVIEW,
                     "Entry mode 07 (contactless chip) but the chip payload carries the same tag set/values as the contact "
                             + "template (no contactless-kernel tags such as 9F6E/9F6D/9F7C, CVM 9F34 = signature). ATL105 App. R "
-                            + "does not mandate a tag list; confirm the payload against a Mastercard contactless (PayPass) kernel trace.",
+                            + "does not mandate a tag list; confirm the payload against a "
+                            + ("AMEX".equals(network) ? "American Express contactless (Expresspay)" : "Mastercard contactless (PayPass)")
+                            + " kernel trace.",
                     "App. R-1 note (tag list not exhaustive); App. J code 07"));
+        }
+    }
+
+    // ------------------------------------------------------------------ entry-mode consistency
+
+    /** Cross-checks Table 005 (App. J) against Element 12 content, Table 031 and the TC entry mode for one leg. */
+    private void entryModeConsistency(JsonNode tc, LegContext ctx, List<Check> c) {
+        String t005 = ctx.table.get("005");
+        String cdbd = ctx.seg100.get("CardDiscretionaryBlockData");
+        if (t005 == null || t005.length() != 3 || cdbd == null) {
+            return;
+        }
+        String area = "Entry mode";
+        String pan = t005.substring(0, 2);
+        String cap = t005.substring(2);
+        boolean trackData = cdbd.matches("[0-9]{7,51}");
+        boolean follow = ctx.followOn || REVERSAL_FAMILY.contains(ctx.txnCode);
+        String entryMode = tc == null ? "" : tc.path("dimensions").path("entry_mode").asText("");
+        if (KEYED_ENTRY.contains(pan)) {
+            c.add(chk(area, "Table 005 vs Element 12 content", "113/12", t005 + " / " + cdbd, "APPJ-KEYED-NO-TRACK", !trackData,
+                    "PAN entry '" + pan + "' (" + appendixJ.panEntryModes().get(pan) + ") means the card was not read; Element 12 "
+                            + "must carry the manually entered expiry (MMYY), not Track 2 data" + (trackData
+                            ? ". Generated value is full Track 2 data (expiry + service code + discretionary)"
+                            + ("79".equals(pan) ? "; a swiped chip fallback must use PAN entry 80 ('used for contact EMV fall back to swiped')." : ".")
+                            : "."), "App. J-1 (p.631); 13 E12 (p.13-32)"));
+        } else if (Set.of("90", "91", "80", "05", "07", "86").contains(pan) && !follow) {
+            c.add(chk(area, "Table 005 vs Element 12 content", "113/12", t005 + " / " + cdbd, "APPJ-READ-HAS-TRACK", trackData,
+                    "PAN entry '" + pan + "' (" + appendixJ.panEntryModes().get(pan) + ") means the card was read; the original "
+                            + "request must carry the unaltered Track 2 data after '='.", "App. J-1; 13 E12 (p.364)"));
+        }
+        if ("EMV_FALLBACK".equals(entryMode) && !follow) {
+            boolean ok = "80".equals(pan) && trackData || "79".equals(pan) && !trackData;
+            c.add(chk(area, "Chip-fallback code vs data", "113/12", t005 + " / " + cdbd, "APPJ-FALLBACK-79-80", ok,
+                    "Chip fallback: swiped fallback => 80 + Track 2 data; keyed fallback => 79 + MMYY expiry only. "
+                            + "Generated: " + pan + " with " + (trackData ? "Track 2 data" : "expiry only") + ".",
+                    "App. J-1 (p.631) codes 79/80"));
+        }
+        String t031 = ctx.table.get("031");
+        if ("8".equals(cap)) {
+            c.add(chk(area, "Terminal capability 8 vs Table 031", "113", t005 + " / 031=" + t031, "APPJ-CAP-8-HIERARCHY",
+                    t031 != null && !"12".equals(t031),
+                    "Capability 8 is reserved for a Contactless MSR on a device with NO chip capability; for an EMV contact/"
+                            + "contactless capable device the code is 1, not 8. Table 031 = " + t031
+                            + ("12".equals(t031) ? " (hybrid ICC contact & contactless) contradicts capability 8." : "."),
+                    "App. J-2 (p.632) footnote 1; App. I-20"));
+        }
+        if ("82".equals(pan) && !follow) {
+            c.add(new Check(area, "Contactless mobile (82) data profile", "113/12", t005 + " / Seg130 "
+                    + (ctx.emvMessage ? "present" : "absent"), "APPJ-82-PROFILE", Verdict.REVIEW,
+                    "PAN entry 82 (contactless mobile commerce device) sent as a non-EMV request with Track 2 data and no "
+                            + "Segment 130. ATL105 does not define the Amex mobile-wallet data profile; TC status '"
+                            + text(tc, "status") + "' - confirm with SME whether chip/cryptogram or token data is expected.",
+                    "App. J-1 code 82; TC scenario_status"));
         }
     }
 
@@ -1210,9 +1296,13 @@ public final class TestDataSpecFieldValidationRunner {
                     "EMV Book 3 Annex C5; 13 E33"));
         }
         switch (template) {
-            case "T1-PUR" -> c.add(chk(area, "CVM for base purchase", "190", cvm, "T1-PUR-CVM",
-                    cvmCode != null && !"02".equals(cvmCode) || pin != null && !pin.isEmpty(),
-                    "Base purchase: CVM other than online PIN, or online PIN with PIN block.", "EMV Book 3 Annex C3"));
+            case "T1-PUR" -> {
+                if (leg.emvMessage) {
+                    c.add(chk(area, "CVM for base purchase", "190", cvm, "T1-PUR-CVM",
+                            cvmCode != null && !"02".equals(cvmCode) || pin != null && !pin.isEmpty(),
+                            "Base purchase: CVM other than online PIN, or online PIN with PIN block.", "EMV Book 3 Annex C3"));
+                }
+            }
             case "T2-EXPIRED-EMV" -> {
                 String cdbd = leg.seg100.get("CardDiscretionaryBlockData");
                 String yymm = cdbd == null || cdbd.length() < 4 ? null : cdbd.substring(0, 4);
@@ -1250,6 +1340,15 @@ public final class TestDataSpecFieldValidationRunner {
             case "T4-PUR-SPLIT" -> c.add(chk(area, "Step 1 PartialApprovalIndicator", "121", leg.seg100.get("PartialApprovalIndicator"),
                     "T4-PAI", "1".equals(leg.seg100.get("PartialApprovalIndicator")),
                     "Partial approval precondition: Element 121 = 1.", "13 E121 (p.440); p.84"));
+            case "T9-PUR-AVS" -> {
+                boolean avs = leg.segments.stream().anyMatch(s -> !Set.of("100", "111").contains(s));
+                c.add(new Check(area, "AVS data present", "116/118", "segments " + leg.segments, "T9-AVS-DATA",
+                        avs ? Verdict.PASS : Verdict.REVIEW,
+                        avs ? "Request carries an additional segment for AVS." : "AVS-mismatch objective but the request carries only "
+                                + "Segments 100/111 - no AVS data (Additional Information code 003, App. K). TC is '" + text(tc, "status")
+                                + "' with open item " + tc.path("open_items") + "; test is not executable as an AVS test until supplied.",
+                        "App. K code 003; TC open_items"));
+            }
             default -> {
             }
         }
@@ -1279,10 +1378,18 @@ public final class TestDataSpecFieldValidationRunner {
             c.add(chk(area, "Expiry = original expiry", "12", (exp1 == null ? "-" : exp1.substring(0, Math.min(4, exp1.length())))
                             + " / " + exp2, "FOLLOW-ON-SAME-EXPIRY",
                     exp1 != null && exp2 != null && exp2.length() >= 4 && exp1.startsWith(exp2.substring(0, 4)),
-                    "Follow-on must carry the original card's expiration date (same credentials as the original).", "13 E12 (p.364-365)"));
-            c.add(chk(area, "POS entry mode = original", "113", o.table.get("005") + " / " + f.table.get("005"),
-                    "FOLLOW-ON-SAME-ENTRY", eq(o.table.get("005"), f.table.get("005")),
-                    "Follow-on reports the original's Table 005 entry mode (TC leg entry_code).", "App. J; TC tx_legs"));
+                    "Follow-on must carry the original card's expiration date in the same form as the original"
+                            + (KEYED_ENTRY.contains(o.entryCode) ? " (keyed original => MMYY, 13 E12)" : "")
+                            + "; retries/follow-ons use the same credentials as the initial attempt.", "13 E12 (p.364-365, p.13-32)"));
+            String e1 = o.table.get("005");
+            String e2 = f.table.get("005");
+            boolean ninetyToTwo = e1 != null && e2 != null && e1.startsWith("90") && e2.startsWith("02")
+                    && e1.substring(2).equals(e2.substring(2));
+            c.add(chk(area, "POS entry mode = original", "113", e1 + " / " + e2,
+                    "FOLLOW-ON-SAME-ENTRY", eq(e1, e2) || ninetyToTwo,
+                    ninetyToTwo ? "Original used PAN entry 90 (full track); a follow-on can pass only PAN + expiry and must use 02 "
+                            + "(App. J footnote 1)." : "Follow-on reports the original's Table 005 entry mode; values must persist "
+                            + "throughout the lifecycle (App. J note).", "App. J-1 (p.631) note + footnote 1; TC tx_legs"));
             c.add(chk(area, "PartialApprovalIndicator = original", "121", o.seg100.get("PartialApprovalIndicator") + " / "
                             + f.seg100.get("PartialApprovalIndicator"), "FOLLOW-ON-SAME-PAI",
                     eq(o.seg100.get("PartialApprovalIndicator"), f.seg100.get("PartialApprovalIndicator")),
@@ -1297,16 +1404,38 @@ public final class TestDataSpecFieldValidationRunner {
         String a1 = s1.seg100.get("NonfuelAmount");
         String a2 = s2.seg100.get("NonfuelAmount");
         String tcStep2 = tc == null ? null : tc.path("steps").path(1).path("request").path(SEG100).path("Nonfuel Amount").path("value").asText(null);
+        int maxAmt = "AMEX".equals(networkOf(tc)) ? 8 : 7;
         if (isRuntimePlaceholder(a2)) {
+            boolean tooLong = tcStep2 != null && tcStep2.length() > maxAmt;
+            boolean exceeds = tcStep2 != null && tcStep2.matches("[0-9]+") && a1 != null && a1.matches("[0-9]+")
+                    && Long.parseLong(tcStep2) >= Long.parseLong(a1);
             c.add(new Check(area, "Step 2 NonfuelAmount (remainder)", "58", a2, "SPLIT-TENDER-REMAINDER", Verdict.REVIEW,
                     "Runtime expression is correct in intent (requested - Approved Amount E6). TC provisional value '" + tcStep2
-                            + "' is NOT a valid remainder of " + a1 + (tcStep2 != null && tcStep2.matches("[0-9]+")
-                            && Long.parseLong(tcStep2) >= Long.parseLong(a1) ? " (exceeds the original amount" : " (")
-                            + (tcStep2 != null && tcStep2.length() > 7 ? "; 8 digits > 7-byte MasterCard limit)." : ")."),
+                            + "' " + (exceeds || tooLong ? "is NOT a valid remainder of " + a1 + " (" + (exceeds ? "exceeds the original amount" : "")
+                            + (tooLong ? (exceeds ? "; " : "") + tcStep2.length() + " digits > " + maxAmt + "-byte " + networkOf(tc) + " limit" : "")
+                            + ")." : "is within range."),
                     "p.84; 13 E58"));
         } else if (a1 != null && a2 != null && a1.matches("[0-9]+") && a2.matches("[0-9]+")) {
             c.add(chk(area, "Step 2 NonfuelAmount < Step 1 amount", "58", a2 + " < " + a1, "SPLIT-TENDER-REMAINDER",
                     Long.parseLong(a2) < Long.parseLong(a1), "Remainder = requested - approved partial amount.", "p.84"));
+        }
+        String sl2 = s2.seg100.get("SegmentLength");
+        if (isRuntimePlaceholder(a2) && a1 != null && a1.matches("[0-9]+") && sl2 != null && sl2.matches("[0-9]{3}")) {
+            int fixed = 0;
+            for (FieldDef fd : SEG100_FIELDS) {
+                String val = s2.seg100.get(fd.tdKey());
+                fixed += ("NonfuelAmount".equals(fd.tdKey()) || val == null ? 0 : val.length()) + 1;
+            }
+            int implied = Integer.parseInt(sl2) - fixed;
+            int maxRemainder = String.valueOf(Long.parseLong(a1) - 1).length();
+            c.add(chk(area, "Step 2 SegmentLength vs possible remainder", "84/58", sl2 + " => amount width " + implied,
+                    "SPLIT-TENDER-LENGTH", implied >= 1 && implied <= maxRemainder,
+                    "Any valid remainder of " + a1 + " has 1-" + maxRemainder + " digits, so Segment 100 length must be "
+                            + (fixed + 1) + "-" + (fixed + maxRemainder) + "; declared " + sl2 + " implies " + implied
+                            + " digits (built from the TC provisional amount '" + tcStep2 + "').", "12.1 F2; 13 E58; p.84"));
+        }
+        if (!s1.emvMessage || !s2.emvMessage) {
+            return;
         }
         String c1 = s1.tlv.get("9F37");
         String c2 = s2.tlv.get("9F37");
@@ -1767,8 +1896,11 @@ public final class TestDataSpecFieldValidationRunner {
             row(b, "Run", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             row(b, "Overall verdict", "**" + overall() + "**");
             row(b, "Counts", "PASS " + count(Verdict.PASS) + " / FAIL " + count(Verdict.FAIL) + " / REVIEW "
-                    + count(Verdict.REVIEW) + " / N/A " + count(Verdict.NA));
-            b.append("\n## Defects (FAIL)\n\n");
+                    + count(Verdict.REVIEW) + " / N/A " + count(Verdict.NA) + " (individual field checks)");
+            b.append(new PlainLanguageExplainer(runYymm).render(tc, files,
+                    legs.stream().map(l -> (List<Check>) l.checks).toList(), caseChecks));
+            b.append("\n---\n\n# Technical evidence\n\nThe tables below are the validator's raw checks behind the explanations above.\n");
+            b.append("\n## Failing checks (FAIL)\n\n");
             List<Check> fails = all().stream().filter(c -> c.verdict() == Verdict.FAIL).toList();
             if (fails.isEmpty()) {
                 b.append("None.\n");
@@ -1781,7 +1913,7 @@ public final class TestDataSpecFieldValidationRunner {
                             .append(" | ").append(md(c.detail())).append(" | ").append(md(c.source())).append(" |\n");
                 }
             }
-            b.append("\n## Review items\n\n");
+            b.append("\n## Review checks (REVIEW)\n\n");
             List<Check> reviews = all().stream().filter(c -> c.verdict() == Verdict.REVIEW).toList();
             if (reviews.isEmpty()) {
                 b.append("None.\n");

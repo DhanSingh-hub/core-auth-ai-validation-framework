@@ -1,0 +1,283 @@
+# ATL105 Field-Level Test Data Validation - TC-002545
+
+| Item | Value |
+|---|---|
+| Test case | TC-002545 (BR1_TS3_TC9) |
+| Name | BUYPASS ATL105 American Express Credit MERCHANT 01 (POS PLACEHOLDER) Purchase/Capture – Magnetic Stripe Purchase → Purchase Reversal |
+| Scenario | TS-ATL105-CREDIT-AMERICAN_EXPRESS-PURCHASE-MAGSTRIPE |
+| Template / type | T5-PUR-REVERSAL / Follow-on lifecycle |
+| Objective | Purchase -> Purchase Reversal |
+| Transaction type | Financial Transaction Request → Purchase Reversal |
+| TC status | ready (catalog: grounded) |
+| Open items | [] |
+| Test data file(s) | TD-TC-002545.step1.purchase.json, TD-TC-002545.step2.reversal.json |
+| Specification | BUYPASS ATL105 Message Format Specifications 2026-3 (Ch. 11.8.1, 12.1, 12.10, 12.20, Ch. 13, App. D/E/G/I/J/R/T) |
+| Validator | regression-artifact-validator TestDataSpecFieldValidationRunner + AppendixR/T/I/J oracles |
+| Run | 2026-11-03T16:42:27.6496943 |
+| Overall verdict | **PASS_WITH_REVIEW** |
+| Counts | PASS 171 / FAIL 0 / REVIEW 7 / N/A 17 (individual field checks) |
+
+## What is wrong in this test case and how to fix it
+
+**No defects.** The generated test data matches the ATL105 specification for every field that can be checked from the spec. Only the confirmation items below remain.
+
+### Items to confirm (not defects)
+
+These cannot be decided from the specification alone. They do not make the test data wrong.
+
+| Item | Why it is open | Who confirms |
+|---|---|---|
+| Terminal ID / merchant number | The value is a placeholder. BUYPASS assigns the real device type, merchant and device number. | Client merchant list |
+| Value taken from the previous response | Correctly left as a run-time value (e.g. Approval Number from step 1). It can only be checked during execution. | Execution |
+| Length reserved for a run-time value | The declared length leaves room for a run-time value of a plausible size. | Execution |
+| Segment 100 length with a run-time value | Cannot be confirmed until the run-time value is filled in. | Execution |
+| Value taken from the previous response | Correctly left as a run-time value (e.g. Approval Number from step 1). It can only be checked during execution. | Execution |
+
+---
+
+# Technical evidence
+
+The tables below are the validator's raw checks behind the explanations above.
+
+## Failing checks (FAIL)
+
+None.
+
+## Review checks (REVIEW)
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| Seg 100 | TerminalIdentifier.DeviceType/Merchant | 102 | `JX / 948216050257 / 001` | SEG100-E102-ASSIGNED | **REVIEW** | Device Type, Merchant Number and Device Number must be BUYPASS-assigned; TC merchant is a placeholder (merchant_provenance=placeholder). | 13 E102 |
+| Seg 100 | TerminalIdentifier.DeviceType/Merchant | 102 | `JX / 948216050257 / 001` | SEG100-E102-ASSIGNED | **REVIEW** | Device Type, Merchant Number and Device Number must be BUYPASS-assigned; TC merchant is a placeholder (merchant_provenance=placeholder). | 13 E102 |
+| Seg 100 | ApprovalNumber | 5 | `<ApprovalNumber from step 1 response>` | SEG100-E5-FOLLOW-ON | **REVIEW** | Required on this follow-on (reversal) to match the original (AN6 fixed, space-filled); runtime link to the original response - must resolve to the 6-character Approval Number at execution. | 13 E5 (p.368); p.85 |
+| Seg 100 | SegmentLength (implied runtime width) | 84 | `083` | E84-SEG100-RUNTIME-WIDTH | **REVIEW** | Declared length implies the runtime value(s) [ApprovalNumber] occupy 6 character(s) (consistent with Element 5 fixed length 6). | 12.1 F2; 13 E5/E58 |
+| Seg 100 | SegmentLength (value) | 84 | `083 (computed with placeholder text: 114)` | E84-SEG100-LENGTH | **REVIEW** | Contains a runtime value; declared length cannot be verified until resolved (sum of transmitted fields (17) + one Field Separator after each). | 12.1 F2; 11.8.1 max 619 |
+| TC<->TD | Standard Message Data Segment.Approval Number [flow_response_runtime_value] | - | `<ApprovalNumber from step 1 response> \| TC: XJQUH5` | TC-TD-FIDELITY | **REVIEW** | TD carries the runtime expression; TC carries a provisional value. | TC request |
+| TC link_defs (step 2 <- step 1) | Approval Number from step 1 response | - | `<ApprovalNumber from step 1 response>` | carry_response_field | **REVIEW** | Correctly left as a runtime link (response values are processor-generated). | p.85: Element No. 5 (Approval Number)-present in the original transaction-must be present and identical (runtime link to the original's response, never invented). |
+
+## Leg 1: `TD-TC-002545.step1.purchase.json`
+
+### Field-by-field ATL105 checks
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| Message | Message type | - | `Financial Transaction Request` | 11.1/11.4/11.8.1 | **PASS** | TC leg message 'Financial Transaction Request' (role purchase, Transaction Type '0') => physical message 'Financial Transaction Request'. | ATL105 11.1 / 11.4 / 11.8.1 |
+| Data Section 1 | MessageFormatVersionIdentifier | 55 | `ATL105` | E55-FINANCIAL-REQUEST | **PASS** | Fixed value 'ATL105' (AN6). | ATL105 11.8.1 F1; 13 E55 |
+| Data Section 1 | NumberofSegments | 63 | `02` | E63-EMV-FINANCIAL-REQUEST-COUNT | **PASS** | N up to 2 digits; must equal segments present (2: [100, 111]). | ATL105 11.8.1 F2; 13 E63 |
+| Data Section 1 | Section 3 slots | - | `1` | 11.1-SECTION3 | **PASS** | Financial Transaction Request Data Section 3 occupies Field Nos. 4-9 (0..6 segments). | ATL105 11.1 / 11.8.1 p.11-43 |
+| Segment presence | Standard Message Data Segment (100) | - | `present` | SEG-100-PRESENCE | **PASS** | Required in Data Section 2 of every Financial Transaction Request. TC decision: REQUIRED. | ATL105 11.1 / 11.8.1 p.11-42; 12.1 |
+| Segment presence | EMV Request Data Segment (130) | - | `absent` | SEG130-R-017/R-001 | **NA** | POS entry mode '90' (Magnetic stripe read with full track data) is not a chip read; no EMV data applies. | ATL105 10.14.2.4; 12.20; 13 E5 |
+| Segment presence | Variable Information Data Segment (111) | - | `present` | SEG-111-PRESENCE | **PASS** | Table 031 must be populated for all transactions (BR-569-1). TC decision: REQUIRED_BY_CONDITION. | ATL105 App. I-20 (p.569) |
+| Seg 100 | Field layout (17 fields) | - | `17 keys` | LAYOUT-Seg100 | **PASS** | All spec fields present in spec order | ATL105 Chapter 12 layout table |
+| Seg 100 | SegmentType | 85 | `100` | E85-SEG100-TYPE | **PASS** | N3, fixed value 100. | 12.1 F1 |
+| Seg 100 | InformationByte | 44 | `0` | SEG100-E44 | **PASS** | AN1: '?' download, '0' single-message, '1' multimessage. | 13 E44 (p.379) |
+| Seg 100 | TerminalIdentifier | 102 | `JX72948216050257001` | SEG100-E102-FORMAT | **PASS** | AN up to 22: Device Type(2)+State Code(2)+Merchant No.(6-15)+Device No.(3) => 13..22 chars. | 13 E102 (p.410-411) |
+| Seg 100 | TerminalIdentifier.StateCode | 102 | `72` | APPD-ANSI-STATE | **PASS** | Positions 3-4 must be a valid ANSI state code (Appendix D). | 13 E102; App. D |
+| Seg 100 | TerminalIdentifier.DeviceType/Merchant | 102 | `JX / 948216050257 / 001` | SEG100-E102-ASSIGNED | **REVIEW** | Device Type, Merchant Number and Device Number must be BUYPASS-assigned; TC merchant is a placeholder (merchant_provenance=placeholder). | 13 E102 |
+| Seg 100 | PromptCode | 78 | `0020` | SEG100-E78-FORMAT | **PASS** | AN4: pos 1 Transaction Type (App. G) + pos 2-4 Card Type (App. E). | 12.1 F5; 13 E78 |
+| Seg 100 | PromptCode.TransactionType | 78 | `0` | APPG-TXN-TYPE | **PASS** | Appendix G: POS Purchase/Capture; TC leg (role purchase) requires '0'. | App. G (p.545) |
+| Seg 100 | PromptCode.CardType | 78 | `020` | APPE-CARD-TYPE | **PASS** | Appendix E code 020 = Credit (AMEX credit program). | App. E-4 |
+| Seg 100 | AccountNumber | 2 | `348833572630239` | SEG100-R-041 | **PASS** | ANS, non-TransArmor request up to 24 bytes; card PAN numeric. | 13 E2 (p.364) |
+| Seg 100 | AccountNumber.Luhn | 2 | `348833572630239` | PAN-LUHN | **PASS** | PAN check digit (ISO/IEC 7812 mod-10). | ISO/IEC 7812 |
+| Seg 100 | AccountNumber.IIN | 2 | `348833` | PAN-IIN-AMEX | **PASS** | American Express IIN 34 / 37, PAN length 15 (TC network AMERICAN_EXPRESS). | BUYPASS IIN Reference Manual |
+| Seg 100 | CardDiscretionaryBlockData | 12 | `290810106528793` | SEG100-R-042 | **PASS** | AN up to 51; Track 2 data after '=' => YYMM expiry + 3-digit service code + discretionary. | 12.1 F7; 13 E12 (p.364-365) |
+| Seg 100 | CardDiscretionaryBlockData.Expiry | 12 | `2908` | TRACK2-EXPIRY-YYMM | **PASS** | Expiry YYMM; month '08' must be 01-12 (valid, not expired as of 2611). | 13 E12; Track 2 (ISO 7813) |
+| Seg 100 | CardDiscretionaryBlockData.ServiceCode | 12 | `101` | TRACK2-SERVICE-CODE | **PASS** | Service code 3 digits, 1st digit 1-7 (ISO 7813). | ISO 7813 |
+| Seg 100 | Account+Discretionary (Track 2) | 2+12 | `31` | TRACK2-COMBINED-37 | **PASS** | Account Number + '=' + Card Discretionary Block Data must not exceed 37 for Track 2. | 13 E12 (p.364) |
+| Seg 100 | EncryptedPINBlockData | 33 | `(empty)` | SEG100-E33-COND | **NA** | Not populated; conditional field not applicable to this transaction. AN36 (KSN 16-20 + PIN block 16); conditional on PIN entry. | 12.1 |
+| Seg 100 | PumpLaneNumber | 79 | `(empty)` | SEG100-E79-COND | **NA** | Not populated; conditional field not applicable to this transaction. N2; fuel/pump context only. | 12.1 |
+| Seg 100 | FuelPurchaseAmount | 41 | `(empty)` | SEG100-E41-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; fuel purchase only. | 12.1 |
+| Seg 100 | TaxAmount | 99 | `(empty)` | SEG100-E99-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; optional tax amount. | 12.1 |
+| Seg 100 | CashAmount | 17 | `(empty)` | SEG100-E17-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; cash back only. | 12.1 |
+| Seg 100 | LocalDateandLocalTime | 49 | `(empty)` | SEG100-E49-COND | **NA** | Not populated; conditional field not applicable to this transaction. N10; preauthorized transaction only. | 12.1 |
+| Seg 100 | NonfuelAmount | 58 | `1500` | SEG100-E58-FORMAT | **PASS** | N, up to 8 digits for AMEX (8 only for American Express), 2 assumed decimals, > 0. | 13 E58 (p.384) |
+| Seg 100 | SequenceNumber | 86 | `025451` | E86-FINANCIAL-REQUEST-SHAPE | **PASS** | N6, 000001-999999. | 12.1 F14; 13 E86 |
+| Seg 100 | ApprovalNumber | 5 | `` | BR-368-2 | **PASS** | Must be empty on a new Purchase request (an Approval Number marks it preauthorized). | 13 E5 (p.368) |
+| Seg 100 | PartialApprovalIndicator | 121 | `1` | SEG100-E121 | **PASS** | N1, required on all transactions: 0 not supported, 1 supported, 5 Amex prepaid only. | 13 E121 (p.440) |
+| Seg 100 | SegmentLength (format) | 84 | `088` | E84-SEG100-LENGTH | **PASS** | N3, range 1-619. | 12.1 F2; 11.8.1 max 619 |
+| Seg 100 | SegmentLength (value) | 84 | `088 (computed 88)` | E84-SEG100-LENGTH | **PASS** | Must include Segment Type, all fields and Field Separators: sum of transmitted fields (17) + one Field Separator after each. | 12.1 F2; 11.8.1 max 619 |
+| Seg 111 | SegmentType | 85 | `111` | E85-SEG111-TYPE | **PASS** | N3, fixed value 111. | 12.10 F1 |
+| Seg 111 | Section[1].VariableInformationIndicator | 111 | `005` | SEG111-E111 | **PASS** | N3 Table ID (Appendix I catalog: SOURCE_LOCATED). | 12.10 F3; 13 E111 |
+| Seg 111 | Section[1].VariableInformationLength | 112 | `003` | SEG111-E112 | **PASS** | N3 001-999 and equal to the length of Element 113 (3). | 12.10 F4; 13 E112 |
+| Seg 111 | Section[1].VariableInformation (Table 005) | 113 | `901` | APPI-T005-R001 | **PASS** | POS entry components are in Appendix J's enumerations. | App. I Table 005 / App. J |
+| Seg 111 | Section[1].POS Entry Mode (App. J) | 113 | `901` | APPJ-POS-ENTRY-MODE | **PASS** | PAN entry '90' = Magnetic stripe read with full track data; terminal capability '1' = PIN entry capability (EMV Contact and Contactless). | App. J (p.638) |
+| Seg 111 | Section[1].POS Entry Mode vs TC leg entry_code | 113 | `90` | LEG-ENTRY-MODE | **PASS** | TC leg entry_code '90' (Magnetic stripe read with full track data) for entry_mode MAGSTRIPE. | App. J; TC rule_checks |
+| Seg 111 | Section[2].VariableInformationIndicator | 111 | `031` | SEG111-E111 | **PASS** | N3 Table ID (Appendix I catalog: SOURCE_LOCATED). | 12.10 F3; 13 E111 |
+| Seg 111 | Section[2].VariableInformationLength | 112 | `002` | SEG111-E112 | **PASS** | N3 001-999 and equal to the length of Element 113 (2). | 12.10 F4; 13 E112 |
+| Seg 111 | Section[2].VariableInformation (Table 031) | 113 | `12` | BR-569-1 | **PASS** | n2 fixed, Terminal Capability code in {00-07,09,12} (12 = Hybrid ICC contact & contactless). | App. I-20 (p.569) |
+| Seg 111 | Table 031 present | 111 | `yes` | TABLE-031-POPULATED | **PASS** | Terminal Capability (Table 031) must be populated for all transactions. | App. I-20 (p.569) BR-569-1 |
+| Seg 111 | Variable Information Section total | - | `17` | 12.10-SECTION-991 | **PASS** | Repeated section total must not exceed 991 bytes. | 12.10 |
+| Seg 111 | SegmentLength (format) | 84 | `026` | E84-SEG111-LENGTH | **PASS** | N3, range 1-999. | 12.10 F2 |
+| Seg 111 | SegmentLength (value) | 84 | `026 (computed 26)` | E84-SEG111-LENGTH | **PASS** | Must include Segment Type, all fields and Field Separators: type+FS+length+FS+sections+final FS. | 12.10 F2 |
+| Entry mode | Table 005 vs Element 12 content | 113/12 | `901 / 290810106528793` | APPJ-READ-HAS-TRACK | **PASS** | PAN entry '90' (Magnetic stripe read with full track data) means the card was read; the original request must carry the unaltered Track 2 data after '='. | App. J-1; 13 E12 (p.364) |
+| Message | Total message length | - | `124` | 11.8.1-MAX-4000 | **PASS** | Computed wire length (Data Section 1 + segments) must not exceed 4,000 bytes. | ATL105 11.8.1 note |
+
+### Test data vs test case request (generation fidelity)
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| TC<->TD | Standard Message Data Segment.Segment Type [fixed_value] | - | `100 \| TC: 100` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Segment Length | 84 | `088` | TC-DERIVED | **NA** | TC defers this value to wire encoding; TD computed '088' (verified in spec checks). | TC method |
+| TC<->TD | Standard Message Data Segment.Information Byte [test_data_config_value] | - | `0 \| TC: 0` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Terminal Identifier [realistic_terminal_id] | - | `JX72948216050257001 \| TC: JX72948216050257001` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Prompt Code [flow_fixed_transaction_code] | - | `0020 \| TC: 0020` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Account Number [realistic_pan] | - | `348833572630239 \| TC: 348833572630239` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Card Discretionary Block Data [realistic_track2_discretionary] | - | `290810106528793 \| TC: 290810106528793` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Encrypted PIN Block Data [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Pump/Lane Number [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Fuel Purchase Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Nonfuel Amount [scenario_parameter_literal] | - | `1500 \| TC: 1500` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Tax Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Cash Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Sequence Number [qe_example_value] | - | `025451 \| TC: 025451` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Approval Number [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Local Date and Local Time [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Partial Approval Indicator [test_data_config_value] | - | `1 \| TC: 1` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Indicator | - | `005 \| TC: 005` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Length | - | `003 \| TC: 003` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information | - | `901 \| TC: 901` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Indicator [2] | - | `031 \| TC: 031` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Length [2] | - | `002 \| TC: 002` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information [2] | - | `12 \| TC: 12` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Segment Type | - | `111 \| TC: 111` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Fleet Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Product Code Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | EBT Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Purchase Card Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Loyalty Card Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Check Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | ECA/ TeleCheck Data Segment Format ® | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | SKU Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | NFC Payment Tokenization Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Moneris Data Segment (Request) | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Tax by Product Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Enhanced Fleet Request | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Request InComm OTC Market Basket Data | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Network Token Data Request | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | EV Charging Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+
+## Leg 2: `TD-TC-002545.step2.reversal.json`
+
+### Field-by-field ATL105 checks
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| Message | Message type | - | `Financial Transaction Request` | 11.1/11.4/11.8.1 | **PASS** | TC leg message 'Purchase Reversal' (role reversal, Transaction Type '8') => physical message 'Financial Transaction Request'. | ATL105 11.1 / 11.4 / 11.8.1 |
+| Data Section 1 | MessageFormatVersionIdentifier | 55 | `ATL105` | E55-FINANCIAL-REQUEST | **PASS** | Fixed value 'ATL105' (AN6). | ATL105 11.8.1 F1; 13 E55 |
+| Data Section 1 | NumberofSegments | 63 | `02` | E63-EMV-FINANCIAL-REQUEST-COUNT | **PASS** | N up to 2 digits; must equal segments present (2: [100, 111]). | ATL105 11.8.1 F2; 13 E63 |
+| Data Section 1 | Section 3 slots | - | `1` | 11.1-SECTION3 | **PASS** | Financial Transaction Request Data Section 3 occupies Field Nos. 4-9 (0..6 segments). | ATL105 11.1 / 11.8.1 p.11-43 |
+| Segment presence | Standard Message Data Segment (100) | - | `present` | SEG-100-PRESENCE | **PASS** | Required in Data Section 2 of every Financial Transaction Request. TC decision: REQUIRED. | ATL105 11.1 / 11.8.1 p.11-42; 12.1 |
+| Segment presence | EMV Request Data Segment (130) | - | `absent` | SEG130-R-017/R-001 | **NA** | POS entry mode '02' (Magnetic stripe read with partial track data) is not a chip read; no EMV data applies. | ATL105 10.14.2.4; 12.20; 13 E5 |
+| Segment presence | Variable Information Data Segment (111) | - | `present` | SEG-111-PRESENCE | **PASS** | Table 031 must be populated for all transactions (BR-569-1). TC decision: REQUIRED_BY_CONDITION. | ATL105 App. I-20 (p.569) |
+| Seg 100 | Field layout (17 fields) | - | `17 keys` | LAYOUT-Seg100 | **PASS** | All spec fields present in spec order | ATL105 Chapter 12 layout table |
+| Seg 100 | SegmentType | 85 | `100` | E85-SEG100-TYPE | **PASS** | N3, fixed value 100. | 12.1 F1 |
+| Seg 100 | InformationByte | 44 | `0` | SEG100-E44 | **PASS** | AN1: '?' download, '0' single-message, '1' multimessage. | 13 E44 (p.379) |
+| Seg 100 | TerminalIdentifier | 102 | `JX72948216050257001` | SEG100-E102-FORMAT | **PASS** | AN up to 22: Device Type(2)+State Code(2)+Merchant No.(6-15)+Device No.(3) => 13..22 chars. | 13 E102 (p.410-411) |
+| Seg 100 | TerminalIdentifier.StateCode | 102 | `72` | APPD-ANSI-STATE | **PASS** | Positions 3-4 must be a valid ANSI state code (Appendix D). | 13 E102; App. D |
+| Seg 100 | TerminalIdentifier.DeviceType/Merchant | 102 | `JX / 948216050257 / 001` | SEG100-E102-ASSIGNED | **REVIEW** | Device Type, Merchant Number and Device Number must be BUYPASS-assigned; TC merchant is a placeholder (merchant_provenance=placeholder). | 13 E102 |
+| Seg 100 | PromptCode | 78 | `8020` | SEG100-E78-FORMAT | **PASS** | AN4: pos 1 Transaction Type (App. G) + pos 2-4 Card Type (App. E). | 12.1 F5; 13 E78 |
+| Seg 100 | PromptCode.TransactionType | 78 | `8` | APPG-TXN-TYPE | **PASS** | Appendix G: Purchase reversal; TC leg (role reversal) requires '8'. | App. G (p.545) |
+| Seg 100 | PromptCode.CardType | 78 | `020` | APPE-CARD-TYPE | **PASS** | Appendix E code 020 = Credit (AMEX credit program). | App. E-4 |
+| Seg 100 | AccountNumber | 2 | `348833572630239` | SEG100-R-041 | **PASS** | ANS, non-TransArmor request up to 24 bytes; card PAN numeric. | 13 E2 (p.364) |
+| Seg 100 | AccountNumber.Luhn | 2 | `348833572630239` | PAN-LUHN | **PASS** | PAN check digit (ISO/IEC 7812 mod-10). | ISO/IEC 7812 |
+| Seg 100 | AccountNumber.IIN | 2 | `348833` | PAN-IIN-AMEX | **PASS** | American Express IIN 34 / 37, PAN length 15 (TC network AMERICAN_EXPRESS). | BUYPASS IIN Reference Manual |
+| Seg 100 | CardDiscretionaryBlockData | 12 | `2908` | SEG100-R-042 | **PASS** | AN up to 51; follow-on carries the expiration date only (4 digits). | 12.1 F7; 13 E12 (p.364-365) |
+| Seg 100 | CardDiscretionaryBlockData.Expiry | 12 | `2908` | TRACK2-EXPIRY-YYMM | **PASS** | Expiry YYMM; month '08' must be 01-12 (valid, not expired as of 2611). | 13 E12; Track 2 (ISO 7813) |
+| Seg 100 | EncryptedPINBlockData | 33 | `(empty)` | SEG100-E33-COND | **NA** | Not populated; conditional field not applicable to this transaction. AN36 (KSN 16-20 + PIN block 16); conditional on PIN entry. | 12.1 |
+| Seg 100 | PumpLaneNumber | 79 | `(empty)` | SEG100-E79-COND | **NA** | Not populated; conditional field not applicable to this transaction. N2; fuel/pump context only. | 12.1 |
+| Seg 100 | FuelPurchaseAmount | 41 | `(empty)` | SEG100-E41-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; fuel purchase only. | 12.1 |
+| Seg 100 | TaxAmount | 99 | `(empty)` | SEG100-E99-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; optional tax amount. | 12.1 |
+| Seg 100 | CashAmount | 17 | `(empty)` | SEG100-E17-COND | **NA** | Not populated; conditional field not applicable to this transaction. N up to 8; cash back only. | 12.1 |
+| Seg 100 | LocalDateandLocalTime | 49 | `(empty)` | SEG100-E49-COND | **NA** | Not populated; conditional field not applicable to this transaction. N10; preauthorized transaction only. | 12.1 |
+| Seg 100 | NonfuelAmount | 58 | `1500` | SEG100-E58-FORMAT | **PASS** | N, up to 8 digits for AMEX (8 only for American Express), 2 assumed decimals, > 0. | 13 E58 (p.384) |
+| Seg 100 | SequenceNumber | 86 | `025451` | E86-FINANCIAL-REQUEST-SHAPE | **PASS** | N6, 000001-999999. | 12.1 F14; 13 E86 |
+| Seg 100 | ApprovalNumber | 5 | `<ApprovalNumber from step 1 response>` | SEG100-E5-FOLLOW-ON | **REVIEW** | Required on this follow-on (reversal) to match the original (AN6 fixed, space-filled); runtime link to the original response - must resolve to the 6-character Approval Number at execution. | 13 E5 (p.368); p.85 |
+| Seg 100 | PartialApprovalIndicator | 121 | `1` | SEG100-E121 | **PASS** | N1, required on all transactions: 0 not supported, 1 supported, 5 Amex prepaid only. | 13 E121 (p.440) |
+| Seg 100 | SegmentLength (implied runtime width) | 84 | `083` | E84-SEG100-RUNTIME-WIDTH | **REVIEW** | Declared length implies the runtime value(s) [ApprovalNumber] occupy 6 character(s) (consistent with Element 5 fixed length 6). | 12.1 F2; 13 E5/E58 |
+| Seg 100 | SegmentLength (format) | 84 | `083` | E84-SEG100-LENGTH | **PASS** | N3, range 1-619. | 12.1 F2; 11.8.1 max 619 |
+| Seg 100 | SegmentLength (value) | 84 | `083 (computed with placeholder text: 114)` | E84-SEG100-LENGTH | **REVIEW** | Contains a runtime value; declared length cannot be verified until resolved (sum of transmitted fields (17) + one Field Separator after each). | 12.1 F2; 11.8.1 max 619 |
+| Seg 111 | SegmentType | 85 | `111` | E85-SEG111-TYPE | **PASS** | N3, fixed value 111. | 12.10 F1 |
+| Seg 111 | Section[1].VariableInformationIndicator | 111 | `005` | SEG111-E111 | **PASS** | N3 Table ID (Appendix I catalog: SOURCE_LOCATED). | 12.10 F3; 13 E111 |
+| Seg 111 | Section[1].VariableInformationLength | 112 | `003` | SEG111-E112 | **PASS** | N3 001-999 and equal to the length of Element 113 (3). | 12.10 F4; 13 E112 |
+| Seg 111 | Section[1].VariableInformation (Table 005) | 113 | `021` | APPI-T005-R001 | **PASS** | POS entry components are in Appendix J's enumerations. | App. I Table 005 / App. J |
+| Seg 111 | Section[1].POS Entry Mode (App. J) | 113 | `021` | APPJ-POS-ENTRY-MODE | **PASS** | PAN entry '02' = Magnetic stripe read with partial track data; terminal capability '1' = PIN entry capability (EMV Contact and Contactless). | App. J (p.638) |
+| Seg 111 | Section[1].POS Entry Mode vs TC leg entry_code | 113 | `02` | LEG-ENTRY-MODE | **PASS** | TC leg entry_code '02' (Magnetic stripe read with partial track data) for entry_mode MAGSTRIPE. | App. J; TC rule_checks |
+| Seg 111 | Section[2].VariableInformationIndicator | 111 | `031` | SEG111-E111 | **PASS** | N3 Table ID (Appendix I catalog: SOURCE_LOCATED). | 12.10 F3; 13 E111 |
+| Seg 111 | Section[2].VariableInformationLength | 112 | `002` | SEG111-E112 | **PASS** | N3 001-999 and equal to the length of Element 113 (2). | 12.10 F4; 13 E112 |
+| Seg 111 | Section[2].VariableInformation (Table 031) | 113 | `12` | BR-569-1 | **PASS** | n2 fixed, Terminal Capability code in {00-07,09,12} (12 = Hybrid ICC contact & contactless). | App. I-20 (p.569) |
+| Seg 111 | Table 031 present | 111 | `yes` | TABLE-031-POPULATED | **PASS** | Terminal Capability (Table 031) must be populated for all transactions. | App. I-20 (p.569) BR-569-1 |
+| Seg 111 | Variable Information Section total | - | `17` | 12.10-SECTION-991 | **PASS** | Repeated section total must not exceed 991 bytes. | 12.10 |
+| Seg 111 | SegmentLength (format) | 84 | `026` | E84-SEG111-LENGTH | **PASS** | N3, range 1-999. | 12.10 F2 |
+| Seg 111 | SegmentLength (value) | 84 | `026 (computed 26)` | E84-SEG111-LENGTH | **PASS** | Must include Segment Type, all fields and Field Separators: type+FS+length+FS+sections+final FS. | 12.10 F2 |
+| Message | Total message length | - | `119` | 11.8.1-MAX-4000 | **PASS** | Computed wire length (Data Section 1 + segments) must not exceed 4,000 bytes. | ATL105 11.8.1 note |
+
+### Test data vs test case request (generation fidelity)
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| TC<->TD | Standard Message Data Segment.Segment Type [fixed_value] | - | `100 \| TC: 100` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Segment Length | 84 | `083` | TC-DERIVED | **NA** | TC defers this value to wire encoding; TD computed '083' (verified in spec checks). | TC method |
+| TC<->TD | Standard Message Data Segment.Information Byte [test_data_config_value] | - | `0 \| TC: 0` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Terminal Identifier [realistic_terminal_id] | - | `JX72948216050257001 \| TC: JX72948216050257001` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Prompt Code [flow_fixed_transaction_code] | - | `8020 \| TC: 8020` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Account Number [realistic_pan] | - | `348833572630239 \| TC: 348833572630239` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Card Discretionary Block Data [realistic_expiry_date] | - | `2908 \| TC: 2908` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Encrypted PIN Block Data [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Pump/Lane Number [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Fuel Purchase Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Nonfuel Amount [flow_carried_value] | - | `1500 \| TC: 1500` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Tax Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Cash Amount [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Sequence Number [flow_carried_value] | - | `025451 \| TC: 025451` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Approval Number [flow_response_runtime_value] | - | `<ApprovalNumber from step 1 response> \| TC: XJQUH5` | TC-TD-FIDELITY | **REVIEW** | TD carries the runtime expression; TC carries a provisional value. | TC request |
+| TC<->TD | Standard Message Data Segment.Local Date and Local Time [omitted] | - | `(null) \| TC: (null)` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Standard Message Data Segment.Partial Approval Indicator [test_data_config_value] | - | `1 \| TC: 1` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Indicator | - | `005 \| TC: 005` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Length | - | `003 \| TC: 003` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information | - | `021 \| TC: 021` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Indicator [2] | - | `031 \| TC: 031` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information Length [2] | - | `002 \| TC: 002` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Variable Information [2] | - | `12 \| TC: 12` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Variable Information Data Segment.Segment Type | - | `111 \| TC: 111` | TC-TD-FIDELITY | **PASS** | TD value equals TC request value. | TC request |
+| TC<->TD | Fleet Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Product Code Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | EBT Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Purchase Card Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Loyalty Card Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Check Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | ECA/ TeleCheck Data Segment Format ® | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | SKU Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | NFC Payment Tokenization Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Moneris Data Segment (Request) | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Tax by Product Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Enhanced Fleet Request | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Request InComm OTC Market Basket Data | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | Network Token Data Request | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+| TC<->TD | EV Charging Data Segment | - | `absent` | TC-SEGMENT-DECISION | **PASS** | TC omits this segment; TD omits it. | TC request |
+
+## Test objective and flow checks
+
+| Area | Field | Element | Value | Rule | Verdict | Detail | Spec source |
+|---|---|---|---|---|---|---|---|
+| Objective (T5-PUR-REVERSAL) | Test objective | - | `Purchase -> Purchase Reversal` | T5-PUR-REVERSAL | **NA** | catalog_status=grounded; status=ready; open_items=[] | TC |
+| TC rule_checks (step 1) | LEG-TXN-TYPE Prompt Code | - | `0` | value_slice_in | **PASS** | Expected to hold; allowed [0]. | Appendix G Transaction Type of the leg (element 78 p.400-401) |
+| TC rule_checks (step 1) | LEG-CARD-TYPE Prompt Code | - | `020` | value_slice_in | **PASS** | Expected to hold; allowed [020]. | Appendix E card type (element 78 p.400-401) |
+| TC rule_checks (step 1) | LEG-ENTRY-MODE 005 | - | `90` | table_slice_in | **PASS** | Expected to hold; allowed [90]. | Appendix J PAN Entry Mode (Table 005 positions 1-2, p.638; follow-on 90 -> 02) |
+| TC rule_checks (step 2) | LEG-TXN-TYPE Prompt Code | - | `8` | value_slice_in | **PASS** | Expected to hold; allowed [8]. | Appendix G Transaction Type of the leg (element 78 p.400-401) |
+| TC rule_checks (step 2) | LEG-CARD-TYPE Prompt Code | - | `020` | value_slice_in | **PASS** | Expected to hold; allowed [020]. | Appendix E card type (element 78 p.400-401) |
+| TC rule_checks (step 2) | LEG-ENTRY-MODE 005 | - | `02` | table_slice_in | **PASS** | Expected to hold; allowed [02]. | Appendix J PAN Entry Mode (Table 005 positions 1-2, p.638; follow-on 90 -> 02) |
+| TC rule_checks (step 1) | SEG-111-REQUIRED 111 | - | `[100, 111]` | segment_present | **PASS** | Expected to hold. | REQUIRED_BY_CONDITION: 'Terminal Capability values must be populated for all transactions, which' (p.569) [BR-569-1] |
+| TC rule_checks (step 1) | TABLE-031-POPULATED 031 | - | `12` | table_slice_in | **PASS** | Expected to hold; allowed [00, 01, 02, 03, 04, 05, 06, 07, 09, 12]. | Terminal Capability values must be populated for all transactions (p.569) |
+| TC rule_checks (step 2) | SEG-111-REQUIRED 111 | - | `[100, 111]` | segment_present | **PASS** | Expected to hold. | REQUIRED_BY_CONDITION: 'Terminal Capability values must be populated for all transactions, which' (p.569) [BR-569-1] |
+| TC rule_checks (step 2) | TABLE-031-POPULATED 031 | - | `12` | table_slice_in | **PASS** | Expected to hold; allowed [00, 01, 02, 03, 04, 05, 06, 07, 09, 12]. | Terminal Capability values must be populated for all transactions (p.569) |
+| TC link_defs (step 2 <- step 1) | Sequence Number carried | - | `025451 / 025451` | carry_request_field | **PASS** | Value must be identical to step 1. | p.84: The Sequence Number must be the Sequence Number contained in the original transaction request. |
+| TC link_defs (step 2 <- step 1) | Approval Number from step 1 response | - | `<ApprovalNumber from step 1 response>` | carry_response_field | **REVIEW** | Correctly left as a runtime link (response values are processor-generated). | p.85: Element No. 5 (Approval Number)-present in the original transaction-must be present and identical (runtime link to the original's response, never invented). |
+| TC link_defs (step 2 <- step 1) | Terminal Identifier carried | - | `JX72948216050257001 / JX72948216050257001` | carry_request_field | **PASS** | Value must be identical to step 1. | p.40: A TOR must be sent from the same device as the original financial transaction request (applied to every follow-on and to the next transaction on the same device). |
+| TC link_defs (step 2 <- step 1) | Nonfuel Amount equal | - | `1500 / 1500` | amount_relation | **PASS** | Amount relation 'equal' to step 1. | p.84: Follow-on carries the original's amount (TOR: requested amount; reversal: approved amount, p.84). |
+| Flow (step 2 reversal of step 1) | AccountNumber = original | 2 | `348833572630239 / 348833572630239` | FOLLOW-ON-SAME-CARD | **PASS** | A follow-on must identify the same card as the transaction it matches. | 13 E2 / E5 (matching to the original) |
+| Flow (step 2 reversal of step 1) | Expiry = original expiry | 12 | `2908 / 2908` | FOLLOW-ON-SAME-EXPIRY | **PASS** | Follow-on must carry the original card's expiration date in the same form as the original; retries/follow-ons use the same credentials as the initial attempt. | 13 E12 (p.364-365, p.13-32) |
+| Flow (step 2 reversal of step 1) | POS entry mode = original | 113 | `901 / 021` | FOLLOW-ON-SAME-ENTRY | **PASS** | Original used PAN entry 90 (full track); a follow-on can pass only PAN + expiry and must use 02 (App. J footnote 1). | App. J-1 (p.631) note + footnote 1; TC tx_legs |
+| Flow (step 2 reversal of step 1) | PartialApprovalIndicator = original | 121 | `1 / 1` | FOLLOW-ON-SAME-PAI | **PASS** | Element 121 is required on all transactions; follow-on keeps the original merchant setting. | 13 E121 (p.440) |
+
+---
+Verdicts: PASS = conforms to ATL105; FAIL = violates ATL105 or the TC's own objective/contract; REVIEW = not assertable from the spec/snapshot alone (placeholder, BUYPASS-assigned or runtime value); N/A = conditional field correctly not populated / informational.
