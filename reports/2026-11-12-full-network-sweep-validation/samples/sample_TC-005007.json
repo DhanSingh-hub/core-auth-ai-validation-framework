@@ -1,0 +1,2949 @@
+{
+  "id": "TC-005007",
+  "name": "BUYPASS ATL105 PULSE PINless POS Debit MERCHANT 01 (POS PLACEHOLDER) Purchase/Capture \u2013 EMV Contact Chip Time-out Reversal with no original \u2192 declined (unmatched)",
+  "scenario_id": "TS-ATL105-PINLESS_DEBIT-PULSE-PURCHASE-EMV_CONTACT",
+  "scenario_type": "positive",
+  "transaction_type": "EMV Financial Transaction Request",
+  "priority": null,
+  "priority_score": null,
+  "requirement_id": "BR-B53C14E0",
+  "requirement_ids": [
+    "BR-B53C14E0"
+  ],
+  "violated_element_name": null,
+  "negative_class": null,
+  "fingerprint": "f19363b59b77e6b22c80819fd49e9c3d0684aee4dd4831e38c9beb5b1cdcb9ae",
+  "request": {
+    "Standard Message Data Segment": {
+      "Segment Type": {
+        "value": "100",
+        "method": "fixed_value",
+        "source_page": 223,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 223,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "100",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Information Byte": {
+        "value": "0",
+        "method": "test_data_config_value",
+        "source_page": 223,
+        "flags": [
+          "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Information Byte' has QE example value(s); the client-entered value is used instead"
+        ],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "library_source_samples": [
+          "config/test_data/atl105_test_data.json 'Information Byte' (qe_sample; sample-run (Copilot, dev approval); 2026-10-08T15:10:01.733022+00:00)"
+        ],
+        "element_no": "44",
+        "data_ref": {
+          "segment": "100",
+          "element": "Information Byte",
+          "variant": "valid"
+        }
+      },
+      "Terminal Identifier": {
+        "value": "JX72948216050257001",
+        "method": "realistic_terminal_id",
+        "source_page": 223,
+        "flags": [
+          "TERMINAL_ID_PER_MERCHANT: one Terminal Identifier per merchant terminal (element 102, p.417); State Code = numeric ANSI code (Appendix D, p.514)"
+        ],
+        "element_no": "102",
+        "data_ref": {
+          "segment": "100",
+          "element": "Terminal Identifier",
+          "variant": "valid"
+        }
+      },
+      "Prompt Code": {
+        "value": "0020",
+        "method": "other_valid_value",
+        "source_page": 223,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+          "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+          "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)",
+          "COMPOSITE_CONTEXT_UNSCOPED: context 'financial transaction' matched no Appendix table caption for part(s) Transaction Type \u2014 codes drawn from ALL tables in that appendix, not scoped to this context",
+          "PROMPT_CODE_CARD_TYPE_PER_APPENDIX_E: positions 2-4 = 020 (card brand 'ax'; element 78 p.400-401, Appendix E p.521-522); position 1 = the composed Transaction Type"
+        ],
+        "element_no": "78",
+        "data_ref": {
+          "segment": "100",
+          "element": "Prompt Code",
+          "variant": "valid"
+        }
+      },
+      "Account Number": {
+        "value": "TOTALS REQUEST",
+        "method": "qe_example_value",
+        "source_page": 224,
+        "flags": [
+          "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24"
+        ],
+        "element_no": "2",
+        "data_ref": {
+          "segment": "100",
+          "element": "Account Number",
+          "variant": "valid"
+        }
+      },
+      "Card Discretionary Block Data": {
+        "value": "0930",
+        "method": "realistic_expiry_date",
+        "source_page": null,
+        "element_no": "12",
+        "flags": [
+          "CARD_EXPIRY_PER_ELEMENT_12: the test case's own card expiry (MMYY) \u2014 element 12 (p.371-372): 'For all authorizations, merchants must send a value even for expired cards'"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Card Discretionary Block Data",
+          "variant": "valid"
+        }
+      },
+      "Encrypted PIN Block Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "33",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Encrypted PIN Block Data",
+          "variant": "omitted"
+        }
+      },
+      "Pump/Lane Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "79",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Pump/Lane Number",
+          "variant": "omitted"
+        }
+      },
+      "Fuel Purchase Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "41",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Fuel Purchase Amount",
+          "variant": "omitted"
+        }
+      },
+      "Nonfuel Amount": {
+        "value": "1500",
+        "method": "scenario_parameter_literal",
+        "source_page": 224,
+        "flags": [],
+        "element_no": "58",
+        "data_ref": {
+          "segment": "100",
+          "element": "Nonfuel Amount",
+          "variant": "valid"
+        },
+        "scenario_named": true
+      },
+      "Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "99",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "Cash Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "17",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Cash Amount",
+          "variant": "omitted"
+        }
+      },
+      "Sequence Number": {
+        "value": "050071",
+        "method": "qe_example_value",
+        "source_page": 224,
+        "flags": [
+          "SEQUENCE_ALLOCATED: unique per terminal across the run set; follow-ons carry the original's number (element 86, p.409, BR-409-3)"
+        ],
+        "element_no": "86",
+        "data_ref": {
+          "segment": "100",
+          "element": "Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "Approval Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "5",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Approval Number",
+          "variant": "omitted"
+        }
+      },
+      "Local Date and Local Time": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "49",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "100",
+          "element": "Local Date and Local Time",
+          "variant": "omitted"
+        }
+      },
+      "Partial Approval Indicator": {
+        "value": "1",
+        "method": "test_data_config_value",
+        "source_page": 225,
+        "flags": [
+          "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Partial Approval Indicator' has QE example value(s); the client-entered value is used instead"
+        ],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "library_source_samples": [
+          "config/test_data/atl105_test_data.json 'Partial Approval Indicator' (qe_sample; sample-run (Copilot, dev approval); 2026-10-08T15:10:01.733022+00:00)"
+        ],
+        "element_no": "121",
+        "data_ref": {
+          "segment": "100",
+          "element": "Partial Approval Indicator",
+          "variant": "valid"
+        }
+      }
+    },
+    "Fleet Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 226,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring fleet data.' (p.168) [BR-226-1]"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "101",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 226,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "101",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Odometer": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "64",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Odometer",
+          "variant": "omitted"
+        }
+      },
+      "Vehicle Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "108",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Vehicle Number",
+          "variant": "omitted"
+        }
+      },
+      "Job Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "47",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Job Number",
+          "variant": "omitted"
+        }
+      },
+      "Driver/Identification Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "31",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Driver/Identification Number",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Employee Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "40",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Employee Number",
+          "variant": "omitted"
+        }
+      },
+      "License #": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "158",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "License #",
+          "variant": "omitted"
+        }
+      },
+      "Job ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "159",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Job ID",
+          "variant": "omitted"
+        }
+      },
+      "Department #": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "160",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Department #",
+          "variant": "omitted"
+        }
+      },
+      "Customer Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "161",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Customer Data",
+          "variant": "omitted"
+        }
+      },
+      "User ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "162",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "User ID",
+          "variant": "omitted"
+        }
+      },
+      "Vehicle ID#": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "163",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Vehicle ID#",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 1",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 2",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 3",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 4": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 4",
+          "variant": "omitted"
+        }
+      },
+      "Fleet Tag 5": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "101",
+          "element": "Fleet Tag 5",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Product Code Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 230,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "102",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Service Level": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "87",
+        "data_ref": {
+          "segment": "102",
+          "element": "Service Level",
+          "variant": "omitted"
+        }
+      },
+      "Number of Products": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "62",
+        "data_ref": {
+          "segment": "102",
+          "element": "Number of Products",
+          "variant": "omitted"
+        }
+      },
+      "Product Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "77",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Code",
+          "variant": "omitted"
+        }
+      },
+      "Unit of Measure": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "106",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit of Measure",
+          "variant": "omitted"
+        }
+      },
+      "Quantity": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 230,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "81",
+        "data_ref": {
+          "segment": "102",
+          "element": "Quantity",
+          "variant": "omitted"
+        }
+      },
+      "Unit Price": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 231,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "107",
+        "data_ref": {
+          "segment": "102",
+          "element": "Unit Price",
+          "variant": "omitted"
+        }
+      },
+      "Product Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 231,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+        ],
+        "element_no": "76",
+        "data_ref": {
+          "segment": "102",
+          "element": "Product Amount",
+          "variant": "omitted"
+        }
+      }
+    },
+    "EBT Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 232,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'Sent only on transactions requiring EBT data.' (p.168)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "103",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 232,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "103",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Clerk ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "18",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "Clerk ID",
+          "variant": "omitted"
+        }
+      },
+      "Voucher ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "109",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "Voucher ID",
+          "variant": "omitted"
+        }
+      },
+      "WIC Discount Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "153",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "WIC Discount Amount",
+          "variant": "omitted"
+        }
+      },
+      "WIC Product Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "154",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "WIC Product Data",
+          "variant": "omitted"
+        }
+      },
+      "EBT Program Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "164",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "103",
+          "element": "EBT Program Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Purchase Card Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 233,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'purchase card data.' (p.168)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "104",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 233,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "104",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Purchase Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "80",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Purchase Code",
+          "variant": "omitted"
+        }
+      },
+      "PC Tax Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "74",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Tax Amount",
+          "variant": "omitted"
+        }
+      },
+      "PC Freight Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "73",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Freight Amount",
+          "variant": "omitted"
+        }
+      },
+      "PC Duty Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "72",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "PC Duty Amount",
+          "variant": "omitted"
+        }
+      },
+      "Ship-to Country Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "89",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-to Country Code",
+          "variant": "omitted"
+        }
+      },
+      "Ship-to Postal Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "90",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-to Postal Code",
+          "variant": "omitted"
+        }
+      },
+      "Ship-from Postal Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "88",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Ship-from Postal Code",
+          "variant": "omitted"
+        }
+      },
+      "Direct Marketing Invoice Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "29",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "104",
+          "element": "Direct Marketing Invoice Number",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Loyalty Card Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 238,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 238,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "108",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Loyalty Program ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 238,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "138",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Program ID",
+          "variant": "omitted"
+        }
+      },
+      "Loyalty Account Number": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "139",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Account Number",
+          "variant": "omitted"
+        }
+      },
+      "Points to Redeem": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 238,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "140",
+        "data_ref": {
+          "segment": "108",
+          "element": "Points to Redeem",
+          "variant": "omitted"
+        }
+      },
+      "Coupon ID": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 238,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "141",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon ID",
+          "variant": "omitted"
+        }
+      },
+      "Coupon Amount": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 238,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "142",
+        "data_ref": {
+          "segment": "108",
+          "element": "Coupon Amount",
+          "variant": "omitted"
+        }
+      },
+      "Update Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "143",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Update Code",
+          "variant": "omitted"
+        }
+      },
+      "Street Address": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "144",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Street Address",
+          "variant": "omitted"
+        }
+      },
+      "Phone Number, Loyalty": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "145",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Phone Number, Loyalty",
+          "variant": "omitted"
+        }
+      },
+      "Expiration Date": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "146",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "108",
+          "element": "Expiration Date",
+          "variant": "omitted"
+        }
+      },
+      "Payment Tender Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 239,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "148",
+        "data_ref": {
+          "segment": "108",
+          "element": "Payment Tender Type",
+          "variant": "omitted"
+        }
+      },
+      "Loyalty Track 2 Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 239,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "147",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Track 2 Data",
+          "variant": "omitted"
+        }
+      },
+      "Loyalty Information Version": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 239,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "150",
+        "data_ref": {
+          "segment": "108",
+          "element": "Loyalty Information Version",
+          "variant": "omitted"
+        }
+      },
+      "Unit of Work": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 239,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+        ],
+        "element_no": "151",
+        "data_ref": {
+          "segment": "108",
+          "element": "Unit of Work",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Variable Information Data Segment": {
+      "Segment Type": {
+        "value": "111",
+        "method": "fixed_value",
+        "source_page": 246,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 246,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "111",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator": {
+        "value": "005",
+        "method": "axis_table_placement",
+        "source_page": 548,
+        "flags": [
+          "AXIS_TABLE_PLACEMENT: Table 005 positions [1, 2]='05' (entry_mode), positions [3, 3]='1' (pin_entry_capability)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length": {
+        "value": "003",
+        "method": "axis_table_placement",
+        "source_page": 548,
+        "flags": [
+          "AXIS_TABLE_PLACEMENT: Table 005 positions [1, 2]='05' (entry_mode), positions [3, 3]='1' (pin_entry_capability)"
+        ],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information": {
+        "value": "051",
+        "method": "axis_table_placement",
+        "source_page": 548,
+        "flags": [
+          "AXIS_TABLE_PLACEMENT: Table 005 positions [1, 2]='05' (entry_mode), positions [3, 3]='1' (pin_entry_capability)"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Indicator [2]": {
+        "value": "031",
+        "method": "fixed_value",
+        "source_page": 569,
+        "flags": [
+          "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p569)"
+        ],
+        "element_no": "111",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "Variable Information Length [2]": {
+        "value": "002",
+        "method": "derived_from_table_data",
+        "source_page": null,
+        "flags": [],
+        "element_no": "112",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information Length",
+          "variant": "valid"
+        }
+      },
+      "Variable Information [2]": {
+        "value": "12",
+        "method": "realistic_terminal_capability",
+        "source_page": null,
+        "flags": [
+          "TERMINAL_CAPABILITY: the merchant terminal's certified capability (merchants.json terminal_capability; Table 031, p.569, BR-569-1)"
+        ],
+        "element_no": "113",
+        "data_ref": {
+          "segment": "111",
+          "element": "Variable Information",
+          "variant": "valid"
+        }
+      }
+    },
+    "SKU Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 251,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 114, SKU Data Segment.' (p.251)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 251,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "114",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "SKU Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 251,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 114, SKU Data Segment.' (p.251)"
+        ],
+        "element_no": "149",
+        "data_ref": {
+          "segment": "114",
+          "element": "SKU Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "EMV Request Data Segment": {
+      "Segment Type": {
+        "value": "130",
+        "method": "fixed_value",
+        "source_page": 270,
+        "flags": [],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "130",
+          "element": "Segment Type",
+          "variant": "valid"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 270,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "130",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "CA Public Key File Checksum": {
+        "value": "2012091700000100000102171",
+        "method": "test_data_config_value",
+        "source_page": 270,
+        "flags": [],
+        "library_provisional": true,
+        "library_source": "qe_sample_observed",
+        "library_source_samples": [
+          "config/test_data/atl105_test_data.json 'CA Public Key File Checksum' (qe_sample; sample-run (Copilot, dev approval); 2026-10-08T15:10:01.733022+00:00)"
+        ],
+        "element_no": "187",
+        "data_ref": {
+          "segment": "130",
+          "element": "CA Public Key File Checksum",
+          "variant": "valid"
+        }
+      },
+      "EMV Card Sequence Number": {
+        "value": "01",
+        "method": "realistic_emv_card_sequence",
+        "source_page": 270,
+        "flags": [
+          "EMV Card Sequence Number = Tag 5F34 of the same card (element 188, p.270)"
+        ],
+        "element_no": "188",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Card Sequence Number",
+          "variant": "valid"
+        }
+      },
+      "EMV Chip Data Length": {
+        "value": "147",
+        "method": "derived_from_linked_field",
+        "source_page": 270,
+        "flags": [
+          "EMV Chip Data Length = bytes of EMV Chip Data (2-byte length prefix + TLV data)"
+        ],
+        "element_no": "189",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Chip Data Length",
+          "variant": "valid"
+        }
+      },
+      "EMV Chip Data": {
+        "value": "01455F2A0208405F340101820258008407A0000000041010950580000480009A032601019C01009F02060000000015009F03060000000000009F0607A00000000410109F1008010103A40000DAC09F1A0208409F1E0831323334353637389F2608B4302C8AE8B7E91C9F2701809F3303E0F0C89F34035E03029F3501229F360201D09F370491DBA92B9F41030128509F530152",
+        "method": "spec_tlv_composite",
+        "source_page": 271,
+        "flags": [
+          "EMV_CHIP_DATA_PER_TEST_CASE: AID A0000000041010 for PULSE (Fiserv EMV guide p.44), 9C=00 for TIMEOUT_REVERSAL (p.144 Table 28), 9F34=5E0302 (p.152), 9F02 = request amount, 5F34 = EMV Card Sequence Number; application cryptogram/IAD/TVR are placeholders (EMV_PLACEHOLDER) - a card simulator supplies them at execution"
+        ],
+        "element_no": "190",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Chip Data",
+          "variant": "valid"
+        }
+      },
+      "EMV Additional Information Indicator": {
+        "value": "001",
+        "method": "qe_example_value",
+        "source_page": 271,
+        "flags": [],
+        "element_no": "191",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Additional Information Indicator",
+          "variant": "valid"
+        }
+      },
+      "EMV Additional Information Length": {
+        "value": "984",
+        "method": "derived_from_linked_field",
+        "source_page": 271,
+        "flags": [
+          "LINKED_FIELD_DERIVED: 'EMV Additional Information Length' (char_length of 'EMV Additional Information', group 'EMV_ADDL')"
+        ],
+        "element_no": "192",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Additional Information Length",
+          "variant": "valid"
+        }
+      },
+      "EMV Additional Information": {
+        "value": "H4NEOJDAYUJECG2Y9X5B9NP4HKA3AR28VUD0K3T8GDBENPX45FQ45IQHCTWB4S6K6HDLGCR32SA6V63HWDCIAA3F1A9E0YDXP0Y6K5ORQQKNZJZQEQFAC4EI2ICHC9MIOB5I5WL23APU3VVYRMPZJCKL9ULC01TZS8CLRB8PWWC2H32CBXFA7CFFQA77KJ8S90JFC6L4OTEOBW9S8ZSVA3TBAGCPQVIINVAPJTJIQD141BS0DDX1AQGEMG5517JNA8ESE1S3HRHLDQKA5TEAPL0OTX3K7NU067QLWIYESIK9UNC47ZJRB7AQNUIJ4KEPYOWX18GHHOHH4W4ZQ43M2X9BSZQQWDQXG0DVDPQ9O8C7HZBIGCJNWWK4J3OYM1PF748AFUO51DP6BKMA3JC1LSV8043BMPK7YZWR84SHP6EEJY308LV29QLMVQLKOS3IB5MOP43Q06IENSRHF0LGGQCDOKGSCM42YOQYG5MJTVTZIFOEW5D7QSALIQVNAJ5V3YXK73XCOROXJ6GIXVL5T6BN2ASZWM93QB8MD56FRCAZA9HGT04SHJRH6NUM07SQ8JGEU8FCQAR3ZGQGOGEJHAFIZZC7M993ZF2RUI5MVV4EEG073WUMECJT1O5GY8OIYXZPM59AOTGY95DN76EXKQ1RBKRCVOSUGUI9CC7XEEBZTGKX85O5975RKUKJGPY17FKH3PPTNYAV4WF69V4ZBEYNYWMZTCBMPCA0AR33V8T9ZMNG9KPHCCKJSV4ZXK6E1MC83RBUD4BYOK0WL8OJYYZ91MIDLO5R5ALBHZH1IRYMH5RD4EARCYW6EWPQXWEXNQBGN2L800Q5Q0HW132E8D1NOH6DNY9T1DEDVLXSPX5GBWQ9FIF1I5MC7KIZVXSLT52FPVYBH9H0YF9DR4ZZH4KZL387542LQ0HSAKUC4M9AYCQ6P8GL1HOGVKFBKRJ9RJBRTHRKVADL4OCW4OV1TZZL",
+        "method": "format_synthesis",
+        "source_page": 271,
+        "flags": [
+          "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+        ],
+        "element_no": "118",
+        "data_ref": {
+          "segment": "130",
+          "element": "EMV Additional Information",
+          "variant": "valid"
+        }
+      }
+    },
+    "Moneris Data Segment (Request)": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 277,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This segment contains data required by the Moneris authorizer.' (p.277) [BR-168-7]"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "135",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 277,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "135",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Moneris Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 277,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This segment contains data required by the Moneris authorizer.' (p.277) [BR-168-7]"
+        ],
+        "element_no": "213",
+        "data_ref": {
+          "segment": "135",
+          "element": "Moneris Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Tax by Product Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 285,
+        "flags": [
+          "SEGMENT_NOT_SENT: EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "143",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 285,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "143",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "Number of Products": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 286,
+        "flags": [
+          "SEGMENT_NOT_SENT: EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+        ],
+        "element_no": "62",
+        "data_ref": {
+          "segment": "143",
+          "element": "Number of Products",
+          "variant": "omitted"
+        }
+      },
+      "Product Code": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 286,
+        "flags": [
+          "SEGMENT_NOT_SENT: EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+        ],
+        "element_no": "77",
+        "data_ref": {
+          "segment": "143",
+          "element": "Product Code",
+          "variant": "omitted"
+        }
+      },
+      "Inclusive/Exclusive for Tax 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 286,
+        "flags": [
+          "SEGMENT_NOT_SENT: EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+        ],
+        "element_no": "223",
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/Exclusive for Tax 1",
+          "variant": "omitted"
+        }
+      },
+      "Tax Type 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "224",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 1",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 1": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "225",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 1",
+          "variant": "omitted"
+        }
+      },
+      "Inclusive/Exclusive for Tax 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "226",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/Exclusive for Tax 2",
+          "variant": "omitted"
+        }
+      },
+      "Tax Type 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "227",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 2",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 2": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "228",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 2",
+          "variant": "omitted"
+        }
+      },
+      "Inclusive/Exclusive for Tax 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "229",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Inclusive/Exclusive for Tax 3",
+          "variant": "omitted"
+        }
+      },
+      "Tax Type 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "230",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Type 3",
+          "variant": "omitted"
+        }
+      },
+      "Tax Amount 3": {
+        "value": null,
+        "method": "omitted",
+        "source_page": null,
+        "element_no": "231",
+        "flags": [
+          "CONDITIONAL_FIELD_OMITTED"
+        ],
+        "data_ref": {
+          "segment": "143",
+          "element": "Tax Amount 3",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Enhanced Fleet Request": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 289,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'The Enhanced Fleet Request Segment contains fleet data that applies to the enhanced fleet' (p.289)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "145",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 289,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "145",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Enhanced Fleet Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 289,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'The Enhanced Fleet Request Segment contains fleet data that applies to the enhanced fleet' (p.289)"
+        ],
+        "element_no": "239",
+        "data_ref": {
+          "segment": "145",
+          "element": "Enhanced Fleet Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "Request InComm OTC Market Basket Data": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 308,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This section describes Data Segment No. 151, Incomm OTC Market Basket Data (Input)' (p.308)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "151",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 308,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "151",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Market Basket Data": {
+        "value": null,
+        "method": "awaiting_client_value",
+        "source_page": 308,
+        "flags": [
+          "AWAITING_CLIENT_VALUE: library entry for 'Market Basket Data' has no client-supplied value"
+        ],
+        "element_no": "",
+        "data_ref": {
+          "segment": "151",
+          "element": "Market Basket Data",
+          "variant": "missing"
+        }
+      }
+    },
+    "Network Token Data Request": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 310,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'When a merchant is entitled to use both First Data provisioned Network Tokens and Auth' (p.310)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "153",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length Indicator": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 310,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "153",
+          "element": "Segment Length Indicator",
+          "variant": "valid"
+        }
+      },
+      "Network Token Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 310,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'When a merchant is entitled to use both First Data provisioned Network Tokens and Auth' (p.310)"
+        ],
+        "element_no": "239",
+        "data_ref": {
+          "segment": "153",
+          "element": "Network Token Data",
+          "variant": "omitted"
+        }
+      }
+    },
+    "EV Charging Data Segment": {
+      "Segment Type": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 318,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This segment is sent for an EV charging transaction only (EV fuel code in Product Code Segment 102).' (p.318)"
+        ],
+        "element_no": "85",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Type",
+          "variant": "omitted"
+        }
+      },
+      "Segment Length": {
+        "value": null,
+        "method": "derived_at_wire_encoding",
+        "source_page": 318,
+        "flags": [
+          "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized"
+        ],
+        "element_no": "84",
+        "data_ref": {
+          "segment": "156",
+          "element": "Segment Length",
+          "variant": "valid"
+        }
+      },
+      "EV Charging Data": {
+        "value": null,
+        "method": "omitted",
+        "source_page": 318,
+        "flags": [
+          "SEGMENT_NOT_SENT: NOT_APPLICABLE: 'This segment is sent for an EV charging transaction only (EV fuel code in Product Code Segment 102).' (p.318)"
+        ],
+        "element_no": "242",
+        "data_ref": {
+          "segment": "156",
+          "element": "EV Charging Data",
+          "variant": "omitted"
+        }
+      }
+    }
+  },
+  "segment_presence": {
+    "100": "REQUIRED",
+    "101": "CONDITIONAL",
+    "102": "CONDITIONAL",
+    "103": "CONDITIONAL",
+    "104": "CONDITIONAL",
+    "108": "CONDITIONAL",
+    "111": "CONDITIONAL",
+    "114": "CONDITIONAL",
+    "130": "REQUIRED",
+    "135": "CONDITIONAL",
+    "143": "CONDITIONAL",
+    "145": "CONDITIONAL",
+    "151": "CONDITIONAL",
+    "153": "CONDITIONAL",
+    "156": "CONDITIONAL"
+  },
+  "forced_segments": [
+    "111",
+    "130"
+  ],
+  "data_section_1": {
+    "elements": {
+      "55": {
+        "element_name": "Message Format Version Identifier",
+        "value": "ATL105",
+        "method": "fixed_value_chapter11_table",
+        "source_page": 391,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-55"
+          ],
+          "rule_pages": [
+            212
+          ],
+          "message_source": "ENT-MSG-CA_PUBLIC_KEY_FILE_LOAD_REQUEST"
+        },
+        "field_no": "1",
+        "entry": "R",
+        "position": null,
+        "length": "6",
+        "source_role": null,
+        "layout_page": 205
+      },
+      "63": {
+        "element_name": "Number of Segments",
+        "value": null,
+        "method": "derived_segment_count",
+        "source_page": 395,
+        "grounding": {
+          "rule_ids": [],
+          "attr_ids": [
+            "ATTR-63"
+          ],
+          "note": "TODO_SPEC_GROUNDING: ATTR-63.is_variable_length(false) contradicts ATTR-63.representation('Variable length of up to two digits'); zero-padding width left unresolved"
+        },
+        "field_no": "2",
+        "entry": "R",
+        "position": null,
+        "length": "2",
+        "source_role": null,
+        "layout_page": 205
+      }
+    },
+    "source": "ENT-MSG-EMV_FINANCIAL_TRANSACTION_REQUEST"
+  },
+  "flags": [
+    "AMBIGUOUS_LENGTH: max_length_raw has 2 candidate numbers [4, 14], using max_length_bytes=4",
+    "AMBIGUOUS_LENGTH: max_length_raw has 5 candidate numbers [24, 25, 50, 105, 425], using max_length_bytes=24",
+    "AWAITING_CLIENT_VALUE: library entry for 'Market Basket Data' has no client-supplied value",
+    "AXIS_TABLE_PLACEMENT: Table 005 positions [1, 2]='05' (entry_mode), positions [3, 3]='1' (pin_entry_capability)",
+    "CARD_EXPIRY_PER_ELEMENT_12: the test case's own card expiry (MMYY) \u2014 element 12 (p.371-372): 'For all authorizations, merchants must send a value even for expired cards'",
+    "COMPOSITE_CONTEXT_UNSCOPED: context 'financial transaction' matched no Appendix table caption for part(s) Transaction Type \u2014 codes drawn from ALL tables in that appendix, not scoped to this context",
+    "COMPOSITE_FROM_SPEC_PARTS: '0' did not fit the financial transaction layout; Transaction Type='0' (kept from composed value), Card Type='001' (client example for Card Type)",
+    "CONDITIONAL_FIELD_OMITTED",
+    "CONSTRAINT_RULE_UNDEFINED: element '78' ('Prompt Code') has no DEFINED length rule (UNRESOLVED_KB_GAP) \u2014 see docs/client-inputs/CLIENT_INPUT_REGISTER.md; max_length=4 is one arbitrary catalog pick, not length-verifiable",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length Indicator''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "DERIVED_AT_WIRE_ENCODING: 'Segment Length''s own spec text defines its value as computed from other rendered content (e.g. segment/element lengths), never synthesized",
+    "ELEMENT_NO_COLLISION: attribute catalog's element_no 239 record is 'Enhanced Fleet Data', not this template field's own name 'Network Token Data' (ATL105 reuses element numbers per-segment) \u2014 attribute and element-keyed scenario parameters not trusted for this field",
+    "LIBRARY_KEY_NORMALISED: library entry 'Inclusive/ Exclusive for Tax 1' matched this field 'Inclusive/Exclusive for Tax 1' ignoring spaces/case (PDF word-split in one of the two names)",
+    "LINKED_FIELD_DERIVED: 'EMV Additional Information Length' (char_length of 'EMV Additional Information', group 'EMV_ADDL')",
+    "LINKED_FIELD_DERIVED: 'EMV Chip Data Length' (hex_byte_length of 'EMV Chip Data', group 'EMV')",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p569)",
+    "MANDATORY_VARIABLE_INFORMATION_TABLE: Table 031 'must be populated for all transactions' (p569); spec 'unspecified' code from ENT-TABLE-I-031 p569 \u2014 replace with the client's real value via VarInfoTable[031]",
+    "MERCHANT_PLACEHOLDER: merchant list not yet supplied by the client",
+    "PATTERNS_DERIVED: test case patterns expanded on demand for PULSE@PINLESS_DEBIT (not in transaction_patterns.json 'enabled'; not SME-reviewed for this combination)",
+    "PROMPT_CODE_CARD_TYPE_PER_APPENDIX_E: positions 2-4 = 020 (card brand 'ax'; element 78 p.400-401, Appendix E p.521-522); position 1 = the composed Transaction Type",
+    "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'EMV Card Sequence Number' has QE example value(s); the client-entered value is used instead",
+    "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Information Byte' has QE example value(s); the client-entered value is used instead",
+    "QE_EXAMPLE_SUPERSEDED_BY_USER_VALUE: 'Partial Approval Indicator' has QE example value(s); the client-entered value is used instead",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Loyalty Program ID''s documented QE example values passed character_type/length validation",
+    "QE_EXAMPLE_VALUES_REJECTED: none of 'Terminal Identifier''s documented QE example values passed character_type/length validation",
+    "SEGMENT_SCENARIO_FIELD_INCLUDED: this field's segment is sent by a segment-level scenario (segment_directives) \u2014 its inclusion is asserted by that scenario, not by the generic inclusion profile",
+    "SPEC_TLV_COMPOSITE: sub-tables 001 'Network Token' N19 synthesized, 002 'Network Token Expiration Date' N4 synthesized, 004='Y' (Network Token) from the spec's own layouts p.310, 311, 312 \u2014 provisional placeholder data",
+    "TLV_SUB_TABLES_NOT_COMPOSED: 003 (CODE_WITHOUT_DOCUMENTED_VALUES), 005 (CODE_WITHOUT_DOCUMENTED_VALUES), 006 (CODE_WITHOUT_DOCUMENTED_VALUES; RESPONSE_ECHO), 007 (SEND_CONDITION_NOT_EVALUABLE)",
+    "UNTRUSTED_VALID_VALUES: attribute's valid_values_parsed skipped (heuristically/unstructured-parsed from narrative text)"
+  ],
+  "completeness_status": "COMPLETE",
+  "completeness_findings": [],
+  "scenario_oracle_hint": {
+    "response_code": null,
+    "decline_code": null
+  },
+  "grounding": {
+    "structure_source": "assembled/output/atl105_complete_templates.json message_templates",
+    "value_source": "test_generation/value_fill.py priority order",
+    "scenario_oracle_authority": null
+  },
+  "source_rule_id": null,
+  "source_page": 106,
+  "source_document_id": null,
+  "inclusion_profile": "typical",
+  "scope_name": null,
+  "scope_segments": null,
+  "scope_mode": null,
+  "expected_response": {
+    "structural": {
+      "tier": "INFER",
+      "assertions": [
+        "response message is well-formed per spec segment structure",
+        "every field satisfies its documented character-type and length"
+      ],
+      "grounding": "steps 1-2 extracted constraints"
+    },
+    "response_code": {
+      "tier": "ASSERT",
+      "field": "ResponseCode",
+      "value": "1",
+      "source_page": 40,
+      "grounding": "transaction_testcases.json T10-TOR-UNMATCHED (p.40)"
+    },
+    "decline_code": {
+      "tier": "INFER",
+      "field": "DeclineCode",
+      "value": null,
+      "note": "positive scenario \u2014 no decline expected"
+    },
+    "response_message": {
+      "available": true,
+      "response_transaction_type": "EMV Financial Transaction Response",
+      "grounding": "assembled/output/atl105_complete_templates.json paired response template",
+      "tier_counts": {
+        "ASSERT": 11,
+        "INFER": 34,
+        "FLAG": 11
+      },
+      "comparison_note": "Compare field-by-field. 'exact' must match the documented value; 'format_only' must satisfy character_type/length but its value is runtime-determined; 'ignore' is processor-generated and not assertable from ATL105.",
+      "data_section_1": {
+        "Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "83",
+          "character_type": "AN",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Download Indicator": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "30",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "45",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Initiation Time": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "46",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Sequence Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "86",
+          "character_type": "N",
+          "max_length_bytes": 6,
+          "presence": "R",
+          "position": null,
+          "length": "6",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Approved Amount": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "6",
+          "character_type": "N",
+          "max_length_bytes": 9,
+          "presence": "C",
+          "position": null,
+          "length": "9",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Approval Number": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "5",
+          "character_type": "AN",
+          "max_length_bytes": 6,
+          "presence": "C",
+          "position": null,
+          "length": "6",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Account Number": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "2",
+          "character_type": "ANS",
+          "max_length_bytes": 24,
+          "presence": "R",
+          "position": null,
+          "length": "25",
+          "source_page": 209,
+          "tolerance_source": "heuristic"
+        },
+        "Decline Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "26",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "C",
+          "position": null,
+          "length": "2",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "7",
+          "character_type": "N",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Authorizer Response Code": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "8",
+          "character_type": "AN",
+          "max_length_bytes": 2,
+          "presence": "R",
+          "position": null,
+          "length": "2",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Settlement Date": {
+          "tier": "FLAG",
+          "tolerance": "ignore",
+          "value": null,
+          "element_no": "119",
+          "character_type": "N",
+          "max_length_bytes": 4,
+          "presence": "R",
+          "position": null,
+          "length": "4",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Additional Information Data Segment Flag": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "115",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Number of Print Lines": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "61",
+          "character_type": "N",
+          "max_length_bytes": 1,
+          "presence": "R",
+          "position": null,
+          "length": "1",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        },
+        "Terminal Display /Printer Message": {
+          "tier": "INFER",
+          "tolerance": "format_only",
+          "value": null,
+          "element_no": "101",
+          "character_type": "AN",
+          "max_length_bytes": 31,
+          "presence": "R",
+          "position": null,
+          "length": "31",
+          "source_page": 210,
+          "tolerance_source": "heuristic"
+        }
+      },
+      "data_section_1_source": "ENT-MSG-EMV_FINANCIAL_TRANSACTION_RESPONSE",
+      "flags": [],
+      "segments": {
+        "Additional Information Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "112",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 248,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 248,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "116",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 248,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "117",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 248,
+            "tolerance_source": "heuristic"
+          },
+          "Additional Information": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "118",
+            "character_type": "AN",
+            "max_length_bytes": 984,
+            "presence": "R",
+            "source_page": 248,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "115",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 252,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 252,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 252,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Print Data 2 Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "120",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 266,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 266,
+            "tolerance_source": "heuristic"
+          },
+          "Print Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "152",
+            "character_type": "ANS",
+            "max_length_bytes": 900,
+            "presence": "R",
+            "source_page": 266,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "EMV Response Data Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "131",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 272,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 272,
+            "tolerance_source": "heuristic"
+          },
+          "CA Public Key File Checksum": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "187",
+            "character_type": "N",
+            "max_length_bytes": 25,
+            "presence": "R",
+            "source_page": 272,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "189",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 272,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Chip Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "190",
+            "character_type": "ANSB",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 272,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Additional Information Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "191",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Additional Information Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "192",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          },
+          "EMV Additional Information": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "118",
+            "character_type": "AN",
+            "max_length_bytes": 984,
+            "presence": "R",
+            "source_page": 273,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Transaction Attributes Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "134",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 276,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 276,
+            "tolerance_source": "heuristic"
+          },
+          "Settlement Type": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "198",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 276,
+            "tolerance_source": "heuristic"
+          },
+          "Signature Required": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "199",
+            "character_type": "AN",
+            "max_length_bytes": 1,
+            "presence": "R",
+            "source_page": 276,
+            "tolerance_source": "heuristic"
+          },
+          "Receipt Card Description": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "200",
+            "character_type": "AN",
+            "max_length_bytes": 10,
+            "presence": "R",
+            "source_page": 276,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Moneris Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "136",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 278,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 278,
+            "tolerance_source": "heuristic"
+          },
+          "Moneris Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "213",
+            "character_type": "AN",
+            "max_length_bytes": 100,
+            "presence": "R",
+            "source_page": 278,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Enhanced Fleet Data Segment (Response)": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "146",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 298,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 298,
+            "tolerance_source": "heuristic"
+          },
+          "Enhanced Fleet Data": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "239",
+            "character_type": "AN",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 298,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "WEX Available Product Fleet Information": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "148",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 304,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 304,
+            "tolerance_source": "heuristic"
+          },
+          "Available Product Information": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "240",
+            "character_type": "AN Variable Length: 17 bytes",
+            "max_length_bytes": 17,
+            "presence": "R",
+            "source_page": 305,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Response InComm OTC Market Basket Data": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "152",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 309,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length Indicator": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 309,
+            "tolerance_source": "heuristic"
+          },
+          "Market Basket Data": {
+            "tier": "FLAG",
+            "tolerance": "ignore",
+            "value": null,
+            "element_no": "",
+            "character_type": null,
+            "max_length_bytes": null,
+            "presence": "R",
+            "source_page": 309,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Network Token Data Response": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "154",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 338,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 338,
+            "tolerance_source": "heuristic"
+          },
+          "Network Token Data": {
+            "tier": "FLAG",
+            "tolerance": "ignore",
+            "value": null,
+            "element_no": "239",
+            "character_type": "AN",
+            "max_length_bytes": 999,
+            "presence": "R",
+            "source_page": 338,
+            "tolerance_source": "heuristic"
+          }
+        },
+        "Real Time Account Updater Response Segment": {
+          "Segment Type": {
+            "tier": "ASSERT",
+            "tolerance": "exact",
+            "value": "155",
+            "element_no": "85",
+            "character_type": "N",
+            "max_length_bytes": 3,
+            "presence": "R",
+            "source_page": 314,
+            "tolerance_source": "heuristic"
+          },
+          "Segment Length": {
+            "tier": "INFER",
+            "tolerance": "format_only",
+            "value": null,
+            "element_no": "84",
+            "character_type": "N",
+            "max_length_bytes": 4,
+            "presence": "R",
+            "source_page": 314,
+            "tolerance_source": "heuristic"
+          }
+        }
+      }
+    }
+  },
+  "segment_directives": {
+    "130": "include"
+  },
+  "layer": "business_model",
+  "check_id": "TX:T10:TS-ATL105-PINLESS_DEBIT-PULSE-PURCHASE-EMV_CONTACT:956ad5874c",
+  "check_level": "TX",
+  "test_type": "T10",
+  "polarity": "Negative",
+  "validation_focus": "Business-rule decline",
+  "test_objective": "Time-out Reversal with no original -> declined (unmatched)",
+  "spec_basis": [
+    {
+      "page": 40,
+      "quote": "BUYPASS declines a TOR request as an unmatched reversal when BUYPASS has not received the original financial transaction request related to the TOR"
+    },
+    {
+      "source_id": null,
+      "page": 106,
+      "quote": "Candidate: PINless POS Debit has no Authorizer Type of its own; DEBIT networks proposed (SME to confirm).",
+      "pair": "program-network"
+    },
+    {
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 106,
+      "quote": "The following point-of-sale transactions are supported for PINless POS Debit card processing: ... Purchase",
+      "pair": "program-txn_category"
+    },
+    {
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 106,
+      "quote": "The following point-of-sale transactions are supported for PINless POS Debit card processing: ... Purchase",
+      "pair": "network-txn_category"
+    },
+    {
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 161,
+      "quote": "The following point-of-sale transactions are supported for EMV card processing: ... Purchase",
+      "pair": "txn_category-entry_mode"
+    }
+  ],
+  "rule_checks": [
+    {
+      "id": "LEG-TXN-TYPE",
+      "op": "value_slice_in",
+      "expect": "hold",
+      "basis": "Appendix G Transaction Type of the leg (element 78 p.400-401)",
+      "step": 1,
+      "segment": "100",
+      "element": "Prompt Code",
+      "start": 1,
+      "end": 1,
+      "allowed": [
+        "Z"
+      ]
+    },
+    {
+      "id": "LEG-ENTRY-MODE",
+      "op": "table_slice_in",
+      "expect": "hold",
+      "basis": "Appendix J PAN Entry Mode (Table 005 positions 1-2, p.638; follow-on 90 -> 02)",
+      "step": 1,
+      "segment": "111",
+      "table_id": "005",
+      "start": 1,
+      "end": 2,
+      "allowed": [
+        "05"
+      ]
+    },
+    {
+      "id": "LEG-EMV-SEGMENT",
+      "op": "segment_present",
+      "expect": "hold",
+      "basis": "Segment 130 required for EMV (p.203/206)",
+      "step": 1,
+      "segment": "130"
+    },
+    {
+      "id": "SEG-111-REQUIRED",
+      "op": "segment_present",
+      "expect": "hold",
+      "step": 1,
+      "segment": "111",
+      "kb_rule_ids": [
+        "BR-569-1"
+      ],
+      "basis": "REQUIRED_BY_CONDITION: 'Terminal Capability values must be populated for all transactions, which' (p.569) [BR-569-1]"
+    },
+    {
+      "id": "TABLE-031-POPULATED",
+      "op": "table_slice_in",
+      "expect": "hold",
+      "step": 1,
+      "segment": "111",
+      "table_id": "031",
+      "start": 1,
+      "end": 2,
+      "allowed": [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "09",
+        "12"
+      ],
+      "kb_rule_ids": [
+        "BR-569-1"
+      ],
+      "basis": "Terminal Capability values must be populated for all transactions (p.569)"
+    }
+  ],
+  "merchant": {
+    "id": "M01",
+    "name": "MERCHANT 01 (POS PLACEHOLDER)",
+    "terminal_type": "POS"
+  },
+  "merchant_provenance": "placeholder",
+  "dimensions": {
+    "platform": "BUYPASS",
+    "spec": "ATL105",
+    "network": "PULSE",
+    "program": "PINLESS_DEBIT",
+    "txn_category": "PURCHASE",
+    "entry_mode": "EMV_CONTACT"
+  },
+  "dimension_labels": {
+    "platform": "BUYPASS",
+    "spec": "ATL105",
+    "network": "PULSE",
+    "program": "PINless POS Debit",
+    "txn_category": "Purchase/Capture",
+    "entry_mode": "EMV Contact Chip"
+  },
+  "scenario_status": "unconfirmed",
+  "requires_sme": true,
+  "requires_review": false,
+  "template_id": "T10-TOR-UNMATCHED",
+  "tc_type": "T10",
+  "tc_type_name": "Business-rule decline",
+  "tc_layer": "host",
+  "template_order": 25,
+  "catalog_status": "grounded",
+  "open_items": [],
+  "device_checkpoints": [],
+  "procedure": [],
+  "expected_behaviour": [],
+  "tx_legs": [
+    {
+      "step": 1,
+      "category": "TIMEOUT_REVERSAL",
+      "category_label": "Time-out Reversal",
+      "role": "timeout_reversal",
+      "message": "EMV Financial Transaction Request",
+      "code": "Z",
+      "prompt_code": null,
+      "entry_code": "05",
+      "of": null,
+      "links": null,
+      "amount": null,
+      "follow_on": false,
+      "independent": false,
+      "required_segments": [
+        "130"
+      ],
+      "link_defs": [],
+      "settings": {},
+      "execution": [
+        "Sequence Number never used by an original transaction"
+      ],
+      "harness": null,
+      "expect": {
+        "tier": "ASSERT",
+        "response_code": "1",
+        "page": 40
+      }
+    }
+  ],
+  "message_chain": "Z",
+  "pattern_scope": "derived",
+  "partial_approval_precondition": false,
+  "segment_decisions": {
+    "100": {
+      "decision": "REQUIRED",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 223,
+      "quote": "It is the only required data segment on all Financial Transaction Request messages.",
+      "reason": "REQUIRED: 'It is the only required data segment on all Financial Transaction Request messages.' (p.223)"
+    },
+    "101": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [
+        "BR-226-1"
+      ],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 168,
+      "quote": "Sent only on transactions requiring fleet data.",
+      "reason": "NOT_APPLICABLE: 'Sent only on transactions requiring fleet data.' (p.168) [BR-226-1]"
+    },
+    "102": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 168,
+      "quote": "Sent only on transactions requiring product data.",
+      "reason": "NOT_APPLICABLE: 'Sent only on transactions requiring product data.' (p.168)"
+    },
+    "103": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 168,
+      "quote": "Sent only on transactions requiring EBT data.",
+      "reason": "NOT_APPLICABLE: 'Sent only on transactions requiring EBT data.' (p.168)"
+    },
+    "104": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 168,
+      "quote": "purchase card data.",
+      "reason": "NOT_APPLICABLE: 'purchase card data.' (p.168)"
+    },
+    "108": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 238,
+      "quote": "This section describes Data Segment No. 108, Loyalty Card Data Segment.",
+      "reason": "NOT_APPLICABLE: 'This section describes Data Segment No. 108, Loyalty Card Data Segment.' (p.238)"
+    },
+    "111": {
+      "decision": "REQUIRED_BY_CONDITION",
+      "kb_rule_ids": [
+        "BR-569-1"
+      ],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 569,
+      "quote": "Terminal Capability values must be populated for all transactions, which",
+      "reason": "REQUIRED_BY_CONDITION: 'Terminal Capability values must be populated for all transactions, which' (p.569) [BR-569-1]"
+    },
+    "114": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 251,
+      "quote": "This section describes Data Segment No. 114, SKU Data Segment.",
+      "reason": "NOT_APPLICABLE: 'This section describes Data Segment No. 114, SKU Data Segment.' (p.251)"
+    },
+    "130": {
+      "decision": "REQUIRED",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 270,
+      "quote": "It always appears in Data Section No. 3 of an EMV Financial Transaction Request.",
+      "reason": "REQUIRED: 'It always appears in Data Section No. 3 of an EMV Financial Transaction Request.' (p.270)"
+    },
+    "135": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [
+        "BR-168-7"
+      ],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 277,
+      "quote": "This segment contains data required by the Moneris authorizer.",
+      "reason": "NOT_APPLICABLE: 'This segment contains data required by the Moneris authorizer.' (p.277) [BR-168-7]"
+    },
+    "143": {
+      "decision": "EXCLUDED_BY_SPEC",
+      "kb_rule_ids": [
+        "BR-206-9"
+      ],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 168,
+      "quote": "included if instructed by your",
+      "reason": "EXCLUDED_BY_SPEC: 'included if instructed by your' (p.168) [BR-206-9]"
+    },
+    "145": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 289,
+      "quote": "The Enhanced Fleet Request Segment contains fleet data that applies to the enhanced fleet",
+      "reason": "NOT_APPLICABLE: 'The Enhanced Fleet Request Segment contains fleet data that applies to the enhanced fleet' (p.289)"
+    },
+    "151": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 308,
+      "quote": "This section describes Data Segment No. 151, Incomm OTC Market Basket Data (Input)",
+      "reason": "NOT_APPLICABLE: 'This section describes Data Segment No. 151, Incomm OTC Market Basket Data (Input)' (p.308)"
+    },
+    "153": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 310,
+      "quote": "When a merchant is entitled to use both First Data provisioned Network Tokens and Auth",
+      "reason": "NOT_APPLICABLE: 'When a merchant is entitled to use both First Data provisioned Network Tokens and Auth' (p.310)"
+    },
+    "156": {
+      "decision": "NOT_APPLICABLE",
+      "kb_rule_ids": [],
+      "source_id": "SRC-ATL105-PDF-001",
+      "page": 318,
+      "quote": "This segment is sent for an EV charging transaction only (EV fuel code in Product Code Segment 102).",
+      "reason": "NOT_APPLICABLE: 'This segment is sent for an EV charging transaction only (EV fuel code in Product Code Segment 102).' (p.318)"
+    }
+  },
+  "awaiting_inputs": [],
+  "conformance_notes": [
+    "EMV AID for PULSE PINLESS_DEBIT pending SME (SME-EMV-01)"
+  ],
+  "segment_applicability_version": "2026-10-31.1",
+  "review_hash": "1cb710e382ce376eece365207831e36a804adc9522dd86321bfd3fefdc821217",
+  "instance_key": "ad2d0f788b85fd4b35b2388e798e0063a00b0302db8c924b027b6075f260ae5b",
+  "verification": {
+    "status": "REJECTED_FINAL",
+    "reasons": [
+      "RULE_CHECK_MISMATCH: LEG-TXN-TYPE expected hold but is violated (actual '0')"
+    ],
+    "level": "REJECTED_FINAL",
+    "attempts": 1
+  },
+  "test_data_requested": false,
+  "display_id": "BR9_TS1_TC18",
+  "build_id": "buypass-atl105-full-set-07536b560d",
+  "status": "blocked_verification",
+  "covered_by": [],
+  "scenario_display_id": "BR9_TS1"
+}

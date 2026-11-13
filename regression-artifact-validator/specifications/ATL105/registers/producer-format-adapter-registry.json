@@ -1,0 +1,115 @@
+{
+  "registerId": "ATL105-PRODUCER-FORMAT-ADAPTER-REGISTRY-001",
+  "specification": "ATL105",
+  "purpose": "Single source of truth for every registered AI-delivery producer-format adapter: its fingerprint, implementation, hash evidence, status, and the deliveries it has been run against. Governed by the Producer Delivery Adapter Contract and Onboarding Procedure in AI-Solution-Output-Validation-Plan.md (Phase 5) and control AIV-027 in AI-ARTIFACT-VALIDATION-CONTROLS.md. An unregistered, one-off script run against a new or changed AI-delivery shape is informal evidence only and must not be cited as a certified adapter.",
+  "governingControl": "AIV-027",
+  "governingPlanSection": "specifications/ATL105/docs/test-validation-strategy/AI-Solution-Output-Validation-Plan.md#producer-delivery-adapter-contract-added-2026-11-12",
+  "statuses": [
+    "PROVISIONAL",
+    "SME_REVIEWED",
+    "DEPRECATED"
+  ],
+  "statusDefinitions": {
+    "PROVISIONAL": "Adapter mechanically parses and normalizes the producer format correctly (structural evidence only). SME/TBA has not reviewed the resulting crosswalk/coverage disposition. Never cite PROVISIONAL output as CONFIRMED semantic coverage.",
+    "SME_REVIEWED": "An SME/TBA (or formally delegated approver) has reviewed a representative sample of this adapter's output and confirmed the field mapping is correct.",
+    "DEPRECATED": "Format is no longer produced by the AI team; adapter retained for historical/regression reference only."
+  },
+  "adapters": [
+    {
+      "formatId": "RUN2-NESTED-TRACEABILITY",
+      "displayName": "Run2 nested traceability registry (September/October 2026 deliveries)",
+      "fingerprint": {
+        "description": "A single nested traceability JSON file (spec/version + requirements/scenarios/cases/testData nested graph) plus a sibling payload/metadata folder.",
+        "keyIndicators": [
+          "Top-level traceability JSON with 'spec' and nested requirement->scenario->testCase->testData graph",
+          "Payload files named '<TC-id>-...' or '<TC-id>.json' alongside the traceability file"
+        ]
+      },
+      "implementation": {
+        "language": "Java",
+        "package": "com.coreauth.validator.coverage",
+        "files": [
+          "src/main/java/com/coreauth/validator/coverage/Run2TraceabilityAdapter.java"
+        ],
+        "testEvidence": "Run2TraceabilityAdapterTest"
+      },
+      "status": "SME_REVIEWED",
+      "notes": "Established adapter; predates this registry. Listed here to make the registry a complete inventory, not because it changed on 2026-11-12."
+    },
+    {
+      "formatId": "5-10-PER-NETWORK-JSON-CSV",
+      "displayName": "5-10 per-network delivery shape (Nov 2026, all 5 payment-network packages)",
+      "fingerprint": {
+        "description": "One folder per network (e.g. american_express_credit/, mastercard_credit/, mastercard_fleet/, interlink_debit/, maestro_direct_debit/), each containing DELIVERY_CONTRACT.md, MANIFEST.json, run_set.json, requirements_scenarios/, test_cases/, test_data/.",
+        "keyIndicators": [
+          "requirements_scenarios/scenario_supporting_rules.csv with columns: rule_id,role,statement,source_id,page,authority_role,confidence_score,requires_review,flags,scenario_count",
+          "requirements_scenarios/business_requirements.json with top-level keys {meta, business_requirements} and exactly one umbrella record per network",
+          "requirements_scenarios/business_scenarios.csv with columns including message,conditions,gaps,scenario,status,requires_sme,supporting_rules_requiring_review (the last is a count, not text, despite its name)",
+          "test_cases/test_cases.jsonl: one JSON object per line per test case, with segment_decisions.<segment>.kb_rule_ids, response_checks[].rule_id, rule_checks[], scenario_rule_references",
+          "test_data/*.json: one request JSON per test case; flow legs named TD-<TC>.step<n>.<leg>.json; Segment 102 identified by SegmentType==\"102\" with a ProductCode field"
+        ]
+      },
+      "implementation": {
+        "language": "Python",
+        "location": "Session workspace (not yet ported to src/main/java/com/coreauth/validator/coverage); candidate target package: com.coreauth.validator.coverage.FiveTenDeliveryAdapter",
+        "files": [
+          {
+            "name": "extract_br_coverage.py",
+            "purpose": "Extracts per-network Test BR catalog (scenario_supporting_rules.csv) + scenario/TC status counts + gate metadata into a single combined dataset.",
+            "sha256": "1498E7B31CE87E434A06FC8B6098DCF46B9A1CD77ED1984223BC4B418FEAA971"
+          },
+          {
+            "name": "crosswalk_engine.py",
+            "purpose": "IDF-weighted token-overlap + numeric/section-anchor matching engine crosswalking the 1,343-row independent Test Solution BR catalog against this format's 2,755 AI rule statements.",
+            "sha256": "5979660A2BFA0F88A618312B5C097C13EC9154987105F850A57DD9085FB81657"
+          },
+          {
+            "name": "appf_validator.py",
+            "purpose": "Presence/value validator: joins BR-APPF-ROW-NNN Test BRs to the existing AppendixFProductCodeOracle and checks delivered test_data for actual Segment 102 ProductCode occurrences.",
+            "sha256": "301CCD401A65D369AB949DA8E7468F16E5A423FF7A5BC4B843D1240EE1FFDD9E"
+          },
+          {
+            "name": "mine_segment_anchors.py",
+            "purpose": "Mines test_cases.jsonl segment_decisions.<segment>.kb_rule_ids across all networks into a rule_id -> ATL105 segment anchor map.",
+            "sha256": "B692D02122458D3C287DCD598D0FCA7C01A1ED8F74C3695A47EAE413093CBD02"
+          }
+        ],
+        "testEvidence": "None yet. Add a regression test fixture (a small synthetic 5-10-shaped sample delivery with a known expected crosswalk result) before this adapter may move to SME_REVIEWED."
+      },
+      "sourceHashEvidence": {
+        "description": "Per-file SHA-256 for every file in the analyzed delivery is already captured by the independent delivery-gate run; this adapter cites that manifest instead of recomputing hashes.",
+        "manifest": "specifications/ATL105/test-output/ai-solution-independent-review/2026-11-10-5-10-delivery-gates-v1/input-manifest.json",
+        "gateSourceSha256": "93f11336ae817266df786c8a83541f96ae680ea08629117a775d362c8b45a497",
+        "packageBuildIds": {
+          "american_express_credit": "american-express-credit-30ce6a9269",
+          "mastercard_credit": "mastercard-credit-012cb1d498",
+          "mastercard_fleet": "mastercard-fleet-f8e91ab05e",
+          "interlink_debit": "interlink-debit-edd2ee88d4",
+          "maestro_direct_debit": "maestro-direct-debit-69393c094d"
+        }
+      },
+      "status": "PROVISIONAL",
+      "deliveriesRunAgainst": [
+        {
+          "deliveryRoot": "C:\\Users\\F5QGZOJ\\Downloads\\5-10\\5-10",
+          "deliveryName": "5-10",
+          "networksCovered": ["american_express_credit", "mastercard_credit", "mastercard_fleet", "interlink_debit", "maestro_direct_debit"],
+          "producedReports": [
+            "core-auth-ai-validation-framework/reports/2026-11-10-ai-team-delivery-defects/ALL-NETWORKS-BR-COVERAGE-REPORT-5-10-DELIVERY.html",
+            "core-auth-ai-validation-framework/reports/2026-11-12-independent-br-crosswalk/INDEPENDENT-1343-BR-CROSSWALK-5-10-DELIVERY.html"
+          ]
+        }
+      ],
+      "notes": "Confirmed-correct and confirmed-false-positive example matches are documented directly in INDEPENDENT-1343-BR-CROSSWALK-5-10-DELIVERY.html's 'Known limitations' section. Do not promote this adapter to SME_REVIEWED without an SME/TBA sampling the crosswalk's STRONG/SEMANTIC_CANDIDATE tier rows, since the engine has a demonstrated false-positive failure mode on short Test BR statements."
+    }
+  ],
+  "unsupportedFormats": [
+    {
+      "formatId": "2026-10-05-FLAT-BR-TS-XLSX",
+      "displayName": "October 5 flat BR/TS catalog plus XLSX exports",
+      "status": "ADAPTER_UNSUPPORTED",
+      "governingControlEvidence": "AIV-002",
+      "notes": "Named explicitly in AIV-002's evidence as having no equivalent production adapter. Unchanged by this registry's creation; still must report ADAPTER_UNSUPPORTED / NOT_ASSESSED if encountered again, not guessed at."
+    }
+  ]
+}

@@ -600,3 +600,26 @@ The demo must show that valid JSON is not sufficient: the package must also be a
 - Replace ATL105-specific assumptions with specification-pack interfaces.
 - Add a second specification pack as a proof of reuse.
 - Keep Core Auth graph, coverage, reporting, and governance logic unchanged.
+
+### Producer Delivery Adapter Contract (added 2026-11-12)
+
+The three bullets above are the long-term goal: reuse across a genuinely different **specification** (for example a non-ATL105 message format). This section operationalizes a narrower, immediately needed sibling: treating every AI-delivery **producer format** for the *same* ATL105 spec as swappable, so a producer-side schema/shape change -- expected here because of client-driven requirement changes -- never blocks validation or forces unregistered, ad hoc analysis the way it has for every format change seen so far (see `AIV-002`'s evidence history).
+
+Every producer delivery format must have exactly one registered adapter before any BR/coverage report may be generated from it. An adapter:
+
+1. **Declares identity**: producer name, format/schema version, generator version, specification + version it targets, and run identity, per the "Adapter and evaluator safeguards" rule above.
+2. **Fingerprints before parsing**: inspects a small, fixed set of top-level file/field markers to select the matching registered adapter (for example, a `requirements_scenarios/scenario_supporting_rules.csv` with columns `rule_id,role,statement,source_id,page,authority_role,confidence_score,requires_review,flags,scenario_count` identifies the "5-10-shape" format registered below). If no fingerprint matches, stop and report `ADAPTER_UNSUPPORTED` / `NOT_ASSESSED`; never guess a field mapping or silently reuse a different format's adapter.
+3. **Normalizes losslessly**: maps every producer record into the canonical model (`CanonicalRequirement` / `CanonicalScenario` / `CanonicalTestCase` / `CanonicalTestData`, the same shapes `Run2TraceabilityAdapter` already populates) while preserving, not resolving, every AI-reported confidence score, `requires_review` flag, and approval/review state as producer evidence only.
+4. **Is hash-pinned**: records the SHA-256 of every source file it reads (or cites an existing trustworthy hash manifest, such as a delivery's own gate `input-manifest.json`, instead of recomputing) plus its own adapter-implementation hash, so a later re-run can prove nothing silently changed.
+5. **Is registered, not ad hoc**: listed in [`producer-format-adapter-registry.json`](../../registers/producer-format-adapter-registry.json) with its fingerprint, implementation location, language, status, and every delivery it has been run against. An unregistered one-off script used for a single report is informal evidence only and must not be cited as a certified adapter.
+
+**First registration under this contract:** the "5-10" delivery format (per-network `requirements_scenarios/scenario_supporting_rules.csv` + `business_requirements.json` + `test_cases/test_cases.jsonl` + `test_data/*.json`, one folder per network) used throughout the 2026-11-10 through 2026-11-12 BR coverage and independent-crosswalk reports. Its reference implementation is a set of hash-pinned Python scripts, not yet ported to the `com.coreauth.validator.coverage` Java package used by `Run2TraceabilityAdapter` -- see the registry for exact hashes and locations. Treat its outputs as **provisional / REVIEW_REQUIRED evidence**, consistent with every other automation-only pass in this plan: the adapter mechanically parses and normalizes, but SME/TBA review of the resulting crosswalk disposition has not occurred, and ATL105-semantic correctness of the mapping has not been independently re-derived from source text the way the core segment rule catalogs were. This closes part of the `AIV-002` gap for this one format only; the 2026-10-05 flat BR/TS + XLSX format named in that control's evidence remains unsupported and must still report `ADAPTER_UNSUPPORTED`.
+
+**Producer Format Onboarding Procedure** (follow this whenever the AI team's delivery shape changes, instead of improvising per-session):
+
+1. Diff the new delivery's folder/file/field shape against every fingerprint already in the registry. If it matches one exactly, reuse that adapter and stop here.
+2. If it is new or changed, write down the exact fingerprint (file paths present, required columns/keys, and one real sample value per field) before writing any matching/scoring logic, and before computing any coverage number.
+3. Write or extend an adapter satisfying all five contract points above. Reuse the canonical model; do not invent a parallel one.
+4. Register the adapter in `producer-format-adapter-registry.json` with status `PROVISIONAL` until SME/TBA review, matching the status discipline used everywhere else in this plan (`DRAFT_REVIEW_REQUIRED`, `NOT_ASSESSED`, and so on); never `CONFIRMED` on adapter output alone.
+5. Update this plan, the [Common LLM Segment Training Handbook](../specs/kb/COMMON-LLM-SEGMENT-TRAINING-STRATEGY.md), and the affected `AIV-*` control's evidence in the same change set, per the Mandatory change synchronization rule at the top of this file.
+6. Only after steps 1-5 are done may a coverage/crosswalk report cite this format's data as more than an informal, one-off script result.
